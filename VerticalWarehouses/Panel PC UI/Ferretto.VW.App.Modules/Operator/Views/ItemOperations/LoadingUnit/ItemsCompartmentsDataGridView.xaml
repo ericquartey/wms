@@ -6,7 +6,7 @@
 
     <DataGrid ItemsSource="{Binding ItemsCompartments}"
               RowHeight="50"
-              SelectedItem="{Binding SelectedItemCompartment, Mode=OneWay}">
+              SelectedItem="{Binding SelectedItemCompartment, Mode=TwoWay}">
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
                                 Width="1.5*"

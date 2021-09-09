@@ -2168,7 +2168,7 @@
     <value>Free</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Panel Id</value>
+    <value>Panel</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>
@@ -2204,7 +2204,7 @@
     <value>Total load units in bay 3</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Total missions</value>
+    <value>Cycles</value>
   </data>
   <data name="MountCamera" xml:space="preserve">
     <value>Mount camera</value>
@@ -2544,5 +2544,17 @@
   <data name="AntiIntrusionGateInternal" xml:space="preserve">
     <value>Anti intrusion gate internal</value>
     <comment>Sensor</comment>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Shutdown panel</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Perform elevator calibration and shutdown the panel</value>
+  </data>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Shutdown the panel (elevator calibration not available now)</value>
   </data>
 </root>

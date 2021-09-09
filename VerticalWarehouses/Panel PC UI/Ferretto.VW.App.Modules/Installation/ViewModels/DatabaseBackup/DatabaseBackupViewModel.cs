@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBusy;
 
+        private bool isStandbyDbOk;
+
         private DelegateCommand saveCommand;
 
         #endregion
@@ -115,6 +117,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsEnabled => true;
 
+        public bool IsStandbyDbOk
+        {
+            get => this.isStandbyDbOk;
+            set
+            {
+                if (this.SetProperty(ref this.isStandbyDbOk, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand SaveCommand =>
                     this.saveCommand
             ??
@@ -125,6 +139,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+            Task.Run(async () =>
+            {
+                do
+                {
+                    await Task.Delay(800);
+                    this.IsStandbyDbOk = await this.machineDatabaseBackupWebService.GetStandbyDbAsync();
+                }
+                while (this.IsVisible);
+            });
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             this.IsBackupOnServerEnabled = true; //await this.machineWmsStatusWebService.IsEnabledAsync();
@@ -132,6 +160,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackupOnServer = await this.machineDatabaseBackupWebService.GetBackupOnServerAsync();
             this.IsBackupOnTelemetry = await this.machineDatabaseBackupWebService.GetBackupOnTelemetryAsync();
+            this.IsStandbyDbOk = await this.machineDatabaseBackupWebService.GetStandbyDbAsync();
 
             this.IsBusy = false;
         }

@@ -588,10 +588,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     ServicingInfo si = this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
-                        .Include(s => s.MachineStatistics)
-                        .Where(S => S.ServiceStatus == MachineServiceStatus.Valid).LastOrDefault();
-                    si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
-                    si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
+                        .Include(s => s.MachineStatistics).LastOrDefault();
+                    //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
+                    //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
                     return si;
                 }

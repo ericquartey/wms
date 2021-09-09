@@ -313,7 +313,7 @@
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
                              InputText="{Binding SelectedLU.NetWeight}"
-                             IsEnabled="{Binding IsEnabledEditing}"
+                             IsEnabled="false"
                              LabelText="{res:Loc InstallationApp.NetWeight}" />
         <!--  LabelText="NetWeight" />  -->
 

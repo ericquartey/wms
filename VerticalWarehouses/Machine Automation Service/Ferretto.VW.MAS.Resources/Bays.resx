@@ -153,4 +153,7 @@
   <data name="TheBayPositionIsBlocked" xml:space="preserve">
     <value>The bay position is blocked</value>
   </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>LoadUnit in bay sensor missing</value>
+  </data>
 </root>

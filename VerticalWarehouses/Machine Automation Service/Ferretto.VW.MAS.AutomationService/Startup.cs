@@ -24,6 +24,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Prism.Events;
+using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -31,9 +33,10 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Constructors
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             this.Configuration = configuration;
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -42,13 +45,17 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public IConfiguration Configuration { get; }
 
+        public ILogger<Startup> Logger { get; }
+
         #endregion
 
         #region Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
+            appLifetime?.ApplicationStopped.Register(this.OnStopped);
+
             var supportedCultures = new[]
             {
                 new CultureInfo("en"),
@@ -184,6 +191,11 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddTimeServices();
 
             services.AddSocketLinkServices();
+        }
+
+        private void OnStopped()
+        {
+            this.Logger.LogInformation("Application stopped");
         }
 
         #endregion

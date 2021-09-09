@@ -17,16 +17,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatile;
+
         #endregion
 
         #region Constructors
 
         public DatabaseBackupController(
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatile,
             ILogger<DatabaseBackupController> logger)
         {
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
         }
 
         #endregion
@@ -49,6 +53,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetBackupOnTelemetry()
         {
             return this.Ok(this.machineProvider.IsDbSaveOnTelemetry());
+        }
+
+        [HttpGet("get/standbydb")]
+        public ActionResult<bool> GetStandbyDb()
+        {
+            return this.Ok(this.machineVolatile.IsStandbyDbOk);
         }
 
         [HttpPost("set/backupOnServer")]

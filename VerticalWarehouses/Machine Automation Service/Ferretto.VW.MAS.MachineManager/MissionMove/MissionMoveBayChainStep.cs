@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.Mission.LoadUnitDestination = destination.Location;
             this.Mission.Status = MissionStatus.Executing;
-            this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain);
+            this.Mission.NeedHomingAxis = this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain;
 
             if (this.Mission.RestoreConditions
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
@@ -87,11 +87,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 && position.LoadingUnit.Id == this.Mission.LoadUnitId
                 && !this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
-                && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)
                 )
             {
-                this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
+                var machine = this.MachineProvider.GetMinMaxHeight();
+
+                if ((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (machine.LoadUnitMaxNetWeight + LoadUnitMaxNetWeightBayChain))
+                {
+                    this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
+                }
             }
+
             try
             {
                 if (this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id))
@@ -339,10 +344,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #endif
             {
                 var position = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                var machine = this.MachineProvider.GetMinMaxHeight();
                 if (position != null
                     && position.LoadingUnit != null
                     && position.LoadingUnit.Id == this.Mission.LoadUnitId
-                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)
+                    && (position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) > (machine.LoadUnitMaxNetWeight + LoadUnitMaxNetWeightBayChain)
                     )
                 {
                     this.Mission.ErrorCode = MachineErrorCode.MoveBayChainNotAllowed;
@@ -407,10 +413,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         private void SetErrorMoveBayChain(Bay bay, BayPosition position)
         {
+            var machine = this.MachineProvider.GetMinMaxHeight();
             this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed,
                 bay.Number,
                 string.Format(Resources.Missions.RemoveMaterialFromLoadUnit,
-                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (position.LoadingUnit.MaxNetWeight + LoadUnitMaxNetWeightBayChain)),
+                    Math.Round((position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare) - (machine.LoadUnitMaxNetWeight + LoadUnitMaxNetWeightBayChain)),
                     this.Mission.LoadUnitId,
                     Math.Round(position.LoadingUnit.GrossWeight - position.LoadingUnit.Tare)));
 
@@ -421,7 +428,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, true);
 
             // set gross weight to the maximum that do not show this error again
-            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, position.LoadingUnit.MaxNetWeight + position.LoadingUnit.Tare + this.ElevatorDataProvider.GetWeight());
+            this.LoadingUnitsDataProvider.SetWeight(this.Mission.LoadUnitId, machine.LoadUnitMaxNetWeight + position.LoadingUnit.Tare + LoadUnitMaxNetWeightBayChain + this.ElevatorDataProvider.GetWeight());
 
             this.Mission.ErrorCode = MachineErrorCode.LoadUnitWeightExceeded;
             this.Mission.RestoreStep = this.Mission.Step;

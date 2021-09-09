@@ -334,4 +334,7 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="LotManagedProduct" xml:space="preserve">
+    <value>Please select the lot of this product</value>
+  </data>
 </root>

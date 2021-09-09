@@ -8,6 +8,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
@@ -156,6 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
             {
+                this.Mission.ErrorMovements |= MissionErrorMovements.MoveForward;
                 if (this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified)
                 {
                     this.Logger.LogInformation($"Open Shutter Mission:Id={this.Mission.Id}");
@@ -183,6 +186,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.LoadUnitCellSourceId,
                     sourceBayPositionId,
                     fastDeposit);
+
+                var machine = this.MachineProvider.GetMinMaxHeight();
+                if (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell &&
+                    this.Mission.LoadUnitSource != LoadingUnitLocation.Cell &&
+                    this.Mission.LoadUnitSource != LoadingUnitLocation.Elevator &&
+                    this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate
+                   )
+                {
+                    var baySource = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    if (!(baySource.IsDouble && (baySource.Carousel != null || baySource.IsExternal))
+                        || baySource.Positions.Any(p => p.IsBlocked)
+                        || this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= (machine.VerticalCyclesToCalibrate * 1.5)
+                        )
+                    {
+                        this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
+                        this.Logger.LogDebug($"Generate Homing. Vertical cycles {this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical)} expired {machine.VerticalCyclesToCalibrate}, Mission:Id={this.Mission.Id}");
+                    }
+                }
             }
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
@@ -262,7 +283,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                 }
 
-                                if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                                if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward)
+                                    && (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                                    )
                                 {
                                     this.Logger.LogInformation($"Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                                     this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay);
@@ -282,10 +305,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 break;
                             }
                         }
-                        else if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
+                        else if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward))
                         {
                             this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal positioning end Mission:Id={this.Mission.Id}");
                             this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
+                            this.Mission.ErrorMovements = MissionErrorMovements.None;
+                            this.MissionsDataProvider.Update(this.Mission);
                         }
 
                         var isMovementEnded = (this.Mission.DeviceNotifications.HasFlag(MissionDeviceNotifications.Positioning) && !(this.MachineVolatileDataProvider.IsOneTonMachine.Value)) ||

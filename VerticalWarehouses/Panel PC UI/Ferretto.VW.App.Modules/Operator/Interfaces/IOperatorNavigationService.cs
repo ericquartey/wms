@@ -10,7 +10,7 @@
 
         void NavigateToOperationOrGoBack();
 
-        void NavigateToOperatorMenu();
+        void NavigateToOperatorMenuAsync();
 
         #endregion
     }

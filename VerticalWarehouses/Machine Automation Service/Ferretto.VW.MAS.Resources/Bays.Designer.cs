@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadUnit in bay sensor missing.
+        /// </summary>
+        public static string LoadUnitInBaySensorMissing {
+            get {
+                return ResourceManager.GetString("LoadUnitInBaySensorMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay chain is not in zero position..
         /// </summary>
         public static string TheBayChainIsNotInZeroPosition {

@@ -1767,8 +1767,14 @@
   <data name="ToteBarcodeAcquired" xml:space="preserve">
     <value>Tote is acquired. Barcode: </value>
   </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--hor</value>
+  </data>
   <data name="ItemBarcodeAcquired" xml:space="preserve">
     <value>Item is acquired. Barcode: </value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--dolní</value>
   </data>
   <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
     <value>Invalid operation. Item and tote must be acquired.</value>

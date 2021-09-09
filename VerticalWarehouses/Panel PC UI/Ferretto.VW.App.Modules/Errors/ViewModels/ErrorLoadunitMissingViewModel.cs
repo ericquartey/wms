@@ -251,17 +251,17 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.errorTime, value);
         }
 
-        public bool HasBay1PositionDownVisible => this.Bay1Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down) ?? false;
+        public bool HasBay1PositionDownVisible => this.Bay1Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down && !a.IsBlocked) ?? false;
 
-        public bool HasBay1PositionUpVisible => this.Bay1Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
+        public bool HasBay1PositionUpVisible => this.Bay1Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up && !a.IsBlocked) ?? false;
 
-        public bool HasBay2PositionDownVisible => this.Bay2Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down) ?? false;
+        public bool HasBay2PositionDownVisible => this.Bay2Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down && !a.IsBlocked) ?? false;
 
-        public bool HasBay2PositionUpVisible => this.Bay2Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
+        public bool HasBay2PositionUpVisible => this.Bay2Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up && !a.IsBlocked) ?? false;
 
-        public bool HasBay3PositionDownVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down) ?? false;
+        public bool HasBay3PositionDownVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down && !a.IsBlocked) ?? false;
 
-        public bool HasBay3PositionUpVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
+        public bool HasBay3PositionUpVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up && !a.IsBlocked) ?? false;
 
         public bool HasStepAutomaticMode => this.currentStep is ErrorLoadunitMissingStepAutomaticMode;
 
@@ -277,10 +277,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public bool HasStepStart => this.currentStep is ErrorLoadunitMissingStepStart;
 
-        internal bool IsBay1Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsDouble ?? false;
-
-        internal bool IsBay1External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsExternal ?? false;
-
         public bool IsBay1PositionDownVisible
         {
             get => this.isBay1PositionDownVisible;
@@ -293,10 +289,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.isBay1PositionUpVisible, value);
         }
 
-        internal bool IsBay2Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsDouble ?? false;
-
-        internal bool IsBay2External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsExternal ?? false;
-
         public bool IsBay2PositionDownVisible
         {
             get => this.isBay2PositionDownVisible;
@@ -308,10 +300,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             get => this.isBay2PositionUpVisible;
             set => this.SetProperty(ref this.isBay2PositionUpVisible, value);
         }
-
-        internal bool IsBay3Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsDouble ?? false;
-
-        internal bool IsBay3External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsExternal ?? false;
 
         public bool IsBay3PositionDownVisible
         {
@@ -440,6 +428,18 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         internal IEnumerable<BayPosition> Bay2Positions => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.Positions;
 
         internal IEnumerable<BayPosition> Bay3Positions => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.Positions;
+
+        internal bool IsBay1Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsDouble ?? false;
+
+        internal bool IsBay1External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsExternal ?? false;
+
+        internal bool IsBay2Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsDouble ?? false;
+
+        internal bool IsBay2External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsExternal ?? false;
+
+        internal bool IsBay3Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsDouble ?? false;
+
+        internal bool IsBay3External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsExternal ?? false;
 
         internal bool LUPresentInBay1Down => this.IsBay1External && this.IsBay1Double ? (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 || this.SensorsService.Sensors.RobotOptionBay1) : this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
 

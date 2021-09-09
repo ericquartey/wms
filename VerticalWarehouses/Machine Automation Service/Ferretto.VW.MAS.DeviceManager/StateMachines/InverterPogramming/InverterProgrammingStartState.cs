@@ -158,6 +158,16 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
             var mainInverter = this.machineData.InverterParametersData.OrderBy(s => s.InverterIndex).FirstOrDefault();
+            var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 10000);
+            var inverterMessage = new FieldCommandMessage(
+                inverterDataMessage,
+                "Update Inverter digital input status",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.InverterSetTimer,
+                mainInverter.InverterIndex);
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
             var commandMessageData = new InverterProgrammingFieldMessageData(mainInverter);
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,
@@ -175,6 +185,18 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPogramming
         {
             this.Logger.LogDebug($"Stop with reason: {reason}");
 
+            if (reason != StopRequestReason.NoReason)
+            {
+                var stopMessage = new FieldCommandMessage(
+                    null,
+                    "Inverter programming Stopped",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.InverterStop,
+                    this.currentInverterIndex);
+
+                this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            }
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new InverterProgrammingEndState(this.stateData, this.Logger));
         }

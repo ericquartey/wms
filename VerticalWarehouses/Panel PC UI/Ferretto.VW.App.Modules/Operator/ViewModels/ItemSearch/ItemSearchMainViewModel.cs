@@ -657,6 +657,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPut = true;
+                if (!this.isGroupbyLot)
+                {
+                    var lotProducts = await this.areasWebService.GetProductsAsync(
+                        this.areaId.Value,
+                        0,
+                        0,
+                        itemCode,
+                        true,
+                        false);
+                    if (lotProducts.Any(l => !string.IsNullOrEmpty(l.Lot)))
+                    {
+                        throw new InvalidOperationException(Resources.Localized.Get("General.LotManagedProduct"));
+                    }
+                }
 
                 await this.wmsDataProvider.PutAsync(
                     itemId,

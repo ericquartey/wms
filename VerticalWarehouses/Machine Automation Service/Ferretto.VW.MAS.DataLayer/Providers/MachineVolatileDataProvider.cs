@@ -104,18 +104,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public double ElevatorVerticalPositionOld { get; set; }
 
-        // Enable/disable the raw database saving on server (EjLog)
-        // (TODO: use another object for this configuration parameter)
-        //x public bool EnableLocalDbSavingOnServer { get; set; }
+        public int ExecutedCycles { get; set; }
 
         // Enable/disable the raw database saving on telemetry
         // (TODO: use another object for this configuration parameter)
         //x public bool EnableLocalDbSavingOnTelemetry { get; set; }
-
-        public int ExecutedCycles { get; set; }
-
         public bool IsAutomationServiceReady { get; set; }
 
+        // Enable/disable the raw database saving on server (EjLog)
+        // (TODO: use another object for this configuration parameter)
+        //x public bool EnableLocalDbSavingOnServer { get; set; }
         public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 
         public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
@@ -156,6 +154,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool? IsOneTonMachine { get; set; }
 
         public Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
+
+        public bool IsStandbyDbOk { get; set; }
 
         public Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 
@@ -211,6 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.Compact:
                     case MachineMode.Compact2:
                     case MachineMode.Compact3:
+                    case MachineMode.Shutdown:
                         return this.Mode;
 
                     case MachineMode.FullTest:
@@ -229,6 +230,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     case MachineMode.SwitchingToManual:
                     case MachineMode.SwitchingToManual2:
                     case MachineMode.SwitchingToManual3:
+                    case MachineMode.SwitchingToShutdown:
                         return this.Mode;
 
                     case MachineMode.SwitchingToLoadUnitOperations:
@@ -313,6 +315,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void OnDataLayerReady()
         {
+            this.IsStandbyDbOk = true;
             this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
         }
 

@@ -313,6 +313,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Panel shutdown in progress.
+        /// </summary>
+        public static string ShutdownInProgress {
+            get {
+                return ResourceManager.GetString("ShutdownInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter open or in unknown position..
         /// </summary>
         public static string ShutterOpenOrUnknowPosition {
