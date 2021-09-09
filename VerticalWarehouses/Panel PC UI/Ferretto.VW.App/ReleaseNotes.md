@@ -31,6 +31,7 @@
 ## Bug Risolti
 - L'errore di cassetto sconosciuto appare anche se lo stato è già automatico
 - Corretto funzionamento della BED in caso di perdita del sensore di presenza
+- Corretto invio delle manutenzioni alla telemetria
 
 ## Compatibile con adapter 0.4.23 e 0.4.24
 ***

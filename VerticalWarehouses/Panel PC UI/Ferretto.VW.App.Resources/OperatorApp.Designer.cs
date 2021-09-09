@@ -1033,6 +1033,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        public static string Days {
+            get {
+                return ResourceManager.GetString("Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete mission.
         /// </summary>
         public static string DeleteMission {
@@ -2487,6 +2496,24 @@ namespace Ferretto.VW.App.Resources {
         public static string IsToDo {
             get {
                 return ResourceManager.GetString("IsToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid operation. Item and tote must be acquired..
+        /// </summary>
+        public static string ItemAndToteInvalidPickOperation {
+            get {
+                return ResourceManager.GetString("ItemAndToteInvalidPickOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item is acquired. Barcode: .
+        /// </summary>
+        public static string ItemBarcodeAcquired {
+            get {
+                return ResourceManager.GetString("ItemBarcodeAcquired", resourceCulture);
             }
         }
         
@@ -4998,6 +5025,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TotalVerticalAxisKilometers {
             get {
                 return ResourceManager.GetString("TotalVerticalAxisKilometers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tote is acquired. Barcode: .
+        /// </summary>
+        public static string ToteBarcodeAcquired {
+            get {
+                return ResourceManager.GetString("ToteBarcodeAcquired", resourceCulture);
             }
         }
         
