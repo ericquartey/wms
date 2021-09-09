@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var newHeight = height;
             if (weightUp > 0 || weightDown > 0)
             {
-                newHeight -= (0.004 * (weightUp + (weightDown / 4)));
+                newHeight -= Math.Max(3, 0.003 * (weightUp + (weightDown / 4)));
                 this.logger.LogInformation($"Vertical positioning to bay adjusted from {height:0.00} to {newHeight:0.00}. Upper weight {weightUp:0.00}, Down Weight {weightDown:0.00}");
             }
             return newHeight;

@@ -381,7 +381,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public async Task AutoPickItem(string barcode)
+        public async Task AutoPutItem(string barcode)
         {
             this.ClearNotifications();
             try
@@ -478,7 +478,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case UserAction.FilterItems:
                     if (this.MachineService.Bay.BarcodeAutomaticPut)
                     {
-                        await this.AutoPickItem(userAction.GetItemCode());
+                        await this.AutoPutItem(userAction.GetItemCode());
                     }
                     else
                     {
