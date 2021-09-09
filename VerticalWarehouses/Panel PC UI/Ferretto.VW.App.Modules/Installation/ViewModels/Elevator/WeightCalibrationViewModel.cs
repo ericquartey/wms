@@ -657,8 +657,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsEnabledForwards = !this.IsMachineMoving &&
                             this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
                             this.MachineService.Loadunits.DrawerInBay() &&
-                            this.current != null &&
-                            this.netWeight != null &&
                             this.current > 0;
                     }
                     else
@@ -666,8 +664,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsEnabledForwards = !this.IsMachineMoving &&
                             this.SensorsService.IsLoadingUnitInBay &&
                             this.MachineService.Loadunits.DrawerInBay() &&
-                            this.current != null &&
-                            this.netWeight != null &&
                             this.current > 0;
                     }
                     break;
@@ -678,8 +674,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsEnabledForwards = !this.IsMachineMoving &&
                             this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
                             this.MachineService.Loadunits.DrawerInBay() &&
-                            this.current != null &&
-                            this.netWeight != null &&
                             this.netWeight > 0 &&
                             this.current > 0;
                     }
@@ -688,8 +682,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsEnabledForwards = !this.IsMachineMoving &&
                             this.SensorsService.IsLoadingUnitInBay &&
                             this.MachineService.Loadunits.DrawerInBay() &&
-                            this.current != null &&
-                            this.netWeight != null &&
                             this.netWeight > 0 &&
                             this.current > 0;
                     }
@@ -701,8 +693,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsEnabledForwards = !this.IsMachineMoving &&
                             this.SensorsService.IsLoadingUnitInMiddleBottomBay &&
                             this.MachineService.Loadunits.DrawerInBay() &&
-                            this.current != null &&
-                            this.netWeight != null &&
                             this.netWeight > 0 &&
                             this.current > 0;
                     }
@@ -711,8 +701,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsEnabledForwards = !this.IsMachineMoving &&
                             this.SensorsService.IsLoadingUnitInBay &&
                             this.MachineService.Loadunits.DrawerInBay() &&
-                            this.current != null &&
-                            this.netWeight != null &&
                             this.netWeight > 0 &&
                             this.current > 0;
                     }
@@ -887,9 +875,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             // HACK: 1
-            this.SelectedLoadingUnit = this.loadingUnitId == null
-                ? null
-                : this.LoadingUnits.SingleOrDefault(c => c.Id == this.loadingUnitId);
+            this.SelectedLoadingUnit = this.LoadingUnits.SingleOrDefault(c => c.Id == this.loadingUnitId);
         }
 
         private async Task LoadFromBayAsync()

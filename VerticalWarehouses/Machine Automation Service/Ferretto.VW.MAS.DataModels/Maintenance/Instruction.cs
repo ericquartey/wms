@@ -10,14 +10,16 @@ namespace Ferretto.VW.MAS.DataModels
 
         public InstructionDefinition Definition { get; set; }
 
-        [Obsolete("Not used")]
-        [JsonIgnore]
+        /// <summary>
+        /// actual counts. updated until not expired
+        /// </summary>
         public double? DoubleCounter { get; set; }
 
         public MachineServiceStatus InstructionStatus { get; set; } = MachineServiceStatus.Valid;
 
-        [Obsolete("Not used")]
-        [JsonIgnore]
+        /// <summary>
+        /// actual days. updated until not expired
+        /// </summary>
         public int? IntCounter { get; set; }
 
         public bool IsDone { get; set; }

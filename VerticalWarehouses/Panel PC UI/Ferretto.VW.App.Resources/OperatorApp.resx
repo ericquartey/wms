@@ -2270,6 +2270,9 @@
     <value>Drapery fully requested.</value>
     <comment>Label</comment>
   </data>
+  <data name="Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Error on signalling defect operation.</value>
     <comment>Error Message</comment>
