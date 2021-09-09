@@ -16,11 +16,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -28,7 +28,6 @@
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{resources:Loc OperatorApp.ConfirmDraperyPickingPageHeader}" />
-        <!--  text: "Confirm picking"  -->
 
         <controls:PpcLabeledText Grid.Row="1"
                                  MaxHeight="65"
@@ -38,7 +37,20 @@
                                  ContentText="{Binding DraperyItemDescription}"
                                  LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
 
-        <Border Grid.Row="2"
+        <Label Grid.Row="2"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Top"
+               Background="Yellow"
+               FontSize="16"
+               FontWeight="Bold"
+               Foreground="Black"
+               Visibility="{Binding IsCurrentDraperyItemFullyRequested, Converter={StaticResource BTVC}}">
+            <TextBlock Margin="8,0,8,0"
+                       Text="{resources:Loc OperatorApp.DraperyItemFullyRequested}"
+                       TextWrapping="WrapWithOverflow" />
+        </Label>
+
+        <Border Grid.Row="3"
                 Width="230"
                 Height="90"
                 MinHeight="90"
@@ -67,8 +79,6 @@
                                Foreground="{DynamicResource Text_Foreground}"
                                Text="{resources:Loc OperatorApp.PresentQuantityDrapery}" />
 
-                    <!--  Text= "Qta pezza totale"  -->
-
                     <TextBlock Grid.Row="1"
                                Margin="4,0,4,4"
                                HorizontalAlignment="Center"
@@ -82,7 +92,7 @@
             </Border>
         </Border>
 
-        <Border Grid.Row="3"
+        <Border Grid.Row="4"
                 Width="230"
                 Height="90"
                 MinHeight="90"
@@ -124,7 +134,7 @@
             </Border>
         </Border>
 
-        <ctrls:PpcSpinEdit Grid.Row="4"
+        <ctrls:PpcSpinEdit Grid.Row="5"
                            Width="230"
                            Height="90"
                            Margin="15,4,15,0"
@@ -135,9 +145,7 @@
                            Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                            MinValue="0" />
 
-        <!--  LabelText= "Qta buona di tessuto prima del difetto"  -->
-
-        <ctrls:PpcSpinEdit Grid.Row="5"
+        <ctrls:PpcSpinEdit Grid.Row="6"
                            Width="230"
                            Height="90"
                            Margin="15,4,15,0"
@@ -148,17 +156,13 @@
                            Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                            MinValue="0" />
 
-        <!--  LabelText= "Qta scarto"  -->
-
         <controls:PpcButton Grid.Row="6"
-                            Margin="15,8,15,0"
-                            HorizontalAlignment="Center"
+                            Margin="15,25,0,0"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Command="{Binding ConfirmDraperyItemCommand}"
                             Content="{resources:Loc OperatorApp.Confirm}"
                             Style="{StaticResource ConfirmButton}" />
-
-        <!--  {Binding IsConfirmSignallingDefectButtonEnabled}"  -->
 
     </Grid>
 

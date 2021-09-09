@@ -668,7 +668,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         false);
                     if (lotProducts.Any(l => !string.IsNullOrEmpty(l.Lot)))
                     {
-                        throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                        throw new InvalidOperationException(Resources.Localized.Get("General.LotManagedProduct"));
                     }
                 }
 

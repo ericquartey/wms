@@ -590,11 +590,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBusyUpdateDrawer = true;
                 var machineLoadUnitTare = await this.machineLoadingUnitsWebService.GetMachineLoadingUnitTareAsync();
 
-                if (machineLoadUnitTare == null)
-                {
-                    return;
-                }
-
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.UpdateTareProcedure"), Localized.Get("InstallationApp.UpdateTareProcedureHeader"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {

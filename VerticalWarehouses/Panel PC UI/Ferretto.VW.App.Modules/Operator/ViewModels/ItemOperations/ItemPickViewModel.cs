@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAddItemFeatureAvailable;
 
+        private bool isCurrentDraperyItemFullyRequested;
+
         private string measureUnitTxt;
 
         private DelegateCommand pickBoxCommand;
@@ -116,6 +118,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAddItemFeatureAvailable;
             set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCurrentDraperyItemFullyRequested
+        {
+            get => this.isCurrentDraperyItemFullyRequested;
+            set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
         }
 
         public string MeasureUnitTxt
@@ -213,6 +221,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemAsync() &&
                 this.IsCurrentDraperyItem;
+
+            // Setup only reserved for Tendaggi Paradiso
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested;
 
             this.barcodeItem = string.Empty;
 
@@ -415,6 +426,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        /*
         // To use with drapery item
         private async Task PickBox_New_Async(string barcode)
         {
@@ -485,6 +497,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.lastMissionOperation = null;
             }
         }
+        */
 
         private async Task PickBoxAsync(string barcode)
         {
@@ -658,6 +671,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        #endregion
+
         //private /*async Task*/ void SignallingDefect()
         //{
         //    this.Logger.Debug("Signalling defect call....");
@@ -729,6 +744,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
+        /*
+        // NOT USED: To be removed
         private void ShowDraperyItemConfirmView(string barcode, bool isPartiallyConfirmOperation)
         {
             this.Logger.Debug($"Show the confirm view for drapery item {this.ItemId}, description {this.MissionOperation.ItemDescription}");
@@ -749,10 +766,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     MeasureUnitTxt = this.MeasureUnitTxt,
                     Barcode = barcode,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
+                    FullyRequested = this.isCurrentDraperyItemFullyRequested,
                 },
                 trackCurrentView: true);
         }
-
-        #endregion
+        */
     }
 }

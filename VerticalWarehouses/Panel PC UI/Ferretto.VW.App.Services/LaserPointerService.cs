@@ -287,12 +287,37 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case 1: // switch on in upper bay position
+                        if (message.Data is null)
+                        {
+                            throw new ArgumentNullException(nameof(message));
+                        }
+                        if (this.bayManager.Identity is null)
+                        {
+                            throw new InvalidOperationException("bayManager.Identity");
+                        }
+                        if (bay is null)
+                        {
+                            throw new InvalidOperationException("bay");
+                        }
+
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
 
                     case 2: // switch on in lower bay position
+                        if (message.Data is null)
+                        {
+                            throw new ArgumentNullException(nameof(message));
+                        }
+                        if (this.bayManager.Identity is null)
+                        {
+                            throw new InvalidOperationException("bayManager.Identity");
+                        }
+                        if (bay is null)
+                        {
+                            throw new InvalidOperationException("bay");
+                        }
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");

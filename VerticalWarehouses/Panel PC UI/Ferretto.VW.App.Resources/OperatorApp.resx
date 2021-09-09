@@ -2266,4 +2266,15 @@
   <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
     <value>LoadUnit in bay sensor missing</value>
   </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Drapery fully requested.</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Error on signalling defect operation.</value>
+    <comment>Error Message</comment>
+  </data>
 </root>

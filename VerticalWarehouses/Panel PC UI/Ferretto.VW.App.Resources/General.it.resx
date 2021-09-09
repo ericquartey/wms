@@ -317,4 +317,7 @@
   <data name="ForbiddenOperation" xml:space="preserve">
     <value>Operazione non permessa</value>
   </data>
+  <data name="LotManagedProduct" xml:space="preserve">
+    <value>Specificare il lotto per questo articolo</value>
+  </data>
 </root>

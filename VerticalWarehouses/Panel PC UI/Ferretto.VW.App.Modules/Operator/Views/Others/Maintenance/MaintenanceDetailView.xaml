@@ -112,7 +112,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column9"
+                        <DataGridTextColumn x:Name="Column5"
                                             Width="100"
                                             Binding="{Binding Path=Definition.Axis, Converter={StaticResource ATSC}}"
                                             Header="{res:Loc OperatorApp.Axis}">
@@ -123,7 +123,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column10"
+                        <DataGridTextColumn x:Name="Column6"
                                             Width="120"
                                             Binding="{Binding Path=Definition.BayNumber, Converter={StaticResource BNTSC}}"
                                             Header="{res:Loc OperatorApp.BayNumber}">
@@ -134,7 +134,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column12"
+                        <DataGridTextColumn x:Name="Column7"
                                             Width="100"
                                             Binding="{Binding Path=Definition.IsShutter, Converter={StaticResource BTSC}}"
                                             Header="{res:Loc InstallationApp.Shutter}">
@@ -156,7 +156,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column5"
+                        <DataGridTextColumn x:Name="Column9"
                                             Width="120"
                                             Binding="{Binding Path=Definition.MaxDays}"
                                             Header="{res:Loc OperatorApp.MaxDays}">
@@ -167,7 +167,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column6"
+                        <DataGridTextColumn x:Name="Column10"
                                             Width="180"
                                             Binding="{Binding Path=Definition.MaxRelativeCount}"
                                             Header="{res:Loc OperatorApp.MaxRelativeCount}">
@@ -178,7 +178,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column7"
+                        <DataGridTextColumn x:Name="Column11"
                                             Width="150"
                                             Binding="{Binding Path=Definition.MaxTotalCount}"
                                             Header="{res:Loc OperatorApp.MaxTotalCount}"
@@ -190,10 +190,32 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="Column11"
+                        <DataGridTextColumn x:Name="Column12"
                                             Width="150"
                                             Binding="{Binding Path=Definition.CounterName, Converter={StaticResource CNC}}"
                                             Header="{res:Loc OperatorApp.CounterName}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column13"
+                                            Width="120"
+                                            Binding="{Binding Path=DoubleCounter}"
+                                            Header="{res:Loc OperatorApp.TotalMissions}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="Column14"
+                                            Width="120"
+                                            Binding="{Binding Path=IntCounter}"
+                                            Header="{res:Loc OperatorApp.Days}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center" />

@@ -110,7 +110,8 @@
             <StackPanel Grid.Row="2"
                         Grid.Column="2"
                         Margin="0,0,0,10"
-                        Orientation="Horizontal">
+                        Orientation="Horizontal"
+                        Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVIC}}">
                 <controls:PpcLabeledText HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          ContentText="{Binding MissionOperation.SerialNumber}"
@@ -127,6 +128,22 @@
                                                 Visibility="{Binding InputSerialNumber, Converter={StaticResource RTVC}}" />
                 </Border>
             </StackPanel>
+            
+            <Label Grid.Row="2"
+                   Grid.Column="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Background="Yellow"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Foreground="Black"
+                   Visibility="{Binding IsCurrentDraperyItemFullyRequested, Converter={StaticResource BTVC}}">
+                <TextBlock Margin="8,0,8,0"
+                           Text="{resources:Loc OperatorApp.DraperyItemFullyRequested}"
+                           TextWrapping="WrapWithOverflow" />
+            </Label>
+            <!--  Only reserved for TendaggiParadiso  -->
+
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="0"
@@ -142,10 +159,11 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding SelectedCompartmentDetail.Stock}"
-                                     LabelText="{resources:Loc OperatorApp.ItemStock}" />
+                                     LabelText="{resources:Loc OperatorApp.ItemStock}"
+                                     Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="0"
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="1"
                                      MaxHeight="40"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
@@ -154,14 +172,32 @@
                                      Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
 
             <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="1"
+                                     Grid.Column="0"
                                      MaxHeight="40"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding CurrentItemHeight}"
                                      LabelText="{resources:Loc OperatorApp.Height}"
                                      Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
-            <!--  {Binding MissionOperation.ItemHeight}  -->
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="1"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.PackingListCode}"
+                                     LabelText="{resources:Loc OperatorApp.CommonPackingListCode}"
+                                     Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="2"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.PackingListDescription}"
+                                     LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
+                                     Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
+
         </Grid>
 
         <controls:PpcLabeledText Grid.Row="1"
@@ -172,9 +208,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemNotes}"
-                                 LabelText="{resources:Loc OperatorApp.CommonNote}"
-                                 Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVIC}}" />
-                                 <!-- Make unvisible for TendaggiParadiso -->
+                                 LabelText="{resources:Loc OperatorApp.CommonNote}" />
 
         <Border Grid.Row="1"
                 Grid.Column="2"

@@ -5118,8 +5118,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Definition", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public InstructionDefinition Definition { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("DoubleCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? DoubleCounter { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("InstructionStatus", Required = Newtonsoft.Json.Required.Always)]
         public MachineServiceStatus InstructionStatus { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IntCounter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IntCounter { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsDone", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDone { get; set; }
@@ -7937,8 +7943,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset CreationDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("destination", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Destination { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public double DispatchedQuantity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fullyRequested", Required = Newtonsoft.Json.Required.Always)]
+        public bool FullyRequested { get; set; }
     
         [Newtonsoft.Json.JsonProperty("itemBarcode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemBarcode { get; set; }
