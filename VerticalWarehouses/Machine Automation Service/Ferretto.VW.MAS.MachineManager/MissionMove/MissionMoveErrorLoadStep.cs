@@ -297,17 +297,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 if (loadUnitOnBoard != null
                     && loadUnitOnBoard.Id == this.Mission.LoadUnitId
-                    && loadUnitOnBoard.Height > 0
+
                     )
                 {
-                    this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
-                    this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
-                    this.Mission.RestoreStep = MissionStep.ToTarget;
-                    this.Mission.StepTime = DateTime.UtcNow;
-                    var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnResume(null);
+                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
+                    {
+                        this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
+                        this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
+                        this.Mission.RestoreStep = MissionStep.ToTarget;
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnResume(null);
 
-                    return;
+                        return;
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}. Return to bay");
+                        this.Mission.LoadUnitDestination = this.Mission.LoadUnitSource;
+                        this.Mission.RestoreStep = MissionStep.BackToBay;
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnResume(null);
+
+                        return;
+                    }
                 }
             }
             this.Mission.StepTime = DateTime.UtcNow;

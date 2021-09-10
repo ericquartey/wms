@@ -1437,6 +1437,7 @@ namespace Ferretto.VW.App.Services
             this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
 
             // Devo aggiornare i dati delle posizioni della baia
+            this.bays = await this.machineBaysWebService.GetAllAsync();
             this.Bay = await this.bayManagerService.GetBayAsync();
 
             this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
