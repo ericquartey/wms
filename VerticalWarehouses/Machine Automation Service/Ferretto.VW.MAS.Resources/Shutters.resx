@@ -141,4 +141,7 @@
   <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
     <value>The shutter of bay {0} is not completely closed.</value>
   </data>
+  <data name="TheShutterSpeedIsNotValid" xml:space="preserve">
+    <value>The shutter Speed is not valid</value>
+  </data>
 </root>

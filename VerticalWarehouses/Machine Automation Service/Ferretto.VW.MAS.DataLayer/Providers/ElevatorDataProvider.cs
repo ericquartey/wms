@@ -364,10 +364,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentBayPosition = this.GetCurrentBayPosition();
+                var currentBayPosition = this.GetCachedCurrentBayPosition();
 
                 var elevator = this.dataContext.Elevators
                     .Include(e => e.BayPosition)
+                    .Include(e => e.Cell)
+                    .ThenInclude(c => c.Panel)
                     .Single();
 
                 if (currentBayPosition?.Id != bayPositionId)
@@ -382,6 +384,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         elevator.BayPosition = newBayPosition;
                         this.cache.Set(ElevatorCurrentBayPositionCacheKey, newBayPosition, this.cacheOptions);
+                        elevator.Cell = null;
+                        this.cache.Remove(ElevatorCurrentCellCacheKey);
                     }
                     else
                     {
@@ -399,9 +403,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentCell = this.GetCurrentCell();
+                var currentCell = this.GetCachedCurrentCell();
 
                 var elevator = this.dataContext.Elevators
+                    .Include(e => e.BayPosition)
                     .Include(e => e.Cell)
                     .ThenInclude(c => c.Panel)
                     .Single();
@@ -418,6 +423,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         elevator.Cell = newCell;
                         this.cache.Set(ElevatorCurrentCellCacheKey, newCell, this.cacheOptions);
+                        elevator.BayPosition = null;
+                        this.cache.Remove(ElevatorCurrentBayPositionCacheKey);
                     }
                     else
                     {

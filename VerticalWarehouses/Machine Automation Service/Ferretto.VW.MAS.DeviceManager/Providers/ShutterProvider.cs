@@ -177,6 +177,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheShutterTypeIsNotValid", CommonUtils.Culture.Actual));
             }
 
+            if (speedRate == 0 || lowSpeed == 0)
+            {
+                throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheShutterSpeedIsNotValid", CommonUtils.Culture.Actual));
+            }
+
             // speed is negative to go up
             speedRate *= direction == ShutterMovementDirection.Up ? -1 : 1;
             lowSpeed *= direction == ShutterMovementDirection.Up ? -1 : 1;

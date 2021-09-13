@@ -1153,16 +1153,23 @@ namespace Ferretto.VW.App.Services
                             await this.UpdateLoadUnitInBayAsync();
 
                             var pos = await this.machineElevatorWebService.GetPositionAsync();
-                            this.UpdateMachineStatusByElevatorPosition(
-                                    new ElevatorPositionChangedEventArgs(
-                                        pos.Vertical,
-                                        pos.Horizontal,
-                                        pos.CellId,
-                                        pos.BayPositionId,
-                                        pos.BayPositionUpper));
-
-                            this.NotifyMachineStatusChanged();
-
+                            if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
+                                || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
+                                || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                                )
+                            {
+                                this.UpdateMachineStatusByElevatorPosition(
+                                        new ElevatorPositionChangedEventArgs(
+                                            pos.Vertical,
+                                            pos.Horizontal,
+                                            pos.CellId,
+                                            pos.BayPositionId,
+                                            pos.BayPositionUpper));
+                            }
+                            else
+                            {
+                                this.NotifyMachineStatusChanged();
+                            }
                             break;
                         }
 
@@ -1479,15 +1486,23 @@ namespace Ferretto.VW.App.Services
             }
 
             var pos = await this.machineElevatorWebService.GetPositionAsync();
-            this.UpdateMachineStatusByElevatorPosition(
+            if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
+                || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
+                || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                )
+            {
+                this.UpdateMachineStatusByElevatorPosition(
                     new ElevatorPositionChangedEventArgs(
                         pos.Vertical,
                         pos.Horizontal,
                         pos.CellId,
                         pos.BayPositionId,
                         pos.BayPositionUpper));
-
-            this.NotifyMachineStatusChanged();
+            }
+            else
+            {
+                this.NotifyMachineStatusChanged();
+            }
         }
 
         private void UpdateLoadUnitsId()
