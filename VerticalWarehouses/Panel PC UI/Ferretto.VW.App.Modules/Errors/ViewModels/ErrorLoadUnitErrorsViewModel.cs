@@ -1310,12 +1310,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                            this.RaisePropertyChanged(nameof(this.HasStepLoadunitOnBay3));
                            this.RaisePropertyChanged(nameof(this.HasStepAutomaticMode));
 
-                           this.RaisePropertyChanged(nameof(this.HasBay1PositionDownVisible));
-                           this.RaisePropertyChanged(nameof(this.HasBay1PositionUpVisible));
-                           this.RaisePropertyChanged(nameof(this.HasBay2PositionDownVisible));
-                           this.RaisePropertyChanged(nameof(this.HasBay2PositionUpVisible));
-                           this.RaisePropertyChanged(nameof(this.HasBay3PositionDownVisible));
-                           this.RaisePropertyChanged(nameof(this.HasBay3PositionUpVisible));
+                           this.RaisePropertyChanged(nameof(this.IsBay1PositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.IsBay1PositionUpVisible));
+                           this.RaisePropertyChanged(nameof(this.IsBay2PositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.IsBay2PositionUpVisible));
+                           this.RaisePropertyChanged(nameof(this.IsBay3PositionDownVisible));
+                           this.RaisePropertyChanged(nameof(this.IsBay3PositionUpVisible));
                        },
                        ThreadOption.UIThread,
                        false);

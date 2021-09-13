@@ -337,6 +337,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 #if CHECK_BAY_SENSOR
             var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
+            if (!machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
             if (!this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
                 && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitDestination == destination.Location && m.Id != this.Mission.Id)

@@ -7949,8 +7949,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public double DispatchedQuantity { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("fullyRequested", Required = Newtonsoft.Json.Required.Always)]
-        public bool FullyRequested { get; set; }
+        [Newtonsoft.Json.JsonProperty("fullyRequested", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FullyRequested { get; set; }
     
         [Newtonsoft.Json.JsonProperty("itemBarcode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemBarcode { get; set; }
