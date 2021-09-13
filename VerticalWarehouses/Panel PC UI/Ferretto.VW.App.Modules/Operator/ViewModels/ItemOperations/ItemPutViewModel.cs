@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand fullOperationCommand;
 
+        private bool isCurrentDraperyItemFullyRequested;
+
         private DelegateCommand putBoxCommand;
 
         #endregion
@@ -116,8 +118,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.ConfirmPartialOperationAsync(),
                 this.CanPartiallyCompleteOnFullCompartment));
 
+        public bool IsCurrentDraperyItemFullyRequested
+        {
+            get => this.isCurrentDraperyItemFullyRequested;
+            set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand PutBoxCommand =>
-            this.putBoxCommand
+                    this.putBoxCommand
             ??
             (this.putBoxCommand = new DelegateCommand(
                 async () => await this.PutBoxAsync("0"),
@@ -322,6 +330,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CloseLine = true;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
+
+            // Setup only reserved for Tendaggi Paradiso
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
+
             await base.OnAppearedAsync();
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);

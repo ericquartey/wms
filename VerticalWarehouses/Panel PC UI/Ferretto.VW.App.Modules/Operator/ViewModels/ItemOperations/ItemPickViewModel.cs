@@ -223,7 +223,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsCurrentDraperyItem;
 
             // Setup only reserved for Tendaggi Paradiso
-            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested;
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
 
             this.barcodeItem = string.Empty;
 

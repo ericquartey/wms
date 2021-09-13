@@ -26,7 +26,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.27 rispetto la 1.0.26
-- 
+- Nessuna
 
 ## Bug Risolti
 - L'errore di cassetto sconosciuto appare anche se lo stato è già automatico
@@ -34,7 +34,7 @@
 - Corretto invio delle manutenzioni alla telemetria
 - Correzione bugs per Tendaggi Paradiso
 
-## Compatibile con adapter 0.4.25
+## Compatibile con adapter 0.4.24 e 0.4.25
 ***
 
 [Versione 1.0.26](#id1026)
