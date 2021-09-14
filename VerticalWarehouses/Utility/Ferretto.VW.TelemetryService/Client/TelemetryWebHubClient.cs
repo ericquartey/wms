@@ -233,7 +233,7 @@ namespace Ferretto.VW.TelemetryService
 
         private Task OnConnectionStatusChanged(ConnectionStatusChangedEventArgs e)
         {
-            this.logger.Info($"Connection {this.IsConnected} to {this.logUri}");
+            this.logger.Info($"Connection {e.IsConnected} to {this.logUri}");
             return Task.CompletedTask;
         }
 
