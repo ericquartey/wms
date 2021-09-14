@@ -98,7 +98,7 @@ namespace Ferretto.VW.TelemetryService
                         .GetRequiredService<IServicingInfoProvider>()
                         .DeleteOldLogs(this.maximumLogTimespan);
 
-                    this.logger.LogDebug("Database cleanup completed.");
+                    this.logger.LogInformation("Database cleanup completed.");
                 }
                 catch (Exception ex) when (ex is OperationCanceledException)
                 {
@@ -112,7 +112,7 @@ namespace Ferretto.VW.TelemetryService
                 }
                 finally
                 {
-                    this.logger.LogDebug("Pausing service for {interval}.", this.executionTimespan);
+                    this.logger.LogInformation("Pausing service for {interval}.", this.executionTimespan);
 
                     await Task.Delay(
                         (int)this.executionTimespan.TotalMilliseconds,

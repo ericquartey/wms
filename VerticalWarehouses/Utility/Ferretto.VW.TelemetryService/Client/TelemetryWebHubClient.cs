@@ -18,6 +18,8 @@ namespace Ferretto.VW.TelemetryService
 
         private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly Uri logUri;
+
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
@@ -28,6 +30,8 @@ namespace Ferretto.VW.TelemetryService
             : base(uri)
         {
             this.serviceScopeFactory = serviceScopeFactory;
+            this.logUri = uri;
+            this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
         }
 
         #endregion
@@ -225,6 +229,12 @@ namespace Ferretto.VW.TelemetryService
 
             var ioLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IIOLogProvider>();
             return ioLogProvider.GetByTimeStamp(serialNumber, start, end);
+        }
+
+        private Task OnConnectionStatusChanged(ConnectionStatusChangedEventArgs e)
+        {
+            this.logger.Info($"Connection {this.IsConnected} to {this.logUri}");
+            return Task.CompletedTask;
         }
 
         private void SaveEntry(byte[] rawDatabaseContent)
