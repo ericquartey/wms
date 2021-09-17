@@ -7,6 +7,7 @@ using Ferretto.VW.Common.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using Realms;
 
 namespace Ferretto.VW.TelemetryService
 {
@@ -107,113 +108,123 @@ namespace Ferretto.VW.TelemetryService
 
             //var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>();
 
-            using (var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>())
+            //using (var realm = scope.ServiceProvider.GetRequiredService<Realms.Realm>())
             {
-                this.logger.Debug("Send saved MissionLog");
-                foreach (var missionLog in realm.All<Models.MissionLog>().ToArray())
-                {
-                    var success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
-                    if (success)
-                    {
-                        await realm.WriteAsync(r =>
-                        {
-                            r.Remove(missionLog);
-                        });
-                    }
-                }
-
-                this.logger.Debug("Send saved ErrorLog");
-                foreach (var errorLogRealm in realm.All<Models.ErrorLog>().ToArray())
-                {
-                    var errorLog = new Models.ErrorLog()
-                    {
-                        AdditionalText = errorLogRealm.AdditionalText,
-                        BayNumber = errorLogRealm.BayNumber,
-                        Code = errorLogRealm.Code,
-                        DetailCode = errorLogRealm.DetailCode,
-                        InverterIndex = errorLogRealm.InverterIndex,
-                        MachineId = errorLogRealm.MachineId,
-                        Machine = errorLogRealm.Machine,
-                        OccurrenceDate = errorLogRealm.OccurrenceDate,
-                        ResolutionDate = errorLogRealm.ResolutionDate,
-                        Id = errorLogRealm.Id,
-                    };
-
-                    var success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
-                    if (success)
-                    {
-                        await realm.WriteAsync(r =>
-                        {
-                            r.Remove(errorLogRealm);
-                        });
-
-                        var ioLogsToBeRemoved = realm.All<Models.IOLog>().Where(io => io.TimeStamp >= errorLogRealm.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= errorLogRealm.OccurrenceDate);
-
-                        foreach (var ioLog in ioLogsToBeRemoved)
-                        {
-                            await realm.WriteAsync(r =>
-                            {
-                                r.Remove(ioLog);
-                            });
-                        }
-                    }
-                }
-
-                //IO NOTE: must be removed because IO Send only on error events
-                //foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
+                //this.logger.Debug("Send saved MissionLog");
+                //foreach (var missionLog in realm.All<Models.MissionLog>().ToArray())
                 //{
-                //    var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
+                //    var success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
                 //    if (success)
                 //    {
                 //        await realm.WriteAsync(r =>
                 //        {
-                //            r.Remove(ioLog);
+                //            r.Remove(missionLog);
                 //        });
                 //    }
                 //}
 
-                this.logger.Debug("Send saved ServicingInfo");
-                foreach (var sInfo in realm.All<Models.ServicingInfo>().ToArray())
-                {
-                    var servicingInfo = new ServicingInfo()
-                    {
-                        InstallationDate = sInfo.InstallationDate,
-                        IsHandOver = sInfo.IsHandOver,
-                        LastServiceDate = sInfo.LastServiceDate,
-                        NextServiceDate = sInfo.NextServiceDate,
-                        ServiceStatusId = sInfo.ServiceStatusId,
-                        TimeStamp = sInfo.TimeStamp,
-                        TotalMissions = sInfo.TotalMissions
-                    };
+                //this.logger.Debug("Send saved ErrorLog");
+                //foreach (var errorLogRealm in realm.All<Models.ErrorLog>().ToArray())
+                //{
+                //    var errorLog = new Models.ErrorLog()
+                //    {
+                //        AdditionalText = errorLogRealm.AdditionalText,
+                //        BayNumber = errorLogRealm.BayNumber,
+                //        Code = errorLogRealm.Code,
+                //        DetailCode = errorLogRealm.DetailCode,
+                //        InverterIndex = errorLogRealm.InverterIndex,
+                //        MachineId = errorLogRealm.MachineId,
+                //        Machine = errorLogRealm.Machine,
+                //        OccurrenceDate = errorLogRealm.OccurrenceDate,
+                //        ResolutionDate = errorLogRealm.ResolutionDate,
+                //        Id = errorLogRealm.Id,
+                //    };
 
-                    if (servicingInfo != null)
-                    {
-                        var success = await this.TrySendServicingInfoAsync(machine.SerialNumber, servicingInfo, persistOnSendFailure: false);
-                        if (success)
-                        {
-                            await realm.WriteAsync(r =>
-                            {
-                                r.Remove(sInfo);
-                            });
-                        }
-                    }
-                }
+                //    var success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
+                //    if (success)
+                //    {
+                //        await realm.WriteAsync(r =>
+                //        {
+                //            r.Remove(errorLogRealm);
+                //        });
 
-                this.logger.Debug("Send saved ScreenShot");
-                foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
-                {
-                    if (screenShot.Image != null)
-                    {
-                        var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
-                        if (success)
-                        {
-                            await realm.WriteAsync(r =>
-                            {
-                                r.Remove(screenShot);
-                            });
-                        }
-                    }
-                }
+                //        var ioLogsToBeRemoved = realm.All<Models.IOLog>().Where(io => io.TimeStamp >= errorLogRealm.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= errorLogRealm.OccurrenceDate);
+
+                //        foreach (var ioLog in ioLogsToBeRemoved)
+                //        {
+                //            await realm.WriteAsync(r =>
+                //            {
+                //                r.Remove(ioLog);
+                //            });
+                //        }
+                //    }
+                //}
+
+                ////IO NOTE: must be removed because IO Send only on error events
+                ////foreach (var ioLog in realm.All<Models.IOLog>().ToArray())
+                ////{
+                ////    var success = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, persistOnSendFailure: false);
+                ////    if (success)
+                ////    {
+                ////        await realm.WriteAsync(r =>
+                ////        {
+                ////            r.Remove(ioLog);
+                ////        });
+                ////    }
+                ////}
+
+                //this.logger.Debug("Send saved ServicingInfo");
+                //foreach (var sInfo in realm.All<Models.ServicingInfo>().ToArray())
+                //{
+                //    var servicingInfo = new ServicingInfo()
+                //    {
+                //        InstallationDate = sInfo.InstallationDate,
+                //        IsHandOver = sInfo.IsHandOver,
+                //        LastServiceDate = sInfo.LastServiceDate,
+                //        NextServiceDate = sInfo.NextServiceDate,
+                //        ServiceStatusId = sInfo.ServiceStatusId,
+                //        TimeStamp = sInfo.TimeStamp,
+                //        TotalMissions = sInfo.TotalMissions
+                //    };
+
+                //    if (servicingInfo != null)
+                //    {
+                //        var success = await this.TrySendServicingInfoAsync(machine.SerialNumber, servicingInfo, persistOnSendFailure: false);
+                //        if (success)
+                //        {
+                //            await realm.WriteAsync(r =>
+                //            {
+                //                r.Remove(sInfo);
+                //            });
+                //        }
+                //    }
+                //}
+
+                //this.logger.Debug("Send saved ScreenShot");
+                //foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
+                //{
+                //    if (screenShot.Image != null)
+                //    {
+                //        var success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
+                //        if (success)
+                //        {
+                //            await realm.WriteAsync(r =>
+                //            {
+                //                r.Remove(screenShot);
+                //            });
+                //        }
+                //    }
+                //}
+
+                await this.SendSavedMissionLog(machine, scope);
+
+                await this.SendSavedErrorLog(machine, scope);
+
+                await this.SendSavedServicingInfo(machine, scope);
+
+                await this.SendSavedScreenshot(machine, scope);
+
+                await this.SendSavedRawDatabase(scope);
             }
         }
 
@@ -285,6 +296,205 @@ namespace Ferretto.VW.TelemetryService
             await screenShotProvider.SaveAsync(serialNumber, screenShot);
         }
 
+        private async Task<bool> SendSavedErrorLog(IMachine machine, IServiceScope scope)
+        {
+            try
+            {
+                this.logger.Debug("Send saved ErrorLog");
+                var success = false;
+                var ri = scope.ServiceProvider.GetRequiredService<Realm>();
+                var realm = Realm.GetInstance(ri.Config);
+                var errors = realm.All<Models.ErrorLog>();
+                foreach (var errorLog in errors.ToArray())
+                {
+                    success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
+                    if (success)
+                    {
+                        success = await this.SendSavedIoLog(machine, scope, errorLog.OccurrenceDate);
+                    }
+                    if (!success)
+                    {
+                        break;
+                    }
+                }
+
+                if (success)
+                {
+                    using (var trans = realm.BeginWrite())
+                    {
+                        realm.RemoveRange(errors);
+                        var ioLogs = realm.All<Models.IOLog>();
+                        realm.RemoveRange(ioLogs);
+                        trans.Commit();
+                    }
+                }
+                return success;
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+                return false;
+            }
+        }
+
+        private async Task<bool> SendSavedIoLog(IMachine machine, IServiceScope scope, DateTimeOffset date)
+        {
+            var successIo = true;
+            try
+            {
+                var ri = scope.ServiceProvider.GetRequiredService<Realm>();
+                var realm = Realm.GetInstance(ri.Config);
+                var ioLogs = realm.All<Models.IOLog>().ToArray();
+                var ioLogsToBeRemoved = ioLogs.Where(io => io.TimeStamp >= date.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= date.AddSeconds(1));
+
+                foreach (var ioLog in ioLogsToBeRemoved)
+                {
+                    successIo = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, false);
+                    if (!successIo)
+                    {
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+                successIo = false;
+            }
+
+            return successIo;
+        }
+
+        private async Task SendSavedMissionLog(IMachine machine, IServiceScope scope)
+        {
+            try
+            {
+                this.logger.Debug("Send saved MissionLog");
+                var ri = scope.ServiceProvider.GetRequiredService<Realm>();
+                var realm = Realm.GetInstance(ri.Config);
+                var missions = realm.All<Models.MissionLog>();
+                var success = false;
+                foreach (var missionLog in missions.ToArray())
+                {
+                    success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
+                    if (!success)
+                    {
+                        break;
+                    }
+                }
+                if (success)
+                {
+                    using (var trans = realm.BeginWrite())
+                    {
+                        missions = realm.All<Models.MissionLog>();
+                        realm.RemoveRange(missions);
+                        trans.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
+        }
+
+        private async Task SendSavedRawDatabase(IServiceScope scope)
+        {
+            try
+            {
+                var ri = scope.ServiceProvider.GetRequiredService<Realm>();
+                var realm = Realm.GetInstance(ri.Config);
+                realm.Write(async () =>
+                {
+                    var machine = realm.All<Models.Machine>().SingleOrDefault();
+                    if (machine.RawDatabaseContent != null)
+                    {
+                        this.logger.Debug("Send saved RawDatabase");
+                        var success = await this.TrySendRawDatabaseContentAsync(machine.SerialNumber, machine.RawDatabaseContent, persistOnSendFailure: false);
+                        if (success)
+                        {
+                            machine.RawDatabaseContent = null;
+                        }
+                        else
+                        {
+                            this.logger.Error("RawDatabase not sent");
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
+        }
+
+        private async Task SendSavedScreenshot(IMachine machine, IServiceScope scope)
+        {
+            try
+            {
+                this.logger.Debug("Send saved ScreenShot");
+                var success = false;
+                var ri = scope.ServiceProvider.GetRequiredService<Realm>();
+                var realm = Realm.GetInstance(ri.Config);
+                var screenShots = realm.All<Models.ScreenShot>();
+                foreach (var screenShot in screenShots.ToArray())
+                {
+                    if (screenShot.Image != null)
+                    {
+                        success = await this.TrySendScreenShotAsync(machine.SerialNumber, screenShot.BayNumber, screenShot.TimeStamp, screenShot.Image, persistOnSendFailure: false);
+                        if (!success)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (success)
+                {
+                    using (var trans = realm.BeginWrite())
+                    {
+                        realm.RemoveRange(screenShots);
+                        trans.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
+        }
+
+        private async Task SendSavedServicingInfo(IMachine machine, IServiceScope scope)
+        {
+            try
+            {
+                this.logger.Debug("Send saved ServicingInfo");
+                var success = false;
+                var ri = scope.ServiceProvider.GetRequiredService<Realm>();
+                var realm = Realm.GetInstance(ri.Config);
+                var sInfos = realm.All<Models.ServicingInfo>();
+                foreach (var sInfo in sInfos.ToArray())
+                {
+                    success = await this.TrySendServicingInfoAsync(machine.SerialNumber, sInfo, persistOnSendFailure: false);
+                    if (!success)
+                    {
+                        break;
+                    }
+                }
+                if (success)
+                {
+                    using (var trans = realm.BeginWrite())
+                    {
+                        realm.RemoveRange(sInfos);
+                        trans.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error(ex);
+            }
+        }
+
         private async Task<bool> TryPersistIOLogAsync(string serialNumber, IIOLog ioLog)
         {
             var messagePersited = false;
@@ -310,18 +520,21 @@ namespace Ferretto.VW.TelemetryService
                 {
                     await this.SendAsync(nameof(ITelemetryHub.SendErrorLog), serialNumber, errorLog);
 
-                    foreach (var ioLog in this.GetEntryAsync(serialNumber, errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS), errorLog.OccurrenceDate.AddSeconds(1)))
+                    if (persistOnSendFailure)
                     {
-                        var ioLogCorrect = new IOLog
+                        foreach (var ioLog in this.GetEntryAsync(serialNumber, errorLog.OccurrenceDate.AddSeconds(IO_ERROR_INTERVAL_SECONDS), errorLog.OccurrenceDate.AddSeconds(1)))
                         {
-                            BayNumber = ioLog.BayNumber,
-                            Description = ioLog.Description,
-                            Input = ioLog.Input,
-                            Output = ioLog.Output,
-                            TimeStamp = ioLog.TimeStamp.ToOffset(DateTimeOffset.Now.Offset)
-                        };
+                            var ioLogCorrect = new IOLog
+                            {
+                                BayNumber = ioLog.BayNumber,
+                                Description = ioLog.Description,
+                                Input = ioLog.Input,
+                                Output = ioLog.Output,
+                                TimeStamp = ioLog.TimeStamp.ToOffset(DateTimeOffset.Now.Offset)
+                            };
 
-                        await this.SendAsync(nameof(ITelemetryHub.SendIOLog), serialNumber, ioLogCorrect);
+                            await this.SendAsync(nameof(ITelemetryHub.SendIOLog), serialNumber, ioLogCorrect);
+                        }
                     }
 
                     messageSent = true;
@@ -408,7 +621,6 @@ namespace Ferretto.VW.TelemetryService
 
             if (!messageSent && persistOnSendFailure)
             {
-                //x await this.SaveEntryAsync(rawDatabaseContent);
                 this.SaveEntry(rawDatabaseContent);
             }
 
@@ -447,7 +659,7 @@ namespace Ferretto.VW.TelemetryService
             return messageSent;
         }
 
-        private async Task<bool> TrySendServicingInfoAsync(string serialNumber, ServicingInfo servicingInfo, bool persistOnSendFailure)
+        private async Task<bool> TrySendServicingInfoAsync(string serialNumber, IServicingInfo servicingInfo, bool persistOnSendFailure)
         {
             var messageSent = false;
 
