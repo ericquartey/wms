@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Ferretto.VW.TelemetryService.Data;
 using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,6 +68,8 @@ namespace Ferretto.VW.TelemetryService
             {
                 options.MaximumReceiveMessageSize = null;
             });
+
+            services.AddDatabase();
 
             services.AddSingleton<ITelemetryWebHubClient>(
                 s => new TelemetryWebHubClient(

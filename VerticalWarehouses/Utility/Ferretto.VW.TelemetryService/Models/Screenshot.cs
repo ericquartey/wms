@@ -1,17 +1,13 @@
 ﻿using System;
 using Ferretto.ServiceDesk.Telemetry;
-using Realms;
 
-namespace Ferretto.VW.TelemetryService.Models
+namespace Ferretto.VW.TelemetryService.Data
 {
-    public class ScreenShot : RealmObject, IScreenShot
+    public class ScreenShot : DataModel, IScreenShot
     {
         #region Properties
 
         public int BayNumber { get; set; }
-
-        [PrimaryKey]
-        public int Id { get; set; }
 
         public byte[]? Image { get; set; }
 

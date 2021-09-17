@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.VW.TelemetryService.Data;
 using Microsoft.Extensions.Logging;
-using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -13,19 +13,19 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Fields
 
-        private readonly ILogger<ErrorLogProvider> logger;
+        private readonly IDataContext dataContext;
 
-        private readonly Realm realm;
+        private readonly ILogger<ErrorLogProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public ErrorLogProvider(Realm realm,
+        public ErrorLogProvider(IDataContext dataContext,
                                 ILogger<ErrorLogProvider> logger)
         {
-            this.realm = realm;
-            this.logger = logger;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -36,9 +36,7 @@ namespace Ferretto.VW.TelemetryService.Providers
         {
             this.logger.LogDebug("Deleting old error logs ...");
 
-            using var trans = this.realm.BeginWrite();
-
-            var errorLogs = this.realm.All<Models.ErrorLog>();
+            var errorLogs = this.dataContext.ErrorLogs;
 
             var lastLog = errorLogs.OrderByDescending(e => e.OccurrenceDate).FirstOrDefault();
 
@@ -53,45 +51,37 @@ namespace Ferretto.VW.TelemetryService.Providers
 
             var countLogsToDelete = logsToDelete.Count();
 
-            this.realm.RemoveRange(logsToDelete);
-
-            trans.Commit();
+            this.dataContext.ErrorLogs.RemoveRange(logsToDelete);
+            this.dataContext.SaveChanges();
 
             this.logger.LogDebug($"A total of {countLogsToDelete} error logs were deleted.");
         }
 
         public IEnumerable<IErrorLog> GetAll()
         {
-            return this.realm.All<Models.ErrorLog>().ToArray();
+            return this.dataContext.ErrorLogs.ToArray();
         }
 
         public async Task SaveAsync(string serialNumber, IErrorLog errorLog)
         {
             if (string.IsNullOrWhiteSpace(serialNumber))
             {
-                throw new System.ArgumentException("The machine's serial number cannot be empty.", nameof(serialNumber));
+                throw new ArgumentException("The machine's serial number cannot be empty.", nameof(serialNumber));
             }
 
             if (errorLog is null)
             {
-                throw new System.ArgumentNullException(nameof(errorLog));
+                throw new ArgumentNullException(nameof(errorLog));
             }
 
-            var machine = this.realm.All<Models.Machine>().SingleOrDefault(m => m.SerialNumber == serialNumber);
+            var machine = this.dataContext.Machines.SingleOrDefault(m => m.SerialNumber == serialNumber);
             if (machine is null)
             {
-                throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                throw new ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
             }
 
-            var newId = 0;
-            if (this.realm.All<Models.ErrorLog>().OrderByDescending(e => e.Id).FirstOrDefault() is Models.ErrorLog error)
+            var logEntry = new Data.ErrorLog()
             {
-                newId = error.Id + 1;
-            }
-
-            var logEntry = new Models.ErrorLog
-            {
-                Id = newId,
                 Machine = machine,
                 AdditionalText = errorLog.AdditionalText,
                 BayNumber = errorLog.BayNumber,
@@ -101,7 +91,8 @@ namespace Ferretto.VW.TelemetryService.Providers
                 ResolutionDate = errorLog.ResolutionDate
             };
 
-            await this.realm.WriteAsync(r => r.Add(logEntry));
+            this.dataContext.ErrorLogs.Add(logEntry);
+            this.dataContext.SaveChanges();
         }
 
         #endregion

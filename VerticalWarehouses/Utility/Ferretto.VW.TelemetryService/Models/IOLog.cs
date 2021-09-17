@@ -1,10 +1,9 @@
 ﻿using System;
 using Ferretto.ServiceDesk.Telemetry;
-using Realms;
 
-namespace Ferretto.VW.TelemetryService.Models
+namespace Ferretto.VW.TelemetryService.Data
 {
-    public class IOLog : RealmObject, IIOLog
+    public class IOLog : IIOLog
     {
         #region Properties
 
