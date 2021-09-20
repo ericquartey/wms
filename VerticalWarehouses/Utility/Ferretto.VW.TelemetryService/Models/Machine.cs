@@ -1,14 +1,10 @@
 ﻿using Ferretto.ServiceDesk.Telemetry;
-using Realms;
 
-namespace Ferretto.VW.TelemetryService.Models
+namespace Ferretto.VW.TelemetryService.Data
 {
-    public class Machine : RealmObject, IMachine
+    public class Machine : DataModel, IMachine
     {
         #region Properties
-
-        [PrimaryKey]
-        public int Id { get; set; }
 
         public string ModelName { get; set; } = string.Empty!;
 

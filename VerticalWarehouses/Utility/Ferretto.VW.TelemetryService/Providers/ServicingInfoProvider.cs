@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.VW.TelemetryService.Data;
 using Microsoft.Extensions.Logging;
-using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -12,18 +11,18 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Fields
 
-        private readonly ILogger<ServicingInfoProvider> logger;
+        private readonly IDataContext dataContext;
 
-        private readonly Realm realm;
+        private readonly ILogger<ServicingInfoProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public ServicingInfoProvider(Realm realm, ILogger<ServicingInfoProvider> logger)
+        public ServicingInfoProvider(IDataContext dataContext, ILogger<ServicingInfoProvider> logger)
         {
-            this.realm = realm;
-            this.logger = logger;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -32,38 +31,58 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
-            this.logger.LogDebug("Deleting old servicing info ...");
-
-            using var trans = this.realm.BeginWrite();
-
-            var servicingInfo = this.realm.All<Models.ServicingInfo>();
-
-            var lastLog = servicingInfo.OrderByDescending(e => e.TimeStamp).FirstOrDefault();
-
-            if (lastLog is null)
+            lock (this.dataContext)
             {
-                return;
+                this.logger.LogDebug("Deleting old servicing info ...");
+
+                var servicingInfo = this.dataContext.ServicingInfos.ToArray();
+
+                var lastLog = servicingInfo.LastOrDefault();
+
+                if (lastLog is null)
+                {
+                    return;
+                }
+
+                var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
+
+                var logsToDelete = servicingInfo.Where(e => e.TimeStamp < minTimestamp);
+
+                var countLogsToDelete = logsToDelete.Count();
+
+                this.dataContext.ServicingInfos.RemoveRange(logsToDelete);
+                this.dataContext.SaveChanges();
+
+                this.logger.LogDebug($"A total of {countLogsToDelete} servicing info were deleted.");
             }
-
-            var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
-
-            var logsToDelete = servicingInfo.Where(e => e.TimeStamp < minTimestamp);
-
-            var countLogsToDelete = logsToDelete.Count();
-
-            this.realm.RemoveRange(logsToDelete);
-
-            trans.Commit();
-
-            this.logger.LogDebug($"A total of {countLogsToDelete} servicing info were deleted.");
         }
 
         public IEnumerable<IServicingInfo> GetAll()
         {
-            return this.realm.All<Models.ServicingInfo>().ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.ServicingInfos.ToArray();
+            }
         }
 
-        public async Task SaveAsync(string serialNumber, IServicingInfo servicingInfo)
+        public IEnumerable<Data.ServicingInfo> GetAllId()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.ServicingInfos.ToArray();
+            }
+        }
+
+        public void Remove(IEnumerable<Data.ServicingInfo> logsToDelete)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.ServicingInfos.RemoveRange(logsToDelete.ToArray());
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SaveAsync(string serialNumber, IServicingInfo servicingInfo)
         {
             if (string.IsNullOrWhiteSpace(serialNumber))
             {
@@ -75,31 +94,28 @@ namespace Ferretto.VW.TelemetryService.Providers
                 throw new System.ArgumentNullException(nameof(servicingInfo));
             }
 
-            var machine = this.realm.All<Models.Machine>().SingleOrDefault(m => m.SerialNumber == serialNumber);
-            if (machine is null)
+            lock (this.dataContext)
             {
-                throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                var machine = this.dataContext.Machines.SingleOrDefault(m => m.SerialNumber == serialNumber);
+                if (machine is null)
+                {
+                    throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                }
+
+                var servicingInfoEntity = new Data.ServicingInfo
+                {
+                    InstallationDate = servicingInfo.InstallationDate,
+                    IsHandOver = servicingInfo.IsHandOver,
+                    LastServiceDate = servicingInfo.LastServiceDate,
+                    NextServiceDate = servicingInfo.NextServiceDate,
+                    ServiceStatusId = servicingInfo.ServiceStatusId,
+                    TimeStamp = servicingInfo.TimeStamp,
+                    TotalMissions = servicingInfo.TotalMissions
+                };
+
+                this.dataContext.ServicingInfos.Add(servicingInfoEntity);
+                this.dataContext.SaveChanges();
             }
-
-            var newId = 0;
-            if (this.realm.All<Models.ServicingInfo>().OrderByDescending(e => e.Id).FirstOrDefault() is Models.ServicingInfo service)
-            {
-                newId = service.Id + 1;
-            }
-
-            var servicingInfoEntity = new Models.ServicingInfo
-            {
-                Id = newId,
-                InstallationDate = servicingInfo.InstallationDate,
-                IsHandOver = servicingInfo.IsHandOver,
-                LastServiceDate = servicingInfo.LastServiceDate,
-                NextServiceDate = servicingInfo.NextServiceDate,
-                ServiceStatusId = servicingInfo.ServiceStatusId,
-                TimeStamp = servicingInfo.TimeStamp,
-                TotalMissions = servicingInfo.TotalMissions
-            };
-
-            await this.realm.WriteAsync(r => r.Add(servicingInfoEntity));
         }
 
         #endregion
