@@ -78,7 +78,8 @@ namespace Ferretto.VW.TelemetryService.Providers
         {
             lock (this.dataContext)
             {
-                return this.dataContext.IOLogs.Where(io => io.TimeStamp >= start && io.TimeStamp <= end).ToArray();
+                var iOLogs = this.dataContext.IOLogs.ToArray();
+                return iOLogs.Where(io => io.TimeStamp >= start && io.TimeStamp <= end);
             }
         }
 

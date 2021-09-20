@@ -101,6 +101,8 @@ namespace Ferretto.VW.TelemetryService.Providers
 
                     this.dataContext.Machines.Update(machineInDatabase);
                     this.dataContext.SaveChanges();
+
+                    this.cache.Remove(MachineCacheKey);
                 }
             }
         }

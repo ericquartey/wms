@@ -44,12 +44,12 @@ namespace Ferretto.VW.TelemetryService
             using var scope = this.serviceScopeFactory.CreateScope();
             try
             {
-                var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
-                if (machine is null)
-                {
-                    this.logger.LogDebug("No machine is defined in the database. Requesting identification to connected client.");
-                    await this.Clients.Caller.RequestMachine();
-                }
+                //var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+                //if (machine is null)
+                //{
+                this.logger.LogDebug("No machine is defined in the database. Requesting identification to connected client.");
+                await this.Clients.Caller.RequestMachine();
+                //}
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace Ferretto.VW.TelemetryService
                 return;
             }
 
-            this.logger.LogDebug($"Received IO log from client.");
+            this.logger.LogDebug($"Save IO log from client.");
 
             using var scope = this.serviceScopeFactory.CreateScope();
             var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();

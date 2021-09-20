@@ -25,8 +25,7 @@ namespace Ferretto.VW.TelemetryService.Data
             {
                 var connectionString = provider
                     .GetRequiredService<IConfiguration>()
-                    .GetConnectionString(DataContext.ConnectionStringName)?
-                    .Replace("%localappdata%", Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), StringComparison.OrdinalIgnoreCase);
+                    .GetConnectionString(DataContext.ConnectionStringName);
 
                 options.UseSqlite(connectionString);
 

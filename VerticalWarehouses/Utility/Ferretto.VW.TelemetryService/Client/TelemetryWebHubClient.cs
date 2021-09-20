@@ -229,17 +229,24 @@ namespace Ferretto.VW.TelemetryService
                 var ioLogs = ioProvider.GetAllId();
                 var ioLogsToBeRemoved = ioLogs.Where(io => io.TimeStamp >= date.AddSeconds(IO_ERROR_INTERVAL_SECONDS) && io.TimeStamp <= date.AddSeconds(1));
 
-                foreach (var ioLog in ioLogsToBeRemoved)
+                if (ioLogsToBeRemoved.Any())
                 {
-                    successIo = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, false);
-                    if (!successIo)
+                    foreach (var ioLog in ioLogsToBeRemoved)
                     {
-                        break;
+                        successIo = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, false);
+                        if (!successIo)
+                        {
+                            break;
+                        }
+                    }
+                    if (successIo)
+                    {
+                        ioProvider.Remove(ioLogsToBeRemoved);
                     }
                 }
-                if (successIo)
+                else
                 {
-                    ioProvider.Remove(ioLogsToBeRemoved);
+                    successIo = true;
                 }
             }
             catch (Exception ex)
@@ -406,8 +413,9 @@ namespace Ferretto.VW.TelemetryService
 
                     messageSent = true;
                 }
-                catch
+                catch (Exception ex)
                 {
+                    this.logger.Error(ex);
                 }
             }
 
@@ -430,9 +438,9 @@ namespace Ferretto.VW.TelemetryService
 
                     messageSent = true;
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    this.logger.Error(e);
+                    this.logger.Error(ex);
                 }
             }
 

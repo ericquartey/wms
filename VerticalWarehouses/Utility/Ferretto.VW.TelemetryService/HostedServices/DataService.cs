@@ -60,7 +60,8 @@ namespace Ferretto.VW.TelemetryService.Data
         {
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var connectionString = configuration.GetConnectionString(ConnectionStringName);
-            var dirName = Path.GetDirectoryName(connectionString);
+            var fileName = connectionString.Split('=')[1]?.Trim('\'');
+            var dirName = Path.GetDirectoryName(fileName);
             if (dirName != "" && !Directory.Exists(dirName))
             {
                 Directory.CreateDirectory(dirName);
