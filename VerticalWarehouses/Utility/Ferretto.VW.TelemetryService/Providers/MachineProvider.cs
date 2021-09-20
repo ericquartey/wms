@@ -65,6 +65,14 @@ namespace Ferretto.VW.TelemetryService.Providers
             return machine;
         }
 
+        public IMachine GetRaw()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.SingleOrDefault();
+            }
+        }
+
         public void SaveAsync(IMachine machine)
         {
             // TODO: add check to avoid inserting duplicate records

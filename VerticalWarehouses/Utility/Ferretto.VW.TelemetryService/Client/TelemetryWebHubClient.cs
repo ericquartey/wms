@@ -222,7 +222,7 @@ namespace Ferretto.VW.TelemetryService
 
         private async Task<bool> SendSavedIoLog(IMachine machine, IServiceScope scope, DateTimeOffset date)
         {
-            var successIo = true;
+            var successIo = false;
             try
             {
                 var ioProvider = scope.ServiceProvider.GetRequiredService<IIOLogProvider>();
@@ -283,7 +283,7 @@ namespace Ferretto.VW.TelemetryService
             try
             {
                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                var machine = machineProvider.Get();
+                var machine = machineProvider.GetRaw();
                 if (machine != null && machine.RawDatabaseContent != null)
                 {
                     this.logger.Debug("Send saved RawDatabase");
