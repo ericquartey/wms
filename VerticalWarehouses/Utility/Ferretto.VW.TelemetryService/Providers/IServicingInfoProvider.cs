@@ -14,7 +14,11 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         IEnumerable<IServicingInfo> GetAll();
 
-        Task SaveAsync(string serialNumber, IServicingInfo servicingInfo);
+        IEnumerable<Data.ServicingInfo> GetAllId();
+
+        void Remove(IEnumerable<Data.ServicingInfo> logsToDelete);
+
+        void SaveAsync(string serialNumber, IServicingInfo servicingInfo);
 
         #endregion
     }

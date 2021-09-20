@@ -1,10 +1,8 @@
-﻿using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
 using Ferretto.ServiceDesk.Telemetry;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Ferretto.VW.TelemetryService.Data;
 using Microsoft.Extensions.Caching.Memory;
-using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -21,15 +19,15 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         private readonly IMemoryCache cache;
 
-        private readonly Realm realm;
+        private readonly IDataContext dataContext;
 
         #endregion
 
         #region Constructors
 
-        public MachineProvider(Realm realm, IMemoryCache cache)
+        public MachineProvider(IDataContext dataContext, IMemoryCache cache)
         {
-            this.realm = realm;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = cache;
         }
 
@@ -39,81 +37,90 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public IMachine? Get()
         {
-            if (!this.cache.TryGetValue<Models.Machine>(MachineCacheKey, out var machine))
+            if (!this.cache.TryGetValue<Data.Machine>(MachineCacheKey, out var machine))
             {
-                var loadedMachine = this.realm.All<Models.Machine>().SingleOrDefault();
-
-                if (loadedMachine is null)
+                lock (this.dataContext)
                 {
-                    return null;
+                    var loadedMachine = this.dataContext.Machines.SingleOrDefault();
+
+                    if (loadedMachine is null)
+                    {
+                        return null;
+                    }
+
+                    var newMachine = new Data.Machine
+                    {
+                        ModelName = loadedMachine.ModelName,
+                        SerialNumber = loadedMachine.SerialNumber,
+                        Version = loadedMachine.Version,
+                    };
+
+                    return this.cache.Set(
+                        MachineCacheKey,
+                        newMachine,
+                        DefaultMemoryCacheOptions);
                 }
-
-                var newMachine = new Machine
-                {
-                    ModelName = loadedMachine.ModelName,
-                    SerialNumber = loadedMachine.SerialNumber,
-                    Version = loadedMachine.Version,
-                };
-
-                return this.cache.Set(
-                    MachineCacheKey,
-                    newMachine,
-                    DefaultMemoryCacheOptions);
             }
 
             return machine;
         }
 
-        public async Task SaveAsync(IMachine machine)
+        public IMachine GetRaw()
         {
-            // TODO: add check to avoid inserting duplicate records
-
-            var machineInDatabase = this.realm.All<Models.Machine>().SingleOrDefault();
-
-            if (machineInDatabase is null)
+            lock (this.dataContext)
             {
-                var machineRecord = new Models.Machine
-                {
-                    ModelName = machine.ModelName,
-                    SerialNumber = machine.SerialNumber,
-                    Version = machine.Version
-                };
-
-                await this.realm.WriteAsync((r) => r.Add(machineRecord));
-            }
-            else
-            {
-                machineInDatabase.ModelName = machine.ModelName;
-                machineInDatabase.SerialNumber = machine.SerialNumber;
-                machineInDatabase.Version = machine.Version;
-
-                await this.realm.WriteAsync((r) => r.Add(machineInDatabase, true));
+                return this.dataContext.Machines.SingleOrDefault();
             }
         }
 
-        public Task SaveRawDatabaseContent(byte[] rawDatabaseContent)
+        public void SaveAsync(IMachine machine)
         {
-            var machineInDatabase = this.realm.All<Models.Machine>().SingleOrDefault();
+            // TODO: add check to avoid inserting duplicate records
 
-            if (machineInDatabase != null)
+            lock (this.dataContext)
             {
-                // It will perform an update to entity inside the database
-                var machineRecord = new Models.Machine
-                {
-                    Id = machineInDatabase.Id, // Set the Id mandatory (as Primary Key)
-                    ModelName = machineInDatabase.ModelName,
-                    SerialNumber = machineInDatabase.SerialNumber,
-                    Version = machineInDatabase.Version,
-                    RawDatabaseContent = rawDatabaseContent // Update the raw database content
-                };
+                var machineInDatabase = this.dataContext.Machines.SingleOrDefault();
 
-                this.realm.Write(() =>
+                if (machineInDatabase is null)
                 {
-                    this.realm.Add(machineRecord, update: true);
-                });
+                    var machineRecord = new Data.Machine
+                    {
+                        ModelName = machine.ModelName,
+                        SerialNumber = machine.SerialNumber,
+                        Version = machine.Version
+                    };
+
+                    this.dataContext.Machines.Add(machineRecord);
+                    this.dataContext.SaveChanges();
+                }
+                else
+                {
+                    machineInDatabase.ModelName = machine.ModelName;
+                    machineInDatabase.SerialNumber = machine.SerialNumber;
+                    machineInDatabase.Version = machine.Version;
+
+                    this.dataContext.Machines.Update(machineInDatabase);
+                    this.dataContext.SaveChanges();
+
+                    this.cache.Remove(MachineCacheKey);
+                }
             }
+        }
 
-            return Task.CompletedTask;
+        public void SaveRawDatabaseContent(byte[]? rawDatabaseContent)
+        {
+            lock (this.dataContext)
+            {
+                var machineInDatabase = this.dataContext.Machines.SingleOrDefault();
+
+                if (machineInDatabase != null)
+                {
+                    machineInDatabase.RawDatabaseContent = rawDatabaseContent;
+
+                    this.dataContext.Machines.Update(machineInDatabase);
+                    this.dataContext.SaveChanges();
+                }
+            }
         }
 
         #endregion
