@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Ferretto.ServiceDesk.Telemetry;
 
 namespace Ferretto.VW.TelemetryService.Data
 {
-    public class IOLog : IIOLog
+    public class IOLog : DataModel, IIOLog
     {
         #region Properties
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Realms;
 
 namespace Ferretto.VW.TelemetryService
 {
@@ -85,44 +84,7 @@ namespace Ferretto.VW.TelemetryService
             services.AddScoped<IServicingInfoProvider, ServicingInfoProvider>();
             services.AddScoped<IScreenShotProvider, ScreenShotProvider>();
 
-            //services.AddTransient<Providers.IMachineProvider, Providers.MachineProvider>();
-            //services.AddTransient<Providers.IErrorLogProvider, Providers.ErrorLogProvider>();
-            //services.AddTransient<Providers.IIOLogProvider, Providers.IOLogProvider>();
-            //services.AddTransient<Providers.IMissionLogProvider, Providers.MissionLogProvider>();
-            //services.AddTransient<Providers.IScreenShotProvider, Providers.ScreenShotProvider>();
-
-            var connectionString = this.Configuration.GetConnectionString(ConnectionStringName);
-            var schemaVersion = Convert.ToUInt64(this.Configuration.GetConnectionString(SchemaVersionName));
-            this.CheckDatabaseDirectory(connectionString);
-
-            var config = new RealmConfiguration(connectionString) { SchemaVersion = schemaVersion };
-            try
-            {
-                Realm.Compact(config);
-                services.AddTransient(s => Realm.GetInstance(config));
-            }
-            catch (Realms.Exceptions.RealmFileAccessErrorException exc)
-            {
-                System.Diagnostics.Debug.WriteLine($"Realm File access error exception. Reason: {exc}");
-                return;
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Debug.WriteLine($"Invalid exception for Realm database");
-                return;
-            }
-            //services.AddTransient(s => Realm.GetInstance(new RealmConfiguration(s.GetRequiredService<IConfiguration>().GetConnectionString(ConnectionStringName))));
-
             services.AddHostedService<DatabaseCleanupService>();
-        }
-
-        private void CheckDatabaseDirectory(string connectionString)
-        {
-            var dirName = Path.GetDirectoryName(connectionString);
-            if (!File.Exists(dirName) && dirName != "")
-            {
-                Directory.CreateDirectory(dirName);
-            }
         }
 
         #endregion

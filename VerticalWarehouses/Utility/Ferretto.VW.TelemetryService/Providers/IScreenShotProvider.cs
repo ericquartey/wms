@@ -13,7 +13,11 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         IEnumerable<IScreenShot> GetAll();
 
-        Task SaveAsync(string serialNumber, IScreenShot screenshot);
+        IEnumerable<Data.ScreenShot> GetAllId();
+
+        void Remove(IEnumerable<Data.ScreenShot> logsToDelete);
+
+        void SaveAsync(string serialNumber, IScreenShot screenshot);
 
         #endregion
     }

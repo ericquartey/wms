@@ -74,7 +74,7 @@ namespace Ferretto.VW.TelemetryService
                 return;
             }
 
-            await this.telemetryWebHubClient.PersistIOLogAsync(machine.SerialNumber, ioLog);
+            this.telemetryWebHubClient.PersistIOLogAsync(machine.SerialNumber, ioLog);
         }
 
         public async Task SendErrorLog(ErrorLog errorLog)
@@ -129,7 +129,7 @@ namespace Ferretto.VW.TelemetryService
                 machine.SerialNumber);
 
             using var scope = this.serviceScopeFactory.CreateScope();
-            await scope.ServiceProvider.GetRequiredService<IMachineProvider>().SaveAsync(machine);
+            scope.ServiceProvider.GetRequiredService<IMachineProvider>().SaveAsync(machine);
 
             await this.telemetryWebHubClient.SendMachineAsync(machine);
         }

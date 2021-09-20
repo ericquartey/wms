@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Transactions;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.TelemetryService.Data;
 using Microsoft.Extensions.Logging;
@@ -34,35 +32,58 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
-            this.logger.LogDebug("Deleting old error logs ...");
-
-            var errorLogs = this.dataContext.ErrorLogs;
-
-            var lastLog = errorLogs.OrderByDescending(e => e.OccurrenceDate).FirstOrDefault();
-
-            if (lastLog is null)
+            lock (this.dataContext)
             {
-                return;
+                this.logger.LogDebug("Deleting old error logs ...");
+
+                var errorLogs = this.dataContext.ErrorLogs.ToArray();
+
+                var lastLog = errorLogs.LastOrDefault();
+
+                if (lastLog is null)
+                {
+                    return;
+                }
+
+                var minTimestamp = lastLog.OccurrenceDate - maximumLogTimespan;
+
+                var logsToDelete = errorLogs.Where(e => e.OccurrenceDate < minTimestamp);
+
+                var countLogsToDelete = logsToDelete.Count();
+
+                this.dataContext.ErrorLogs.RemoveRange(logsToDelete);
+                this.dataContext.SaveChanges();
+
+                this.logger.LogDebug($"A total of {countLogsToDelete} error logs were deleted.");
             }
-
-            var minTimestamp = lastLog.OccurrenceDate - maximumLogTimespan;
-
-            var logsToDelete = errorLogs.Where(e => e.OccurrenceDate < minTimestamp);
-
-            var countLogsToDelete = logsToDelete.Count();
-
-            this.dataContext.ErrorLogs.RemoveRange(logsToDelete);
-            this.dataContext.SaveChanges();
-
-            this.logger.LogDebug($"A total of {countLogsToDelete} error logs were deleted.");
         }
 
         public IEnumerable<IErrorLog> GetAll()
         {
-            return this.dataContext.ErrorLogs.ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.ErrorLogs.ToArray();
+            }
         }
 
-        public async Task SaveAsync(string serialNumber, IErrorLog errorLog)
+        public IEnumerable<Data.ErrorLog> GetAllId()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.ErrorLogs.ToArray();
+            }
+        }
+
+        public void Remove(IEnumerable<Data.ErrorLog> logsToDelete)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.ErrorLogs.RemoveRange(logsToDelete.ToArray());
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SaveAsync(string serialNumber, IErrorLog errorLog)
         {
             if (string.IsNullOrWhiteSpace(serialNumber))
             {
@@ -74,25 +95,28 @@ namespace Ferretto.VW.TelemetryService.Providers
                 throw new ArgumentNullException(nameof(errorLog));
             }
 
-            var machine = this.dataContext.Machines.SingleOrDefault(m => m.SerialNumber == serialNumber);
-            if (machine is null)
+            lock (this.dataContext)
             {
-                throw new ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                var machine = this.dataContext.Machines.SingleOrDefault(m => m.SerialNumber == serialNumber);
+                if (machine is null)
+                {
+                    throw new ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                }
+
+                var logEntry = new Data.ErrorLog()
+                {
+                    Machine = machine,
+                    AdditionalText = errorLog.AdditionalText,
+                    BayNumber = errorLog.BayNumber,
+                    Code = errorLog.Code,
+                    DetailCode = errorLog.DetailCode,
+                    OccurrenceDate = errorLog.OccurrenceDate,
+                    ResolutionDate = errorLog.ResolutionDate
+                };
+
+                this.dataContext.ErrorLogs.Add(logEntry);
+                this.dataContext.SaveChanges();
             }
-
-            var logEntry = new Data.ErrorLog()
-            {
-                Machine = machine,
-                AdditionalText = errorLog.AdditionalText,
-                BayNumber = errorLog.BayNumber,
-                Code = errorLog.Code,
-                DetailCode = errorLog.DetailCode,
-                OccurrenceDate = errorLog.OccurrenceDate,
-                ResolutionDate = errorLog.ResolutionDate
-            };
-
-            this.dataContext.ErrorLogs.Add(logEntry);
-            this.dataContext.SaveChanges();
         }
 
         #endregion

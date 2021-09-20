@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,6 +14,8 @@ namespace Ferretto.VW.TelemetryService.Data
     internal sealed class DataService : BackgroundService
     {
         #region Fields
+
+        private const string ConnectionStringName = "Database";
 
         private readonly ILogger<DataService> logger;
 
@@ -35,6 +39,7 @@ namespace Ferretto.VW.TelemetryService.Data
         {
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
+                this.EnsureFolderExistence(scope);
                 var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
 
                 var pendingMigrations = await dataContext.Database.GetPendingMigrationsAsync();
@@ -48,6 +53,17 @@ namespace Ferretto.VW.TelemetryService.Data
                 dataServiceStatus.IsReady = true;
 
                 this.logger.LogInformation("Database is ready.");
+            }
+        }
+
+        private void EnsureFolderExistence(IServiceScope scope)
+        {
+            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var connectionString = configuration.GetConnectionString(ConnectionStringName);
+            var dirName = Path.GetDirectoryName(connectionString);
+            if (dirName != "" && !Directory.Exists(dirName))
+            {
+                Directory.CreateDirectory(dirName);
             }
         }
 
