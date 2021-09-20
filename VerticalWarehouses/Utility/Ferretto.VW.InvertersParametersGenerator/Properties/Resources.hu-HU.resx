@@ -117,85 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+  <data name="Close" xml:space="preserve">
+    <value>Bezárás</value>
   </data>
-  <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+  <data name="Next" xml:space="preserve">
+    <value>Következő</value>
   </data>
-  <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Mappa megnyitása</value>
   </data>
-  <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Vertimag konfigurációs fájl</value>
   </data>
-  <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Fájl megnyitása</value>
   </data>
-  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Inverterek mappa</value>
   </data>
-  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Inverterek paramétereinek generálása fájl</value>
   </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
+  <data name="Import" xml:space="preserve">
+    <value>Importálás</value>
   </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Nem található paraméterfájl</value>
   </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>[{0}] inverter, '{1}' típus, paraméterek konfigurálása</value>
   </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>{0} paraméter összesen</value>
   </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Adatkészlet</value>
   </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Típus</value>
   </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Érték</value>
   </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Csak olvasás</value>
   </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Konfiguráció exportálása</value>
   </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Fájl exportálása</value>
   </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
+  <data name="NoRows" xml:space="preserve">
+    <value>Egyik sor sem</value>
   </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Az exportálás sikeresen befejeződött.</value>
   </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Konfigurációs fájl mentése</value>
   </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Konfigurációs fájl</value>
   </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
+  <data name="Previous" xml:space="preserve">
+    <value>Előző</value>
   </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Konfiguráció importálása</value>
   </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Fájl kiválasztása</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value></value>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Inverterparaméterek mappa</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Konfigurációs fájl kiválasztása</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Konfigurációs mappa</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>A mappa nem létezik</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>A fájl nem érvényes vagy nincs megadva</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Fájl nincs mentve</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Mintafájlok</value>
+  </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Vertimag inverter konfigurációs fájl</value>
   </data>
 </root>

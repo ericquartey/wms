@@ -303,14 +303,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         "Italiano"));
 
             res.Add(new Culture(
-                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
-                            "en-EN",
-                            "English"));
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/CZ.png",
+                            "cs-CZ",
+                            "Čeština"));
 
             res.Add(new Culture(
                              $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/DE.png",
                              "de-DE",
                              "Deutsche"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/GR.png",
+                            "el-GR",
+                            "Ελληνικά"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
+                            "en-EN",
+                            "English"));
 
             res.Add(new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/ES.png",
@@ -322,6 +332,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //                "fr-FR",
             //                "Français"));
 
+            //res.Add(new Culture(
+            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SK.png",
+            //                "sk-SK",
+            //                "Slovenský"));
+
+            res.Add(new Culture(
+                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",
+                             "hr-HR",
+                             "Hrvatski"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HU.png",
+                            "hu-HU",
+                            "Magyar"));
+
             res.Add(new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/PL.png",
                             "pl-PL",
@@ -332,30 +357,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             "ru-RU",
                             "Pусский"));
 
-            //res.Add(new Culture(
-            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SK.png",
-            //                "sk-SK",
-            //                "Slovcco"));
-
             res.Add(new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SI.png",
                             "sl-SI",
                             "Slovenščina"));
-
-            res.Add(new Culture(
-                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",
-                             "hr-HR",
-                             "Hrvatski"));
-
-            res.Add(new Culture(
-                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/GR.png",
-                            "el-GR",
-                            "Ελληνικά"));
-
-            res.Add(new Culture(
-                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/CZ.png",
-                            "cs-CZ",
-                            "Čeština"));
 
             return res;
         }

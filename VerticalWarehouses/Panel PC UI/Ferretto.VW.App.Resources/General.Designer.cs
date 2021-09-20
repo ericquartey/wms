@@ -367,6 +367,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select the lot of this product.
+        /// </summary>
+        public static string LotManagedProduct {
+            get {
+                return ResourceManager.GetString("LotManagedProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run.
         /// </summary>
         public static string MachineRun {

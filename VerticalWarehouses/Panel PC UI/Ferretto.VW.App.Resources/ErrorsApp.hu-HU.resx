@@ -117,85 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>A hiba nem lehet 1 mm-nél nagyobb</value>
   </data>
-  <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Tálca ellenőrzése:</value>
   </data>
-  <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Részlet kód</value>
   </data>
-  <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>A tálca azonosítási eljárásának végén átlép automatikus üzemmódba.</value>
   </data>
-  <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>A tálca azonosítási eljárásának végén átlép kézi üzemmódba.</value>
   </data>
-  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Tálca kiválasztása</value>
   </data>
-  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Hibakód</value>
   </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Hiba leírása</value>
   </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Lehetséges okok</value>
   </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Hiba helyreállítása</value>
   </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Észlelve</value>
   </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
+  <data name="Forwards" xml:space="preserve">
+    <value>Előre</value>
   </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Felső pozíció</value>
   </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>A tálca nem érvényes, adja meg: </value>
   </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inverter</value>
   </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>INVERTER HIBA hiba helyreállítása</value>
   </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Terület lent</value>
   </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Megoldottként jelölve</value>
   </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Nincs cikk betöltve az oldalra.</value>
   </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Válassza ki az emelőn található tálca azonosítóját.</value>
   </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Tálca az emelőn</value>
   </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Tálca kiválasztása (1. munkaállomás):</value>
   </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Tálca kiválasztása (2. munkaállomás):</value>
   </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Tálca kiválasztása (3. munkaállomás):</value>
   </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Válassza ki a munkaállomáson lévő tálca/tálcák azonosítóját.</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value></value>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Megoldottként jelölve és nulla keresése</value>
   </data>
 </root>

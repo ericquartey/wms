@@ -117,85 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+  <data name="AirFiltersCheck" xml:space="preserve">
+    <value>Levegőszűrők ellenőrzése</value>
   </data>
-  <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+  <data name="BearingsCheck" xml:space="preserve">
+    <value>Csapágyak ellenőrzése</value>
   </data>
-  <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+  <data name="BearingsGrease" xml:space="preserve">
+    <value>Csapágyak zsírzása</value>
   </data>
-  <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+  <data name="BeltAdjust" xml:space="preserve">
+    <value>Szíjfeszesség</value>
   </data>
-  <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+  <data name="BeltFasten" xml:space="preserve">
+    <value>A szíjak rögzítésének ellenőrzése</value>
   </data>
-  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+  <data name="BeltSubstitute" xml:space="preserve">
+    <value>Szíj cseréje</value>
   </data>
-  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
+  <data name="CableChainCheck" xml:space="preserve">
+    <value>Kábeltartó lánc ellenőrzése</value>
   </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
+  <data name="CablesCheck" xml:space="preserve">
+    <value>Kábelek ellenőrzése</value>
   </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
+  <data name="ChainAdjust" xml:space="preserve">
+    <value>Láncfeszesség</value>
   </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
+  <data name="ChainGrease" xml:space="preserve">
+    <value>Lánc zsírzása</value>
   </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
+  <data name="ChainSubstitute" xml:space="preserve">
+    <value>Lánc cseréje</value>
   </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
+  <data name="ContactorsSubstitute" xml:space="preserve">
+    <value>ContactorsSubstitute</value>
   </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
+  <data name="ElectricalComponentsCheck" xml:space="preserve">
+    <value>Elektromos alkatrészek ellenőrzése</value>
   </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
+  <data name="FirstCellCheck" xml:space="preserve">
+    <value>Első rekesz ellenőrzése</value>
   </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
+  <data name="GuidesCheck" xml:space="preserve">
+    <value>Vezetősínek ellenőrzése</value>
   </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
+  <data name="GuidesSubstitute" xml:space="preserve">
+    <value>Vezetősínek cseréje</value>
   </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
+  <data name="LampsCheck" xml:space="preserve">
+    <value>Kiégett izzók ellenőrzése a lámpákban</value>
   </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
+  <data name="LinkCheck" xml:space="preserve">
+    <value>Csatlakozóelem ellenőrzése</value>
   </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
+  <data name="LinksGrease" xml:space="preserve">
+    <value>Csatlakozóelem zsírzása</value>
   </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
+  <data name="LinkSubstitute" xml:space="preserve">
+    <value>Csatlakozóelem cseréje</value>
   </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
+  <data name="MicroSwitchesCheck" xml:space="preserve">
+    <value>Mikrokapcsoló ellenőrzése</value>
   </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
+  <data name="MicroSwitchesMount" xml:space="preserve">
+    <value>Mikrokapcsoló rögzítése</value>
   </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
+  <data name="MicroSwitchesSubstitute" xml:space="preserve">
+    <value>Mikrokapcsoló cseréje</value>
   </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
+  <data name="MotorChainAdjust" xml:space="preserve">
+    <value>Motor, láncfeszesség</value>
   </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
+  <data name="MotorChainGrease" xml:space="preserve">
+    <value>Motor, lánc zsírzása</value>
   </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
+  <data name="MotorChainSubstitute" xml:space="preserve">
+    <value>Motor, lánc cseréje</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value></value>
+  <data name="MotorGearOil" xml:space="preserve">
+    <value>Reduktor olajszintjének ellenőrzése és feltöltése</value>
+  </data>
+  <data name="MotorGearSubstitute" xml:space="preserve">
+    <value>Reduktor cseréje</value>
+  </data>
+  <data name="OpticalSensorsClean" xml:space="preserve">
+    <value>Optikai szenzorok tisztítása</value>
+  </data>
+  <data name="OpticalSensorsMount" xml:space="preserve">
+    <value>Optikai szenzorok rögzítése</value>
+  </data>
+  <data name="PinPawlFastenersCheck" xml:space="preserve">
+    <value>Retesz rögzítőcsapjainak ellenőrzése</value>
+  </data>
+  <data name="PinPawlFastenersGrease" xml:space="preserve">
+    <value>Retesz rögzítőcsapjainak zsírzása</value>
+  </data>
+  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
+    <value>Retesz rögzítőcsapjainak cseréje</value>
+  </data>
+  <data name="PlasticCamsCheck" xml:space="preserve">
+    <value>Műanyag bütykök állapotának ellenőrzése</value>
+  </data>
+  <data name="RandomCellCheck" xml:space="preserve">
+    <value>Rekesz random ellenőrzése</value>
+  </data>
+  <data name="SensorCheck" xml:space="preserve">
+    <value>Szenzorok működési próbái</value>
+  </data>
+  <data name="SensorsClean" xml:space="preserve">
+    <value>Szenzorok tisztítása</value>
+  </data>
+  <data name="SensorsMount" xml:space="preserve">
+    <value>Szenzorok rögzítése</value>
+  </data>
+  <data name="ShaftCheck" xml:space="preserve">
+    <value>Redőnytengely ellenőrzése</value>
+  </data>
+  <data name="SupportsCheck" xml:space="preserve">
+    <value>Tartók holtjátékának ellenőrzése</value>
+  </data>
+  <data name="WheelsCheck" xml:space="preserve">
+    <value>Az ellentartó kerekek ellenőrzése</value>
+  </data>
+  <data name="WheelsSubstitute" xml:space="preserve">
+    <value>Az ellentartó kerekek cseréje</value>
   </data>
 </root>

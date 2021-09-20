@@ -1483,11 +1483,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to tote barcode length.
+        ///   Looks up a localized string similar to Tote barcode length.
         /// </summary>
         public static string ToteBarcodeLength {
             get {
-                return ResourceManager.GetString("ToteBercodeLength", resourceCulture);
+                return ResourceManager.GetString("ToteBarcodeLength", resourceCulture);
             }
         }
         

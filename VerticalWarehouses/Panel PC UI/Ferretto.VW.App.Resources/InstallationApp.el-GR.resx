@@ -2059,7 +2059,7 @@
     <value>Βάρος</value>
   </data>
   <data name="LoadingUnitStatus_InBay" xml:space="preserve">
-    <value>Σε πλατφόρμα</value>
+    <value>Σε πλατφόρ.</value>
   </data>
   <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
     <value>Σε ανελκυστήρα</value>

@@ -118,84 +118,81 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+    <value>Munkaállomás megvilágításának bekapcsolása</value>
   </data>
   <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+    <value>Bal védőburkolat szenzora</value>
   </data>
   <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+    <value>Jobb védőburkolat szenzora</value>
   </data>
   <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+    <value>Vészleállító nyomógomb</value>
   </data>
   <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+    <value>Működés engedélyezése a konzolról</value>
   </data>
   <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+    <value>Bölcsőmotor kiválasztása (feedback)</value>
   </data>
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
-  </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
-  </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
-  </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
-  </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
-  </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
-  </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
-  </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
-  </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
-  </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
-  </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
-  </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
-  </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
-  </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
-  </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
-  </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
-  </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
-  </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
-  </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
-  </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
+    <value>Emelőmotor kiválasztása (feedback)</value>
   </data>
   <data name="Free" xml:space="preserve">
-    <value></value>
+    <value>Szabad</value>
+  </data>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Magasságleolvasás aktiválása (mérő fényfüggöny)</value>
+  </data>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Kumulatív Inverter hibaállapotban</value>
+  </data>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>IO eszköz {0:00}</value>
+  </data>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>IO eszköz neve</value>
+  </data>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Benyúlásvédő fényfüggöny</value>
+  </data>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Fényfüggöny kalibrálása</value>
+  </data>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Alsó tálcajelenlét szenzor / közbenső munkaállomás</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Tálca jelenléte a gép oldali bölcsőn</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Bölcsőmotor kiválasztása</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Emelőmotor kiválasztása</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Tálca jelenléte a kezelő oldali bölcsőn</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Biztonsági funkció helyreállítása (impulzus: 300ms)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Robotopció - Felvétel vége gomb (vagy robot felvétel vége)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Robotopció - Feladat befejezve, tároló</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Robotopció - Tároló kész/hibás</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Biztonsági funkció állapota</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Kocsiopció - Kocsi rögzítése</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Tálcajelenlét szenzor a munkaállomáson</value>
   </data>
 </root>

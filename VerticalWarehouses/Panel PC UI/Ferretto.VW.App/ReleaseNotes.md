@@ -25,17 +25,16 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.27 rispetto la 1.0.26
-- Nessuna
+## Nuove Funzionalità 1.0.28 rispetto la 1.0.27
+- Aggiunta lingua ungherese
 
 ## Bug Risolti
-- L'errore di cassetto sconosciuto appare anche se lo stato è già automatico
-- Corretto funzionamento della BED in caso di perdita del sensore di presenza
-- Corretto invio delle manutenzioni alla telemetria
-- Correzione bugs per Tendaggi Paradiso
+- Telemetria: il database locale è in formato SqlLite
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***
+
+[Versione 1.0.27](#id1027)
 
 [Versione 1.0.26](#id1026)
 
@@ -91,6 +90,18 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1027"></a>
+## Nuove Funzionalità 1.0.27 rispetto la 1.0.26
+- Nessuna
+
+## Bug Risolti
+- L'errore di cassetto sconosciuto appare anche se lo stato è già automatico
+- Corretto funzionamento della BED in caso di perdita del sensore di presenza
+- Corretto invio delle manutenzioni alla telemetria
+- Correzione bugs per Tendaggi Paradiso
+
+## Compatibile con adapter 0.4.24 e 0.4.25
 
 <a id="id1026"></a>
 ## Nuove Funzionalità 1.0.26 rispetto la 1.0.25

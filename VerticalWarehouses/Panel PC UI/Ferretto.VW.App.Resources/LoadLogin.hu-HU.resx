@@ -117,85 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Kapcsolódás a szolgáltatásokhoz megtörtént</value>
   </data>
-  <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Megszűnt a kapcsolat az Automatizálási Szolgáltatással, újracsatlakozás folyamatban...</value>
   </data>
-  <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Nem lehet csatlakozni az automatizálási szolgáltatáshoz</value>
   </data>
-  <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>A hitelesítő adatok nem érvényesek.</value>
   </data>
-  <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Modul betöltve.</value>
   </data>
-  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Jelszó megadása</value>
   </data>
-  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>A jelszó túl rövid.</value>
   </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Meg kell adni a jelszót.</value>
   </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>A szolgáltatások inicializálási fázisban vannak.</value>
   </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
+  <data name="TempKey" xml:space="preserve">
+    <value>Ideiglenes kulcs: {0}</value>
   </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>A vonalkód egyik regisztrált felhasználónak sem felel meg.</value>
   </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>A felhasználónevet meg kell adni.</value>
   </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>A kártya egyik regisztrált felhasználóhoz sincs hozzárendelve.</value>
   </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Bejelentkezés kártya leolvasásával...</value>
   </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Felhasználó hitelesítése folyamatban...</value>
   </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Zseton behelyezve. Hitelesítés folyamatban...</value>
   </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Zseton eltávolítva.</value>
   </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Zsetonnal történő hitelesítés sikertelen.</value>
   </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>A hitelesítést nem lehet zsetonnal elvégezni, mert a WMS nem elérhető.</value>
   </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
-  </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
-  </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
-  </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
-  </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
-  </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
-  </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
-  </data>
-  <data name="Free" xml:space="preserve">
-    <value></value>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>„Szerviz” felhasználó munkamenet lejárt</value>
   </data>
 </root>

@@ -1,0 +1,1863 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Confirm" xml:space="preserve">
+    <value>Megerősítés</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Részletek</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Gépek</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Csomagolás típusa</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Gyártás dátuma</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Mennyiség</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Lekért mennyiség [{0}]</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Műveletek a tálcán</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Várakozó listák</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Cikk kereséses</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Kitárolási művelet.</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>Lekért menny.</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Kitárolt menny.</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>Új tálca érkezésére vár.</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Ütemezett műveletek:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Kitárolt cikk adatai.</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Gyártás dátuma</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Tétel</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Anyag állapota</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Csomagolás típusa</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Végrehajtásra várakozó listák</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Lista adatai</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Lista végrehajtása</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Cikk keresése kód és leírás szerint</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Keresés</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Rendelkezésre álló mennyiség [{0}]</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Cikk behívása</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Cikk adatai</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Kezelés típusa</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>FIFO időszak [nap]</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Tálca azonnali lekérése</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Tálca behívása</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Lekért tálca</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Általános tudnivalók</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Sorozatszám</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Tálcák száma</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Szoftververzió</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Felülvizsgálat</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Legutóbbi karbantartás</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Következő karbantartás</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Gépállapot</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Tálcák tömörítési eljárása.</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>Elülső oldal adatai.</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Töredékek száma</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Max. visszanyerhető hely</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Visszanyerendő hely</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Elülső tömörítés</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Hátsó tömörítés</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Tömörítés</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Statisztikák</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Karbantartás</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>Statisztika: általános adatok.</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Mozgatott tálcák</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Bekapcsolási idő, óra</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Foglalt terület</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Betöltött súly</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Idő automatikus üzemmódban</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Használati együttható</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Statisztikák: tálcaterek telítettsége.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Tálcák összesen</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Tálcák mérete (mm)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Gép töltése</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Tér elemzése</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Statisztikák: tálcasúlyok elemzése.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Tálcák összesen</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Max. bruttó teherbírás (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Max. nettó teherbírás (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Betöltött bruttó súly (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Betöltött nettó súly (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Betöltött nettó súly (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Lista elvégezhető sorai</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Statisztikák: rekeszek.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Rekeszek összesen</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Elülső rekeszek összesen</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Hátsó rekeszek összesen</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Rekeszek foglaltsága összesen</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Egyéb</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Statisztikák: hibák elemzése.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Mozgatott tálcák összesen</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Hibák összesen</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Mozgatott tálcák hibák nélkül</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Megbízhatósági index</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Hiba leírása</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Karbantartás: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Soros</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Telepítés dátuma</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Legutóbbi karbantartás dátuma</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Következő karbantartás dátuma</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Gépállapot</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Karbantartás részletei</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Elvégzett ciklusok összesen</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Ciklusok két karbantartás között</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Ciklusok a legutóbbi karbantartás óta</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Elem állapota</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Lekért gépleállítás [óra]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Emelőplatform</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Csatlakozási kérés elküldése</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Tálca behívása</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Tálcastatisztikák</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Rekeszstatisztikák</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Hibastatisztikák</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Utántöltési művelet.</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Utántöltendő menny. [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Utántöltött menny. [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Maximális kapacitás frissítése</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Lista sora</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Lekért menny. [db]</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Utántöltési művelet részlet.</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Tétel</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Anyag állapota</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Csomagolás típusa</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Gyártás dátuma</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>Utántöltendő menny.</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Lista sora</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Cikkszám</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Cikk leírása</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Listakód</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Lista leírása</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Csomagolás kódja</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Csomagolás leírása</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Megjegyzések:</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>Fel</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>Le</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Leltárművelet.</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Készletmenny.</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Pozíció:</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>Megerősítés</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Részletek</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Leltárművelet részlet.</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Besorolási kategória</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>A, B, C osztály</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Mértékegység</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Átlagos súly [g]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Össz. Hát.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>% Hát.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Össz. El.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>% El.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Rekeszek</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Újratöltés</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Újratölt.</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Feladatok</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Rekesz</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Magasság</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Oldal</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Súly</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Hiba</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Szám</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>% Összes</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Gépek</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Típus</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Készlet</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Lekérés</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Aktuális súly</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Magasság</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>% max.</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Nettó max.</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Tára</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Elem</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Mennyiség</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Cikk</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Gép</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Mennyiség</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Sor</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Gépstatisztikák</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Gépstatisztikák.</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Függőleges tengely adatok.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Összes megtett km</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Elvégzett ciklusok összesen</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Redőnyadatok</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>1. redőnyciklusok</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>2. redőnyciklusok</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>3. redőnyciklusok</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Lánctengely adatok.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Elvégzett ciklusok összesen</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Munkaállomás adatok.</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>1. munkaállomás mozgatott tálcák</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>2. munkaállomás mozgatott tálcák</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>3. munkaállomás mozgatott tálcák</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Cikk</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Cikk leírása</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Gépek</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>Hátsó oldali adatok</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Lista típusa</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>WMS állapota</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>A tömörítési adatok megjelenítése.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Tálca elmozdulásban</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Kiinduló rekesz</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Célrekesz</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Jelenlegi fázis</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Függőleges tengely pozíció</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Vízszintes tengely pozíció</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Maradványtöredékek</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Visszanyert hely mm.</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Visszanyerendő hely mm.</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Tömörítés befejezése</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>Aktuális állapot</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Nincs</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Nincs meghatározva</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Csak tér</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Blokkolva</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Nem elérhető</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Sorban</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Lejárt</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>Lejáró</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Ismeretlen</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Érvényes</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Tálca visszatérése</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Tér elemzése</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Térfogat</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Nincs megadva</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Leltár</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Kitárolás</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Utántöltés</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Nincs megadva</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Kitárolandó mennyiség</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Kitárolt mennyiség [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Áru állapota</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Leltárművelet.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Mért mennyiség [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>{0} cikk kitárolási lekérése ({1} mennyiség) elfogadva.</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Rendelkezésre áll</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Lista sora</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Tálca ID</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Üres megerősítése</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Rendelkezésre állás a gépen</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Törölt művelet</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Megerősített művelet.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Nincs mozgatandó tálca a(z) {0} munkaállomáson</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>{0} tálca továbbítandó a(z) {1} munkaállomásra</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>Van továbbítandó tálca a(z) {0} munkaállomásra</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Távolítsa el a fakkból az esetleges utántöltött cikkeket.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Távolítsa el a fakkból az esetleges utántöltött cikkeket.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Utántöltés visszavonása</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Kitárolás visszavonása</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>A visszavont művelet megerősítve</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>A leltárművelet visszavonva.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Feladatok</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Feladatok listája</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Létrehozás</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Lépés</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Munkaállomás</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Mind</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Emelő munkaállomás</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>Hármas munkaállomás</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>Kettes munkaállomás</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Egyik munkaállomás sem</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Végrehajtás alatt</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Új</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Várakozik</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Befejeződött</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Megszakítva</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>Befejezés alatt</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Egyes munkaállomás</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Feladat típusa</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Feltétel</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Munkaállomás</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1. Új</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2. Kezdés</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3. Emelő betöltése</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4. Célra</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5. Tálca lerakása</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6. Műveletre várakozás</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7. Munkaállomás felemelése</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8. Redőny zárása</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13. Vége</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101. Hiba</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Egyik típus sem</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Kézi vezérlés</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Bemenet</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Kimenet</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Tömörítés</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Nincs meghatározva</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>A munkaállomáson</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Tálca visszatérése</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>munkadarabok</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Kitárolás</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Utántöltés</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Módosítás</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Készlet</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Cikk leírása</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Cikkszám</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Fakk</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Helyesbítendő mennyiség [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Utántöltendő mennyiség [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Kitárolandó mennyiség [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Új rendelkezésre álló műveletek</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Megerősítés és új rendelkezésre álló műveletek</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Készlet</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Tálca jelen</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Egy fakk kiválasztása</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>PICK</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Kitárolás</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>TÉTEL</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Cikkek keresése és behívása</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>LIST</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Listák végrehajtása/felfüggesztése</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>DRAW</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Műveletek a tálcán</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Tömörítés</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Teszt szükséges</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kód</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Nincs rendelkezésre álló cikk '{0}' kóddal.</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Frissítés kezdése</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Riasztások</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Tömörítés folyamatban</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Diagnosztika</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Általános</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Általános tudnivalók</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Gép száma</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Soros</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statisztikák</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Összes megtett km</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Gép súlya összesen</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Feladatok összesen</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Tálcák összesen</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Várakozik</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Számlálók</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>Nincs cikk a kiválasztott fakkban.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>Első teszt</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Befejezett teszt IN</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Befejezett teszt OUT</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Tálcaművelet</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Tétel</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>A gép riasztásainak listája</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Munkaállomás száma</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Kód részletei</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Inverter mutatója</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Esemény dátuma</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Felbontás dátuma</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Gyári szám</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Töredezettség hátul</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Töredezettség elöl</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Töredezettség összesen</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>A lista nem végezhető el.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>{0} művelet nem érvényes</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Felhasználók</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>a munkaállomás kimenetén</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Kiegészítő információk</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Tálca sz.</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Magasság</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Súly</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Túlzott töredezettség: javasolt tömörítést végezni.</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Karusszel kalibrációja folyamatban</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Vízszintes kalibráció folyamatban</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Rendelkezésre álló mennyiség</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Kódra szűrt cikkek.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>'{0}' vonalkód nem tartalmaz cikkszámot.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>'{0}' vonalkód nem tartalmazza a cikk mennyiségét.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>'{0}' vonalkód nem tartalmazza a lista azonosítókódját.</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Nem létezik lista '{0}' azonosítókóddal.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>'{0}' lista végrehajtása elfogadva.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Foglalt rekeszek</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Szabad rekeszek</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Szabad rekeszek alátámasztásra</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Szabad rekeszek csak tér</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Blokkolt rekeszek</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Rekeszek összesen</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Tálcák a munkaállomáson</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Tálcák a rekeszben</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Tálcák az emelőn</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Szerviz megerősítése</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>A telepítés dátuma</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Legutóbbi szerviz dátuma</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Következő szerviz dátuma</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Szerviz állapota</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>Kész</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>Elvégzendő</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>MaxNap</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>MaxRelatívSzáml</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxÖsszesSzáml</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Aktív feladatok összes ideje</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>1. munkaállomás km</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>2. munkaállomás km</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>3. munkaállomás km</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km emelő vízszintes tengely</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km emelő függőleges tengely</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Tálcák az 1. munkaállomáson</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Tálcák a 2. munkaállomáson</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Tálcák a 3. munkaállomáson</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Az adatok a legutóbbi karbantartástól vannak számítva a teljes értékhez képest)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Karbantartás:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Aktív feladatok ideje</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>1. munkaállomás</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>2. munkaállomás</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>3. munkaállomás</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Emelő, vízszintes tengely</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Emelő, függőleges tengely</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Km munkaállomások a legutóbbi karbantartás óta / összes</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Km emelő tengelyek a legutóbbi karbantartás óta / összes</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Aktív feladatok teljes ideje a legutóbbi karbantartás óta / összes</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Tálcák a munkaállomáson a legutóbbi karbantartás óta / összes</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Lekért mennyiség</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Sor megerősítése</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Tengely</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>Számláló neve</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Sor állapota</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Sor végrehajtása</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Biztos abban, hogy megerősíti ezt a szervizt?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Emelő ciklusok a legutóbbi karbantartás óta / összes</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Vízszintes tengely</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Függőleges tengely</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Módosítás</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Jelenlévő megerősítése</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Jelenlévő mennyiség</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Cikk: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Tálcák</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Befejezve</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Súly alacsony</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Összes feladat</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Sor mentése</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Frissített érték</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Feladat visszavonása</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Tálca célállomása</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Tálca kiindulópontja</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>ID WMS</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>1. munkaállomás, karusszel alacsony poz.</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>1. munkaállomás, karusszel magas poz.</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>2. munkaállomás, karusszel alacsony poz.</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>2. munkaállomás, karusszel magas poz.</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>3. munkaállomás, karusszel alacsony poz.</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>3. munkaállomás, karusszel magas poz.</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Rekesz</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Alsó</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Emelő</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>1. külső munkaállomás, alacsony poz.</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>1. külső munkaállomás, magas poz.</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>2. külső munkaállomás, alacsony poz.</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>2. külső munkaállomás, magas poz.</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>3. külső munkaállomás, alacsony poz.</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>3. külső munkaállomás, magas poz.</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>1. belső munkaállomás, alacsony poz.</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>1. belső munkaállomás, magas poz.</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>2. belső munkaállomás, alacsony poz.</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>2. belső munkaállomás, magas poz.</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>3. belső munkaállomás, alacsony poz.</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>3. belső munkaállomás, magas poz.</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Tálca</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Egyik pozíció sem</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Ismeretlen</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Magas</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Visszatérés a munkaállomásra</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Betárolási hiba</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Betöltési hiba</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Külső munkaállomás</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Lánc várakozás</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Tálca jelenlét a munkaállomáson, tömörítés nem engedélyezett</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Súly mértékegysége frissítve</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Átlagsúly tényleges mértékegysége [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Átlagsúly eredeti mértékegysége [g]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Súlymérés és darabszámlálás</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Újrabeállítás</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Mért mennyiség</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Súly mértékegységének frissítése</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Észlelt mennyiség megerősítése </value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>Lekért mennyiség megerősítése</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Súly mértékegysége [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Művelet megerősítése vonalkóddal.</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>A '{0}' vonalkód egyes mezői nem esnek egybe a cikkével.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>A '{0}' vonalkód egyes mezői nem esnek egybe a cikkével. Újrakezdés.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>A mennyiség megadása megerősítés előtt.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>'{0}' vonalkód nincs felismerve,</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>{0} cikk utántöltési lekérése ({1} mennyiség) elfogadva.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Kitárolási művelet, tálca sz.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Utántöltési művelet, tálca sz.</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Cikk kitárolása </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Cikk utántöltése </value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Cikkek betöltése folyamatban...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Műveletek a munkaállomáson</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Megtekintés</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Maximum egymást követő szabad hely, hátsó oldal</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Maximum egymást követő szabad hely, elülső oldal</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Megoldottként jelölve és a tömörítésre lép</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Tárolóedény kódja</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Tárolóedény kitárolás</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Tárolóedény utántöltése</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Tárolóedény</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Tárolóedény bevitel</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Tárolóedény eltávolítás</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Megjegyzések</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Ok kiválasztása</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Rekesz betárolásra várakozás</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Munkaállomás betárolásra várakozás</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>A megjegyzések mező nem érvényes, a művelet nincs megerősítve</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Figyelem</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Ez az utolsó művelet ezen a tálcán, cikk betárolása és az OK megnyomása</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Hálózati kártya</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>Kiegészítő IP</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>Kiegészítő alhálózati maszk</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hozzáadás</value>
+  </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Hiba jelzése</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Lézer</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Lézer eltolása</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Teljes darabszám</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Jó anyag menny. a hiba előtt</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Selejt menny.</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Hiba jelzése</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Darab kitárolás megerősítése</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Hiba jelzése sikertelen</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Cikk törölve</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Hiba jelzése sikeres</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Vonalkód</value>
+  </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Dupla külső munkaállomás</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Külső munkaállomás betárolásra várakozás</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>Belső munkaállomás betárolásra vár</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Uwf szűrő aktív</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Uwf szűrő kikapcsolása</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Teli</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Üres</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Megtekintés</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>A megtekintési művelet visszavonva.</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Megtekintés</value>
+  </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>{0} cikk megtekintés lekérése (({1} tálca elfogadva).</value>
+  </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Darab betöltése.</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Cikk/kód</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Darab</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Betöltött darab</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>Nincs darab</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Tevékenység</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Munkaállomás értesítések</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Munkaállomási redőny zárása</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>Redőny zárási pozíciója</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Készülék értesítések </value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Irány</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Tálca tiltása</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Mozgási hiba</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Feladat időtartama</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Tengely alaphelyzet szükséges</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Redőny nyitva pozíció </value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Feltételek helyreállítása</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Lépés helyreállítása</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Leállítás oka</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Lépés időtartama</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Rekesz kiindulás ID </value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Hátra mozgás szükséges</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Aktiválás</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Szünet</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Folytatás</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Közbenső</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>Elhelyezkedés</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>Alaphelyzet</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Kombinált mozgások</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>Behatolásellenőrzés</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Hátra</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>Nincs ok</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Végrehajtási állapot változása</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Hibaállapot változása</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Szolgáltatás újraindítása</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>IP-cím sikeresen elérve</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>IP-cím NEM elérhető</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>UWF szűrő NEM aktív</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>UWF szűrő aktív</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Címzett</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Szállítási nap</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Nap</value>
+  </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>Emelő a felső munkaállomáson</value>
+  </data>
+  <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
+    <value>Már van darab '{0}' kóddal.</value>
+  </data>
+  <data name="DraperyAvailable" xml:space="preserve">
+    <value>Darab rendelkezésre áll.</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Argumentum nem érvényes</value>
+  </data>
+</root>

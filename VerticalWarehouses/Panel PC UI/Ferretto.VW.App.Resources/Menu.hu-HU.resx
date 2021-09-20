@@ -117,85 +117,145 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>Az alfanumerikus kód konfigurációja és ellenőrzése</value>
   </data>
-  <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Konfigurációs paraméterek</value>
   </data>
-  <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Teszt</value>
   </data>
-  <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Alfanumerikus kód</value>
   </data>
-  <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Nyíl</value>
   </data>
-  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
   </data>
-  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>Üzenet</value>
   </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Csoport - próbaüzenet -</value>
   </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>Pozíció</value>
   </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Szöveg</value>
   </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>A vonalkódleolvasó konfigurációja és ellenőrzése</value>
   </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Vonalkódleolvasó</value>
   </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>A kártyaleolvasó konfigurációja és ellenőrzése</value>
   </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Kártyaleolvasó</value>
   </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>IP-cím</value>
   </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>A címkenyomtató konfigurációja és ellenőrzése</value>
   </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Címkenyomtató</value>
   </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>A konfiguráció kezelése és a lézer működési tesztje</value>
   </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Lézermutató</value>
   </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>X-tengely eltolása</value>
   </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>Y-tengely eltolása</value>
   </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Z-tengely eltolása (alacsony munkaállomás)</value>
   </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Z-tengely eltolása (magas munkaállomás)</value>
   </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Tartozékok menü</value>
   </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Kikapcsolva</value>
   </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Hozzáférés</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value></value>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Ajtó</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Méret</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>A tokenleolvasó konfigurációja és ellenőrzése</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Tokenleolvasó</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>A darabszámláló mérleg konfigurációja és ellenőrzése</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Darabszámláló mérleg</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Munkaállomás</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Munkaállomás menü</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Rekeszek menü</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>Felülvizsgálat megerősítése</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Emelő menü</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Telepítés</value>
+  </data>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Telepítési állapot</value>
+  </data>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Tartozékok</value>
+  </data>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Rekeszek</value>
+  </data>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Emelő</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Tálcák</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Mozgások</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Beállítások</value>
+  </data>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Beállítások menü</value>
+  </data>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Tálcák menü</value>
   </data>
 </root>

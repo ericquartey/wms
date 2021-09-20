@@ -117,85 +117,94 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BayLightActivation" xml:space="preserve">
-    <value>Turn On the Bay Light</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Nincs automatikus</value>
   </data>
-  <data name="CarterSensorLeft" xml:space="preserve">
-    <value>Protection Door Sensor Left</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>A munkaállomás kalibrálása nincs elvégezve.</value>
   </data>
-  <data name="CarterSensorRight" xml:space="preserve">
-    <value>Protection Door Sensor Right</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>A karusszel kalibrálását nem lehet elvégezni. \r\n A munkaállomás lánca nincs nulla pozícióban.</value>
   </data>
-  <data name="EmergencyPB" xml:space="preserve">
-    <value>Emergency Push Button</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Foglalt</value>
   </data>
-  <data name="EnableRunConsole" xml:space="preserve">
-    <value>Enable Run Console</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Szabad</value>
   </data>
-  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
-    <value>Elevator Chain Motor selected (feedback)</value>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Alaphelyzet nincs elvégezve.</value>
   </data>
-  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
-    <value>Elevator Motor selected (feedback)</value>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>A tálca jelenlétérzékelőinek inkonzisztenciája a munkaállomáson.</value>
   </data>
-  <data name="InnerLightCurtain" xml:space="preserve">
-    <value>Inner Safety Light Curtain</value>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>A terhelési állapot és a szenzorok inkonzisztenciája.</value>
   </data>
-  <data name="HeightReadingActivation" xml:space="preserve">
-    <value>Height reading function activation (measurement light curtain)</value>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Ellentmondás a retesz nulla szenzora és a tálca jelenlét között.</value>
   </data>
-  <data name="InverterFaultSignal" xml:space="preserve">
-    <value>Inverter Fault Signal</value>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Tálca jelenléte az emelőn.</value>
   </data>
-  <data name="IODeviceByID" xml:space="preserve">
-    <value>IO Device  {0:00}</value>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>A tálca készen áll a műveletre.</value>
   </data>
-  <data name="IODeviceName" xml:space="preserve">
-    <value>IO Device Name</value>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Tálca lekérése {0} megfelelően befejeződött.</value>
   </data>
-  <data name="LightCurtain" xml:space="preserve">
-    <value>Safety Light Curtain</value>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Az emelő fedélzetén lévő tálca magassága hibás</value>
   </data>
-  <data name="LightCurtainCalibration" xml:space="preserve">
-    <value>Light Curtain Calibration</value>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>A gép nem kézi üzemmódban van...</value>
   </data>
-  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
-    <value>Lower Bay Box Sensor Presence</value>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Gép kikapcsolva</value>
   </data>
-  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Machine side Elevator Chain box presence</value>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Feladatok hibaállapotban...</value>
   </data>
-  <data name="MotorElevatorChainSelection" xml:space="preserve">
-    <value>Select Motor Elevator Chain</value>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Feladatok jöttek a Wms-ről, de a Wms nem aktív</value>
   </data>
-  <data name="MotorElevatorSelection" xml:space="preserve">
-    <value>Select Motor Elevator</value>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Munkaállomás láncának mozgatása folyamatban...</value>
   </data>
-  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
-    <value>Operator side Elevator Chain box presence</value>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Emelő mozgatása folyamatban...</value>
   </data>
-  <data name="ResetSafetyFunction" xml:space="preserve">
-    <value>Reset Safety Function</value>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Vízszintes mozgatás folyamatban...</value>
   </data>
-  <data name="RobotEndPicking" xml:space="preserve">
-    <value>Robot option - Push Button Robot picking completed</value>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Mozgatás folyamatban... {0}</value>
   </data>
-  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
-    <value>RobotOption - Warhouse Mission Completed</value>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Mozgatás folyamatban... (Feladat: {0}, Tálca: {1}, Állapot: {2}, Mozgatás: innen: {3} {4}, ide: {5} {6})</value>
   </data>
-  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
-    <value>RobotOption - Warhouse Ready/Fault</value>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Tálca mozgatása folyamatban...</value>
   </data>
-  <data name="SafetyStatus" xml:space="preserve">
-    <value>Safety Status</value>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Redőny mozgatása folyamatban...</value>
   </data>
-  <data name="TrolleyHook" xml:space="preserve">
-    <value>Trolley option - trolley hook</value>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Függőleges mozgatás folyamatban...</value>
   </data>
-  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
-    <value>Upper Bay Box Sensor Presence</value>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Nincs tálca a munkaállomáson.</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value></value>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>A retesz nulla szenzora vagy a tálca jelenlét hiányzik.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Pozíció {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Redőny nyitva vagy ismeretlen pozícióban.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Teszt folyamatban...</value>
   </data>
 </root>
