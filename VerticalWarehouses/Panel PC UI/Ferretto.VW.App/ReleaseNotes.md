@@ -29,7 +29,7 @@
 - Aggiunta lingua ungherese
 
 ## Bug Risolti
-- Telemetria: il database locale è in formato SqlLite
+- Telemetria: il database locale è ora in formato SqlLite
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***

@@ -47,7 +47,7 @@ namespace Ferretto.VW.TelemetryService
                 //var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
                 //if (machine is null)
                 //{
-                this.logger.LogDebug("No machine is defined in the database. Requesting identification to connected client.");
+                this.logger.LogDebug("Requesting identification to connected client.");
                 await this.Clients.Caller.RequestMachine();
                 //}
             }

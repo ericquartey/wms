@@ -214,7 +214,11 @@ namespace Ferretto.VW.App.Services
                     return;
                 }
 
-                this.logger.Debug($"OnMissionChangeAsync:Id {e.MachineMission.Id}; Compartment {e.WmsOperation.CompartmentId}; MissionType {e.MachineMission.MissionType}; Status {e.MachineMission.Status}");
+                this.logger.Debug($"OnMissionChangeAsync:Id {e.MachineMission.Id}; " +
+                    $"Operation {e.WmsOperation.Id}; " +
+                    $"Compartment {e.WmsOperation.CompartmentId}; " +
+                    $"MissionType {e.MachineMission.MissionType}; " +
+                    $"Status {e.MachineMission.Status}");
 
                 if (e.MachineMission.MissionType is MissionType.WMS)
                 {
@@ -252,9 +256,27 @@ namespace Ferretto.VW.App.Services
                             itemHeight = e.WmsOperation.ItemHeight.Value;
                         }
 
-                        var point = this.laserPointerDriver.CalculateLaserPoint(e.WmsMission.LoadingUnit.Width, e.WmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
+                        var point = this.laserPointerDriver.CalculateLaserPoint(
+                            e.WmsMission.LoadingUnit.Width,
+                            e.WmsMission.LoadingUnit.Depth,
+                            compartmentSelected.Width.Value,
+                            compartmentSelected.Depth.Value,
+                            compartmentSelected.XPosition.Value,
+                            compartmentSelected.YPosition.Value,
+                            itemHeight,
+                            bayPosition.IsUpper,
+                            bay.Side);
 
-                        this.logger.Info($"Move and switch on laser pointer, operation {e.WmsOperation.Id}, SelectedPosition {compartmentSelected.XPosition.Value}");
+                        this.logger.Info($"Move and switch on laser pointer; " +
+                            $"luW {e.WmsMission.LoadingUnit.Width}; " +
+                            $"luD {e.WmsMission.LoadingUnit.Depth}; " +
+                            $"cw {compartmentSelected.Width.Value}; " +
+                            $"cd {compartmentSelected.Depth.Value}; " +
+                            $"cx {compartmentSelected.XPosition.Value}; " +
+                            $"cy {compartmentSelected.YPosition.Value}; " +
+                            $"z {itemHeight}; " +
+                            $"up {bayPosition.IsUpper}; " +
+                            $"side {bay.Side}");
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                     }
                 }
@@ -302,7 +324,7 @@ namespace Ferretto.VW.App.Services
 
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
-                        this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
+                        this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}, up {true}, side {bay.Side}");
                         break;
 
                     case 2: // switch on in lower bay position
@@ -320,7 +342,7 @@ namespace Ferretto.VW.App.Services
                         }
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
-                        this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
+                        this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}, up {false}, side {bay.Side}");
                         break;
                 }
             }

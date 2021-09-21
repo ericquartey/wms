@@ -269,6 +269,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                              "hr-HR",
                              "Hrvatski");
 
+                case "hu-HU":
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HU.png",
+                            "hu-HU",
+                            "Magyar");
+
                 case "cs-CZ":
                     return new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/CZ.png",

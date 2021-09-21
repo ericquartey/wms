@@ -109,6 +109,27 @@
                                     </icon:PackIconFontAwesome.Style>
                                 </icon:PackIconFontAwesome>
 
+                                <icon:PackIconModern Grid.ColumnSpan="2"
+                                                            Width="32"
+                                                            Height="32"
+                                                            Margin="10"
+                                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                            VerticalAlignment="Center"
+                                                            Foreground="{DynamicResource Foreground}"
+                                                            Kind="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alert'}"
+                                                            Tag="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <icon:PackIconModern.Style>
+                                        <Style TargetType="{x:Type icon:PackIconModern}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Tag" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </icon:PackIconModern.Style>
+                                </icon:PackIconModern>
+
                                 <controls:PpcIcon x:Name="PpcButton_Icon"
                                                   Height="24"
                                                   Margin="15,5"
@@ -402,6 +423,27 @@
                                         </Style>
                                     </icon:PackIconFontAwesome.Style>
                                 </icon:PackIconFontAwesome>
+                                
+                                <icon:PackIconModern Grid.Column="1"
+                                                          Width="24"
+                                                          Height="24"
+                                                          Margin="5"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"
+                                                          Foreground="{DynamicResource Foreground}"
+                                                          Kind="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alert'}"
+                                                          Tag="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <icon:PackIconModern.Style>
+                                        <Style TargetType="{x:Type icon:PackIconModern}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Tag" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </icon:PackIconModern.Style>
+                                </icon:PackIconModern>
                             </Grid>
                         </Border>
                     </Grid>
