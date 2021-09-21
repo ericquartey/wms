@@ -127,19 +127,19 @@
     <value>{0} munkaállomás</value>
   </data>
   <data name="BayCarousel" xml:space="preserve">
-    <value>{0} munkaállomási karusszel</value>
+    <value>{0} állomási karusszel</value>
   </data>
   <data name="BayCarousel_Description" xml:space="preserve">
     <value>Karusszel paraméterek</value>
   </data>
   <data name="BayInverter" xml:space="preserve">
-    <value>{0} munkaállomási inverter</value>
+    <value>{0} állomási inverter</value>
   </data>
   <data name="BayIoDevice" xml:space="preserve">
-    <value>{0} munkaállomási IoDevice</value>
+    <value>{0} állomási IoDevice</value>
   </data>
   <data name="BayLaser" xml:space="preserve">
-    <value>{0} munkaállomási lézer</value>
+    <value>{0} állomási lézer</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
     <value>Munkaállomás száma</value>

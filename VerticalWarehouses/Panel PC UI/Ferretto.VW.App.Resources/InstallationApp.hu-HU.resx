@@ -838,7 +838,7 @@
     <value>Rekesz {0}</value>
   </data>
   <data name="InBayWithNumber" xml:space="preserve">
-    <value>A munkaállomáson {0}</value>
+    <value>A állomáson {0}</value>
   </data>
   <data name="Test" xml:space="preserve">
     <value>Teszt</value>
@@ -2059,7 +2059,7 @@
     <value>Súly</value>
   </data>
   <data name="LoadingUnitStatus_InBay" xml:space="preserve">
-    <value>A munkaállomáson</value>
+    <value>A állomáson</value>
   </data>
   <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
     <value>Az emelőn</value>

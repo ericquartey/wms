@@ -175,7 +175,7 @@
     <value>Téma cseréje</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Munkaállomás</value>
+    <value>Állom.</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>{0:0} nappal ezelőtt</value>

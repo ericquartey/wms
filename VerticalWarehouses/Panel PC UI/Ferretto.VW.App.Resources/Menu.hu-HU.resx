@@ -138,9 +138,6 @@
   <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
     <value>Üzenet</value>
   </data>
-  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
-    <value>Ferretto Csoport - próbaüzenet -</value>
-  </data>
   <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
     <value>Pozíció</value>
   </data>
