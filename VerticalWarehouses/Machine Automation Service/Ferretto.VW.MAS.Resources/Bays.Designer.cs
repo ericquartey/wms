@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadUnit in bay sensor missing.
+        /// </summary>
+        public static string LoadUnitInBaySensorMissing {
+            get {
+                return ResourceManager.GetString("LoadUnitInBaySensorMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay chain is not in zero position..
         /// </summary>
         public static string TheBayChainIsNotInZeroPosition {
@@ -120,6 +129,15 @@ namespace Ferretto.VW.MAS.Resources {
         public static string TheBayLoadingMaxHeightNotValid {
             get {
                 return ResourceManager.GetString("TheBayLoadingMaxHeightNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay position is blocked.
+        /// </summary>
+        public static string TheBayPositionIsBlocked {
+            get {
+                return ResourceManager.GetString("TheBayPositionIsBlocked", resourceCulture);
             }
         }
         

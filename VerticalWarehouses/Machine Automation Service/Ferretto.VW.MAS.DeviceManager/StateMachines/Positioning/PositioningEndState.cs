@@ -415,89 +415,98 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
+                    try
                     {
-                        var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                        if (this.machineData.MessageData.TargetPosition > 0
-                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
-                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal))
+                        if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
                         {
-                            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
-                            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
-                            if (origin != null
-                                && destination != null
-                                && origin.LoadingUnit != null)
+                            var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                            if (this.machineData.MessageData.TargetPosition > 0
+                                && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
+                                && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal))
                             {
-                                baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id, 0);
-                                baysDataProvider.SetLoadingUnit(origin.Id, null);
-                                isChanged = true;
-                            }
-                        }
-                    }
-                    else if (bayPosition != null)
-                    {
-                        var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
-                        var isDrawerInBay = bayPosition.IsUpper
-                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
-                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal);
-
-                        if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
-                        // possible pickup from bay
-                        {
-                            if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
-                            {
-                                elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
-                                baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {bayPosition.LoadingUnit.Id}; in elevator from bay position {bayPosition.Id}");
-                                isChanged = true;
-                            }
-                        }
-                        else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
-                        // possible deposit to bay
-                        {
-                            if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
-                            {
-                                elevatorDataProvider.SetLoadingUnit(null);
-                                baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
-                                //loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
-                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to bay position {bayPosition.Id}");
-                                isChanged = true;
-                            }
-                        }
-                    }
-                    else if (cell != null)
-                    {
-                        if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
-                        // possible pickup from cell
-                        {
-                            if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
-                            {
-                                elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
-                                cellsProvider.SetLoadingUnit(cell.Id, null);
-                                this.Logger.LogDebug($"SetLoadingUnit: Load Unit {cell.LoadingUnit.Id}; in elevator from Cell id {cell.Id}");
-                                isChanged = true;
-                            }
-                        }
-                        else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
-                        // possible deposit to cell
-                        {
-                            if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
-                            {
-                                if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                                var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+                                var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                                if (origin != null
+                                    && destination != null
+                                    && origin.LoadingUnit != null)
                                 {
-                                    elevatorDataProvider.SetLoadingUnit(null);
-                                    cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
-                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to Cell id {cell.Id}");
+                                    baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id, 0);
+                                    baysDataProvider.SetLoadingUnit(origin.Id, null);
                                     isChanged = true;
                                 }
-                                else
+                            }
+                        }
+                        else if (bayPosition != null)
+                        {
+                            var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
+                            var isDrawerInBay = bayPosition.IsUpper
+                                 ? machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
+                                 : machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal);
+
+                            if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
+                            // possible pickup from bay
+                            {
+                                if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
                                 {
-                                    this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+                                    elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+                                    baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {bayPosition.LoadingUnit.Id}; in elevator from bay position {bayPosition.Id}");
+                                    isChanged = true;
+                                }
+                            }
+                            else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
+                            // possible deposit to bay
+                            {
+                                if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
+                                {
+                                    elevatorDataProvider.SetLoadingUnit(null);
+                                    baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
+                                    //loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
+                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to bay position {bayPosition.Id}");
+                                    isChanged = true;
                                 }
                             }
                         }
+                        else if (cell != null)
+                        {
+                            if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
+                            // possible pickup from cell
+                            {
+                                if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
+                                {
+                                    elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
+                                    cellsProvider.SetLoadingUnit(cell.Id, null);
+                                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {cell.LoadingUnit.Id}; in elevator from Cell id {cell.Id}");
+                                    isChanged = true;
+                                }
+                            }
+                            else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
+                            // possible deposit to cell
+                            {
+                                if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
+                                {
+                                    if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                                    {
+                                        elevatorDataProvider.SetLoadingUnit(null);
+                                        cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+                                        this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to Cell id {cell.Id}");
+                                        isChanged = true;
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+                                    }
+                                }
+                            }
+                        }
+                        transaction.Commit();
                     }
-                    transaction.Commit();
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        isChanged = false;
+                        this.Logger.LogError(ex.Message);
+                    }
                 }
                 if (isChanged)
                 {

@@ -811,6 +811,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    selectedBayPosition != null &&
                    selectedBayPosition.LoadingUnit == null &&
                    this.MachineStatus.EmbarkedLoadingUnit != null &&
+                   !this.MachineService.Bay.Positions.First(p => p.IsUpper == this.MachineStatus.BayPositionUpper).IsBlocked &&
                    conditionOnExternalBay;
 
             return res;

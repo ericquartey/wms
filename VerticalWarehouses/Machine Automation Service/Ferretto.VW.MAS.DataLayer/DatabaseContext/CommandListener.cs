@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<DataLayerContext> logger;
 
+        private readonly IMachineVolatileDataProvider machineVolatile;
+
         private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
         private bool writingOnStandby;
@@ -27,10 +29,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public CommandListener(
             IDbContextRedundancyService<TDbContext> redundancyService,
-            ILogger<DataLayerContext> logger)
+            ILogger<DataLayerContext> logger,
+            IMachineVolatileDataProvider machineVolatile)
         {
             this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
         }
 
         #endregion
@@ -40,26 +44,26 @@ namespace Ferretto.VW.MAS.DataLayer
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable CA1801 // Remove unused parameter
 
-        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
-        public void OnCommandError(
-                DbCommand command,
-                DbCommandMethod executeMethod,
-                Guid commandId,
-                Guid connectionId,
-                Exception exception,
-                bool async,
-                DateTimeOffset startTime,
-                TimeSpan duration)
-        {
-            lock (this.redundancyService)
-            {
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.logger.LogError($"Database command error.");
-                    this.OnCommandOrConnectionError(exception);
-                }
-            }
-        }
+        //[DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
+        //public void OnCommandError(
+        //        DbCommand command,
+        //        DbCommandMethod executeMethod,
+        //        Guid commandId,
+        //        Guid connectionId,
+        //        Exception exception,
+        //        bool async,
+        //        DateTimeOffset startTime,
+        //        TimeSpan duration)
+        //{
+        //    lock (this.redundancyService)
+        //    {
+        //        if (this.redundancyService.IsEnabled)
+        //        {
+        //            this.logger.LogError($"Database command error.");
+        //            this.OnCommandOrConnectionError(exception);
+        //        }
+        //    }
+        //}
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
         public void OnCommandExecuting(
@@ -111,11 +115,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         try
                         {
                             dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
+                            //this.machineVolatile.IsStandbyDbOk = true;
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            this.logger.LogWarning("Inhibiting database standby channel.");
-                            this.redundancyService.InhibitStandbyDb();
+                            //this.logger.LogWarning("Inhibiting database standby channel.");
+                            //this.redundancyService.InhibitStandbyDb();
+                            this.logger.LogError($"Error writing to standby database: {ex.Message}: {command.CommandText}");
+                            this.writingOnStandby = false;
+                            this.machineVolatile.IsStandbyDbOk = false;
+
+                            // TODO - please enable the following instruction to make standby database errors blocking
+                            //throw new InvalidOperationException($"Error writing to standby database: {ex.Message}");
                         }
 
                         this.writingOnStandby = false;
@@ -124,26 +135,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Connection.ConnectionError")]
-        public void OnConnectionError(
-               DbCommand command,
-               DbCommandMethod executeMethod,
-               Guid commandId,
-               Guid connectionId,
-               Exception exception,
-               bool async,
-               DateTimeOffset startTime,
-               TimeSpan duration)
-        {
-            lock (this.redundancyService)
-            {
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.logger.LogError($"Database connection error.");
-                    this.OnCommandOrConnectionError(null);
-                }
-            }
-        }
+        //[DiagnosticName("Microsoft.EntityFrameworkCore.Database.Connection.ConnectionError")]
+        //public void OnConnectionError(
+        //       DbCommand command,
+        //       DbCommandMethod executeMethod,
+        //       Guid commandId,
+        //       Guid connectionId,
+        //       Exception exception,
+        //       bool async,
+        //       DateTimeOffset startTime,
+        //       TimeSpan duration)
+        //{
+        //    lock (this.redundancyService)
+        //    {
+        //        if (this.redundancyService.IsEnabled)
+        //        {
+        //            this.logger.LogError($"Database connection error.");
+        //            this.OnCommandOrConnectionError(null);
+        //        }
+        //    }
+        //}
 
 #pragma warning restore IDE0060 // Remove unused parameter
 #pragma warning restore CA1801 // Remove unused parameter
@@ -169,17 +180,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void OnCommandOrConnectionError(Exception exception)
         {
-            lock (this.redundancyService)
-            {
-                var dbContextOptions = this.writingOnStandby
-                ? this.redundancyService.StandbyDbContextOptions
-                : this.redundancyService.ActiveDbContextOptions;
+            // DO NOTHING!! please never swap a database by software
 
-                if (this.redundancyService.IsEnabled)
-                {
-                    this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
-                }
-            }
+            //lock (this.redundancyService)
+            //{
+            //    var dbContextOptions = this.writingOnStandby
+            //    ? this.redundancyService.StandbyDbContextOptions
+            //    : this.redundancyService.ActiveDbContextOptions;
+
+            //    if (this.redundancyService.IsEnabled)
+            //    {
+            //        this.redundancyService.HandleDbContextFault(dbContextOptions, exception);
+            //    }
+            //}
         }
 
         #endregion

@@ -75,8 +75,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var redundancyService = app.ApplicationServices.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
             var logger = app.ApplicationServices.GetRequiredService<ILogger<DataLayerContext>>();
+            var machineVolatile = app.ApplicationServices.GetRequiredService<IMachineVolatileDataProvider>();
 
-            listener.SubscribeWithAdapter(new CommandListener<DataLayerContext>(redundancyService, logger));
+            listener.SubscribeWithAdapter(new CommandListener<DataLayerContext>(redundancyService, logger, machineVolatile));
 
             return app;
         }

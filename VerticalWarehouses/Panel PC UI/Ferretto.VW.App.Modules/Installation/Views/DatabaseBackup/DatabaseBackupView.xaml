@@ -29,6 +29,7 @@
             <ColumnDefinition Width="100" />
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <TextBlock x:Name="Title"
@@ -61,9 +62,15 @@
                               IsChecked="True"
                               IsEnabled="False"
                               LabelText="{res:Loc InstallationApp.DatabaseBackupModeInternal}" />
+        
+        <controls:PpcSensorControl Grid.Row="6"
+                                   Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   SensorState="{Binding IsStandbyDbOk}"
+                                   Text="Status"/>
 
         <controls:PpcButton Grid.Row="7"
-                            Grid.ColumnSpan="3"
+                            Grid.ColumnSpan="4"
                             Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"

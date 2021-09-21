@@ -220,7 +220,7 @@
     <value>Invalid sensors</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>Inconsistenza stato sensori elevatore</value>
+    <value>Invalid elevator presence sensors.</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
     <value>Inconsistenza stato sensori</value>
@@ -440,5 +440,14 @@
   </data>
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>The tare of the Loading Unit is 0</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Vertical positioning error</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Vertical positioning error</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Height too low</value>
   </data>
 </root>

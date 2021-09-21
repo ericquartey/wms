@@ -588,4 +588,13 @@
   <data name="Machine_IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Request confirm for last operation on LU</value>
   </data>
+  <data name="ElevatorAxis_VerticalDepositCompensationDelay" xml:space="preserve">
+    <value>Vertical Deposit Compensation Delay</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupCompensationDelay" xml:space="preserve">
+    <value>Vertical Pickup Compensation Delay</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barcode length</value>
+  </data>
 </root>

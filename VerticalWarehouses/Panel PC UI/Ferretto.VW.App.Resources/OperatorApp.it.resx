@@ -1102,7 +1102,7 @@
     <value>Totale peso macchina</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Totale missioni</value>
+    <value>Cicli</value>
   </data>
   <data name="TotalUnits" xml:space="preserve">
     <value>Totale cassetti</value>
@@ -1416,7 +1416,7 @@
     <comment>Block Level</comment>
   </data>
   <data name="TotalMissionsHeader" xml:space="preserve">
-    <value>Missioni totali</value>
+    <value>Cicli</value>
   </data>
   <data name="CloseLine" xml:space="preserve">
     <value>Salda riga</value>
@@ -1864,6 +1864,39 @@
   </data>
   <data name="InvalidArgument" xml:space="preserve">
     <value>Argomento non valido</value>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Inserito</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Sopra</value>
+  </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--alta</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--bassa</value>
+  </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Il contenitore esterno è acquisito. Codice a barre: </value>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>Articolo è acquisito. Codice a barre: </value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Operazione non valida. Articolo e contenitore esterno devono essere acquisiti.</value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Manca il sensore di presenza del cassetto in baia</value>
+  </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Pezza richiesta completamente</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Giorni</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Errore operazione segnalazione difetto.</value>
   </data>
   <data name="ItemLoaded" xml:space="preserve">
     <value>Articolo caricato</value>

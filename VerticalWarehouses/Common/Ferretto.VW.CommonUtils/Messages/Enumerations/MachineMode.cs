@@ -42,6 +42,8 @@
 
         FirstTest3,
 
+        Shutdown,
+
         SwitchingToAutomatic,
 
         SwitchingToManual,
@@ -73,5 +75,7 @@
         SwitchingToFirstTest2,
 
         SwitchingToFirstTest3,
+
+        SwitchingToShutdown,
     }
 }

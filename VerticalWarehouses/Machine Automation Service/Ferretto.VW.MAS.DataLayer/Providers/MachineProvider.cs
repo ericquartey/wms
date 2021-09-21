@@ -313,6 +313,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetToteBarcodeLength()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().ToteBarcodeLength;
+            }
+        }
+
         public void Import(Machine machine, DataLayerContext context)
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
@@ -807,7 +815,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         machineStat.TotalWeightBack += l.GrossWeight;
                     }
-                    l.IsIntoMachine = true;
+                    l.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
                 }
             }
             );

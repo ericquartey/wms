@@ -283,23 +283,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         foreach (var parameter in this.inverterParameters.Parameters)
                         {
+                            var stringValue = parameter.StringValue;
                             if (angError.Any(s => s == parameter.Code))
                             {
                                 if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 0 &&
                                     !parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
                                 else if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 1 &&
                                     parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
 
-                                parameter.StringValue += " " + parameter.Um;
-                                this.error.Add(parameter);
+                                stringValue += " " + parameter.Um;
+                                if (!this.error.Any(e => e.Code == parameter.Code && e.DataSet == parameter.DataSet))
+                                {
+                                    var par = new InverterParameter()
+                                    {
+                                        Id = parameter.Id,
+                                        Code = parameter.Code,
+                                        DataSet = parameter.DataSet,
+                                        DecimalCount = parameter.DecimalCount,
+                                        Description = parameter.Description,
+                                        Error = parameter.Error,
+                                        IsReadOnly = parameter.IsReadOnly,
+                                        ReadCode = parameter.ReadCode,
+                                        StringValue = stringValue,
+                                        Type = parameter.Type,
+                                        Um = parameter.Um,
+                                        WriteCode = parameter.WriteCode
+                                    };
+                                    this.error.Add(par);
+                                }
 
                                 if (this.errorParameters.Any(s => s.Code == parameter.Code))
                                 {
@@ -369,17 +388,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                     parameter.StringValue.Length - parameter.DecimalCount > 0 &&
                                     !parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
                                 else if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 1 &&
                                     parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
 
-                                parameter.StringValue += " " + parameter.Um;
-                                this.actualValueParameters.Add(parameter);
+                                stringValue += " " + parameter.Um;
+                                if (this.actualValueParameters.Any(s => s.Code == parameter.Code))
+                                {
+                                    this.actualValueParameters.Remove(parameter);
+                                }
+                                var par = new InverterParameter()
+                                {
+                                    Id = parameter.Id,
+                                    Code = parameter.Code,
+                                    DataSet = parameter.DataSet,
+                                    DecimalCount = parameter.DecimalCount,
+                                    Description = parameter.Description,
+                                    Error = parameter.Error,
+                                    IsReadOnly = parameter.IsReadOnly,
+                                    ReadCode = parameter.ReadCode,
+                                    StringValue = stringValue,
+                                    Type = parameter.Type,
+                                    Um = parameter.Um,
+                                    WriteCode = parameter.WriteCode
+                                };
+                                this.actualValueParameters.Add(par);
                             }
                         }
                         break;
@@ -388,23 +426,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         foreach (var parameter in this.inverterParameters.Parameters)
                         {
+                            var stringValue = parameter.StringValue;
                             if (aglError.Any(s => s == parameter.Code))
                             {
                                 if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 0 &&
                                     !parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
                                 else if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 1 &&
                                     parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
 
-                                parameter.StringValue += " " + parameter.Um;
-                                this.error.Add(parameter);
+                                stringValue += " " + parameter.Um;
+                                if (!this.error.Any(e => e.Code == parameter.Code && e.DataSet == parameter.DataSet))
+                                {
+                                    var par = new InverterParameter()
+                                    {
+                                        Id = parameter.Id,
+                                        Code = parameter.Code,
+                                        DataSet = parameter.DataSet,
+                                        DecimalCount = parameter.DecimalCount,
+                                        Description = parameter.Description,
+                                        Error = parameter.Error,
+                                        IsReadOnly = parameter.IsReadOnly,
+                                        ReadCode = parameter.ReadCode,
+                                        StringValue = stringValue,
+                                        Type = parameter.Type,
+                                        Um = parameter.Um,
+                                        WriteCode = parameter.WriteCode
+                                    };
+                                    this.error.Add(par);
+                                }
 
                                 if (this.errorParameters.Any(s => s.Code == parameter.Code))
                                 {
@@ -484,7 +541,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                 }
 
                                 parameter.StringValue += " " + parameter.Um;
-                                this.actualValueParameters.Add(parameter);
+                                if (this.actualValueParameters.Any(s => s.Code == parameter.Code))
+                                {
+                                    this.actualValueParameters.Remove(parameter);
+                                }
+                                var par = new InverterParameter()
+                                {
+                                    Id = parameter.Id,
+                                    Code = parameter.Code,
+                                    DataSet = parameter.DataSet,
+                                    DecimalCount = parameter.DecimalCount,
+                                    Description = parameter.Description,
+                                    Error = parameter.Error,
+                                    IsReadOnly = parameter.IsReadOnly,
+                                    ReadCode = parameter.ReadCode,
+                                    StringValue = stringValue,
+                                    Type = parameter.Type,
+                                    Um = parameter.Um,
+                                    WriteCode = parameter.WriteCode
+                                };
+                                this.actualValueParameters.Add(par);
                             }
                         }
                         break;
@@ -493,23 +569,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         foreach (var parameter in this.inverterParameters.Parameters)
                         {
+                            var stringValue = parameter.StringValue;
                             if (acuError.Any(s => s == parameter.Code))
                             {
                                 if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 0 &&
                                     !parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
                                 else if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 1 &&
                                     parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
 
-                                parameter.StringValue += " " + parameter.Um;
-                                this.error.Add(parameter);
+                                stringValue += " " + parameter.Um;
+                                if (!this.error.Any(e => e.Code == parameter.Code && e.DataSet == parameter.DataSet))
+                                {
+                                    var par = new InverterParameter()
+                                    {
+                                        Id = parameter.Id,
+                                        Code = parameter.Code,
+                                        DataSet = parameter.DataSet,
+                                        DecimalCount = parameter.DecimalCount,
+                                        Description = parameter.Description,
+                                        Error = parameter.Error,
+                                        IsReadOnly = parameter.IsReadOnly,
+                                        ReadCode = parameter.ReadCode,
+                                        StringValue = stringValue,
+                                        Type = parameter.Type,
+                                        Um = parameter.Um,
+                                        WriteCode = parameter.WriteCode
+                                    };
+                                    this.error.Add(par);
+                                }
 
                                 if (this.errorParameters.Any(s => s.Code == parameter.Code))
                                 {
@@ -579,17 +674,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                     parameter.StringValue.Length - parameter.DecimalCount > 0 &&
                                     !parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
                                 else if (parameter.DecimalCount > 0 &&
                                     parameter.StringValue.Length - parameter.DecimalCount > 1 &&
                                     parameter.StringValue.Contains("-"))
                                 {
-                                    parameter.StringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
+                                    stringValue = parameter.StringValue.Insert(parameter.StringValue.Length - parameter.DecimalCount, ",");
                                 }
 
-                                parameter.StringValue += " " + parameter.Um;
-                                this.actualValueParameters.Add(parameter);
+                                stringValue += " " + parameter.Um;
+                                if (this.ActualValueParameters.Any(s => s.Code == parameter.Code))
+                                {
+                                    this.actualValueParameters.Remove(parameter);
+                                }
+                                var par = new InverterParameter()
+                                {
+                                    Id = parameter.Id,
+                                    Code = parameter.Code,
+                                    DataSet = parameter.DataSet,
+                                    DecimalCount = parameter.DecimalCount,
+                                    Description = parameter.Description,
+                                    Error = parameter.Error,
+                                    IsReadOnly = parameter.IsReadOnly,
+                                    ReadCode = parameter.ReadCode,
+                                    StringValue = stringValue,
+                                    Type = parameter.Type,
+                                    Um = parameter.Um,
+                                    WriteCode = parameter.WriteCode
+                                };
+                                this.actualValueParameters.Add(par);
                             }
                         }
                         break;
@@ -614,13 +728,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnInverterReadingMessageReceived(NotificationMessageUI<InverterReadingMessageData> message)
+        private async Task OnInverterReadingMessageReceivedAsync(NotificationMessageUI<InverterReadingMessageData> message)
         {
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     this.IsBusy = false;
                     this.ShowNotification(Localized.Get("InstallationApp.InverterReadingSuccessfullyEnded"), Services.Models.NotificationSeverity.Success);
+                    await this.RefreshAsync();
                     break;
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
@@ -655,8 +770,52 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsBusy = true;
 
-                var parameters = this.error;
-                parameters.AddRange(this.actualValueParameters);
+                var parameters = new List<InverterParameter>();
+                foreach (var parameter in this.error)
+                {
+                    var par = new InverterParameter()
+                    {
+                        Id = parameter.Id,
+                        Code = parameter.Code,
+                        DataSet = parameter.DataSet,
+                        DecimalCount = parameter.DecimalCount,
+                        Description = parameter.Description,
+                        Error = parameter.Error,
+                        IsReadOnly = parameter.IsReadOnly,
+                        ReadCode = parameter.ReadCode,
+                        Type = parameter.Type,
+                        Um = parameter.Um,
+                        WriteCode = parameter.WriteCode
+                    };
+                    var oldPar = this.inverterParameters.Parameters.FirstOrDefault(p => p.Code == parameter.Code && p.DataSet == parameter.DataSet);
+                    par.StringValue = oldPar.Payload.ToString();
+                    parameters.Add(par);
+                }
+
+                //parameters.AddRange(this.actualValueParameters);
+                foreach (var parameter in this.actualValueParameters)
+                {
+                    if (!parameters.Any(e => e.Code == parameter.Code && e.DataSet == parameter.DataSet))
+                    {
+                        var par = new InverterParameter()
+                        {
+                            Id = parameter.Id,
+                            Code = parameter.Code,
+                            DataSet = parameter.DataSet,
+                            DecimalCount = parameter.DecimalCount,
+                            Description = parameter.Description,
+                            Error = parameter.Error,
+                            IsReadOnly = parameter.IsReadOnly,
+                            ReadCode = parameter.ReadCode,
+                            Type = parameter.Type,
+                            Um = parameter.Um,
+                            WriteCode = parameter.WriteCode
+                        };
+                        var oldPar = this.inverterParameters.Parameters.FirstOrDefault(p => p.Code == parameter.Code && p.DataSet == parameter.DataSet);
+                        par.StringValue = oldPar.Payload.ToString();
+                        parameters.Add(par);
+                    }
+                }
 
                 this.inverterParameters.Parameters = parameters;
 
@@ -685,6 +844,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.inverterParameters = inverters.SingleOrDefault(s => s.Index == this.inverterParameters.Index);
                     this.inverterParameters.Parameters = this.inverterParameters.Parameters.OrderBy(s => s.Code).ThenBy(s => s.DataSet);
 
+                    this.errorParameters.Clear();
+                    this.actualValueParameters.Clear();
                     this.LoadData();
                 }
             }
@@ -704,7 +865,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                ?? this.EventAggregator
                    .GetEvent<NotificationEventUI<InverterReadingMessageData>>()
                    .Subscribe(
-                       (m) => this.OnInverterReadingMessageReceived(m),
+                       async (m) => await this.OnInverterReadingMessageReceivedAsync(m),
                        ThreadOption.UIThread,
                        false);
 

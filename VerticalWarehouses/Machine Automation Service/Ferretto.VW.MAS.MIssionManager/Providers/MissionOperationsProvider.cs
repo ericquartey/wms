@@ -83,14 +83,14 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <param name="wmsId">The identifier of the WMS mission to complete.</param>
         /// <param name="quantity">The product quantity that was involved.</param>
         /// <returns>Returns HTTP 200 if the completion request was successfully processed.</returns>
-        public async Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null, double wastedQuantity = 0)
+        public async Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null, double wastedQuantity = 0, string toteBarcode = null)
         {
             try
             {
                 if (this.wmsSettingsProvider.IsEnabled)
                 {
                     //x double wastedQuantity = 0;
-                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, wastedQuantity, printerName, null, barcode);
+                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, wastedQuantity, printerName, null, barcode, toteBarcode);
                 }
                 else
                 {

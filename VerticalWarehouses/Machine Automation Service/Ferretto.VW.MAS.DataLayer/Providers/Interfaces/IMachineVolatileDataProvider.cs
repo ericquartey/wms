@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
+        bool IsStandbyDbOk { get; set; }
+
         Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 
         List<int> LoadUnitsToTest { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -345,6 +346,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         // Check presence in bottom position
                         if (ok
                             && this.machineData.CalibrationType == Calibration.FindSensor
+                            && bay.Positions.Any(p => !p.IsBlocked && !p.IsUpper)
                             && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                             )
                         {

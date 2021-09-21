@@ -395,7 +395,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             return !this.IsMoving &&
                    this.TestUnits.Any() &&
-                   this.RequiredCycles.HasValue;
+                   this.RequiredCycles.HasValue &&
+                   this.RequiredCycles > 0;
         }
 
         private bool CanStop()

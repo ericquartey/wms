@@ -138,9 +138,6 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Επιλέχθηκε ο κινητήρας ανελκυστήρα (ανάδραση)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Ελεύθερο</value>
-  </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Ενεργοποίηση λειτουργίας ανάγνωσης ύψους (φωτοηλεκτρικό φράγμα μέτρησης)</value>
   </data>

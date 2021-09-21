@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Services
                     return;
                 }
 
-                this.logger.Debug($"OnMissionChangeAsync:Id {e.MachineMission.Id} MissionType {e.MachineMission.MissionType} Status {e.MachineMission.Status}");
+                this.logger.Debug($"OnMissionChangeAsync:Id {e.MachineMission.Id}; Compartment {e.WmsOperation.CompartmentId}; MissionType {e.MachineMission.MissionType}; Status {e.MachineMission.Status}");
 
                 if (e.MachineMission.MissionType is MissionType.WMS)
                 {
@@ -254,7 +254,7 @@ namespace Ferretto.VW.App.Services
 
                         var point = this.laserPointerDriver.CalculateLaserPoint(e.WmsMission.LoadingUnit.Width, e.WmsMission.LoadingUnit.Depth, compartmentSelected.Width.Value, compartmentSelected.Depth.Value, compartmentSelected.XPosition.Value, compartmentSelected.YPosition.Value, itemHeight, bayPosition.IsUpper, bay.Side);
 
-                        this.logger.Info($"Move and switch on laser pointer, operation {e.WmsOperation.Id}");
+                        this.logger.Info($"Move and switch on laser pointer, operation {e.WmsOperation.Id}, SelectedPosition {compartmentSelected.XPosition.Value}");
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                     }
                 }
@@ -287,12 +287,37 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case 1: // switch on in upper bay position
+                        if (message.Data is null)
+                        {
+                            throw new ArgumentNullException(nameof(message));
+                        }
+                        if (this.bayManager.Identity is null)
+                        {
+                            throw new InvalidOperationException("bayManager.Identity");
+                        }
+                        if (bay is null)
+                        {
+                            throw new InvalidOperationException("bay");
+                        }
+
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, true, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");
                         break;
 
                     case 2: // switch on in lower bay position
+                        if (message.Data is null)
+                        {
+                            throw new ArgumentNullException(nameof(message));
+                        }
+                        if (this.bayManager.Identity is null)
+                        {
+                            throw new InvalidOperationException("bayManager.Identity");
+                        }
+                        if (bay is null)
+                        {
+                            throw new InvalidOperationException("bay");
+                        }
                         point = this.laserPointerDriver.CalculateLaserPointForSocketLink(message.Data.X, message.Data.Y, message.Data.Z, this.bayManager.Identity, false, bay.Side);
                         await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
                         this.logger.Info($"OnSocketLinkLaserPointerChangeAsync, switch on {message.Data.CommandCode} {point}");

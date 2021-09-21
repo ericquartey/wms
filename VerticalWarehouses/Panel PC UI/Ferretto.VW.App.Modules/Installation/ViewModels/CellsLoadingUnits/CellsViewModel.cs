@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -28,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand saveCommand;
 
-        private Cell selectedCell;
+        private CellPlus selectedCell;
 
         #endregion
 
@@ -47,7 +48,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest).ToList();
 
-        public ObservableCollection<Cell> Cells => IEnumConvert(this.MachineService.Cells.OrderBy(s => s.Side).ThenBy(s => s.Id));
+        public ObservableCollection<CellPlus> Cells => IEnumConvert(this.MachineService.CellsPlus.OrderBy(s => s.Side).ThenBy(s => s.Id));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -66,7 +67,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.Save(),
                 () => !this.IsMoving && this.SelectedCell != null));
 
-        public Cell SelectedCell
+        public CellPlus SelectedCell
         {
             get => this.selectedCell;
             set => this.SetProperty(ref this.selectedCell, value);

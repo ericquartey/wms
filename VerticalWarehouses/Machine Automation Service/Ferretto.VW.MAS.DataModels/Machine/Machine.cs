@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool EnabeNoteRules { get; set; }
 
-        public int ExpireCountPrecent { get; set; } = 10;
+        public int ExpireCountPrecent { get; set; } = 90;
 
         public int ExpireDays { get; set; } = 14;
 
@@ -118,6 +118,11 @@ namespace Ferretto.VW.MAS.DataModels
         public string SerialNumber { get; set; }
 
         public bool Simulation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tote barcode length.
+        /// </summary>
+        public int ToteBarcodeLength { get; set; }
 
         public int VerticalCyclesToCalibrate { get; set; } = 50;
 

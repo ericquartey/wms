@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -84,9 +85,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var loadingUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId);
-            if (!loadingUnit.IsIntoMachine)
+            if (!loadingUnit.IsIntoMachineOK)
             {
-                throw new InvalidOperationException($"The load unit {loadingUnitId} is not contained in the machine.");
+                throw new InvalidOperationException($"The load unit {loadingUnitId} is not contained in the machine or blocked.");
             }
             if (!this.CheckBayHeight(targetBayNumber, loadingUnit.Height))
             {
@@ -110,9 +111,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var loadingUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId);
-            if (!loadingUnit.IsIntoMachine)
+            if (!loadingUnit.IsIntoMachineOK)
             {
-                throw new InvalidOperationException($"The loading unit {loadingUnitId} is not contained in the machine.");
+                throw new InvalidOperationException($"The loading unit {loadingUnitId} is not contained in the machine or blocked.");
             }
             if (!this.CheckBayHeight(targetBayNumber, loadingUnit.Height))
             {
@@ -144,13 +145,23 @@ namespace Ferretto.VW.MAS.MissionManager
                     return true;
                 }
                 // first loop: load from bay
-                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                var loadUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId);
+                var loadUnitSource = this.baysDataProvider.GetLoadingUnitLocationByLoadingUnit(loadUnitId);
                 if (loadUnitSource == LoadingUnitLocation.NoLocation)
                 {
-                    loadUnitSource = baysDataProvider.GetByNumber(sourceBayNumber).Positions.OrderBy(p => p.IsUpper).LastOrDefault().Location;
+                    var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+                    var bay = this.baysDataProvider.GetByNumber(sourceBayNumber);
+                    var isUpper = true;
+                    if (bay.IsDouble && bay.IsExternal)
+                    {
+                        isUpper = machineResourcesProvider.IsDrawerInBayTop(sourceBayNumber, true);
+                    }
+                    else if (bay.IsDouble && !bay.IsExternal && bay.Carousel == null)
+                    {
+                        isUpper = machineResourcesProvider.IsDrawerInBayTop(sourceBayNumber);
+                    }
+                    loadUnitSource = bay.Positions.OrderBy(p => p.IsUpper == isUpper).LastOrDefault().Location;
                 }
-                this.logger.LogInformation($"Move from bay {sourceBayNumber} to cell {cellId} First test");
+                this.logger.LogInformation($"Move from bay {sourceBayNumber} position {loadUnitSource} to cell {cellId} First test");
                 moveLoadingUnitProvider.InsertToCell(MissionType.FirstTest, loadUnitSource, cellId, loadUnitId, sourceBayNumber, MessageActor.MissionManager);
                 return true;
             }
@@ -258,7 +269,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    if (loadUnit.IsIntoMachine)
+                    if (loadUnit.IsIntoMachineOK)
                     {
                         cellId = this.cellsProvider.FindDownCell(loadUnit);
                         loadUnitOut = loadUnit;
@@ -286,7 +297,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    if (loadUnit.IsIntoMachine)
+                    if (loadUnit.IsIntoMachineOK)
                     {
                         cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
                         loadUnitOut = loadUnit;
@@ -318,7 +329,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         try
                         {
-                            if (loadUnit.IsIntoMachine)
+                            if (loadUnit.IsIntoMachineOK)
                             {
                                 cellId = this.cellsProvider.FindTopCell(loadUnit);
                                 loadUnitOut = loadUnit;

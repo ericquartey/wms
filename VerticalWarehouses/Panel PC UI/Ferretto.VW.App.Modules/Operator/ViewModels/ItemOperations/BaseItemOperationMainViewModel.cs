@@ -566,6 +566,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 () => this.SignallingDefect(),
                 this.CanOpenSignallingDefect));
 
+        public int ToteBarcodeLength { get; set; }
+
         public ICommand WeightCommand =>
             this.weightCommand
             ??
@@ -1154,6 +1156,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //}
 
             this.BarcodeLenght = await this.machineIdentityWebService.GetItemUniqueIdLengthAsync();
+            this.ToteBarcodeLength = await this.machineIdentityWebService.GetToteBarcodeLengthAsync();
 
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;
@@ -1933,6 +1936,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     Barcode = barcode,
                     BarcodeLength = this.BarcodeLenght,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
+                    FullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value,
                     CloseLine = this.closeLine,
                 },
                 trackCurrentView: true);

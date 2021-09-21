@@ -40,7 +40,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.LowerBound = lowerBound;
             this.UpperBound = upperBound;
             this.SwitchPosition = switchPosition;
-            this.Delay = delay;
+            this.DelayEnd = delay;
             this.Direction = direction;
             this.WaitContinue = waitContinue;
         }
@@ -94,7 +94,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.LowerBound = other.LowerBound;
             this.UpperBound = other.UpperBound;
             this.SwitchPosition = other.SwitchPosition;
-            this.Delay = other.Delay;
+            this.DelayEnd = other.DelayEnd;
+            this.DelayStart = other.DelayStart;
             this.Direction = other.Direction;
             this.WaitContinue = other.WaitContinue;
         }
@@ -111,7 +112,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool ComputeElongation { get; set; }
 
-        public int Delay { get; set; }
+        public int DelayEnd { get; set; }
+
+        public int DelayStart { get; set; }
 
         public HorizontalMovementDirection Direction { get; set; }
 
@@ -171,7 +174,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.RequiredCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound} Delay:{this.Delay}";
+            return $"AxisMovement:{this.AxisMovement.ToString()} MovementType:{this.MovementType.ToString()} TargetPosition:{this.TargetPosition} TargetSpeed:{this.TargetSpeed} TargetAcceleration:{this.TargetAcceleration} TargetDeceleration:{this.TargetDeceleration} NumberCycles:{this.RequiredCycles} LowerBound:{this.LowerBound} UpperBound:{this.UpperBound} Delay:{this.DelayEnd}";
         }
 
         #endregion

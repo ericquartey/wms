@@ -64,6 +64,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override bool CanStart()
         {
+            if (this.LoadingUnitId.HasValue &&
+                (this.selectedLU is null || this.selectedLU.Id != this.LoadingUnitId)
+                )
+            {
+                this.UpdateDrawerInfo();
+            }
             // Conditions to check
             // Load from InBay only if bay is NOT double and Bay first position is upper
             var checkP1 = this.SensorsService.IsLoadingUnitInBay && (!this.MachineService.Bay.IsDouble) && this.MachineService.BayFirstPositionIsUpper;
@@ -208,7 +214,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await this.GetLoadingUnits();
 
-            if ((this.MachineService.Bay.IsDouble && !this.MachineService.Bay.IsExternal) || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
+            if (this.MachineService.Bay.Positions.Any(p => p.IsUpper && !p.IsBlocked) &&
+                ((this.MachineService.Bay.IsDouble && !this.MachineService.Bay.IsExternal) || this.MachineService.BayFirstPositionIsUpper || this.MachineService.HasCarousel)
+                )
             {
                 this.SelectBayPositionUp();
             }
@@ -257,6 +265,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.selectedLU.MaxNetWeight = maxLU.MaxNetWeight;
                     this.selectedLU.NetWeight = maxLU.NetWeight;
                     this.selectedLU.GrossWeight = maxLU.GrossWeight;
+                    this.selectedLU.Id = this.LoadingUnitId.Value;
                 }
             }
 

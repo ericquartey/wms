@@ -7,8 +7,6 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-
-
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
     public class AglInverterStatus : InverterStatusBase, IAglInverterStatus
@@ -144,42 +142,42 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private ShutterPosition GetCurrentPosition()
         {
-            var configurationEnvName = "";
-            using (var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var envProvider = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
-                configurationEnvName = envProvider.EnvironmentName;
-            }
+            //var configurationEnvName = "";
+            //using (var scope = this.serviceScopeFactory.CreateScope())
+            //{
+            //    var envProvider = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+            //    configurationEnvName = envProvider.EnvironmentName;
+            //}
 
             var value = ShutterPosition.NotSpecified;
 
-            if (configurationEnvName == "Prototype1")
-            {
-                // Used only for Prototype1 (old true table for shutters)
-                if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
-                {
-                    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
-                    {
-                        value = ShutterPosition.Opened;
-                    }
-                    else
-                    {
-                        value = ShutterPosition.Half;
-                    }
-                }
-                else
-                {
-                    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
-                    {
-                        value = ShutterPosition.Intermediate;
-                    }
-                    else
-                    {
-                        value = ShutterPosition.Closed;
-                    }
-                }
-            }
-            else
+            //if (configurationEnvName == "Prototype1")
+            //{
+            //    // Used only for Prototype1 (old true table for shutters)
+            //    if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
+            //    {
+            //        if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+            //        {
+            //            value = ShutterPosition.Opened;
+            //        }
+            //        else
+            //        {
+            //            value = ShutterPosition.Half;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
+            //        {
+            //            value = ShutterPosition.Intermediate;
+            //        }
+            //        else
+            //        {
+            //            value = ShutterPosition.Closed;
+            //        }
+            //    }
+            //}
+            //else
             {
                 if (!this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
                 {

@@ -138,9 +138,6 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Volba motoru zvedáku (zpětná vazba)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Volný</value>
-  </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Aktivace odečtu výšky (měřicí bariéra)</value>
   </data>

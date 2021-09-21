@@ -207,4 +207,7 @@
   <data name="TestInProgress" xml:space="preserve">
     <value>Test in corso...</value>
   </data>
+  <data name="ShutdownInProgress" xml:space="preserve">
+    <value>Spegnimento del pannello in corso</value>
+  </data>
 </root>

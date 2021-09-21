@@ -2116,7 +2116,7 @@
     <value>Wolne</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Identyfikator panelu</value>
+    <value>Panelu</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorytet</value>

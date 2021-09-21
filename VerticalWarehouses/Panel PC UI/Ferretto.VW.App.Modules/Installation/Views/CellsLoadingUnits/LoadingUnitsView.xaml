@@ -113,7 +113,7 @@
         <controls:PpcTextBox Grid.Column="6"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
-                             InputText="{Binding SelectedLU.IsIntoMachine, Converter={StaticResource BTSC}}"
+                             InputText="{Binding SelectedLU.IsIntoMachineOK, Converter={StaticResource BTSC}}"
                              IsEnabled="False"
                              LabelText="{res:Loc InstallationApp.IsIntoMachine}" />
         <!--  LabelText="IsIntoMachine" />  -->

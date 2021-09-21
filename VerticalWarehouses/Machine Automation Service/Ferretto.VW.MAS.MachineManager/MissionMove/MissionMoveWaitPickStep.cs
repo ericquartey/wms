@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.WmsId.HasValue)
             {
-                this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.WmsId.Value);
+                this.LoadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.Mission.Id);
             }
             else if (!bay.IsDouble
                 || (bay.Positions.FirstOrDefault(p => p.Location == this.Mission.LoadUnitDestination)?.LoadingUnit?.Id ?? this.Mission.LoadUnitId) == this.Mission.LoadUnitId
@@ -63,10 +63,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.RestoreConditions = false;
             this.MissionsDataProvider.Update(this.Mission);
 
-            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);
-
-            var description = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-            this.SendMoveNotification(bay.Number, description, MessageStatus.OperationWaitResume);
+            this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
 
             // Set the light ON for the target bay. Handle exceptional case, if exist already a waiting mission in the current internal double bay
             if (bay.IsDouble &&
@@ -177,7 +174,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(this.Mission.TargetBay);
                             this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                            this.ErrorsProvider.RecordNew(this.Mission.ErrorCode, this.Mission.TargetBay);
+                            var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                            this.ErrorsProvider.RecordNew(this.Mission.ErrorCode,
+                                this.Mission.TargetBay,
+                                string.Format(Resources.Missions.ErrorMissionDetails,
+                                    this.Mission.LoadUnitId,
+                                    Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                                    Math.Round(loadUnit.Height),
+                                    this.Mission.WmsId ?? 0));
                             this.BaysDataProvider.Light(this.Mission.TargetBay, true);
 
                             // End (forced) the current mission

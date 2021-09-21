@@ -2112,7 +2112,7 @@
     <value>Libera</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Pannello Id</value>
+    <value>Pannello</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorità</value>
@@ -2148,7 +2148,7 @@
     <value>Cassetti totali in baia 3</value>
   </data>
   <data name="TotalMissions" xml:space="preserve">
-    <value>Missioni totali</value>
+    <value>Cicli</value>
   </data>
   <data name="MountCamera" xml:space="preserve">
     <value>Montare telecamera</value>
@@ -2468,5 +2468,20 @@
   </data>
   <data name="MaxMessageLength" xml:space="preserve">
     <value>Lunghezza massima messaggio</value>
+  </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>Barriera anti intrusione interna</value>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Sostegno</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>spegni pannello</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Esegui la taratura elevatore e spegni il pannello</value>
+  </data>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Spegni il pannello (non è possibile adesso la taratura dell'elevatore)</value>
   </data>
 </root>

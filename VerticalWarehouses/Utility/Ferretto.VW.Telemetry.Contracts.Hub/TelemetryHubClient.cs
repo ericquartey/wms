@@ -152,6 +152,23 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
         }
 
+        public async Task SendServicingInfoAsync(IServicingInfo servicingInfo)
+        {
+            if (!this.IsConnected)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.SendAsync("SendServicingInfo", servicingInfo);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending service infoto telemetry service {ex.Message}");
+            }
+        }
+
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);

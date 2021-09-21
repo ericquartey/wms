@@ -96,7 +96,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 #if DEBUG
                 this.AvailableDrives = new ReadOnlyCollection<DriveInfo>(DriveInfo.GetDrives().ToList());
 #endif
+            }
+            catch
+            {
+                // do nothing
+            }
 
+            try
+            {
                 var lastServicing = await this.machineServicingWebService.GetLastValidAsync();
 
                 if (lastServicing != null)
@@ -131,9 +138,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.TotalStatistics));
             }
-            catch
+            catch (Exception ex)
             {
-                // do nothing
+                this.ShowNotification(ex);
             }
         }
 

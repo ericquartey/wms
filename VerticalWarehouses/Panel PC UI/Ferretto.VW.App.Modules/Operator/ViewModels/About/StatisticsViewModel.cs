@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -33,6 +34,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int freeCellsForSupport;
 
         private int freeCellsOnlySpace;
+
+        private bool isVisibleDetails;
 
         private int lockedCells;
 
@@ -119,6 +122,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             private set => this.SetProperty(ref this.freeCellsOnlySpace, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsVisibleDetails
+        {
+            get => this.isVisibleDetails;
+            private set => this.SetProperty(ref this.isVisibleDetails, value, this.RaiseCanExecuteChanged);
+        }
+
         public int LockedCells
         {
             get => this.lockedCells;
@@ -180,7 +189,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             // TODO: Insert code here
-
+            this.IsVisibleDetails = this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
             await base.OnAppearedAsync();
         }
 
@@ -188,6 +197,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                this.IsVisibleDetails = this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
                 var cells = await this.machineCellsWebService.GetStatisticsAsync();
                 this.FragmentBackPercent = cells.FragmentBackPercent;
                 this.FragmentFrontPercent = cells.FragmentFrontPercent;
@@ -206,7 +216,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
-                //this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+                //this.TotalDrawers = unit.Count(n => n.IsIntoMachineOK);
                 this.UnitsInCell = unit.Count(n => n.Status == LoadingUnitStatus.InLocation);
                 this.UnitsInBay = unit.Count(n => n.Status == LoadingUnitStatus.InBay);
                 this.UnitsInElevator = unit.Count(n => n.Status == LoadingUnitStatus.InElevator);

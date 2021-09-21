@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Añadir</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Atrás</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Inicio de sesión</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>Apagar</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>Depurar</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Ruta del archivo</value>
+  </data>
+  <data name="ConfirmMachineRun" xml:space="preserve">
+    <value>¿Está seguro de que quiere poner la máquina en marcha?</value>
+  </data>
+  <data name="MachineRun" xml:space="preserve">
+    <value>Marcha</value>
+  </data>
+  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
+    <value>¿Está seguro de que quiere poner la máquina en automático y restablecer los movimientos en curso?</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automático</value>
+  </data>
+  <data name="ShuttingDown" xml:space="preserve">
+    <value>Apagando...</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Cambiar de tema</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bahía</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>{0:0} días atrás</value>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Error de comunicación con los servicios.</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>Hace {0:0}horas</value>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>Hace {0:0} minutos</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Ahora</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Número de serie:</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versión {0}</value>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Posterior</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Frente</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Bahía</value>
+  </data>
+  <data name="BayOneName" xml:space="preserve">
+    <value>Una</value>
+  </data>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>Tres</value>
+  </data>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>Dos</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Cambiar a automático</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Inicie</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Detener</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Dispositivos</value>
+  </data>
+  <data name="DiagnosticDetailTitle" xml:space="preserve">
+    <value>DEBUG</value>
+  </data>
+  <data name="FiniteMachineState" xml:space="preserve">
+    <value>Máquina de estados finitos</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Inversor</value>
+  </data>
+  <data name="IODrive" xml:space="preserve">
+    <value>Unidad IO</value>
+  </data>
+  <data name="StatusDebug" xml:space="preserve">
+    <value>Estado:</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>No hay líneas en la lista</value>
+  </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Discapacitados</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>WMS habilitado</value>
+  </data>
+  <data name="DateFormatComplete" xml:space="preserve">
+    <value>{0:dd.MM.aaaa HH:mm}</value>
+  </data>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>La zona de la máquina es desconocida</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Este convertidor solo puede convertir valores de tipo Visibilidad.</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>La identificación del cajón no existe.</value>
+  </data>
+  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
+    <value>La propiedad '{0}' de la plantilla de vista '\1}' debe contener un identificador de cajón válido.</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>La sintaxis de NameOf es Type={x:Type className&gt;}.&lt;</value>
+  </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>El parámetro no puede ser nulo o estar vacío.</value>
+  </data>
+  <data name="DateFormatDayNumber" xml:space="preserve">
+    <value>{0: dd.MM.aaaa}</value>
+  </data>
+  <data name="SwitchToManual" xml:space="preserve">
+    <value>Cambiar a manual</value>
+  </data>
+  <data name="BackShutterTest" xml:space="preserve">
+    <value>Pruebas en curso... No se puede salir de la página</value>
+  </data>
+  <data name="SocketLinkEnabled" xml:space="preserve">
+    <value>Enlace de enchufe habilitado</value>
+  </data>
+  <data name="SocketLinkPolling" xml:space="preserve">
+    <value>Intervalo de sondeo</value>
+  </data>
+  <data name="SocketLinkPort" xml:space="preserve">
+    <value>Puerta</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>Tiempo de espera</value>
+  </data>
+  <data name="Connectivity" xml:space="preserve">
+    <value>Conectividad</value>
+  </data>
+  <data name="Present" xml:space="preserve">
+    <value>Presente</value>
+  </data>
+  <data name="NotPresent" xml:space="preserve">
+    <value>No está presente</value>
+  </data>
+  <data name="TokenStatus" xml:space="preserve">
+    <value>Estado de la ficha</value>
+  </data>
+  <data name="ForbiddenOperation" xml:space="preserve">
+    <value>Operación no permitida</value>
+  </data>
+</root>

@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>No se cumplen las condiciones de colocación.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>No se cumplen las condiciones de arranque.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>El cajón no está completamente cargado.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Elevador no cargado en la toma</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Elevador no vacío en el depósito</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Incongruencia del estado de los sensores</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Incongruencia del estado de los sensores</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Error del inversor.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>No se ha podido escribir el parámetro del inversor durante la ejecución.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Los datos del conjunto de datos del inversor no coinciden.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Error de suma de comprobación de la EEPROM del inversor.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Error de lectura de la EEPROM del inversor.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Error de escritura en la EEPROM del inversor.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Conjunto de datos del inversor no válido.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Parámetro del inversor no válido.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>El nodo especificado no está disponible.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>El parámetro del inversor es de solo lectura.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>El parámetro del inversor es de solo escritura.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Error de sintaxis en el mensaje enviado al inversor.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Parámetro desconocido pasado al inversor.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Incongruencia entre la longitud del mensaje al inversor y el tipo de datos del mensaje.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Se ha detectado un error en uno de los inversores.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>La función de seguridad se activó.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Celda de destino no válida</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Cuna elevador ocupada</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Posición de origen del cajón de la base de datos inconsistente</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>No hay cajones en la bahía indicada</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Cajón detectado en la bahía de extracción</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Bahía de destino del cajón ocupada</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Cajón no disponible</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>El cajón seleccionado no está cargado en el almacén</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Vaciar el cajón de la fuente de la bahía</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>celda de origen no válida</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Error del sensor de la bahía</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Sensores de presencia no válidos</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Cajón detectado en el elevador</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Falta el sensor de cero con el elevador vacío</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Estado de inconsistencia de los sensores de la bahía</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Alto nivel de la bahía ocupada</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Incongruencia del estado de los sensores</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>El peso máximo cargado en el cajón es demasiado.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Compuerta cerrada</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Compuerta abierta</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Destino menor del límite inferior</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>El inversor está ejecutando otra orden</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Destino mayor que el límite superior</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Se ha detectado un error en el IoDevice.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Cajón detectado en la celda</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Modo de máquina inválido</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Barrera de seguridad activada</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Pulsador de emergencia presionado</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>El panel lateral izquierdo está abierto.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Cajón detectado en otra bahía</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Cajón no presente en el elevador</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Error del sensor de la bahía</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>El nivel superior de la bahía está vacío</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Error de ejecución de la misión</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Error de ejecución de la misión</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Error de ejecución de la misión</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>No hay errores</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Peso demasiado bajo</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Se ha superado el peso total del almacén</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Almacén lleno</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Bahía ocupada con cajón desconocido</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Elevador ocupado con cajón desconocido</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Error de conexión con el inversor</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Error de conexión con IoDevice</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Error de conexión del láser</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Restablecimiento automático de los movimientos no permitidos</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>El tipo de destino no es válido</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Posición de la bahía inferior no definida</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Posición de la bahía superior no definida</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Tipo de misión no válido</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>No se permite el movimiento de la cadena de la bahía: el cajón es demasiado pesado.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>La orden de volver del picking no es válida</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Error al actualizar el archivo de celdas. Una o más celdas de destino están lógicamente ocupadas</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>No se cumplen las condiciones de calibración.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Error de altura</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Error de estado de la compuerta</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>La bahía del objetivo carece de calibración.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Prueba no completada</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Almacén no vacío.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Error de posicionamiento de la bahía</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>El panel lateral derecho está abierto</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Posición vertical incorrecta.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>La configuración de la aceleración del movimiento del eje {0} no es válida: la aceleración en vacío es inferior a la de plena carga</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>La configuración de la velocidad del movimiento del eje {0} no es válida: la velocidad en vacío es inferior a la de plena carga</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Prueba no completada</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Bahía inválida</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Posición de la bahía no válida</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Configuración de aceleración de movimiento del eje {0} no válida.</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Configuración de desaceleración de movimiento del eje {0} no válida.</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Configuración de la velocidad de movimiento del eje {0} no válida.</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Error de posicionamiento en el extremo superior</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Bahía exterior ocupada</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Bahía exterior vacía</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>Error de WMS</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Movimiento inválido</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Error de posición en el extremo inferior</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Cajón no disponible</value>
+  </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Número de cajón</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Error del sensor de la bahía</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Error de posicionamiento</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Error de control del inversor</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Error de comando de la tarjeta de entrada/salida</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Error de sintaxis en el mensaje enviado al inversor.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>La bahía telescópica no está bien encajada</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>La tara del cajón es 0</value>
+  </data>
+</root>

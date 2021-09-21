@@ -218,7 +218,8 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SelectOperationOnBayCommand}"
-                            Content="{Resources:Loc OperatorApp.BayOperations}" />
+                            Content="{Resources:Loc OperatorApp.BayOperations}"
+                            Visibility="Collapsed"/>
       </StackPanel>
 
 

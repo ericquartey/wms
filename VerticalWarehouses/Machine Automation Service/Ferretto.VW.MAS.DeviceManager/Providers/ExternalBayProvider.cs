@@ -361,6 +361,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", CommonUtils.Culture.Actual) };
                         }
+                        if (!isLoadingUnitInExternalDownPosition && bay.Positions.Any(p => !p.IsUpper && p.LoadingUnit != null))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("LoadUnitInBaySensorMissing", CommonUtils.Culture.Actual) };
+                        }
                     }
                     else
                     {
@@ -397,6 +401,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (!isLoadingUnitInInternalDownPosition && isLoadingUnitInExternalDownPosition)
                         {
                             return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsALoadingUnitInItsExternalPosition", CommonUtils.Culture.Actual) };
+                        }
+                        if (!isLoadingUnitInExternalUpPosition && bay.Positions.Any(p => p.IsUpper && p.LoadingUnit != null))
+                        {
+                            return new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("LoadUnitInBaySensorMissing", CommonUtils.Culture.Actual) };
                         }
                     }
 
@@ -803,6 +811,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 targetPosition = distance;
             }
+            else if (distance < 0 && !bypassConditions)
+            {
+                switch (direction)
+                {
+                    case ExternalBayMovementDirection.TowardMachine:
+                        targetPosition = this.baysDataProvider.GetChainPosition(bayNumber) - bay.ChainOffset;
+                        break;
+
+                    case ExternalBayMovementDirection.TowardOperator:
+                        targetPosition = bay.External.Race - this.baysDataProvider.GetChainPosition(bayNumber) + bay.ChainOffset;
+                        break;
+                }
+            }
 
             // Target position is positive with TowardOperator movement direction, otherwise position is negative
             targetPosition *= direction is ExternalBayMovementDirection.TowardOperator ? 1 : -1;
@@ -883,6 +904,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset) + EXT_RACE_FOR_EXTRACTION)
             {
                 targetPosition = distance;
+            }
+            else if (distance < 0 && !bypassConditions)
+            {
+                switch (direction)
+                {
+                    case ExternalBayMovementDirection.TowardMachine:
+                        targetPosition = this.baysDataProvider.GetChainPosition(bayNumber) - bay.ChainOffset;
+                        break;
+
+                    case ExternalBayMovementDirection.TowardOperator:
+                        targetPosition = bay.External.Race - this.baysDataProvider.GetChainPosition(bayNumber) + bay.ChainOffset;
+                        break;
+                }
             }
 
             // Target position is positive with TowardOperator movement direction, otherwise position is negative

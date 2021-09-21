@@ -174,7 +174,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.RefreshAllValue();
 
                 var unit = await this.machineLoadingUnitsWebService.GetAllAsync();
-                this.TotalDrawers = unit.Count(n => n.IsIntoMachine);
+                this.TotalDrawers = unit.Count(n => n.IsIntoMachineOK);
 
                 await base.OnDataRefreshAsync();
             }

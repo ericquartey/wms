@@ -92,10 +92,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                const int HighMissionCount = 3000000;
+                const int HighMissionCount = 300000;
                 const int NormalMissionCount = 40000;
                 const int LowMissionCount = 20000;
-                //const int VeryHighMissionCount = 600000;
+                const int VeryHighMissionCount = 600000;
                 const int OneYear = 365;
 
                 // this instruction is reeeeally slow
@@ -103,18 +103,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 foreach (InstructionType instructionType in Enum.GetValues(typeof(InstructionType)))
                 {
-                    var instruction = new InstructionDefinition();
+                    InstructionDefinition instruction;
                     switch (instructionType)
                     {
                         case InstructionType.AirFiltersCheck:
                         case InstructionType.ElectricalComponentsCheck:
                         case InstructionType.LampsCheck:
-                            instruction.InstructionType = instructionType;
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.None,
+                                BayNumber.None);
                             instruction.IsSystem = true;
-                            instruction.MaxDays = OneYear;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            instruction.GetDescription(instruction.InstructionType);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
@@ -126,198 +127,300 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.CablesCheck:
                         case InstructionType.FirstCellCheck:
                         case InstructionType.RandomCellCheck:
-                            instruction.InstructionType = instructionType;
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.MaxDays = OneYear;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.BeltSubstitute:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear * 5;
-                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
                             {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear * 5,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
                                 instruction.IsShutter = true;
-                                instruction.BayNumber = bay.Number;
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
-                            instruction.IsShutter = false;
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear * 5,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.ChainAdjust:
                         case InstructionType.ChainGrease:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction.SetCounterName(bay.Number);
-                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
-                                instruction.BayNumber = bay.Number;
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
 
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.GetDescription(instruction.InstructionType);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.ChainSubstitute:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxRelativeCount = NormalMissionCount;
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction.SetCounterName(bay.Number);
-                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
-                                instruction.BayNumber = bay.Number;
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    NormalMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                null,
+                                NormalMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.ContactorsSubstitute:
-                            instruction.InstructionType = instructionType;
+                            instruction = new InstructionDefinition(instructionType,
+                                null,
+                                OneYear * 5,
+                                null,
+                                Axis.None,
+                                BayNumber.None);
                             instruction.IsSystem = true;
-                            instruction.MaxDays = OneYear * 5;
-                            instruction.GetDescription(instruction.InstructionType);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.GuidesCheck:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
                             {
-                                instruction.SetCounterName(bay.Number);
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
                                 instruction.IsShutter = true;
-                                instruction.BayNumber = bay.Number;
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
-                            instruction.IsShutter = false;
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction.SetCounterName(bay.Number);
-                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
-                                instruction.BayNumber = bay.Number;
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
 
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                NormalMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.GuidesSubstitute:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxRelativeCount = HighMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
                             {
-                                instruction.SetCounterName(bay.Number);
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    VeryHighMissionCount,
+                                    Axis.None,
+                                    bay.Number);
                                 instruction.IsShutter = true;
-                                instruction.BayNumber = bay.Number;
-                                instruction.GetDescription(instruction.InstructionType);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
                             break;
 
                         case InstructionType.LinkCheck:
                         case InstructionType.LinksGrease:
-                        case InstructionType.OpticalSensorsClean:
-                        case InstructionType.OpticalSensorsMount:
                         case InstructionType.MotorGearOil:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
 
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionType.OpticalSensorsClean:
+                        case InstructionType.OpticalSensorsMount:
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
                             break;
 
                         case InstructionType.MicroSwitchesCheck:
                         case InstructionType.MicroSwitchesMount:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.GetDescription(instruction.InstructionType);
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.SensorCheck:
                         case InstructionType.SensorsClean:
                         case InstructionType.SensorsMount:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
                             if (instructionType == InstructionType.SensorCheck)
                             {
-                                foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
+                                foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
                                 {
-                                    instruction.SetCounterName(bay.Number);
+                                    instruction = new InstructionDefinition(instructionType,
+                                        nameof(MachineStatistics.TotalMissions),
+                                        OneYear,
+                                        LowMissionCount,
+                                        Axis.None,
+                                        bay.Number);
                                     instruction.IsShutter = true;
-                                    instruction.BayNumber = bay.Number;
-                                    instruction.GetDescription(instruction.InstructionType);
                                     dataContext.InstructionDefinitions.Add(instruction);
                                 }
-                                instruction.IsShutter = false;
                             }
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction.SetCounterName(bay.Number);
-                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
-                                instruction.BayNumber = bay.Number;
-                                instruction.GetDescription(instruction.InstructionType);
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.GetDescription(instruction.InstructionType);
+
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
 
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.LinkSubstitute:
                         case InstructionType.MotorChainSubstitute:
                         case InstructionType.PinPawlFastenersSubstitute:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxRelativeCount = NormalMissionCount;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                null,
+                                NormalMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.MicroSwitchesSubstitute:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear * 5;
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.GetDescription(instruction.InstructionType);
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear * 5,
+                                    null,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear * 5,
+                                    null,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear * 5,
+                                null,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
@@ -325,60 +428,93 @@ namespace Ferretto.VW.MAS.DataLayer
                         case InstructionType.MotorChainGrease:
                         case InstructionType.PinPawlFastenersCheck:
                         case InstructionType.WheelsCheck:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
-                            instruction.GetDescription(instruction.InstructionType);
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
                         case InstructionType.MotorGearSubstitute:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxRelativeCount = HighMissionCount;
-                            instruction.CounterName = nameof(MachineStatistics.TotalMissions);
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Vertical;
-                            instruction.GetDescription(instruction.InstructionType);
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    VeryHighMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
+                            {
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    VeryHighMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                null,
+                                HighMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
 
-                            instruction.Axis = CommonUtils.Messages.Enumerations.Axis.Horizontal;
+                            instruction = new InstructionDefinition(instructionType,
+                                nameof(MachineStatistics.TotalMissions),
+                                null,
+                                HighMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
+
                             break;
 
                         case InstructionType.PlasticCamsCheck:
                         case InstructionType.SupportsCheck:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxDays = OneYear;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
                             {
-                                instruction.SetCounterName(bay.Number);
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
                                 instruction.IsShutter = true;
-                                instruction.BayNumber = bay.Number;
-                                instruction.GetDescription(instruction.InstructionType);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
-                            instruction.IsShutter = false;
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction.SetCounterName(bay.Number);
-                                instruction.Axis = CommonUtils.Messages.Enumerations.Axis.BayChain;
-                                instruction.BayNumber = bay.Number;
-                                instruction.GetDescription(instruction.InstructionType);
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
                             break;
 
                         case InstructionType.ShaftCheck:
-                            instruction.InstructionType = instructionType;
-                            instruction.MaxRelativeCount = LowMissionCount;
-                            foreach (var bay in machine.Bays.Where(b => (b.Shutter != null) ? b.Shutter.Type != ShutterType.NotSpecified : false))
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
                             {
-                                instruction.SetCounterName(bay.Number);
+                                instruction = new InstructionDefinition(instructionType,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
                                 instruction.IsShutter = true;
-                                instruction.BayNumber = bay.Number;
-                                instruction.GetDescription(instruction.InstructionType);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
                             break;

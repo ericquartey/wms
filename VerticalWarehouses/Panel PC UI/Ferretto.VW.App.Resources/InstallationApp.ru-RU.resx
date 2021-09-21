@@ -2113,7 +2113,7 @@
     <value>Свободный</value>
   </data>
   <data name="PanelId" xml:space="preserve">
-    <value>Идентификатор Панели</value>
+    <value>Панели</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Приоритет</value>

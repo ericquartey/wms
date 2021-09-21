@@ -114,6 +114,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 measure = false;
             }
+            if (this.Mission.NeedHomingAxis == Axis.None)
+            {
+                this.MachineVolatileDataProvider.IsHomingExecuted = this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
+                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.HorizontalAndVertical);
+            }
             if (this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
             {
                 if (this.Mission.CloseShutterBayNumber == BayNumber.None)
@@ -169,6 +174,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.Mission.NeedHomingAxis = Axis.None;
                                 this.MissionsDataProvider.Update(this.Mission);
+                            }
+                            if (messageData.AxisToCalibrate == Axis.Vertical || messageData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                            {
+                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
                             }
 
                             var destinationHeight = this.LoadingUnitMovementProvider.GetDestinationHeight(this.Mission, out var targetBayPositionId, out var targetCellId);
@@ -357,7 +366,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 //this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                 this.MachineVolatileDataProvider.Mode = this.MachineVolatileDataProvider.GetMachineModeManualByBayNumber(errorMission.TargetBay);
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                this.ErrorsProvider.RecordNew(errorMission.ErrorCode, this.Mission.TargetBay);
+                var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                this.ErrorsProvider.RecordNew(this.Mission.ErrorCode,
+                    this.Mission.TargetBay,
+                    string.Format(Resources.Missions.ErrorMissionDetails,
+                        this.Mission.LoadUnitId,
+                        Math.Round(loadUnit.GrossWeight - loadUnit.Tare),
+                        Math.Round(loadUnit.Height),
+                        this.Mission.WmsId ?? 0));
                 this.BaysDataProvider.Light(this.Mission.TargetBay, true);
             }
         }

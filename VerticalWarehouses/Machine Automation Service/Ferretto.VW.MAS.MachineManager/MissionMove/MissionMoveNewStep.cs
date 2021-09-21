@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -85,7 +86,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var returnValue = this.CheckStartConditions(this.Mission, command, showErrors);
             if (returnValue)
             {
-                // Remove error mission, if exists, for a internal double bay
+                // Remove error mission, if exists, for an internal double bay
                 this.removeMissionWithErrorConditionExceededWeightOnBID();
 
                 this.Mission.Status = MissionStatus.New;
@@ -105,6 +106,24 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.IsLowerBayChainSource())
                 {
                     startState = new MissionMoveBayChainStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                }
+                else if (this.IsWarehouseFull(command))
+                {
+                    this.MissionsDataProvider.Reload(this.Mission);
+
+                    // the notification invokes the scheduler
+                    var notificationMessage = new NotificationMessage(
+                        null,
+                        $"Reload machine mission available for bay {this.Mission.TargetBay}.",
+                        MessageActor.MissionManager,
+                        MessageActor.MachineManager,
+                        MessageType.NewMachineMissionAvailable,
+                        this.Mission.TargetBay);
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(notificationMessage);
+                    return true;
                 }
                 else
                 {
@@ -128,6 +147,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
 
             return returnValue;
+        }
+
+        private bool IsWarehouseFull(CommandMessage commandMessage)
+        {
+            if (commandMessage != null
+                && commandMessage.Data is IMoveLoadingUnitMessageData messageData
+                && messageData.InsertLoadUnit
+                && this.Mission.MissionType == MissionType.IN)
+            {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
+                if (bay != null && bay.IsDouble
+                    && bay.Positions.Any(p => p.LoadingUnit == null && !p.IsBlocked))
+                {
+                    var lastError = this.ErrorsProvider.GetLast();
+                    if (lastError != null
+                        && lastError.Code == (int)MachineErrorCode.WarehouseIsFull
+                        && this.MissionsDataProvider.GetAllActiveMissions()
+                            .Any(x => x.Status == MissionStatus.New
+                                && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS)
+                                && x.TargetBay == this.Mission.TargetBay
+                                )
+                        )
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private bool IsLowerBayChainSource()
@@ -266,7 +313,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if ((mission.MissionType != MissionType.Manual
                                 || this.Mission.MissionType != MissionType.ScaleCalibration)
-                            && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry)
+                            && !this.CheckBayHeight(destinationBay, destination, mission, out var canRetry, out var errorCode)
                             )
                         {
                             if (showErrors || !canRetry)
@@ -402,6 +449,22 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         // bay to bay movement
                         bay = destinationBay;
                     }
+                    if (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic)
+                    {
+                        foreach (var position in bay.Positions.Where(p => p.LoadingUnit is null && !p.IsBlocked))
+                        {
+                            if (this.SensorsProvider.IsLoadingUnitInLocation(position.Location)
+                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                || (bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
+                            {
+                                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                                return false;
+                            }
+                        }
+                    }
+
                     if (bay.Positions.Count() == 1)
                     {
                         // always check upper position
@@ -460,11 +523,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             // If bay is not double or bay is carousel
                             // always check upper position first
-                            returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false || messageData.Destination == upper);
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false /*|| messageData.Destination == upper*/);
                             if (returnValue)
                             {
                                 // upper position is empty. we can use it only if bottom is also free
-                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
                                 if (returnValue
                                     || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
                                     )
@@ -836,11 +899,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
                     if (bay != null && bay.IsExternal && bay.IsDouble)
                     {
-                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source);
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
 
                         if (!returnValue)
                         {
-                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source);
+                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number);
                         }
                     }
                     else if (bay != null && bay.IsExternal)
@@ -873,7 +936,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         {
                             unitToMove = sourceCell.LoadingUnit;
                             if (unitToMove != null
-                                && unitToMove.Status != DataModels.Enumerations.LoadingUnitStatus.InLocation
+                                && !unitToMove.IsIntoMachineOK
                                 )
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
@@ -941,7 +1004,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
                                     return false;
                                 }
-                                else if (unitToMove.Status != DataModels.Enumerations.LoadingUnitStatus.InLocation)
+                                else if (!unitToMove.IsIntoMachineOK)
                                 {
                                     this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
                                     return false;
@@ -1075,8 +1138,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
 #if CHECK_BAY_SENSOR
                         if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
-                            && !(bay != null && bay.IsExternal && !bay.IsDouble && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
-                            && !(bay != null && bay.IsExternal && bay.IsDouble && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source)))
+                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)))
+                            && !(bay != null && bay.IsExternal && bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source))))
                         {
                             unitToMove = null;
                             if (showErrors)

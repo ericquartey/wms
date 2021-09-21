@@ -52,9 +52,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(95)]
             public MovementParameters FullLoadMovement { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Inventory))]
-            [Id(130)]
-            public bool Inventory { get; set; }
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Inventory))]
+            //[Id(130)]
+            //public bool Inventory { get; set; }
 
             [ScaffoldColumn(false)]
             public Inverter Inverter { get; set; }
@@ -109,9 +109,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public BayOperation Operation { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Pick))]
-            [Id(100)]
-            public bool Pick { get; set; }
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Pick))]
+            //[Id(100)]
+            //public bool Pick { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.Position))]
             [CategoryParameter(nameof(BayPosition.LocationUpDown), ValueStringifierType = typeof(EnumValueStringifier))]
@@ -119,9 +119,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Offset(10)]
             public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Put))]
-            [Id(110)]
-            public bool Put { get; set; }
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Put))]
+            //[Id(110)]
+            //public bool Put { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Resolution))]
             [Id(7)]
@@ -141,11 +141,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public BayStatus Status { get; set; }
 
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.View))]
-            [Id(120)]
-            public bool View { get; set; }
-
             #endregion
+
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.View))]
+            //[Id(120)]
+            //public bool View { get; set; }
         }
 
         #endregion

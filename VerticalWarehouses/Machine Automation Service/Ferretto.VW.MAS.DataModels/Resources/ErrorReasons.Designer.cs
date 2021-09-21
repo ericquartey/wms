@@ -583,7 +583,16 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The height of the load unit is too high for this bay. Send it to another bay or move it manually.
+        ///   Looks up a localized string similar to The height is lower than minimum. Please check alignment and cleaning of measuring devices.
+        /// </summary>
+        public static string LoadUnitHeightFromBayTooLow {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightFromBayTooLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The height of the load unit is too high or too low for this bay. Send it to another bay or move it manually.
         /// </summary>
         public static string LoadUnitHeightToBayExceeded {
             get {
@@ -957,6 +966,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string VerticalPositionChanged {
             get {
                 return ResourceManager.GetString("VerticalPositionChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vertical zero sensor is active in a high position. Please perform an elevator homing.
+        /// </summary>
+        public static string VerticalZeroHighError {
+            get {
+                return ResourceManager.GetString("VerticalZeroHighError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vertical zero sensor is not active in a low position. Please perform an elevator homing.
+        /// </summary>
+        public static string VerticalZeroLowError {
+            get {
+                return ResourceManager.GetString("VerticalZeroLowError", resourceCulture);
             }
         }
         

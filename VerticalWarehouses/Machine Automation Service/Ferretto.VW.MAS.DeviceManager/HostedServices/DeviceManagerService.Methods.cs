@@ -318,6 +318,13 @@ namespace Ferretto.VW.MAS.DeviceManager
             else
             {
                 message.TargetBay = BayNumber.ElevatorBay;
+                var data = message.Data as IInverterProgrammingMessageData;
+                var messageInverterIndex = (InverterIndex)data.InverterParametersData.First().InverterIndex;
+                if (messageInverterIndex != InverterIndex.None)
+                {
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    message.TargetBay = baysDataProvider.GetByInverterIndex(messageInverterIndex);
+                }
                 var currentStateMachine = new InverterProgrammingStateMachine(
                     message,
                     this.EventAggregator,
@@ -344,6 +351,13 @@ namespace Ferretto.VW.MAS.DeviceManager
             else
             {
                 message.TargetBay = BayNumber.ElevatorBay;
+                var data = message.Data as IInverterReadingMessageData;
+                var messageInverterIndex = (InverterIndex)data.InverterParametersData.First().InverterIndex;
+                if (messageInverterIndex != InverterIndex.None)
+                {
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    message.TargetBay = baysDataProvider.GetByInverterIndex(messageInverterIndex);
+                }
                 var currentStateMachine = new InverterReadingStateMachine(
                     message,
                     this.EventAggregator,

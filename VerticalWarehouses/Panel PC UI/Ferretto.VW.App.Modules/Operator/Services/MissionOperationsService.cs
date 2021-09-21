@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0)
+        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null)
         {
             this.logger.Debug($"User requested to complete operation '{operationId}' with quantity {quantity}.");
 
@@ -98,7 +98,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     quantity,
                     labelPrinterName,
                     barcode,
-                    wastedQuantity);
+                    wastedQuantity,
+                    toteBarcode);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -301,9 +302,9 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             if (e.BayNumber == this.bayNumber)
             {
-                this.logger.Debug($"Mission assigned to bay has changed to '{e.MissionId}'.");
+                this.logger.Debug($"Mission assigned to bay has changed to id '{e.MissionId}'.");
                 this.ActiveWmsMission = null;
-                await this.RefreshActiveMissionAsync();
+                await this.RefreshActiveMissionAsync(e.MissionId);
             }
         }
 
@@ -360,11 +361,11 @@ namespace Ferretto.VW.App.Modules.Operator
                .Publish(new MissionChangedEventArgs(this.ActiveMachineMission, this.ActiveWmsMission, this.ActiveWmsOperation));
         }
 
-        private async Task RefreshActiveMissionAsync()
+        private async Task RefreshActiveMissionAsync(int? missionId = null)
         {
             try
             {
-                var newMachineMission = await this.RetrieveActiveMissionAsync();
+                var newMachineMission = await this.RetrieveActiveMissionAsync(missionId);
                 MissionWithLoadingUnitDetails newWmsMission = null;
                 MissionOperation newWmsOperation = null;
                 MissionOperationInfo newWmsOperationInfo = null;
@@ -390,9 +391,9 @@ namespace Ferretto.VW.App.Modules.Operator
                     {
                         this.logger.Debug($"Active WMS mission '{newMachineMission.WmsId}' has no executable mission operation.");
 
-                        this.logger.Debug($"Recalling loading unit '{newMachineMission.LoadUnitId}'.");
+                        //this.logger.Debug($"Recalling loading unit '{newMachineMission.LoadUnitId}'.");
 
-                        await this.loadingUnitsWebService.RemoveFromBayAsync(newMachineMission.LoadUnitId);
+                        //await this.loadingUnitsWebService.RemoveFromBayAsync(newMachineMission.LoadUnitId);
 
                         newMachineMission = null;
                         newWmsMission = null;
@@ -438,7 +439,9 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    newWmsOperation?.DispatchedQuantity != this.ActiveWmsOperation?.DispatchedQuantity
                    ||
-                   (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true))
+                   (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true)
+                   ||
+                   missionId.HasValue)
                 {
                     this.ActiveMachineMission = newMachineMission;
                     this.ActiveWmsMission = newWmsMission;
@@ -457,7 +460,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        private async Task<Mission> RetrieveActiveMissionAsync()
+        private async Task<Mission> RetrieveActiveMissionAsync(int? missionId = null)
         {
             this.logger.Trace("Retrieving active mission ...");
 
@@ -465,61 +468,71 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 // Retrieve properties of bay: check if it is an internal double bay
                 var bay = await this.machineBaysWebService.GetByNumberAsync(this.bayNumber);
-                var isInternalDoubleBay = bay.IsDouble && (bay.Carousel == null);
-                var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
+                //var isInternalDoubleBay = bay.IsDouble && (bay.Carousel == null);
+                //var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
 
                 // Retrieve the machine missions
                 var machineMissions = await this.missionsWebService.GetAllAsync();
-
-                // Retrieve the active missions in the given bay according to the bay's properties
-                // in BID we show LU window only when 1 LU is ready
                 IOrderedEnumerable<Mission> activeMissions = null;
-                if (!isInternalDoubleBay
-                    ||
-                    bay.Positions.Count(x => x.LoadingUnit != null) == 1
-                    )
-                {
-                    // Retrieve the active missions according to the enlisted condition.
-                    // The missions are ordered by the location of destination for the load unit
-                    activeMissions = machineMissions.Where(m =>
-                        m.Step is MissionStep.WaitPick
-                        &&
-                        m.TargetBay == this.bayNumber
-                        &&
-                        m.Status == MissionStatus.Waiting
-                        &&
-                        m.ErrorCode == MachineErrorCode.NoError)
-                        .OrderBy(o => o.LoadUnitDestination);
-                }
-                else if (isExternalDoubleBay)
-                {
-                    activeMissions = machineMissions.Where(m =>
-                        m.Step is MissionStep.WaitPick
-                        &&
-                        m.TargetBay == this.bayNumber
-                        &&
-                        m.Status == MissionStatus.Waiting
-                        &&
-                        m.ErrorCode == MachineErrorCode.NoError)
-                        .OrderBy(o => o.LoadUnitDestination);
-                }
 
-                //else
-                //{
-                //    // Retrieve the active missions according to the enlisted condition.
-                //    // The missions are ordered by creation date (descending way)
-                //    activeMissions = machineMissions.Where(m =>
-                //        m.Step is MissionStep.WaitPick
-                //        &&
-                //        m.TargetBay == this.bayNumber
-                //        &&
-                //        m.Status == MissionStatus.Waiting)
-                //        .OrderByDescending(d => d.CreationDate);
-                //}
+                if (missionId.HasValue)
+                {
+                    activeMissions = machineMissions.Where(m =>
+                            m.Step is MissionStep.WaitPick
+                            &&
+                            m.TargetBay == this.bayNumber
+                            &&
+                            m.Status == MissionStatus.Waiting
+                            &&
+                            m.ErrorCode == MachineErrorCode.NoError
+                            &&
+                            m.Id == missionId.Value)
+                        .OrderBy(o => o.LoadUnitDestination);
+                }
+                else
+                {
+                    activeMissions = machineMissions.Where(m =>
+                        m.Step is MissionStep.WaitPick
+                        &&
+                        m.TargetBay == this.bayNumber
+                        &&
+                        m.Status == MissionStatus.Waiting
+                        &&
+                        m.ErrorCode == MachineErrorCode.NoError
+                        )
+                        .OrderBy(o => o.LoadUnitDestination);
+
+                    //else
+                    //{
+                    //    // Retrieve the active missions according to the enlisted condition.
+                    //    // The missions are ordered by creation date (descending way)
+                    //    activeMissions = machineMissions.Where(m =>
+                    //        m.Step is MissionStep.WaitPick
+                    //        &&
+                    //        m.TargetBay == this.bayNumber
+                    //        &&
+                    //        m.Status == MissionStatus.Waiting)
+                    //        .OrderByDescending(d => d.CreationDate);
+                    //}
+                }
 
                 if (activeMissions.Any())
                 {
-                    this.logger.Debug($"Active mission has id {activeMissions.FirstOrDefault().Id}");
+                    var loadUnitId = activeMissions.FirstOrDefault().LoadUnitId;
+                    if (machineMissions.Any(m => m.LoadUnitId == loadUnitId && m.MissionType == MissionType.IN)
+                        // BID must wait for second load unit to move away from bay
+                        || (bay.IsDouble && !bay.IsExternal && bay.Carousel == null
+                            && bay.Positions.Any(p => p.LoadingUnit != null && p.LoadingUnit.Id != loadUnitId)
+                            )
+                        )
+                    {
+                        this.logger.Trace("No active mission on bay - IN mission already present");
+                        activeMissions = null;
+                    }
+                    else
+                    {
+                        this.logger.Debug($"Active mission has id {activeMissions.FirstOrDefault().Id}");
+                    }
                 }
                 else
                 {

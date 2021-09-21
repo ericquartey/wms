@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -17,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private string barcodeItem;
+
         private bool canConfirm;
 
         private bool canConfirmOnEmpty;
@@ -26,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand emptyOperationCommand;
 
         private bool isAddItemFeatureAvailable;
+
+        private bool isCurrentDraperyItemFullyRequested;
 
         private string measureUnitTxt;
 
@@ -115,6 +120,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsCurrentDraperyItemFullyRequested
+        {
+            get => this.isCurrentDraperyItemFullyRequested;
+            set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
         public string MeasureUnitTxt
         {
             get => this.measureUnitTxt;
@@ -155,6 +166,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
             {
                 await base.CommandUserActionAsync(userAction);
+                return;
+            }
+
+            // Handle the tote devices
+            var bIsToteManaged = this.ToteBarcodeLength > 0;
+            if (bIsToteManaged && userAction.UserAction == UserAction.NotSpecified)
+            {
+                await this.PickBoxAsync(userAction.Code);
                 return;
             }
 
@@ -202,6 +221,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemAsync() &&
                 this.IsCurrentDraperyItem;
+
+            // Setup only reserved for Tendaggi Paradiso
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
+
+            this.barcodeItem = string.Empty;
 
             //this.SetLastQuantity();
         }
@@ -402,6 +426,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        /*
         // To use with drapery item
         private async Task PickBox_New_Async(string barcode)
         {
@@ -472,6 +497,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.lastMissionOperation = null;
             }
         }
+        */
 
         private async Task PickBoxAsync(string barcode)
         {
@@ -509,26 +535,101 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (barcode != null)
                 {
-                    this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                    if (isToteBarcodeManaged)
+                    {
+                        if (barcode.Length == this.ToteBarcodeLength &&
+                            !string.IsNullOrEmpty(this.barcodeItem))
+                        {
+                            var toteBarcode = barcode;
+
+                            this.Logger.Debug($"Confirm operation for: {this.barcodeItem} item, {toteBarcode} tote");
+                            this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + toteBarcode);
+
+                            // The flow of operation requires:
+                            // - acquisition of item barcode (first)
+                            // - acquisition of tote barcode
+                            // - complete the operation
+                            canComplete = await this.MissionOperationsService.CompleteAsync(
+                                this.MissionOperation.Id,
+                                this.InputQuantity.Value,
+                                this.barcodeItem,
+                                0,
+                                toteBarcode);
+
+                            if (canComplete)
+                            {
+                                this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                            }
+                            else
+                            {
+                                this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                                this.NavigationService.GoBackTo(
+                                    nameof(Utils.Modules.Operator),
+                                    Utils.Modules.Operator.ItemOperations.WAIT,
+                                    "PickBoxAsync");
+                            }
+                        }
+                        else
+                        {
+                            this.Logger.Debug($"Cache barcode item: {barcode}");
+
+                            this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + barcode);
+
+                            this.barcodeItem = barcode;
+                        }
+                    }
+                    else
+                    {
+                        this.barcodeItem = barcode;
+
+                        this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
+                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem);
+
+                        if (canComplete)
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                            this.NavigationService.GoBackTo(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.ItemOperations.WAIT,
+                                "PickBoxAsync");
+                        }
+                    }
                 }
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+
+                    if (canComplete)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                    }
+                    else
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                        this.NavigationService.GoBackTo(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.WAIT,
+                            "PickBoxAsync");
+                    }
                 }
 
-                if (canComplete)
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
-                }
-                else
-                {
-                    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
-                    this.NavigationService.GoBackTo(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.ItemOperations.WAIT,
-                        "PickBoxAsync");
-                }
+                //if (canComplete)
+                //{
+                //    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+                //}
+                //else
+                //{
+                //    this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                //    this.NavigationService.GoBackTo(
+                //        nameof(Utils.Modules.Operator),
+                //        Utils.Modules.Operator.ItemOperations.WAIT,
+                //        "PickBoxAsync");
+                //}
 
                 //this.navigationService.GoBackTo(
                 //    nameof(Utils.Modules.Operator),
@@ -536,9 +637,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
                 this.IsOperationConfirmed = false;
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    this.barcodeItem = string.Empty;
+                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                    if (isToteBarcodeManaged)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        this.ShowNotification(ex);
+                    }
+
+                    //throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {
@@ -550,6 +670,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.lastMissionOperation = null;
             }
         }
+
+        #endregion
 
         //private /*async Task*/ void SignallingDefect()
         //{
@@ -622,6 +744,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
+        /*
+        // NOT USED: To be removed
         private void ShowDraperyItemConfirmView(string barcode, bool isPartiallyConfirmOperation)
         {
             this.Logger.Debug($"Show the confirm view for drapery item {this.ItemId}, description {this.MissionOperation.ItemDescription}");
@@ -642,10 +766,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     MeasureUnitTxt = this.MeasureUnitTxt,
                     Barcode = barcode,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,
+                    FullyRequested = this.isCurrentDraperyItemFullyRequested,
                 },
                 trackCurrentView: true);
         }
-
-        #endregion
+        */
     }
 }

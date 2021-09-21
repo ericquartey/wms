@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<MachineStatistics> GetStatistics();
 
+        int GetToteBarcodeLength();
+
         void Import(Machine machine, DataLayerContext context);
 
         void ImportMachineServicingInfo(IEnumerable<ServicingInfo> servicingInfo, DataLayerContext context);

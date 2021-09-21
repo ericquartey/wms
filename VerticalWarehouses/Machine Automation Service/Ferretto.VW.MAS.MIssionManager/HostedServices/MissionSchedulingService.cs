@@ -17,11 +17,12 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.MachineManager;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 using System.Threading;
+using System.Diagnostics;
+using Microsoft.Extensions.Hosting;
 //using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -399,7 +400,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
             var missionToRestore = activeMissions
-                .OrderBy(o => o.Status)
+                .OrderByDescending(o => o.Status)
                 .ThenBy(t => t.RestoreStep)
                 .FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
                     && x.IsMissionToRestore());
@@ -513,7 +514,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             mission.LoadUnitId,
                             bayNumber,
                             MessageActor.MissionManager);
-                        this.NotifyAssignedMissionChanged(bayNumber, mission.Id);
+                        //this.NotifyAssignedMissionChanged(bayNumber, mission.Id);
                     }
                 }
                 else if (mission.IsMissionWaiting())
@@ -731,6 +732,12 @@ namespace Ferretto.VW.MAS.MissionManager
             var sensorsProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
             if (!sensorsProvider.IsMachineSecurityRunning)
             {
+                if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToShutdown)
+                {
+                    this.machineVolatileDataProvider.Mode = MachineMode.Shutdown;
+                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    return;
+                }
                 this.Logger.LogWarning("Mission scheduling is not allowed: machine is not in running state.");
                 return;
             }
@@ -1134,6 +1141,56 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     break;
 
+                case MachineMode.SwitchingToShutdown:
+                    {
+                        var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+                        if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                                && m.Step > MissionStep.New)
+                            && !this.machineVolatileDataProvider.IsHomingActive
+                            )
+                        {
+                            var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                            if (errorsProvider.GetCurrent() == null
+                                && !missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
+                                    && m.Step >= MissionStep.Error)
+                                )
+                            {
+                                IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical,
+                                    Calibration.FindSensor,
+                                    loadingUnitId: null,
+                                    showErrors: true);
+
+                                this.EventAggregator
+                                    .GetEvent<CommandEvent>()
+                                    .Publish(
+                                        new CommandMessage(
+                                            homingData,
+                                            "Execute Homing Command",
+                                            MessageActor.DeviceManager,
+                                            MessageActor.MissionManager,
+                                            MessageType.Homing,
+                                            BayNumber.BayOne));
+                                this.Logger.LogDebug($"GenerateHoming: Elevator");
+                                this.machineVolatileDataProvider.IsHomingActive = true;
+                            }
+                            this.machineVolatileDataProvider.Mode = MachineMode.Shutdown;
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.Shutdown:
+                    if (!this.machineVolatileDataProvider.IsHomingActive)
+                    {
+                        var runningStateProvider = serviceProvider.GetRequiredService<IRunningStateProvider>();
+                        if (runningStateProvider.MachinePowerState == MachinePowerState.Powered)
+                        {
+                            runningStateProvider.SetRunningState(false, BayNumber.BayOne, MessageActor.MissionManager);
+                        }
+                    }
+                    // wait for ppc app to shutdown MAS and system
+                    break;
+
                 default:
                     {
                         this.Logger.LogDebug("Mission scheduling is not allowed: machine is not in automatic mode.");
@@ -1180,6 +1237,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         foreach (var position in bay.Positions.OrderBy(b => b.Location))
                         {
                             if (!sensorProvider.IsLoadingUnitInLocation(position.Location)
+                                && !position.IsBlocked
                                 && (!bay.IsExternal
                                     || (!bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
                                     || (bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location))
@@ -1208,7 +1266,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
-                        if (sensorProvider.IsLoadingUnitInLocation(position.Location)
+                        if ((sensorProvider.IsLoadingUnitInLocation(position.Location) && !position.IsBlocked)
                             || (!bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
                             || (bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
                         {
@@ -1222,7 +1280,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                 return true;
                             }
 
-                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id))
+                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id && m.TargetBay == bay.Number))
                             {
                                 this.Logger.LogInformation($"Insert load unit {position.LoadingUnit.Id} from {position.Location} to cell");
                                 var missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;
@@ -1266,6 +1324,15 @@ namespace Ferretto.VW.MAS.MissionManager
             await this.InvokeSchedulerAsync(serviceProvider);
         }
 
+        private async Task OnChangeRunningState(IServiceProvider serviceProvider)
+        {
+            if (this.machineVolatileDataProvider.Mode == MachineMode.Shutdown)
+            {
+                this.Logger.LogDebug("InvokeSchedulerAsync");
+                await this.InvokeSchedulerAsync(serviceProvider);
+            }
+        }
+
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
@@ -1303,7 +1370,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         this.machineVolatileDataProvider.IsBayHomingExecuted[message.RequestingBay] = true;
                     }
-                    else
+                    else if (data.AxisToCalibrate == Axis.Vertical || data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
                         this.machineVolatileDataProvider.IsHomingExecuted = true;
                     }
@@ -1350,6 +1417,16 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.machineVolatileDataProvider.Mode = MachineMode.Manual3; // MachineMode.LoadUnitOperations;
                         this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
                     }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToShutdown)
+                    {
+                        this.machineVolatileDataProvider.Mode = MachineMode.Shutdown;
+                        this.Logger.LogInformation($"Automation Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    }
+                    else if (this.machineVolatileDataProvider.Mode == MachineMode.Shutdown)
+                    {
+                        this.Logger.LogDebug("InvokeSchedulerAsync");
+                        await this.InvokeSchedulerAsync(serviceProvider);
+                    }
                 }
             }
         }
@@ -1385,7 +1462,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
 
                     missionsDataProvider.Complete(mission.Id);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    //this.NotifyAssignedMissionChanged(mission.TargetBay, null);
                 }
                 else if (mission.LoadUnitDestination != LoadingUnitLocation.Cell
                     &&
@@ -1398,13 +1475,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 // loading unit to bay mission
                 {
                     baysDataProvider.AssignMission(mission.TargetBay, mission);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.WmsId);
+                    this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
                 }
                 else if (mission.Status != MissionStatus.Waiting)
                 // any other mission type
                 {
                     missionsDataProvider.Complete(mission.Id);
-                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                    //this.NotifyAssignedMissionChanged(mission.TargetBay, null);
 
                     //var bCreateAMissionForExceptionalCase = false;
                     //if (mission.Status == MissionStatus.Completed)
@@ -1636,10 +1713,25 @@ namespace Ferretto.VW.MAS.MissionManager
                             .GetRequiredService<IBaysDataProvider>()
                             .AssignMission(mission.TargetBay, mission);
 
-                        this.NotifyAssignedMissionChanged(mission.TargetBay, wmsMission.Id);
+                        this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
+                    }
+                    else if (mission.Status is MissionStatus.Waiting && mission.Step == MissionStep.BayChain)
+                    {
+                        var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+                        var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
+
+                        this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume waiting.", mission.TargetBay, mission.Id);
+                        moveLoadingUnitProvider.ResumeMoveLoadUnit(
+                            mission.Id,
+                            loadingUnitSource,
+                            LoadingUnitLocation.Cell,
+                            bayNumber,
+                            null,
+                            mission.MissionType,
+                            MessageActor.MissionManager);
                     }
                 }
-                else if (mission.Status is MissionStatus.Executing || mission.Status is MissionStatus.Waiting)
+                else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
                     // wms mission is finished
                     mission.Status = MissionStatus.Completed;

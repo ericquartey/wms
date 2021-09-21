@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
-        private const string VERSION = "4.9";
+        private const string VERSION = "4.11";
 
         private readonly IBaysDataProvider baysDataProvider;
 

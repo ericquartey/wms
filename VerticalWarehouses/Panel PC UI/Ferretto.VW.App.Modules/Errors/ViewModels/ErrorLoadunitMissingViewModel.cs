@@ -251,17 +251,17 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.errorTime, value);
         }
 
-        public bool HasBay1PositionDownVisible => this.Bay1Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down) ?? false;
+        public bool HasBay1PositionDownVisible => this.Bay1Positions?.Any(a => !a.IsUpper && !a.IsBlocked) ?? false;
 
-        public bool HasBay1PositionUpVisible => this.Bay1Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
+        public bool HasBay1PositionUpVisible => this.Bay1Positions?.Any(a => a.IsUpper && !a.IsBlocked) ?? false;
 
-        public bool HasBay2PositionDownVisible => this.Bay2Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down) ?? false;
+        public bool HasBay2PositionDownVisible => this.Bay2Positions?.Any(a => !a.IsUpper && !a.IsBlocked) ?? false;
 
-        public bool HasBay2PositionUpVisible => this.Bay2Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
+        public bool HasBay2PositionUpVisible => this.Bay2Positions?.Any(a => a.IsUpper && !a.IsBlocked) ?? false;
 
-        public bool HasBay3PositionDownVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Down) ?? false;
+        public bool HasBay3PositionDownVisible => this.Bay3Positions?.Any(a => !a.IsUpper && !a.IsBlocked) ?? false;
 
-        public bool HasBay3PositionUpVisible => this.Bay3Positions?.Any(a => a.LocationUpDown == LoadingUnitLocation.Up) ?? false;
+        public bool HasBay3PositionUpVisible => this.Bay3Positions?.Any(a => a.IsUpper && !a.IsBlocked) ?? false;
 
         public bool HasStepAutomaticMode => this.currentStep is ErrorLoadunitMissingStepAutomaticMode;
 

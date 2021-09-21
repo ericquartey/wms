@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => this.isBusyLoadingNextPage ? null : OperationalContext.ItemsSearch.ToString();
+        public string ActiveContextName => this.IsWaitingForReason ? OperationalContext.NoteDescription.ToString() : (this.isBusyLoadingNextPage ? null : OperationalContext.ItemsSearch.ToString());
 
         public bool Appear
         {
@@ -261,6 +261,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsWaitingForReason { get; private set; }
+
         public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -340,6 +342,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (value is null)
                 {
                     //this.RaisePropertyChanged();
+                    _ = this.SetProperty(ref this.selectedItem, value);
+
                     this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
                     this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
                     return;
@@ -377,7 +381,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Methods
 
-        public async Task AutoPickItem(string barcode)
+        public async Task AutoPutItem(string barcode)
         {
             this.ClearNotifications();
             try
@@ -474,7 +478,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case UserAction.FilterItems:
                     if (this.MachineService.Bay.BarcodeAutomaticPut)
                     {
-                        await this.AutoPickItem(userAction.GetItemCode());
+                        await this.AutoPutItem(userAction.GetItemCode());
                     }
                     else
                     {
@@ -486,6 +490,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case UserAction.PickItem:
                     await this.PickItemByBarcodeAsync(userAction);
 
+                    break;
+
+                case UserAction.Notes:
+                    if (this.IsWaitingForReason)
+                    {
+                        this.ReasonNotes = userAction.Code;
+                        await this.ExecuteItemAsync();
+                    }
                     break;
             }
         }
@@ -523,6 +535,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.selectedItem = null;
+            this.AvailableQuantity = null;
             this.RaisePropertyChanged(nameof(this.SelectedItem));
         }
 
@@ -580,6 +593,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     userName: this.authenticationService.UserName);
 
                 this.Reasons = null;
+                this.IsWaitingForReason = false;
 
                 this.ShowNotification(
                     string.Format(
@@ -643,6 +657,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPut = true;
+                if (!this.isGroupbyLot)
+                {
+                    var lotProducts = await this.areasWebService.GetProductsAsync(
+                        this.areaId.Value,
+                        0,
+                        0,
+                        itemCode,
+                        true,
+                        false);
+                    if (lotProducts.Any(l => !string.IsNullOrEmpty(l.Lot)))
+                    {
+                        throw new InvalidOperationException(Resources.Localized.Get("General.LotManagedProduct"));
+                    }
+                }
 
                 await this.wmsDataProvider.PutAsync(
                     itemId,
@@ -654,6 +682,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     userName: this.authenticationService.UserName);
 
                 this.Reasons = null;
+                this.IsWaitingForReason = false;
 
                 this.ShowNotification(
                     string.Format(
@@ -679,6 +708,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Appear = false;
             this.InputQuantity = 0;
             this.Reasons = null;
+            this.IsWaitingForReason = false;
             this.IsBusyConfirmingOperation = false;
 
             this.productsChangedToken =
@@ -709,15 +739,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
 
-            this.NoteEnabled = false;
+            // Notes textbox field for the reasons view in the UI is enabled
+            this.NoteEnabled = true;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
             var waitForReason = await this.CheckReasonsAsync();
+
+            this.IsWaitingForReason = waitForReason;
 
             if (!waitForReason)
             {
                 await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
+                this.AvailableQuantity = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -730,15 +764,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
 
-            this.NoteEnabled = false;
+            // Notes textbox field for the reasons view in the UI is enabled
+            this.NoteEnabled = true;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
             var waitForReason = await this.CheckReasonsAsync();
+
+            this.IsWaitingForReason = waitForReason;
 
             if (!waitForReason)
             {
                 await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
+                this.AvailableQuantity = null;
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -790,6 +828,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
+                    this.SelectedItem = null;
+                    this.AvailableQuantity = null;
+                    this.InputQuantity = 0;
+
                     this.RaisePropertyChanged(nameof(this.Items));
                     return;
                 }
@@ -937,6 +979,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void CancelReason()
         {
             this.Reasons = null;
+            this.IsWaitingForReason = false;
             this.IsBusyConfirmingOperation = false;
             this.IsBusyRequestingItemPut = false;
             this.IsBusyRequestingItemPick = false;

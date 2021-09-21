@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
+        private const int FindZeroLimit = 80;
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IElevatorProvider elevatorProvider;
@@ -74,6 +76,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private double? profileStartPosition = null;
 
         private double targetPosition;
+
+        private AxisBounds verticalBounds;
 
         private double verticalStartingPosition;
 
@@ -227,6 +231,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         else if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                         {
                             this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
+                            this.verticalBounds = this.elevatorProvider.GetVerticalBounds();
                         }
                         if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual)
                         {
@@ -738,6 +743,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             return false;
         }
 
+        private bool IsVerticalZeroHighError()
+        {
+            return this.machineData.MessageData.MovementMode == MovementMode.Position
+                && this.machineData.MessageData.AxisMovement == Axis.Vertical
+                && !this.machineData.MessageData.BypassConditions
+                && this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                && this.elevatorProvider.VerticalPosition > this.verticalBounds.Offset * 1.4;
+        }
+
+        private bool IsVerticalZeroLowError()
+        {
+            return this.machineData.MessageData.MovementMode == MovementMode.Position
+                && this.machineData.MessageData.AxisMovement == Axis.Vertical
+                && !this.machineData.MessageData.BypassConditions
+                && !this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                && this.elevatorProvider.VerticalPosition < this.verticalBounds.Offset * 0.7;
+        }
+
         private bool IsZeroSensorError()
         {
             if (this.machineData.MessageData.MovementMode == MovementMode.Position
@@ -865,13 +888,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"Horizontal Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if (data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition + 11 &&
-                                            data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition + 11)
+                                        else if ((data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition + FindZeroLimit + 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition + FindZeroLimit + 1))
                                         {
-                                            this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition - 20:0.0000}");
+                                            this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition - (FindZeroLimit * 2):0.0000}");
 
                                             this.findZeroStep = HorizontalCalibrationStep.BackwardFindZeroSensor;
-                                            this.FindZeroNextPosition(this.horizontalStartingPosition - 20);
+                                            this.FindZeroNextPosition(this.horizontalStartingPosition - (FindZeroLimit * 2));
                                         }
                                         break;
 
@@ -881,8 +904,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"Horizontal Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if (data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - 11 &&
-                                            data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - 11)
+                                        else if ((data.CurrentPosition.Value + 1 >= this.horizontalStartingPosition - FindZeroLimit - 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.horizontalStartingPosition - FindZeroLimit - 1))
                                         {
                                             this.Logger.LogDebug($"Horizontal Find Zero update destination position Value {this.horizontalStartingPosition:0.0000}");
 
@@ -901,6 +924,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (this.IsLoadingErrorDuringPickup())
                         {
+                            // TODO - if this warning is reliable we can enable the alarm
                             this.Logger.LogWarning("Cradle not correctly loaded during pickup");
                             //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
@@ -909,6 +933,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                         else if (this.IsUnloadingErrorDuringDeposit())
                         {
+                            // TODO - if this warning is reliable we can enable the alarm
                             this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
                             //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                             //this.stateData.FieldMessage = message;
@@ -938,6 +963,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);
+                        }
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsVerticalZeroHighError()
+                            )
+                        {
+                            // TODO - if this warning is reliable we can enable the alarm
+                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroHighError, this.machineData.RequestingBay);
+
+                            //this.stateData.FieldMessage = message;
+                            //this.Stop(StopRequestReason.Error);
+                            this.Logger.LogWarning("The vertical zero sensor is active in a high position");
+                        }
+                        if (!this.machineData.MessageData.BypassConditions
+                            && this.IsVerticalZeroLowError()
+                            )
+                        {
+                            // TODO - if this warning is reliable we can enable the alarm
+                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroLowError, this.machineData.RequestingBay);
+
+                            //this.stateData.FieldMessage = message;
+                            //this.Stop(StopRequestReason.Error);
+                            this.Logger.LogWarning("The vertical zero sensor is not active in a low position");
                         }
                         else if (this.machineData.MessageData.MovementMode == MovementMode.Position
                             && this.machineData.MessageData.AxisMovement == Axis.Horizontal
@@ -1232,9 +1279,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                         else
                         {
-                            if (this.machineData.MessageData.Delay > 0)
+                            if (this.machineData.MessageData.DelayEnd > 0)
                             {
-                                this.delayTimer = new Timer(this.DelayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
+                                this.delayTimer = new Timer(this.DelayElapsed, null, this.machineData.MessageData.DelayEnd * 1000, Timeout.Infinite);
                             }
                             else
                             {
@@ -1487,9 +1534,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                             else
                             {
-                                if (this.machineData.MessageData.Delay > 0)
+                                if (this.machineData.MessageData.DelayEnd > 0)
                                 {
-                                    this.delayTimer = new Timer(this.DelayDoubleExtBayElapsed, null, this.machineData.MessageData.Delay * 1000, Timeout.Infinite);
+                                    this.delayTimer = new Timer(this.DelayDoubleExtBayElapsed, null, this.machineData.MessageData.DelayEnd * 1000, Timeout.Infinite);
                                 }
                                 else
                                 {

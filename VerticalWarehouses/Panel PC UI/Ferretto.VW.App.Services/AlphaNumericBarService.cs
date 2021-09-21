@@ -272,7 +272,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
                             this.alphaNumericBarDriver.SelectedMessage = message;
-                            this.logger.Debug($"OnMissionChangeAsync; SelectedPosition {compartmentSelected.XPosition}; message {message}");
+                            this.logger.Debug($"OnMissionChangeAsync; Compartment {e.WmsOperation.CompartmentId}; SelectedPosition {compartmentSelected.XPosition}; message {message}");
 
                             await this.alphaNumericBarDriver.EnabledAsync(false);
 

@@ -4965,6 +4965,71 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<bool> GetStandbyDbAsync()
+        {
+            return GetStandbyDbAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<bool> GetStandbyDbAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/database-backup/get/standbydb");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(bool);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task SetBackupOnServerAsync(bool enable)
         {
             return SetBackupOnServerAsync(enable, System.Threading.CancellationToken.None);
@@ -10807,21 +10872,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction)
+        public System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass)
         {
-            return MoveManualAsync(direction, System.Threading.CancellationToken.None);
+            return MoveManualAsync(direction, bypass, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
+            if (bypass == null)
+                throw new System.ArgumentNullException("bypass");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/external-bay/move-manual?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bypass") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bypass, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -10874,21 +10943,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction)
+        public System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass)
         {
-            return MoveManualExtDoubleAsync(direction, System.Threading.CancellationToken.None);
+            return MoveManualExtDoubleAsync(direction, bypass, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
+            if (bypass == null)
+                throw new System.ArgumentNullException("bypass");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/external-bay/move-manual-double?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bypass") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bypass, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -12706,6 +12779,72 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         }
             
                         return default(MachineStatistics);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<int> GetToteBarcodeLengthAsync()
+        {
+            return GetToteBarcodeLengthAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<int> GetToteBarcodeLengthAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/get/ToteBarcodeLength");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<int>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(int);
                     }
                     finally
                     {
@@ -19629,6 +19768,74 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/mode/manual");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new MasWebApiException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task SetShutdownAsync()
+        {
+            return SetShutdownAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task SetShutdownAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/mode/shutdown");
     
             var client_ = _httpClient;
             try
@@ -26694,14 +26901,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity)
+        public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode)
         {
-            return CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, System.Threading.CancellationToken.None);
+            return CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, toteBarcode, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -26719,6 +26926,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(System.Uri.EscapeDataString("printerName") + "=").Append(System.Uri.EscapeDataString(printerName != null ? ConvertToString(printerName, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("barcode") + "=").Append(System.Uri.EscapeDataString(barcode != null ? ConvertToString(barcode, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("wastedQuantity") + "=").Append(System.Uri.EscapeDataString(ConvertToString(wastedQuantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("toteBarcode") + "=").Append(System.Uri.EscapeDataString(toteBarcode != null ? ConvertToString(toteBarcode, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

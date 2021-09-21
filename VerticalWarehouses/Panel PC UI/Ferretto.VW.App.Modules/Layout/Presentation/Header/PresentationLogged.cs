@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -21,7 +22,11 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private readonly DispatcherTimer autologoutServiceTimer;
 
+        private readonly IDialogService dialogService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
+
+        private readonly IMachineService machineService;
 
         private readonly INavigationService navigationService;
 
@@ -30,6 +35,8 @@ namespace Ferretto.VW.App.Modules.Layout
         private bool isPopupOpen;
 
         private DelegateCommand logOutCommand;
+
+        private DelegateCommand shutdownCommand;
 
         private DelegateCommand toggleThemeCommand;
 
@@ -43,7 +50,9 @@ namespace Ferretto.VW.App.Modules.Layout
             IAuthenticationService authenticationService,
             INavigationService navigationService,
             IMachineBaysWebService machineBaysWebService,
-            IThemeService themeService)
+            IThemeService themeService,
+            IDialogService dialogService,
+            IMachineService machineService)
             : base(PresentationTypes.Logged)
         {
             if (authenticationService is null)
@@ -65,6 +74,8 @@ namespace Ferretto.VW.App.Modules.Layout
             {
                 throw new ArgumentNullException(nameof(themeService));
             }
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.authenticationService = authenticationService;
             this.navigationService = navigationService;
@@ -99,6 +110,11 @@ namespace Ferretto.VW.App.Modules.Layout
             this.logOutCommand
             ??
             (this.logOutCommand = new DelegateCommand(async () => await this.ExecuteLogOutCommand()));
+
+        public ICommand ShutdownCommand =>
+            this.shutdownCommand
+            ??
+            (this.shutdownCommand = new DelegateCommand(async () => await this.ExecuteShutdownCommand()));
 
         public ICommand ToggleThemeCommand =>
          this.toggleThemeCommand
@@ -156,6 +172,28 @@ namespace Ferretto.VW.App.Modules.Layout
             await this.machineBaysWebService.DeactivateAsync();
             this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN, "ExecuteLogOutCommand");
             this.autologoutServiceTimer.Stop();
+        }
+
+        private async Task ExecuteShutdownCommand()
+        {
+            this.IsPopupOpen = false;
+            string description;
+            if (this.machineService.MachinePower >= MachinePowerState.PoweringUp
+                && !this.machineService.MachineStatus.IsError
+                && !this.machineService.IsMissionInError
+                )
+            {
+                description = Localized.Get("InstallationApp.ShutdownDescription");
+            }
+            else
+            {
+                description = Localized.Get("InstallationApp.ShutdownDescriptionNoCalibration");
+            }
+            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), description, DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult == DialogResult.Yes)
+            {
+                await this.machineService.ShutdownAsync();
+            }
         }
 
         private void ExecuteToggleThemeCommand()

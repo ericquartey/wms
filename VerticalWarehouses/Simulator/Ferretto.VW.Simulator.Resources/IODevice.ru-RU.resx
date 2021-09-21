@@ -138,9 +138,6 @@
   <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
     <value>Выбран двигатель лифта (обратная связь)</value>
   </data>
-  <data name="Free" xml:space="preserve">
-    <value>Свободный</value>
-  </data>
   <data name="HeightReadingActivation" xml:space="preserve">
     <value>Активация функции считывания высоты (измерительная световая завеса)</value>
   </data>

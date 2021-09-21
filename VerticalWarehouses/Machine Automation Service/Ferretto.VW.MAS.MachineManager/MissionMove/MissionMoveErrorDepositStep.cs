@@ -203,7 +203,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private void ManualMovementEnd(NotificationMessage notification)
         {
             if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward)
-                && !this.SensorsProvider.IsSensorZeroOnCradle
+                && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
                 )
             {
                 this.Mission.NeedMovingBackward = false;
@@ -233,10 +233,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                if (!this.SensorsProvider.IsSensorZeroOnCradle
+                    || this.SensorsProvider.IsDrawerPartiallyOnCradle
+                    )
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
                 this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveForward;
                 if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward))
                 {
-                    this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    }
                     this.Mission.ErrorMovements &= ~MissionErrorMovements.MoveBackward;
                 }
                 this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
@@ -453,7 +463,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
-                    this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+                    {
+                        this.Mission.NeedHomingAxis = Axis.Horizontal;
+                    }
                     this.DepositUnitEnd(restore: true);
                     return;
                 }

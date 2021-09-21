@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Constructors
 
-        public ErrorDescriptionAttribute(Type descriptionResourceType, Type reasonResourceType, string propertyName, int severity = 0)
+        public ErrorDescriptionAttribute(Type descriptionResourceType, Type reasonResourceType, string propertyName, int severity = (int)MachineErrorSeverity.Low)
         {
             this.DescriptionResourceType = descriptionResourceType ?? throw new ArgumentNullException(nameof(descriptionResourceType));
             this.ReasonResourceType = reasonResourceType ?? throw new ArgumentNullException(nameof(reasonResourceType));

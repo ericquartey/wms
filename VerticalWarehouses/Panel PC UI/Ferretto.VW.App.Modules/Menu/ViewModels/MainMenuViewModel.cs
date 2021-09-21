@@ -221,7 +221,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 switch (menu)
                 {
                     case Menu.Operation:
-                        this.operatorNavigationService.NavigateToOperatorMenu();
+                        this.operatorNavigationService.NavigateToOperatorMenuAsync();
                         break;
 
                     case Menu.Maintenance:

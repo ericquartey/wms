@@ -268,6 +268,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anti intrusion gate internal.
+        /// </summary>
+        public static string AntiIntrusionGateInternal {
+            get {
+                return ResourceManager.GetString("AntiIntrusionGateInternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply Correction.
         /// </summary>
         public static string ApplyCorrection {
@@ -4831,7 +4840,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Panel Id.
+        ///   Looks up a localized string similar to Panel.
         /// </summary>
         public static string PanelId {
             get {
@@ -5740,6 +5749,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shutdown panel.
+        /// </summary>
+        public static string Shutdown {
+            get {
+                return ResourceManager.GetString("Shutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform elevator calibration and shutdown the panel.
+        /// </summary>
+        public static string ShutdownDescription {
+            get {
+                return ResourceManager.GetString("ShutdownDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutdown the panel (elevator calibration not available now).
+        /// </summary>
+        public static string ShutdownDescriptionNoCalibration {
+            get {
+                return ResourceManager.GetString("ShutdownDescriptionNoCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter.
         /// </summary>
         public static string Shutter {
@@ -6127,6 +6163,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Support.
+        /// </summary>
+        public static string SupportType {
+            get {
+                return ResourceManager.GetString("SupportType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sure to apply configuration ?.
         /// </summary>
         public static string SureToApplyConfiguration {
@@ -6406,7 +6451,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total missions.
+        ///   Looks up a localized string similar to Cycles.
         /// </summary>
         public static string TotalMissions {
             get {

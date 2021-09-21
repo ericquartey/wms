@@ -518,7 +518,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
         {
-            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            while (concurrentQueure.TryDequeue(out var sendMessage)) {; }
             return true;
         }
 

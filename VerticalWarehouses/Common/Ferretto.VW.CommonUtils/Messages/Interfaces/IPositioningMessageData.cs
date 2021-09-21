@@ -15,7 +15,15 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool ComputeElongation { get; set; }
 
-        int Delay { get; set; }
+        /// <summary>
+        /// seconds
+        /// </summary>
+        int DelayEnd { get; set; }
+
+        /// <summary>
+        /// milliSeconds
+        /// </summary>
+        int DelayStart { get; set; }
 
         HorizontalMovementDirection Direction { get; set; }
 

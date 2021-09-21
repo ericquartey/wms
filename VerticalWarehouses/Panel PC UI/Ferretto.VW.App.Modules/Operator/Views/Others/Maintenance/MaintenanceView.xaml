@@ -142,7 +142,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalBayChainKilometers1, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
-                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers1}" />
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers1}"
+                                     Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}"/>
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="1"
@@ -150,7 +151,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalBayChainKilometers2, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
-                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers2}" />
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers2}" 
+                                     Visibility="{Binding IsBay2Operator, Converter={StaticResource BTVC}}"/>
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="2"
@@ -158,7 +160,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalBayChainKilometers3, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
-                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers3}" />
+                                     LabelText="{Resources:Loc OperatorApp.TotalBayKilometers3}" 
+                                     Visibility="{Binding IsBay3Operator, Converter={StaticResource BTVC}}"/>
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="3"
@@ -166,7 +169,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalVerticalAxisKilometers, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
-                                     LabelText="{Resources:Loc OperatorApp.TotalVerticalAxisKilometers}" />
+                                     LabelText="{Resources:Loc OperatorApp.TotalVerticalAxisKilometers}" 
+                                     Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}"/>
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="3"
@@ -174,7 +178,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalHorizontalAxisKilometers, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, StringFormat={}{0:F2}}"
-                                     LabelText="{Resources:Loc OperatorApp.TotalHorizontalAxisKilometers}" />
+                                     LabelText="{Resources:Loc OperatorApp.TotalHorizontalAxisKilometers}" 
+                                     Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}"/>
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Margin="0,15,0,0"
@@ -189,7 +194,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalLoadUnitsInBay2, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
-                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay2}" />
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay2}"
+                                     Visibility="{Binding IsBay2, Converter={StaticResource BTVC}}"/>
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="2"
@@ -197,7 +203,8 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Statistics.TotalLoadUnitsInBay3, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
-                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay3}" />
+                                     LabelText="{Resources:Loc OperatorApp.UnitsInBay3}"
+                                     Visibility="{Binding IsBay3, Converter={StaticResource BTVC}}"/>
         </Grid>
 
         <controls:PpcButton Grid.Row="2"

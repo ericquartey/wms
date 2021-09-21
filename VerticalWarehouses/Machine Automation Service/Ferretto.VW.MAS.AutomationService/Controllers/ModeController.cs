@@ -103,6 +103,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("shutdown")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult SetShutdown()
+        {
+            this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Shutdown);
+
+            return this.Accepted();
+        }
+
         #endregion
     }
 }

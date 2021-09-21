@@ -908,13 +908,13 @@ namespace Ferretto.VW.MAS.DeviceManager
                         var dataMessageRead = receivedMessage.Data as IInverterReadingFieldMessageData;
                         var msgReading = new InverterReadingMessageData();
 
-                        if (dataMessageRead != null)
-                        {
-                            var parameterData = new InverterParametersData(dataMessageRead.InverterParametersData);
-                            var iparameterData = new List<InverterParametersData>();
-                            iparameterData.Add(parameterData);
-                            msgReading.InverterParametersData = iparameterData;
-                        }
+                        //if (dataMessageRead != null)
+                        //{
+                        //    var parameterData = new InverterParametersData(dataMessageRead.InverterParametersData);
+                        //    var iparameterData = new List<InverterParametersData>();
+                        //    iparameterData.Add(parameterData);
+                        //    msgReading.InverterParametersData = iparameterData;
+                        //}
 
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
@@ -961,6 +961,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 this.Logger.LogDebug($"Emergency button status are [1:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
                 this.Logger.LogDebug($"Anti intrusion barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
+                this.Logger.LogDebug($"Anti intrusion inner barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay3}]");
                 this.Logger.LogDebug($"Micro carter status are [Left:{this.machineResourcesProvider.IsMicroCarterLeftSide}, Right:{this.machineResourcesProvider.IsMicroCarterRightSide}]");
 
                 var errorCode = MachineErrorCode.SecurityWasTriggered;
@@ -985,21 +986,24 @@ namespace Ferretto.VW.MAS.DeviceManager
                         .GetRequiredService<IErrorsProvider>()
                         .RecordNew(errorCode, BayNumber.BayThree);
                 }
-                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1)
+                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay1
+                    || this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay1)
                 {
                     errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
                     scope.ServiceProvider
                         .GetRequiredService<IErrorsProvider>()
                         .RecordNew(errorCode, BayNumber.BayOne);
                 }
-                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay2)
+                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay2
+                    || this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay2)
                 {
                     errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
                     scope.ServiceProvider
                         .GetRequiredService<IErrorsProvider>()
                         .RecordNew(errorCode, BayNumber.BayTwo);
                 }
-                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay3)
+                if (this.machineResourcesProvider.IsAntiIntrusionBarrierBay3
+                    || this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay3)
                 {
                     errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
                     scope.ServiceProvider

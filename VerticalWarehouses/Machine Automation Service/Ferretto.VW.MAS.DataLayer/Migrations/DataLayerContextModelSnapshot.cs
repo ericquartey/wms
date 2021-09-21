@@ -379,7 +379,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
+                    b.Property<int?>("VerticalDepositCompensationDelay");
+
                     b.Property<double?>("VerticalDepositOffset");
+
+                    b.Property<int?>("VerticalPickupCompensationDelay");
 
                     b.Property<double?>("VerticalPickupOffset");
 
@@ -892,6 +896,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 87,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 88,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1294,6 +1308,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("SerialNumber");
 
                     b.Property<bool>("Simulation");
+
+                    b.Property<int>("ToteBarcodeLength");
 
                     b.Property<int>("VerticalCyclesToCalibrate");
 

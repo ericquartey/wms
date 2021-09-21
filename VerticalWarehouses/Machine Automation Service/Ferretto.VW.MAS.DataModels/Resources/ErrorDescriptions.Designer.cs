@@ -349,7 +349,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inconsistenza stato sensori elevatore.
+        ///   Looks up a localized string similar to Invalid elevator presence sensors..
         /// </summary>
         public static string InvalidPresenceSensors {
             get {
@@ -588,6 +588,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string LoadUnitHeightFromBayExceeded {
             get {
                 return ResourceManager.GetString("LoadUnitHeightFromBayExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height too low.
+        /// </summary>
+        public static string LoadUnitHeightFromBayTooLow {
+            get {
+                return ResourceManager.GetString("LoadUnitHeightFromBayTooLow", resourceCulture);
             }
         }
         
@@ -975,6 +984,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string VerticalPositionChanged {
             get {
                 return ResourceManager.GetString("VerticalPositionChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical positioning error.
+        /// </summary>
+        public static string VerticalZeroHighError {
+            get {
+                return ResourceManager.GetString("VerticalZeroHighError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical positioning error.
+        /// </summary>
+        public static string VerticalZeroLowError {
+            get {
+                return ResourceManager.GetString("VerticalZeroLowError", resourceCulture);
             }
         }
         

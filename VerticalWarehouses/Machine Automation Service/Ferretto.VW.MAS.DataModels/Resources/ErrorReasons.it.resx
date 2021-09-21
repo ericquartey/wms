@@ -406,7 +406,7 @@
     <value>Il WMS ha risposto con un codice di errore</value>
   </data>
   <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
-    <value>Il cassetto è troppo alto per questa baia. Prelevalo con un'altra baia o muovilo manualmente</value>
+    <value>Il cassetto è troppo alto o troppo basso per questa baia. Prelevalo con un'altra baia o muovilo manualmente</value>
   </data>
   <data name="ElevatorUnderrunDetected" xml:space="preserve">
     <value>L'elevatore ha raggiunto il sensore di oltrecorsa in basso</value>
@@ -434,5 +434,14 @@
   </data>
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>Correggere il parametro tara del cassetto</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Il sensore di zero dell'asse verticale risulta attivo in una posizione alta. E' necessaria la calibrazione verticale</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Il sensore di zero dell'asse verticale non risulta attivo in una posizione bassa. E' necessaria la calibrazione verticale</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>L'altezza rilevata è inferiore alla minima. Verificare allineamento e pulizia delle barriere di misura</value>
   </data>
 </root>

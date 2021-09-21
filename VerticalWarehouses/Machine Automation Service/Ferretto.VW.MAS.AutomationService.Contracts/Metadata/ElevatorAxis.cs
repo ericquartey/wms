@@ -120,10 +120,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_UpperBound))]
             public double UpperBound { get; set; }
 
+            [Unit("s/10")]
+            [Range(0, 20)]
+            [Id(16)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalDepositCompensationDelay))]
+            public int? VerticalDepositCompensationDelay { get; set; }
+
             [Unit("mm")]
             [Id(11)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalDepositOffset))]
             public double? VerticalDepositOffset { get; set; }
+
+            [Unit("s/10")]
+            [Range(0, 20)]
+            [Id(17)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_VerticalPickupCompensationDelay))]
+            public int? VerticalPickupCompensationDelay { get; set; }
 
             [Unit("mm")]
             [Id(12)]

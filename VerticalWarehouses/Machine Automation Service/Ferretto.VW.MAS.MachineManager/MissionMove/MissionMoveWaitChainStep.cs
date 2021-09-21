@@ -68,7 +68,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     var lowerMission = this.MissionsDataProvider.GetAllActiveMissions().FirstOrDefault(m => m.LoadUnitId == lowerUnit.Id
-                        && m.MissionType != MissionType.IN);
+                        && m.MissionType != MissionType.IN
+                        && m.TargetBay == bay.Number
+                        && m.Step > MissionStep.New);
                     if (lowerMission != null)
                     {
                         if (lowerMission.Status == MissionStatus.Waiting)

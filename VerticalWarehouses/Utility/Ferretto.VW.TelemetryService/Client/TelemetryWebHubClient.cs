@@ -18,6 +18,8 @@ namespace Ferretto.VW.TelemetryService
 
         private readonly NLog.ILogger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly Uri logUri;
+
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
@@ -28,6 +30,8 @@ namespace Ferretto.VW.TelemetryService
             : base(uri)
         {
             this.serviceScopeFactory = serviceScopeFactory;
+            this.logUri = uri;
+            this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
         }
 
         #endregion
@@ -78,6 +82,11 @@ namespace Ferretto.VW.TelemetryService
         public async Task SendScreenShotAsync(int bayNumber, string serialNumber, DateTimeOffset timeStamp, byte[] screenshot)
         {
             await this.TrySendScreenShotAsync(serialNumber, bayNumber, timeStamp, screenshot, persistOnSendFailure: true);
+        }
+
+        public async Task SendServicingInfoAsync(string serialNumber, ServicingInfo servicingInfo)
+        {
+            await this.TrySendServicingInfoAsync(serialNumber, servicingInfo, persistOnSendFailure: true);
         }
 
         protected override async Task OnConnectedAsync()
@@ -163,6 +172,33 @@ namespace Ferretto.VW.TelemetryService
                 //    }
                 //}
 
+                this.logger.Debug("Send saved ServicingInfo");
+                foreach (var sInfo in realm.All<Models.ServicingInfo>().ToArray())
+                {
+                    var servicingInfo = new ServicingInfo()
+                    {
+                        InstallationDate = sInfo.InstallationDate,
+                        IsHandOver = sInfo.IsHandOver,
+                        LastServiceDate = sInfo.LastServiceDate,
+                        NextServiceDate = sInfo.NextServiceDate,
+                        ServiceStatusId = sInfo.ServiceStatusId,
+                        TimeStamp = sInfo.TimeStamp,
+                        TotalMissions = sInfo.TotalMissions
+                    };
+
+                    if (servicingInfo != null)
+                    {
+                        var success = await this.TrySendServicingInfoAsync(machine.SerialNumber, servicingInfo, persistOnSendFailure: false);
+                        if (success)
+                        {
+                            await realm.WriteAsync(r =>
+                            {
+                                r.Remove(sInfo);
+                            });
+                        }
+                    }
+                }
+
                 this.logger.Debug("Send saved ScreenShot");
                 foreach (var screenShot in realm.All<Models.ScreenShot>().ToArray())
                 {
@@ -195,6 +231,12 @@ namespace Ferretto.VW.TelemetryService
             return ioLogProvider.GetByTimeStamp(serialNumber, start, end);
         }
 
+        private Task OnConnectionStatusChanged(ConnectionStatusChangedEventArgs e)
+        {
+            this.logger.Info($"Connection {e.IsConnected} to {this.logUri}");
+            return Task.CompletedTask;
+        }
+
         private void SaveEntry(byte[] rawDatabaseContent)
         {
             var scope = this.serviceScopeFactory.CreateScope();
@@ -225,6 +267,14 @@ namespace Ferretto.VW.TelemetryService
 
             var missionLogProvider = scope.ServiceProvider.GetRequiredService<Providers.IMissionLogProvider>();
             await missionLogProvider.SaveAsync(serialNumber, missionLog);
+        }
+
+        private async Task SaveEntryAsync(string serialNumber, IServicingInfo servicingInfo)
+        {
+            var scope = this.serviceScopeFactory.CreateScope();
+
+            var servicingInfoProvider = scope.ServiceProvider.GetRequiredService<Providers.IServicingInfoProvider>();
+            await servicingInfoProvider.SaveAsync(serialNumber, servicingInfo);
         }
 
         private async Task SaveEntryAsync(string serialNumber, IScreenShot screenShot)
@@ -392,6 +442,31 @@ namespace Ferretto.VW.TelemetryService
                 };
 
                 await this.SaveEntryAsync(serialNumber, screenShot);
+            }
+
+            return messageSent;
+        }
+
+        private async Task<bool> TrySendServicingInfoAsync(string serialNumber, ServicingInfo servicingInfo, bool persistOnSendFailure)
+        {
+            var messageSent = false;
+
+            if (this.IsConnected)
+            {
+                try
+                {
+                    await this.SendAsync(nameof(ITelemetryHub.SendServicingInfo), serialNumber, servicingInfo);
+
+                    messageSent = true;
+                }
+                catch
+                {
+                }
+            }
+
+            if (!messageSent && persistOnSendFailure)
+            {
+                await this.SaveEntryAsync(serialNumber, servicingInfo);
             }
 
             return messageSent;

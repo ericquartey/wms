@@ -452,6 +452,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetBackupOnTelemetryAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetStandbyDbAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetStandbyDbAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetBackupOnServerAsync(bool enable);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1009,18 +1016,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveAssistedExternalBayAsync(ExternalBayMovementDirection direction, bool isPositionUpper, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction);
+        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveManualAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction);
+        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveManualExtDoubleAsync(ExternalBayMovementDirection direction, bool bypass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MovementForExtractionAsync(bool isUpperPosition);
@@ -1183,6 +1190,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetToteBarcodeLengthAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetToteBarcodeLengthAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsEnableAddItemAsync();
@@ -1817,6 +1831,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetManualAsync(System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetShutdownAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetShutdownAsync(System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -2404,11 +2425,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity);
+        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MissionOperation> ExecuteAsync(int id);
@@ -3517,6 +3538,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitTareError = 86,
     
+        VerticalZeroLowError = 87,
+    
+        VerticalZeroHighError = 88,
+    
+        LoadUnitHeightFromBayTooLow = 89,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -3910,6 +3937,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Error", Required = Newtonsoft.Json.Required.Always)]
         public bool Error { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("InverterId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? InverterId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsReadOnly", Required = Newtonsoft.Json.Required.Always)]
         public bool IsReadOnly { get; set; }
     
@@ -4070,8 +4100,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsInFullTest", Required = Newtonsoft.Json.Required.Always)]
         public bool IsInFullTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsIntoMachine", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsIntoMachine { get; set; }
+        [Newtonsoft.Json.JsonProperty("IsIntoMachineOK", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIntoMachineOK { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsIntoMachineOrBlocked", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsIntoMachineOrBlocked { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLaserOffset { get; set; }
@@ -4131,6 +4164,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public WarehouseSide Side { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("SupportType", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public SupportType SupportType { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -4177,6 +4215,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"Back")]
         Back = 2,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum SupportType
+    {
+        [System.Runtime.Serialization.EnumMember(Value = @"Undefined")]
+        Undefined = 0,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Insert")]
+        Insert = 1,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Above")]
+        Above = 2,
     
     }
     
@@ -4628,6 +4680,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Simulation", Required = Newtonsoft.Json.Required.Always)]
         public bool Simulation { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("ToteBarcodeLength", Required = Newtonsoft.Json.Required.Always)]
+        public int ToteBarcodeLength { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("VerticalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int VerticalCyclesToCalibrate { get; set; }
     
@@ -4751,8 +4806,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("UpperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("VerticalDepositCompensationDelay", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? VerticalDepositCompensationDelay { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("VerticalDepositOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? VerticalDepositOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("VerticalPickupCompensationDelay", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? VerticalPickupCompensationDelay { get; set; }
     
         [Newtonsoft.Json.JsonProperty("VerticalPickupOffset", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? VerticalPickupOffset { get; set; }
@@ -5085,9 +5146,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsToDo", Required = Newtonsoft.Json.Required.Always)]
         public bool IsToDo { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("MaintenanceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? MaintenanceDate { get; set; }
     
         public string ToJson() 
         {
@@ -5659,6 +5717,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("Lower", Required = Newtonsoft.Json.Required.Always)]
         public double Lower { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Offset", Required = Newtonsoft.Json.Required.Always)]
+        public double Offset { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Upper", Required = Newtonsoft.Json.Required.Always)]
         public double Upper { get; set; }
@@ -6985,37 +7046,41 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FirstTest3 = 19,
     
-        SwitchingToAutomatic = 20,
+        Shutdown = 20,
     
-        SwitchingToManual = 21,
+        SwitchingToAutomatic = 21,
     
-        SwitchingToManual2 = 22,
+        SwitchingToManual = 22,
     
-        SwitchingToManual3 = 23,
+        SwitchingToManual2 = 23,
     
-        SwitchingToLoadUnitOperations = 24,
+        SwitchingToManual3 = 24,
     
-        SwitchingToLoadUnitOperations2 = 25,
+        SwitchingToLoadUnitOperations = 25,
     
-        SwitchingToLoadUnitOperations3 = 26,
+        SwitchingToLoadUnitOperations2 = 26,
     
-        SwitchingToCompact = 27,
+        SwitchingToLoadUnitOperations3 = 27,
     
-        SwitchingToCompact2 = 28,
+        SwitchingToCompact = 28,
     
-        SwitchingToCompact3 = 29,
+        SwitchingToCompact2 = 29,
     
-        SwitchingToFullTest = 30,
+        SwitchingToCompact3 = 30,
     
-        SwitchingToFullTest2 = 31,
+        SwitchingToFullTest = 31,
     
-        SwitchingToFullTest3 = 32,
+        SwitchingToFullTest2 = 32,
     
-        SwitchingToFirstTest = 33,
+        SwitchingToFullTest3 = 33,
     
-        SwitchingToFirstTest2 = 34,
+        SwitchingToFirstTest = 34,
     
-        SwitchingToFirstTest3 = 35,
+        SwitchingToFirstTest2 = 35,
+    
+        SwitchingToFirstTest3 = 36,
+    
+        SwitchingToShutdown = 37,
     
     }
     
@@ -7892,8 +7957,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset CreationDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("destination", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Destination { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
         public double DispatchedQuantity { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fullyRequested", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FullyRequested { get; set; }
     
         [Newtonsoft.Json.JsonProperty("itemBarcode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemBarcode { get; set; }
