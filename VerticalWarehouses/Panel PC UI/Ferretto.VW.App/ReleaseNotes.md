@@ -31,6 +31,7 @@
 ## Bug Risolti
 - Telemetria: il database locale è ora in formato SqlLite
 - Compattazione: corretto in caso di celle Solo Spazio a metà scaffale
+- Correzione bugs per gestione contenitore esterno (Kohler)
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***

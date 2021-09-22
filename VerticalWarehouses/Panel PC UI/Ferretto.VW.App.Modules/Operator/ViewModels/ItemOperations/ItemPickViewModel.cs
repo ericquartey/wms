@@ -157,6 +157,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            // Handle the tote devices (use with barcode rules, be careful about the order of blocks)
+            var bIsToteManaged = this.ToteBarcodeLength > 0;
+            if (bIsToteManaged && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.PickBoxAsync(userAction.Code);
+                return;
+            }
+
             if (this.CanPickBoxes() && userAction.UserAction == UserAction.VerifyItem)
             {
                 await this.PickBoxAsync(userAction.Code);
@@ -169,8 +177,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            // Handle the tote devices
-            var bIsToteManaged = this.ToteBarcodeLength > 0;
+            // Handle the tote devices (use without barcode rules)
+            bIsToteManaged = this.ToteBarcodeLength > 0;
             if (bIsToteManaged && userAction.UserAction == UserAction.NotSpecified)
             {
                 await this.PickBoxAsync(userAction.Code);
@@ -541,6 +549,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         if (barcode.Length == this.ToteBarcodeLength &&
                             !string.IsNullOrEmpty(this.barcodeItem))
                         {
+                            // acquire the tote barcode
                             var toteBarcode = barcode;
 
                             this.Logger.Debug($"Confirm operation for: {this.barcodeItem} item, {toteBarcode} tote");
@@ -572,11 +581,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
-                            this.Logger.Debug($"Cache barcode item: {barcode}");
+                            if (string.IsNullOrEmpty(this.barcodeItem))
+                            {
+                                // acquire the item barcode
+                                this.Logger.Debug($"Cache barcode item: {barcode}");
 
-                            this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + barcode);
+                                var szMsg = Localized.Get("OperatorApp.ItemBarcodeAcquired") + barcode + ".    " + Localized.Get("OperatorApp.ToteBarcodeToAcquire");
+                                this.ShowNotification(szMsg);
 
-                            this.barcodeItem = barcode;
+                                // Handle a particular barcode item ("1P" prefix)
+                                if (barcode.StartsWith("1P", StringComparison.CurrentCulture) &&
+                                    barcode.Length >= 3)
+                                {
+                                    barcode = barcode.Substring(2);
+                                }
+
+                                this.barcodeItem = barcode;
+                            }
+                            else
+                            {
+                                // Invalid barcode tote
+                                this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                                this.barcodeItem = string.Empty;
+                            }
                         }
                     }
                     else

@@ -1767,4 +1767,7 @@
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Error on signalling defect operation.</value>
   </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Acquire tote ... </value>
+  </data>
 </root>

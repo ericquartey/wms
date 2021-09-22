@@ -2277,4 +2277,8 @@
     <value>Error on signalling defect operation.</value>
     <comment>Error Message</comment>
   </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Acquire tote ... </value>
+    <comment>Error Message</comment>
+  </data>
 </root>

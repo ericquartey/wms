@@ -1898,4 +1898,7 @@
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Errore operazione segnalazione difetto.</value>
   </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Acquisire il tote ... </value>
+  </data>
 </root>
