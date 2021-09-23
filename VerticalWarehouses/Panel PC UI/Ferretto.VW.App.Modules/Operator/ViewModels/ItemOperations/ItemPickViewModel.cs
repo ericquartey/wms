@@ -213,7 +213,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsAddItem = false;
             //this.CanInputAvailableQuantity = true;
-            this.CanInputAvailableQuantity = this.IsEnableAvailableQuantityEditingForArticleInPicking;
+            this.CanInputAvailableQuantity = this.IsEnableAvailableQtyItemEditingPick;
             this.CanInputQuantity = true;
             this.CloseLine = true;
             this.FullCompartment = false;

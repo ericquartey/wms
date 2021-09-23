@@ -148,10 +148,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         /*
-        [HttpPost("get/IsEnableAvailableQuantityEditingForArticleInPicking")]
-        public ActionResult<bool> IsEnableAvailableQuantityEditingForArticleInPicking()
+        [HttpPost("get/IsEnableQtyItemEditingPick")]
+        public ActionResult<bool> IsEnableQtyItemEditingPick()
         {
-            return this.Ok(this.machineProvider.IsEnableAvailableQuantityEditingForArticleInPicking());
+            return this.Ok(this.machineProvider.IsEnableQtyItemEditingPick());
         }
         */
 

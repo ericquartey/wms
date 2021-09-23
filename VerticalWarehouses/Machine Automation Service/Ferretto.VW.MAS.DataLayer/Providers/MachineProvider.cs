@@ -403,14 +403,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool IsEnableAvailableQuantityEditingForArticleInPicking()
+        public bool IsEnableQtyItemEditingPick()
         {
             var retValue = true;
             return retValue;
             /*
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsEnableAvailableQuantityEditingForArticleInPicking ?? false;
+                return this.dataContext.Machines.FirstOrDefault()?.IsEnableQtyItemEditingPick ?? false;
             }
             */
         }
