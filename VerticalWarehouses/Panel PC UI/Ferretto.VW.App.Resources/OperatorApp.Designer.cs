@@ -5056,6 +5056,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acquire tote ... .
+        /// </summary>
+        public static string ToteBarcodeToAcquire {
+            get {
+                return ResourceManager.GetString("ToteBarcodeToAcquire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit.
         /// </summary>
         public static string Unit {
