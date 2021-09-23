@@ -210,4 +210,7 @@
   <data name="ShutdownInProgress" xml:space="preserve">
     <value>Spegnimento del pannello in corso</value>
   </data>
+  <data name="BayPositionsDisabled" xml:space="preserve">
+    <value>Tutte le posizioni di baia sono disabilitate</value>
+  </data>
 </root>

@@ -30,8 +30,9 @@
 
 ## Bug Risolti
 - Telemetria: il database locale è ora in formato SqlLite
-- Compattazione: corretto in caso di celle Solo Spazio a metà scaffale
+- Compattazione: corretto un caso di celle Solo Spazio a metà scaffale
 - BIG: aggiunto controllo del sensore di presenza sui ripristini
+- BED: corretta gestione delle posizioni bloccate in baia
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***

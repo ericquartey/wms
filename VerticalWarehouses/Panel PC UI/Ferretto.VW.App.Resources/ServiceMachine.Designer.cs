@@ -79,6 +79,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All bay positions are disabled.
+        /// </summary>
+        public static string BayPositionsDisabled {
+            get {
+                return ResourceManager.GetString("BayPositionsDisabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel calibration failed. \r\n The bay chain is not in the zero position..
         /// </summary>
         public static string CalibrationCarouselFailedChainNotZeroPosition {

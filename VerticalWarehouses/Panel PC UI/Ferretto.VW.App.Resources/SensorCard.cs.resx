@@ -159,4 +159,10 @@
   <data name="Internal" xml:space="preserve">
     <value>Int.</value>
   </data>
+  <data name="InternalBlock" xml:space="preserve">
+    <value>--int.</value>
+  </data>
+  <data name="ExternalBlock" xml:space="preserve">
+    <value>--ext.</value>
+  </data>
 </root>

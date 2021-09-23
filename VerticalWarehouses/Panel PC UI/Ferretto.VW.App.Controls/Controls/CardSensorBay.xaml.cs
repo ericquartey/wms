@@ -254,8 +254,26 @@ namespace Ferretto.VW.App.Controls.Controls
 
             if (this.machineService.Bay.IsDouble && this.machineService.Bay.IsExternal)
             {
-                this.CardSensorLabel4 = this.CardSensorLabel5 = Localized.Get("SensorCard.Internal");
-                this.CardSensorLabel2 = this.CardSensorLabel3 = Localized.Get("SensorCard.External");
+                if (this.machineService.Bay.Positions.Any(p => p.IsUpper && p.IsBlocked))
+                {
+                    this.CardSensorLabel4 = Localized.Get("SensorCard.InternalBlock");
+                    this.CardSensorLabel2 = Localized.Get("SensorCard.ExternalBlock");
+                }
+                else
+                {
+                    this.CardSensorLabel4 = Localized.Get("SensorCard.Internal");
+                    this.CardSensorLabel2 = Localized.Get("SensorCard.External");
+                }
+                if (this.machineService.Bay.Positions.Any(p => !p.IsUpper && p.IsBlocked))
+                {
+                    this.CardSensorLabel3 = Localized.Get("SensorCard.ExternalBlock");
+                    this.CardSensorLabel5 = Localized.Get("SensorCard.InternalBlock");
+                }
+                else
+                {
+                    this.CardSensorLabel3 = Localized.Get("SensorCard.External");
+                    this.CardSensorLabel5 = Localized.Get("SensorCard.Internal");
+                }
 
                 this.CardSensorLabel6 = Localized.Get("SensorCard.Zero");
 

@@ -210,4 +210,7 @@
   <data name="ShutdownInProgress" xml:space="preserve">
     <value>Panel shutdown in progress</value>
   </data>
+  <data name="BayPositionsDisabled" xml:space="preserve">
+    <value>All bay positions are disabled</value>
+  </data>
 </root>
