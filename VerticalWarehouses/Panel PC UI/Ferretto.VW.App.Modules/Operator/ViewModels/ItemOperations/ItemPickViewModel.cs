@@ -212,7 +212,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsAddItem = false;
-            this.CanInputAvailableQuantity = true;
+            //this.CanInputAvailableQuantity = true;
+            this.CanInputAvailableQuantity = this.IsEnableAvailableQuantityEditingForArticleInPicking;
             this.CanInputQuantity = true;
             this.CloseLine = true;
             this.FullCompartment = false;

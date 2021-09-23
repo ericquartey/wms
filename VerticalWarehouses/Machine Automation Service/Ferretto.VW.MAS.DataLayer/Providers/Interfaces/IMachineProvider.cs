@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsEnableAddItem();
 
+        bool IsEnableAvailableQuantityEditingForArticleInPicking();
+
         bool IsHeartBeat();
 
         bool IsOneTonMachine();

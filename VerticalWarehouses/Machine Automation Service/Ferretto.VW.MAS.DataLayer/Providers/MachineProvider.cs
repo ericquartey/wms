@@ -403,6 +403,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsEnableAvailableQuantityEditingForArticleInPicking()
+        {
+            var retValue = true;
+            return retValue;
+            /*
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsEnableAvailableQuantityEditingForArticleInPicking ?? false;
+            }
+            */
+        }
+
         public bool IsHeartBeat()
         {
             lock (this.dataContext)

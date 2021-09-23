@@ -240,7 +240,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.availableQuantity, value, () =>
                  {
                      this.RaiseCanExecuteChanged();
-                     this.CanInputAvailableQuantity = true;
+                     //this.CanInputAvailableQuantity = true;
+                     this.CanInputAvailableQuantity = this.IsEnableAvailableQuantityEditingForArticleInPicking;
                      this.CanConfirmPresent = value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock;
                      this.CanInputQuantity = false;
                  });
@@ -421,6 +422,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isCurrentDraperyItem;
             set => this.SetProperty(ref this.isCurrentDraperyItem, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsEnableAvailableQuantityEditingForArticleInPicking { get; set; }
 
         public bool IsInputQuantityEnabled
         {
@@ -1143,6 +1146,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
             this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
+            this.IsEnableAvailableQuantityEditingForArticleInPicking = true; // await this.MachineIdentityWebService.IsEnableAvailableQuantityEditingForArticleInPicking();
 
             //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
 
@@ -1738,7 +1742,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 catch (Exception)
                 {
-                    this.CanInputAvailableQuantity = true;
+                    //this.CanInputAvailableQuantity = true;
+                    this.CanInputAvailableQuantity = this.IsEnableAvailableQuantityEditingForArticleInPicking;
                     this.CanInputQuantity = true;
                     this.AvailableQuantity = null;
                 }
@@ -1754,7 +1759,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
 
-            this.CanInputAvailableQuantity = true;
+            //this.CanInputAvailableQuantity = true;
+            this.CanInputAvailableQuantity = this.IsEnableAvailableQuantityEditingForArticleInPicking;
             this.CanInputQuantity = true;
         }
 
