@@ -159,4 +159,10 @@
   <data name="External" xml:space="preserve">
     <value>Kül.</value>
   </data>
+  <data name="InternalBlock" xml:space="preserve">
+    <value>--bel.</value>
+  </data>
+  <data name="ExternalBlock" xml:space="preserve">
+    <value>--kül.</value>
+  </data>
 </root>

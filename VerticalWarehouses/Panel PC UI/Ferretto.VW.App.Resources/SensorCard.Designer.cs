@@ -97,6 +97,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to --ext..
+        /// </summary>
+        public static string ExternalBlock {
+            get {
+                return ResourceManager.GetString("ExternalBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extra.
         /// </summary>
         public static string Extra {
@@ -138,6 +147,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Internal {
             get {
                 return ResourceManager.GetString("Internal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to --int..
+        /// </summary>
+        public static string InternalBlock {
+            get {
+                return ResourceManager.GetString("InternalBlock", resourceCulture);
             }
         }
         

@@ -1707,9 +1707,6 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
   </data>
-  <data name="ToteBarcodeAcquired" xml:space="preserve">
-    <value>Tote is acquired. Barcode: </value>
-  </data>
   <data name="UpBlock" xml:space="preserve">
     <value>--up</value>
   </data>
@@ -1719,16 +1716,10 @@
   <data name="DownBlock" xml:space="preserve">
     <value>--kάτω</value>
   </data>
-  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
-    <value>Invalid operation. Item and tote must be acquired.</value>
-  </data>
   <data name="DraperyItemFullyRequested" xml:space="preserve">
     <value>Drapery fully requested.</value>
   </data>
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Error on signalling defect operation.</value>
-  </data>
-  <data name="ToteBarcodeToAcquire" xml:space="preserve">
-    <value>Acquire tote ... </value>
   </data>
 </root>

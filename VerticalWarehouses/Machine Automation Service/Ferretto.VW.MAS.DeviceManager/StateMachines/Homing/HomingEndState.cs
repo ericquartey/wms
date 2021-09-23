@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -137,6 +138,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     var baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                     baysDataProvider.UpdateLastIdealPosition(bayChainPosition, this.machineData.RequestingBay);
                     baysDataProvider.UpdateLastCalibrationCycles(this.machineData.RequestingBay);
+
+                    var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
+                    var inverterMessage = new FieldCommandMessage(
+                        inverterDataMessage,
+                        "Update Inverter digital input status",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.DeviceManager,
+                        FieldMessageType.InverterSetTimer,
+                        (byte)this.machineData.CurrentInverterIndex);
+
+                    this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                    this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+                    this.ParentStateMachine.PublishFieldCommandMessage(
+                        new FieldCommandMessage(
+                            new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0),
+                        "Update Inverter status word status",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.DeviceManager,
+                        FieldMessageType.InverterSetTimer,
+                        (byte)this.machineData.CurrentInverterIndex));
                 }
                 //else if (this.machineData.AxisToCalibrate == Axis.Horizontal)
                 //{
