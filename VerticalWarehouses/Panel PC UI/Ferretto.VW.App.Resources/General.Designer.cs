@@ -106,6 +106,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMS error: Bad Request..
+        /// </summary>
+        public static string BadRequestTitle {
+            get {
+                return ResourceManager.GetString("BadRequestTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {

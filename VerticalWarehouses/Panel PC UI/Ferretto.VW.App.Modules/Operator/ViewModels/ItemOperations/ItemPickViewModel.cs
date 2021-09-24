@@ -425,7 +425,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsOperationConfirmed = false;
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx)
+                {
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {
@@ -666,21 +686,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = false;
                 this.IsOperationConfirmed = false;
-                if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                if (ex is MasWebApiException webEx)
                 {
-                    this.barcodeItem = string.Empty;
-                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
-                    if (isToteBarcodeManaged)
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
                     {
-                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                        this.barcodeItem = string.Empty;
+                        var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                        if (isToteBarcodeManaged)
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                        }
                     }
                     else
                     {
-                        this.ShowNotification(ex);
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
                     }
 
                     //throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
                 }
                 else
                 {

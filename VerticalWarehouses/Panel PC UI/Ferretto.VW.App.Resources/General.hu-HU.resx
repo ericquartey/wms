@@ -315,4 +315,7 @@
   <data name="ForbiddenOperation" xml:space="preserve">
     <value>A művelet nem engedélyezett</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>A lekérés megfogalmazása nem megfelelő.</value>
+  </data>
 </root>

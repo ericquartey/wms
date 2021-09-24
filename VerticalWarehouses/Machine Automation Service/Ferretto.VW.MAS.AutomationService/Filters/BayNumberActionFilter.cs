@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
-                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
+                        Title = Resources.General.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual),
                         Detail = "The Bay-Number request header was not found.",
                     });
                 }
@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                     {
                         context.Result = new BadRequestObjectResult(new ProblemDetails
                         {
-                            Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
+                            Title = Resources.General.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual),
                             Detail = "Cannot parse bay number.",
                         });
                     }

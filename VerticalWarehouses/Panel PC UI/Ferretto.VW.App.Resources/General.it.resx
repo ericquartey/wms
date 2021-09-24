@@ -320,4 +320,7 @@
   <data name="LotManagedProduct" xml:space="preserve">
     <value>Specificare il lotto per questo articolo</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Errore WMS: Richiesta non corretta</value>
+  </data>
 </root>
