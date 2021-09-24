@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 Bay = (int)message.RequestingBay,
                 CreationDate = messageData.CreationDate,
                 Destination = messageData.Destination.ToString(),
-                CellId = messageData.DestinationCellId,
+                CellId = messageData.DestinationCellId.HasValue ? messageData.DestinationCellId : messageData.SourceCellId,
                 LoadUnitId = messageData.LoadUnitId.Value,
                 MissionId = messageData.MissionId.Value,
                 MissionType = messageData.MissionType.ToString(),
