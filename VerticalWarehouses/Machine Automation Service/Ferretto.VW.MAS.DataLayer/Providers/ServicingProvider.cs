@@ -467,8 +467,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 ServicingInfo si = this.dataContext.ServicingInfo
                    .Include(s => s.Instructions)
                    .ThenInclude(e => e.Definition)
-                   .Include(s => s.MachineStatistics)
-                   .Where(s => s.Id == s.MachineStatisticsId).LastOrDefault();
+                   .Include(s => s.MachineStatistics).LastOrDefault();
                 return si;
             }
         }

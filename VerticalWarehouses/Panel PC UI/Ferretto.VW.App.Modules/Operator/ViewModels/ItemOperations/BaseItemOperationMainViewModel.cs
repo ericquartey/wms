@@ -16,6 +16,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
 
@@ -961,7 +962,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx)
+                {
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
                 this.IsBusyConfirmingOperation = false;
                 this.IsOperationConfirmed = false;
             }
@@ -1085,7 +1106,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx)
+                {
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
                 this.IsBusyConfirmingPartialOperation = false;
                 this.IsOperationConfirmed = false;
             }
@@ -1260,7 +1301,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsOperationConfirmed = false;
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx)
+                {
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {

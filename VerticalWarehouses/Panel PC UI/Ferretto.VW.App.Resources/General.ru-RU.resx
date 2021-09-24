@@ -312,4 +312,7 @@
   <data name="TokenStatus" xml:space="preserve">
     <value>Статус маркера</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Неправильный запрос.</value>
+  </data>
 </root>

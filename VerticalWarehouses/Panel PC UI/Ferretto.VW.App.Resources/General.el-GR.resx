@@ -312,4 +312,7 @@
   <data name="TokenStatus" xml:space="preserve">
     <value>Κατάσταση συμβόλου</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Κακό αίτημα.</value>
+  </data>
 </root>

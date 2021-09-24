@@ -309,4 +309,7 @@
   <data name="TokenStatus" xml:space="preserve">
     <value>Status tokena</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Zahtjev nije pravilno formuliran.</value>
+  </data>
 </root>
