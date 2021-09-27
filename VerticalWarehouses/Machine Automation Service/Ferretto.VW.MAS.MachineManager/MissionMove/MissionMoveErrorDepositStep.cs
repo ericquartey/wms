@@ -363,9 +363,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && bay.Shutter != null
                         && bay.Shutter.Type != ShutterType.NotSpecified
                         && this.Mission.ErrorMovements == MissionErrorMovements.None
-                        && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)   // cannot move shutter if load unit is not in center
                         )
                     {
+                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        {
+                            // shutter not open and load unit partially out of elevator: not allowed!
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.LoadUnitShutterInvalid, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
                         // in the first movement the shutter always goes to Opened
                         this.Mission.OpenShutterPosition = ShutterPosition.Opened;
                         this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start 1 Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
