@@ -277,6 +277,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode service error.
+        /// </summary>
+        public static string BarcodeServiceError {
+            get {
+                return ResourceManager.GetString("BarcodeServiceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {
@@ -2199,6 +2208,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GeneralInfoWmsStatus {
             get {
                 return ResourceManager.GetString("GeneralInfoWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid value.
+        /// </summary>
+        public static string GenericValidationError {
+            get {
+                return ResourceManager.GetString("GenericValidationError", resourceCulture);
             }
         }
         

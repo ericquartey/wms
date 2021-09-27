@@ -303,7 +303,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.subscriptionToken = this.healthProbeService.HealthStatusChanged
                 .Subscribe(
-                    this.OnHealthStatusChanged,
+                    async (e) => await this.OnHealthStatusChangedLocalAsync(e),
                     ThreadOption.UIThread,
                     false);
 
@@ -375,7 +375,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
+        private async Task OnHealthStatusChangedLocalAsync(HealthStatusChangedEventArgs e)
         {
             if (e is null)
             {
@@ -394,6 +394,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionLost"), Services.Models.NotificationSeverity.Error);
                 this.RaiseCanExecuteChanged();
+            }
+
+            if (e.HealthWmsStatus == HealthStatus.Healthy)
+            {
+                await this.barcodeReaderService.StartAsync();
+                await this.SetUsers();
+            }
+            else
+            {
+                await this.barcodeReaderService.StopAsync();
             }
         }
 

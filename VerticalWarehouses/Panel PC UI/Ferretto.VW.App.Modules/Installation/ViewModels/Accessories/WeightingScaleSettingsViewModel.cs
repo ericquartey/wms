@@ -74,7 +74,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    this.ShowNotification(App.Resources.Localized.Get("OperatorApp.GenericValidationError"), Services.Models.NotificationSeverity.Error);
+                    return;
                 }
 
                 if (this.SetProperty(ref this.port, value))

@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value));
+                    this.ShowNotification(App.Resources.Localized.Get("OperatorApp.GenericValidationError"), Services.Models.NotificationSeverity.Error);
                 }
 
                 if (this.SetProperty(ref this.port, value))
@@ -155,6 +155,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.zOffsetLowerPosition;
             set
             {
+                if (value < 0)
+                {
+                    this.ShowNotification(App.Resources.Localized.Get("OperatorApp.GenericValidationError"), Services.Models.NotificationSeverity.Error);
+                    return;
+                }
                 if (this.SetProperty(ref this.zOffsetLowerPosition, value))
                 {
                     this.AreSettingsChanged = true;
@@ -168,6 +173,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.zOffsetUpperPosition;
             set
             {
+                if (value < 0)
+                {
+                    this.ShowNotification(App.Resources.Localized.Get("OperatorApp.GenericValidationError"), Services.Models.NotificationSeverity.Error);
+                    return;
+                }
                 if (this.SetProperty(ref this.zOffsetUpperPosition, value))
                 {
                     this.AreSettingsChanged = true;

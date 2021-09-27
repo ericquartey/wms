@@ -1779,4 +1779,7 @@
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Error on signalling defect operation.</value>
   </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Neplatná hodnota</value>
+  </data>
 </root>

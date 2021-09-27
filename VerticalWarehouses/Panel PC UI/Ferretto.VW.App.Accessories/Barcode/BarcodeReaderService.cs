@@ -118,6 +118,7 @@ namespace Ferretto.VW.App.Accessories
 
             try
             {
+                this.logger.Info("Start barcode service");
                 var accessories = await this.accessoriesWebService.GetAllAsync();
                 this.isDeviceEnabled = accessories.BarcodeReader?.IsEnabledNew == true;
                 if (this.isDeviceEnabled)
@@ -148,7 +149,7 @@ namespace Ferretto.VW.App.Accessories
             catch (Exception ex)
             {
                 this.isStarted = false;
-                this.NotifyError($"Impossibile comunicare con il lettore di codici a barre. {ex.Message}");
+                this.NotifyError($"{Resources.Localized.Get("OperatorApp.BarcodeServiceError")}. {ex.Message}");
             }
         }
 
@@ -166,6 +167,7 @@ namespace Ferretto.VW.App.Accessories
 
             try
             {
+                this.logger.Info("Stop barcode service");
                 this.deviceDriver.Disconnect();
                 this.ruleSet = Array.Empty<BarcodeRule>();
             }
