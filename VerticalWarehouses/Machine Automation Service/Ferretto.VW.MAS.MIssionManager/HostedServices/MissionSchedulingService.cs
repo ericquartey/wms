@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
             var missionToRestore = activeMissions
-                .OrderByDescending(o => o.Status)
+                .OrderBy(o => o.Status)
                 .ThenBy(t => t.RestoreStep)
                 .FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
                     && x.IsMissionToRestore());
