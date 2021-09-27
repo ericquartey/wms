@@ -100,6 +100,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<MachineProvider> logger;
 
+        private readonly IMachineVolatileDataProvider machineVolatile;
+
         #endregion
 
         #region Constructors
@@ -108,12 +110,14 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             ILogger<MachineProvider> logger,
             IMemoryCache cache,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMachineVolatileDataProvider machineVolatile)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
         }
 
         #endregion
@@ -236,7 +240,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             // Retrieve the path of primary database file
             //      example: "Database/MachineAutomationService.Simulation.Primary.db"
-            var filePath = GetDBFilePath(this.configuration.GetDataLayerPrimaryConnectionString());
+            var filePath = GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
             var exist = File.Exists(filePath);
             if (!exist)
             {
@@ -293,7 +297,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             */
 
-            this.logger.LogInformation($"Retrieve raw database content from file {filePath}");
+            this.logger.LogInformation($"Retrieve raw secondary (is ok: {this.machineVolatile.IsStandbyDbOk}) database content from file {filePath}");
             return rawDatabase;
         }
 

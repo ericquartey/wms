@@ -1863,4 +1863,7 @@
   <data name="DownBlock" xml:space="preserve">
     <value>--alsó</value>
   </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Az érték nem érvényes</value>
+  </data>
 </root>

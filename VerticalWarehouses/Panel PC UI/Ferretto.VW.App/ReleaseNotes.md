@@ -29,11 +29,12 @@
 - Aggiunta lingua ungherese
 
 ## Bug Risolti
-- Telemetria: il database locale è ora in formato SqlLite
+- Telemetria: corretti vari errori (il database locale è ora in formato SqlLite)
 - Compattazione: corretto un caso di celle Solo Spazio a metà scaffale
 - BIG: aggiunto controllo del sensore di presenza sui ripristini
 - Correzione bugs per gestione contenitore esterno (Kohler)
 - BED: corretta gestione delle posizioni bloccate in baia
+- Gli utenti si ricaricano alla riconnessione con WMS
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***
