@@ -1187,7 +1187,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
             this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
-            this.IsEnableAvailableQtyItemEditingPick = true; // await this.MachineIdentityWebService.IsEnableQtyItemEditingPick();
+            this.IsEnableAvailableQtyItemEditingPick = await this.machineIdentityWebService.IsEnableQtyItemEditingPickAsync();
 
             //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
 

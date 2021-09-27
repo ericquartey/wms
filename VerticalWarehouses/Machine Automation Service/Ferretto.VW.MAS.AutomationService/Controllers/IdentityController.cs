@@ -147,13 +147,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsEnableAddItem());
         }
 
-        /*
         [HttpPost("get/IsEnableQtyItemEditingPick")]
         public ActionResult<bool> IsEnableQtyItemEditingPick()
         {
             return this.Ok(this.machineProvider.IsEnableQtyItemEditingPick());
         }
-        */
 
         [HttpPost("get/IsRequestConfirmForLastOperationOnLoadingUnit")]
         public ActionResult<bool> IsRequestConfirmForLastOperationOnLoadingUnit()
