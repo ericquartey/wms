@@ -1,0 +1,2469 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>A szíj bejáratása</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Le</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Előre</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Lecsatlakozva</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Redőny</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Emelő</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Kézi vezérlés</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Nem ég</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Ég</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Fel</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Függőleges tengely origó</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>A függőleges tengely origóba állítása nem történt meg.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Alsó határ (mm)</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Eltolás (mm)</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Eredmény</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Felbontás (imp/mm)</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Kezdés</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Felső határ (mm)</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Munkaállomások</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Bölcső</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Benyúlásvédő fényfüggöny</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Kiválasztott bölcsőmotor</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Kiválasztott emelőmotor</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Vészhelyzeti végálláskapcsoló</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>UDC jelenléte a gép oldali bölcsőn</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>UDC jelenléte a kezelő oldali bölcsőn</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Bal oldali védőburkolat mikrokapcsolója</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Jobb oldali védőburkolat mikrokapcsolója</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Vészleállító nyomógomb</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Aktív biztonsági funkció</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Retesz nulla szenzora </value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Függőleges tengely nulla szenzora</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Redőnyteszt</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Elmozdult</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Kezdeti pozícióra lép</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Kezdeti pozíció (mm)</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Új felbontás (imp/mm)</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Jelenlegi felbontás (imp/mm)</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Mért mozgástartomány (mm)</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Függőleges tengely felbontási kalibrációja</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Zárt</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Végrehajtott ciklusok (munkamenet)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Aktuális pozíció (mm)</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Késleltetés a ciklusok között (s)</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Nyitott</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Lekért ciklusok</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Redőnyteszt, 1. munkaállomás</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Jelenlegi pozíció (mm)</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Fényfüggöny korrekciója (mm)</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Fényfüggöny beállítása, tálcamagasság mérése, 1. munkaállomás</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Sebesség (mm/s)</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Rendszerhiba (mm)</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Lekért tűrés (+/-) (mm)</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Függőleges tengely eltolási kalibrációja</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Súlyellenőrzés</value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Lekért tűrés (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Megadott súly (kg)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Mért súly (kg)</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Tesztútvonal (mm)</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Korrigált eltolás (mm)</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Tényleges eltolás (mm)</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Eljárás bezárása</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>A kiválasztott rekesz pozícióértéke (mm)</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Lépés értéke (mm)</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Rekesz pozícióértéke (mm)</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Kiválasztott rekesz</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Tényleges panel</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Panel korrekciója (mm)</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Panelek összesen:</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Hátra</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Elülső</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Korrekciók</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Telepítési állapot</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>A szíj bejáratása</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Függőleges tengely origó</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Függőleges tengely felbontása</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Rekeszmagasságok ellenőrzése</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Mért kezdeti pozícióérték (mm)</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Elmozdult a pozícióba</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Rekesz pozícióérték korrekciója (mm)</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Függőleges eltolás ellenőrzése</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>A. redőnyszenzor</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>B. redőnyszenzor</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Végső pozícióérték (mm)</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Eljárás indítása</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Eljárás bezárása</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Következő panel</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Konzolpanelek pozícióellenőrzése</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>Leolvasott végleges pozícióérték (mm)</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Elért magasság</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Emelő</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Rekeszcsoportok pozícióértékének módosítása</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Kezdeti rekesz</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Végső rekesz</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Lekért korrekció (mm)</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Kiválasztott oldal</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Tálcák betöltése.</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Tálcák összesen</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Max. teherbírás (kg)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Behelyezett tálcák</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Betárolandó tálca</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Következő tálca</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Bevitel megkezdése</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Első tálca betöltése és a rekeszek tesztje</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Összes tesztelendő rekesz</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Összes tesztelt rekesz</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Tesztfázisban lévő rekesz</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Betárolandó tálca</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Tálca maximális teherbírása (kg)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Tálca bevitele</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Tálca behívása</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Munkaállomás pozíciójának ellenőrzése</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Pozíció a munkaállomáson</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Munkaállomás pozícióértéke (mm)</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Aktuális pozíció (mm)</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>A korrekció értéke (mm)</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Következő pozíció</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Tálca berakodási/kirakodási tesztje a munkaállomáson.</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Előrehaladási sebesség %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Lekért ciklusok</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Lánc aktuális pozíciója (mm)</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Végrehajtott ciklusok</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Ciklus leállítása</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Ciklus indítása</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Figyelem:</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>A kézi parancsok jelenleg engedélyezve vannak kis elmozdulások alacsony sebességű elvégzésére reteszelések nélkül.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Konfigurációs fájl mentése.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Konfigurációs fájl helyreállítása.</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Kiválasztott mappa</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Konfiguráció mentése</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Mentés megerősítése</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Mentés visszavonása</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Konfiguráció betöltése</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Betöltés megerősítése</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Betöltés visszavonása</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Vízszintes tengely kalibrációja befejeződött</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Vízszintes tengely kalibrációja folyamatban ({0} per {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Vízszintes tengely kalibrációjának indítása </value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Motorcsere befejezve</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Motorcsere megkezdve</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Függőleges tengely kalibrációja folyamatban ({0} per {1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Függőleges tengely kalibrációjának indítása</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Függőleges tengely kalibrációs hiba ({0} per {1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Vízszintes tengely kalibrációs hiba ({0} per {1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Tengelycsere hiba</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Behívás rekeszből munkaállomásra</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Betöltés munkaállomásról rekeszbe</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Tálca betöltése és tálca behívása</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Inicializálás...</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>1. munkaállomás</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>2. munkaállomás</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>3. munkaállomás</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Redőnyteszt, a munkaállomásról</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Zárt</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>Félúton</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Nyitott</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>1. lépés</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>2. lépés</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Rekesz oldal</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Alsó pozíció</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Felső pozíció</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Elmozdulás (mm)</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Külső munkaállomás</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Korrekció alkalmazása</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>A tálca ID megadása</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Ellenőrzés</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Oldal</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Munkaállomás</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Munkaállomás pozíciója</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Függőleges pozíció (mm)</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Tálca a munkaállomáson</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Munkaállomásra lép</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Rekeszek</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Emelő</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Berakodott tálca</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Tálca súlya (kg)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Vízszintes pozíció (mm)</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>Az eljárás megszakítva.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Újrabeállítás</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Végrehajtott ciklusok (összesítve)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Előre</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Súlyelemzés</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Tálca tára (kg)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Nettó súly (kg)</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>A tűzfal engedélyezve van ezen a terminálon.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Az eljárás befejeződött.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>Magasságra áll</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Pozícióérték</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Megerősíti a műveletet?</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Tálca ID</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Munkaállomás kalibrálása</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Karusszel le</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Karusszel fel</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Lánc kalibrálása</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Tálca száma</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Redőny zárása</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Redőny nyitása</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Tálcára lép</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>UDC jelenléte a gép oldalon</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>UDC jelenléte a kezelői oldalon</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Az információ frissítése megtörtént.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>A mentés sikeresen befejeződött</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Célrekesz ID</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Tálca behelyezése a munkaállomásról a rekeszbe</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Lánc nulla</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>A tálca áthelyezése az egyik rekeszről a másikra</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Tálca eltávolítása (mozgatás a rekesztől a munkaállomásra)</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Tálca kivételének megerősítése</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Redőnyteszt</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Alsó poz. értéke (mm)</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Felső poz. értéke (mm)</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Jelenlét alsó poz.</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Jelenlét felső poz.</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Tálca felső poz.-ban</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Tálca alsó poz.-ban</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Tálcakód</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Rekesz</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>A helyreállítás sikeresen befejeződött</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Helyreállítás</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportálás</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>A fájl megtalálható az eszközön</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Helyezze be a helyreállító fájlt tartalmazó eszközt - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Fájlolvasási hiba</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Az exportálás sikeresen befejeződött</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Megerősíti a fájl felülírását?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>Egy fájl már található az eszközön.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Helyreállítás megerősítése</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>A konfiguráció helyreállítása</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Biztosan alkalmazza a konfigurációt?</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Ismeretlen</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>A teszt sikeresen befejeződött</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Hátsó</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Súlymérés elvégzése</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Mérés elvégzése</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Betöltés</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Kirakodás</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Pozíció</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Rekesz {0}</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>A állomáson {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Teszt</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Vezetett mozgások</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Kézi mozgások</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Kalibrálás</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Elért magasság</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Gép reset</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>A gép reset sikeresen befejeződött.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Redőny le</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Redőny fel</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Alsó</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Magas</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Fényfüggöny kalibrálása</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Biztonság</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Biztonsági szenzorok</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Óra</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Év</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Hónap</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Nap</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Perc</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 A rendszerdátum és -idő</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>WMS automatikus szinkronizálás</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Dátum és idő kézi beállítása</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>A megadott dátum és/vagy idő nem érvényes.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Megerősíti a frissítést: {0} '{1}' ?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Frissítés megerősítése</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>A frissítés sikeresen befejeződött.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Hiba a frissítés kezdeti fázisában.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>A(z) {0} importálható konfigurációs fájl importálása</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Elérhető archiválási egységek.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importálás</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>{0} konfiguráció áll rendelkezésre az importáláshoz.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Az archiválási egységek már nem érhetőek el.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Importálás NEM lehetséges a(z) "{0}" fájlból.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Importálás lehetséges a(z) "{0}" fájlból.</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Kiind.</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Telepítő app sikeresen elindítva.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Hiba a telepítő app végrehajtása során.</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>A rekesz nem érvényes</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>Az InputFormCellId pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>Az InputFormCellId szükséges.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>Az InputToCellId pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>Az InputToCellId szükséges.</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>A lépésnek pozitívnak kell lennie.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>A lépés szükséges.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>A módosítás sikeresen megtörtént</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Függőleges tengely eltolása frissítve</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>A szíj bejáratása</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>a megadott cella nem szabad</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>A kiválasztott cella nincs jelen.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Ki kell választani egy cellát.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>A fájlok checksum ellenőrzése megfelelően befejeződött.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>'{0}' ideiglenes mappa törlése.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>A célpozíciónak szigorúan pozitívnak kell lennie.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>A célpozíció a(z) ({0}) tengelyek tartományán kívül van.</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>DestinationPosition szükséges.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Kivett {0} tálca ID</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Hiba a(z) {0} fájl ellenőrzése során.</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Hiba a fájl checksum ellenőrzésében:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Hiba a(z) {0} fájl ellenőrzése során. Nem található checksum.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Hiba az ideiglenes mappa törlése során:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Hiba a fájl kitömörítése során:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Indítási hiba:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>A kitömörítés sikeresen befejeződött.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Szabad rekeszre lép</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Vízszintes tengely mozgatása folyamatban...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>Az InputDelayBetweenCycles szigorúan pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>Az InputDelayBetweenCycles szükséges.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>Az InputDisplacement szigorúan pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>Az InputDisplacement szükséges.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>Az InputNetWeight szigorúan pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>Az InputNetWeight szükséges.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>Az InputWeightRequired szigorúan pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>Az InputWeightRequired szükséges.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>A megadott rekesz ID nem érvényes</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>A rekesz ID a tálcán nem érvényes</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>A célállomás kiválasztási típusa nem érvényes</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>A tálca ID a munkaállomáson nem érvényes</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>A kiválasztott tálca nem érvényes</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>A bevitt tálca ID nem érvényes</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>A kiindulás kiválasztási típusa nem érvényes</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>A LoadingUnitId szigorúan pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>A LoadingUnitId szükséges.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>A mért pozíció a tengelyek tartományán kívül van ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Sikertelen művelet.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>A szükséges ciklusszám elvégezve.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>'{0}' fájlok checksum ellenőrzésének kezdése.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Fájlok kitömörítése innen: '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>'{0}' alkalmazás indítása.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>A start pozíciónak szigorúan pozitívnak kell lennie</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>A start pozíció a tengelyek tartományán kívül van ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>A TestToRun szigorúan pozitív kell, hogy legyen.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Függőleges tengely mozgása folyamatban...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>A súly tűrésének határozottan pozitívnak kell lennie.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Tálcaműveletek</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Tömör</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Karusszel kalibrációja</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>Az InputDelay nagyobb kell, hogy legyen, mint 0</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>Az InputLowerBound nagyobb kell hogy legyen, mint az InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>Az InputLowerBound nagyobb kell hogy legyen, mint {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>Az InputLowerBound nagyobb kell hogy legyen, mint 0</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>Az InputLowerBound szükséges.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>Az InputRequiredCycles nagyobb kell hogy legyen, mint 0</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>Az InputRequiredCycles szükséges.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>Az InputUpperBound nagyobb kell hogy legyen, mint az InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>Az InputUpperBound nagyobb kell hogy legyen, mint {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>Az InputUpperBound nagyobb kell hogy legyen, mint 0</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>Az InputUpperBound szükséges.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Felső pozíció ellenőrzése</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Állítsa az emelőt a munkaállomás magasságába és nyissa ki a redőnyt, ha van.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Új alsó poz. értéke (mm)</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Új felső poz. értéke (mm)</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Ellenőrizze az illeszkedést a munkaállomás és az emelő között. Ha nem illeszkednek, korrigálja az emelő pozícióját.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>A módosítások megerősítése.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Alsó pozíció ellenőrzése</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Emelő elmozdult</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Nem történt módosítás.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Ellenőrizze az új pozíciókat és nyomja meg a Mentés gombot a módosítások érvényesítéséhez.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Tengelyköz (mm)</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Következő</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>Első teszt</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>A kiválasztott rekesz blokkolt</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Kezdés előtt</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Kalibráció folyamatban...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Végezze el a munkaállomás kalibrálási eljárását, a konzolt a szenzorhoz állítva.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>A kezdés előtt ellenőrizze, hogy nincsenek-e tálcák a munkaállomáson. Nyomja meg a KEZDÉS gombot az eljárás elindításához</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Befejezés</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Korrekció megerősítése</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Hiba (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Hátralévő idő</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Ismétlés</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Nyomja meg az Ismétlés gombot az eljárás ismételt elvégzéséhez.</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Válassza a + gombot, ha szenzor felett van, illetve a - gombot, ha alatta, és alkalmazza a korrekciót a Korrekció Alkalmazása gombbal</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Fázisban történő leállítás folyamatban...</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Eljárás leállítása</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Elvégzett emelések</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Felülvizsgálat megerősítése</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálca áthelyezését a kiinduló rekeszből a célrekeszbe. Az eljárás elindításához adja meg a tálca azonosítószámát, a célrekesz azonosítószámát, majd nyomja meg a Kezdés gombot.</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálca áthelyezését a kiinduló munkaállomásról a célrekeszbe. A folyamat elindításához adja meg a tálca azonosítóját, majd nyomja meg a Kezdés gombot</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Válassza ki a tálca felvételi pozícióját</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>A tálca áthelyezése az egyik munkaállomásról a másikra</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálca áthelyezését a kiinduló munkaállomásról a célállomásra. A folyamat elindításához adja meg a tálca azonosítóját, majd nyomja meg a Kezdés gombot</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Válassza ki a tálca célpozícióját</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálca eltávolítását. A folyamat elindításához adja meg a tálca azonosítóját, majd nyomja meg a Kezdés gombot</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Tálcák kezelése</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Válassza ki a tálca célpozícióját</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Új eltolás megerősítése</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Korrigálja az emelő pozícióját, amíg tökéletesen nem illeszkedik, és nyomja meg az Előre gombot.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Áramerősség [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Végezze el egy rekesz mérését</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Pozicionálja az emelőt egy rekesz elé.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Végezze el a kiindulási kalibrációt</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Állítsa az emelőt olyan magasságba, amely lehetővé teszi a mérőműszer rögzítését.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Az emelő pozícióba állítása</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Magasságra áll</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Új eltolás [mm]</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>A mérő rögzítése</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Távolítsa el az egyik oldalsó védőburkolatot és helyezze el a mérőt. Fejezze be a műveletet a védőburkolat visszahelyezésével és az üzemképes állapot visszaállításával.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>Az eltolás az imént elvégzett megváltoztatása miatt ismételten el kell végezni a függőleges tengely origójának kalibrálását. A kezdéshez nyomja meg a Kezdés gombot.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Kiválasztott rekesz</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Kiindulási pozíció</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Idő [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Ellenőrizze a számított eltolás új értékét, és nyomja meg a Mentés gombot a módosítás érvényesítéséhez. Minden ezt követő pozicionálás figyelembe veszi a korrekciót.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Teljes teszt</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a gépen található összes tálca teljes tesztjének elvégzését. A folyamat elindításához adja meg a ciklusszámot, majd nyomja meg a Kezdés gombot</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Munkamenet-ciklusok</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Tényleg alkalmazza a korrekciót?</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>A mérő rögzítése:</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Megerősíti a kalibrációs eljárást?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Az új felbontás megerősítése:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Célpozíció</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Állítsa az emelőt olyan magasságba, amely lehetővé teszi a mérőműszer rögzítését.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Végezze el az első mérést (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Végezze el a második mérést (2/2):</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Jelölje a mért pozíciót a mérővel és nyomja meg az Előre gombot</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Mért pozíció</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>A következő eredmény módosítja a gép LowerBound értékét, folytatja?</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Tényleg nullázni kívánja az elvégzett ciklusok teljes számát?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Mentés</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Meg kívánja kezdeni az eljárást</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Teszt fázisban leállítva</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Ellenőrizze a számított felbontás új értékét, és nyomja meg a Mentés gombot a módosítás érvényesítéséhez</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Új felbontás</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Megerősíti az előző verzió visszaállítását?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Visszaállítás folyamatban...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>A visszaállítás hibákkal fejeződött be</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>'{0}' telepítési snapshot fájl törlése.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Hiba a snapshot fájl törlése során.</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Tálcák kezelése</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Átlagos áramerősség [A]</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Tálca behívása</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Várja meg az eljárás végét, szükség esetén „STOP” gomb az azonnali leállításhoz, és „ELJÁRÁS LEÁLLÍTÁSA” a fázisban történő leállításhoz.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>A rekeszek szerkesztése</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Rekeszek kezelése</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Ellenőrizze, a tálca jelenlétét érzékelő fotocellák beállítását, ha nincsenek beállítva, az emelő elakadhat a gép legfelső részén.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Panelek ellenőrzése:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Fotocellák ellenőrzése:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Tálca eltávolítása</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Emelő hátra</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Emelő le</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Emelő előre</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Emelő fel</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Tálca visszatérés</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Rekeszre lép</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Tálca bevitele</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Az eljárás nem fejeződött be</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Ismételje meg az eljárást, ha nem fejeződött be megfelelően</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Tálca mentése</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Tesztelt panelek</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Összes befejezett ciklus</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Tálcák</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>A tálcák szerkesztése</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Fényfüggöny kalibrációja</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Munkaállomás mérése</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Bal oldal kalibrációja [mm]</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Kalibrálás eredménye:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Jobb oldal kalibrációja [mm]</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Az adatnak pozitívnak kell lennie.</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Emelő pozícióban:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Fényfüggöny korrekciója</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} telepítési fájl található</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>bal</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Bal oldal mérése</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>A megengedett maximum érték 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>Az érték hiányzik</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Nem található telepítési fájl</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Egy telepítési fájl található</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>Az eljárás végén az oldal automatikusan vált.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>PanelPc jelenlegi verzió</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Panelek</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Paraméterek</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Állítsa az emelőt a munkaállomás magasságába.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Állítsa a keretet</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>A kalibráció eredménye alapján eldöntheti, hogy befejezi-e a műveletet 1 mm alatt eredménnyel.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Ha a kalibráció eredménye nagyobb, mint 1 mm, alkalmazni kell a javasolt módosításokat, és meg kell ismételni a mérést.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Töltsön be egy tálcát a munkaállomásra, vagy hívjon be egyet a munkaállomás irányított kalibrációs eljárásának megkezdéséhez.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Állítsa a beállítókeretet a munkaállomási tálca jobb felső sarkába, és ellenőrizze, hogy a mágnesek úgy vannak-e elhelyezve, hogy megfelelően a tálcához rögzítve maradjon. Végül nyissa ki a redőnyt.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Állítsa a beállítókeretet a munkaállomási tálca bal felső sarkába, és ellenőrizze, hogy a mágnesek úgy vannak-e elhelyezve, hogy megfelelően a tálcához rögzítve maradjon.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>A kalibráció megismétlése</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Visszaállítás</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>jobb</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Jobb oldal mérése</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Tár útja</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statisztikák</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Rendszerhiba</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>A keret elhelyezését követően nyissa ki a redőnyt, és nyomja meg a MÉRÉS gombot, ezzel elindítva az eljárást.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Felülvizsgálat adatai</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Szükséges tűrés</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Tálca a munkaállomáson:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Tálca felső pozícióban</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Tálca alsó pozícióban</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Szoftver frissítése</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Felhasználók kezelése</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Várakozás...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Várja meg az automatikus eljárás végét.</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Az áramerősségi értékek mintavételezésének elvégzése a súly beszerzéséhez</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Súlyprofil elemzése</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Lehetővé teszi a tálca magasságát érzékelő fényfüggöny beállítását</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Fényfüggöny kalibrációja</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Lehetővé teszi a különböző pozíciók értékeinek ellenőrzését és korrigálását a munkaállomásokon</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Munkaállomás ellenőrzése</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Végrehajtja a függőleges tengely egy sor elmozdulási ciklusát</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>A szíj bejáratása</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Megerősíti a teszt elvégzésének kihagyását?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>A karusszel kalibrációjának elvégzése</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Karusszel kalibrációja</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Rekeszek kezelése</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Első tálca betöltése és a rekeszek tesztje</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Határoló rekeszek tesztje</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Korrekció alkalmazása a rekeszek egy csoportjára</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Rekeszek blokkolásának módosítása (elavult)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Ellenőrzi a rekeszek pozícióját, panelekre felosztva, az elvégzett ellenőrzések pozicionálásának nyomon követésével</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Rekeszmagasságok ellenőrzése</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Ellenőrzi egy vagy több rekesz pozícióját</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Rekeszpozíciók ellenőrzése (elavult)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Elvégzi a teszteket a többi munkaállomáson</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Befejezett teszt</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Megerősíti a felülvizsgálat elvégzését?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>A rendszerdátum és -idő beállítása</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Dátum és idő</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Berakodás / Kirakodás</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Lehetővé teszi egy sor ismétlődő teszt elvégzését a redőnyön</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Redőnyteszt</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Új tálca beviteli eljárása</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Bevitel</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Az inverter paraméterezésének betöltése standard paraméterekkel</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Inverter paraméterezése</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Helyi felhasználók kezelése</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Felhasználók kezelése</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>A tálca áthelyezési eljárása az egyik munkaállomásról a másikra</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Áthelyezés az egyik munkaállomásról a másikra</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>A tálca áthelyezési eljárása az egyik rekeszről a másikra</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Áthelyezés az egyik rekeszről a másikra</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>A függőleges tengely eltolási kalibrációjának elvégzése</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Függőleges tengely eltolása</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>A gépparaméterek módosítása, importálása és exportálása</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Paraméterek</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>A tálca eltávolítási eljárása</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Eltávolítás</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>A függőleges tengely felbontási kalibrációjának elvégzése</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Függőleges tengely felbontása</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Tálca kezelése</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>A függőleges tengely origókalibrációjának elvégzése</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Függőleges tengely origó</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>A WMS kommunikációs paramétereinek beállítása</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>WMS kommunikáció</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Hozzáférés</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Kikapcsolva</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>A szíj újrafeszítése 56 Hz-en</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Állapot ellenőrzése</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>A telepítés befejezett állapota.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>A telepítés befejezetlen állapota. {0}/{1} eljárás elvégezve.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Megfelelő távolság</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Keret dőlésszöge</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Keret hossza</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Paraméterek mentése</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Telepítés</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>WMS beállítások</value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Host-cím</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Lánc vízszintes kalibrálása</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Elvégzi a lánc vízszintes kalibrációját </value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Elvégzi a lánc kalibrációs eljárását. A vízszintes nulla szenzornak aktívnak kell lennie.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>A lánc vízszintes kalibrálási funkciója lehetővé teszi a megfelelő érték kalibrálását a saját vonatkozó eljárása segítségével. Az eljárást egymást követő lépések alkotják, amíg megfelelően be nem fejeződik.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Vízszintes kalibráció</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Eljárás megerősítése</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Elvégzett mérés</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>A következő mérés alkalmazása a gépre</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Az eljárás ismételt elvégzése</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Munkamenet visszaállítása</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Összesítők visszaállítása</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Teszt leállítása</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>A munkaállomásra behívandó tálca kiválasztása</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>A redőny zárási parancsának elvégzése</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>A redőny nyitási parancsának elvégzése</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>A tálcák berakodási/kirakodási funkciója lehetővé teszi a tálcamozgások megfelelő működésének tesztelését egy ciklussorozat segítségével. Az eljárást egymást követő lépések alkotják, amíg megfelelően be nem fejeződik.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Elvégzett teszt</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Itt látható az elvégzett ciklusok száma</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Ciklusok</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Adja meg az elvégezni kívánt ciklusok számát</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>A WMS offline</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Ellenőrzés folyamatban</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Leválasztva</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Csatlakoztatva</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>A teszt elvégzése</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Adatkészlet</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Típus</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Érték</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Minden tálca hozzáadása a teszthez</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Tálca hozzáadása a teszthez</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Minden tálca eltávolítása a tesztből</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Tálca eltávolítása a tesztből</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Inverter programozása folyamatban</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Inverter programozása sikeresen befejeződött</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Inverter programozása leállítva</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Inverter programozása hibákkal fejeződött be</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Következő inverter programozásának megkezdése</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Csak olvasás</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Mozgatás az emelő felé</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Engedélyezve</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Készülék konfigurálása</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Rendszerportok</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Nem érzékelhető soros port. Ellenőrizze, hogy a készülék csatlakozik-e a panelhez.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Olvassa be ezeket a vonalkódokat az olvasó konfigurációjához soros emulációban.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>A keresett soros port nincs rajta a listán? A készülék konfigurálása.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>COM emuláció engedélyezése</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Konfiguráció megkezdése</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Konfiguráció befejezése</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Firmware verzió</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Gyártás dátuma</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Modellszám</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Gyári szám</value>
+  </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Hosszú</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Mozgatás a kezelő felé</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Közepes</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Külső munkaállomás kalibrálása</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Rövid</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Nagyon hosszú</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Nagyon rövid</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Importálás memóriába</value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Az importálás sikeresen megtörtént</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Konfigurációs fájl importálása</value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Alapértelmezett konfiguráció betöltve</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Munkaállomás láncának alaphelyzete folyamatban</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Tálca külső pozícióban</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Tálca belső pozícióban</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>A külső munkaállomás kalibrációjának elvégzése</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Külső munkaállomás kalibrációja</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>A munkaállomás kalibrálási eljárásának elvégzése a szenzorhoz való beállítás érdekében</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Elvégzett mozgatások</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Út (mm)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Nyomja meg a KEZDÉS gombot az eljárás elindításához</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>'{0}' útvonal nem található</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Felismert szekvenciák (regex)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Teszt indítása</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Elért szekvencia</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Kód felismerve.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>A módosítások mentése a teszt megkezdése előtt.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Húzza le a kártyát a leolvasón.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Vonalkód fogadva</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Soros portok vezérlése</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Gépkezelő</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Nyomtató neve</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Kód</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Magasság</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Súly</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>A állomáson</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>Az emelőn</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>A helyen</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Mozgatás munkaállomásra</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Továbbítás</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Nincs meghatározva</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Leírás</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Bruttó súly (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>A gépen</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Max. nettó súly (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Feladatok</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Tára (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Blokkolási szint</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Aktív szenzor</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Kikapcsolt szenzor</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Hamis</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Jelmagyarázat</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Szabad</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Panel ID</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Prioritás</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Igaz</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>Lánc munkaállomás</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Vízszintes</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Vízszintes és függőleges</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nincs</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Függőleges</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Emelő a munkaállomáson</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Összes tálca az 1. munkaállomáson</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Összes tálca a 2. munkaállomáson</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Összes tálca a 3. munkaállomáson</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Összes feladat</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Kamera felszerelése</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Kamera elmozdítása a megfelelő pozícióba</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Képernyőmentés küldése</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Naplók küldése</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Képernyők átvitele</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Rekesz mentése</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Idő frissítése</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Csatlakoztatott eltávolítható készülékek</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Rendelkezésre álló csomagok</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Napló mentése</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Napló mentése</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Naplók betöltése a telemetriai szolgáltatásról.</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>A telemetriai szolgáltatásról betöltött naplók</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Tartozékok</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Tára</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>A célmeghajtó kiválasztása.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Karusszel lánc nulla</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Távoli segítségnyújtás</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Ez a művelet eltávolítja a tálcát a tároló alaprajzáról</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Extra mozgatás a kezelő felé</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Extra mozgatás az emelő felé</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Inverter hibaállapotban</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Lejárt video mirroring</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Befejezve</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Energiamegtakarítás</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Kül</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Bel</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Zseton sorozatszáma</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>A modell kiválasztása</value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Tálca blokkolása</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Tálca feloldása</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Blokkolva</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Tára frissítése</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Tálca tárafrissítési eljárása</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Megerősíti, hogy a kiválasztott tálca üres?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Súly kalibrációja</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>A súlykalibrációs funkció lehetővé teszi a súly leolvasási algoritmusának beállítását mintasúlyok segítségével</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Töltsön be egy tálcát a munkaállomásra, vagy hívjon be egyet az irányított súlykalibrációs eljárásának megkezdéséhez</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Súlymérés üres tálcával</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Nyomja meg a gombot az áramerősség adatainak mentéséhez a tálca mozgása során, és adja meg a nettó súlyát. Végül nyomja meg az Előre gombot a művelet megerősítéséhez</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Felvett áramerősség</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Első súlymérés közepes súllyal</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Súlymérés teljesen megterhelt tálcával</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Tálcacsere</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Gépszám cseréje</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Új gép ID</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>ID cseréje</value>
+  </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Nyomja meg a Kezdés gombot a kalibráció megkezdéséhez</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Kirakodás</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Betöltés</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Emelő kalibrálása</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>USB-tár behelyezése</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Inverter olvasása sikeresen befejeződött</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Inverter olvasása hibákkal fejeződött be</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Inverter olvasása leállítva</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Következő inverter olvasásának megkezdése</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Írás kód</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Olvasás kód</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Tizedesek száma</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Inverter olvasása folyamatban</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Minden olvasása</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Célfájlok felülírása</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Inverter konfigurációjának mentése</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Egyetlen írása</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Az összes írása</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Parancs elindítva</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Hibás és tényleges értékek</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Hibák</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Tényleges értékek</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importálás és mentés </value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>A befejezés előtt</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Gép adatbázisának biztonsági mentése</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Belső másolat</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>Szerveren</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>Telemetrián</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Adatbázis biztonsági mentésének beállításai</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Aktív hibák vannak jelen</value>
+  </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Kézi 2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Kézi 3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Teszt 2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Teszt 3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Kompakt 2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Kompakt 3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Tálcaműveletek 2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Tálcaműveletek 3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Az első 30 rekesz letiltása a vonatkozó munkaállomás felett</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Random rekeszek kijelölése</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Tálca belső felső pozícióban</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Tálca belső alsó pozícióban</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>1. külső dupla munkaállomás</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>2. külső dupla munkaállomás</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>3. külső dupla munkaállomás</value>
+  </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Gép mozgásban</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Lézer eltolása (mm)</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Lézer</value>
+  </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Hibás áramerősségi értékek - mind a háromnak különbözőnek kell lennie!</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Hibás súlyértékek - mind a háromnak különbözőnek kell lennie!</value>
+  </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Lánc felső poz. nulla</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Lánc alsó poz. nulla</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Újratöltés</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Böngésző bezárása</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Böngésző megnyitása</value>
+  </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>Aktív feladatok vannak erre a tálcára a WMS-ről</value>
+  </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>Teleszkópos munkaállomás a helyén</value>
+  </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Üzenet maximális hossza</value>
+  </data>
+</root>

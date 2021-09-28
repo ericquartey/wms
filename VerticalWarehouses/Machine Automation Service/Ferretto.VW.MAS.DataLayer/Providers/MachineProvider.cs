@@ -100,6 +100,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<MachineProvider> logger;
 
+        private readonly IMachineVolatileDataProvider machineVolatile;
+
+        private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
+
         #endregion
 
         #region Constructors
@@ -108,12 +112,16 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             ILogger<MachineProvider> logger,
             IMemoryCache cache,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMachineVolatileDataProvider machineVolatile,
+            IDbContextRedundancyService<DataLayerContext> redundancyService)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
+            this.redundancyService = redundancyService ?? throw new System.ArgumentNullException(nameof(redundancyService));
         }
 
         #endregion
@@ -236,7 +244,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             // Retrieve the path of primary database file
             //      example: "Database/MachineAutomationService.Simulation.Primary.db"
-            var filePath = GetDBFilePath(this.configuration.GetDataLayerPrimaryConnectionString());
+            var filePath = GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
             var exist = File.Exists(filePath);
             if (!exist)
             {
@@ -250,7 +258,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 try
                 {
-                    lock (this.dataContext)
+                    lock (this.redundancyService)
                     {
                         // Get the raw bytes contents
                         using (var stream = File.OpenRead(filePath))
@@ -293,7 +301,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             */
 
-            this.logger.LogInformation($"Retrieve raw database content from file {filePath}");
+            this.logger.LogInformation($"Retrieve raw secondary (is ok: {this.machineVolatile.IsStandbyDbOk}) database content from file {filePath}");
             return rawDatabase;
         }
 
@@ -392,6 +400,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.FirstOrDefault()?.IsDbSaveOnTelemetry ?? false;
+            }
+        }
+
+        public bool IsDisableQtyItemEditingPick()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsDisableQtyItemEditingPick ?? false;
             }
         }
 

@@ -297,4 +297,7 @@
   <data name="SocketLinkTimeout" xml:space="preserve">
     <value>Timeout</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Zahteva ni pravilno oblikovana.</value>
+  </data>
 </root>

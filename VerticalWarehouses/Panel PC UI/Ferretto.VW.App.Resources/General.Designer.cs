@@ -106,6 +106,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WMS error: Bad Request..
+        /// </summary>
+        public static string BadRequestTitle {
+            get {
+                return ResourceManager.GetString("BadRequestTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {
@@ -363,6 +372,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select the lot of this product.
+        /// </summary>
+        public static string LotManagedProduct {
+            get {
+                return ResourceManager.GetString("LotManagedProduct", resourceCulture);
             }
         }
         

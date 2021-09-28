@@ -1279,6 +1279,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsDbSaveOnTelemetry");
 
+                    b.Property<bool>("IsDisableQtyItemEditingPick");
+
                     b.Property<bool>("IsEnableAddItem");
 
                     b.Property<bool>("IsHeartBeat");

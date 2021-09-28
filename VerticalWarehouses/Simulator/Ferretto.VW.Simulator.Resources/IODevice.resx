@@ -195,4 +195,7 @@
   <data name="UpperBayBoxSensorPresence" xml:space="preserve">
     <value>Upper Bay Box Sensor Presence</value>
   </data>
+  <data name="Free" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

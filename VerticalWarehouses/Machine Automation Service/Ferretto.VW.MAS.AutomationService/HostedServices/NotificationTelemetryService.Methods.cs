@@ -47,6 +47,17 @@ namespace Ferretto.VW.MAS.AutomationService
                 this.Logger.LogWarning(
                     "Unable to send error log to telemetry service because error {id} was not found.",
                     messageData.ErrorId);
+
+                return;
+            }
+
+            var si = serviceProvider
+                .GetRequiredService<IServicingProvider>()
+                .GetActual();
+            if (si?.LastServiceDate is null)
+            {
+                this.Logger.LogTrace("Do not send error log to telemetry service during handover.");
+                return;
             }
 
             var description = "";
@@ -118,7 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 Bay = (int)message.RequestingBay,
                 CreationDate = messageData.CreationDate,
                 Destination = messageData.Destination.ToString(),
-                CellId = messageData.DestinationCellId,
+                CellId = messageData.DestinationCellId.HasValue ? messageData.DestinationCellId : messageData.SourceCellId,
                 LoadUnitId = messageData.LoadUnitId.Value,
                 MissionId = messageData.MissionId.Value,
                 MissionType = messageData.MissionType.ToString(),

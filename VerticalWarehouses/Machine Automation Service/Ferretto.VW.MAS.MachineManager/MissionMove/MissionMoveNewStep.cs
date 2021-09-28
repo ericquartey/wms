@@ -465,32 +465,37 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                     }
 
-                    if (bay.Positions.Count() == 1)
+                    if ((bay.Carousel != null || bay.IsExternal)
+                        && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
+                        && bay.Positions.Any(p => p.LoadingUnit != null)
+                        )
                     {
-                        // always check upper position
-                        returnValue = this.CheckBayDestination(messageData, bay.Number, bay.Positions.First().Location, mission, showErrors);
+                        if (showErrors)
+                        {
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
+                        }
+                        return false;
+                    }
+
+                    if (bay.Positions.All(b => b.IsBlocked))
+                    {
+                        this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
+                    }
+                    else if (bay.Positions.Count(b => !b.IsBlocked) == 1)
+                    {
+                        // always check first position
+                        returnValue = this.CheckBayDestination(messageData, bay.Number, bay.Positions.First(b => !b.IsBlocked).Location, mission, showErrors);
                         if (returnValue)
                         {
-                            mission.LoadUnitDestination = bay.Positions.First().Location;
+                            mission.LoadUnitDestination = bay.Positions.First(b => !b.IsBlocked).Location;
                         }
                     }
                     else
                     {
-                        if ((bay.Carousel != null || bay.IsExternal)
-                            && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
-                            && bay.Positions.Any(p => p.LoadingUnit != null)
-                            )
-                        {
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
-                            }
-                            return false;
-                        }
                         var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (upper is LoadingUnitLocation.NoLocation)
                         {
@@ -528,13 +533,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 // upper position is empty. we can use it only if bottom is also free
                                 returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
-                                if (returnValue
-                                    || bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked
-                                    )
+                                if (returnValue)
                                 {
                                     returnValue = true;
                                     // both positions are free: choose upper if not fixed by message
-                                    if (messageData.Destination == bottom && !bay.Positions.FirstOrDefault(b => b.Location == bottom).IsBlocked)
+                                    if (messageData.Destination == bottom)
                                     {
                                         mission.LoadUnitDestination = bottom;
                                     }
@@ -546,7 +549,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 else
                                 {
                                     if (showErrors
-                                        || !bay.Positions.Any(p => p.LoadingUnit is null && !p.IsBlocked)
+                                        || !bay.Positions.Any(p => p.LoadingUnit is null)
                                         )
                                     {
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);

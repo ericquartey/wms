@@ -141,4 +141,7 @@
   <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
     <value>La serranda della baia {0} non è completamente chiusa.</value>
   </data>
+  <data name="TheShutterSpeedIsNotValid" xml:space="preserve">
+    <value>La Velocità della serranda non è valida</value>
+  </data>
 </root>

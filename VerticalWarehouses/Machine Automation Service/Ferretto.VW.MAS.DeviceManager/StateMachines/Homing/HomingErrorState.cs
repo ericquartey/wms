@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DeviceManager.Homing
@@ -43,7 +44,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -84,7 +85,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
             }
 
-            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
+            if (this.machineData.AxisToCalibrate == Axis.BayChain)
+            {
+                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
+                var inverterMessage = new FieldCommandMessage(
+                    inverterDataMessage,
+                    "Update Inverter digital input status",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.InverterSetTimer,
+                    (byte)currentInverterIndex);
+
+                this.Logger.LogTrace($"2:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
+
+                this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+                this.ParentStateMachine.PublishFieldCommandMessage(
+                    new FieldCommandMessage(
+                        new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, false, 0),
+                    "Update Inverter status word status",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.InverterSetTimer,
+                    (byte)currentInverterIndex));
+            }
+
+            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",

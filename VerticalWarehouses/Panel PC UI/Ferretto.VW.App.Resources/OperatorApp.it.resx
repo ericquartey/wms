@@ -1898,4 +1898,13 @@
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Errore operazione segnalazione difetto.</value>
   </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Acquisire il tote ... </value>
+  </data>
+  <data name="BarcodeServiceError" xml:space="preserve">
+    <value>Errore del servizio Codice a barre</value>
+  </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Valore non valido</value>
+  </data>
 </root>

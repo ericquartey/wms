@@ -315,4 +315,7 @@
   <data name="ForbiddenOperation" xml:space="preserve">
     <value>Operación no permitida</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Solicitud mal redactada.</value>
+  </data>
 </root>

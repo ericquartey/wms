@@ -138,9 +138,6 @@
   <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
     <value>Сообщение</value>
   </data>
-  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
-    <value>Группа Ферретто - Тестовое сообщение -</value>
-  </data>
   <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
     <value>Положение</value>
   </data>

@@ -211,6 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     if (prev is null
                         || prev.IsNotAvailable
                         || prev.BlockLevel == BlockLevel.NeedsTest
+                        || cell.BlockLevel == BlockLevel.SpaceOnly
                         || !prev.IsFree
                         )
                     {
@@ -219,6 +220,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else if (cell.IsNotAvailable
                     || cell.BlockLevel == BlockLevel.NeedsTest
+                    || cell.BlockLevel == BlockLevel.SpaceOnly
                     || !cell.IsFree
                     )
                 {

@@ -159,4 +159,10 @@
   <data name="External" xml:space="preserve">
     <value>Zew.</value>
   </data>
+  <data name="InternalBlock" xml:space="preserve">
+    <value>--wew.</value>
+  </data>
+  <data name="ExternalBlock" xml:space="preserve">
+    <value>--zew.</value>
+  </data>
 </root>

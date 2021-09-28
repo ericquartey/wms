@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                     {
                         this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     else
                     {
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                     {
                         this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     else
                     {
@@ -348,7 +348,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.Mission.CloseShutterBayNumber = BayNumber.None;
                                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             else if (notification.Type == MessageType.CheckIntrusion && this.Mission.NeedHomingAxis == Axis.None)
                             {

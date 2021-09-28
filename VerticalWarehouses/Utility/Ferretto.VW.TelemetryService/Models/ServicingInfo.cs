@@ -1,15 +1,11 @@
 ﻿using System;
 using Ferretto.ServiceDesk.Telemetry;
-using Realms;
 
-namespace Ferretto.VW.TelemetryService.Models
+namespace Ferretto.VW.TelemetryService.Data
 {
-    public class ServicingInfo : RealmObject, IServicingInfo
+    public class ServicingInfo : DataModel, IServicingInfo
     {
         #region Properties
-
-        [PrimaryKey]
-        public int Id { get; set; }
 
         public DateTimeOffset? InstallationDate { get; set; }
 

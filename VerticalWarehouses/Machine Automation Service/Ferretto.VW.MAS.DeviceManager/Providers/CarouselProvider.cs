@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors);
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, false);
             this.PublishCommand(
                 homingData,
                 $"Execute homing {calibration} Command",

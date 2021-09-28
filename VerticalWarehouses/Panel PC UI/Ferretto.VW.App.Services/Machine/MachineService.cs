@@ -1153,16 +1153,23 @@ namespace Ferretto.VW.App.Services
                             await this.UpdateLoadUnitInBayAsync();
 
                             var pos = await this.machineElevatorWebService.GetPositionAsync();
-                            this.UpdateMachineStatusByElevatorPosition(
-                                    new ElevatorPositionChangedEventArgs(
-                                        pos.Vertical,
-                                        pos.Horizontal,
-                                        pos.CellId,
-                                        pos.BayPositionId,
-                                        pos.BayPositionUpper));
-
-                            this.NotifyMachineStatusChanged();
-
+                            if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
+                                || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
+                                || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                                )
+                            {
+                                this.UpdateMachineStatusByElevatorPosition(
+                                        new ElevatorPositionChangedEventArgs(
+                                            pos.Vertical,
+                                            pos.Horizontal,
+                                            pos.CellId,
+                                            pos.BayPositionId,
+                                            pos.BayPositionUpper));
+                            }
+                            else
+                            {
+                                this.NotifyMachineStatusChanged();
+                            }
                             break;
                         }
 
@@ -1479,15 +1486,23 @@ namespace Ferretto.VW.App.Services
             }
 
             var pos = await this.machineElevatorWebService.GetPositionAsync();
-            this.UpdateMachineStatusByElevatorPosition(
+            if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
+                || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
+                || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                )
+            {
+                this.UpdateMachineStatusByElevatorPosition(
                     new ElevatorPositionChangedEventArgs(
                         pos.Vertical,
                         pos.Horizontal,
                         pos.CellId,
                         pos.BayPositionId,
                         pos.BayPositionUpper));
-
-            this.NotifyMachineStatusChanged();
+            }
+            else
+            {
+                this.NotifyMachineStatusChanged();
+            }
         }
 
         private void UpdateLoadUnitsId()
@@ -1686,6 +1701,11 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
+                        else if (this.bay.Positions.All(p => p.IsBlocked) &&
+                                 !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayPositionsDisabled"), NotificationSeverity.Warning);
+                        }
                         else if (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0
                             && this.MachineStatus.EmbarkedLoadingUnit.Height == 0
                             )
@@ -1740,6 +1760,10 @@ namespace Ferretto.VW.App.Services
                         else if (!this.isBayHoming[this.bay.Number])
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
+                        }
+                        else if (this.bay.Positions.All(p => p.IsBlocked))
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayPositionsDisabled"), NotificationSeverity.Warning);
                         }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {

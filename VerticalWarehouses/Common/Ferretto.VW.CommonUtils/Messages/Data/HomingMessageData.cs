@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class HomingMessageData : IHomingMessageData
@@ -12,12 +11,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, int? loadingUnitId, bool showErrors, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, int? loadingUnitId, bool showErrors, bool turnBack, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToCalibrate = axisToCalibrate;
             this.CalibrationType = calibration;
             this.LoadingUnitId = loadingUnitId;
             this.ShowErrors = showErrors;
+            this.TurnBack = turnBack;
             this.Verbosity = verbosity;
         }
 
@@ -32,6 +32,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int? LoadingUnitId { get; set; }
 
         public bool ShowErrors { get; }
+
+        public bool TurnBack { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

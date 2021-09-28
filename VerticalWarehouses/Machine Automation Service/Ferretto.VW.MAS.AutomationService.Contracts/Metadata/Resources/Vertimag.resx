@@ -580,7 +580,7 @@
     <value>Telescopic</value>
   </data>
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
-    <value>Enabled add item</value>
+    <value>Enabled add drapery item</value>
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Barcode automatic put</value>
@@ -596,5 +596,8 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="Machine_IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Not editing available quantity of item in picking</value>
   </data>
 </root>

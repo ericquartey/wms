@@ -141,6 +141,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.GetToteBarcodeLength());
         }
 
+        [HttpPost("get/IsDisableQtyItemEditingPick")]
+        public ActionResult<bool> IsDisableQtyItemEditingPick()
+        {
+            return this.Ok(this.machineProvider.IsDisableQtyItemEditingPick());
+        }
+
         [HttpPost("get/IsEnableAddItem")]
         public ActionResult<bool> IsEnableAddItem()
         {

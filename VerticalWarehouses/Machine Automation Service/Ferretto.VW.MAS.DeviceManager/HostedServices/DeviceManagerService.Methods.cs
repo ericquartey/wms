@@ -227,6 +227,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         data.LoadingUnitId,
                         this.machineVolatileDataProvider.IsOneTonMachine.Value,
                         data.ShowErrors,
+                        data.TurnBack,
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
                         this.machineResourcesProvider,

@@ -1,0 +1,438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Ellenőrizze, hogy a retesz nullán legyen, és a tálca teljesen be legyen töltve az emelő fedélzetére.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Ellenőrizze, hogy a vészleállító nyomógombok és valamennyi biztonsági szenzor deaktiválva van-e.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Lehet, hogy a tálca beakadt.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Úgy tűnik, hogy a tálca nincs teljesen az emelő fedélzetén a betöltési fázist követően.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Úgy tűnik, hogy a tálca nincs teljesen az emelőn kívül a kirakási fázist követően.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>A retesz nulla szenzor nem aktív a betárolási művelet után.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Az emelő jelenlétérzékelője nem aktív a betöltési műveletet követően.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Ellenőrizze, hogy a vészleállító nyomógombok és valamennyi biztonsági szenzor deaktiválva van-e.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Ellenőrizze, hogy a tálca célrekesze az adatbázisban megfelelően van-e konfigurálva</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Ellenőrizze, hogy az emelőbölcső üres-e. Ellenőrizze a tálca jelenlétérzékelőinek megfelelő működését a rekeszen.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Ellenőrizze, hogy a tálca kiinduló pozíciója az adatbázisban megfelelően van-e konfigurálva</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Ellenőrizze, hogy egy tálca megtalálható legyen a munkaállomáson, és a jelenlétérzékelő szenzorok megfelelően működjenek</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Ha a tálca már el van távolítva, ellenőrizze a tálca jelenlétét érzékelő szenzorokat a munkaállomáson, vagy távolítsa el a tálcát a munkaállomásról.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Ellenőrizze, hogy a tálca célállomási munkaállomása ténylegesen üres-e. Ellenőrizze, hogy a tálca jelenlétét érzékelő szenzorok megfelelően működnek-e a munkaállomáson.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>A kiválasztott tálca nem áll rendelkezésre. Ellenőrizze a behelyezett tálca számát és a tálca logikai pozícióját.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>A kiválasztott tálca megtalálható az adatbázisban, de nincs betöltve a tárolóba. Ellenőrizze az adatbázis konfigurációját.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Ellenőrizze, hogy a tálca ténylegesen megtalálható-e a kiinduló munkaállomáson. Ellenőrizze, hogy a tálca jelenlétét érzékelő szenzorok megfelelően működnek-e a munkaállomáson.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Ellenőrizze, hogy a tálca kiinduló rekesze az adatbázisban megfelelően van-e konfigurálva</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>A munkaállomás alsó szintje foglalt.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>A jelenlétérzékelők nem érvényesek</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Jelenlét az emelő fedélzetén, amikor az emelő logikailag üres.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>A szenzorállapotok inkonzisztenciája. A retesz nulla szenzor nem aktív.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>A szenzorállapotok inkonzisztenciája. A munkaállomás nulla szenzora nem aktív.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>A munkaállomás felső szintje foglalt</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>A retesz nulla szenzor aktív az emelőfedélzet jelenlétérzékelőivel egyidőben</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Rakodja ki a tálcát a munkaállomáson és távolítsa el a súlyfelesleget.  Ezután állítsa vissza az automatikus üzemmódot.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>A redőny nem nyitott állásban van. Ellenőrizze a szenzorok állapotát.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>A redőny nem zárt állásban van. Ellenőrizze a szenzorok állapotát.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Tengely célállomás a minimumszint alatt hiba. Ellenőrizze a gép paramétereit.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>A munkaállomáson már folyamatban van egy parancs, és nem tud újat fogadni</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Tengely célállomás a minimumszint felett hiba. Ellenőrizze a gép paramétereit.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Hiba az I/O készülék kezeléséven vagy a parancs végrehajtásában.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>A tálca már jelen van a rekeszben.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>A gép nem fogadja a kiadott feladatot, mert a gépüzemmód nem érvényes.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Az egyik biztonsági fényfüggöny megszakadt. Szabadítsa fel a zónát és próbálja újra.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Egy vészleállító nyomógomb be van nyomva. Ellenőrizze az állapotát és próbálja újra.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>A tálca már jelen van egy másik rekeszben.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>A tálca nem azonosítható az emelő fedélzetén.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>A munkaállomás alsó szintje üres</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>A munkaállomás felső szintje üres. Ellenőrizze, hogy a tálca megfelelően van-e pozicionálva, és nem mozdult-e el a gép felé. Ellenőrizze, hogy a jelenlétérzékelő nyelve nincs-e megakadva.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Ezen a munkaállomáson már van egy éppen végrehajtott feladat.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Ezen a tálcán már van egy éppen végrehajtott feladat.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Erre a feladattípusra már van egy éppen végrehajtott feladat.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Nincs észlelt hiba.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>A tálca súlya az elvárt súly alatt.  Ezután állítsa vissza az automatikus üzemmódot.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>A gép teljes súlyának határértéke meghaladva. Ellenőrizze a gép és a tálcák feltöltési állapotát.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>A tároló tele van, és nem található szabad rekesz a kiválasztott tálcának.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Ellenőrizze a munkaállomáson lévő tálca azonosítóját. Ellenőrizze, hogy a tálca jelenlétét érzékelő szenzorok megfelelően működnek-e a munkaállomáson. Állítsa a gépet Automatikus üzemmódba.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Ellenőrizze az emelőn lévő tálca azonosítóját. Ellenőrizze, hogy a tálca jelenlétét érzékelő szenzorok megfelelően működnek-e az emelőn. Állítsa a gépet Automatikus üzemmódba.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Csatlakozási hiba az inverter(ek)en. Ellenőrizze az Ethernet-csatlakozás állapotát.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Csatlakozási hiba az I/O készüléken. Ellenőrizze az Ethernet-csatlakozás állapotát.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Csatlakozási hiba a lézeren. Ellenőrizze az Ethernet-csatlakozás állapotát.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>A(z) {0} tengelymozgás Gyorsulás {1} érvénytelen: Az üres gyorsulás alacsonyabb, mint a teljes terheléses gyorsulás</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>A(z) {0} tengelymozgás Sebesség {1} érvénytelen: Az üres sebesség alacsonyabb, mint a teljes terheléses sebesség</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Ellenőrizze az emelő és a munkaállomás jelenlétérzékelőit</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>A célállomás típusa nem érvényes</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>A munkaállomás alsó pozíciója nincs meghatározva</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>A munkaállomás felső pozíciója nincs meghatározva</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>A feladat típusa nem érvényes</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Rakodja ki a tálcát a munkaállomáson és távolítsa el a súlyfelesleget. Ennek végeztével kövesse a riasztás utasításait.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>A felvételből való visszatérés parancsa nem érvényes</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>A rekeszek archívumának frissítési hibája. Egy vagy több célrekesz logikailag foglalt</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Ellenőrizze, hogy a retesz nullán legyen, és a tálca teljesen be legyen töltve az emelő fedélzetére. Ellenőrizze ezen felül, hogy a redőny zárva van-e.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Csökkentse az anyag magasságát a tálcán. Ezután állítsa vissza az automatikus üzemmódot.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>A redőny nincs sem nyitott, sem zárt állásban. Ellenőrizze a szenzorok állapotát.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>A célállomási munkaállomás nincs kalibrálva.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Az Első Tálca teszt sikertelen volt: nem minden rekesz kapott jóváhagyást.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>A tároló nem üres. Az első tálca betöltési tesztje nem engedélyezett.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>A munkaállomás nulla szenzora nem aktív a pozicionálás végén</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>A bal oldalsó panel nyitva van. Ellenőrizze, hogy a géppanelek a helyükön vannak-e, és be vannak-e zárva.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>A jobb oldalsó panel nyitva van. Ellenőrizze, hogy a géppanelek a helyükön vannak-e, és be vannak-e zárva.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Az emelő függőleges pozíciója változott a gép indítása után.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>A befejezett teszt sikertelen volt: nem minden tervezett ciklus került elvégzésre.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>A kiválasztott munkaállomás nem érvényes</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>A munkaállomás kiválasztott pozíciója nem érvényes</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Az emelő elérte a felső túlfutásérzékelőt</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>A külső munkaállomás foglalt</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>A külső munkaállomás üres</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>A(z) {0} tengely mozgás Gyorsulás {1} alacsonyabb, mint a teljes terheléses gyorsulás, vagy magasabb, mint az üres gyorsulás</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>A(z) {0} tengely mozgás Sebesség {1} alacsonyabb, mint a teljes terheléses sebesség, vagy magasabb, mint az üres sebesség</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>A WMS hibakóddal válaszolt</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>A tálca túl magasan van ehhez a munkaállomáshoz. Tárolja ki másik munkaállomással vagy mozgassa kézileg</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Az emelő elérte az alsó túlfutásérzékelőt</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>A munkaállomás pozíciója nem engedélyezett</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>A munkaállomás jelenlétszenzorainak hibája</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>A mozgás túl régen leállt</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Hiba a bemeneti/kimeneti kártya kezelésében vagy a parancs végrehajtásában.</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>A teleszkópos munkaállomás a helyén kívül van. Pozicionálja megfelelően az automatikus mozgások helyreállítására</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Korrigálja a tálca táraparaméterét</value>
+  </data>
+</root>

@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
+                        Title = Resources.General.ResourceManager.GetString("DataEntryError", CommonUtils.Culture.Actual),
                         Detail = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("MeasuredDistanceMustBeStrictlyPositive", CommonUtils.Culture.Actual),
                     });
             }
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest(
                     new ProblemDetails
                     {
-                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
+                        Title = Resources.General.ResourceManager.GetString("DataEntryError", CommonUtils.Culture.Actual),
                         Detail = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ExpectedDistanceMustBeStrictlyPositive", CommonUtils.Culture.Actual),
                     });
             }

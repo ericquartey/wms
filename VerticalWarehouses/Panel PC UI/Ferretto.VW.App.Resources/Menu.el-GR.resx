@@ -138,9 +138,6 @@
   <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
     <value>Μήνυμα</value>
   </data>
-  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
-    <value>Ferretto Group - Μήνυμα δοκιμής -</value>
-  </data>
   <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
     <value>Θέση</value>
   </data>

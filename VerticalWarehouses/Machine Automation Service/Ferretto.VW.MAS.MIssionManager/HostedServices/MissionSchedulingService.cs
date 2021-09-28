@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
             var missionToRestore = activeMissions
-                .OrderByDescending(o => o.Status)
+                .OrderBy(o => o.Status)
                 .ThenBy(t => t.RestoreStep)
                 .FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
                     && x.IsMissionToRestore());
@@ -668,7 +668,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     IHomingMessageData homingData = new HomingMessageData(Axis.BayChain,
                         Calibration.FindSensor,
                         loadingUnitId: null,
-                        showErrors: true);
+                        showErrors: true,
+                        turnBack: false);
 
                     this.EventAggregator
                         .GetEvent<CommandEvent>()
@@ -691,7 +692,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical,
                     Calibration.FindSensor,
                     loadingUnitId: null,
-                    showErrors: true);
+                    showErrors: true,
+                    turnBack: false);
 
                 this.EventAggregator
                     .GetEvent<CommandEvent>()
@@ -1158,7 +1160,8 @@ namespace Ferretto.VW.MAS.MissionManager
                                 IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical,
                                     Calibration.FindSensor,
                                     loadingUnitId: null,
-                                    showErrors: true);
+                                    showErrors: true,
+                                    turnBack: false);
 
                                 this.EventAggregator
                                     .GetEvent<CommandEvent>()

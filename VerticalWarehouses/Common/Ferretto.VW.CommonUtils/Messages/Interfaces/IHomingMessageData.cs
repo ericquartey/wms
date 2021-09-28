@@ -14,6 +14,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool ShowErrors { get; }
 
+        bool TurnBack { get; }
+
         #endregion
     }
 }

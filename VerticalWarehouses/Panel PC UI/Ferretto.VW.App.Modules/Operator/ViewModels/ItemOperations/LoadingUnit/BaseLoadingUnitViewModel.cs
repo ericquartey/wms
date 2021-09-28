@@ -411,7 +411,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isUpperPosition,
                 this.IsBaySideBack ? WarehouseSide.Back : WarehouseSide.Front
                 );
-            this.Logger.Info($"Move and switch on laser pointer to compartment {this.selectedCompartment.Id}, upper Position {this.isUpperPosition}");
+
+            this.Logger.Info($"Move and switch on laser pointer to compartment {this.selectedCompartment.Id}; " +
+                $"luW {this.loadingUnitWidth}; " +
+                $"luD {this.loadingUnitDepth}; " +
+                $"cw {this.selectedCompartment.Width.Value}; " +
+                $"cd {this.selectedCompartment.Depth.Value}; " +
+                $"cx {this.selectedCompartment.XPosition.Value}; " +
+                $"cy {this.selectedCompartment.YPosition.Value}; " +
+                $"z {this.LoadingUnit.LaserOffset}; " +
+                $"up {this.isUpperPosition}; " +
+                $"back {this.IsBaySideBack}");
             await this.laserPointerDriver.MoveAndSwitchOnAsync(point, false);
             this.IsLaserOnEnabled = false;
             this.IsLaserOffEnabled = true;

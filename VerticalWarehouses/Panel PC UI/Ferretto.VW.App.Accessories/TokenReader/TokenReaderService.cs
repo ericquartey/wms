@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
-            this.logger.Debug("Starting the token reader service ...");
+            this.logger.Info("Starting the token reader service ...");
 
             try
             {
@@ -122,7 +122,7 @@ namespace Ferretto.VW.App.Accessories
         {
             if (this.isStarted)
             {
-                this.logger.Debug("Stopping keyboard-emulated card reader service.");
+                this.logger.Info("Stopping keyboard-emulated card reader service.");
                 this.isStarted = false;
             }
 

@@ -73,6 +73,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsAxisChanged { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsDisableQtyItemEditingPick))]
+            [Id(27)]
+            public bool IsDisableQtyItemEditingPick { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsEnableAddItem))]
             [Id(24)]
             public bool IsEnableAddItem { get; set; }

@@ -12,7 +12,11 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         IEnumerable<IErrorLog> GetAll();
 
-        Task SaveAsync(string serialNumber, IErrorLog machine);
+        IEnumerable<Data.ErrorLog> GetAllId();
+
+        void Remove(IEnumerable<Data.ErrorLog> logsToDelete);
+
+        void SaveAsync(string serialNumber, IErrorLog machine);
 
         #endregion
     }

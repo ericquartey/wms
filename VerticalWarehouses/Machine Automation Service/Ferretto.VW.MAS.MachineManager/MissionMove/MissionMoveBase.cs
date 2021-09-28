@@ -703,6 +703,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
+        /// <summary>
+        /// this notification generates a call to InvokeSchedulerAsync
+        /// </summary>
+        /// <param name="targetBay"></param>
+        /// <param name="description"></param>
+        /// <param name="messageStatus"></param>
         public void SendMoveNotification(BayNumber targetBay, string description, MessageStatus messageStatus)
         {
             var messageData = new MoveLoadingUnitMessageData(

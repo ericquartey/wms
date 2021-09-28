@@ -4,8 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Width="100"
-             Height="100"
+             Width="120"
+             Height="120"
              d:DataContext="{d:DesignInstance Type=local:PpcBadge,
                                               IsDesignTimeCreatable=False}"
              mc:Ignorable="d">
@@ -31,8 +31,8 @@
 
     <Viewbox Stretch="Uniform"
              StretchDirection="Both">
-        <Grid Width="100"
-              Height="100">
+        <Grid Width="120"
+              Height="120">
             <Ellipse Style="{DynamicResource PpcBadge_Ellipse_Style}" />
             <TextBlock x:Name="PpcBadge_TextBlock"
                        Style="{DynamicResource PpcBadge_TextBlock_Style}" />

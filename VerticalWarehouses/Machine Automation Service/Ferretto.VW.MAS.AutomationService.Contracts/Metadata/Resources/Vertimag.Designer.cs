@@ -934,7 +934,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enabled add item.
+        ///   Looks up a localized string similar to Not editing available quantity of item in picking.
+        /// </summary>
+        public static string Machine_IsDisableQtyItemEditingPick {
+            get {
+                return ResourceManager.GetString("Machine_IsDisableQtyItemEditingPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled add drapery item.
         /// </summary>
         public static string Machine_IsEnableAddItem {
             get {
@@ -1483,11 +1492,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to tote barcode length.
+        ///   Looks up a localized string similar to Tote barcode length.
         /// </summary>
         public static string ToteBarcodeLength {
             get {
-                return ResourceManager.GetString("ToteBercodeLength", resourceCulture);
+                return ResourceManager.GetString("ToteBarcodeLength", resourceCulture);
             }
         }
         
