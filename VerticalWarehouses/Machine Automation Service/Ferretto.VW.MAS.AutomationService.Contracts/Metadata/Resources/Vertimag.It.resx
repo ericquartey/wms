@@ -577,7 +577,7 @@
     <value>Telescopica</value>
   </data>
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
-    <value>Abilita aggiungi articolo</value>
+    <value>Abilita aggiungi pezza</value>
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Versamento automatico con barcode</value>
@@ -593,5 +593,8 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Lunghezza codice contenitore esterno</value>
+  </data>
+  <data name="Machine_IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Non modificare quantità disponibile articolo in prelievo</value> 
   </data>
 </root>

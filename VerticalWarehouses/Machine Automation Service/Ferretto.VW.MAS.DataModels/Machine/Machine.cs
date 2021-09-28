@@ -49,6 +49,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDbSaveOnTelemetry { get; set; }
 
         /// <summary>
+        /// Get a value indicating if disable editing the available quantity of item in the picking operation.
+        /// </summary>
+        public bool IsDisableQtyItemEditingPick { get; set; }
+
+        /// <summary>
         /// Get a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }

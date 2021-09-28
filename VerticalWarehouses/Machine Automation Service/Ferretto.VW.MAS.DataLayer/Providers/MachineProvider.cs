@@ -403,6 +403,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsDisableQtyItemEditingPick()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsDisableQtyItemEditingPick ?? false;
+            }
+        }
+
         public bool IsEnableAddItem()
         {
             lock (this.dataContext)

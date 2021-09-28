@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsDbSaveOnTelemetry();
 
+        bool IsDisableQtyItemEditingPick();
+
         bool IsEnableAddItem();
 
         bool IsHeartBeat();

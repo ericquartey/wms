@@ -270,7 +270,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             else
             {
-                canConfirm = this.InputQuantity.Value + this.wastedDraperyQuantity < this.AvailableQuantity.Value;
+                canConfirm = this.InputQuantity.Value + this.wastedDraperyQuantity <= this.AvailableQuantity.Value;
             }
 
             return canConfirm;
