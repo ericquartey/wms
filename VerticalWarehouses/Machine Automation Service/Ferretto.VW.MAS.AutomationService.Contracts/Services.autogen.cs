@@ -12859,17 +12859,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> IsEnableAddItemAsync()
+        public System.Threading.Tasks.Task<bool> IsDisableQtyItemEditingPickAsync()
         {
-            return IsEnableAddItemAsync(System.Threading.CancellationToken.None);
+            return IsDisableQtyItemEditingPickAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<bool> IsEnableAddItemAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> IsDisableQtyItemEditingPickAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/get/IsEnableAddItem");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/get/IsDisableQtyItemEditingPick");
     
             var client_ = _httpClient;
             try
@@ -12925,17 +12925,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<bool> IsEnableQtyItemEditingPickAsync()
+        public System.Threading.Tasks.Task<bool> IsEnableAddItemAsync()
         {
-            return IsEnableQtyItemEditingPickAsync(System.Threading.CancellationToken.None);
+            return IsEnableAddItemAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<bool> IsEnableQtyItemEditingPickAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<bool> IsEnableAddItemAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/get/IsEnableQtyItemEditingPick");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/get/IsEnableAddItem");
     
             var client_ = _httpClient;
             try

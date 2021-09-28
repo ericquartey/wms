@@ -399,24 +399,20 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsDisableQtyItemEditingPick()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsDisableQtyItemEditingPick ?? false;
+            }
+        }
+
         public bool IsEnableAddItem()
         {
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.FirstOrDefault()?.IsEnableAddItem ?? false;
             }
-        }
-
-        public bool IsEnableQtyItemEditingPick()
-        {
-            var retValue = true;
-            return retValue;
-            /*
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.FirstOrDefault()?.IsEnableQtyItemEditingPick ?? false;
-            }
-            */
         }
 
         public bool IsHeartBeat()

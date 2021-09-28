@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.28 rispetto la 1.0.27
 - Aggiunta lingua ungherese
+- Aggiunta la possibilità di disabilitare la modifica della quantità disponibile di un articolo in prelievo
 
 ## Bug Risolti
 - Telemetria: corretti vari errori (il database locale è ora in formato SqlLite)
@@ -35,6 +36,7 @@
 - Correzione bugs per gestione contenitore esterno (Kohler)
 - BED: corretta gestione delle posizioni bloccate in baia
 - Gli utenti si ricaricano alla riconnessione con WMS
+- Correzione bug minore per conferma prelievo pezze (Tendaggi Paradiso)
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***
