@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.MissionsDataProvider.Update(this.Mission);
                         this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
                         return;
                     }
                 }

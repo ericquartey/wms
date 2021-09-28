@@ -105,15 +105,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 if (this.machineData.NumberOfExecutedSteps == this.machineData.MaximumSteps)
                 {
-                    var baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                    var bay = baysDataProvider.GetByNumber(this.machineData.TargetBay);
                     if (this.machineData.AxisToCalibrate == Axis.BayChain
-                        && bay.IsDouble
-                        && bay.IsExternal
-                        && bay.Positions.Any(p => !p.IsUpper && p.IsBlocked)
+                        && this.machineData.TurnBack
                         )
                     {
-                        // in BED with bottom disabled we have to move back after homing
                         this.ParentStateMachine.ChangeState(new HomingBackExecutingState(this.stateData, this.Logger));
                     }
                     else

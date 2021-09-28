@@ -102,6 +102,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineVolatileDataProvider machineVolatile;
 
+        private readonly IDbContextRedundancyService<DataLayerContext> redundancyService;
+
         #endregion
 
         #region Constructors
@@ -111,13 +113,15 @@ namespace Ferretto.VW.MAS.DataLayer
             ILogger<MachineProvider> logger,
             IMemoryCache cache,
             IConfiguration configuration,
-            IMachineVolatileDataProvider machineVolatile)
+            IMachineVolatileDataProvider machineVolatile,
+            IDbContextRedundancyService<DataLayerContext> redundancyService)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
+            this.redundancyService = redundancyService ?? throw new System.ArgumentNullException(nameof(redundancyService));
         }
 
         #endregion
@@ -254,7 +258,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 try
                 {
-                    lock (this.dataContext)
+                    lock (this.redundancyService)
                     {
                         // Get the raw bytes contents
                         using (var stream = File.OpenRead(filePath))

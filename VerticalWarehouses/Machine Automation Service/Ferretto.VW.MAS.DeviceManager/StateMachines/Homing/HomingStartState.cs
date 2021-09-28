@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name}, axis {this.machineData.AxisToCalibrate}, calibration {this.machineData.CalibrationType}");
+            this.Logger.LogDebug($"Start {this.GetType().Name}, axis {this.machineData.AxisToCalibrate}, calibration {this.machineData.CalibrationType}, turnBack {this.machineData.TurnBack}");
 
             if (this.machineData.IsOneTonMachine && this.machineData.AxisToCalibrate == Axis.Horizontal)
             {
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 "Homing Started",

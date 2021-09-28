@@ -626,7 +626,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
         {
-            IHomingMessageData homingData = new HomingMessageData(calibrateAxis, calibration, loadUnitId, showErrors);
+            IHomingMessageData homingData = new HomingMessageData(calibrateAxis, calibration, loadUnitId, showErrors, false);
             switch (calibrateAxis)
             {
                 case Axis.Horizontal:

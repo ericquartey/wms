@@ -194,7 +194,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.NeedHomingAxis == Axis.Horizontal || this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
             {
                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             else if (this.Mission.NeedHomingAxis == Axis.BayChain
                 && this.Mission.OpenShutterPosition != ShutterPosition.NotSpecified
@@ -362,7 +362,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.MissionsDataProvider.Update(this.Mission);
                                 this.Logger.LogInformation($"Homing Bay free start Mission:Id={this.Mission.Id}");
-                                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, notification.RequestingBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(
+                                    Axis.BayChain,
+                                    Calibration.FindSensor,
+                                    this.Mission.LoadUnitId,
+                                    showErrors: true,
+                                    turnBack: bay.IsExternal && bay.IsDouble && bay.Positions.Any(p => p.IsUpper && p.Location == this.Mission.LoadUnitSource),
+                                    notification.RequestingBay,
+                                    MessageActor.MachineManager);
                             }
                             else
                             {

@@ -430,9 +430,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.baysDataProvider.GetChainPosition(bayNumber);
         }
 
-        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
+        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, bool turnBack, BayNumber bayNumber, MessageActor sender)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors);
+            if (!turnBack)
+            {
+                // in BED with bottom disabled we have to move back after homing
+                var bay = this.baysDataProvider.GetByNumber(bayNumber);
+                turnBack = bay.IsDouble && bay.Positions.Any(p => !p.IsUpper && p.IsBlocked);
+            }
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, turnBack);
             this.PublishCommand(
                 homingData,
                 $"Execute homing {calibration} Command",

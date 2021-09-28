@@ -107,30 +107,29 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.writingOnStandby = true;
 
-                    using (var dbContext = new DataLayerContext(isActiveChannel: false, this.redundancyService as IDbContextRedundancyService<DataLayerContext>))
+                    var dbContext = new DataLayerContext(isActiveChannel: false, this.redundancyService as IDbContextRedundancyService<DataLayerContext>);
+
+                    var parametersArray = new SqliteParameter[command.Parameters.Count];
+                    command.Parameters.CopyTo(parametersArray, 0);
+
+                    try
                     {
-                        var parametersArray = new SqliteParameter[command.Parameters.Count];
-                        command.Parameters.CopyTo(parametersArray, 0);
-
-                        try
-                        {
-                            dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
-                            //this.machineVolatile.IsStandbyDbOk = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            //this.logger.LogWarning("Inhibiting database standby channel.");
-                            //this.redundancyService.InhibitStandbyDb();
-                            this.logger.LogError($"Error writing to standby database: {ex.Message}: {command.CommandText}");
-                            this.writingOnStandby = false;
-                            this.machineVolatile.IsStandbyDbOk = false;
-
-                            // TODO - please enable the following instruction to make standby database errors blocking
-                            //throw new InvalidOperationException($"Error writing to standby database: {ex.Message}");
-                        }
-
-                        this.writingOnStandby = false;
+                        dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
+                        //this.machineVolatile.IsStandbyDbOk = true;
                     }
+                    catch (Exception ex)
+                    {
+                        //this.logger.LogWarning("Inhibiting database standby channel.");
+                        //this.redundancyService.InhibitStandbyDb();
+                        this.logger.LogError($"Error writing to standby database: {ex.Message}: {command.CommandText}");
+                        this.writingOnStandby = false;
+                        this.machineVolatile.IsStandbyDbOk = false;
+
+                        // TODO - please enable the following instruction to make standby database errors blocking
+                        //throw new InvalidOperationException($"Error writing to standby database: {ex.Message}");
+                    }
+
+                    this.writingOnStandby = false;
                 }
             }
         }

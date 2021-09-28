@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
             IMachineResourcesProvider machineResourcesProvider,
             InverterIndex inverterIndex,
             bool showErrors,
+            bool turnBack,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -32,6 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
             this.MachineSensorStatus = machineResourcesProvider;
             this.CurrentInverterIndex = inverterIndex;
             this.ShowErrors = showErrors;
+            this.TurnBack = turnBack;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
@@ -77,6 +79,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         public bool ShowErrors { get; }
 
         public BayNumber TargetBay { get; }
+
+        public bool TurnBack { get; }
 
         public double VerticalStartingPosition { get; set; }
 

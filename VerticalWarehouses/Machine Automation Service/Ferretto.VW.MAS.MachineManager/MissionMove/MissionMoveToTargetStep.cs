@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (this.Mission.CloseShutterBayNumber == BayNumber.None)
                 {
                     this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
-                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                    this.LoadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     if (this.Mission.NeedHomingAxis == Axis.HorizontalAndVertical)
                                     {
                                         this.Logger.LogInformation($"Homing elevator occupied start Mission:Id={this.Mission.Id}");
-                                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
                                     }
                                     else
                                     {

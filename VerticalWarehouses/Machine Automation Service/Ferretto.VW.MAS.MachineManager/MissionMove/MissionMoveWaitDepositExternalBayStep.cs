@@ -150,6 +150,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
+            if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+            {
+                this.Mission.NeedHomingAxis = Axis.BayChain;
+            }
             var isLoadingUnitInExternalUpPosition = this.machineResourcesProvider.IsDrawerInBayTop(bay.Number);
             var isLoadingUnitInExternalDownPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
 

@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
 
         bool ShowErrors { get; }
 
+        bool TurnBack { get; }
+
         double VerticalStartingPosition { get; set; }
 
         #endregion
