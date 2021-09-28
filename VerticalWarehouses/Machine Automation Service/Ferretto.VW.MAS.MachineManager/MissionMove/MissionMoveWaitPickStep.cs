@@ -113,6 +113,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationFaultStop:
                     if ((notification.RequestingBay == this.Mission.TargetBay || notification.RequestingBay == BayNumber.None)
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.EjectLoadUnit)
+                        && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
                         )
                     {
                         this.OnStop(StopRequestReason.Error);
