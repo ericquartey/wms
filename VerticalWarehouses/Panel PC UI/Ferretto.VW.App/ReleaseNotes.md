@@ -37,6 +37,7 @@
 - BED: corretta gestione delle posizioni bloccate in baia
 - Gli utenti si ricaricano alla riconnessione con WMS
 - Correzione bug minore per conferma prelievo pezze (Tendaggi Paradiso)
+- BED: correzioni alle missioni di ripristino
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***
