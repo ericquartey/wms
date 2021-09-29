@@ -85,19 +85,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.RestoreConditions)
             {
                 this.Mission.ErrorCode = MachineErrorCode.NoError;
-                if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
-                {
-                    this.Mission.NeedHomingAxis = Axis.BayChain;
-                }
-                this.Logger.LogInformation($"Homing axis {this.Mission.NeedHomingAxis} Start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.Homing(
-                    this.Mission.NeedHomingAxis,
-                    Calibration.FindSensor,
-                    this.Mission.LoadUnitId,
-                    true,
-                    false,
-                    bay.Number,
-                    MessageActor.MachineManager);
+                this.Logger.LogInformation($"Homing axis BayChain Start Mission:Id={this.Mission.Id}");
+                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
             }
             else
             {
@@ -286,30 +275,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             notification.Data is HomingMessageData messageData)
                         {
                             // Calibrate elevator
-                            if (messageData.AxisToCalibrate == Axis.Horizontal || messageData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                            if (messageData.AxisToCalibrate == Axis.Horizontal && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
-                                if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
-                                {
-                                    this.MachineVolatileDataProvider.IsHomingExecuted = true;
-                                }
-
-                                if (this.Mission.RestoreConditions)
-                                {
-                                    this.Mission.RestoreConditions = false;
-                                    this.Mission.NeedHomingAxis = Axis.BayChain;
-                                    this.MissionsDataProvider.Update(this.Mission);
-
-                                    this.Logger.LogInformation($"Homing axis {this.Mission.NeedHomingAxis} Start Mission:Id={this.Mission.Id}");
-                                    this.LoadingUnitMovementProvider.Homing(
-                                        this.Mission.NeedHomingAxis,
-                                        Calibration.FindSensor,
-                                        this.Mission.LoadUnitId,
-                                        true,
-                                        false,
-                                        bay.Number,
-                                        MessageActor.MachineManager);
-                                    return;
-                                }
+                                this.MachineVolatileDataProvider.IsHomingExecuted = true;
                             }
 
                             // Calibrate double external bay
