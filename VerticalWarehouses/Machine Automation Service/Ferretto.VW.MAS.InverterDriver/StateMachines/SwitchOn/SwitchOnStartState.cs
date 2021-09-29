@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                             this.InverterStatus.CommonControlWord.SwitchOn = true;
                             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
-                            this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+                            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                                 // try to restart inverter
                                 var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, message.UShortPayload, InverterDataset.AxisChangeDatasetWrite);
 
-                                this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+                                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
                                 this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                         // ack: write response
                         var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.AxisChanged, message.UShortPayload, InverterDataset.AxisChangeDatasetWrite);
 
-                        this.Logger.LogDebug($"1:inverterMessage={inverterMessage}");
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
                         this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
@@ -252,7 +252,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                     // read again
                     var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AxisChanged, InverterDataset.AxisChangeDatasetRead);
 
-                    this.Logger.LogDebug($"3:inverterMessage={inverterMessage}");
+                    this.Logger.LogTrace($"3:inverterMessage={inverterMessage}");
 
                     this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                 }

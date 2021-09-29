@@ -292,7 +292,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     this.MachineVolatileDataProvider.IsHomingExecuted = true;
                                 }
-
                                 if (this.Mission.RestoreConditions)
                                 {
                                     this.Mission.RestoreConditions = false;

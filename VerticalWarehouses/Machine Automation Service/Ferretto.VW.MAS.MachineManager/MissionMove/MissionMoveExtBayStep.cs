@@ -73,7 +73,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.RestoreConditions)
             {
-                this.Mission.RestoreConditions = false;
                 this.Mission.ErrorCode = MachineErrorCode.NoError;
                 if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
                 {
