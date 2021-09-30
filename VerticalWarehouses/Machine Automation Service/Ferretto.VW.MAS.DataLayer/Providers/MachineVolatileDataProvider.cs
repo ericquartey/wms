@@ -316,7 +316,7 @@ namespace Ferretto.VW.MAS.DataLayer
         private void OnDataLayerReady()
         {
             this.IsStandbyDbOk = true;
-            this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
+            //this.IsOneTonMachine = this.IsOneTonMachine ?? this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IMachineProvider>().IsOneTonMachine();
         }
 
         private void timer_Elapsed(object sender, ElapsedEventArgs e)

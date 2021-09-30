@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -96,11 +97,36 @@ namespace Ferretto.VW.MAS.DataLayer
                     var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
                     var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
 
-                    var model = dataContext.Model;
-
                     await this.LoadConfigurationAsync(configuration.GetDataLayerConfigurationFile(), dataContext);
                     this.GenerateInstructionDefinitions(dataContext);
                     this.GenerateAccessories(dataContext);
+
+                    // performance optimization
+                    var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                    elevatorDataProvider.GetAxis(Orientation.Horizontal);
+                    elevatorDataProvider.UpdateLastIdealPosition(-999999);
+
+                    elevatorDataProvider.GetAxis(Orientation.Vertical);
+                    elevatorDataProvider.GetLoadingUnitOnBoard();
+                    elevatorDataProvider.GetStructuralProperties();
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                    machineProvider.Get();
+                    var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                    var bays = baysDataProvider.GetAll();
+                    var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+
+                    foreach (var bay in bays.Where(b => b.Carousel == null && b.External == null && b.Number != BayNumber.ElevatorBay))
+                    {
+                        machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+                    }
+                    machineVolatileDataProvider.IsOneTonMachine = machineProvider.IsOneTonMachine();
+
+                    scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
+                    var servicingInfo = scope.ServiceProvider.GetRequiredService<IServicingProvider>();
+                    servicingInfo.CheckServicingInfo();
+
+                    var loadUnitsDataProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                    loadUnitsDataProvider.UpdateWeightStatistics();
 
                     this.IsReady = true;
 

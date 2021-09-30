@@ -218,6 +218,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
+                this.ShowNotification(Localized.Get("OperatorApp.SignallingDefectOnProcess"), Services.Models.NotificationSeverity.Info);
+
                 bResult = await this.itemsWebService.SignallingDefectOnDraperyItemAsync(
                     this.missionOperation.ItemBarcode,
                     this.GoodDraperyQuantity.Value,

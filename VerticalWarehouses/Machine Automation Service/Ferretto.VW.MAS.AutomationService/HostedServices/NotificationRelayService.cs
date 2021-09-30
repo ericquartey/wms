@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
 
                 dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
-                dataHubClient.ConnectionStatusChanged += this.OnWmsConnectionStatusChanged;
+                dataHubClient.ConnectionStatusChanged += async (s, e) => await this.OnWmsConnectionStatusChangedAsync(s, e);
 
                 await this.OnWmsEnableChanged(scope.ServiceProvider);
             }
@@ -103,12 +103,12 @@ namespace Ferretto.VW.MAS.AutomationService
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
 
-        private void OnWmsConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        private async Task OnWmsConnectionStatusChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
         {
             this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
             if (e.IsConnected)
             {
-                this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
+                await this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
                     nameof(MissionOperation),
                     null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
                     null,
