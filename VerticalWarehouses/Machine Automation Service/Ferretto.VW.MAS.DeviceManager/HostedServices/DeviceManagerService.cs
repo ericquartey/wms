@@ -438,13 +438,13 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
 
                     var fieldNotification = new FieldNotificationMessage(
-                    null,
-                    "Data Layer Ready",
-                    FieldMessageActor.Any,
-                    FieldMessageActor.DeviceManager,
-                    FieldMessageType.DataLayerReady,
-                    MessageStatus.NotSpecified,
-                    (byte)InverterIndex.None);
+                        null,
+                        "Data Layer Ready",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.DeviceManager,
+                        FieldMessageType.DataLayerReady,
+                        MessageStatus.NotSpecified,
+                        (byte)InverterIndex.None);
 
                     this.EventAggregator
                         .GetEvent<FieldNotificationEvent>()

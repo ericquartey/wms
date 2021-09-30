@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -449,7 +450,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public async void SetMachineId(int newMachineId)
+        public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;
 

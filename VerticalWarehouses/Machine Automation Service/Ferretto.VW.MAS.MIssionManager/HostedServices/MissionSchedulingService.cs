@@ -1339,11 +1339,11 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
-            var servicingInfo = serviceProvider.GetRequiredService<IServicingProvider>();
-            servicingInfo.CheckServicingInfo();
+            //var servicingInfo = serviceProvider.GetRequiredService<IServicingProvider>();
+            //servicingInfo.CheckServicingInfo();
 
-            var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
-            loadUnitsDataProvider.UpdateWeightStatistics();
+            //var loadUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            //loadUnitsDataProvider.UpdateWeightStatistics();
 
             this.OnTimePeriodElapsed(null);
             GetPersistedMissions(serviceProvider, this.EventAggregator);

@@ -182,7 +182,6 @@ namespace Ferretto.VW.MAS.TimeManagement
             catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
                 this.logger.LogTrace("Stopping service.");
-                return;
             }
         }
 
