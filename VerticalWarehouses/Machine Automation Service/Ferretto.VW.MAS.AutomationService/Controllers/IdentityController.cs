@@ -160,9 +160,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("set/machine/id")]
-        public IActionResult SetMachineId(int newMachineId)
+        public async Task<IActionResult> SetMachineIdAsync(int newMachineId)
         {
-            this.machineProvider.SetMachineId(newMachineId);
+            await this.machineProvider.SetMachineId(newMachineId);
             return this.Ok();
         }
 
