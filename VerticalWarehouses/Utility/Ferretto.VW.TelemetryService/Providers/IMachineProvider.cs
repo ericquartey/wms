@@ -9,9 +9,11 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         IMachine? Get();
 
-        Task SaveAsync(IMachine machine);
+        IMachine GetRaw();
 
-        Task SaveRawDatabaseContent(byte[] rawDatabaseContent);
+        void SaveAsync(IMachine machine);
+
+        void SaveRawDatabaseContent(byte[]? rawDatabaseContent);
 
         #endregion
     }

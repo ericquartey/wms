@@ -1,0 +1,1278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>A teszthez szükséges felső pozíció értékét jelöli. Csak akkor állítsa be az értéket, ha a mező szerkeszthető.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>A teszthez szükséges alsó pozíció értékét jelöli. Csak akkor állítsa be az értéket, ha a mező szerkeszthető.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Állítsa be a lekért ciklusok számát.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>A jelenleg befejezett ciklusok számát jeleníti meg.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>A tengely jelenlegi pozícióját mutatja.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>A teszt indítása. A teszt folytatódik, amíg el nem éri a lekért ciklusok számát, vagy a leállító gomb megnyomásáig.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>A teszt leállítása. A ciklus leáll a jelenlegi mozgás végén. A ciklusindítás gomb megnyomása folytatja a teszt végrehajtását a befejezésig.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a függőleges tengely egy sor elmozdulási ciklusának végrehajtását a bemeneti adatokban meghatározott két pont között. A ciklus az indítást követően addig folytatódik, amíg el nem éri a lekért ciklusszámot, vagy meg nem nyomják a vége gombot.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>A függőleges tengely felbontási kalibrációjának funkciója lehetővé teszi a helyes érték kalibrálását a mező mérése segítségével, majd a rendszer által ajánlott alapértelmezett érték frissítésével. Az eljárást egymást követő lépések alkotják, amíg megfelelően be nem fejeződik.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Ha a mező szerkeszthető, állítsa be a lekért kezdeti értéket.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>A gomb elindítja az eljárást, a tengely origójának végrehajtásával, majd az előzetesen meghatározott értékre történő pozicionálással.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Ha a mező szerkeszthető, állítsa be a lekért végső értéket.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>A gomb elindítja a tengely elmozdítását az előzetesen beállított végső értékre.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>A kezdeti pontból a végső pontba vezető mért utat jeleníti meg.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>1. lépés: tengely pozicionálása a kezdeti pontba</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>2. lépés: tengely pozicionálása a végső pontba</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>3. lépés: a felbontás frissítése az új értékre</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>4. lépés: a tengely újrapozicionálása és az eljárás bezárása</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>A tengely jelenlegi felbontását jeleníti meg</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Az eljárás által számított új felbontási értéket jeleníti meg.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Helyettesíti az előző felbontási értéket az új számított értékkel.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Visszaállítja a tengelyt a kezdeti pozícióba.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Elvégzi a tengely origóba állítását és bezárja az eljárást.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Megjeleníti a telepítés jelenlegi állapotát. A már elvégzett lépések zöld színben jelennek meg, míg az elvégzendőek vagy befejezendőek szürkék. Egyes eljárások csak az előkészítő eljárások elvégzése után lehetségesek.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>A szürke mutató a még elvégzendő eljárásokat jelöli</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>A zöld mutató a megfelelően befejeződött eljárásokat jelöli.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Szenzorok állapotának megjelenítése</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>A különböző oldalak lehetővé teszik a gépet alkotó különböző részegységek szenzorai állapotának megjelenítését. A megjelenítés valós időben történik, és a különböző szenzorok állapotának változásával változik.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>A zöld szín a szenzor aktív állapotát jelöli.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>A szürke szín a szenzor nem aktív állapotát jelöli.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Alacsony sebességű kézi parancsok.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Lehetővé teszik a különböző tengelyek alacsony sebességű mozgatását. Minden irányban csökkentett mozgási tér van beállítva. A gombok szövege a lekért mozgásnak megfelelően változik. Ha a gép felülvizsgálata befejeződött, az összes tengely alacsony sebessége vezérelhető reteszelések és korlátozott mozgástartományok nélkül.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>A jelenlegi pozíciót vagy állapotot jelzi azon részegységekre, amelyek csak diszkrét pozíciókkal rendelkeznek.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Előre mozgatás, emelés vagy nyitás gombja, a kiválasztott részegység függvényében.</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Hátra mozgatás, leengedés vagy zárás gombja, a kiválasztott részegység függvényében.</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Lehetővé teszi egy sor ismétlődő teszt elvégzését a redőnyön a kiválasztott munkaállomás zárásához. Beállítható egy várakozási idő két egymást követő mozgás között. Az eljárás akkor végződik, ha eléri a beállított ciklusszámot, vagy kilépéskor.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Állítsa be a lekért ciklusok számát.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Állítsa be a késleltetési időt két egymást követő ciklus között.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>A jelenleg befejezett ciklusok számát jelöli.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>A fényfüggöny A. szenzorának állapota.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>A fényfüggöny B. szenzorának állapota.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Elindítja a lekért teszteket. A gomb akkor aktív, ha a lekért ciklusszám nagyobb, mint nulla.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Leállítja a ciklust a jelenlegi mozgás befejezésekor. Az indítógomb következő megnyomása újrakezdi a tesztet a leállított ciklust követő ciklussal.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a függőleges tengely origóba állítását, melynek végén beállításra kerül az eltolási érték által jelzett jelenlegi pozíció. Az eljárás az egyéb olyan funkciók előfeltétele, amelyek a tengely egy adott pontra történő mozgatását igénylik.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Alsó mozgási határ.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Felső mozgási határ.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Az eltolás jelenlegi értéke. A tengely origóba állításának végén a jelenlegi érték erre az értékre került beállításra.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>A tengely jelenlegi felbontása.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Az eljárás végleges eredményét jelzi.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Elindítja a függőleges tengely origóba állítási eljárását.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Leállítja a függőleges tengely origóba állítási eljárását.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>A mérő által leolvasott jelenlegi pozíció kezdeti értéke.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>A mérő által leolvasott jelenlegi pozíció végső értéke.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a kiválasztott rekesz pozíciójának ellenőrzését, és esetleges korrekcióját. A korrekció kizárólag a kiválasztott rekeszre kerül alkalmazásra.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Állítsa be a rekeszt, amelynek ellenőrizni kívánja a pozícióját.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>A megfelelően kiválasztott rekesz pozícióját jelöli.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>A pozíció változásának értéke a beállítási fázisban.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>A tengely pozíciójának jelenlegi értéke.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Az alkalmazandó korrekció teljes értéke.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>A függőleges tengelyt a kiválasztott rekeszhez állítja.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Növeli a tengely aktuális magasságát a lépésben megadott értékkel.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Csökkenti a tengely aktuális magasságát a lépésben megadott értékkel.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Korrigálja a kiválasztott rekesz pozícióját azon mezőben megadott értékkel, amely a teljes lekért értéket tartalmazza.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a konzoltartó különböző paneljei megfelelő pozicionálásának ellenőrzését. Az esetleges korrekció az ellenőrzött panel minden rekeszére alkalmazásra kerül.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>A referenciarekesz kiválasztott oldalán található panelek teljes számát jeleníti meg.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>A jelenleg kiválasztott panelt jeleníti meg, amelyen az ellenőrzés elvégzésre kerül.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>A kiválasztott rekesz, amelyből az ellenőrzendő panel származtatva van. A páratlan vagy páros számok határozzák meg az első vagy hátsó oldalt.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>A kiválasztott rekesz pozícióértéke.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>A tengely jelenlegi pozícióját jelöli. A léptetőgombok működtetése módosítja.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>A pozíció módosításához használt léptetés értéke.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>A kiválasztott rekesz pozícióértékére alkalmazandó korrekció teljes értéke.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Lehetővé teszi a következő ellenőrzendő panelre történő továbblépést.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>A tengelyt a kiválasztott rekeszhez állítja.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Növeli a tengely aktuális magasságát a lépésben megadott értékkel.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Csökkenti a tengely aktuális magasságát a lépésben megadott értékkel.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Alkalmazza a korrekciót a jelenleg kiválasztott panelen lévő rekeszcsoportra.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálca magasságát érzékelő fényfüggöny beállítását. A magasság elérésének jele a tesztkeret előpozicionálásának fázisában is felhasználásra kerül.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Állítsa be a kalibrálási fázisban felhasználandó sebességet.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Rendszerhibát jelez, amely a beállított kalibrálási sebességből és a rendszer szkennelési idejéből származik. Csökkentse a sebességet a hiba csökkentése érdekében.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Beállítja a mérés során megengedett maximális tűrést. A teszt kimenete negatív, ha az eredmény meghaladja a lekért értéket.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>A magasság ellenőrzési elemeként felhasznált sugár aktiválását jelzi. </value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>A lánctengely jelenlegi pozícióját mutatja.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>A fényfüggönyre alkalmazandó korrekciót mutatja. A plusz jel a fényfüggöny emelését, a mínusz jel a leengedését vezérli a meghatározott értékkel.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>A teszt végső eredményét mutatja.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>A gomb elindítja az ellenőrzési eljárást.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>A gomb leállítja az ellenőrzési eljárást.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi annak ellenőrzését, hogy a súlymérés a meghatározott tűréseken belül van-e. A méréshez mintasúlyok kerülnek felhasználásra a vonatkozó mezőben meghatározott mennyiségben.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Az alacsony sebességgel megtett utat jelöli, melynek során megtörténik a felvett áramerősség mintavételezése.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>A teszthez felhasznált mintasúlyt tartalmazza.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>A mérés lekért tűrését tartalmazza.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>A rendszer által mért súlyt jelöli.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Az eljárás végleges eredményét mutatja. A kimenet pozitív, ha a mért súly a beállított tűréseken belül van.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>A teszteljárás indítása.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>A teszteljárás leállítása.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a függőleges tengely eltolásának korrekcióját úgy, hogy a különböző rekeszek pozícióját a függőleges tengely referenciarendszeréhez illeszti.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Az ellenőrzésre kiválasztott rekesz.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>A kiválasztott rekesz tényleges pozícióértéke.</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>A pozícióérték alkalmazandó módosításának értéke minden tengelyelmozdulást vezérlő gombnyomásra.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>A függőleges tengely jelenlegi pozíciója.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>A függőleges tengely eltolásának jelenlegi értéke.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Új eltolási érték.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>A függőleges tengelyt a kiválasztott rekesz pozíciójához mozgatja.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>A beállított lépésértékkel növeli a függőleges tengely jelenlegi pozícióját.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>A beállított lépésértékkel csökkenti a függőleges tengely jelenlegi pozícióját.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>A jelzett értékre frissíti a függőleges tengely eltolását.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi az első és utolsó kiválasztott közötti rekeszblokk módosítását. A kiválasztott oldal automatikusan megjelenik a kezdeti rekesz számának alapján, aszerint, hogy az páratlan vagy páros.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Állítsa be a blokk kezdeti rekeszének számát.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Állítsa be a blokk utolsó rekeszének számát.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Állítsa be a korrekció kívánt értékét, amely alkalmazásra kerül a kiválasztott rekeszcsoportra.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Azt az oldalt jelöli, amelyen a módosítás elvégzésre kerül. Az oldal automatikusan kerül meghatározásra a kiválasztott kezdeti rekesz számának alapján, aszerint, hogy az páratlan vagy páros.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Alkalmazza a korrekciót a kiválasztott rekeszcsoportra.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>A tesztnek alávetendő rekeszek teljes számát mutatja.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>A jelenleg tesztelt rekeszek számát mutatja.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>A jelenleg tesztelt rekesz száma.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>A beviteli fázisban lévő tálca száma.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>A betöltési fázisban lévő tálca maximális teherbírása.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Elindítja a tálca beviteli eljárását. Az eljárás a meghatározott ciklusszám elvégzésével fejeződik be.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Behívja a munkaállomásra a teszthez használt tálcát.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a megfelelő beviteli mezőben kiválasztott tálca felhasználását a gép alsó és felső rekeszeinek tesztelésére, a letiltottként megjelenő rekeszblokkok alatti és feletti rekeszek kivételével. Az eljárás célja annak ellenőrzése, hogy ezeken a területeken ne álljanak fel mechanikai ütközések.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi üres tálcák bevitelét a gép belsejébe az üzembe helyezési eljárást követően. A tálcák a szabad blokkokba kerülnek a legalacsonyabb prioritás figyelembe vételével.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>A behelyezendő tálcák teljes száma.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>A gépbe már behelyezett tálcák.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>A beviteli fázisban lévő tálca száma. A megfelelő gombbal generálható, vagy megadható a vonatkozó mezőben.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>A jelenleg éppen behelyezett tálca maximálisan megengedett teherbírását mutatja.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>A gomb a következő behelyezendő tálcát állítja be, a szám a legutóbb behelyezettet követő szám.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Elindítja a kiválasztott tálca beviteli eljárását.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a különböző munkaállomásokon lehetséges különböző pozíciók értékének ellenőrzését, és esetleges korrekcióját. Az eljárás a gépkonfiguráció leírását tartalmazó dokumentumban meghatározott munkaállomás-típustól függ. Ha több pozíció van ugyanazon a munkaállomáson, az eljárás többszörös ellenőrzést tesz lehetővé.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Kiválasztja a munkaállomást, amelynek ellenőrizni kívánjuk a pozícióit.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>A kiválasztott munkaállomás belsejében lévő pozíciót jelöli, amelynek ellenőrizni kívánjuk az értékét. Automatikusan kerül beállításra.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Megjeleníti a kiválasztott pozíció értékét az ellenőrzött munkaállomáson.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>A tengely jelenlegi pozíciójára alkalmazott lépés értéke az elmozdulást vezérlő gombok minden megnyomására.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>A munkaállomás-kiválasztott pozíció értékére alkalmazott korrekció kumulatív értéke. </value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>A függőleges tengelyt a munkaállomáshoz-kiválasztott pozícióhoz állítja.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Növeli a tengely aktuális magasságát a lépésben megadott értékkel.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Csökkenti a tengely aktuális magasságát a lépésben megadott értékkel.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Korrigálja a munkaállomás-jelenlegi pozíció tényleges értékét a vonatkozó mezőben megadott értékkel.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Ha engedélyezve van, a gomb lehetővé teszi a jelenleg kiválasztott munkaállomáson található következő pozíció kiválasztását. Az eljárás megismétlődik a következő pozícióra.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>A főmenü lehetővé teszi a gép üzembe helyezési fázisára vonatkozó valamennyi funkcióhoz való hozzáférést.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Főmenü</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Ha látható, hiba jelenlétét mutatja. A gomb megnyomásával megnyílik egy ablak, amelyben a helyzet helyreállítható.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>A gomb Off állapota a gép mozgásainak letiltását jelzi.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>A gomb On állapota azt jelzi, hogy a gép mozgása engedélyezve van.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>A jelenleg bejelentkezett felhasználó nevét mutatja. Megnyomásával ki lehet jelentkezni a rendszerből.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>Megnyomásával megnyílik a jelenleg kiválasztott funkció kontextusmenüje.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Lehetővé teszi a különböző funkciók gomblistáján való navigációt felfelé.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>A telepítési funkciók gomblistája.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Lehetővé teszi a különböző funkciók gomblistáján való navigációt lefelé.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálca egy sor kirakodási és berakodási tesztének elvégzését a vonatkozó beviteli mezőben kiválasztott munkaállomás felhasználásával. A teszthez módosíthatjuk a gyorsulás, lassulás előtolási sebességét és a sebességet a vonatkozó mező tartalmának megfelelően. A teszt addig folytatódik, amíg el nem éri a lekért ciklusok számát, vagy a leállító gomb megnyomásáig.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Adja meg a munkaállomás számát, amelyen el kívánja végezni a tesztet.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Adja meg a pozíciót a munkaállomás belsejében, amelyen el kívánja végezni a tesztet.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Adja meg a teszthez szükséges előtolási sebességet. A csökkentés a gyorsulási és lassulási értékekre is vonatkozik.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>A lánctengely jelenlegi értékét mutatja, mint a kiindulási pontra vonatkozó érték.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Adja meg a tesztciklusok lekért számát.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>A megfelelő elvégzett, kész ciklusok számát mutatja.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>A függőleges tengelyt a kiválasztott munkaállomás belső pozícióértékére állítja. A pozícióérték figyelembe veszi a berakodási eltolást.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>A teszteljárás indítása. A gomb csak azután lesz aktív, hogy a függőleges tengely a lekért munkaállomási pozícióba állt.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Leállítja a tesztciklust.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>A kézi parancsokra jelenleg engedélyezett üzemmódot mutatja. A kiterjesztett mozgástartomány üzemmódja automatikusan beállításra kerül az üzembe helyezés befejezését követően.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Mentés és a gépkonfiguráció helyreállítása.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a konfigurációs fájl külső eszközre történő mentését vagy onnan való betöltését.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>A konfiguráció mentési eljárása.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Az automatikusan létrehozott mappát mutatja, ahová mentésre kerülnek a konfigurációs fájlok.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Elindítja a konfigurációs fájlok mentési eljárását. Az esetlegesen már meglévő fájlok felülírásra kerülnek.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Megerősíti a fájlok mentési eljárását.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Visszavonja a fájlok mentési eljárását.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>A konfiguráció helyreállítási eljárása.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Elindítja a konfigurációs fájlok betöltési eljárását. Az esetlegesen már meglévő fájlok felül lesznek írva.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Megerősíti a fájlok betöltési eljárását.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Visszavonja a fájlok betöltési eljárását.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>Kezdeti oldal.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>A főmenü lehetővé teszi a gépállapot ellenőrzését a megfelelő gombok segítségével a képernyő felső részén. A bal oldalon, a navigációs gombok segítségével lehet hozzáférni a különböző funkciókhoz.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>A kézi vezérlés állapotát mutatja. Az automatikus ciklus felfüggesztve.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Az automatikus vezérlés állapotát mutatja. A gép kezeli a vezérlőrendszerről beérkező parancsokat.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>A motorok teljesítménye le van tiltva. Semmilyen üzemmódban sem lehetségesek mozgások.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>A motorok teljesítménye engedélyezve van. A gép képes mozgások elvégzésére.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>A rendszer azt jelzi, hogy a gép egyes részegységeinél közeledik a tervezett karbantartás elvégzésének ideje.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>A rendszer azt jelzi, hogy a gép egyes részegységei elérték a két karbantartás közötti időszak végét. Karbantartás szükséges!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Hiba történt a gép működése során. A gomb megnyomása megnyitja a helyreállítási eljárások kezelőoldalát.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>A jelenleg csatlakozott kezelő nevét mutatja. A gomb megnyomása lehetővé teszi a kijelentkezést.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>A gomb megnyitja a súgó kontextusablakát a folyamatban lévő eljárásra vonatkozóan.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>A gomb megnyitja a munkaállomáson lévő tálca ütemezett műveleteinek kezelőoldalát.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>A gomb megnyitja az oldalt, amely lehetővé teszi a cikkszámok keresését.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>A gomb megnyitja az oldalt, amely megjeleníti a WMS által ütemezett végrehajtásra várakozó listákat.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Lehetővé teszi a további funkciókhoz való hozzáférést.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Az oldal azt jelzi, hogy a rendszer elvégezte a tervezett műveleteket a munkaállomásra érkezett utolsó tálcán. A következő tálca beérkezésére várakozik, amely megnyitja majd a tervezett műveletek oldalát.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>A megjegyzés a rendszer aktuális állapotát mutatja.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>A mező a jelenleg ütemezett műveletek számát mutatja azon munkaállomásra, ahol a kezelő dolgozik.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Az eljárás minden részletinformációt megmutat azon tálca ütemezett kitárolási műveletére vonatkozóan, amely azon a munkaállomáson található, ahol a felhasználó dolgozik. A vázlatrajz, ha van, a tálca felosztását mutatja, és a megjelölt zóna mutatja azon fakkot, amelyen a műveletet el kell végezni. Ha van, a mozgatás tárgyát képező cikk képe is megjelenik.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Megjelenik a kitárolandó áru mennyisége a megnevezett rekeszből.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>A felhasználó módosíthatja a ténylegesen kitárolt mennyiséget, ha a készlet nem elegendő. Normál esetben a mezőben már szerepel a kért mennyiség.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>Az ablak tartalmaz egy sor további információt is a kivételi ablak információin kívül. Megjelennek a részletinformációk a kitárolási fázisban lévő cikkre és a kapcsolódó esetleges csomagolási listára vonatkozóan. Ha van, megjelenik a cikk képe is.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Megjelenik a lista azon sora, amely a folyamatban lévő kitárolási műveletre hivatkozik.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Megjelenik a kitárolási fázisban lévő cikk gyártási dátuma.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Megjelenik a kitárolási fázisban lévő cikk gyártási tételszáma is, ha van ilyen.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Ha van, megjelenik a kitárolás tárgyát képező anyag állapota.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>Ha van, megjelenik a csomagolási lista, amelyen szerepelnek a kitárolási fázisban lévő különböző cikkekre vonatkozó információk.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Ha van, megjelenik a csomagolási lista leírása, amely magában foglalja a kitárolt anyagokat.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Tartalmazza a kitárolási fázisban lévő cikk csomagolási típusának megjelölését.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Megjelenik a megnevezett rekeszből kitárolandó áru mennyisége.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>Az oldal a jelenleg folyamatban lévő utántöltési műveletre vonatkozó részleteket tartalmazza. További részletek jelennek meg az elvégzendő műveletek alapoldalához képest.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>A folyamatban lévő művelethez kapcsolódó lista sorát jelzi.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>A cikk gyártási dátumát tartalmazza.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Az utántöltési fázisban lévő cikk anyagállapotát mutatja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Az utántöltési fázisban lévő cikk gyártási tételszámát mutatja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Az utántöltési fázisban lévő cikk csomagolásának típusát mutatja.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Az utántöltendő mennyiség a megjelölt fakkban.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>A folyamatban lévő művelethez kapcsolódó lista kódját mutatja.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>A folyamatban lévő művelethez kapcsolódó lista leírását mutatja.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>A folyamatban lévő művelet tárgyát képező cikk kódját mutatja.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>A folyamatban lévő művelet tárgyát képező cikk leírását mutatja.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>A mező azt a pozíciót jelzi, amelyben a folyamatban lévő művelet tárgyát képező fakk található, a vonatkozó kódolás alapján feltérképezve.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Esetleges megjegyzések is megjelennek a kezelő számára az elvégzendő művelethez kapcsolódóan. </value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>A gomb lehetővé teszi azon oldal megjelenítését, ahol a folyamatban lévő műveletre vonatkozó további részletek szerepelnek.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Megerősíti, hogy a folyamatban lévő művelet befejeződött.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a cikket tartalmazó fakk újratöltését, az utántöltéssel megegyező jellemzőkkel rendelkező cikkel. Az eljárás lehetővé teszi a fakk maximális kapacitásának frissítését, ha a regisztrált érték hibásnak bizonyul.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Az utántöltendő mennyiség a kiválasztott fakkban.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Megnyitja a fakk maximális kapacitásának frissítését kezelő oldalt.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Lehetővé teszi a ténylegesen utántöltött mennyiség beállítását a kiválasztott fakkban.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>A táblázat oszlopainak leírása.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>Az előző elemre állítja a mutatót. Kétszeri megnyomásra a lista elejére lép.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>A mutatót a következő elemre állítja. Kétszeri megnyomásra a lista végére lép.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a WMS által végrehajtásra várakozásba helyezett összes lista megjelenítését Minden listára vonatkozóan megjelenik a kapcsolódó gép. Lehet csak azon részét végrehajtani a listáknak, amelyek azon a gépen jelenlévő kitárolandó cikkeket tartalmazzák, ahonnan az eljárást használják.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>A táblázat oszlopa tartalmazza a végrehajtásra várakozó listák kódjait.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>A táblázat oszlopa tartalmazza a végrehajtásra várakozó listák leírását.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>Az oszlop minden listára tartalmazza a végrehajtásához szükséges gépek listáját.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>A gomb lehetővé teszi a lista részleteinek oldalához való hozzáférést, ahol látható a jelen lévő cikkek listája.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>A gomb, ha aktív, lehetővé teszi a jelenleg kiválasztott lista végrehajtásba helyezését azon gép vonatkozásában, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>A megjelenített lista sorának számát tartalmazza.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>A cikkszámot tartalmazza.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>A cikk leírását tartalmazza.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>Az adott cikkből lekért mennyiséget tartalmazza.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>Az oldal a kiválasztott lista részleteit tartalmazza. A megjelenített soroknál csak azokat lehet végrehajtani, ahol ez szerepel, mert a cikk azon gépben található, ahonnan a kezelő éppen dolgozik. A „Lista végrehajtása” gomb csak akkor aktív, ha legalább egy sor végrehajtható a gépen, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi egy cikk keresését a kódoszlop vagy leíró oszlop segítségével. A keresési mezőbe bevitt szöveg automatikusan felhasználásra kerül a két oszlop tartalmában való keresés eredményeinek megjelenítéséhez. A táblázatban megjelenik az eredmény.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Tartalmazza azon cikkszámok listáját, amelyek megfelelnek a keresési feltételeknek.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Tartalmazza azon cikkszámok leírását, amelyek megfelelnek a keresési feltételeknek.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Tartalmazza azon gépek listáját, amelyek tartalmazzák a sorban szereplő cikket. Egy cikk egy vagy több gépen is megtalálható lehet.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Adja meg a mezőben a kódmezőkben és a cikkek leírásában keresendő karaktersort.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>A kiválasztott cikk elérhető mennyiségét mutatja azon gép belsejében, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>A mező csak akkor van engedélyezve, ha a kiválasztott cikk elérhető mennyisége nagyobb, mint nulla. Olyan értéket lehet csak megadni, amely nem nagyobb az elérhető mennyiségnél.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Lehetővé teszi a kiválasztott cikk kikérését a szükséges mennyiségben. A gomb csak akkor aktív, ha a cikk rendelkezésre áll azon a gépen, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>Az oldal megjeleníti a kiválasztott cikk elsődleges adatait. A részletesebb információk a kezelő WMS szintjén jeleníthetőek meg.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>A cikk kezelési módját jeleníti meg.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>A cikk Fifo idejét mutatja, a megjelölt mértékegységben kifejezve.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>A cikk besorolási kategóriája</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>A kiválasztott cikk mozgatási osztálya.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>A cikkhez kiválasztott mértékegység.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Átlagos egységsúly a megjelölt mértékegységben.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Lehetővé teszi a meghatározott lista sorainak végrehajtását. A gomb csak akkor aktív, ha a kiválasztott lista legalább egy sora végrehajtható azon a gépen, amelyen éppen dolgozik. </value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>Az oszlop azon gépet vagy gépeket tartalmazza, amelyeken a cikk jelenleg megtalálható.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a kiválasztott tálca behívását azon a munkaállomáson, amelyen a kezelő éppen dolgozik.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Azon tálca számát jelzi, amelyre a táblázat adatai vonatkoznak.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>A kiválasztott tálca jelenlegi magassága.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>A kiválasztott tálca jelenlegi súlyát mutatja.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Azt a rekeszt mutatja, ahol a tálca tárolva van.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>A gép azon oldalát mutatja, ahol a tálca tárolva van.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>A tálca jelenlegi állapotát mutatja. A piros szín azt jelzi, hogy a tálcát a jelenleg bejelentkezett felhasználó nem kérheti le.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>A lekérendő tálca számát mutatja.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>A gomb lehetővé teszi a táblázatban jelenleg kiválasztott tálca behívását. A gomb csak akkor aktív, ha a tálcát a jelenlegi felhasználó behívhatja.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a tálcák által elfoglalt hely tömörítését, a felesleges terek kiküszöbölésével. Az eljárás a gép minden oldalára kiszámítja, hogy mennyi felesleges töredék van jelenleg, és megjeleníti, hogy mennyi hely nyerhető vissza a teljes tömörítés elvégzésével. Ennél kisebb tömörítési terület is kiválasztható, ilyen esetben az eljárás a lekért érték elérésekor befejeződik.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>A gép azon oldalát jelöli, amelyre a megadott adatok vonatkoznak.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>A jelenlegi oldalon található felesleges töredékek számát jelzi.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>A maximális helyet jelzi, amely visszanyerhető a jelenlegi oldalon.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Visszanyerendő hely. Alapértelmezésben a visszanyerhető hely maximális értékére van állítva.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Aktiválja a tömörítési eljárást a gép elülső oldalára. A gomb akkor aktív, ha a lekért tér helyreállítása lehetséges.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Aktiválja a tömörítési eljárást a gép hátsó oldalára. A gomb akkor aktív, ha a lekért tér helyreállítása lehetséges.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Az eljárás adatokat jelenít meg a különböző tálcákon elfoglalt, és általánosságban a gép belsejében rendelkezésre álló helyre vonatkozóan. Minden tálcára vonatkozóan rendelkezésre állnak további információk, például az elvégzett feladatok száma, mennyi fakk található benne, a töltés százalékos értéke akár grafikus, akár numerikus formában.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>A tálca számát jeleníti meg.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Azon feladatok számát jeleníti meg, amelyek a tálcán kerültek elvégzésre.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>A feltérképezett fakkok számát jeleníti meg, amelyek a tálcán találhatóak, függetlenül az állapotuktól.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>A gépen található tálcák teljes számát mutatja.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>A gép belsejében tárolt tálcák méretét mutatja.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>A gép teljes töltöttségének fokát jeleníti meg akár grafikus, akár numerikus formában.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Lehetővé teszi a statisztikai elemzések eljárásának megnyitását a különböző tálcákon elhelyezett súlyra vonatkozóan.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Az eljárás adatokat jelenít meg a különböző tálcákon elhelyezett, és általánosságban a gép belsejében található súlyra vonatkozóan. Minden tálcára vonatkozóan további információk jelennek meg, például a jelenlegi magasság, a maximum betölthető súly tálcánként, a tárasúly, a teljes jelenlegi súly, valamint a jelenlegi súly százalékértéke a megadott maximumhoz képest, akár grafikus, akár numerikus formátumban. Megjelenik továbbá a teljes gépre vonatkozó globális érték is.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>A tálca számát jeleníti meg.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>A tálca jelenlegi magassága.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>A tálcára megengedett maximum súlyt mutatja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Az üres tálca súlyát mutatja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>A tálca jelenlegi súlyát jelzi.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>A felhasznált súly százalékértékét mutatja a lehetséges maximumhoz képest.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>A gépen elhelyezett tálcák maximális számát mutatja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>A gép maximális bruttó teherbírását mutatja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>A betöltött bruttó súlyt mutatja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>A gépen megengedett maximális nettó teherbírás.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>A ténylegesen betöltött nettó súlyt mutatja.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>A betöltött súly jelenlegi százalékértékét mutatja a megengedett maximum súlyhoz képest.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Az eljárás a gép főbb részegységeinek statisztikai adatait biztosítja. A megjelenített adatok a gép teljes életciklusára vonatkoznak a telepítés pillanatától kezdve.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>A függőleges tengely végrehajtott ciklusainak teljes számát mutatja. Egy ciklus két pont közötti elmozdulásnak felel meg.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>A függőleges tengely által megtett összes km-t mutatja a telepítés pillanatától kezdve.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Az 1. sz. munkaállomás redőnye által elvégzett ciklusok teljes számát mutatja.  A ciklust egy - teljes vagy közbenső - nyitási és zárási művelet alkotja.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>A 2. sz. munkaállomás redőnye által elvégzett ciklusok teljes számát mutatja.  A ciklust egy - teljes vagy közbenső - nyitási és zárási művelet alkotja.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>A 3. sz. munkaállomás redőnye által elvégzett ciklusok teljes számát mutatja.  A ciklust egy - teljes vagy közbenső - nyitási és zárási művelet alkotja.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>A mező a gép emelőjén található lánc által végrehajtott ciklusok teljes számát mutatja a telepítés pillanatától kezdve. Egy ciklus egy berakodási vagy kirakodási műveletet jelent.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>A mező a tálcák teljes számát mutatja, amelyek az 1. sz. munkaállomáshoz kapcsolódnak.  A számláló növekszik, ha egy tálca a munkaállomásra, majd a tárolóba kerül.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>A mező a tálcák teljes számát mutatja, amelyek a 2. sz. munkaállomáshoz kapcsolódnak.  A számláló növekszik, ha egy tálca a munkaállomásra, majd a tárolóba kerül.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>A mező a tálcák teljes számát mutatja, amelyek a 3. sz. munkaállomáshoz kapcsolódnak.  A számláló növekszik, ha egy tálca a munkaállomásra, majd a tárolóba kerül.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>Az oszlop a kiválasztott komponenshez kapcsolódó készlet kódját mutatja.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>Az oszlop a különböző készletek leírását tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>A készlet aktuális állapotát jeleníti meg. A narancssárga szín a karbantartás közeledtét, a piros határidő lejártát, tehát a karbantartás szükségességét jelzi.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>Az oszlop azt jelzi, hogy egy meghatározott egységre már volt-e beavatkozási kérelem a karbantartók felé.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>A gépmodellt tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>A gép sorozatszámát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>A gép telepítési dátumát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Az utolsó karbantartás dátumát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>A következő karbantartás becsült dátumát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Az egység aktuális állapotát jeleníti meg. A narancssárga szín a karbantartás közeledtét, a piros határidő lejártát, tehát a karbantartás szükségességét jelzi.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Az oldal lehetővé teszi azon adatok megjelenítését, amelyeken a kiválasztott egység karbantartása alapul. Megjeleníti a rendszer által a tervezett karbantartási műveletek meghatározására használt valamennyi információt.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>A kiválasztott karbantartási egység által használt komponens kódját tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>A kiválasztott egységben használt komponens leírását tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>A kiválasztott egységben lekért elem darabszámát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>A teljesített ciklusok teljes száma a gép telepítésétől számítva.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>A legutóbbi karbantartás óta elvégzett ciklusok számát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>Két karbantartás között elvégezhető ciklusok számát tartalmazza.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Az egység állapotát jeleníti meg, a narancssárga szín a karbantartás közeledtét, a piros pedig a karbantartási határidő lejártát.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>A lekért karbantartási művelet elvégzéséhez szükséges órák számát jeleníti meg.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Azt jelzi, hogy az elvégzendő karbantartási művelethez szükséges-e állvány használata a magasban végzett munkákhoz.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>E-mail küldését teszi lehetővé az ügyfélszolgálati iroda számára, amely kapcsolatfelvételt kér a karbantartási művelet egyeztetése érdekében.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>Az oldalon egy sor általános, azon gépre vonatkozó információ található, amelyen éppen dolgozik. Az egyéb információk mellett például a következő karbantartás dátuma is megjelenik. Ha több esedékes karbantartás is van, a legközelebbi dátum jelenik meg.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Azon gépmodellt tartalmazza, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Azon gép sorozatszámát tartalmazza, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>A gépre jelenleg telepített szoftver verziószámát tartalmazza.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>A gépbe összesen behelyezett tálcák száma.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>A gép telepítési dátumát tartalmazza.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>A legutóbbi karbantartás dátumát jelzi.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>A következő karbantartás becsült dátumát tartalmazza.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>A gép jelenlegi karbantartási állapotát jelzi.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>Az oldal statisztikai információkat jelenít meg a tálcák területének használatára és a teljes betöltött súlyra vonatkozóan, a gép jellemzőihez képest. A gép használatára vonatkozó információk is láthatóak itt.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Összes behelyezett tálca a telepítés kezdetétől.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>A gép belsejében elfoglalt terület százalékos értékét jelzi a teljes elérhető területhez képest.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>A teljes betöltött súlyt jelzi a gép megengedett maximális súlyához képest.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>A teljes működési időt jelzi a gép telepítésének pillanatától kezdve.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Az automatikus üzemmód teljes időtartama és a működési idő arányát jelzi a telepítés pillanatától kezdve.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>A használati együttható az automatikus üzemmódban, tálcák mozgatásával töltött idő és a teljes működési idő arányát jelzi.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Az eljárás a gép belsejében található rekeszek statisztikai adatait mutatja. Az elülső és hátsó oldalra vonatkozó globális adatokon kívül megjelenik a különböző tervezett állapotokban lévő rekeszek száma, mind az elülső, mind a hátsó oldalra vonatkozóan.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Megjelenik azon rekesz állapota, amelyre a sor adatai vonatkoznak.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Az összes rekeszt mutatja, amelyek állapota az elülső oldalra vonatkozó táblázat első oszlopában szerepel.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Azon rekeszek százalékértékét mutatja, amelyek állapota az elülső oldalra vonatkozó táblázat első oszlopában szerepel.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Az összes rekeszt mutatja, amelyek állapota az elülső oldalra vonatkozó táblázat első oszlopában szerepel.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Azon rekeszek százalékértékét mutatja, amelyek állapota a hátsó oldalra vonatkozó táblázat első oszlopában szerepel.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>A gépen található rekeszek teljes száma.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>A gép elülső oldalán található rekeszek teljes száma.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>A gép hátsó oldalán található rekeszek teljes száma.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Az elfoglalt rekeszek száma az összes jelen lévő rekesz számához képest.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>A gomb lehetővé teszi a tárolótér tömörítési eljárásának megnyitását.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Aktiválja a rekeszekre vonatkozó statisztikák megjelenítési oldalát.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Megjeleníti a gépen található különböző tálcák statisztikai adatainak oldalát.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Lehetővé teszi a gép statisztikai adatait megjelenítő oldal megnyitását.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Aktiválja a gép által generált hibákra vonatkozó statisztikai adatok megjelenítési oldalát a gép telepítésétől kezdve.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Megjeleníti a tálca azonnali behívására vonatkozó oldalt.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Lehetővé teszi a tárolótér tömörítési eljárása kezelőoldalának megnyitását.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Lehetővé teszi azon gép statisztikai adataira vonatkozó szakasz megnyitását, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Megnyitja azon gép tervezett karbantartási műveleteinek oldalát, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi azon gép hibastatisztikai oldalának megjelenítését, amelyen éppen dolgozik. A statisztika a telepítéstől kezdve a lekérés pillanatáig a teljes időszakot magában foglalja.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>A táblázat oszlopa tartalmazza azon gép által generált hibakódok listáját, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>Ebben az oszlopban jelenik meg az alkalmak teljes száma, ahányszor a hiba előfordult.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>Minden egyes hiba előfordulási százalékértékét mutatja a számlált hibák összességéhez képest.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>A mező a mozgatott tálcák teljes számát mutatja a telepítéstől kezdve. Egy tálca akkor minősül mozgatottnak, ha egy kiindulási helyről egy célhelyre mozdul el.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Megjelenik a táblázatban kiválasztott hiba teljes leírása.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Megjelenik azon hibák teljes száma, amelyeket a gép számolt a telepítéstől kezdve.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>A mező a rendszer által számított statisztikát tartalmazza, amely a hiba nélkül mozgatott tálcák átlagára vonatkozik.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>A rendszer a gép megbízhatósági együtthatóját úgy számítja ki, mint a számlált hibák száma és a mozgatott tálcák összességének hányadosa.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>Az oldal tartalmazza munkaállomáson található tálcákban elhelyezett különböző cikkek elvégzendő leltárműveletére vonatkozó főbb adatokat. Az eljárás a lekért cikket tartalmazó fakk megjelölése után várakozik, amíg a kezelő megadja a ténylegesen készleten lévő darabok mennyiségét.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>A mező a kezelő által megszámlált, ténylegesen készleten lévő darabok mennyiségét tartalmazza.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Az oldal további részleteket biztosít a kezelő számára a folyamatban lévő leltárműveletre vonatkozóan.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>A leltár tárgyát képező cikk gyártási dátumát mutatja.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>A leltározás alatt lévő cikk anyagállapotát mutatja.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>A leltározás alatt lévő cikk gyártási tételszámát mutatja.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>A leltározás alatt lévő cikk csomagolásának típusát mutatja.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>A lista típusát mutatja az alábbi kódokkal:   P: kitárolás V: utántöltés I: Leltár</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>A kiválasztott lista típusát mutatja az alábbi kódokkal:  P: Kitárolás V: Utántöltés I: Leltár.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>A mező a WMS jelenlegi állapotát mutatja, ha van, amely azt a gépet vezérli, amelyen éppen dolgozik.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>Az oldal a tömörítési eljárási előrehaladási állapotát mutatja. A mozgatási fázisban lévő tálcát jelöli, és hogy melyik rekeszből van kivéve, és melyik rekesz a célpontja. Megjelenik ezen kívül az eljárás előrehaladási állapota, a töredékek és a visszanyerendő terület megjelölésével, illetve a már visszanyert terület.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Az éppen mozgatott tálca kódját mutatja.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>A kiinduló rekeszt jelzi, ahol a mozgatott tálca tárolva volt.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Azon rekesz számát mutatja, ahová a tálca elmozdul a mozgatási fázisban.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>A különböző tálcák mozgatási ciklusának jelenlegi fázisát mutatja.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>A függőleges tengely jelenlegi pozícióját mutatja.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>A vízszintes tengely jelenlegi pozícióját jelöli.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>A még tömörítendő töredékek számát jelzi.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>A ténylegesen visszanyert terület összességét mutatja.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>A visszanyerendő terület lekért értékét mutatja, amelynek elérésekor az eljárás befejeződik.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>A munkaállomás redőnye által elvégzett ciklusok teljes számát mutatja. A ciklust egy - teljes vagy közbenső - nyitási és zárási művelet alkotja.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>A karusszel kalibrációjának funkciója lehetővé teszi a helyes érték kalibrálását egy sor egymást követő automatikus mozgás elvégzésével, majd a rendszer által javasolt alapértelmezett érték frissítésével. Az eljárást egymást követő lépések alkotják, amíg megfelelően be nem fejeződik.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>A külső munkaállomás kalibrációjának funkciója lehetővé teszi a helyes érték kalibrálását egy sor egymást követő automatikus mozgás elvégzésével, majd a rendszer által javasolt alapértelmezett érték frissítésével. Az eljárást egymást követő lépések alkotják, amíg megfelelően be nem fejeződik.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Az eljárás lehetővé teszi a jelenlegi munkaállomáson lehetséges műveletek típusának megjelenítését </value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>FIGYELEM: Ha egy művelettípust letilt, a WMS által küldött listák elutasításra kerülnek </value>
+  </data>
+</root>

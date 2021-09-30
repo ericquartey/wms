@@ -138,7 +138,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.Logger.LogInformation($"Stop Bay Test on {this.machineData.RequestingBay} after {this.machineData.MessageData.ExecutedCycles} cycles");
                         this.isTestStopped = true;
                     }
-                    break;
 
                     if (this.machineData.MessageData.MovementMode == MovementMode.DoubleExtBayTest)
                     {

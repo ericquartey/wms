@@ -1701,6 +1701,11 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
                         }
+                        else if (this.bay.Positions.All(p => p.IsBlocked) &&
+                                 !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayPositionsDisabled"), NotificationSeverity.Warning);
+                        }
                         else if (this.MachineStatus.EmbarkedLoadingUnitId.GetValueOrDefault() > 0
                             && this.MachineStatus.EmbarkedLoadingUnit.Height == 0
                             )
@@ -1755,6 +1760,10 @@ namespace Ferretto.VW.App.Services
                         else if (!this.isBayHoming[this.bay.Number])
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
+                        }
+                        else if (this.bay.Positions.All(p => p.IsBlocked))
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayPositionsDisabled"), NotificationSeverity.Warning);
                         }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {

@@ -48,13 +48,6 @@ namespace Ferretto.VW.MAS.MachineManager
 
                 case MessageType.DataLayerReady:
                     {
-                        this.Logger.LogTrace("OnDataLayerReady start");
-
-                        // performance optimization
-                        serviceProvider.GetRequiredService<ICellsProvider>().GetAll();
-                        serviceProvider.GetRequiredService<IMachineProvider>().Get();
-                        serviceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
-
                         var machineVolatileDataProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                         machineVolatileDataProvider.IsAutomationServiceReady = true;
                         this.Logger.LogInformation("Machine Automation Service ready");

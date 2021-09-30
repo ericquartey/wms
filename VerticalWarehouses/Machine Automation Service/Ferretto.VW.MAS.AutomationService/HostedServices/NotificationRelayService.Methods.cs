@@ -134,22 +134,22 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task OnDataLayerReady(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("OnDataLayerReady start");
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var bays = baysDataProvider.GetAll();
+            //var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            //var bays = baysDataProvider.GetAll();
 
-            foreach (var bay in bays.Where(b => b.Carousel == null && b.External == null && b.Number != BayNumber.ElevatorBay))
-            {
-                this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
-            }
+            //foreach (var bay in bays.Where(b => b.Carousel == null && b.External == null && b.Number != BayNumber.ElevatorBay))
+            //{
+            //    this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+            //}
 
-            baysDataProvider.AddElevatorPseudoBay();
+            //baysDataProvider.AddElevatorPseudoBay();
 
             var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
             if (wmsSettingsProvider.IsEnabled)
             {
                 var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
                 wmsSettingsProvider.IsConnected = false;
-                dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+                await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
             }
 
             this.Logger.LogTrace("OnDataLayerReady end");

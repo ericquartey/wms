@@ -2280,4 +2280,18 @@
     <value>Error on signalling defect operation.</value>
     <comment>Error Message</comment>
   </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Acquire tote ... </value>
+    <comment>Error Message</comment>
+  </data>
+  <data name="BarcodeServiceError" xml:space="preserve">
+    <value>Barcode service error</value>
+  </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Invalid value</value>
+  </data>
+  <data name="SignallingDefectOnProcess" xml:space="preserve">
+    <value>Signalling defect on process...</value>
+    <comment>Error Message</comment>
+  </data>
 </root>

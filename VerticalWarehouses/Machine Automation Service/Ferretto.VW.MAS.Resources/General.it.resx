@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BadRequestTitle" xml:space="preserve">
-    <value>Richiesta non formulata correttamente.</value>
+    <value>Errore WMS: Richiesta non corretta</value>
   </data>
   <data name="InternalServerErrorTitle" xml:space="preserve">
     <value>Errore interno del server.</value>
@@ -146,5 +146,8 @@
   </data>
   <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Il valore non può essere nullo o contenere soli spazi.</value>
+  </data>
+  <data name="DataEntryError" xml:space="preserve">
+    <value>Errore nei dati inseriti</value>
   </data>
 </root>

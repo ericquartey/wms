@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Accessories
 
             this.isStarted = true;
 
-            this.logger.Debug("Starting the weighting scale service ...");
+            this.logger.Info("Starting the weighting scale service ...");
 
             try
             {
@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Accessories
             //    return Task.CompletedTask;
             //}
 
-            this.logger.Debug("Stopping the weighting scale service ...");
+            this.logger.Info("Stopping the weighting scale service ...");
 
             this.isStarted = false;
             this.weightPollTimer.Change(Timeout.Infinite, Timeout.Infinite);

@@ -337,4 +337,7 @@
   <data name="LotManagedProduct" xml:space="preserve">
     <value>Please select the lot of this product</value>
   </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>WMS error: Bad Request.</value>
+  </data>
 </root>

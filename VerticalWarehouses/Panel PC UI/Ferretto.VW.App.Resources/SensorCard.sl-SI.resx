@@ -159,4 +159,10 @@
   <data name="Internal" xml:space="preserve">
     <value>Notra.</value>
   </data>
+  <data name="InternalBlock" xml:space="preserve">
+    <value>--notra.</value>
+  </data>
+  <data name="ExternalBlock" xml:space="preserve">
+    <value>--zuna.</value>
+  </data>
 </root>

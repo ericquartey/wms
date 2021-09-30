@@ -13,9 +13,13 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         IEnumerable<IIOLog> GetAll();
 
+        IEnumerable<Data.IOLog> GetAllId();
+
         IEnumerable<IIOLog> GetByTimeStamp(string serialNumber, DateTimeOffset start, DateTimeOffset end);
 
-        Task SaveAsync(string serialNumber, IIOLog ioLog);
+        void Remove(IEnumerable<Data.IOLog> logsToDelete);
+
+        void SaveAsync(string serialNumber, IIOLog ioLog);
 
         #endregion
     }

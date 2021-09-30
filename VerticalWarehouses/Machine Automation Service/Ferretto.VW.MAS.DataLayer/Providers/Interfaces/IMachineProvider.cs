@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -53,6 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsDbSaveOnTelemetry();
 
+        bool IsDisableQtyItemEditingPick();
+
         bool IsEnableAddItem();
 
         bool IsHeartBeat();
@@ -61,7 +64,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsRequestConfirmForLastOperationOnLoadingUnit();
 
-        void SetMachineId(int newMachineId);
+        Task SetMachineId(int newMachineId);
 
         void Update(Machine machine, DataLayerContext context);
 

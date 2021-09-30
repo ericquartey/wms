@@ -84,26 +84,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             if (this.Mission.RestoreConditions)
             {
-                this.Mission.RestoreConditions = false;
                 this.Mission.ErrorCode = MachineErrorCode.NoError;
-                this.Logger.LogInformation($"Homing Double External Bay Start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+                this.Logger.LogInformation($"Homing axis BayChain Start Mission:Id={this.Mission.Id}");
+                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
             }
-            //else if (this.Mission.RestoreConditions)
-            //{
-            //    this.Logger.LogDebug($"Move in restore conditions => LoadUnitDestination: {this.Mission.LoadUnitDestination}, bay number: {bay.Number}");
-            //    if (!this.LoadingUnitMovementProvider.MoveDoubleExternalBay(this.Mission.LoadUnitId,
-            //        ((isLoadUnitDestinationInBay && !destination.IsUpper) || (!isLoadUnitDestinationInBay && destination.IsUpper) ? ExternalBayMovementDirection.TowardOperator : ExternalBayMovementDirection.TowardMachine),
-            //        MessageActor.MachineManager,
-            //        bay.Number,
-            //        restore: true,
-            //        destination.IsUpper))
-            //    {
-            //        // already arrived
-            //        this.ExternalBayChainEnd();
-            //        return true;
-            //    }
-            //}
             else
             {
                 // Move during normal positioning
@@ -290,9 +274,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (notification.Type == MessageType.Homing &&
                             notification.Data is HomingMessageData messageData)
                         {
-                            // Calibrate horizontal axis
-                            if (messageData.AxisToCalibrate == Axis.Horizontal &&
-                                !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                            // Calibrate elevator
+                            if (messageData.AxisToCalibrate == Axis.Horizontal && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                             {
                                 this.MachineVolatileDataProvider.IsHomingExecuted = true;
                             }
@@ -301,7 +284,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             if (messageData.AxisToCalibrate == Axis.BayChain)
                             {
                                 this.Logger.LogDebug($"Homing full BayChain executed: prepare for empty homing");
-                                this.Mission.NeedHomingAxis = Axis.BayChain;
 
                                 this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 

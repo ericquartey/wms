@@ -138,9 +138,6 @@
   <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
     <value>Hlášení</value>
   </data>
-  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
-    <value>Ferretto Group - testovací hlášení -</value>
-  </data>
   <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
     <value>Pozice</value>
   </data>

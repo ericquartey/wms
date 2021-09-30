@@ -1,9 +1,11 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.StateMachines.Homing;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -103,7 +105,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 if (this.machineData.NumberOfExecutedSteps == this.machineData.MaximumSteps)
                 {
-                    this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData, this.Logger));
+                    if (this.machineData.AxisToCalibrate == Axis.BayChain
+                        && this.machineData.TurnBack
+                        )
+                    {
+                        this.ParentStateMachine.ChangeState(new HomingBackExecutingState(this.stateData, this.Logger));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData, this.Logger));
+                    }
                 }
                 else
                 {

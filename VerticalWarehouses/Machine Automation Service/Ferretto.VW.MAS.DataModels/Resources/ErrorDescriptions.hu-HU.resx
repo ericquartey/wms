@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>A pozicionálási feltételek nem teljesülnek.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>A működési feltételek nem teljesülnek.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>A tálca nincs teljesen megterhelve.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Az emelőn nincs teher kitároláskor</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Az emelő nem üres betároláskor</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>A szenzorállapotok inkonzisztenciája</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>A szenzorállapotok inkonzisztenciája</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Inverterhiba.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Az inverter paramétere nem írható a kivitelezés során.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Az inverter adatkészletének adatai nem megfelelőek.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Inverter EEPROM checksum hiba.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Inverter EEPROM olvasási hiba.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Inverter EEPROM írási hiba.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Az inverter adatkészlete nem érvényes.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Az inverter paramétere nem érvényes.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>A megadott csomópont nem elérhető.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Az inverter paramétere csak olvasható.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Az inverter paramétere csak írható.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Szintaxishiba az inverterre küldött üzenetben.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Ismeretlen paraméter továbbítva az inverterre.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Ellentmondás az inverterre küldött üzenet hossza és az üzenet adattípusa között.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Hiba észlelve az inverterek egyikén.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>A biztonsági funkció kioldott.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>A célrekesz nem érvényes</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Emelőbölcső foglalt</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Adatbázis-inkonzisztencia tálca kiindulási pozíció</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Nincs tálca a jelölt munkaállomáson</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Tálca észlelve a kivételi munkaállomáson</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>A tálca célállomási munkaállomása foglalt</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>A tálca nem elérhető</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>A kiválasztott tálca nincs betöltve a tárolóba</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>A tálca kiinduló munkaállomása üres</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>kiindulási rekesz nem érvényes</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>A munkaállomás szenzorainak hiba</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>A jelenlétérzékelők nem érvényesek</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Tálca észlelve az emelőn</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Nincs nulla szenzor, az emelő üres</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>A munkaállomási szenzorállapotok inkonzisztenciája</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>A munkaállomás felső szintje foglalt</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>A szenzorállapotok inkonzisztenciája</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>A tálcára betöltött maximális súly túllépve.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Redőny zárva</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Redőny nyitva</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Célállomás az alsó határérték alatt</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Az inverter egy másik parancsot hajt végre</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Célállomás a felső határérték felett</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Hiba észlelve az IoDevice eszközön.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Tálca észlelve a rekeszben</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Gépüzemmód nem érvényes</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Biztonsági fényfüggöny foglalt</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Vészleállító gomb benyomva</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>A bal oldalsó panel nyitva van.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Tálca észlelve egy másik munkaállomáson</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>A tálca nincs az emelőn</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>A munkaállomás szenzorainak hibája</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>A munkaállomás felső szintje üres</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>A feladat kivitelezésének hibája</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>A feladat kivitelezésének hibája</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>A feladat kivitelezésének hibája</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Nincs hiba</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>A súly túl alacsony</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>A tároló teljes súlya meghaladva</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Tároló tele</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>A munkaállomást ismeretlen tálca foglalja</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Az emelőt ismeretlen tálca foglalja</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Inverter csatlakozási hiba</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>IoDevice csatlakozási hiba</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Lézer csatlakozási hiba</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>A mozgás automatikus helyreállítása nem engedélyezett</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>A célállomás típusa nem érvényes</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>A munkaállomás alsó pozíciója nincs meghatározva</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>A munkaállomás felső pozíciója nincs meghatározva</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>A feladat típusa nem érvényes</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>A munkaállomás láncának mozgása nincs engedélyezve: a tálca túl nehéz.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>A felvételből való visszatérés parancsa nem érvényes</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>A rekeszek archívumának frissítési hibája. Egy vagy több célrekesz logikailag foglalt</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>A kalibrálási feltételek nem teljesülnek.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Magassági hiba</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Redőnyállapot hiba</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>A célállomási munkaállomás nincs kalibrálva.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>A teszt nem fejeződött be</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>A tároló nem üres.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Munkaállomás pozicionálási hiba</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>A jobb oldalsó panel nyitva van</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Hibás függőleges pozíció.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>A(z) {0} tengely mozgásának gyorsulási konfigurációja nem érvényes: az üresen gyorsulás alacsonyabb, mint a teljes terheléses</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>A(z) {0} tengely mozgásának sebességi konfigurációja nem érvényes: az üres sebesség alacsonyabb, mint a teljes terheléses</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>A teszt nem fejeződött be</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>A munkaállomás nem érvényes</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>A munkaállomás pozíciója nem érvényes</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Tengelymozgás gyorsulásának konfigurációja {0} nem érvényes.</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Tengelymozgás lassulásának konfigurációja {0} nem érvényes.</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Tengelymozgás sebességének konfigurációja {0} nem érvényes.</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Pozicionálási hiba a felső végen</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Külső munkaállomás foglalt</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Külső munkaállomás üres</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS hiba</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Elmozdulás nem érvényes</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Pozicionálási hiba az alsó végen</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>A tálca nem elérhető</value>
+  </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Tálca száma</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>A munkaállomás szenzorainak hibája</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Pozicionálási hiba</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Inverter vezérlési hiba</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>A bemeneti / kimeneti kártya vezérlési hibája</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Szintaxishiba az inverterre küldött üzenetben.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>A teleszkópos munkaállomás nem csatlakozik megfelelően</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>A tálca tárasúlya 0</value>
+  </data>
+</root>

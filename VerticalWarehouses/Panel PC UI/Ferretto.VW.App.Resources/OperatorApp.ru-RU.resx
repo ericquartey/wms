@@ -1677,9 +1677,6 @@
   <data name="ItemLoaded" xml:space="preserve">
     <value>Item loaded</value>
   </data>
-  <data name="ToteBarcodeAcquired" xml:space="preserve">
-    <value>Tote is acquired. Barcode: </value>
-  </data>
   <data name="UpBlock" xml:space="preserve">
     <value>--bверх</value>
   </data>
@@ -1688,9 +1685,6 @@
   </data>
   <data name="DownBlock" xml:space="preserve">
     <value>--bниз</value>
-  </data>
-  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
-    <value>Invalid operation. Item and tote must be acquired.</value>
   </data>
   <data name="DraperyItemFullyRequested" xml:space="preserve">
     <value>Drapery fully requested.</value>

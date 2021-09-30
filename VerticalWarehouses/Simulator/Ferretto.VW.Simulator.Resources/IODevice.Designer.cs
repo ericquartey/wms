@@ -124,6 +124,15 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Free {
+            get {
+                return ResourceManager.GetString("Free", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Height reading function activation (measurement light curtain).
         /// </summary>
         public static string HeightReadingActivation {

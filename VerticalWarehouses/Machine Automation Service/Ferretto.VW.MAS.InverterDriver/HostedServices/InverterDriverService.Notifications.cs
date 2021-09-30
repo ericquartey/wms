@@ -41,14 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             switch (receivedMessage.Type)
             {
                 case FieldMessageType.DataLayerReady:
-                    // performance optimization
-                    _ = serviceProvider.GetRequiredService<IInvertersProvider>();
-                    var elevator = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                    elevator.GetAxis(Orientation.Horizontal);
-                    elevator.UpdateLastIdealPosition(-999999);
-
-                    elevator.GetAxis(Orientation.Vertical);
-
                     // start communication
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
                     this.InitializeTimers(serviceProvider);

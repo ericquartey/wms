@@ -157,6 +157,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            // Handle the tote devices (use with barcode rules, be careful about the order of blocks)
+            var bIsToteManaged = this.ToteBarcodeLength > 0;
+            if (bIsToteManaged && userAction.UserAction == UserAction.VerifyItem)
+            {
+                await this.PickBoxAsync(userAction.Code);
+                return;
+            }
+
             if (this.CanPickBoxes() && userAction.UserAction == UserAction.VerifyItem)
             {
                 await this.PickBoxAsync(userAction.Code);
@@ -169,8 +177,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            // Handle the tote devices
-            var bIsToteManaged = this.ToteBarcodeLength > 0;
+            // Handle the tote devices (use without barcode rules)
+            bIsToteManaged = this.ToteBarcodeLength > 0;
             if (bIsToteManaged && userAction.UserAction == UserAction.NotSpecified)
             {
                 await this.PickBoxAsync(userAction.Code);
@@ -204,7 +212,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsAddItem = false;
-            this.CanInputAvailableQuantity = true;
+            //this.CanInputAvailableQuantity = true;
+            this.CanInputAvailableQuantity = this.IsEnableAvailableQtyItemEditingPick;
             this.CanInputQuantity = true;
             this.CloseLine = true;
             this.FullCompartment = false;
@@ -417,7 +426,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.IsOperationConfirmed = false;
-                this.ShowNotification(ex);
+                if (ex is MasWebApiException webEx)
+                {
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    this.ShowNotification(ex);
+                }
             }
             finally
             {
@@ -541,6 +570,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         if (barcode.Length == this.ToteBarcodeLength &&
                             !string.IsNullOrEmpty(this.barcodeItem))
                         {
+                            // acquire the tote barcode
                             var toteBarcode = barcode;
 
                             this.Logger.Debug($"Confirm operation for: {this.barcodeItem} item, {toteBarcode} tote");
@@ -557,6 +587,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 0,
                                 toteBarcode);
 
+                            this.barcodeItem = string.Empty;
+
                             if (canComplete)
                             {
                                 this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -572,11 +604,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
                         else
                         {
-                            this.Logger.Debug($"Cache barcode item: {barcode}");
+                            if (string.IsNullOrEmpty(this.barcodeItem))
+                            {
+                                // acquire the item barcode
+                                this.Logger.Debug($"Cache barcode item: {barcode}");
 
-                            this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + barcode);
+                                var szMsg = Localized.Get("OperatorApp.ItemBarcodeAcquired") + barcode + ".    " + Localized.Get("OperatorApp.ToteBarcodeToAcquire");
+                                this.ShowNotification(szMsg);
 
-                            this.barcodeItem = barcode;
+                                // Handle a particular barcode item ("1P" prefix)
+                                if (barcode.StartsWith("1P", StringComparison.CurrentCulture) &&
+                                    barcode.Length >= 3)
+                                {
+                                    barcode = barcode.Substring(2);
+                                }
+
+                                this.barcodeItem = barcode;
+                            }
+                            else
+                            {
+                                // Invalid barcode tote
+                                this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                                this.barcodeItem = string.Empty;
+                            }
                         }
                     }
                     else
@@ -639,21 +689,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = false;
                 this.IsOperationConfirmed = false;
-                if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                if (ex is MasWebApiException webEx)
                 {
-                    this.barcodeItem = string.Empty;
-                    var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
-                    if (isToteBarcodeManaged)
+                    if (webEx.StatusCode == StatusCodes.Status403Forbidden)
                     {
-                        this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                        this.barcodeItem = string.Empty;
+                        var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+                        if (isToteBarcodeManaged)
+                        {
+                            this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                        }
                     }
                     else
                     {
-                        this.ShowNotification(ex);
+                        var error = $"{Localized.Get("General.BadRequestTitle")}: ({webEx.StatusCode})";
+                        this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
                     }
 
                     //throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+                else if (ex is System.Net.Http.HttpRequestException hEx)
+                {
+                    var error = $"{Localized.Get("General.BadRequestTitle")}: ({hEx.Message})";
+                    this.ShowNotification(error, Services.Models.NotificationSeverity.Error);
                 }
                 else
                 {

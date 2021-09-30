@@ -125,22 +125,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private int SaveToActiveDb()
         {
-            using (var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService))
-            {
-                var affectedRecordsCount = 0;
-                try
-                {
-                    affectedRecordsCount = dbContext.SaveChanges();
-                }
-                catch
-                {
-                    // Do nothing.
-                    // Errors are handled in diagnostic interceptor:
-                    // Microsoft.EntityFrameworkCore.Database.Command.CommandError
-                }
+            var dbContext = new DataLayerContext(isActiveChannel: true, this.redundancyService);
 
-                return affectedRecordsCount;
+            var affectedRecordsCount = 0;
+            try
+            {
+                affectedRecordsCount = dbContext.SaveChanges();
             }
+            catch
+            {
+                // Do nothing.
+                // Errors are handled in diagnostic interceptor:
+                // Microsoft.EntityFrameworkCore.Database.Command.CommandError
+            }
+
+            return affectedRecordsCount;
         }
 
         #endregion

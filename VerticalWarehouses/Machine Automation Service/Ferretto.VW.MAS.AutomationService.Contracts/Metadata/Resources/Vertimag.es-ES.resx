@@ -557,7 +557,7 @@
     <value>Telescópico</value>
   </data>
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
-    <value>Activar la adición de artículos</value>
+    <value>Activar la adición de parches</value>
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Depósito automático con código de barras</value>

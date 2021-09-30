@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task RetrieveMachineInfoAsync()
         {
-            this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthMasStatus}'.");
+            this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthMasStatus}', WMS service is '{this.healthProbeService.HealthWmsStatus}'.");
 
             switch (this.healthProbeService.HealthMasStatus)
             {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.VW.TelemetryService.Data;
 using Microsoft.Extensions.Logging;
-using Realms;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -12,19 +11,19 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Fields
 
-        private readonly ILogger<IOLogProvider> logger;
+        private readonly IDataContext dataContext;
 
-        private readonly Realm realm;
+        private readonly ILogger<IOLogProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public IOLogProvider(Realm realm,
+        public IOLogProvider(IDataContext dataContext,
                           ILogger<IOLogProvider> logger)
         {
-            this.realm = realm;
-            this.logger = logger;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -33,43 +32,67 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public void DeleteOldLogs(TimeSpan maximumLogTimespan)
         {
-            this.logger.LogDebug("Deleting old IO logs ...");
-
-            using var trans = this.realm.BeginWrite();
-
-            var ioLogs = this.realm.All<Models.IOLog>();
-
-            var lastLog = ioLogs.OrderByDescending(e => e.TimeStamp).FirstOrDefault();
-
-            if (lastLog is null)
+            lock (this.dataContext)
             {
-                return;
+                this.logger.LogDebug("Deleting old IO logs ...");
+
+                var ioLogs = this.dataContext.IOLogs.ToArray();
+
+                var lastLog = ioLogs.LastOrDefault();
+
+                if (lastLog is null)
+                {
+                    return;
+                }
+
+                var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
+
+                var logsToDelete = ioLogs.Where(e => e.TimeStamp < minTimestamp);
+
+                var countLogsToDelete = logsToDelete.Count();
+
+                this.dataContext.IOLogs.RemoveRange(logsToDelete);
+                this.dataContext.SaveChanges();
+
+                this.logger.LogDebug($"A total of {countLogsToDelete} IO logs were deleted.");
             }
-
-            var minTimestamp = lastLog.TimeStamp - maximumLogTimespan;
-
-            var logsToDelete = ioLogs.Where(e => e.TimeStamp < minTimestamp);
-
-            var countLogsToDelete = logsToDelete.Count();
-
-            this.realm.RemoveRange(logsToDelete);
-
-            trans.Commit();
-
-            this.logger.LogDebug($"A total of {countLogsToDelete} IO logs were deleted.");
         }
 
         public IEnumerable<IIOLog> GetAll()
         {
-            return this.realm.All<Models.IOLog>().ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.IOLogs.ToArray();
+            }
+        }
+
+        public IEnumerable<Data.IOLog> GetAllId()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.IOLogs.ToArray();
+            }
         }
 
         public IEnumerable<IIOLog> GetByTimeStamp(string serialNumber, DateTimeOffset start, DateTimeOffset end)
         {
-            return this.realm.All<Models.IOLog>().Where(io => io.TimeStamp >= start && io.TimeStamp <= end).ToArray();
+            lock (this.dataContext)
+            {
+                var iOLogs = this.dataContext.IOLogs.ToArray();
+                return iOLogs.Where(io => io.TimeStamp >= start && io.TimeStamp <= end);
+            }
         }
 
-        public async Task SaveAsync(string serialNumber, IIOLog ioLog)
+        public void Remove(IEnumerable<Data.IOLog> logsToDelete)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.IOLogs.RemoveRange(logsToDelete.ToArray());
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SaveAsync(string serialNumber, IIOLog ioLog)
         {
             if (string.IsNullOrWhiteSpace(serialNumber))
             {
@@ -81,23 +104,27 @@ namespace Ferretto.VW.TelemetryService.Providers
                 throw new System.ArgumentNullException(nameof(ioLog));
             }
 
-            var machine = this.realm.All<Models.Machine>().SingleOrDefault(m => m.SerialNumber == serialNumber);
-            if (machine is null)
+            lock (this.dataContext)
             {
-                throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                var machine = this.dataContext.Machines.SingleOrDefault(m => m.SerialNumber == serialNumber);
+                if (machine is null)
+                {
+                    throw new System.ArgumentException($"No machine corresponding to the serial '{serialNumber}' was found.");
+                }
+
+                var logEntry = new Data.IOLog
+                {
+                    BayNumber = ioLog.BayNumber,
+                    Description = ioLog.Description,
+                    Input = ioLog.Input,
+                    Output = ioLog.Output,
+                    Machine = machine,
+                    TimeStamp = ioLog.TimeStamp,
+                };
+
+                this.dataContext.IOLogs.Add(logEntry);
+                this.dataContext.SaveChanges();
             }
-
-            var logEntry = new Models.IOLog
-            {
-                BayNumber = ioLog.BayNumber,
-                Description = ioLog.Description,
-                Input = ioLog.Input,
-                Output = ioLog.Output,
-                Machine = machine,
-                TimeStamp = ioLog.TimeStamp,
-            };
-
-            await this.realm.WriteAsync(r => r.Add(logEntry));
         }
 
         #endregion

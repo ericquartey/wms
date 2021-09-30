@@ -358,14 +358,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
                     var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
                     var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                    if (shutterPosition != ShutterPosition.Opened
+                    if (shutterPosition != this.Mission.OpenShutterPosition
                         && shutterInverter != InverterDriver.Contracts.InverterIndex.None
                         && bay.Shutter != null
                         && bay.Shutter.Type != ShutterType.NotSpecified
                         && this.Mission.ErrorMovements == MissionErrorMovements.None
-                        && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)   // cannot move shutter if load unit is not in center
                         )
                     {
+                        if (!this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        {
+                            // shutter not open and load unit partially out of elevator: not allowed!
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, this.Mission.TargetBay);
+                            throw new StateMachineException(ErrorDescriptions.LoadUnitShutterInvalid, this.Mission.TargetBay, MessageActor.MachineManager);
+                        }
                         // in the first movement the shutter always goes to Opened
                         this.Mission.OpenShutterPosition = ShutterPosition.Opened;
                         this.Logger.LogInformation($"{this.GetType().Name}: Manual Shutter positioning start 1 Mission:Id={this.Mission.Id} from position {shutterPosition} to {this.Mission.OpenShutterPosition}");
@@ -449,7 +454,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.MissionsDataProvider.Update(this.Mission);
                         this.Logger.LogInformation($"Homing External Bay Start Mission:Id={this.Mission.Id}");
-                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, bay.Number, MessageActor.MachineManager);
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
                         return;
                     }
                 }

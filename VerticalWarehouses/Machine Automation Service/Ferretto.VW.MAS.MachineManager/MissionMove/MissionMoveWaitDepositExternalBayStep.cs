@@ -60,25 +60,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
+            this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
+
             if (this.Mission.RestoreConditions)
             {
                 this.OnResume(command);
                 return true;
             }
-
-            this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
-            var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
-            if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
-            {
-                this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
-            }
-            if (this.Mission.CloseShutterPosition != ShutterPosition.NotSpecified)
-            {
-                this.Logger.LogInformation($"CloseShutter start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
-            }
-
-            this.SendMoveNotification(bay.Number, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
 
             var isLoadingUnitInExternalUpPosition = this.machineResourcesProvider.IsDrawerInBayTop(bay.Number) || bay.Positions.Any(p => p.IsUpper && p.LoadingUnit != null);
             var isLoadingUnitInExternalDownPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number) || bay.Positions.Any(p => !p.IsUpper && p.LoadingUnit != null);
@@ -100,6 +88,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
+                    this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
+                    var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
+                    if (this.Mission.CloseShutterPosition == this.SensorsProvider.GetShutterPosition(shutterInverter))
+                    {
+                        this.Mission.CloseShutterPosition = ShutterPosition.NotSpecified;
+                    }
+                    if (this.Mission.CloseShutterPosition != ShutterPosition.NotSpecified)
+                    {
+                        this.Logger.LogInformation($"CloseShutter start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, this.Mission.TargetBay, false, this.Mission.CloseShutterPosition);
+                    }
+                    this.MissionsDataProvider.Update(this.Mission);
+
                     var description = $"Deposit in external bay not possible because there is a LU in external position. Wait for resume. Mission:Id={this.Mission.Id}";
                     this.Logger.LogInformation(description);
                     return true;
@@ -149,6 +150,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
             }
 
+            if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+            {
+                this.Mission.NeedHomingAxis = Axis.BayChain;
+            }
             var isLoadingUnitInExternalUpPosition = this.machineResourcesProvider.IsDrawerInBayTop(bay.Number);
             var isLoadingUnitInExternalDownPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
 

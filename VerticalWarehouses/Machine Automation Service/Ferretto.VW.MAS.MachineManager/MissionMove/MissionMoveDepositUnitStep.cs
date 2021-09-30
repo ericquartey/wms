@@ -327,7 +327,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 )
                             {
                                 this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
-                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, this.Mission.TargetBay, MessageActor.MachineManager);
+                                this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
                             }
                             else
                             {
