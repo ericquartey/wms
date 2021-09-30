@@ -400,6 +400,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task LaserOnAsync()
         {
+            var accessories = await this.bayManager.GetBayAccessoriesAsync();
+            if (accessories is null)
+            {
+                return;
+            }
+            var laserPointer = accessories.LaserPointer;
+            if (laserPointer is null
+                || !laserPointer.IsEnabledNew)
+            {
+                return;
+            }
+            this.laserPointerDriver.Configure(laserPointer.IpAddress, laserPointer.TcpPort, laserPointer.XOffset, laserPointer.YOffset, laserPointer.ZOffsetLowerPosition, laserPointer.ZOffsetUpperPosition);
             var point = this.laserPointerDriver.CalculateLaserPoint(
                 this.loadingUnitWidth,
                 this.loadingUnitDepth,

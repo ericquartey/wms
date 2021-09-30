@@ -272,7 +272,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.Wait"), Services.Models.NotificationSeverity.Warning);
                 this.ConnectionBrush = Brushes.DarkOrange;
 
-                this.deviceDriver.Configure(this.ipAddress, this.port);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.xOffset, this.yOffset, this.zOffsetLowerPosition, this.zOffsetUpperPosition);
                 var result = await this.deviceDriver.ParametersAsync();
 
                 if (result)
