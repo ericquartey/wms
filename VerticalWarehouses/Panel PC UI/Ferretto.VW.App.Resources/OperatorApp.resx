@@ -2287,4 +2287,8 @@
   <data name="GenericValidationError" xml:space="preserve">
     <value>Invalid value</value>
   </data>
+  <data name="SignallingDefectOnProcess" xml:space="preserve">
+    <value>Signalling defect on process...</value>
+    <comment>Error Message</comment>
+  </data>
 </root>
