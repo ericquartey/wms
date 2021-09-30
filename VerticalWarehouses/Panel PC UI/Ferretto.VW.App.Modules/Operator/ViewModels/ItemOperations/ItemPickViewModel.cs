@@ -587,6 +587,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 0,
                                 toteBarcode);
 
+                            this.barcodeItem = string.Empty;
+
                             if (canComplete)
                             {
                                 this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
