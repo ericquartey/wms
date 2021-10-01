@@ -19,6 +19,8 @@ namespace Ferretto.VW.TelemetryService.Data
 
         public int EjectLoadUnit { get; set; }
 
+        public int? LoadUnitHeight { get; set; }
+
         public int LoadUnitId { get; set; }
 
         public Machine? Machine { get; set; }
@@ -28,6 +30,8 @@ namespace Ferretto.VW.TelemetryService.Data
         public int MissionId { get; set; }
 
         public string? MissionType { get; set; }
+
+        public int? NetWeight { get; set; }
 
         public int Priority { get; set; }
 

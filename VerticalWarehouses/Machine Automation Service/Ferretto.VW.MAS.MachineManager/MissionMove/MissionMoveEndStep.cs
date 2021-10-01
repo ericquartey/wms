@@ -210,6 +210,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.CheckMissionShowError(missionError);
 
                 // Send information about the mission with LoadUnitWeightExceeded
+                var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
                 var messageData = new MoveLoadingUnitMessageData(
                     missionError.MissionType,
                     missionError.LoadUnitSource,
@@ -219,6 +220,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     missionError.LoadUnitId,
                     (missionError.LoadUnitDestination == LoadingUnitLocation.Cell),
                     missionError.Id,
+                    (int?)loadUnit?.Height,
+                    (int?)loadUnit?.NetWeight,
                     missionError.Action,
                     missionError.StopReason,
                     missionError.Step);
