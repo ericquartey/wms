@@ -25,22 +25,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.28 rispetto la 1.0.27
-- Aggiunta lingua ungherese
-- Aggiunta la possibilità di disabilitare la modifica della quantità disponibile di un articolo in prelievo
+## Nuove Funzionalità 1.0.29 rispetto la 1.0.28
+- Il comando di puntamento laser su scomparto è disponibile anche per l'operatore
 
 ## Bug Risolti
-- Telemetria: corretti vari errori (il database locale è ora in formato SqlLite)
-- Compattazione: corretto un caso di celle Solo Spazio a metà scaffale
-- BIG: aggiunto controllo del sensore di presenza sui ripristini
-- Correzione bugs per gestione contenitore esterno (Kohler)
-- BED: corretta gestione delle posizioni bloccate in baia
-- Gli utenti si ricaricano alla riconnessione con WMS
-- Correzione bug minore per conferma prelievo pezze (Tendaggi Paradiso)
-- BED: correzioni alle missioni di ripristino
+- Corretto errore di giacenza in caso di prelievo di articoli con lotto
+- Aggiunti peso e altezza nelle movimentazioni della telemetria 
+- Invio di un comando di HOME al laser all'accensione della macchina
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***
+
+[Versione 1.0.28](#id1028)
 
 [Versione 1.0.27](#id1027)
 
@@ -97,6 +93,24 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1028"></a>
+## Nuove Funzionalità 1.0.28 rispetto la 1.0.27
+- Aggiunta lingua ungherese
+- Aggiunta la possibilità di disabilitare la modifica della quantità disponibile di un articolo in prelievo
+
+## Bug Risolti
+- Telemetria: corretti vari errori (il database locale è ora in formato SqlLite)
+- Compattazione: corretto un caso di celle Solo Spazio a metà scaffale
+- BIG: aggiunto controllo del sensore di presenza sui ripristini
+- Correzione bugs per gestione contenitore esterno (Kohler)
+- BED: corretta gestione delle posizioni bloccate in baia
+- Gli utenti si ricaricano alla riconnessione con WMS
+- Correzione bug minore per conferma prelievo pezze (Tendaggi Paradiso)
+- BED: correzioni alle missioni di ripristino
+
+## Compatibile con adapter 0.4.24 e 0.4.25
 ***
 
 <a id="id1027"></a>
