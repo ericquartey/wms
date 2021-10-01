@@ -224,16 +224,17 @@ namespace Ferretto.VW.Devices.LaserPointer
         /// Send the messages int the queue, in the right order.
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject)
+        public async Task<bool> ExecuteCommandsAsync(CancellationToken? cancellationToken)
         {
             var result = false;
-            await syncObject.WaitAsync();
             try
             {
                 this.ClearConcurrentQueue(this.messagesReceivedQueue);
                 int errors = 0;
 
-                while (!this.messagesToBeSendQueue.IsEmpty)
+                while (!this.messagesToBeSendQueue.IsEmpty
+                    && (!cancellationToken.HasValue || !cancellationToken.Value.IsCancellationRequested)
+                    )
                 {
                     if (this.messagesToBeSendQueue.TryPeek(out var sendMessage))
                     {
@@ -310,6 +311,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                         {
                             this.messagesToBeSendQueue.TryDequeue(out _);
                             errors = 0;
+                            result = true;
                         }
                     }
                     else
@@ -318,7 +320,6 @@ namespace Ferretto.VW.Devices.LaserPointer
                         break;
                     }
                 }
-                result = true;
             }
             catch (Exception e)
             {
@@ -326,10 +327,6 @@ namespace Ferretto.VW.Devices.LaserPointer
                 this.logger.Error(e);
                 this.Disconnect();
                 Thread.Sleep(400);
-            }
-            finally
-            {
-                syncObject.Release();
             }
             return result;
         }
@@ -537,6 +534,10 @@ namespace Ferretto.VW.Devices.LaserPointer
 
             switch (command)
             {
+                case LaserPointerCommands.Command.HOME:
+                    strCommand = "HOME";
+                    break;
+
                 case LaserPointerCommands.Command.LASER_ON:
                     strCommand = "LASER ON";
                     this.laserEnabled = true;
