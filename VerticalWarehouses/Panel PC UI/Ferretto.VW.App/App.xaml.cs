@@ -185,13 +185,29 @@ namespace Ferretto.VW.App
         {
             try
             {
+                var serialPortService = this.Container.Resolve<ISerialPortsService>();
+                this.logger.Info("Deactivating serial port service on application exit.");
+
+                serialPortService.Stop();
+
                 var barcodeReaderService = this.Container.Resolve<IBarcodeReaderService>();
                 this.logger.Info("Deactivating barcode reader on application exit.");
 
-                Task
-                    .Run(async () => await barcodeReaderService.StopAsync().ConfigureAwait(false))
-                    .GetAwaiter()
-                    .GetResult();
+                var taskBarcode = Task.Run(() => barcodeReaderService.StopAsync());
+
+                var laserPointerService = this.Container.Resolve<ILaserPointerService>();
+                this.logger.Info("Deactivating laser on application exit.");
+
+                var taskLaser = Task.Run(() => laserPointerService.StopAsync());
+
+                var alphaNumericBarService = this.Container.Resolve<IAlphaNumericBarService>();
+                this.logger.Info("Deactivating alpha bar on application exit.");
+
+                var taskAlpha = Task.Run(() => alphaNumericBarService.StopAsync());
+
+                Task.WaitAll(taskBarcode, taskLaser, taskAlpha);
+
+                this.logger.Debug("Accessories Deactivated.");
             }
             catch (Exception ex)
             {

@@ -317,17 +317,18 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// Send the messages int the queue, in the right order.
         /// </summary>
         /// <returns></returns>
-        public async Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject)
+        public async Task<bool> ExecuteCommandsAsync(CancellationToken? cancellationToken)
         {
             var result = false;
-            await syncObject.WaitAsync();
             try
             {
                 this.ClearConcurrentQueue(this.messagesReceivedQueue);
                 this.ClearConcurrentQueue(this.errorsQueue);
                 int errors = 0;
 
-                while (!this.messagesToBeSendQueue.IsEmpty)
+                while (!this.messagesToBeSendQueue.IsEmpty
+                    && (!cancellationToken.HasValue || !cancellationToken.Value.IsCancellationRequested)
+                    )
                 {
                     if (this.messagesToBeSendQueue.TryPeek(out var sendMessage))
                     {
@@ -421,10 +422,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 this.logger.Error(e);
                 this.Disconnect();
                 Thread.Sleep(400);
-            }
-            finally
-            {
-                syncObject.Release();
             }
 
             return result;

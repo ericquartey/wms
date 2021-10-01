@@ -33,13 +33,13 @@ namespace Ferretto.VW.App.Services
 
         private readonly int pollingDelay = 200;
 
-        private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1, 1);
-
         private bool isEnabled;
 
         private SubscriptionToken missionToken;
 
         private string PollingStep = "Undefined";
+
+        private Task runningTask;
 
         private SubscriptionToken socketLinkToken;
 
@@ -154,7 +154,7 @@ namespace Ferretto.VW.App.Services
             this.tokenSource?.Cancel();
             this.tokenSource = new CancellationTokenSource();
 
-            Task.Run(async () =>
+            this.runningTask = Task.Run(async () =>
             {
                 var cancellationToken = this.tokenSource.Token;
 
@@ -162,14 +162,22 @@ namespace Ferretto.VW.App.Services
                 {
                     do
                     {
-                        await this.PollingLaserPointer();
+                        await this.PollingLaserPointer(cancellationToken);
                         await Task.Delay(this.pollingDelay, cancellationToken);
                     }
                     while (!cancellationToken.IsCancellationRequested);
                 }
                 catch (OperationCanceledException)
                 {
-                    //return;
+                    if (this.isEnabled)
+                    {
+                        this.logger.Debug("StopAsync;Switch off laser pointer");
+                        this.laserPointerDriver.ClearCommands();
+                        await this.laserPointerDriver.EnabledAsync(false, false);
+                        await this.PollingLaserPointer(null);
+                        this.laserPointerDriver.Disconnect();
+                    }
+                    this.logger.Info("Stop laser pointer service");
                 }
             });
             return Task.CompletedTask;
@@ -177,8 +185,8 @@ namespace Ferretto.VW.App.Services
 
         public async Task StopAsync()
         {
-            await Task.Run(() => this.logger.Info("StopAsync;Switch off laser pointer"));
-            //await this.laserPointerDriver.EnabledAsync(false, false);
+            this.tokenSource?.Cancel();
+            this.runningTask?.Wait();
         }
 
         private void NotifyError(Exception ex)
@@ -352,7 +360,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private async Task PollingLaserPointer()
+        private async Task PollingLaserPointer(CancellationToken? cancellationToken)
         {
             switch (this.PollingStep)
             {
@@ -367,15 +375,33 @@ namespace Ferretto.VW.App.Services
                             break;
                         }
                         await this.LaserPointerConfigureAsync();
-                        this.PollingStep = "Active";
+                        this.PollingStep = "Home";
                         this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        break;
+                    }
+                case "Home":
+                    {
+                        if (this.isEnabled)
+                        {
+                            await this.laserPointerDriver.HomeAsync();
+                            if (await this.laserPointerDriver.ExecuteCommandsAsync(cancellationToken).ConfigureAwait(true))
+                            {
+                                this.PollingStep = "Active";
+                                this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                            }
+                        }
+                        else
+                        {
+                            this.PollingStep = "Active";
+                            this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
+                        }
                         break;
                     }
                 case "Active":
                     {
                         if (this.isEnabled)
                         {
-                            await this.laserPointerDriver.ExecuteCommandsAsync(this.syncObject).ConfigureAwait(true);
+                            await this.laserPointerDriver.ExecuteCommandsAsync(cancellationToken).ConfigureAwait(true);
                         }
                         break;
                     }
