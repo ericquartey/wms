@@ -14137,14 +14137,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ImmediateAddItemAsync(int id, int itemId, int quantity, int compartmentId, string lot, string serialNumber)
+        public System.Threading.Tasks.Task ImmediateAddItemAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber)
         {
             return ImmediateAddItemAsync(id, itemId, quantity, compartmentId, lot, serialNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ImmediateAddItemAsync(int id, int itemId, int quantity, int compartmentId, string lot, string serialNumber, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ImmediateAddItemAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");

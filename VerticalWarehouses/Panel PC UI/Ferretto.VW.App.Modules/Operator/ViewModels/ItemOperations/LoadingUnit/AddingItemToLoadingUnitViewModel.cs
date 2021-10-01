@@ -247,7 +247,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.machineLoadingUnitsWebService.ImmediateAddItemAsync(
                 this.LoadingUnitId,
                 this.itemId,
-                (int)this.InputQuantity,   // change into double type
+                this.InputQuantity,
                 this.compartmentId,
                 this.Lot,
                 this.SerialNumber);
