@@ -1799,7 +1799,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
                         var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
                         itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                        this.SelectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.selectedCompartment.Id && s.ItemId == (this.MissionOperation?.ItemId ?? 0)).FirstOrDefault();
+                        this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment.Id
+                            && s.ItemId == (this.MissionOperation?.ItemId ?? 0)
+                            && (this.MissionOperation?.Lot == null || s.Lot == this.MissionOperation?.Lot)
+                            && (this.MissionOperation?.SerialNumber == null || s.ItemSerialNumber == this.MissionOperation?.SerialNumber)
+                            );
                         this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
                     }
                 }

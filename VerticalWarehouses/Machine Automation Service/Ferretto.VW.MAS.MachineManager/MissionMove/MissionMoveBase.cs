@@ -711,6 +711,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="messageStatus"></param>
         public void SendMoveNotification(BayNumber targetBay, string description, MessageStatus messageStatus)
         {
+            var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
             var messageData = new MoveLoadingUnitMessageData(
                 this.Mission.MissionType,
                 this.Mission.LoadUnitSource,
@@ -720,6 +721,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.LoadUnitId,
                 (this.Mission.LoadUnitDestination == LoadingUnitLocation.Cell),
                 this.Mission.Id,
+                (int?)loadUnit?.Height,
+                (int?)loadUnit?.NetWeight,
                 this.Mission.Action,
                 this.Mission.StopReason,
                 this.Mission.Step);

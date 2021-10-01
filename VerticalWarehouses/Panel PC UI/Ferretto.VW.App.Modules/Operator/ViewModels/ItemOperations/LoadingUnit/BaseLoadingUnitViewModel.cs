@@ -477,7 +477,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var accessories = await this.bayManager.GetBayAccessoriesAsync();
             this.isLaserEnabled = accessories?.LaserPointer?.IsEnabledNew ?? false;
-            this.IsLaserOnEnabled = this.isLaserEnabled && this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
+            this.IsLaserOnEnabled = this.isLaserEnabled;// && this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
             this.IsLaserOffEnabled = false;
 
             if (this.Data is int loadingUnitId)

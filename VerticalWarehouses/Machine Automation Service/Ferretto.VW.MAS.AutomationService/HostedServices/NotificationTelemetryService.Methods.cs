@@ -131,6 +131,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 Destination = messageData.Destination.ToString(),
                 CellId = messageData.DestinationCellId.HasValue ? messageData.DestinationCellId : messageData.SourceCellId,
                 LoadUnitId = messageData.LoadUnitId.Value,
+                LoadUnitHeight = messageData.LoadUnitHeight,
+                NetWeight = messageData.NetWeight,
                 MissionId = messageData.MissionId.Value,
                 MissionType = messageData.MissionType.ToString(),
                 Status = messageData.MissionStep.ToString(),

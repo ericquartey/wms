@@ -1020,6 +1020,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     loadUnitId: null,
                     insertLoadUnit: false,
                     missionId,
+                    loadUnitHeight: null,
+                    netWeight: null,
                     CommandAction.Resume);
             data.WmsId = wmsId;
             this.PublishCommand(

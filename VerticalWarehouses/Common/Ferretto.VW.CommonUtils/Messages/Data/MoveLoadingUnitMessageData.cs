@@ -21,6 +21,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int? loadUnitId,
             bool insertLoadUnit = false,
             int? missionId = null,
+            int? loadUnitHeight = null,
+            int? netWeight = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
             MissionStep step = MissionStep.NotDefined,
@@ -34,6 +36,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.LoadUnitId = loadUnitId;
             this.InsertLoadUnit = insertLoadUnit;
             this.MissionId = missionId;
+            this.LoadUnitHeight = loadUnitHeight;
+            this.NetWeight = netWeight;
             this.CommandAction = commandAction;
             this.StopReason = stopReason;
             this.MissionStep = step;
@@ -47,9 +51,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Destination = other.Destination;
             this.SourceCellId = other.SourceCellId;
             this.DestinationCellId = other.DestinationCellId;
+            this.LoadUnitHeight = other.LoadUnitHeight;
             this.LoadUnitId = other.LoadUnitId;
             this.InsertLoadUnit = other.InsertLoadUnit;
             this.MissionId = other.MissionId;
+            this.NetWeight = other.NetWeight;
             this.CommandAction = other.CommandAction;
             this.StopReason = other.StopReason;
             this.MissionStep = other.MissionStep;
@@ -70,6 +76,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool InsertLoadUnit { get; set; }
 
+        public int? LoadUnitHeight { get; set; }
+
         public int? LoadUnitId { get; set; }
 
         public int? MissionId { get; set; }
@@ -77,6 +85,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MissionStep MissionStep { get; set; }
 
         public MissionType MissionType { get; set; }
+
+        public int? NetWeight { get; set; }
 
         public LoadingUnitLocation Source { get; set; }
 
