@@ -946,7 +946,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
             }
-            if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || sender == MessageActor.AutomationService)
+            if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || Math.Abs(verticalDisplacement) <= 0.1)
             {
                 // Perform the horizontal movement for regular machine (no combined movements)
                 this.MoveHorizontalManual_ForRegularMachine(

@@ -2557,4 +2557,16 @@
   <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
     <value>Shutdown the panel (elevator calibration not available now)</value>
   </data>
+  <data name="HorizontalZeroOffset" xml:space="preserve">
+    <value>Horizontal zero offset</value>
+  </data>
+  <data name="HorizontalZeroOffsetDescription" xml:space="preserve">
+    <value>Performs the zero offset measurement of the chain</value>
+  </data>
+  <data name="HorizontalZeroOffsetHelp" xml:space="preserve">
+    <value>The horizontal zero offset function allows you to measure the correct value through its specific procedure. The procedure works in successive steps until correct completion.</value>
+  </data>
+  <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
+    <value>Perform the zero offset measurement of the chain. The horizontal zero sensor must be active.</value>
+  </data>
 </root>

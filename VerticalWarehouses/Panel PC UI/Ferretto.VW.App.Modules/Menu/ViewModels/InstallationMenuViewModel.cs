@@ -344,7 +344,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.HorizontalChainCalibration"), DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.HorizontalZeroOffset"), DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.HorizontalChainCalibrationBypassAsync();
@@ -540,7 +540,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source.Add(new ItemListSetupProcedure() { Text = Localized.Get("InstallationApp.VerticalResolutionDone"), Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure()
                 {
-                    Text = Localized.Get("InstallationApp.HorizontalChainCalibration"),
+                    Text = Localized.Get("InstallationApp.HorizontalZeroOffset"),
                     Status = status.HorizontalChainCalibration.InProgress ? InstallationStatus.Inprogress : status.HorizontalChainCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !status.HorizontalChainCalibration.IsCompleted,
                     Bypassed = status.HorizontalChainCalibration.IsBypassed,

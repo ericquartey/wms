@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
         RepeatedTestProcedure GetFullTest(BayNumber bayNumber);
 
         SetupProcedure GetHorizontalChainCalibration();
-
+        SetupProcedure GetHorizontalResolutionCalibration();
         PositioningProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();

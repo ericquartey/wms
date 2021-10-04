@@ -88,7 +88,63 @@
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-          <controls:PpcButton Title="{res:Loc InstallationApp.AnalysisWeightProfileMenuTitle}"
+          <controls:PpcButton Title="{res:Loc InstallationApp.OffsetVerticalAxisMenuTitle}"
+                              Margin="0,0,30,30"
+                              Padding="-2,1,0,0"
+                              Abbrevation="4.2.4"
+                              BorderBrush="{DynamicResource FerrettoRed}"
+                              Command="{Binding VerticalOffsetCalibrationCommand}"
+                              Content="{res:Loc InstallationApp.OffsetVerticalAxisMenuDescription}"
+                              IsCompleted="{Binding IsVerticalOffsetProcedure}"
+                              Kind="Account"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="{res:Loc InstallationApp.HorizontalZeroOffset}"
+                              Margin="0,0,30,30"
+                              Padding="-2,1,0,0"
+                              Abbrevation="4.2.5"
+                              BorderBrush="{DynamicResource FerrettoRed}"
+                              Command="{Binding HorizontalChainCalibration}"
+                              Content="{res:Loc InstallationApp.HorizontalZeroOffsetDescription}"
+                              IsBypassed="{Binding IsHorizontalChainBypassed}"
+                              IsCompleted="{Binding IsHorizChainCompleted}"
+                              Kind="Account"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="{res:Loc InstallationApp.HorizontalChainCalibration}"
+                              Margin="0,0,30,30"
+                              Padding="-2,1,0,0"
+                              Abbrevation="4.2.6"
+                              BorderBrush="{DynamicResource FerrettoRed}"
+                              Command="{Binding HorizontalResolutionCalibration}"
+                              Content="{res:Loc InstallationApp.HorizontalChainCalibrationDescription}"
+                              IsBypassed="{Binding IsHorizontalResolutionBypassed}"
+                              IsCompleted="{Binding IsHorizontalResolutionCompleted}"
+                              Kind="Account"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+          <controls:PpcButton Title="{res:Loc InstallationApp.WeightCalibration}"
+                              Height="86"
+                              Margin="0,0,30,30"
+                              Padding="-2,1,0,0"
+                              Abbrevation="4.2.7"
+                              BorderBrush="{DynamicResource FerrettoRed}"
+                              Command="{Binding WeightCalibrationCommand}"
+                              Kind="Account"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+            
+                    <controls:PpcButton Title="{res:Loc InstallationApp.EmbarkDisembarkMenuTitle}"
+                              Height="86"
+                              Margin="0,0,30,30"
+                              Padding="-2,1,0,0"
+                              Abbrevation="4.2.8"
+                              BorderBrush="{DynamicResource FerrettoOrange}"
+                              Command="{Binding TestDepositAndPickUpCommand}"
+                              IsCompleted="{Binding IsTestDepositAndPickUpCompleted}"
+                              Kind="Account"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+            
+                    <controls:PpcButton Title="{res:Loc InstallationApp.AnalysisWeightProfileMenuTitle}"
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
                               Abbrevation="4.2.4"
@@ -99,49 +155,8 @@
                               Style="{DynamicResource PpcButtonMenuCardStyle}"
                               Visibility="Collapsed" />
 
-          <controls:PpcButton Title="{res:Loc InstallationApp.HorizontalChainCalibration}"
-                              Margin="0,0,30,30"
-                              Padding="-2,1,0,0"
-                              Abbrevation="4.2.4"
-                              BorderBrush="{DynamicResource FerrettoRed}"
-                              Command="{Binding HorizontalChainCalibration}"
-                              Content="{res:Loc InstallationApp.HorizontalChainCalibrationDescription}"
-                              IsBypassed="{Binding IsHorizontalChainBypassed}"
-                              IsCompleted="{Binding IsHorizChainCompleted}"
-                              Kind="Account"
-                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-          <controls:PpcButton Title="{res:Loc InstallationApp.OffsetVerticalAxisMenuTitle}"
-                              Margin="0,0,30,30"
-                              Padding="-2,1,0,0"
-                              Abbrevation="4.2.5"
-                              BorderBrush="{DynamicResource FerrettoRed}"
-                              Command="{Binding VerticalOffsetCalibrationCommand}"
-                              Content="{res:Loc InstallationApp.OffsetVerticalAxisMenuDescription}"
-                              IsCompleted="{Binding IsVerticalOffsetProcedure}"
-                              Kind="Account"
-                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-          <controls:PpcButton Title="{res:Loc InstallationApp.EmbarkDisembarkMenuTitle}"
-                              Margin="0,0,30,30"
-                              Padding="-2,1,0,0"
-                              Abbrevation="4.2.6"
-                              BorderBrush="{DynamicResource FerrettoOrange}"
-                              Command="{Binding TestDepositAndPickUpCommand}"
-                              IsCompleted="{Binding IsTestDepositAndPickUpCompleted}"
-                              Kind="Account"
-                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
-
-          <controls:PpcButton Title="{res:Loc InstallationApp.WeightCalibration}"
-                              Height="86"
-                              Margin="0,0,30,30"
-                              Padding="-2,1,0,0"
-                              Abbrevation="4.2.7"
-                              BorderBrush="{DynamicResource FerrettoOrange}"
-                              Command="{Binding WeightCalibrationCommand}"
-                              Kind="Account"
-                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
-        </WrapPanel>
+                </WrapPanel>
       </Grid>
 
       <views:InstallationNavigationFooterView Grid.Row="2"

@@ -58,8 +58,6 @@
         /// </summary>
         BayTest,
 
-        HorizontalForwardBackward,
-
         /// <summary>
         /// Movements in external bay
         /// </summary>

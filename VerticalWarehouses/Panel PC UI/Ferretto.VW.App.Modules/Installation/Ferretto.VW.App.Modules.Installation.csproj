@@ -39,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Elevator\HorizontalResolutionCalibrationView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Inverters\Error\ErrorParameterInverterView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

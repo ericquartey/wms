@@ -2860,6 +2860,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Horizontal zero offset.
+        /// </summary>
+        public static string HorizontalZeroOffset {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performs the zero offset measurement of the chain.
+        /// </summary>
+        public static string HorizontalZeroOffsetDescription {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffsetDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The horizontal zero offset function allows you to measure the correct value through its specific procedure. The procedure works in successive steps until correct completion..
+        /// </summary>
+        public static string HorizontalZeroOffsetHelp {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffsetHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the zero offset measurement of the chain. The horizontal zero sensor must be active..
+        /// </summary>
+        public static string HorizontalZeroOffsetProcedure {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffsetProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Perform the chain calibration procedure. The horizontal zero sensor must be active..
         /// </summary>
         public static string HorizzontalChainCalibrationProcedureRequired {

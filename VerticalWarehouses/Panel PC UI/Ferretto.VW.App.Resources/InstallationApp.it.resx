@@ -2484,4 +2484,16 @@
   <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
     <value>Spegni il pannello (non è possibile adesso la taratura dell'elevatore)</value>
   </data>
+  <data name="HorizontalZeroOffset" xml:space="preserve">
+    <value>Offset di zero orizzontale catena</value>
+  </data>
+  <data name="HorizontalZeroOffsetDescription" xml:space="preserve">
+    <value>Esegui la misurazione dell'offset di zero della catena</value>
+  </data>
+  <data name="HorizontalZeroOffsetHelp" xml:space="preserve">
+    <value>La funzione di misurazione dell'offset orizzontale della catena permette di ricavare il valore corretto tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento</value>
+  </data>
+  <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
+    <value>Esegui la misurazione dell'offset di zero della catena. Il sensore di zero orizzontale deve essere attivo.</value>
+  </data>
 </root>

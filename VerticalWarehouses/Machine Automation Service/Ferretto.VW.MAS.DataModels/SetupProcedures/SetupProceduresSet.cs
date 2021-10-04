@@ -62,6 +62,8 @@
 
         public SetupProcedure HorizontalChainCalibration { get; set; }
 
+        public SetupProcedure HorizontalResolutionCalibration { get; set; }
+
         public PositioningProcedure LoadFirstDrawerTest { get; set; }
 
         public SetupProcedure ShutterHeightCheck { get; set; }

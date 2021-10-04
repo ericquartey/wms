@@ -5395,6 +5395,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HorizontalChainCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure HorizontalChainCalibration { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("HorizontalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SetupProcedure HorizontalResolutionCalibration { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LoadFirstDrawerTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure LoadFirstDrawerTest { get; set; }
     
@@ -6550,11 +6553,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("DepositAndPickUpTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus DepositAndPickUpTest { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("FullTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SetupStepStatus FullTest { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("HorizontalChainCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus HorizontalChainCalibration { get; set; }
     
         [Newtonsoft.Json.JsonProperty("HorizontalHoming", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus HorizontalHoming { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HorizontalResolutionCalibration", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public SetupStepStatus HorizontalResolutionCalibration { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsComplete", Required = Newtonsoft.Json.Required.Always)]
         public bool IsComplete { get; set; }
@@ -6573,9 +6582,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("WeightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupStepStatus WeightMeasurement { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("FullTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SetupStepStatus FullTest { get; set; }
     
         public string ToJson() 
         {

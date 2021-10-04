@@ -49,6 +49,8 @@
 
         public const string HORIZONTALCHAINCALIBRATION = "HorizontalChainCalibrationViewModel";
 
+        public const string HORIZONTALRESOLUTIONCALIBRATION = "HorizontalResolutionCalibrationViewModel";
+
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
