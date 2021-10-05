@@ -44,7 +44,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         Task<bool> EnabledAsync(bool value, bool force = true);
 
-        Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject);
+        Task<bool> ExecuteCommandsAsync(CancellationToken? cancellationToken);
 
         bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage, out int scrollEnd);
 

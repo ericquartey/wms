@@ -573,6 +573,8 @@ namespace Ferretto.VW.MAS.DataLayer
                         loadUnitId: null,
                         insertLoadUnit: false,
                         missionId: null,
+                        loadUnitHeight: null,
+                        netWeight: null,
                         CommandAction.Abort);
 
             this.eventAggregator

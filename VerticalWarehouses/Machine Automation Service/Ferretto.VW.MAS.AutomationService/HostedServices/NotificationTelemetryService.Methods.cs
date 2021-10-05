@@ -125,12 +125,13 @@ namespace Ferretto.VW.MAS.AutomationService
 
             var missionLog = new MissionLog
             {
-                // TODO: fill all missing fields
                 Bay = (int)message.RequestingBay,
                 CreationDate = messageData.CreationDate,
                 Destination = messageData.Destination.ToString(),
                 CellId = messageData.DestinationCellId.HasValue ? messageData.DestinationCellId : messageData.SourceCellId,
                 LoadUnitId = messageData.LoadUnitId.Value,
+                LoadUnitHeight = messageData.LoadUnitHeight,
+                NetWeight = messageData.NetWeight,
                 MissionId = messageData.MissionId.Value,
                 MissionType = messageData.MissionType.ToString(),
                 Status = messageData.MissionStep.ToString(),

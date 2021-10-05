@@ -159,27 +159,27 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var prevError = this.ActiveError;
-                this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
+                //var prevError = this.ActiveError;
+                //this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
 
-                if (this.ActiveError != prevError
-                    &&
-                    this.ActiveError != null)
-                {
-                    byte[] screenshot = null;
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        screenshot = this.navigationService.TakeScreenshot(false);
-                    });
+                //if (this.ActiveError != prevError
+                //    &&
+                //    this.ActiveError != null)
+                //{
+                //    byte[] screenshot = null;
+                //    Application.Current.Dispatcher.Invoke(() =>
+                //    {
+                //        screenshot = this.navigationService.TakeScreenshot(false);
+                //    });
 
-                    if (this.ActiveError != null && screenshot != null)
-                    {
-                        await this.telemetryHubClient.SendScreenShotAsync(
-                            (int)this.activeError.BayNumber,
-                            this.activeError.OccurrenceDate,
-                            screenshot);
-                    }
-                }
+                //    if (this.ActiveError != null && screenshot != null)
+                //    {
+                //        await this.telemetryHubClient.SendScreenShotAsync(
+                //            (int)this.activeError.BayNumber,
+                //            this.activeError.OccurrenceDate,
+                //            screenshot);
+                //    }
+                //}
 
                 await this.NavigateToErrorPageAsync();
             }

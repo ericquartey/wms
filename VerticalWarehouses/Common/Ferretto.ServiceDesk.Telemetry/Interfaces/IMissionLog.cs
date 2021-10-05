@@ -18,11 +18,15 @@ namespace Ferretto.ServiceDesk.Telemetry
 
         int Id { get; set; }
 
+        int? LoadUnitHeight { get; set; }
+
         int LoadUnitId { get; set; }
 
         int MissionId { get; set; }
 
         string MissionType { get; set; }
+
+        int? NetWeight { get; set; }
 
         int Priority { get; set; }
 

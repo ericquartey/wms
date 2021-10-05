@@ -35,13 +35,13 @@ namespace Ferretto.VW.App.Services
 
         private readonly int pollingDelay = 200;
 
-        private readonly SemaphoreSlim syncObject = new SemaphoreSlim(1, 1);
-
         private bool isEnabled;
 
         private SubscriptionToken missionToken;
 
         private string PollingStep = "Undefined";
+
+        private Task runningTask;
 
         private SubscriptionToken socketLinkToken;
 
@@ -153,7 +153,7 @@ namespace Ferretto.VW.App.Services
             this.tokenSource?.Cancel();
             this.tokenSource = new CancellationTokenSource();
 
-            Task.Run(async () =>
+            this.runningTask = Task.Run(async () =>
             {
                 var cancellationToken = this.tokenSource.Token;
 
@@ -161,14 +161,23 @@ namespace Ferretto.VW.App.Services
                 {
                     do
                     {
-                        await this.PollingAlphaNumericBar();
+                        await this.PollingAlphaNumericBar(cancellationToken);
                         await Task.Delay(this.pollingDelay, cancellationToken);
                     }
                     while (!cancellationToken.IsCancellationRequested);
                 }
                 catch (OperationCanceledException)
                 {
-                    //return;
+                    if (this.isEnabled)
+                    {
+                        this.logger.Debug("StopAsync;Switch off alpha numeric bar");
+                        this.alphaNumericBarDriver.ClearCommands();
+                        await this.alphaNumericBarDriver.EnabledAsync(false);
+                        await this.PollingAlphaNumericBar(null);
+
+                        this.alphaNumericBarDriver.Disconnect();
+                    }
+                    this.logger.Info("Stop alpha numeric bar service");
                 }
             });
             return Task.CompletedTask;
@@ -176,12 +185,11 @@ namespace Ferretto.VW.App.Services
 
         public async Task StopAsync()
         {
-            this.logger.Info("Switch off alpha numeric bar.");
-
-            await this.alphaNumericBarDriver.EnabledAsync(false);
-
-            this.alphaNumericBarDriver.SelectedMessage = string.Empty;
-            this.alphaNumericBarDriver.SelectedPosition = null;
+            this.tokenSource.Cancel();
+            if (this.runningTask != null)
+            {
+                this.runningTask.Wait();
+            }
         }
 
         private string GetMessageFromMissionChangedEventArg(MissionChangedEventArgs e)
@@ -405,7 +413,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private async Task PollingAlphaNumericBar()
+        private async Task PollingAlphaNumericBar(CancellationToken? cancellationToken)
         {
             switch (this.PollingStep)
             {
@@ -428,7 +436,7 @@ namespace Ferretto.VW.App.Services
                     {
                         if (this.isEnabled)
                         {
-                            await this.alphaNumericBarDriver.ExecuteCommandsAsync(this.syncObject).ConfigureAwait(true);
+                            await this.alphaNumericBarDriver.ExecuteCommandsAsync(cancellationToken).ConfigureAwait(true);
                         }
                         break;
                     }

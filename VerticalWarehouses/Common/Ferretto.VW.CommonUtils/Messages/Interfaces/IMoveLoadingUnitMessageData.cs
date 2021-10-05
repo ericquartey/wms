@@ -17,6 +17,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool InsertLoadUnit { get; }
 
+        int? LoadUnitHeight { get; set; }
+
         int? LoadUnitId { get; }
 
         int? MissionId { get; }
@@ -24,6 +26,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         MissionStep MissionStep { get; }
 
         MissionType MissionType { get; set; }
+
+        int? NetWeight { get; set; }
 
         LoadingUnitLocation Source { get; }
 

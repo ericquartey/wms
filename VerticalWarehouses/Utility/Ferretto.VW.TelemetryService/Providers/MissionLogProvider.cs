@@ -121,6 +121,8 @@ namespace Ferretto.VW.TelemetryService.Providers
                     StopReason = missionLog.StopReason,
                     TimeStamp = missionLog.TimeStamp,
                     WmsId = missionLog.WmsId,
+                    LoadUnitHeight = missionLog.LoadUnitHeight,
+                    NetWeight = missionLog.NetWeight
                 };
 
                 this.dataContext.MissionLogs.Add(logEntry);

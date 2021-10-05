@@ -23,7 +23,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         Task<bool> EnabledAsync(bool enable, bool onMovement);
 
-        Task<bool> ExecuteCommandsAsync(SemaphoreSlim syncObject);
+        Task<bool> ExecuteCommandsAsync(CancellationToken? cancellationToken);
 
         Task<bool> HelpAsync();
 
