@@ -472,7 +472,7 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
-            dataContext.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.HorizontalResolutionCalibration, (e) => e.Id);
 
             dataContext.SaveChanges();
         }
