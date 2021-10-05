@@ -160,7 +160,7 @@ namespace Ferretto.VW.App.Services
             try
             {
                 //var prevError = this.ActiveError;
-                //this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
+                this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
 
                 //if (this.ActiveError != prevError
                 //    &&
