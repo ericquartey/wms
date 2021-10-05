@@ -29,6 +29,7 @@
 - Il comando di puntamento laser su scomparto è disponibile anche per l'operatore
 
 ## Bug Risolti
+- Corretto errore nella creazione del database
 - Corretto errore di giacenza in caso di prelievo di articoli con lotto
 - Aggiunti peso e altezza nelle movimentazioni della telemetria 
 - Invio di un comando di HOME al laser all'accensione della macchina
