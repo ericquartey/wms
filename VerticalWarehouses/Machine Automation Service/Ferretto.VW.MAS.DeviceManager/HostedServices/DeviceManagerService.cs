@@ -525,11 +525,18 @@ namespace Ferretto.VW.MAS.DeviceManager
                         if (inverter.SystemIndex > InverterIndex.Slave1)
                         {
                             // disable shutter inverter
-                            var bayNumber = baysDataProvider.GetByInverterIndex(inverter.SystemIndex);
-                            var bay = baysDataProvider.GetByNumber(bayNumber);
-                            if (bay.Shutter != null && bay.Shutter.Inverter != null
-                                && bay.Shutter.Inverter.Index == inverter.SystemIndex
-                                && bay.Shutter.Type == ShutterType.NotSpecified)
+                            try
+                            {
+                                var bayNumber = baysDataProvider.GetByInverterIndex(inverter.SystemIndex);
+                                var bay = baysDataProvider.GetByNumber(bayNumber);
+                                if (bay.Shutter != null && bay.Shutter.Inverter != null
+                                    && bay.Shutter.Inverter.Index == inverter.SystemIndex
+                                    && bay.Shutter.Type == ShutterType.NotSpecified)
+                                {
+                                    enabled = false;
+                                }
+                            }
+                            catch (EntityNotFoundException)
                             {
                                 enabled = false;
                             }
@@ -623,7 +630,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                         var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
                         if (messageInverterIndex != InverterIndex.None)
                         {
-                            bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex, receivedMessage.Type);
+                            try
+                            {
+                                bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex, receivedMessage.Type);
+                            }
+                            catch(EntityNotFoundException)
+                            {
+                                return;
+                            }
                         }
                         break;
                     }
