@@ -47,7 +47,7 @@
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.HorizontalZeroOffsetProcedure}" /><Run Text="." />
           </TextBlock>
         </StackPanel>
 
@@ -224,7 +224,7 @@
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.HorizontalZeroOffsetProcedure}" /><Run Text="." />
           </TextBlock>
         </StackPanel>
 
@@ -478,7 +478,7 @@
                  Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{res:Loc InstallationApp.HorizontalChainCalibration}" />
+                 Text="{res:Loc InstallationApp.HorizontalZeroOffset}" />
     </StackPanel>
     <!--#endregion-->
 
@@ -489,7 +489,7 @@
                Margin="0,0,15,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-               Text="{res:Loc InstallationApp.HorizontalChainCalibratioDescription}" />
+               Text="{res:Loc InstallationApp.HorizontalZeroOffsetHelp}" />
     <!--#endregion-->
 
     <!--#region Tails-->

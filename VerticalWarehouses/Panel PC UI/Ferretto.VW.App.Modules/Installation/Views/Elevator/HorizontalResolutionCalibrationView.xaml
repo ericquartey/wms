@@ -26,7 +26,7 @@
         <!--#endregion-->
 
         <!--#region DataTemplate Body-->
-        <DataTemplate x:Key="DataTemplateChainCalibration">
+        <DataTemplate x:Key="DataTemplateResolutionCalibration">
             <Grid Margin="20"
             DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
@@ -47,7 +47,7 @@
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.HorizontalZeroOffsetProcedure}" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
 
@@ -224,7 +224,7 @@
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.HorizontalZeroOffsetProcedure}" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
 
@@ -443,7 +443,7 @@
         </DataTemplate>
 
         <local:HorizontalResolutionStepTemplateSelector x:Key="selector"
-                                                     EnumChainCalibration="{StaticResource DataTemplateChainCalibration}"
+                                                     EnumChainCalibration="{StaticResource DataTemplateResolutionCalibration}"
                                                      EnumConfirmAdjustment="{StaticResource DataTemplateConfirmAdjustment}"
                                                      EnumEndChainCalibration="{StaticResource DataTemplateEndChainCalibration}"
                                                      EnumRunningCalibration="{StaticResource DataTemplateRunningCalibration}"
@@ -478,7 +478,7 @@
                  Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{res:Loc InstallationApp.HorizontalZeroOffset}" />
+                 Text="{res:Loc InstallationApp.HorizontalChainCalibration}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -489,7 +489,7 @@
                Margin="0,0,15,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-               Text="{res:Loc InstallationApp.HorizontalZeroOffsetHelp}" />
+               Text="{res:Loc InstallationApp.HorizontalChainCalibratioDescription}" />
         <!--#endregion-->
 
         <!--#region Tails-->
