@@ -518,18 +518,42 @@ namespace Ferretto.VW.MAS.DeviceManager
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
                     var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
+                    var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                     foreach (var inverter in inverterProvider.GetAll())
                     {
-                        var fieldMessageData = new InverterCurrentErrorFieldMessageData();
-                        var commandMessage = new FieldCommandMessage(
-                            fieldMessageData,
-                            $"Request Inverter Error Code",
-                            FieldMessageActor.InverterDriver,
-                            FieldMessageActor.DeviceManager,
-                            FieldMessageType.InverterCurrentError,
-                            (byte)inverter.SystemIndex);
+                        var enabled = true;
+                        if (inverter.SystemIndex > InverterIndex.Slave1)
+                        {
+                            // disable shutter inverter
+                            try
+                            {
+                                var bayNumber = baysDataProvider.GetByInverterIndex(inverter.SystemIndex);
+                                var bay = baysDataProvider.GetByNumber(bayNumber);
+                                if (bay.Shutter != null && bay.Shutter.Inverter != null
+                                    && bay.Shutter.Inverter.Index == inverter.SystemIndex
+                                    && bay.Shutter.Type == ShutterType.NotSpecified)
+                                {
+                                    enabled = false;
+                                }
+                            }
+                            catch (EntityNotFoundException)
+                            {
+                                enabled = false;
+                            }
+                        }
+                        if (enabled)
+                        {
+                            var fieldMessageData = new InverterCurrentErrorFieldMessageData();
+                            var commandMessage = new FieldCommandMessage(
+                                fieldMessageData,
+                                $"Request Inverter Error Code",
+                                FieldMessageActor.InverterDriver,
+                                FieldMessageActor.DeviceManager,
+                                FieldMessageType.InverterCurrentError,
+                                (byte)inverter.SystemIndex);
 
-                        this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                            this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                        }
                     }
                 }
             }
@@ -606,7 +630,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                         var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
                         if (messageInverterIndex != InverterIndex.None)
                         {
-                            bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex, receivedMessage.Type);
+                            try
+                            {
+                                bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex, receivedMessage.Type);
+                            }
+                            catch(EntityNotFoundException)
+                            {
+                                return;
+                            }
                         }
                         break;
                     }
