@@ -329,6 +329,7 @@
                             <TextBox x:Name="SearchText"
                                      Grid.Column="1"
                                      Margin="0"
+                                     Style="{DynamicResource SearchTextBoxStyle}"
                                      Text="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}"
                                      VerticalScrollBarVisibility="Disabled">
                                 <i:Interaction.Behaviors>

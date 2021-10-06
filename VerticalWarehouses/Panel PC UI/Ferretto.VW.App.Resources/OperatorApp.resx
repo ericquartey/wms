@@ -2294,4 +2294,14 @@
     <value>Signalling defect on process...</value>
     <comment>Error Message</comment>
   </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Adding item failed</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Adding item ...</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Adding item on loading unit </value>
+    <comment>Page header</comment>
+  </data>
 </root>

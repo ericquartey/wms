@@ -1913,4 +1913,13 @@
   <data name="SignallingDefectOnProcess" xml:space="preserve">
     <value>Segnalazione difetto in processamento...</value>
   </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Aggiunta articolo fallita</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Aggiunta articolo ...</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Aggiunta articolo su cassetto </value>
+  </data>
 </root>

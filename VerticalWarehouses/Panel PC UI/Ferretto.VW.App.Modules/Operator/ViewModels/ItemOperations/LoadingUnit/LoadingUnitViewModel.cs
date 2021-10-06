@@ -458,7 +458,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.SetProperty(ref this.searchItem, value))
                 {
                     this.IsSearching = true;
-                    // this.TriggerSearchAsync().GetAwaiter();  // Do not perform the searching routine
+
+                    // Perform the searching routine (only if not drapery management)
+                    if (!this.IsAddItemFeatureForDraperyManagementAvailable)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                        {
+                            this.selectedProduct = null;
+                            this.RaisePropertyChanged(nameof(this.SelectedProduct));
+                        }
+
+                        // Searching routine
+                        this.TriggerSearchAsync().GetAwaiter();
+                    }
                 }
             }
         }
@@ -928,14 +940,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var loadingUnitId = this.LoadingUnit.Id;
                 var selectedItemId = this.SelectedProduct?.Id;
-                var compartmentId = this.SelectedItemCompartment.Id;
+                //var compartmentId = this.SelectedItemCompartment.Id;
+                var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : -1;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId.Value);
 
-                // Show the view to adding item into current loading unit
-                this.navigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.ItemOperations.ADDITEMINTOLOADINGUNIT,
-                new ItemAddedToLoadingUnitDetail
+                var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {
                     ItemId = selectedItemId.Value,
                     LoadingUnitId = loadingUnitId,
@@ -944,8 +953,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     QuantityIncrement = this.QuantityIncrement,
                     QuantityTolerance = this.QuantityTolerance,
                     MeasureUnitTxt = string.Empty,
-                },
-                trackCurrentView: true);
+                };
+
+                // Show the view to adding item into current loading unit
+                this.navigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.ADDITEMINTOLOADINGUNIT,
+                    itemAddedToLoadingUnitInfo,
+                    trackCurrentView: true);
             }
             catch
             {
@@ -1064,16 +1079,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmItemOperation()
         {
-            return
-                this.IsWmsEnabledAndHealthy
-                &&
-                !this.IsWaitingForResponse
-                &&
-                //this.SelectedProduct != null   // actually the product is not selected
-                //&&
-                !this.IsBusyConfirmingRecallOperation
-                &&
+            var retValue = this.IsWmsEnabledAndHealthy &&
+                !this.IsWaitingForResponse &&
+                !this.IsBusyConfirmingRecallOperation &&
                 !this.IsBusyConfirmingOperation;
+
+            if (!this.IsAddItemFeatureForDraperyManagementAvailable)
+            {
+                // check if selected product is valid
+                retValue = retValue && (this.SelectedProduct != null);
+            }
+
+            return retValue;
         }
 
         private bool CanConfirmOperation()

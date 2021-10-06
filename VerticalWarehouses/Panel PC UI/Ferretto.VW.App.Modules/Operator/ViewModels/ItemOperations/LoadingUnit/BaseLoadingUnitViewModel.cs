@@ -94,6 +94,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private TrayControlCompartment selectedCompartment;
 
+        private TrayControlCompartment selectedCompartmentForImmediateAdding;
+
         private CompartmentDetails selectedItem;
 
         private CompartmentDetails selectedItemCompartment;
@@ -319,10 +321,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         var newSelectedItemCompartment = this.itemsCompartments?.FirstOrDefault(c => c.Id == this.selectedCompartment.Id);
                         this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
                         this.SelectedItemCompartment = newSelectedItemCompartment;
+
+                        // cache the selected compartment for the adding item operation
+                        this.selectedCompartmentForImmediateAdding = this.selectedCompartment;
                     }
                 }
             }
         }
+
+        public TrayControlCompartment SelectedCompartmentForImmediateAdding => this.selectedCompartmentForImmediateAdding;
 
         public CompartmentDetails SelectedItem
         {
