@@ -477,7 +477,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     if (bay is null)
                     {
-                        if (this.elevatorDataProvider.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
+                        if (this.elevatorDataProvider.GetElevatorAxes().Any(a => a.Inverter?.Index == inverterIndex))
                         {
                             cacheEntry = BayNumber.ElevatorBay;
                         }

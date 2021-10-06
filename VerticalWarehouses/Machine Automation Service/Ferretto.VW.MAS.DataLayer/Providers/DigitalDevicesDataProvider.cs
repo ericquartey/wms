@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var inverters = new List<Inverter>();
 
-                if (bay.Shutter != null && bay.Shutter.Inverter != null)
+                if (bay.Shutter != null && bay.Shutter.Inverter != null && bay.Shutter.Type != ShutterType.NotSpecified)
                 {
                     inverters.Add(bay.Shutter.Inverter);
                 }

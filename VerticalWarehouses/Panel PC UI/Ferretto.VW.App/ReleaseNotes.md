@@ -33,6 +33,7 @@
 - Corretto errore di giacenza in caso di prelievo di articoli con lotto
 - Aggiunti peso e altezza nelle movimentazioni della telemetria 
 - Invio di un comando di HOME al laser all'accensione della macchina
+- Se la serranda è disabilitata non interroghiamo più l'inverter della serranda
 
 ## Compatibile con adapter 0.4.24 e 0.4.25
 ***
