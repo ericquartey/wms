@@ -832,6 +832,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var direction = (bay.Side == WarehouseSide.Back) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            if (axis.HorizontalCalibrateSpeed == 0)
+            {
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheHorizontalCalibrateSpeedCannotBeZero", CommonUtils.Culture.Actual) };
+                throw new InvalidOperationException(policy.Reason);
+            }
 
             var targetPosition = 100;
 
@@ -898,6 +903,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            if (axis.HomingCreepSpeed == 0)
+            {
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheHomingCreepSpeedCannotBeZero", CommonUtils.Culture.Actual) };
+                throw new InvalidOperationException(policy.Reason);
+            }
 
             var targetPosition = this.HorizontalPosition + 400;
 

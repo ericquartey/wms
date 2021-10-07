@@ -205,6 +205,24 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The homing creep speed cannot be zero.
+        /// </summary>
+        public static string TheHomingCreepSpeedCannotBeZero {
+            get {
+                return ResourceManager.GetString("TheHomingCreepSpeedCannotBeZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The horizontal calibration speed cannot be zero.
+        /// </summary>
+        public static string TheHorizontalCalibrateSpeedCannotBeZero {
+            get {
+                return ResourceManager.GetString("TheHorizontalCalibrateSpeedCannotBeZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The loading unit does not fit in the specified cell..
         /// </summary>
         public static string TheLoadingUnitDoesNotFitInTheSpecifiedCell {

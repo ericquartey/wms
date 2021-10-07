@@ -177,4 +177,10 @@
   <data name="VerticalCompensationDistanceOutOfBounds" xml:space="preserve">
     <value>The vertical compensation distance is out of bounds</value>
   </data>
+  <data name="TheHomingCreepSpeedCannotBeZero" xml:space="preserve">
+    <value>The homing creep speed cannot be zero</value>
+  </data>
+  <data name="TheHorizontalCalibrateSpeedCannotBeZero" xml:space="preserve">
+    <value>The horizontal calibration speed cannot be zero</value>
+  </data>
 </root>
