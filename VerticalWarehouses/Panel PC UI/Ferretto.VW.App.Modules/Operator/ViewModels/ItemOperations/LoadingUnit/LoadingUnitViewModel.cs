@@ -723,8 +723,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     var quantity = this.ItemsCompartments.FirstOrDefault(ic => ic.Id == activeOperation.CompartmentId
                         && ic.ItemId == activeOperation.ItemId
-                        && (activeOperation.Lot == null || activeOperation.Lot == "*" || ic.Lot == activeOperation.Lot)
-                        && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || ic.ItemSerialNumber == activeOperation.SerialNumber)
+                        && (activeOperation.Lot == null || ic.Lot == activeOperation.Lot)
+                        && (activeOperation.SerialNumber == null || ic.ItemSerialNumber == activeOperation.SerialNumber)
                         )?.Stock ?? activeOperation.RequestedQuantity;
 
                     var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, quantity);
@@ -1036,8 +1036,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (activeOperation != null && activeOperation.CompartmentId > 0 && activeOperation.ItemId > 0)
                 {
                     this.SelectedItemCompartment = this.ItemsCompartments.FirstOrDefault(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId
-                        && (activeOperation.Lot == null || activeOperation.Lot == "*" || s.Lot == activeOperation.Lot)
-                        && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || s.ItemSerialNumber == activeOperation.SerialNumber));
+                        && (activeOperation.Lot == null || s.Lot == activeOperation.Lot)
+                        && (activeOperation.SerialNumber == null || s.ItemSerialNumber == activeOperation.SerialNumber));
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
