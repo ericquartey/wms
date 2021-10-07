@@ -841,8 +841,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (activeOperation != null && activeOperation.ItemId > 0 && activeOperation.CompartmentId == this.selectedCompartment.Id)
             {
                 this.selectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == activeOperation.ItemId
-                    && (activeOperation.Lot == null || ic.Lot == activeOperation.Lot)
-                    && (activeOperation.SerialNumber == null || ic.ItemSerialNumber == activeOperation.SerialNumber));
+                    && (activeOperation.Lot == null || activeOperation.Lot == "*" || ic.Lot == activeOperation.Lot)
+                    && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || ic.ItemSerialNumber == activeOperation.SerialNumber));
             }
 
             if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
