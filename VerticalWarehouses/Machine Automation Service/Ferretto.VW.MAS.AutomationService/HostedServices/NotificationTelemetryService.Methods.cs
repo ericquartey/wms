@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
-using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -52,8 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 return;
             }
 
-            var severity = error.Severity;
-            if (severity.HasValue && severity.Value == (int)MachineErrorSeverity.Low)
+            if (error.Code == (int)DataModels.MachineErrorCode.ConditionsNotMetForRunning)
             {
                 this.Logger.LogTrace($"Do not send low priority error {error.Code} to telemetry service.");
                 return;
