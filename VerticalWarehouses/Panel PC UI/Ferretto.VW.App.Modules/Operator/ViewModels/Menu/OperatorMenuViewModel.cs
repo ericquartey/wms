@@ -169,22 +169,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanShowItemLists()
         {
-            return this.IsWmsEnabled;
+            return this.IsWmsEnabled && this.IsWmsHealthy;
         }
 
         private bool CanShowItemOperations()
         {
-            return true;
+            return !this.IsWmsEnabled || this.IsWmsHealthy;
         }
 
         private bool CanShowItemSearch()
         {
-            return this.IsWmsEnabled;
+            return this.IsWmsEnabled && this.IsWmsHealthy;
         }
 
         private bool CanShowOtherMenu()
         {
-            return true;
+            return !this.IsWmsEnabled || this.IsWmsHealthy;
         }
 
         private void ShowItemLists()

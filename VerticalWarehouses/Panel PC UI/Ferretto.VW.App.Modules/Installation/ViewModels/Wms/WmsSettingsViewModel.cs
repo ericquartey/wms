@@ -392,7 +392,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.WmsServicesStatusDescription = VW.App.Resources.Localized.Get("InstallationApp.WmsStatusOffline");
                 this.WmsServicesStatusBrush = Brushes.Red;
 
-                this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.WmsOffline"), Services.Models.NotificationSeverity.Warning);
+                //this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.WmsOffline"), Services.Models.NotificationSeverity.Warning);
             }
             else
             {
