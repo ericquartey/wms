@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -48,6 +49,13 @@ namespace Ferretto.VW.MAS.AutomationService
                     "Unable to send error log to telemetry service because error {id} was not found.",
                     messageData.ErrorId);
 
+                return;
+            }
+
+            var severity = error.Severity;
+            if (severity.HasValue && severity.Value == (int)MachineErrorSeverity.Low)
+            {
+                this.Logger.LogTrace($"Do not send low priority error {error.Code} to telemetry service.");
                 return;
             }
 
