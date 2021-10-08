@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineModeService machineModeService;
+
         private string applicationVersion;
 
         private SubscriptionToken subscriptionToken;
@@ -34,7 +36,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public LoaderViewModel(
             IBayManager bayManager,
-            IHealthProbeService healthProbeService)
+            IHealthProbeService healthProbeService,
+            IMachineModeService machineModeService
+            )
             : base(PresentationMode.Login)
         {
             if (bayManager is null)
@@ -50,6 +54,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager;
             this.healthProbeService = healthProbeService;
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
+            this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
 
             var versionAttribute = Assembly.GetEntryAssembly()
                 .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
@@ -152,6 +157,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private async Task RetrieveMachineInfoAsync()
         {
             this.logger.Info($"Status of machine automation service is '{this.healthProbeService.HealthMasStatus}', WMS service is '{this.healthProbeService.HealthWmsStatus}'.");
+            var isWmsEnabled = this.machineModeService.IsWmsEnabled;
 
             switch (this.healthProbeService.HealthMasStatus)
             {
@@ -171,7 +177,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                         await this.bayManager.InitializeAsync();
                         var machineIdentity = this.bayManager.Identity;
 
-                        if (this.ServiceHealthStatus != this.healthProbeService.HealthMasStatus && this.healthProbeService.HealthWmsStatus == HealthStatus.Unhealthy)
+                        if (this.ServiceHealthStatus != this.healthProbeService.HealthMasStatus
+                            && (!isWmsEnabled || this.healthProbeService.HealthWmsStatus == HealthStatus.Unhealthy)
+                            )
                         {
                             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
                             this.NavigateToLoginPage(machineIdentity);
