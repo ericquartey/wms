@@ -2860,7 +2860,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Horizontal chain axis resolution.
         /// </summary>
         public static string HorizontalResolutionCalibration {
             get {
@@ -2869,7 +2869,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Performs the resolutions of the horizontal chain axis.
         /// </summary>
         public static string HorizontalResolutionCalibrationDescription {
             get {
@@ -2878,7 +2878,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The calibration of the horizontal chain axis resolution enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
         /// </summary>
         public static string HorizontalResolutionCalibrationHelp {
             get {

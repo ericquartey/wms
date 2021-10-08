@@ -2570,12 +2570,12 @@
     <value>Perform the zero offset measurement of the chain. The horizontal zero sensor must be active.</value>
   </data>
   <data name="HorizontalResolutionCalibration" xml:space="preserve">
-    <value></value>
+    <value>Horizontal chain axis resolution</value>
   </data>
   <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
-    <value></value>
+    <value>Performs the resolutions of the horizontal chain axis</value>
   </data>
   <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
-    <value></value>
+    <value>The calibration of the horizontal chain axis resolution enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
   </data>
 </root>
