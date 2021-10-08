@@ -1213,6 +1213,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check that there are no drawers in bay and in the cell opposite to the bay.. Press START to begin the procedure.
+        /// </summary>
+        public static string CheckEmpyBayAndCell {
+            get {
+                return ResourceManager.GetString("CheckEmpyBayAndCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check serial ports.
         /// </summary>
         public static string CheckSerialPorts {

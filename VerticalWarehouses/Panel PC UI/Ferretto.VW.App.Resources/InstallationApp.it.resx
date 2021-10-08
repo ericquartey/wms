@@ -2505,4 +2505,7 @@
   <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
     <value>La funzione di calibrazione della risoluzione orizzontale della catena permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
+  <data name="CheckEmpyBayAndCell" xml:space="preserve">
+    <value>Controlla che non ci siano cassetti nè in baia nè nella cella opposta alla baia.  Premi su INIZIA per avviare la procedura</value>
+  </data>
 </root>

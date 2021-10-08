@@ -2578,4 +2578,7 @@
   <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
     <value>The calibration of the horizontal chain axis resolution enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
   </data>
+  <data name="CheckEmpyBayAndCell" xml:space="preserve">
+    <value>Check that there are no drawers in bay and in the cell opposite to the bay.. Press START to begin the procedure</value>
+  </data>
 </root>
