@@ -62,7 +62,7 @@
 
         public SetupProcedure HorizontalChainCalibration { get; set; }
 
-        public SetupProcedure HorizontalResolutionCalibration { get; set; }
+        public RepeatedTestProcedure HorizontalResolutionCalibration { get; set; }
 
         public PositioningProcedure LoadFirstDrawerTest { get; set; }
 

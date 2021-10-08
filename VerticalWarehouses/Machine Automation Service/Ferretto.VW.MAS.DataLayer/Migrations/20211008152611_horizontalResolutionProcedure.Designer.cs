@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20211005070315_horizontalResolutionProcedure")]
+    [Migration("20211008152611_horizontalResolutionProcedure")]
     partial class horizontalResolutionProcedure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2432,7 +2432,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("HorizontalChainCalibrationId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "HorizontalResolutionCalibration")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "HorizontalResolutionCalibration")
                         .WithMany()
                         .HasForeignKey("HorizontalResolutionCalibrationId");
 

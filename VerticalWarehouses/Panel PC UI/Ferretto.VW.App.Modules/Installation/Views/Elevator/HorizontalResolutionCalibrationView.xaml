@@ -51,6 +51,15 @@
                     </TextBlock>
                 </StackPanel>
 
+
+                <controls:PpcButton Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Command="{Binding MoveToShutterCommand}"
+                            Content="{Binding ShutterLabel}"
+                            Style="{DynamicResource WizardIntoButton}"
+                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+
                 <controls:PpcButton Grid.Row="1"
                             Grid.Column="1"
                             HorizontalAlignment="Center"
@@ -60,34 +69,14 @@
                             IsBusy="{Binding IsTuningChain}"
                             Style="{StaticResource WizardIntoButton}" />
 
-                <controls:PpcButton Grid.Row="1"
-                            Grid.Column="0"
-                            HorizontalAlignment="Center"
-                            Command="{Binding ClosedShutterCommand}"
-                            Content="{res:Loc InstallationApp.GateClose}"
-                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
-                    <controls:PpcButton.Style>
-                        <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-                   TargetType="{x:Type controls:PpcButton}">
-                            <Setter Property="Grid.Column" Value="3" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding BayIsShutterThreeSensors}"
-                             Value="False">
-                                    <Setter Property="Grid.Column" Value="2" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:PpcButton.Style>
-                </controls:PpcButton>
-
                 <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding MoveToGoToBayCommand}"
-                            Content="{res:Loc InstallationApp.Forwards}"
-                            Style="{StaticResource WizardConfirmButton}" />
+                        Grid.Column="1"
+                        Margin="15,15,0,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding MoveToGoToBayCommand}"
+                        Content="{res:Loc InstallationApp.Forwards}"
+                        Style="{StaticResource WizardConfirmButton}" />
 
 
             </Grid>
@@ -123,9 +112,43 @@
                     </TextBlock>
                     <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.CheckDrawersThenStart}" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.CheckEmpyBayAndCell}" /><Run Text="." />
                     </TextBlock>
                 </StackPanel>
+
+
+                <controls:PpcButton Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding MoveToBayPositionCommand}"
+                            CommandParameter="UP"
+                            Content="{res:Loc InstallationApp.GoToBay}"
+                            IsBusy="{Binding IsTuningChain}"
+                            Kind="ArrowUp"
+                            Style="{DynamicResource PpcIconTextButtonStyle}"
+                            Visibility="{Binding HasBayUp, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcButton Grid.Row="1"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding MoveToBayPositionCommand}"
+                            CommandParameter="DOWN"
+                            Content="{res:Loc InstallationApp.GoToBay}"
+                            IsBusy="{Binding IsTuningChain}"
+                            Kind="ArrowDown"
+                            Style="{DynamicResource PpcIconTextButtonStyle}"
+                            Visibility="{Binding HasBayDown, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcButton Grid.Row="2"
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Command="{Binding MoveToShutterCommand}"
+                            Content="{Binding ShutterLabel}"
+                            Style="{DynamicResource WizardIntoButton}"
+                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+
 
                 <controls:PpcButton Grid.Row="3"
                             Grid.ColumnSpan="2"
@@ -179,6 +202,16 @@
 
                 </StackPanel>
 
+                <controls:PpcButton Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding StopInPhaseCommand}"
+                            Content="{res:Loc InstallationApp.StopProcedure}"
+                            Style="{StaticResource WizardConfirmButton}"
+                            Visibility="Visible" />
+
                 <ctrls:PpcSpinEdit Grid.Row="3"
                            Grid.Column="0"
                            Width="250"
@@ -189,17 +222,71 @@
                            EditValue="{Binding RemainingTime, StringFormat={}{0}, FallbackValue=00:00}"
                            IsEnabled="False"
                            LabelText="{res:Loc InstallationApp.RemainingTime}"
-                           Visibility="Collapsed" />
+                           Visibility="Visible" />
 
-                <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            Margin="0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding StopInPhaseCommand}"
-                            Content="{res:Loc InstallationApp.StopProcedure}"
-                            Style="{StaticResource WizardConfirmButton}"
-                            Visibility="Collapsed" />
+                <Border Grid.Row="3"
+                    Grid.Column="2"
+                    Width="250"
+                    Height="90"
+                    Margin="0,15,15,0"
+                    HorizontalAlignment="Stretch"
+                    Background="{DynamicResource PpcBackground}">
+                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                      BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="8,4"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
+                                 Style="{DynamicResource VWAPP_CardSensor}"
+                                 Text="{res:Loc InstallationApp.TotalCyclesCompleted}" />
+
+                            <StackPanel Grid.Row="1"
+                                  Margin="4"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Orientation="Horizontal">
+                                <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding PerformedCycles}" />
+                                <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="/" />
+                                <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding RequiredCycles}" />
+                            </StackPanel>
+
+                            <controls:PpcProgressBar Grid.Row="2"
+                                   Height="8"
+                                   Margin="8,4,8,8"
+                                   Color1="{DynamicResource FerrettoGreen}"
+                                   Color2="Green"
+                                   Maximum="100"
+                                   Minimum="0"
+                                   Value="{Binding CyclesPercent}" />
+
+                        </Grid>
+
+                    </Border>
+                </Border>
             </Grid>
         </DataTemplate>
 

@@ -2430,7 +2430,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("HorizontalChainCalibrationId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "HorizontalResolutionCalibration")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "HorizontalResolutionCalibration")
                         .WithMany()
                         .HasForeignKey("HorizontalResolutionCalibrationId");
 

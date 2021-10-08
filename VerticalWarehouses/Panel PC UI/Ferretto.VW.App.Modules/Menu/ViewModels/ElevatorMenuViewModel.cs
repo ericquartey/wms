@@ -234,6 +234,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.weightMeasurement?.RaiseCanExecuteChanged();
             this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
             this.horizontalChainCalibration?.RaiseCanExecuteChanged();
+            this.horizontalResolutionCalibration?.RaiseCanExecuteChanged();
             this.weightCalibration?.RaiseCanExecuteChanged();
         }
 

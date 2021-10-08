@@ -143,6 +143,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Horizontal));
         }
 
+        [HttpGet("horizontal/resolution-procedure")]
+        public ActionResult<RepeatedTestProcedure> GetHorizontalResolutionProcedure()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalResolutionCalibration();
+
+            return this.Ok(procedureParameters);
+        }
+
         [HttpGet("loading-unit-on-board")]
         public ActionResult<LoadingUnit> GetLoadingUnitOnBoard()
         {
@@ -399,6 +407,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetHorizontalChainCalibrationDistance(double distance)
         {
             this.elevatorDataProvider.UpdateHorizontalDistance(distance);
+            return this.Ok();
+        }
+
+        [HttpPost("horizontal/resolution/set-completed")]
+        public IActionResult SetHorizontalResolutionCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalResolutionCalibration(), false);
             return this.Ok();
         }
 
