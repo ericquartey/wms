@@ -224,7 +224,7 @@
           </TextBlock>
           <TextBlock Grid.ColumnSpan="2"
                      Style="{DynamicResource VWAPP_WizardDescriptionTextBlockStyle}">
-            <Run Text="{res:Loc InstallationApp.HorizontalZeroOffsetProcedure}" /><Run Text="." />
+            <Run Text="{res:Loc InstallationApp.HorizzontalChainCalibrationProcedureRequired}" /><Run Text="." />
           </TextBlock>
         </StackPanel>
 

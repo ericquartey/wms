@@ -2860,6 +2860,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HorizontalResolutionCalibration {
+            get {
+                return ResourceManager.GetString("HorizontalResolutionCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HorizontalResolutionCalibrationDescription {
+            get {
+                return ResourceManager.GetString("HorizontalResolutionCalibrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HorizontalResolutionCalibrationHelp {
+            get {
+                return ResourceManager.GetString("HorizontalResolutionCalibrationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Horizontal zero offset.
         /// </summary>
         public static string HorizontalZeroOffset {

@@ -2496,4 +2496,13 @@
   <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
     <value>Esegui la misurazione dell'offset di zero della catena. Il sensore di zero orizzontale deve essere attivo.</value>
   </data>
+  <data name="HorizontalResolutionCalibration" xml:space="preserve">
+    <value>Risoluzione asse orizzontale catena</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
+    <value>Esegui la calibrazione della risoluzione orizzontale della catena</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
+    <value>La funzione di calibrazione della risoluzione orizzontale della catena permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
+  </data>
 </root>

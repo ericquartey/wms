@@ -478,7 +478,7 @@
                  Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{res:Loc InstallationApp.HorizontalChainCalibration}" />
+                 Text="{res:Loc InstallationApp.HorizontalResolutionCalibration}" />
         </StackPanel>
         <!--#endregion-->
 
@@ -489,7 +489,7 @@
                Margin="0,0,15,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-               Text="{res:Loc InstallationApp.HorizontalChainCalibratioDescription}" />
+               Text="{res:Loc InstallationApp.HorizontalResolutionCalibrationHelp}" />
         <!--#endregion-->
 
         <!--#region Tails-->

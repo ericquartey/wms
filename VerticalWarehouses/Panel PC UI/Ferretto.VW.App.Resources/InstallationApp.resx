@@ -2569,4 +2569,13 @@
   <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
     <value>Perform the zero offset measurement of the chain. The horizontal zero sensor must be active.</value>
   </data>
+  <data name="HorizontalResolutionCalibration" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

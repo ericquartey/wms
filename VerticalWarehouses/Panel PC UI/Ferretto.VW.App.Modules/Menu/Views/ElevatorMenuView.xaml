@@ -111,13 +111,13 @@
                               Kind="Account"
                               Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Title="{res:Loc InstallationApp.HorizontalChainCalibration}"
+                    <controls:PpcButton Title="{res:Loc InstallationApp.HorizontalResolutionCalibration}"
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
                               Abbrevation="4.2.6"
                               BorderBrush="{DynamicResource FerrettoRed}"
                               Command="{Binding HorizontalResolutionCalibration}"
-                              Content="{res:Loc InstallationApp.HorizontalChainCalibrationDescription}"
+                              Content="{res:Loc InstallationApp.HorizontalResolutionCalibrationDescription}"
                               IsBypassed="{Binding IsHorizontalResolutionBypassed}"
                               IsCompleted="{Binding IsHorizontalResolutionCompleted}"
                               Kind="Account"
