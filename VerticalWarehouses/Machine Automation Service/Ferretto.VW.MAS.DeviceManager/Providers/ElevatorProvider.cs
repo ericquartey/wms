@@ -867,7 +867,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay,
                 BayNumber.ElevatorBay);
 
-            // open other bays
+            // close other bays
             var bays = this.baysDataProvider.GetAll();
             foreach (var otherBay in bays)
             {
@@ -1027,6 +1027,49 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Profile Calibration Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
+        public void MoveHorizontalResolution(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        {
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var policy = this.CanCalibrateZeroPlate();
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            var profileTypeLoad = this.SelectProfileType(direction, false);
+            var profileTypeDeposit = this.SelectProfileType(direction, true);
+            var targetPosition = axis.Profiles.Single(p => p.Name == profileTypeLoad).TotalDistance +
+                axis.Profiles.Single(p => p.Name == profileTypeDeposit).TotalDistance;
+
+            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+
+            var speed = new[] { axis.ManualMovements.FeedRateAfterZero * axis.FullLoadMovement.Speed };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Absolute,
+                MovementMode.HorizontalResolution,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Horizontal resolution Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,

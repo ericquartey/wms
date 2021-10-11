@@ -29,6 +29,11 @@
         /// </summary>
         HorizontalCalibration,
 
+        /// <summary>
+        /// Elevator Horizontal axis movement (for calibration)
+        /// </summary>
+        HorizontalResolution,
+
         TorqueCurrentSampling,
 
         ProfileCalibration,

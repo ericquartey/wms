@@ -8,6 +8,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "HorizontalResolutionCalibrationId",
+                table: "SetupProceduresSets");
+            migrationBuilder.Sql("DELETE FROM SetupProcedures WHERE id = (SELECT MAX(ID) FROM SetupProcedures)");
         }
 
         protected override void Up(MigrationBuilder migrationBuilder)

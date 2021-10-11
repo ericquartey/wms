@@ -25,6 +25,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ferretto.VW.MAS.DeviceManager.InverterReading;
+using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -437,6 +438,24 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.StartStateMachine(currentStateMachine);
                 }
+                else if (data.MovementMode == MovementMode.HorizontalResolution)
+                {
+                    var currentStateMachine = new HorizontalResolutionStateMachine(
+                        message.Source,
+                        message.RequestingBay,
+                        targetBay,
+                        data,
+                        this.machineResourcesProvider,
+                        this.EventAggregator,
+                        this.Logger,
+                        baysDataProvider,
+                        this.ServiceScopeFactory);
+
+                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                    this.currentStateMachines.Add(currentStateMachine);
+
+                    this.StartStateMachine(currentStateMachine);
+                }
                 else
                 {
                     // vertical and horizontal axes,
@@ -669,7 +688,11 @@ namespace Ferretto.VW.MAS.DeviceManager
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var shutterIndex = baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index;
 
-            if (this.currentStateMachines.Any(x => x.BayNumber == message.RequestingBay && !(x is PositioningStateMachine) && !(x is ExtBayPositioningStateMachine) && !(x is HomingStateMachine)))
+            if (this.currentStateMachines.Any(x => x.BayNumber == message.RequestingBay
+                    && !(x is PositioningStateMachine)
+                    && !(x is ExtBayPositioningStateMachine)
+                    && !(x is HorizontalResolutionStateMachine)
+                    && !(x is HomingStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
                     $"Error while starting shutter position state machine. Operation already in progress on {message.RequestingBay}",
@@ -780,6 +803,17 @@ namespace Ferretto.VW.MAS.DeviceManager
             //{
             //    this.Logger.LogDebug($"StopTest Message ignored, no active positioning state machine for bay {receivedMessage.TargetBay}");
             //}
+
+            // Check the stopTest message for the HorizontalResolution state machine
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is HorizontalResolutionStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as HorizontalResolutionStateMachine;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+            }
 
             // Check the stopTest message for the ExtBayPositioning state machine
             stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is ExtBayPositioningStateMachine);

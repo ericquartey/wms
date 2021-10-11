@@ -207,7 +207,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public SetupProcedure GetHorizontalResolutionCalibration()
+        public RepeatedTestProcedure GetHorizontalResolutionCalibration()
         {
             lock (this.dataContext)
             {

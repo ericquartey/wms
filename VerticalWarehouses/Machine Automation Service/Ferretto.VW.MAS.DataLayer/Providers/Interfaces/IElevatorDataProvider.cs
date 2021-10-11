@@ -78,6 +78,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateHorizontalDistance(double newDistance);
 
+        void UpdateHorizontalResolution(double newResolution);
+
         void UpdateLastCalibrationCycles(Orientation orientation);
 
         void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);

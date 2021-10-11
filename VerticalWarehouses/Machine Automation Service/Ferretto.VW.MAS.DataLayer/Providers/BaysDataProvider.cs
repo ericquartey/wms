@@ -682,8 +682,9 @@ namespace Ferretto.VW.MAS.DataLayer
                             returnValue = InverterIndex.MainInverter;
                             break;
 
-                        case MovementMode.HorizontalCalibration:
                         case MovementMode.FindZero:
+                        case MovementMode.HorizontalCalibration:
+                        case MovementMode.HorizontalResolution:
                             returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 

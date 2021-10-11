@@ -481,6 +481,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdateHorizontalResolution(double newResolution)
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
+
+                var axis = this.GetAxis(Orientation.Horizontal);
+
+                axis.Resolution = newResolution;
+                this.dataContext.ElevatorAxes.Update(axis);
+                this.dataContext.SaveChanges();
+
+                this.logger.LogDebug($"Elevator axis Horizontal resolution save {newResolution}");
+            }
+        }
+
         public void UpdateLastCalibrationCycles(Orientation orientation)
         {
             lock (this.dataContext)
