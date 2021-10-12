@@ -8,8 +8,6 @@ namespace Ferretto.VW.App.Installation.Views
     {
         #region Properties
 
-        public DataTemplate EnumChainCalibration { get; set; }
-
         public DataTemplate EnumConfirmAdjustment { get; set; }
 
         public DataTemplate EnumEndChainCalibration { get; set; }
@@ -35,9 +33,6 @@ namespace Ferretto.VW.App.Installation.Views
 
                 case HorizontalResolutionCalibrationStep.ConfirmAdjustment:
                     return this.EnumConfirmAdjustment;
-
-                case HorizontalResolutionCalibrationStep.ChainCalibration:
-                    return this.EnumChainCalibration;
 
                 case HorizontalResolutionCalibrationStep.EndChainCalibration:
                     return this.EnumEndChainCalibration;

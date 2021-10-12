@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.IsTorqueCurrentSamplingEnabled = messageData.MovementMode == MovementMode.TorqueCurrentSampling;
             this.IsWeightMeasure = (messageData.MovementMode == MovementMode.PositionAndMeasureWeight && this.AxisMovement == Axis.Vertical);
             this.IsProfileCalibrate = (messageData.MovementMode == MovementMode.ProfileCalibration);
-            this.IsHorizontalCalibrate = (messageData.MovementMode == MovementMode.HorizontalCalibration || messageData.MovementMode == MovementMode.FindZero);
+            this.IsHorizontalCalibrate = (messageData.MovementMode == MovementMode.HorizontalCalibration || messageData.MovementMode == MovementMode.FindZero || messageData.MovementMode == MovementMode.HorizontalResolution);
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;

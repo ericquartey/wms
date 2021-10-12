@@ -1042,6 +1042,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
+            var verticalPosition = this.elevatorDataProvider.VerticalPosition;
+            var otherBay = this.baysDataProvider.GetAll().FirstOrDefault(b => b.Number != requestingBay
+                        && b.Side != bay.Side
+                        && b.Positions.Any(p => Math.Abs(p.Height - verticalPosition) < 700));
+            if (otherBay != null && otherBay.Shutter != null && otherBay.Shutter.Type != ShutterType.NotSpecified)
+            {
+                var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(otherBay.Number);
+                var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
+                if (position != ShutterPosition.Opened)
+                {
+                    throw new InvalidOperationException(string.Format(Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyOpen", CommonUtils.Culture.Actual), otherBay.Number));
+                }
+            }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var profileTypeLoad = this.SelectProfileType(direction, false);
@@ -1050,6 +1063,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 axis.Profiles.Single(p => p.Name == profileTypeDeposit).TotalDistance;
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalResolutionCalibration();
 
             var speed = new[] { axis.ManualMovements.FeedRateAfterZero * axis.FullLoadMovement.Speed };
             var acceleration = new[] { axis.FullLoadMovement.Acceleration };
@@ -1064,12 +1079,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBound: 0,
+                upperBound: 0,
+                delay: 0,
                 switchPosition,
                 direction);
 
             this.PublishCommand(
                 messageData,
-                $"Execute {Axis.Horizontal} Horizontal resolution Command",
+                $"Execute {Axis.Horizontal} resolution Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,

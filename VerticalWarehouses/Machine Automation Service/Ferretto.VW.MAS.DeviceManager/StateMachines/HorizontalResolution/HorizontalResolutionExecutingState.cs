@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.HorizontalResolution
                     switch (message.Type)
                     {
                         case FieldMessageType.Positioning:
-                            this.Logger.LogDebug($"Trace Notification Message {message}");
+                            this.Logger.LogDebug($"Trace Notification Message {message.Type}");
                             this.ProcessEndPositioning();
                             break;
 
@@ -151,16 +151,17 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.HorizontalResolution
                 case MovementMode.HorizontalResolution:
                     {
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
-                        this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
+                        this.targetPosition = this.machineData.MessageData.TargetPosition;
+                        var nextPosition = this.elevatorProvider.HorizontalPosition;
                         if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                         {
-                            this.targetPosition = this.horizontalStartingPosition + this.machineData.MessageData.TargetPosition;
+                            nextPosition += this.targetPosition;
                         }
                         else
                         {
-                            this.targetPosition = this.horizontalStartingPosition - this.machineData.MessageData.TargetPosition;
+                            nextPosition -= this.targetPosition;
                         }
-                        positioningFieldMessageData.TargetPosition = this.targetPosition;
+                        positioningFieldMessageData.TargetPosition = nextPosition;
                         statusWordPollingInterval = 500;
 
                         commandMessage = new FieldCommandMessage(
@@ -320,16 +321,16 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.HorizontalResolution
                             {
                                 this.Logger.LogInformation($"Start another Horizontal Resolution after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
                                 var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
-                                this.horizontalStartingPosition = this.elevatorProvider.HorizontalPosition;
+                                var nextPosition = this.elevatorProvider.HorizontalPosition;
                                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                                 {
-                                    this.targetPosition = this.horizontalStartingPosition + this.machineData.MessageData.TargetPosition;
+                                    nextPosition += this.targetPosition;
                                 }
                                 else
                                 {
-                                    this.targetPosition = this.horizontalStartingPosition - this.machineData.MessageData.TargetPosition;
+                                    nextPosition -= this.targetPosition;
                                 }
-                                positioningFieldMessageData.TargetPosition = this.targetPosition;
+                                positioningFieldMessageData.TargetPositionOriginal = nextPosition;
                                 var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
                                 var commandMessage = new FieldCommandMessage(

@@ -1681,6 +1681,7 @@ namespace Ferretto.VW.App.Services
                                  ((this.bay.Shutter != null) ? this.bay.Shutter.Type != ShutterType.NotSpecified : false) &&
                                  !this.sensorsService.ShutterSensors.Closed && !this.sensorsService.ShutterSensors.MidWay &&
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("HorizontalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                  (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutterOpenOrUnknowPosition"), NotificationSeverity.Warning);
@@ -1703,6 +1704,7 @@ namespace Ferretto.VW.App.Services
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.CalibrationCarouselFailedChainNotZeroPosition"), NotificationSeverity.Warning);
                         }
                         else if (!this.isBayHoming[this.bay.Number] &&
+                                 !view.Equals("HorizontalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                  !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);

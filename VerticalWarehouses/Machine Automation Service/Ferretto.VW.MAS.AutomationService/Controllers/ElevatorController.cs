@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("horizontal/offset")]
         public ActionResult<double> GetHorizontalOffset()
         {
-            return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset);
+            return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Horizontal).ChainOffset);
         }
 
         [HttpGet("horizontal/resolution-value")]

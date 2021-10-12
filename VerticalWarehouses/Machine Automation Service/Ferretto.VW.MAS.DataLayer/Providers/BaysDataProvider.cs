@@ -555,6 +555,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case MovementMode.TorqueCurrentSampling:
                 case MovementMode.ProfileCalibration:
                 case MovementMode.FindZero:
+                case MovementMode.HorizontalResolution:
                     targetBay = BayNumber.ElevatorBay;
                     break;
 

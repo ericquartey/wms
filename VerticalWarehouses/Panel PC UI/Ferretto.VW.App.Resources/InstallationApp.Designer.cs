@@ -1213,7 +1213,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the bay position. Open the shutter and check that there are no drawers in bay and in the cell opposite to the bay.. Press START to begin the procedure.
+        ///   Looks up a localized string similar to Select the bay position. Open the shutter and check that there are no drawers in bay and in the cell opposite to the bay. Perform the Chain calibration. Press START to begin the procedure.
         /// </summary>
         public static string CheckEmptyBayAndCell {
             get {

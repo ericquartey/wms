@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "SetupProceduresSets",
                 nullable: true);
 
-            migrationBuilder.Sql("INSERT INTO SetupProcedures (FeedRate, IsBypassed, IsCompleted, RepeatedTestProcedure_InProgress, performedCycles, requiredCycles, Discriminator) VALUES (1, 0, 0, 0, 0, 50, 'RepeatedTestProcedure')");
+            migrationBuilder.Sql("INSERT INTO SetupProcedures (FeedRate, IsBypassed, IsCompleted, RepeatedTestProcedure_InProgress, performedCycles, requiredCycles, Discriminator) VALUES (1, 0, 0, 0, 0, 20, 'RepeatedTestProcedure')");
             migrationBuilder.Sql("UPDATE SetupProceduresSets SET HorizontalResolutionCalibrationId = (SELECT MAX(ID) FROM SetupProcedures)");
         }
 

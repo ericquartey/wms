@@ -225,6 +225,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsHorizChainCompleted));
             this.RaisePropertyChanged(nameof(this.IsHorizontalChainBypassed));
+            this.RaisePropertyChanged(nameof(this.IsHorizontalResolutionCompleted));
+            this.RaisePropertyChanged(nameof(this.IsHorizontalResolutionBypassed));
 
             this.beltBurnishingCommand?.RaiseCanExecuteChanged();
             this.verticalOffsetCalibration?.RaiseCanExecuteChanged();
