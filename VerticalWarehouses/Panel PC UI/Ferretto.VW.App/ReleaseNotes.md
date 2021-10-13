@@ -25,18 +25,16 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.29 rispetto la 1.0.28
-- Il comando di puntamento laser su scomparto è disponibile anche per l'operatore
+## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
+- Aggiunta immediata articolo presente a magazzino su un cassetto
 
 ## Bug Risolti
-- Corretto errore nella creazione del database
-- Corretto errore di giacenza in caso di prelievo di articoli con lotto
-- Aggiunti peso e altezza nelle movimentazioni della telemetria 
-- Invio di un comando di HOME al laser all'accensione della macchina
-- Se la serranda è disabilitata non interroghiamo più l'inverter della serranda
+- 
 
-## Compatibile con adapter 0.4.24 e 0.4.25
+## Compatibile con adapter 0.4.26
 ***
+
+[Versione 1.0.29](#id1029)
 
 [Versione 1.0.28](#id1028)
 
@@ -95,6 +93,20 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1029"></a>
+## Nuove Funzionalità 1.0.29 rispetto la 1.0.28
+- Il comando di puntamento laser su scomparto è disponibile anche per l'operatore
+
+## Bug Risolti
+- Corretto errore nella creazione del database
+- Corretto errore di giacenza in caso di prelievo di articoli con lotto
+- Aggiunti peso e altezza nelle movimentazioni della telemetria 
+- Invio di un comando di HOME al laser all'accensione della macchina
+- Se la serranda è disabilitata non interroghiamo più l'inverter della serranda
+
+## Compatibile con adapter 0.4.24 e 0.4.25
 ***
 
 <a id="id1028"></a>

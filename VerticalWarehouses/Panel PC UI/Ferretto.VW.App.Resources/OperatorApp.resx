@@ -2239,6 +2239,9 @@
     <value>Invalid argument</value>
     <comment>Error Message</comment>
   </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>Item loaded</value>
+  </data>
   <data name="SupportType_Insert" xml:space="preserve">
     <value>Insert</value>
   </data>
@@ -2290,5 +2293,15 @@
   <data name="SignallingDefectOnProcess" xml:space="preserve">
     <value>Signalling defect on process...</value>
     <comment>Error Message</comment>
+  </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Adding item failed</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Adding item ...</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Adding item on loading unit </value>
+    <comment>Page header</comment>
   </data>
 </root>

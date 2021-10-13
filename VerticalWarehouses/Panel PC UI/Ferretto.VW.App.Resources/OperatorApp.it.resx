@@ -1898,6 +1898,9 @@
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Errore operazione segnalazione difetto.</value>
   </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>Articolo caricato</value>
+  </data>
   <data name="ToteBarcodeToAcquire" xml:space="preserve">
     <value>Acquisire il tote ... </value>
   </data>
@@ -1909,5 +1912,14 @@
   </data>
   <data name="SignallingDefectOnProcess" xml:space="preserve">
     <value>Segnalazione difetto in processamento...</value>
+  </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Aggiunta articolo fallita</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Aggiunta articolo ...</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Aggiunta articolo su cassetto </value>
   </data>
 </root>
