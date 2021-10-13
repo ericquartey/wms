@@ -1052,7 +1052,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
                 if (position != ShutterPosition.Opened)
                 {
-                    throw new InvalidOperationException(string.Format(Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyOpen", CommonUtils.Culture.Actual), otherBay.Number));
+                    throw new InvalidOperationException(string.Format(Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyOpen", CommonUtils.Culture.Actual), (int)otherBay.Number));
                 }
             }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);

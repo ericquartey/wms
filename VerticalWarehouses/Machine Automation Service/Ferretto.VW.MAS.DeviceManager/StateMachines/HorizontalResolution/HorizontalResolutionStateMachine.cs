@@ -158,7 +158,8 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
 
             if (this.machineData.MessageData.MovementMode == MovementMode.HorizontalResolution)
             {
-                ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
+                ok = !(bay.Carousel != null || bay.IsExternal)
+                    || this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
                 if (!ok)
                 {
                     errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";

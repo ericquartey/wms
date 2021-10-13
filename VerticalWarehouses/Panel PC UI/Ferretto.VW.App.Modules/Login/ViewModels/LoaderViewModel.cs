@@ -189,6 +189,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     {
                         this.ShowNotification(ex);
                     }
+                    catch (Exception ex2)
+                    {
+                        this.logger.Debug(ex2.Message);
+                    }
 
                     break;
 

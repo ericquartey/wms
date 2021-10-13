@@ -871,7 +871,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     if (!isOk)
                     {
-                        this.ShowNotification(string.Format(Localized.Get("ServiceMachine.InconsistencyStateAndSensorsBay"), otherBay.Number), NotificationSeverity.Warning);
+                        this.ShowNotification(string.Format(Localized.Get("ServiceMachine.InconsistencyStateAndSensorsBay"), (int)otherBay.Number), NotificationSeverity.Warning);
                     }
                 }
             }
