@@ -506,7 +506,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopInPhaseCommand
             ??
             (this.stopInPhaseCommand = new DelegateCommand(
-                async () => await this.StopAsync(),
+                async () => await this.StopInPhaseAsync(),
                 this.CanStopInPhase));
 
         public double? TotalDistance => Math.Abs(this.machineElevatorWebService.GetHorizontalTotalDistanceAsync().Result);
@@ -576,6 +576,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.BayPositionActive = null;
             this.IsChainTuned = false;
+            this.IsExecutingStopInPhase = false;
 
             this.ShutterLabel = this.SensorsService.ShutterSensors.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
 
@@ -699,6 +700,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToStartCalibrationCommand?.RaiseCanExecuteChanged();
             this.moveToShutterCommand?.RaiseCanExecuteChanged();
             this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+            this.repeatCalibrationCommand?.RaiseCanExecuteChanged();
+
             this.ShutterLabel = this.SensorsService.ShutterSensors.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
 
             this.RaisePropertyChanged(nameof(this.RemainingTime));
@@ -718,16 +721,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ApplyCorrectionMessage"), Localized.Get("InstallationApp.HorizontalResolutionCalibration"), DialogType.Question, DialogButtons.YesNo);
+                var measuredCorrection = (this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset) / 2;
+                var distance = this.TotalDistance;
+                var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
+                var newDistance = correctionForEachMovement + distance;
+                var newResolution = (double)(this.CurrentResolution * newDistance / distance);
+                var applyCorrection = $"{Localized.Get("InstallationApp.Resolution")}: {this.CurrentResolution:0.000000}, {Localized.Get("InstallationApp.NewResolution")}: {newResolution:0.000000}";
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ApplyCorrectionMessage"), applyCorrection, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    var measuredCorrection = (this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset) / 2;
-                    var distance = this.TotalDistance;
-                    var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
-                    var newDistance = correctionForEachMovement + distance;
-                    var newResolution = (double)(this.CurrentResolution * newDistance / distance);
-
                     await this.machineElevatorWebService.UpdateHorizontalResolutionAsync(newResolution);
+
+                    this.Logger.Debug(applyCorrection);
 
                     this.CurrentResolution = newResolution;
 
@@ -1194,6 +1199,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task StopInPhaseAsync()
+        {
+            this.IsWaitingForResponse = true;
+            this.IsExecutingProcedure = false;
+            this.IsExecutingStopInPhase = true;
+            try
+            {
+                await this.machineElevatorWebService.StopCalibrationAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.isErrorVisible = true;
+            }
+            finally
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private void SubscribeToEvents()
         {
             this.stepChangedToken = this.stepChangedToken
@@ -1327,6 +1353,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNextStepSinglePage(true, this.moveToGoToBayCommand?.CanExecute() ?? false);
                     this.IsChainTuned = false;
                     this.isErrorVisible = false;
+                    this.IsExecutingStopInPhase = false;
                     break;
 
                 case HorizontalResolutionCalibrationStep.RunningCalibration:

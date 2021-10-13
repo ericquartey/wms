@@ -789,6 +789,18 @@ namespace Ferretto.VW.MAS.DeviceManager
                 return;
             }
 
+            // Check the stopTest message for the HorizontalResolution state machine
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.TargetBay && x is HorizontalResolutionStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as HorizontalResolutionStateMachine;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+                return;
+            }
+
             // Check the stopTest message for the Positioning state machine
             stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is PositioningStateMachine);
             if (stateMachines.Any())
@@ -803,17 +815,6 @@ namespace Ferretto.VW.MAS.DeviceManager
             //{
             //    this.Logger.LogDebug($"StopTest Message ignored, no active positioning state machine for bay {receivedMessage.TargetBay}");
             //}
-
-            // Check the stopTest message for the HorizontalResolution state machine
-            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is HorizontalResolutionStateMachine);
-            if (stateMachines.Any())
-            {
-                foreach (var fsm in stateMachines)
-                {
-                    var stateMachine = fsm as HorizontalResolutionStateMachine;
-                    stateMachine.ProcessCommandMessage(receivedMessage);
-                }
-            }
 
             // Check the stopTest message for the ExtBayPositioning state machine
             stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.RequestingBay && x is ExtBayPositioningStateMachine);

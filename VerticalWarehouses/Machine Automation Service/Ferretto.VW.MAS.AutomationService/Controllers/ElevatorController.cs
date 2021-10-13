@@ -485,6 +485,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("stop-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StopCalibration()
+        {
+            this.elevatorProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("weight-check-stop")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
