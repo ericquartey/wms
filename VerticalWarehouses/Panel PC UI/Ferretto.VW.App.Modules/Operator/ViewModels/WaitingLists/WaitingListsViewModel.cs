@@ -146,15 +146,42 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ExecuteListAsync(ItemListExecution itemList)
         {
-            try
+            if (!this.areaId.HasValue)
             {
-                if (!this.areaId.HasValue)
-                {
-                    return;
-                }
+                return;
+            }
+
+            if (itemList == null)
+            {
+                return;
+            }
+
+            // Handle the current not dispatchable list
+            if (!itemList.IsDispatchable)
+            {
+                this.Logger.Debug($"Show the evadability options view for item list {itemList.Id}");
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, bay.Id, this.authenticationService.UserName);
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.WaitingLists.EVADABILITYOPTIONS,
+                    new WaitingListExecuteData
+                    {
+                        ListId = itemList.Id,
+                        ListDescription = itemList.Description,
+                        BayId = bay.Id,
+                        AreaId = this.areaId.Value,
+                        AuthenticationUserName = this.authenticationService.UserName,
+                    },
+                    trackCurrentView: true);
+
+                return;
+            }
+
+            try
+            {
+                var bay = await this.bayManager.GetBayAsync();
+                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, ItemListEvadabilityType.PartiallyExecuteAndWait, bay.Id, this.authenticationService.UserName);
                 await this.LoadListsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),

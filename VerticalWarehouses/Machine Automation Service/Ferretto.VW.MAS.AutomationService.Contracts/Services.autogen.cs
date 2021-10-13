@@ -25478,14 +25478,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, int? bayId, string userName)
+        public System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, ItemListEvadabilityType type, int? bayId, string userName)
         {
-            return ExecuteAsync(id, areaId, bayId, userName, System.Threading.CancellationToken.None);
+            return ExecuteAsync(id, areaId, type, bayId, userName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, int? bayId, string userName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, ItemListEvadabilityType type, int? bayId, string userName, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -25493,10 +25493,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (areaId == null)
                 throw new System.ArgumentNullException("areaId");
     
+            if (type == null)
+                throw new System.ArgumentNullException("type");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/item-lists/{id}/execute?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("areaId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(areaId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("type") + "=").Append(System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             if (bayId != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("bayId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -25560,22 +25564,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, int? bayId, string userName)
+        public System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, ItemListEvadabilityType type, int? bayId, string userName)
         {
-            return ExecuteNumAsync(id, areaId, bayId, userName, System.Threading.CancellationToken.None);
+            return ExecuteNumAsync(id, areaId, type, bayId, userName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, int? bayId, string userName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, ItemListEvadabilityType type, int? bayId, string userName, System.Threading.CancellationToken cancellationToken)
         {
             if (areaId == null)
                 throw new System.ArgumentNullException("areaId");
+    
+            if (type == null)
+                throw new System.ArgumentNullException("type");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/item-lists/{id}/execute-num?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("areaId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(areaId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("type") + "=").Append(System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             if (bayId != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("bayId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");

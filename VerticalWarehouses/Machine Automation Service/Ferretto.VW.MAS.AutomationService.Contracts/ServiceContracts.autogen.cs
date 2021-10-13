@@ -2303,18 +2303,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineItemListsWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, int? bayId, string userName);
+        System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, ItemListEvadabilityType type, int? bayId, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, int? bayId, string userName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ItemListDetails> ExecuteAsync(int id, int areaId, ItemListEvadabilityType type, int? bayId, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, int? bayId, string userName);
+        System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, ItemListEvadabilityType type, int? bayId, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, int? bayId, string userName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ItemListDetails> ExecuteNumAsync(string id, int areaId, ItemListEvadabilityType type, int? bayId, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ItemListDetails> GetByIdAsync(int id);
@@ -7232,6 +7232,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("isDispatchable", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDispatchable { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("itemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
         public int ItemListRowsCount { get; set; }
     
@@ -7647,6 +7650,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("firstExecutionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? FirstExecutionDate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("isDispatchable", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDispatchable { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("itemListRowsCount", Required = Newtonsoft.Json.Required.Always)]
         public int ItemListRowsCount { get; set; }
     
@@ -7686,6 +7692,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemListDetails>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum ItemListEvadabilityType
+    {
+        PartiallyExecuteAndComplete = 67,
+    
+        PartiallyExecute = 69,
+    
+        PartiallyExecuteAndWait = 87,
     
     }
     

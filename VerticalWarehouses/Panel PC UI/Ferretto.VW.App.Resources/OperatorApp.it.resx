@@ -1922,4 +1922,16 @@
   <data name="AddingItemPageHeader" xml:space="preserve">
     <value>Aggiunta articolo su cassetto </value>
   </data>
+  <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
+    <value>Selezione modalità di evasione per la lista</value>
+  </data>
+  <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
+    <value>Esegui parzialmente e attesa</value>
+  </data>
+  <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
+    <value>Esegui parzialmente e termina</value>
+  </data>
+  <data name="PartiallyExecuteLabel" xml:space="preserve">
+    <value>Esegui parzialmente</value>
+  </data>
 </root>
