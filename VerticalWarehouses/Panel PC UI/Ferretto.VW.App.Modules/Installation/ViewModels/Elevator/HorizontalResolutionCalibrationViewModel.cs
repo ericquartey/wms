@@ -53,8 +53,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand completeCommand;
 
-        private DelegateCommand confirmCalibration;
-
         //private double? currentDistance;
 
         private double? currentResolution;
@@ -98,8 +96,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand<string> moveToBayPositionCommand;
 
         private DelegateCommand moveToConfirmAdjustmentCommand;
-
-        private DelegateCommand moveToGoToBayCommand;
 
         private DelegateCommand moveToShutterCommand;
 
@@ -195,12 +191,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.completeCommand = new DelegateCommand(
                 async () => await this.CompleteAsync(), this.CanComplete));
-
-        public ICommand ConfirmCalibration =>
-            this.confirmCalibration
-            ??
-            (this.confirmCalibration = new DelegateCommand(
-                async () => await this.ConfirmCalibrationAsync()));
 
         public double? CurrentResolution
         {
@@ -374,13 +364,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToConfirmAdjustmentCommand = new DelegateCommand(
                 () => this.CurrentStep = HorizontalResolutionCalibrationStep.ConfirmAdjustment,
                 () => this.CanBaseExecute()));
-
-        public ICommand MoveToGoToBayCommand =>
-                    this.moveToGoToBayCommand
-            ??
-            (this.moveToGoToBayCommand = new DelegateCommand(
-                () => this.CurrentStep = HorizontalResolutionCalibrationStep.StartCalibration,
-                () => this.CanMoveToGoToBay()));
 
         public ICommand MoveToShutterCommand =>
             this.moveToShutterCommand
@@ -695,7 +678,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.startCalibrationCommand?.RaiseCanExecuteChanged();
             this.completeCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
-            this.moveToGoToBayCommand?.RaiseCanExecuteChanged();
             this.moveToConfirmAdjustmentCommand?.RaiseCanExecuteChanged();
             this.moveToStartCalibrationCommand?.RaiseCanExecuteChanged();
             this.moveToShutterCommand?.RaiseCanExecuteChanged();
@@ -763,18 +745,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return !this.IsKeyboardOpened &&
                    !this.IsMoving;
-        }
-
-        private bool CanCloseShutter()
-        {
-            return
-                this.CanBaseExecute()
-                //&& !this.IsShutterMoving
-                && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
-                &&
-                this.SensorsService.ShutterSensors != null
-                &&
-                !this.SensorsService.ShutterSensors.Closed;
         }
 
         private bool CanComplete()
@@ -941,32 +911,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.CurrentStep = HorizontalResolutionCalibrationStep.StartCalibration;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task ConfirmCalibrationAsync()
-        {
-            try
-            {
-                await this.MachineService.OnUpdateServiceAsync();
-                await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
-
-                this.ShowNotification(
-                        VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
-                        Services.Models.NotificationSeverity.Success);
-
-                this.NavigationService.GoBack();
-
-                this.CurrentStep = HorizontalResolutionCalibrationStep.StartCalibration;
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-                this.isErrorVisible = true;
-            }
-            finally
-            {
                 this.IsWaitingForResponse = false;
             }
         }
@@ -1350,7 +1294,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case HorizontalResolutionCalibrationStep.StartCalibration:
                     this.ShowPrevStepSinglePage(true, false);
-                    this.ShowNextStepSinglePage(true, this.moveToGoToBayCommand?.CanExecute() ?? false);
                     this.IsChainTuned = false;
                     this.isErrorVisible = false;
                     this.IsExecutingStopInPhase = false;
