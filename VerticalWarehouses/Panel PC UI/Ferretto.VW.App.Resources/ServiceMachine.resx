@@ -213,4 +213,7 @@
   <data name="BayPositionsDisabled" xml:space="preserve">
     <value>All bay positions are disabled</value>
   </data>
+  <data name="InconsistencyStateAndSensorsBay" xml:space="preserve">
+    <value>Load state and sensors inconsistency Bay {0}</value>
+  </data>
 </root>

@@ -20,6 +20,7 @@
             VerticalResolutionCalibration = SetupStepStatus.Complete,
             WeightMeasurement = SetupStepStatus.Complete,
             HorizontalChainCalibration = SetupStepStatus.Complete,
+            HorizontalResolutionCalibration = SetupStepStatus.Complete,
             DepositAndPickUpTest = SetupStepStatus.Complete,
             FullTest = SetupStepStatus.Complete
         };
@@ -46,9 +47,13 @@
 
         public SetupStepStatus DepositAndPickUpTest { get; set; }
 
+        public SetupStepStatus FullTest { get; set; }
+
         public SetupStepStatus HorizontalChainCalibration { get; set; }
 
         public SetupStepStatus HorizontalHoming { get; set; }
+
+        public SetupStepStatus HorizontalResolutionCalibration { get; set; }
 
         public bool IsComplete { get; set; }
 
@@ -62,8 +67,6 @@
 
         public SetupStepStatus WeightMeasurement { get; set; }
 
-        public SetupStepStatus FullTest { get; set; }
-
-    #endregion
-}
+        #endregion
+    }
 }

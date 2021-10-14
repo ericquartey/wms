@@ -555,6 +555,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case MovementMode.TorqueCurrentSampling:
                 case MovementMode.ProfileCalibration:
                 case MovementMode.FindZero:
+                case MovementMode.HorizontalResolution:
                     targetBay = BayNumber.ElevatorBay;
                     break;
 
@@ -682,8 +683,9 @@ namespace Ferretto.VW.MAS.DataLayer
                             returnValue = InverterIndex.MainInverter;
                             break;
 
-                        case MovementMode.HorizontalCalibration:
                         case MovementMode.FindZero:
+                        case MovementMode.HorizontalCalibration:
+                        case MovementMode.HorizontalResolution:
                             returnValue = this.machineVolatileDataProvider.IsOneTonMachine.Value ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 

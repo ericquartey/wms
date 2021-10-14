@@ -2557,4 +2557,28 @@
   <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
     <value>Shutdown the panel (elevator calibration not available now)</value>
   </data>
+  <data name="HorizontalZeroOffset" xml:space="preserve">
+    <value>Horizontal zero offset</value>
+  </data>
+  <data name="HorizontalZeroOffsetDescription" xml:space="preserve">
+    <value>Performs the zero offset measurement of the chain</value>
+  </data>
+  <data name="HorizontalZeroOffsetHelp" xml:space="preserve">
+    <value>The horizontal zero offset function allows you to measure the correct value through its specific procedure. The procedure works in successive steps until correct completion.</value>
+  </data>
+  <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
+    <value>Perform the zero offset measurement of the chain. The horizontal zero sensor must be active.</value>
+  </data>
+  <data name="HorizontalResolutionCalibration" xml:space="preserve">
+    <value>Horizontal chain axis resolution</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
+    <value>Performs the resolutions of the horizontal chain axis</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
+    <value>The calibration of the horizontal chain axis resolution enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
+  </data>
+  <data name="CheckEmptyBayAndCell" xml:space="preserve">
+    <value>Select the bay position. Open the shutter (if any) and check that there are no drawers in bay and in the cell opposite to the bay. Perform the Chain calibration. Press START to begin the procedure</value>
+  </data>
 </root>

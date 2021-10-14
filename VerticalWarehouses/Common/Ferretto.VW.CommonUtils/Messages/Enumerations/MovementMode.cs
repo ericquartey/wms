@@ -29,6 +29,11 @@
         /// </summary>
         HorizontalCalibration,
 
+        /// <summary>
+        /// Elevator Horizontal axis movement (for calibration)
+        /// </summary>
+        HorizontalResolution,
+
         TorqueCurrentSampling,
 
         ProfileCalibration,
@@ -57,8 +62,6 @@
         /// Test in carousel bay (for calibration)
         /// </summary>
         BayTest,
-
-        HorizontalForwardBackward,
 
         /// <summary>
         /// Movements in external bay

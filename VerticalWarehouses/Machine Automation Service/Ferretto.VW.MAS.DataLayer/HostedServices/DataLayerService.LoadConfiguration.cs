@@ -531,6 +531,29 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        private void GenerateSetupProcedures(DataLayerContext dataContext)
+        {
+            var sets = dataContext.SetupProceduresSets.SingleOrDefault();
+            if (sets != null)
+            {
+                if (dataContext.SetupProceduresSets.Any(s => s.HorizontalResolutionCalibration == null))
+                {
+                    var procedure = new RepeatedTestProcedure()
+                    {
+                        FeedRate = 1,
+                        IsBypassed = false,
+                        IsCompleted = false,
+                        InProgress = false,
+                        PerformedCycles = 0,
+                        RequiredCycles = 25
+                    };
+                    sets.HorizontalResolutionCalibration = procedure;
+                    dataContext.SetupProcedures.Add(procedure);
+                    dataContext.SaveChanges();
+                }
+            }
+        }
+
         private async Task LoadConfigurationAsync(string configurationFilePath, DataLayerContext dataContext)
         {
             if (dataContext.Machines.Any())

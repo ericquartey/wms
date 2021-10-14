@@ -302,10 +302,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var horizontalTargetPosition = distance;
 
-            // Take account of current position in the horizontal axes and carry out the compensation along distance
-            var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition);
-            var percentileCompensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - horizontalAxis.LastIdealPosition) / Math.Abs(this.elevatorDataProvider.HorizontalPosition);
-
             horizontalTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
             var horizontalSpeed = new[] { horizontalAxis.FullLoadMovement.Speed * (highSpeed ? horizontalAxis.ManualMovements.FeedRateAfterZero : horizontalAxis.ManualMovements.FeedRate) };

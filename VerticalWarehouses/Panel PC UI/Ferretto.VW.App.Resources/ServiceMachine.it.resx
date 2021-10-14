@@ -213,4 +213,7 @@
   <data name="BayPositionsDisabled" xml:space="preserve">
     <value>Tutte le posizioni di baia sono disabilitate</value>
   </data>
+  <data name="InconsistencyStateAndSensorsBay" xml:space="preserve">
+    <value>Inconsistenza stato di carico e sensori Baia {0}</value>
+  </data>
 </root>

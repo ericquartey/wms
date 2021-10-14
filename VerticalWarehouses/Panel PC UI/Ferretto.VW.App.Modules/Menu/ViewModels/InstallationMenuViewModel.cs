@@ -56,6 +56,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand horizontalChainCalibrationTestBypassCommand;
 
+        private DelegateCommand horizontalResolutionCalibrationTestBypassCommand;
+
         private int proceduresCompleted;
 
         private int proceduresCompletedPercent;
@@ -344,10 +346,37 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.HorizontalChainCalibration"), DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.HorizontalZeroOffset"), DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.HorizontalChainCalibrationBypassAsync();
+
+                            await this.UpdateSetupStatusAsync();
+                        }
+                    }
+                    catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                    {
+                        this.ShowNotification(ex);
+                    }
+                    finally
+                    {
+                        this.IsExecutingProcedure = false;
+                    }
+                }));
+
+        public ICommand HorizontalResolutionCalibrationTestBypassCommand =>
+            this.horizontalResolutionCalibrationTestBypassCommand
+            ??
+            (this.horizontalResolutionCalibrationTestBypassCommand = new DelegateCommand(
+                async () =>
+                {
+                    try
+                    {
+                        this.IsExecutingProcedure = true;
+                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.HorizontalResolutionCalibration"), DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult == DialogResult.Yes)
+                        {
+                            await this.machineSetupStatusWebService.HorizontalResolutionCalibrationBypassAsync();
 
                             await this.UpdateSetupStatusAsync();
                         }
@@ -476,6 +505,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.externalBayCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
             this.fullTestBypassCommand?.RaiseCanExecuteChanged();
             this.horizontalChainCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
+            this.horizontalResolutionCalibrationTestBypassCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.Source));
             this.RaisePropertyChanged(nameof(this.SubTitleLabel));
@@ -540,11 +570,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.source.Add(new ItemListSetupProcedure() { Text = Localized.Get("InstallationApp.VerticalResolutionDone"), Status = status.VerticalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete, Bypassable = false, Bypassed = false, Command = new DelegateCommand(() => { }), });
                 this.source.Add(new ItemListSetupProcedure()
                 {
-                    Text = Localized.Get("InstallationApp.HorizontalChainCalibration"),
+                    Text = Localized.Get("InstallationApp.HorizontalZeroOffset"),
                     Status = status.HorizontalChainCalibration.InProgress ? InstallationStatus.Inprogress : status.HorizontalChainCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !status.HorizontalChainCalibration.IsCompleted,
                     Bypassed = status.HorizontalChainCalibration.IsBypassed,
                     Command = this.HorizontalChainCalibrationTestBypassCommand,
+                });
+                this.source.Add(new ItemListSetupProcedure()
+                {
+                    Text = Localized.Get("InstallationApp.HorizontalResolutionCalibration"),
+                    Status = status.HorizontalResolutionCalibration.InProgress ? InstallationStatus.Inprogress : status.HorizontalResolutionCalibration.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
+                    Bypassable = !status.HorizontalResolutionCalibration.IsCompleted,
+                    Bypassed = status.HorizontalResolutionCalibration.IsBypassed,
+                    Command = this.HorizontalResolutionCalibrationTestBypassCommand,
                 });
                 this.source.Add(new ItemListSetupProcedure()
                 {

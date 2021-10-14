@@ -1213,6 +1213,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the bay position. Open the shutter (if any) and check that there are no drawers in bay and in the cell opposite to the bay. Perform the Chain calibration. Press START to begin the procedure.
+        /// </summary>
+        public static string CheckEmptyBayAndCell {
+            get {
+                return ResourceManager.GetString("CheckEmptyBayAndCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check serial ports.
         /// </summary>
         public static string CheckSerialPorts {
@@ -2856,6 +2865,69 @@ namespace Ferretto.VW.App.Resources {
         public static string HorizontalHomingStarted {
             get {
                 return ResourceManager.GetString("HorizontalHomingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal chain axis resolution.
+        /// </summary>
+        public static string HorizontalResolutionCalibration {
+            get {
+                return ResourceManager.GetString("HorizontalResolutionCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performs the resolutions of the horizontal chain axis.
+        /// </summary>
+        public static string HorizontalResolutionCalibrationDescription {
+            get {
+                return ResourceManager.GetString("HorizontalResolutionCalibrationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The calibration of the horizontal chain axis resolution enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
+        /// </summary>
+        public static string HorizontalResolutionCalibrationHelp {
+            get {
+                return ResourceManager.GetString("HorizontalResolutionCalibrationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal zero offset.
+        /// </summary>
+        public static string HorizontalZeroOffset {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Performs the zero offset measurement of the chain.
+        /// </summary>
+        public static string HorizontalZeroOffsetDescription {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffsetDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The horizontal zero offset function allows you to measure the correct value through its specific procedure. The procedure works in successive steps until correct completion..
+        /// </summary>
+        public static string HorizontalZeroOffsetHelp {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffsetHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the zero offset measurement of the chain. The horizontal zero sensor must be active..
+        /// </summary>
+        public static string HorizontalZeroOffsetProcedure {
+            get {
+                return ResourceManager.GetString("HorizontalZeroOffsetProcedure", resourceCulture);
             }
         }
         
