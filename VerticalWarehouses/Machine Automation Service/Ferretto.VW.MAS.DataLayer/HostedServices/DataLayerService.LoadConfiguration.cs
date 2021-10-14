@@ -545,7 +545,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         IsCompleted = false,
                         InProgress = false,
                         PerformedCycles = 0,
-                        RequiredCycles = 20
+                        RequiredCycles = 25
                     };
                     sets.HorizontalResolutionCalibration = procedure;
                     dataContext.SetupProcedures.Add(procedure);

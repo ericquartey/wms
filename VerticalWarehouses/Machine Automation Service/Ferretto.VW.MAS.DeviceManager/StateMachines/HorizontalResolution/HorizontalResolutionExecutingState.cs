@@ -44,8 +44,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.HorizontalResolution
 
         //private HorizontalCalibrationStep findZeroStep;
 
-        private double horizontalStartingPosition;
-
         private bool isDisposed;
 
         private bool isTestStopped;

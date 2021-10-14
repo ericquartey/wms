@@ -318,22 +318,12 @@
                     <ctrls:PpcSpinEdit Grid.Row="2"
                              Grid.ColumnSpan="2"
                              Width="250"
-                             Height="90"
                              Margin="0,0,0,15"
                              HorizontalAlignment="Center"
                              EditValue="{Binding ChainOffset, Mode=OneWay}"
                              IsEnabled="false"
                              LabelText="{res:Loc InstallationApp.ErrorInMillimiters}"
                              Mask="F1" />
-                    <ctrls:PpcSpinEdit Grid.Row="2"
-                             Grid.ColumnSpan="2"
-                             Width="250"
-                             Height="90"
-                             Margin="0,0,0,15"
-                             HorizontalAlignment="Center"
-                             EditValue="{Binding ChainOffset}"
-                             IsEnabled="False"
-                             LabelText="{res:Loc InstallationApp.ErrorInMillimiters}" />
 
                     <RadioButton Grid.Row="3"
                        Margin="0"
@@ -392,12 +382,24 @@
 
                     <controls:PpcButton Grid.Row="6"
                               Grid.Column="0"
-                              Grid.ColumnSpan="2"
                               Margin="0,10,0,0"
+                              HorizontalAlignment="Left"
                               VerticalAlignment="Bottom"
                               Command="{Binding RepeatCalibrationCommand}"
                               Content="{res:Loc InstallationApp.Repeat}"
                               Style="{StaticResource WizardConfirmButton}" />
+
+                    <ctrls:PpcSpinEdit Grid.Row="6"
+                             Grid.Column="1"
+                             Margin="0,10,0,0"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             EditValue="{Binding PerformedCycles, Mode=OneWay}"
+                             IsEnabled="false"
+                             LabelText="{res:Loc InstallationApp.TotalCyclesCompleted}"
+                             Mask="F1" />
+
+
                 </Grid>
 
                 <Grid Visibility="{Binding IsCalibrationCompleted, Converter={StaticResource ResourceKey=BTVC}}">

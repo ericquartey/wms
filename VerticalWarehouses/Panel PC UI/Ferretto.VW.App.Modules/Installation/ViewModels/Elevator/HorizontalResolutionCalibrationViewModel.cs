@@ -703,7 +703,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var measuredCorrection = (this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset) / 2;
+                var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
                 var distance = this.TotalDistance;
                 var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
                 var newDistance = correctionForEachMovement + distance;
@@ -895,6 +895,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsExecutingProcedure = false;
 
                     await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
+                    await this.machineElevatorWebService.SearchHorizontalZeroAsync();
+                    this.IsChainTuned = true;
 
                     this.ShowNotification(
                             VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
@@ -1199,32 +1201,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningChainAsync()
         {
-            var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.ChainCalibration"), DialogType.Question, DialogButtons.YesNo);
-            if (messageBoxResult is DialogResult.Yes)
+            try
             {
-                try
-                {
-                    this.IsWaitingForResponse = true;
-                    await this.machineElevatorWebService.SearchHorizontalZeroAsync();
-                    this.IsTuningChain = true;
-                    this.IsChainTuned = true;
-                    this.IsExecutingProcedure = true;
-                    this.IsExecutingChainCalibration = true;
-                }
-                catch (Exception ex)
-                {
-                    this.IsTuningChain = false;
-                    this.IsChainTuned = true;
-                    this.IsExecutingChainCalibration = false;
+                this.IsWaitingForResponse = true;
+                await this.machineElevatorWebService.SearchHorizontalZeroAsync();
+                this.IsTuningChain = true;
+                this.IsChainTuned = true;
+                this.IsExecutingProcedure = true;
+                this.IsExecutingChainCalibration = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningChain = false;
+                this.IsChainTuned = true;
+                this.IsExecutingChainCalibration = false;
 
-                    this.ShowNotification(ex);
-                    this.isErrorVisible = true;
-                }
-                finally
-                {
-                    this.IsExecutingProcedure = false;
-                    this.IsWaitingForResponse = false;
-                }
+                this.ShowNotification(ex);
+                this.isErrorVisible = true;
+            }
+            finally
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -1259,8 +1257,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         }
                         else
                         {
-                            // ogni 30 cicli ricalcolo il tempo per singolo ciclo...
-                            if ((this.PerformedCycles % 30) == 0 || this.PerformedCycles == 2)
+                            // ogni 10 cicli ricalcolo il tempo per singolo ciclo...
+                            if ((this.PerformedCycles % 10) == 0 || this.PerformedCycles == 2)
                             {
                                 var totalCycleTime = DateTime.Now - this.startTime - this.firstCycleTime;
 

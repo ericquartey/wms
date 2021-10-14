@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.ExtBayTest)
+            if (this.machineData.MessageData.MovementMode == MovementMode.HorizontalResolution)
             {
                 //this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
                 //this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
