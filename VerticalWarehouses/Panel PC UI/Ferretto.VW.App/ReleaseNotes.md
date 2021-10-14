@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
 - Aggiunta immediata articolo presente a magazzino su un cassetto
+- Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
 
 ## Bug Risolti
 - 
