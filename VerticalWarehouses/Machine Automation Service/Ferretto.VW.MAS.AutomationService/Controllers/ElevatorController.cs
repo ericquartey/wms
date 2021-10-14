@@ -473,6 +473,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2)
         {
             this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2);
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetWeightMeasurement(), false);
             return this.Ok();
         }
 

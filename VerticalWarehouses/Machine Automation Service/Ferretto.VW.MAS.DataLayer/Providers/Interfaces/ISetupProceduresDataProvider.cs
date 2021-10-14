@@ -46,6 +46,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 
+        SetupProcedure GetWeightMeasurement();
+
         void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 
         RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest, int? requiredCycles = null);

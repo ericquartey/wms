@@ -150,6 +150,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("weight-measurement-bypass")]
+        public IActionResult WeightMeasurementBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetWeightMeasurement(), true);
+            return this.Ok();
+        }
+
         #endregion
     }
 }

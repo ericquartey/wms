@@ -134,6 +134,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibration.IsCompleted;
 
+        public bool IsWeightCalibrationBypassed => this.WeightCalibration.IsBypassed;
+
+        public bool IsWeightCalibrationCompleted => this.WeightCalibration.IsCompleted;
+
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         private SetupStepStatus TestDepositAndPickUp => this.SetupStatusCapabilities?.DepositAndPickUpTest ?? new SetupStepStatus();
@@ -182,13 +186,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
                 () => this.CanExecuteCommand()));
 
+        private SetupStepStatus WeightCalibration => this.SetupStatusCapabilities?.WeightMeasurement ?? new SetupStepStatus();
+
         public ICommand WeightCalibrationCommand =>
                     this.weightCalibration
             ??
             (this.weightCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightCalibration),
                 () => this.CanExecuteCommand() &&
-                      (this.VerticalResolutionCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+                      (this.WeightCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
@@ -227,6 +233,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsHorizontalChainBypassed));
             this.RaisePropertyChanged(nameof(this.IsHorizontalResolutionCompleted));
             this.RaisePropertyChanged(nameof(this.IsHorizontalResolutionBypassed));
+            this.RaisePropertyChanged(nameof(this.IsWeightCalibrationCompleted));
+            this.RaisePropertyChanged(nameof(this.IsWeightCalibrationBypassed));
 
             this.beltBurnishingCommand?.RaiseCanExecuteChanged();
             this.verticalOffsetCalibration?.RaiseCanExecuteChanged();

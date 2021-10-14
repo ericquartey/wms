@@ -267,6 +267,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public SetupProcedure GetWeightMeasurement()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
+                    .Select(s => s.WeightMeasurement)
+                    .Single();
+            }
+        }
+
         public void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context)
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));

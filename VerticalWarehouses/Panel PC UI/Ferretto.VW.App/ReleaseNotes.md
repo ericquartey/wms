@@ -30,7 +30,7 @@
 - Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
 
 ## Bug Risolti
-- 
+- La procedura di controllo peso è obbligatoria
 
 ## Compatibile con adapter 0.4.26
 ***
