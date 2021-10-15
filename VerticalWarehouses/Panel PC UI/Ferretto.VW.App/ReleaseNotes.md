@@ -31,6 +31,7 @@
 
 ## Bug Risolti
 - La procedura di controllo peso è obbligatoria
+- Eliminato caso di mancata pesata nei movimenti guidati
 
 ## Compatibile con adapter 0.4.26
 ***
