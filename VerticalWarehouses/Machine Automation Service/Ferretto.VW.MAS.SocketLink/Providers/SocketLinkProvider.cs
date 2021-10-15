@@ -175,6 +175,14 @@ namespace Ferretto.VW.MAS.SocketLink
                     case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
                         commandsResponse.Add(SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived));
                         break;
+
+                    case SocketLinkCommand.HeaderType.PICKING_CMD:
+                        commandsResponse.Add(this.ProcessCommandPickingCommand(cmdReceived));
+                        break;
+
+                    case SocketLinkCommand.HeaderType.PICKING_STATUS:
+                        commandsResponse.Add(this.ProcessCommandPickingStatus(cmdReceived));
+                        break;
                 }
             }
 
@@ -723,6 +731,125 @@ namespace Ferretto.VW.MAS.SocketLink
                         cmdResponse.AddPayload(loadingunit.Id);
                         cmdResponse.AddPayload(loadingunit.Height.ToString(CultureInfo.InvariantCulture));
                     }
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandPickingCommand(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.PICKING_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
+                    cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
+
+                    var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
+
+                    var id = cmdReceived.GetPayloadByPosition(2);
+                    var message = cmdReceived.GetPayloadByPosition(3);
+                    var quantityString = cmdReceived.GetPayloadByPosition(4);
+                    var operationType = cmdReceived.GetPayloadByPosition(5);
+                    var articleCode = cmdReceived.GetPayloadByPosition(6);
+                    var articleDescription = cmdReceived.GetPayloadByPosition(7);
+                    var listNumber = cmdReceived.GetPayloadByPosition(8);
+                    var compartPosition = cmdReceived.GetPayloadByPosition(9);      //integer array mm from left corner ("x1,y1,x2,y2") TODO: not implemented
+
+                    if (decimal.TryParse(quantityString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var quantity))
+                    {
+                        if (string.IsNullOrEmpty(id))
+                        {
+                            // clear message
+                            // TODO: add method to clear picking message
+                            cmdResponse.AddPayload((int)PickingCommandResponse.messageCorrectlyReceived);
+                        }
+                        else
+                        {
+                            if (this.machineModeProvider.GetCurrent() == CommonUtils.Messages.MachineMode.Automatic)
+                            {
+                                // TODO: add method to shows  picking message
+                                cmdResponse.AddPayload((int)PickingCommandResponse.messageCorrectlyReceived);
+                            }
+                            else
+                            {
+                                cmdResponse.AddPayload((int)PickingCommandResponse.machineNotReady);
+                                cmdResponse.AddPayload("Machine not ready (no authomatic mode)");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid quantity number ({quantityString})");
+                    }
+                }
+                else
+                {
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                }
+            }
+            catch (Exception ex)
+            {
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+            }
+
+            return cmdResponse;
+        }
+
+        private SocketLinkCommand ProcessCommandPickingStatus(SocketLinkCommand cmdReceived)
+        {
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.PICKING_STATUS_RES);
+
+            try
+            {
+                if (this.WarehouseNumberIsValid(cmdReceived))
+                {
+                    var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
+                    var trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
+                    var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == MissionType.OUT).Count();
+
+                    cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());                                   // <WarehouseNumber>
+                    cmdResponse.AddPayload((int)bay.Number);                                                    // <BayNumber>
+
+                    if (this.machineModeProvider.GetCurrent() == CommonUtils.Messages.MachineMode.Automatic)    // <Automatic>
+                    {
+                        cmdResponse.AddPayload((int)SocketLinkCommand.StatusAutomatic.machineIsWorkingInAutomaticMode);
+                    }
+                    else
+                    {
+                        cmdResponse.AddPayload((int)SocketLinkCommand.StatusAutomatic.machineIsTurnedOffOrIsNotInAutomaticMode);
+                    }
+
+                    cmdResponse.AddPayload((int)SocketLinkCommand.StatusEnabled.machineIsLogicallyEnabled);     // <Enabled> machine is always enabled
+
+                    if (this.errorsProvider.GetErrors().FindAll(e => e.ResolutionDate == null).Count > 0)       // <MachineAlarmStatus>
+                    {
+                        cmdResponse.AddPayload((int)SocketLinkCommand.MachineAlarmStatus.atLeastOneAlarmActiveOnTheMachine);
+                    }
+                    else
+                    {
+                        cmdResponse.AddPayload((int)SocketLinkCommand.MachineAlarmStatus.noActiveAlarm);
+                    }
+
+                    cmdResponse.AddPayload(trayNumber);                                                         // <TrayIdentfierInBayN>
+                    cmdResponse.AddPayload(numberMissionOnBay);                                                 // <NumberOfTraysCurrentlyInTheQueueBayN>
+
+                    cmdResponse.AddPayload((int)PickingConfirm.NotConfirmed);                                   // <PickingConfirmedBayN> TODO
+                    cmdResponse.AddPayload("123456789");                                                        // <PickingIdN> TODO
+                    cmdResponse.AddPayload("99");                                                               // <PickingQuantityN> TODO
+                    cmdResponse.AddPayload(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));                       // <PickingTimestampN> TODO
                 }
                 else
                 {
