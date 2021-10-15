@@ -28,8 +28,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.data = data;
             this.verticalParams = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
-
-            logger.LogDebug("1:Method Start");
         }
 
         #endregion
@@ -41,7 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             var position = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(this.verticalParams.UpperBound, Orientation.Vertical);
             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPosition, position));
-            this.Logger.LogDebug($"Set target position: {position}");
+            this.Logger.LogDebug($"Set target position: {position}; inverter {this.InverterStatus.SystemIndex}");
         }
 
         /// <inheritdoc />
