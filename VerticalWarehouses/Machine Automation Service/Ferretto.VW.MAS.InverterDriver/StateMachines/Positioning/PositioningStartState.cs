@@ -56,8 +56,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 MessageStatus.OperationStart,
                 this.InverterStatus.SystemIndex);
 
-            this.Logger.LogDebug("Inverter Positioning Start State Start");
-
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }
 
