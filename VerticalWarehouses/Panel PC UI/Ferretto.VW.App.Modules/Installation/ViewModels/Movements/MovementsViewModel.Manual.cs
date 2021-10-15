@@ -287,7 +287,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsPolicyBypassed = false;
                     this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
                 }
-                else
+                else if (this.MachineModeService.MachinePower == MachinePowerState.Powered)
+
                 {
                     this.IsPolicyBypassed = true;
                     this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
