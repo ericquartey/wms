@@ -282,13 +282,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.isPolicyBypassedCommand = new DelegateCommand(() =>
             {
-                if (this.IsPolicyBypassed == true)
+                if (this.IsPolicyBypassed)
                 {
                     this.IsPolicyBypassed = false;
                     this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
                 }
                 else if (this.MachineModeService.MachinePower == MachinePowerState.Powered)
-
                 {
                     this.IsPolicyBypassed = true;
                     this.RaisePropertyChanged(nameof(this.IsPolicyBypassed));
