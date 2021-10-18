@@ -38,9 +38,9 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double Height { get; set; }
 
-        public int HorizontalCyclesToCalibrate { get; set; } = 10;
+        public int HorizontalCyclesToCalibrate { get; set; } = 50;
 
-        public int HorizontalPositionToCalibrate { get; set; } = 3000;
+        public int HorizontalPositionToCalibrate { get; set; } = 10000;
 
         public bool IsAxisChanged { get; set; }
 
