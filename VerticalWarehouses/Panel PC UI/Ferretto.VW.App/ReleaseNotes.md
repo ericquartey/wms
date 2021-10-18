@@ -32,6 +32,7 @@
 ## Bug Risolti
 - La procedura di controllo peso è obbligatoria
 - Eliminato caso di mancata pesata nei movimenti guidati
+- Corretto ripristino del collegamento con il WMS
 
 ## Compatibile con adapter 0.4.26
 ***
