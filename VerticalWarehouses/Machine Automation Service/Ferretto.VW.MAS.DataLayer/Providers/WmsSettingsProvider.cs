@@ -180,6 +180,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         this.dataContext.WmsSettings.Single().ServiceUrl = value;
                         this.dataContext.SaveChanges();
+                        this.eventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new CommonUtils.Messages.NotificationMessage
+                                {
+                                    Destination = MessageActor.AutomationService,
+                                    Source = MessageActor.DataLayer,
+                                    Type = CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged
+                                });
                     }
                 }
             }

@@ -2549,7 +2549,7 @@
     <value>Support</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Shutdown panel</value>
+    <value>Shutdown procedure</value>
   </data>
   <data name="ShutdownDescription" xml:space="preserve">
     <value>Perform elevator calibration and shutdown the panel</value>

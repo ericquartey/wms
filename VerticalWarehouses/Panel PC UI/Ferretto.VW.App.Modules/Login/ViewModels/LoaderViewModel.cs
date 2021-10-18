@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private const int FirewallCheckDelay = 5000;
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IBayManager bayManager;
 
         private readonly IHealthProbeService healthProbeService;
@@ -28,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private string applicationVersion;
 
+        private HealthStatus oldWmsStatus;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -37,7 +41,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public LoaderViewModel(
             IBayManager bayManager,
             IHealthProbeService healthProbeService,
-            IMachineModeService machineModeService
+            IMachineModeService machineModeService,
+            IAuthenticationService authenticationService
             )
             : base(PresentationMode.Login)
         {
@@ -54,7 +59,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager;
             this.healthProbeService = healthProbeService;
             this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
+            this.oldWmsStatus = HealthStatus.Unknown;
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
 
             var versionAttribute = Assembly.GetEntryAssembly()
                 .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
@@ -143,15 +150,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private void NavigateToLoginPage(MAS.AutomationService.Contracts.MachineIdentity machineIdentity)
+        private async Task NavigateToLoginPageAsync()
         {
             this.ClearNotifications();
+
+            this.logger.Debug($"NavigateToLoginPage.LogOutAsync();");
+
+            await this.authenticationService.LogOutAsync();
 
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Login),
                 Utils.Modules.Login.LOGIN,
-                machineIdentity,
-                trackCurrentView: false);
+                "NavigateToLoginPage");
         }
 
         private async Task RetrieveMachineInfoAsync()
@@ -163,27 +173,29 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             {
                 case HealthStatus.Initialized:
                 case HealthStatus.Initializing:
+                    this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
                     this.ShowNotification(Resources.Localized.Get("LoadLogin.ServiceInitialization"));
-
                     break;
 
                 case HealthStatus.Healthy:
                 case HealthStatus.Degraded:
-
                     this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionEstablished"), Services.Models.NotificationSeverity.Success);
 
                     try
                     {
-                        await this.bayManager.InitializeAsync();
-                        var machineIdentity = this.bayManager.Identity;
-
-                        if (this.ServiceHealthStatus != this.healthProbeService.HealthMasStatus
-                            && (!isWmsEnabled || this.healthProbeService.HealthWmsStatus == HealthStatus.Unhealthy)
+                        if (this.ServiceHealthStatus != this.healthProbeService.HealthMasStatus)
+                        {
+                            await this.NavigateToLoginPageAsync();
+                        }
+                        else if (this.oldWmsStatus != this.healthProbeService.HealthWmsStatus
+                            && isWmsEnabled
+                            //&& (this.healthProbeService.HealthWmsStatus == HealthStatus.Unhealthy || this.healthProbeService.HealthWmsStatus == HealthStatus.Unknown)
                             )
                         {
-                            this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
-                            this.NavigateToLoginPage(machineIdentity);
+                            await this.NavigateToLoginPageAsync();
                         }
+                        this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
+                        this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
                     }
                     catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                     {
@@ -197,7 +209,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     break;
 
                 case HealthStatus.Unhealthy:
-
+                    this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
                     this.ShowNotification(Resources.Localized.Get("LoadLogin.ConnectionNotPossible"), Services.Models.NotificationSeverity.Error);
                     break;
             }

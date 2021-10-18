@@ -45,9 +45,12 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.DataLayerReady:
-                    await this.OnDataLayerReadyAsync();
+                    await this.OnDataLayerReadyAsync(serviceProvider);
                     break;
 
+                case MessageType.WmsEnableChanged:
+                    await this.OnWmsEnableChanged(serviceProvider);
+                    break;
             }
         }
 
@@ -56,7 +59,7 @@ namespace Ferretto.VW.MAS.MissionManager
             await this.RetrieveNewWmsMissionsAsync();
         }
 
-        private async Task OnDataLayerReadyAsync()
+        private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
             if (this.dataLayerIsReady)
             {
@@ -64,6 +67,8 @@ namespace Ferretto.VW.MAS.MissionManager
             }
             this.Logger.LogTrace("OnDataLayerReady start");
             this.dataLayerIsReady = true;
+
+            await this.OnWmsEnableChanged(serviceProvider);
 
             this.RetrieveMachineId();
 

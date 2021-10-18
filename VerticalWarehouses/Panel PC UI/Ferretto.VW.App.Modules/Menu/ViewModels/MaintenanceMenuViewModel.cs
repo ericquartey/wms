@@ -98,14 +98,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            if (this.Data is MachineIdentity machineIdentity)
-            {
-                this.MachineIdentity = machineIdentity;
-            }
-            else
-            {
-                this.MachineIdentity = this.sessionService.MachineIdentity;
-            }
+            this.MachineIdentity = this.sessionService.MachineIdentity;
 
             if (!this.MachineService.HasShutter && this.MachineService.Loadunits.DrawerInBay())
             {

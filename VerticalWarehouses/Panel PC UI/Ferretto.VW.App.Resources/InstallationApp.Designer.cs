@@ -5821,7 +5821,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutdown panel.
+        ///   Looks up a localized string similar to Shutdown procedure.
         /// </summary>
         public static string Shutdown {
             get {

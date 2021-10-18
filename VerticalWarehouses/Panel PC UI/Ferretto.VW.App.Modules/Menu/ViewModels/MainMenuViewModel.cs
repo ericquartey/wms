@@ -136,14 +136,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             this.IsBackNavigationAllowed = false;
 
-            if (this.Data is MachineIdentity machineIdentity)
-            {
-                this.MachineIdentity = machineIdentity;
-            }
-            else
-            {
-                this.MachineIdentity = this.sessionService.MachineIdentity;
-            }
+            this.MachineIdentity = this.sessionService.MachineIdentity;
 
             await base.OnAppearedAsync();
         }

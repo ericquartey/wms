@@ -310,15 +310,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.machineErrorsService.AutoNavigateOnError = false;
 
-            if (this.Data is MachineIdentity machineIdentity)
-            {
-                this.MachineIdentity = machineIdentity;
-                this.sessionService.MachineIdentity = machineIdentity;
-            }
-            else
-            {
-                this.MachineIdentity = this.sessionService.MachineIdentity;
-            }
+            this.MachineIdentity = this.sessionService.MachineIdentity;
             if (this.MachineIdentity is null)
             {
                 try

@@ -128,14 +128,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            if (this.Data is MachineIdentity machineIdentity)
-            {
-                this.MachineIdentity = machineIdentity;
-            }
-            else
-            {
-                this.MachineIdentity = this.sessionService.MachineIdentity;
-            }
+            this.MachineIdentity = this.sessionService.MachineIdentity;
 
             this.IsWmsEnabled = this.wmsDataProvider.IsEnabled;
 

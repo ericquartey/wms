@@ -423,7 +423,11 @@ namespace Ferretto.VW.App.Services
             try
             {
                 var idService = await this.machineIdentityWebService.GetAsync();
-                this.IsTuningCompleted = idService.InstallationDate.HasValue;
+                if (idService != null)
+                {
+                    this.sessionService.MachineIdentity = idService;
+                    this.IsTuningCompleted = idService.InstallationDate.HasValue;
+                }
 
                 var setupStatus = await this.machineSetupStatusWebService.GetAsync();
                 this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&

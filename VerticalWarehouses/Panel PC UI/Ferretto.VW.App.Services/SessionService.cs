@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.logger.Debug($"OnHealthStatusChanged.LogOutAsync();");
 
-                await this.authenticationService.LogOutAsync();
+                //await this.authenticationService.LogOutAsync();
 
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),
