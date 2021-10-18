@@ -33,6 +33,7 @@
 - La procedura di controllo peso è obbligatoria
 - Eliminato caso di mancata pesata nei movimenti guidati
 - Corretto ripristino del collegamento con il WMS
+- Inviamo il comando HOME al laser quando lo stato diventa Automatico
 
 ## Compatibile con adapter 0.4.26
 ***
