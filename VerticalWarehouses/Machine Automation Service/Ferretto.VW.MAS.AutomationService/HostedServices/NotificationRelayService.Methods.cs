@@ -144,14 +144,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
             //baysDataProvider.AddElevatorPseudoBay();
 
-            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
-            if (wmsSettingsProvider.IsEnabled)
-            {
-                var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
-                wmsSettingsProvider.IsConnected = false;
-                await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
-            }
-
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
@@ -305,31 +297,6 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task OnSystemTimeChangedAsync()
         {
             await this.installationHub.Clients.All.SystemTimeChanged();
-        }
-
-        private async Task OnWmsEnableChanged(IServiceProvider serviceProvider)
-        {
-            var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
-            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
-            if (wmsSettingsProvider.IsEnabled)
-            {
-                wmsSettingsProvider.IsConnected = false;
-                await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
-            }
-            else
-            {
-                try
-                {
-                    if (dataHubClient.IsConnected)
-                    {
-                        await dataHubClient.DisconnectAsync();
-                    }
-                }
-                catch
-                {
-                    // do nothing
-                }
-            }
         }
 
         private async Task ResolutionCalibrationMethod(NotificationMessage receivedMessage)

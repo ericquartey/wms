@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils;
@@ -48,17 +50,140 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             await base.StartAsync(cancellationToken);
 
-            if (this.dataLayerService.IsReady)
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                await this.OnDataLayerReadyAsync();
+                var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
+
+                dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
+                dataHubClient.ConnectionStatusChanged += async (s, e) => await this.OnWmsConnectionStatusChangedAsync(s, e);
+
+                //if (this.dataLayerService.IsReady)
+                //{
+                //    await this.OnDataLayerReadyAsync(scope.ServiceProvider);
+                //}
+                //else
+                //{
+                //    this.EventAggregator.GetEvent<NotificationEvent>().Subscribe(async (x) =>
+                //        await this.OnDataLayerReadyAsync(scope.ServiceProvider),
+                //        ThreadOption.PublisherThread,
+                //        false,
+                //        m => m.Type is CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
+                //}
+            }
+        }
+
+        private void NotifyAssignedMissionChanged(
+            BayNumber bayNumber,
+            int? missionId)
+        {
+            var data = new AssignedMissionChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission assigned to bay {bayNumber} has changed.",
+                MessageActor.WebApi,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionChanged,
+                bayNumber);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
+        }
+
+        private async Task OnWmsConnectionStatusChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            this.Logger.LogDebug("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
+            if (e.IsConnected)
+            {
+                await this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
+                    nameof(MissionOperation),
+                    null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
+                    null,
+                    null));
             }
             else
             {
-                this.EventAggregator.GetEvent<NotificationEvent>().Subscribe(async (x) =>
-                    await this.OnDataLayerReadyAsync(),
-                    ThreadOption.PublisherThread,
-                    false,
-                    m => m.Type is CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
+                var scope = base.ServiceScopeFactory.CreateScope();
+                await this.OnWmsEnableChanged(scope.ServiceProvider);
+            }
+        }
+
+        private async Task OnWmsEnableChanged(IServiceProvider serviceProvider)
+        {
+            this.Logger.LogDebug("Wms connection enable changed");
+            var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                wmsSettingsProvider.IsConnected = false;
+                await dataHubClient.ConnectAsync(new Uri(wmsSettingsProvider.ServiceUrl, "hubs/data"));
+            }
+            else
+            {
+                try
+                {
+                    if (dataHubClient.IsConnected)
+                    {
+                        await dataHubClient.DisconnectAsync();
+                    }
+                }
+                catch
+                {
+                    // do nothing
+                }
+            }
+        }
+
+        private async Task OnWmsEntityChangedAsync(object sender, EntityChangedEventArgs e)
+        {
+            if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
+            {
+                return;
+            }
+
+            switch (e.EntityType)
+            {
+                case nameof(MissionOperation):
+                    {
+                        var msg = new NotificationMessage(
+                            null,
+                            "New WMS mission available",
+                            MessageActor.Any,
+                            MessageActor.AutomationService,
+                            MessageType.NewWmsMissionAvailable,
+                            BayNumber.None,
+                            BayNumber.None,
+                            MessageStatus.OperationStart);
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(msg);
+
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            try
+                            {
+                                var missionWebService = scope.ServiceProvider.GetRequiredService<IMissionOperationsWmsWebService>();
+                                var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                                if (int.TryParse(e.Id, out var operationId))
+                                {
+                                    var operation = await missionWebService.GetByIdAsync(operationId);
+                                    var mission = missionDataProvider.GetByWmsId(operation.MissionId);
+                                    this.NotifyAssignedMissionChanged(mission.TargetBay, null);
+                                }
+                            }
+                            catch
+                            {
+                                // do nothing
+                            }
+                        }
+                        break;
+                    }
             }
         }
 
@@ -115,7 +240,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var newWmsMissions = wmsMissions
                         .Where(m => m.BayId.HasValue)
                         .Where(m => localMissions.All(lm => lm.WmsId != m.Id))
-                        .Where(m => m.Status == MissionStatus.New);
+                        .Where(m => m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.New);
 
                     if (newWmsMissions.Any())
                     {
@@ -162,7 +287,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var localMissionsToAbort = localMissions
                         .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New)
                         .Where(lm => wmsMissions.Any(m => m.Id == lm.WmsId
-                            && (m.Status == MissionStatus.Completed
+                            && (m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.Completed
                                 || (m.Operations?.All(op => (int)op.Status == (int)CommonUtils.Messages.Enumerations.MissionOperationStatus.OnHold) ?? false))
                                 )
                             ).ToArray();

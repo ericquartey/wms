@@ -129,6 +129,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("horizontal-resolution-calibration-bypass")]
+        public IActionResult HorizontalResolutionCalibrationBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalResolutionCalibration(), true);
+            return this.Ok();
+        }
+
         [HttpPost("load-first-drawer-test-bypass")]
         public IActionResult LoadFirstDrawerTestBypass()
         {
@@ -140,6 +147,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult ShutterHeightCheckBypass()
         {
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetShutterHeightCheck(), true);
+            return this.Ok();
+        }
+
+        [HttpPost("weight-measurement-bypass")]
+        public IActionResult WeightMeasurementBypass()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetWeightMeasurement(), true);
             return this.Ok();
         }
 

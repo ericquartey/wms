@@ -138,7 +138,15 @@ namespace Ferretto.VW.MAS.SocketLink
 
             UTC_CMD,
 
-            UTC_RES
+            UTC_RES,
+
+            PICKING_CMD,
+
+            PICKING_RES,
+
+            PICKING_STATUS,
+
+            PICKING_STATUS_RES
         }
 
         public enum InfoErrorCode
@@ -177,6 +185,26 @@ namespace Ferretto.VW.MAS.SocketLink
             noActiveAlarm = 0,
 
             atLeastOneAlarmActiveOnTheMachine = 1
+        }
+
+        public enum PickingCommandResponse
+        {
+            messageCorrectlyReceived = 0,
+
+            warehouseNotFound = 1,
+
+            bayNotFound = 2,
+
+            machineNotReady = 3,
+
+            wrongMessage = 4,
+        }
+
+        public enum PickingConfirm
+        {
+            NotConfirmed = 0,
+
+            Confirmed = 1
         }
 
         public enum RequestResetResponseResult

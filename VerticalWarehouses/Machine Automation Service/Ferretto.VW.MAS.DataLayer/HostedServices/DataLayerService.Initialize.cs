@@ -100,6 +100,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     await this.LoadConfigurationAsync(configuration.GetDataLayerConfigurationFile(), dataContext);
                     this.GenerateInstructionDefinitions(dataContext);
                     this.GenerateAccessories(dataContext);
+                    this.GenerateSetupProcedures(dataContext);
 
                     // performance optimization
                     var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();

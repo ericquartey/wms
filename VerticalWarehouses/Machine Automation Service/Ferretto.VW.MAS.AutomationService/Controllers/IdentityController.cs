@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var machine = this.machineProvider.Get();
 
             int? areaId = null;
-            if (this.wmsSettingsProvider.IsEnabled)
+            if (this.wmsSettingsProvider.IsEnabled && this.wmsSettingsProvider.IsConnected)
             {
                 try
                 {

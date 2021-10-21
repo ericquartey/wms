@@ -68,16 +68,6 @@ namespace Ferretto.VW.MAS.AutomationService
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
-
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var dataHubClient = scope.ServiceProvider.GetRequiredService<IDataHubClient>();
-
-                dataHubClient.EntityChanged += async (s, e) => await this.OnWmsEntityChangedAsync(s, e);
-                dataHubClient.ConnectionStatusChanged += async (s, e) => await this.OnWmsConnectionStatusChangedAsync(s, e);
-
-                await this.OnWmsEnableChanged(scope.ServiceProvider);
-            }
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)
@@ -101,67 +91,6 @@ namespace Ferretto.VW.MAS.AutomationService
                 ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-        }
-
-        private async Task OnWmsConnectionStatusChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
-        {
-            this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
-            if (e.IsConnected)
-            {
-                await this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
-                    nameof(MissionOperation),
-                    null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
-                    null,
-                    null));
-            }
-        }
-
-        private async Task OnWmsEntityChangedAsync(object sender, EntityChangedEventArgs e)
-        {
-            if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
-            {
-                return;
-            }
-
-            switch (e.EntityType)
-            {
-                case nameof(MissionOperation):
-                    {
-                        var msg = new NotificationMessage(
-                            null,
-                            "New WMS mission available",
-                            MessageActor.Any,
-                            MessageActor.AutomationService,
-                            MessageType.NewWmsMissionAvailable,
-                            BayNumber.None,
-                            BayNumber.None,
-                            MessageStatus.OperationStart);
-
-                        this.EventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(msg);
-
-                        using (var scope = this.ServiceScopeFactory.CreateScope())
-                        {
-                            try
-                            {
-                                var missionWebService = scope.ServiceProvider.GetRequiredService<IMissionOperationsWmsWebService>();
-                                var missionDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-                                if (int.TryParse(e.Id, out var operationId))
-                                {
-                                    var operation = await missionWebService.GetByIdAsync(operationId);
-                                    var mission = missionDataProvider.GetByWmsId(operation.MissionId);
-                                    await this.operatorHub.Clients.All.AssignedMissionOperationChanged(mission.TargetBay);
-                                }
-                            }
-                            catch
-                            {
-                                // do nothing
-                            }
-                        }
-                        break;
-                    }
-            }
         }
 
         #endregion

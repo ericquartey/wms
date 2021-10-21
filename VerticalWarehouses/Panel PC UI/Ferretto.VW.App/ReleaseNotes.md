@@ -28,9 +28,13 @@
 ## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
 - Aggiunta immediata articolo presente a magazzino su un cassetto
 - Gestione liste di prelievo in attesa non evadibili
+- Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
 
 ## Bug Risolti
-- 
+- La procedura di controllo peso è obbligatoria
+- Eliminato caso di mancata pesata nei movimenti guidati
+- Corretto ripristino del collegamento con il WMS
+- Inviamo il comando HOME al laser quando lo stato diventa Automatico
 
 ## Compatibile con adapter 0.4.26
 ***

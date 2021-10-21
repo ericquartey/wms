@@ -657,7 +657,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPut = true;
-                if (!this.isGroupbyLot)
+                if (!this.isGroupbyLot && this.areaId.HasValue)
                 {
                     var lotProducts = await this.areasWebService.GetProductsAsync(
                         this.areaId.Value,

@@ -906,6 +906,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 89,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1638,6 +1643,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("HorizontalChainCalibrationId");
 
+                    b.Property<int?>("HorizontalResolutionCalibrationId");
+
                     b.Property<int?>("LoadFirstDrawerTestId");
 
                     b.Property<int?>("ShutterHeightCheckId");
@@ -1709,6 +1716,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("DepositAndPickUpTestId");
 
                     b.HasIndex("HorizontalChainCalibrationId");
+
+                    b.HasIndex("HorizontalResolutionCalibrationId");
 
                     b.HasIndex("LoadFirstDrawerTestId");
 
@@ -2261,9 +2270,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InverterParameter", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Inverter")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany("Parameters")
-                        .HasForeignKey("InverterId");
+                        .HasForeignKey("InverterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
@@ -2419,6 +2429,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "HorizontalChainCalibration")
                         .WithMany()
                         .HasForeignKey("HorizontalChainCalibrationId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "HorizontalResolutionCalibration")
+                        .WithMany()
+                        .HasForeignKey("HorizontalResolutionCalibrationId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "LoadFirstDrawerTest")
                         .WithMany()

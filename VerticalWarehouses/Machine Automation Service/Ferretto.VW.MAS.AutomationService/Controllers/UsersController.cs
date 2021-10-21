@@ -72,7 +72,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.Ok(claims);
             }
 
-            return this.BadRequest("The Wms is not enabled.");
+            return this.BadRequest(
+                new Microsoft.AspNetCore.Mvc.ProblemDetails
+                {
+                    Title = "Wms error",
+                    Detail = "The Wms is not enabled"
+                });
         }
 
         [HttpPost("authenticate-resource-owner")]
@@ -186,7 +191,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.Ok(users);
             }
 
-            return this.BadRequest("The Wms is not enabled.");
+            return this.BadRequest(
+                new Microsoft.AspNetCore.Mvc.ProblemDetails
+                {
+                    Title = "Wms error",
+                    Detail = wmsSettingsProvider.IsEnabled ? "The Wms is disconnected" : "The Wms is not enabled"
+                });
         }
 
         [HttpGet("get-culture")]

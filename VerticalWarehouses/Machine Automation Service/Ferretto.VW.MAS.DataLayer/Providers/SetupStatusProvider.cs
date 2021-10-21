@@ -302,6 +302,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     CanBePerformed = setup.VerticalOriginCalibration.IsCompleted, // todo define conditions
                     IsBypassed = setup.HorizontalChainCalibration.IsBypassed,
                 },
+                HorizontalResolutionCalibration = new SetupStepStatus
+                {
+                    IsCompleted = setup.HorizontalResolutionCalibration.IsCompleted,
+                    CanBePerformed = setup.VerticalOriginCalibration.IsCompleted, // todo define conditions
+                    IsBypassed = setup.HorizontalResolutionCalibration.IsBypassed,
+                },
                 DepositAndPickUpTest = new SetupStepStatus
                 {
                     IsCompleted = setup.DepositAndPickUpTest.IsCompleted,

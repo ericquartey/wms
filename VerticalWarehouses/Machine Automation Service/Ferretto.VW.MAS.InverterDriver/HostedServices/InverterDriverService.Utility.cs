@@ -862,14 +862,15 @@ namespace Ferretto.VW.MAS.InverterDriver
                             $"target: [{targetPosition} impulses]; " +
                             $"speed: {positioningFieldData.TargetSpeed[0]}; " +
                             $"acceleration: {positioningFieldData.TargetAcceleration[0]}; " +
-                            $"movement type: {positioningFieldData.MovementType}");
+                            $"movement type: {positioningFieldData.MovementType};" +
+                            $"weight measure: {positioningFieldData.IsWeightMeasure} ");
 
                         this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(Timeout.Infinite, Timeout.Infinite);
 
                         switch (positioningData.MovementType)
                         {
                             case MovementType.Absolute:
-                                if (currentPosition == positioningFieldData.TargetPosition)
+                                if (currentPosition == positioningFieldData.TargetPosition && !positioningFieldData.IsWeightMeasure)
                                 {
                                     var msgNotification = new FieldNotificationMessage(
                                         null,

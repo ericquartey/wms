@@ -729,11 +729,11 @@ namespace Ferretto.VW.Simulator.Services
                 || messageText.StartsWith("LASER ON", StringComparison.Ordinal)
                 || messageText.StartsWith("LASER OFF", StringComparison.Ordinal)
                 || messageText.StartsWith("MOVE", StringComparison.Ordinal)
+                || messageText.StartsWith("HOME", StringComparison.Ordinal)
                 )
             {
                 System.Diagnostics.Debug.WriteLine($"Simulation *** {messageText}");
                 client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
-
             }
         }
 

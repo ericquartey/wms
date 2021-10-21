@@ -226,7 +226,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         // resolve low priority errors
                         foreach (var activeError in existingUnresolvedError.Where(e => e.Severity == (int)MachineErrorSeverity.Low))
                         {
-                            this.logger.LogTrace($"Machine error {activeError.Code} ({(int)activeError.Code}) for {bayNumber} was resolved by higher priority error {code}.");
+                            this.logger.LogTrace($"Machine error {activeError.Code} ({activeError.Code}) for {bayNumber} was resolved by higher priority error {code}.");
                             this.Resolve(activeError.Id, force: true);
                         }
                     }

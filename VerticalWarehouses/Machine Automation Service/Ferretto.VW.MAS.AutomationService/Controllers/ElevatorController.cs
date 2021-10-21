@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -143,6 +144,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Horizontal));
         }
 
+        [HttpGet("horizontal/offset")]
+        public ActionResult<double> GetHorizontalOffset()
+        {
+            return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Horizontal).ChainOffset);
+        }
+
+        [HttpGet("horizontal/resolution-value")]
+        public ActionResult<double> GetHorizontalResolution()
+        {
+            return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Horizontal).Resolution);
+        }
+
+        [HttpGet("horizontal/resolution-procedure")]
+        public ActionResult<RepeatedTestProcedure> GetHorizontalResolutionProcedure()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalResolutionCalibration();
+
+            return this.Ok(procedureParameters);
+        }
+
+        [HttpGet("horizontal/total-distance")]
+        public ActionResult<double> GetHorizontalTotalDistance()
+        {
+            var profiles = this.elevatorDataProvider.GetAxis(Orientation.Horizontal).Profiles;
+            var totalDistance = profiles.First(p => p.Name == MovementProfileType.ShortPickup).TotalDistance +
+                profiles.First(p => p.Name == MovementProfileType.LongDeposit).TotalDistance;
+            return this.Ok(totalDistance);
+        }
+
         [HttpGet("loading-unit-on-board")]
         public ActionResult<LoadingUnit> GetLoadingUnitOnBoard()
         {
@@ -245,6 +275,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.BayNumber,
                 MessageActor.AutomationService,
                 highSpeed: false);
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/resolution")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveHorizontalResolution(HorizontalMovementDirection direction)
+        {
+            this.elevatorProvider.MoveHorizontalResolution(direction, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -372,6 +411,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("horizontal/reset-resolution")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult ResetHorizontalResolution()
+        {
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalResolutionCalibration();
+            this.setupProceduresDataProvider.ResetPerformedCycles(procedureParameters);
+
+            return this.Accepted();
+        }
+
         [HttpPost("search-horizontal-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -402,6 +452,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("horizontal/resolution/set-completed")]
+        public IActionResult SetHorizontalResolutionCalibrationCompleted()
+        {
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetHorizontalResolutionCalibration(), false);
+            return this.Ok();
+        }
+
         [HttpPost("set-loadunit-on-elevator")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -416,6 +473,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2)
         {
             this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2);
+            this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetWeightMeasurement(), false);
             return this.Ok();
         }
 
@@ -425,6 +483,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult Stop()
         {
             this.elevatorProvider.Stop(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("stop-calibration")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StopCalibration()
+        {
+            this.elevatorProvider.StopTest(this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -455,6 +522,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider.UnloadToCell(cellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
+        }
+
+        [HttpPost("horizontal/resolution-update")]
+        public IActionResult UpdateHorizontalResolution(double newResolution)
+        {
+            this.elevatorDataProvider.UpdateHorizontalResolution(newResolution);
+
+            return this.Ok();
         }
 
         [HttpPost("vertical/lowerbound")]

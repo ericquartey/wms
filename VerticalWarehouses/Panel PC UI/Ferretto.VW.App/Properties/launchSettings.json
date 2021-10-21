@@ -4,7 +4,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "1",
-        "LOGOUT_WHEN_UNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "True"
       }
     },
     "PanelPC (Bay 2)": {

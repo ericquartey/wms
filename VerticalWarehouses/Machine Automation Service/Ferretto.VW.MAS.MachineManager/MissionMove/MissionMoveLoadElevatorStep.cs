@@ -258,6 +258,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                     }
                     else if (notification.Type == MessageType.ShutterPositioning
+                            || notification.Type == MessageType.CheckIntrusion
                             || notification.TargetBay == BayNumber.ElevatorBay
                             )
                     {

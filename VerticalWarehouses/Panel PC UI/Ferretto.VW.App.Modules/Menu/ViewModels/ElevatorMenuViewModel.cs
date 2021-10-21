@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand horizontalChainCalibration;
 
+        private DelegateCommand horizontalResolutionCalibration;
+
         private DelegateCommand testDepositAndPickUpCommand;
 
         private DelegateCommand verticalOffsetCalibration;
@@ -67,11 +69,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             VerticalOriginCalibration,
 
-            TestDepositAndPickUp,
+            HorizontalResolutionCalibration,
 
             HorizontalChainCalibration,
 
             WeightCalibration,
+
+            TestDepositAndPickUp,
         }
 
         #endregion
@@ -100,6 +104,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       (this.HorizontalChain.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
+        private SetupStepStatus HorizontalResolution => this.SetupStatusCapabilities?.HorizontalResolutionCalibration ?? new SetupStepStatus();
+
+        public ICommand HorizontalResolutionCalibration =>
+                    this.horizontalResolutionCalibration
+            ??
+            (this.horizontalResolutionCalibration = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.HorizontalResolutionCalibration),
+                () => this.CanExecuteCommand() &&
+                      (this.HorizontalResolution.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+
         public bool IsBeltBurnishing => this.BeltBurnishing.IsCompleted && !this.BeltBurnishing.IsBypassed;
 
         public bool IsBeltBurnishingBypassed => this.BeltBurnishing.IsBypassed;
@@ -110,11 +124,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsHorizontalChainBypassed => this.HorizontalChain.IsBypassed;
 
+        public bool IsHorizontalResolutionBypassed => this.HorizontalResolution.IsBypassed;
+
+        public bool IsHorizontalResolutionCompleted => this.HorizontalResolution.IsCompleted;
+
         public bool IsTestDepositAndPickUpCompleted => this.TestDepositAndPickUp.IsCompleted;
 
         public bool IsVerticalOffsetProcedure => this.VerticalOffsetCalibration.IsCompleted;
 
         public bool IsVerticalResolutionCalibration => this.VerticalResolutionCalibration.IsCompleted;
+
+        public bool IsWeightCalibrationBypassed => this.WeightCalibration.IsBypassed;
+
+        public bool IsWeightCalibrationCompleted => this.WeightCalibration.IsCompleted;
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
@@ -164,13 +186,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.WeightAnalysis),
                 () => this.CanExecuteCommand()));
 
+        private SetupStepStatus WeightCalibration => this.SetupStatusCapabilities?.WeightMeasurement ?? new SetupStepStatus();
+
         public ICommand WeightCalibrationCommand =>
                     this.weightCalibration
             ??
             (this.weightCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.WeightCalibration),
                 () => this.CanExecuteCommand() &&
-                      (this.VerticalResolutionCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
+                      (this.WeightCalibration.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public ICommand WeightMeasurementCommand =>
             this.weightMeasurement
@@ -207,6 +231,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsHorizChainCompleted));
             this.RaisePropertyChanged(nameof(this.IsHorizontalChainBypassed));
+            this.RaisePropertyChanged(nameof(this.IsHorizontalResolutionCompleted));
+            this.RaisePropertyChanged(nameof(this.IsHorizontalResolutionBypassed));
+            this.RaisePropertyChanged(nameof(this.IsWeightCalibrationCompleted));
+            this.RaisePropertyChanged(nameof(this.IsWeightCalibrationBypassed));
 
             this.beltBurnishingCommand?.RaiseCanExecuteChanged();
             this.verticalOffsetCalibration?.RaiseCanExecuteChanged();
@@ -216,6 +244,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.weightMeasurement?.RaiseCanExecuteChanged();
             this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
             this.horizontalChainCalibration?.RaiseCanExecuteChanged();
+            this.horizontalResolutionCalibration?.RaiseCanExecuteChanged();
             this.weightCalibration?.RaiseCanExecuteChanged();
         }
 
@@ -283,6 +312,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
                        Utils.Modules.Installation.HORIZONTALCHAINCALIBRATION,
+                       data: null,
+                       trackCurrentView: true);
+                    break;
+
+                case Menu.HorizontalResolutionCalibration:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.HORIZONTALRESOLUTIONCALIBRATION,
                        data: null,
                        trackCurrentView: true);
                     break;

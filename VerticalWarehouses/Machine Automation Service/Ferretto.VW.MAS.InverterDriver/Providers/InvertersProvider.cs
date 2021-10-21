@@ -130,12 +130,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                         ? this.elevatorDataProvider.GetAxis(Orientation.Horizontal)
                         : this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-                    if (position < axis.LowerBound)
+                    if (position < axis.LowerBound && !positioningData.IsHorizontalCalibrate)
                     {
                         this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
                         throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the axis lower bound ({axis.LowerBound:0.00}).");
                     }
-                    if (position > axis.UpperBound)
+                    if (position > axis.UpperBound && !positioningData.IsHorizontalCalibrate)
                     {
                         this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
                         throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the axis upper bound ({axis.UpperBound}:0.00).");
