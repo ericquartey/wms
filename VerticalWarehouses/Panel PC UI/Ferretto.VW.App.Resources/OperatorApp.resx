@@ -2304,6 +2304,22 @@
     <value>Adding item on loading unit </value>
     <comment>Page header</comment>
   </data>
+  <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
+    <value>Evadability mode selection for the list</value>
+    <comment>Page header</comment>
+  </data>
+  <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
+    <value>Partially execute and wait</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
+    <value>Partially execute and complete</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="PartiallyExecuteLabel" xml:space="preserve">
+    <value>Partially execute</value>
+    <comment>Label Message</comment>
+  </data>
   <data name="SocketLink" xml:space="preserve">
     <value>Socket Link</value>
     <comment>Action</comment>

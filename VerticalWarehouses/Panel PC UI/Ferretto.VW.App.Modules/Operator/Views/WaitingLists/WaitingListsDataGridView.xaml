@@ -39,16 +39,78 @@
         </DataGrid.Resources>
 
         <DataGrid.Columns>
+
+            <DataGridTemplateColumn x:Name="Column0"
+                                    Width="10"
+                                    Header="">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxga:StateIndicatorControl x:Name="stateIndicatorControlX"
+                                                    Margin="0,0,0,2"
+                                                    RenderOptions.EdgeMode="Aliased"
+                                                    Template="{DynamicResource StateIndicatorControlControlTemplate1}">
+                            <dxga:StateIndicatorControl.AdditionalStates>
+                                <dxga:State>
+                                    <dxga:State.Presentation>
+                                        <dxga:CustomStatePresentation>
+                                            <dxga:CustomStatePresentation.StateTemplate>
+                                                <ControlTemplate>
+                                                    <Viewbox Stretch="Uniform">
+                                                        <Grid Width="6"
+                                                              Height="15"
+                                                              Margin="0">
+                                                            <Rectangle Width="6"
+                                                                       Height="15"
+                                                                       HorizontalAlignment="Center"
+                                                                       VerticalAlignment="Center"
+                                                                       Fill="MediumPurple" />
+                                                        </Grid>
+                                                    </Viewbox>
+                                                </ControlTemplate>
+                                            </dxga:CustomStatePresentation.StateTemplate>
+                                        </dxga:CustomStatePresentation>
+                                    </dxga:State.Presentation>
+                                </dxga:State>
+                            </dxga:StateIndicatorControl.AdditionalStates>
+                            <dxga:StateIndicatorControl.Model>
+                                <dxga:LampStateIndicatorModel />
+                            </dxga:StateIndicatorControl.Model>
+                            <dxga:StateIndicatorControl.Style>
+                                <Style TargetType="{x:Type dxga:StateIndicatorControl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DispatchableTag}">
+                                            <DataTrigger.Value>
+                                                <model:ItemListDispatchableTag>No</model:ItemListDispatchableTag>
+                                            </DataTrigger.Value>
+                                            <Setter Property="StateIndex" Value="4" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DispatchableTag}">
+                                            <DataTrigger.Value>
+                                                <model:ItemListDispatchableTag>Yes</model:ItemListDispatchableTag>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxga:StateIndicatorControl.Style>
+                        </dxga:StateIndicatorControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+
+
             <DataGridTextColumn x:Name="Column1"
                                 Width="1*"
                                 Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
                                 Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
+
                 <DataGridTextColumn.CellStyle>
                     <Style TargetType="{x:Type DataGridCell}">
-                        <Setter Property="BorderThickness" Value="1,0,0,0" />
+                        <Setter Property="BorderThickness" Value="0,0,0,0" />
                         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                     </Style>
                 </DataGridTextColumn.CellStyle>
+
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -56,10 +118,12 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
+
             <DataGridTextColumn x:Name="Column2"
                                 Width="1*"
                                 Binding="{Binding Code}"
                                 Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
+
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -67,10 +131,12 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
+
             <DataGridTextColumn x:Name="Column3"
                                 Width="2*"
                                 Binding="{Binding Description}"
                                 Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
+
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -78,7 +144,6 @@
                         <Setter Property="TextWrapping" Value="Wrap" />
                     </Style>
                 </DataGridTextColumn.ElementStyle>
-
             </DataGridTextColumn>
 
             <DataGridTextColumn x:Name="Column4"
@@ -86,6 +151,7 @@
                                 Binding="{Binding ShipmentUnitCode}"
                                 Header="{Resources:Loc OperatorApp.Day}"
                                 Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">
+
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -191,7 +257,9 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
+
         </DataGrid.Columns>
+
     </DataGrid>
 
 </UserControl>

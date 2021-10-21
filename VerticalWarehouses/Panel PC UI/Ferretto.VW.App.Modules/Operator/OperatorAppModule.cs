@@ -85,6 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             containerRegistry.RegisterForNavigation<WaitingListsView>();
             containerRegistry.RegisterForNavigation<WaitingListDetailView>();
+            containerRegistry.RegisterForNavigation<WaitingListEvadabilityOptionsView>();
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
             containerRegistry.RegisterForNavigation<ImmediateLoadingUnitCallView>();

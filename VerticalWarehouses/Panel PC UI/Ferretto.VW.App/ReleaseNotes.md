@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
 - Aggiunta immediata articolo presente a magazzino su un cassetto
+- Gestione liste di prelievo in attesa non evadibili
 - Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
 
 ## Bug Risolti

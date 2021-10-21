@@ -172,6 +172,8 @@
 
             public const string DETAIL = "WaitingListDetailViewModel";
 
+            public const string EVADABILITYOPTIONS = "WaitingListEvadabilityOptionsViewModel";
+
             public const string MAIN = "WaitingListsViewModel";
 
             #endregion

@@ -1551,14 +1551,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.areaId.HasValue)
                 {
-                    var totalProducts = await this.areasWebService.GetProductsAsync(
-                        this.areaId.Value,
-                        0,
-                        0,
-                        this.searchItem,
-                        false,
-                        true,
-                        cancellationToken);
+                    // retrieve all products from warehouse
+                    var totalProducts = await this.areasWebService.GetAllProductsAsync(this.searchItem, cancellationToken);
 
                     if (totalProducts != null)
                     {
@@ -1674,20 +1668,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ClearNotifications();
 
-                var items = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    0,
-                    1,
-                    itemCode,
-                    false,
-                    false);
+                // retrieve all products from warehouse
+                var items = await this.areasWebService.GetAllProductsAsync(itemCode);
 
                 if (items.Any())
                 {
                     this.SearchItem = itemCode;
                     this.products.AddRange(items.Select(i => new ItemInfo(i, this.machineService.Bay.Id)));
                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
-                    //}
                 }
                 else
                 {

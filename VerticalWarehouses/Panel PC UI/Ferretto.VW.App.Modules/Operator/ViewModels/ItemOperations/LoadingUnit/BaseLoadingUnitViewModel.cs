@@ -333,10 +333,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         var newSelectedItemCompartment = this.itemsCompartments?.FirstOrDefault(c => c.Id == this.selectedCompartment.Id);
                         this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
                         this.SelectedItemCompartment = newSelectedItemCompartment;
-
-                        // cache the selected compartment for the adding item operation
-                        this.selectedCompartmentForImmediateAdding = this.selectedCompartment;
                     }
+
+                    // cache the selected compartment for the adding item operation
+                    this.selectedCompartmentForImmediateAdding = this.selectedCompartment;
                 }
             }
         }
