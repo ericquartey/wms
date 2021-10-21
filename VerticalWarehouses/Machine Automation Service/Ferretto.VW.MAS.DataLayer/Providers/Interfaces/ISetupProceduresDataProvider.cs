@@ -34,6 +34,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetHorizontalChainCalibration();
 
+        RepeatedTestProcedure GetHorizontalResolutionCalibration();
+
         PositioningProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
@@ -43,6 +45,8 @@ namespace Ferretto.VW.MAS.DataLayer
         SetupProcedure GetVerticalOriginCalibration();
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
+
+        SetupProcedure GetWeightMeasurement();
 
         void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 

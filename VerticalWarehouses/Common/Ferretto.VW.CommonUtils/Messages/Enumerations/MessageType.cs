@@ -152,5 +152,7 @@
         /// Servicing and maintenance status to Telemetry
         /// </summary>
         ServicingSchedule,
+
+        SocketLinkOperationChange,
     }
 }

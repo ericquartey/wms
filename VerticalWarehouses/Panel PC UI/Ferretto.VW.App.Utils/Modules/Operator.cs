@@ -45,6 +45,8 @@
 
             public const string ADD_DRAPERYITEM_INTO_LOADINGUNIT = "AddingItemDraperyToLoadingUnitViewModel";
 
+            public const string ADDITEMINTOLOADINGUNIT = "AddingItemToLoadingUnitViewModel";
+
             public const string INVENTORY = "ItemInventoryViewModel";
 
             public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";
@@ -60,6 +62,8 @@
             public const string PUT = "ItemPutViewModel";
 
             public const string PUT_DETAILS = "ItemPutDetailsViewModel";
+
+            public const string SOCKETLINKOPERATION = "SocketLinkOperationViewModel";
 
             public const string WAIT = "ItemOperationWaitViewModel";
 
@@ -167,6 +171,8 @@
             #region Fields
 
             public const string DETAIL = "WaitingListDetailViewModel";
+
+            public const string EVADABILITYOPTIONS = "WaitingListEvadabilityOptionsViewModel";
 
             public const string MAIN = "WaitingListsViewModel";
 

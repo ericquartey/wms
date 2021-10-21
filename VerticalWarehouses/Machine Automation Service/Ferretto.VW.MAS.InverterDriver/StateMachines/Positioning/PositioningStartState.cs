@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningStartState : InverterStateBase
@@ -38,7 +37,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"Positioning Start");
+            this.Logger.LogDebug($"Positioning Start inverter {this.InverterStatus.SystemIndex}");
 
             this.InverterStatus.OperatingMode = (ushort)InverterOperationMode.Position;
 
@@ -56,8 +55,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 FieldMessageType.Positioning,
                 MessageStatus.OperationStart,
                 this.InverterStatus.SystemIndex);
-
-            this.Logger.LogDebug("Inverter Positioning Start State Start");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
         }

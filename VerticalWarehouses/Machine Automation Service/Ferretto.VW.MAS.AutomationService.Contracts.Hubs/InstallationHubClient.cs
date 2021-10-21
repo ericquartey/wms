@@ -69,6 +69,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<SocketLinkLaserPointerChangeMessageData>>(
                 nameof(IInstallationHub.SocketLinkLaserPointerChange), this.OnSocketLinkLaserPointerNotify);
 
+            connection.On<NotificationMessageUI<SocketLinkOperationChangeMessageData>>(
+                nameof(IInstallationHub.SocketLinkOperationChange), this.OnSocketLinkOperationNotify);
+
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                 nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
 
@@ -260,6 +263,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnSocketLinkLaserPointerNotify(NotificationMessageUI<SocketLinkLaserPointerChangeMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSocketLinkOperationNotify(NotificationMessageUI<SocketLinkOperationChangeMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

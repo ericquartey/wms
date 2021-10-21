@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.WeightMeasurement)
 
                     .Include(s => s.HorizontalChainCalibration)
+                    .Include(s => s.HorizontalResolutionCalibration)
 
                     .Single());
 
@@ -206,6 +207,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public RepeatedTestProcedure GetHorizontalResolutionCalibration()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
+                    .Select(s => s.HorizontalResolutionCalibration)
+                    .Single();
+            }
+        }
+
         public PositioningProcedure GetLoadFirstDrawerTest()
         {
             lock (this.dataContext)
@@ -256,6 +267,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public SetupProcedure GetWeightMeasurement()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.SetupProceduresSets.AsNoTracking()
+                    .Select(s => s.WeightMeasurement)
+                    .Single();
+            }
+        }
+
         public void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context)
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
@@ -298,6 +319,7 @@ namespace Ferretto.VW.MAS.DataLayer
             context.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
 
             context.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.HorizontalResolutionCalibration, (e) => e.Id);
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure, int? requiredCycles = null)
@@ -460,6 +482,7 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
 
             dataContext.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.HorizontalResolutionCalibration, (e) => e.Id);
 
             dataContext.SaveChanges();
         }

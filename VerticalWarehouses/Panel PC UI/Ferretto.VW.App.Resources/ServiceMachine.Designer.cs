@@ -142,6 +142,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load state and sensors inconsistency Bay {0}.
+        /// </summary>
+        public static string InconsistencyStateAndSensorsBay {
+            get {
+                return ResourceManager.GetString("InconsistencyStateAndSensorsBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zero pawl sensor inconsistency and loading unit presence..
         /// </summary>
         public static string InconsistencyZeroPawlSensor {

@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
@@ -34,6 +35,8 @@ namespace Ferretto.VW.App.Services
         private readonly int pollingDelay = 200;
 
         private bool isEnabled;
+
+        private SubscriptionToken machineModeChangedToken;
 
         private SubscriptionToken missionToken;
 
@@ -151,6 +154,13 @@ namespace Ferretto.VW.App.Services
                         ThreadOption.BackgroundThread,
                         false);
 
+            this.machineModeChangedToken = this.eventAggregator
+               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+               .Subscribe(
+                   async e => await this.OnMachineModeChangedAsync(e),
+                   ThreadOption.UIThread,
+                   false);
+
             this.tokenSource?.Cancel();
             this.tokenSource = new CancellationTokenSource();
 
@@ -194,6 +204,26 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(ex));
+        }
+
+        private async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
+        {
+            try
+            {
+                if (e.MachineMode == MachineMode.Automatic)
+                {
+                    var activeMission = await this.RetrieveActiveMissionAsync();
+                    if (activeMission == null)
+                    {
+                        this.logger.Debug($"Send Home to Laser pointer.");
+                        await this.laserPointerDriver.HomeAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
         }
 
         private async Task OnMissionChangeAsync(MissionChangedEventArgs e)

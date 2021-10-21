@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,7 +59,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly EventHandler<TokenStatusChangedEventArgs> tokenReaderTokenStatusChangedEventHandler;
 
-        private System.Collections.Generic.List<string> users;
+        private ObservableCollection<string> users;
 
         private System.Collections.Generic.IEnumerable<User> wmsUsers;
 
@@ -116,7 +117,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
                 async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
 
-            this.Users = new List<string>(this.BaseUser);
+            this.Users = new ObservableCollection<string>(this.BaseUser);
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
@@ -203,7 +204,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public System.Collections.Generic.List<string> Users
+        public ObservableCollection<string> Users
         {
             get => this.users;
             set
@@ -309,15 +310,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.machineErrorsService.AutoNavigateOnError = false;
 
-            if (this.Data is MachineIdentity machineIdentity)
-            {
-                this.MachineIdentity = machineIdentity;
-                this.sessionService.MachineIdentity = machineIdentity;
-            }
-            else
-            {
-                this.MachineIdentity = this.sessionService.MachineIdentity;
-            }
+            this.MachineIdentity = this.sessionService.MachineIdentity;
             if (this.MachineIdentity is null)
             {
                 try

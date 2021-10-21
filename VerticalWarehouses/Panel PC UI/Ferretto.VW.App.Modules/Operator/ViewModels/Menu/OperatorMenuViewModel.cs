@@ -128,14 +128,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            if (this.Data is MachineIdentity machineIdentity)
-            {
-                this.MachineIdentity = machineIdentity;
-            }
-            else
-            {
-                this.MachineIdentity = this.sessionService.MachineIdentity;
-            }
+            this.MachineIdentity = this.sessionService.MachineIdentity;
 
             this.IsWmsEnabled = this.wmsDataProvider.IsEnabled;
 
@@ -169,22 +162,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanShowItemLists()
         {
-            return this.IsWmsEnabled;
+            return this.IsWmsEnabled && this.IsWmsHealthy;
         }
 
         private bool CanShowItemOperations()
         {
-            return true;
+            return !this.IsWmsEnabled || this.IsWmsHealthy;
         }
 
         private bool CanShowItemSearch()
         {
-            return this.IsWmsEnabled;
+            return this.IsWmsEnabled && this.IsWmsHealthy;
         }
 
         private bool CanShowOtherMenu()
         {
-            return true;
+            return !this.IsWmsEnabled || this.IsWmsHealthy;
         }
 
         private void ShowItemLists()

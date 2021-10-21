@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.Logger.LogDebug($"PositioningStartMoving.Start Inverter type={this.InverterStatus.GetType().Name}");
+            this.Logger.LogDebug($"PositioningStartMoving Start Inverter {this.InverterStatus.SystemIndex} type={this.InverterStatus.GetType().Name}");
 
             this.startTime = DateTime.UtcNow;
             this.Inverter.PositionControlWord.NewSetPoint = true;

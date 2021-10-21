@@ -1,0 +1,93 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.WaitingListEvadabilityOptionsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="15">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Margin="10,10,15,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{resources:Loc OperatorApp.WaitingListEvadabilityModeSelectionPageHeader}" />
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 MaxHeight="65"
+                                 Margin="0,0,0,10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding WaitingListCode}"
+                                 LabelText="{resources:Loc OperatorApp.CommonListCode}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 MaxHeight="65"
+                                 Margin="0,0,0,10"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding WaitingListDescription}"
+                                 LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
+
+        <RadioButton Grid.Row="4"
+                     Margin="350,0,10,0"
+                     HorizontalAlignment="Stretch"
+                     HorizontalContentAlignment="Stretch"
+                     GroupName="test"
+                     IsChecked="{Binding IsPartiallyExecuteAndWait, Mode=TwoWay}">
+            <RadioButton.Content>
+                <TextBlock Grid.Row="2"
+                           Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{resources:Loc OperatorApp.PartiallyExecuteAndWaitLabel}" />
+            </RadioButton.Content>
+        </RadioButton>
+
+        <RadioButton Grid.Row="5"
+                     Margin="350,0,10,0"
+                     GroupName="test"
+                     IsChecked="{Binding IsPartiallyExecuteAndComplete, Mode=TwoWay}">
+            <RadioButton.Content>
+                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{resources:Loc OperatorApp.PartiallyExecuteAndCompleteLabel}" />
+            </RadioButton.Content>
+        </RadioButton>
+
+        <RadioButton Grid.Row="6"
+                     Margin="350,0,10,0"
+                     GroupName="test"
+                     IsChecked="{Binding IsPartiallyExecute, Mode=TwoWay}">
+            <RadioButton.Content>
+                <TextBlock Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                           Text="{resources:Loc OperatorApp.PartiallyExecuteLabel}" />
+            </RadioButton.Content>
+        </RadioButton>
+
+        <controls:PpcButton Grid.Row="7"
+                            Margin="15,25,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ListExecuteCommand}"
+                            Content="{resources:Loc OperatorApp.ListsInWaitExecute}"
+                            Style="{StaticResource ConfirmButton}" />
+
+    </Grid>
+
+</ctrls:View>

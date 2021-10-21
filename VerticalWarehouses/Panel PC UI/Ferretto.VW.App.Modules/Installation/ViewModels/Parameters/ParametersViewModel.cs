@@ -162,7 +162,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcher.Enable();
 
             this.ChangeMachineIdVisible = this.sessionService.UserAccessLevel == UserAccessLevel.Support ||
-                                      this.sessionService.UserAccessLevel == UserAccessLevel.Admin; ;
+                                      this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
             var model = await this.identityService.GetAsync();
 

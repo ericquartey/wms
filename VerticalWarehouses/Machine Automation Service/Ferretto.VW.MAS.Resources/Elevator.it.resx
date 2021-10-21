@@ -168,4 +168,10 @@
   <data name="NoMissionIsWaitingInTheSpecifiedBayPosition" xml:space="preserve">
     <value>Nessun cassetto è in attesa di essere estratto nella posizione della baia specificata.</value>
   </data>
+  <data name="TheHomingCreepSpeedCannotBeZero" xml:space="preserve">
+    <value>La velocità di homing non può essere zero</value>
+  </data>
+  <data name="TheHorizontalCalibrateSpeedCannotBeZero" xml:space="preserve">
+    <value>La velocità di calibrazione orizzontale non può essere zero</value>
+  </data>
 </root>

@@ -423,7 +423,11 @@ namespace Ferretto.VW.App.Services
             try
             {
                 var idService = await this.machineIdentityWebService.GetAsync();
-                this.IsTuningCompleted = idService.InstallationDate.HasValue;
+                if (idService != null)
+                {
+                    this.sessionService.MachineIdentity = idService;
+                    this.IsTuningCompleted = idService.InstallationDate.HasValue;
+                }
 
                 var setupStatus = await this.machineSetupStatusWebService.GetAsync();
                 this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&
@@ -1603,6 +1607,8 @@ namespace Ferretto.VW.App.Services
         private void WarningsManagement(string view)
         {
             this.ActiveView = view;
+            var isWmsHealthy = this.healthProbeService.HealthWmsStatus == HealthStatus.Healthy;
+
             if (!(view is null) && !this.MachineStatus.IsMoving && !this.MachineStatus.IsMovingLoadingUnit)
             {
                 switch (this.GetWarningAreaAttribute())
@@ -1679,6 +1685,7 @@ namespace Ferretto.VW.App.Services
                                  ((this.bay.Shutter != null) ? this.bay.Shutter.Type != ShutterType.NotSpecified : false) &&
                                  !this.sensorsService.ShutterSensors.Closed && !this.sensorsService.ShutterSensors.MidWay &&
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("HorizontalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                  (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutterOpenOrUnknowPosition"), NotificationSeverity.Warning);
@@ -1686,6 +1693,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsWmsEnabled && !isWmsHealthy)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.WmsOffline"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionWms && !this.IsWmsEnabled)
                         {
@@ -1697,6 +1708,7 @@ namespace Ferretto.VW.App.Services
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.CalibrationCarouselFailedChainNotZeroPosition"), NotificationSeverity.Warning);
                         }
                         else if (!this.isBayHoming[this.bay.Number] &&
+                                 !view.Equals("HorizontalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                  !view.Equals("DepositAndPickUpTestView", StringComparison.InvariantCultureIgnoreCase))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayCalibrationNotPerformed"), NotificationSeverity.Warning);
@@ -1736,6 +1748,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsWmsEnabled && !isWmsHealthy)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.WmsOffline"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionWms && !this.IsWmsEnabled)
                         {
@@ -1800,6 +1816,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
                         }
+                        else if (this.IsWmsEnabled && !isWmsHealthy)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.WmsOffline"), NotificationSeverity.Warning);
+                        }
                         else if (this.IsMissionWms && !this.IsWmsEnabled)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
@@ -1837,6 +1857,10 @@ namespace Ferretto.VW.App.Services
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsWmsEnabled && !isWmsHealthy)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.WmsOffline"), NotificationSeverity.Warning);
                         }
                         else if (this.IsMissionWms && !this.IsWmsEnabled)
                         {

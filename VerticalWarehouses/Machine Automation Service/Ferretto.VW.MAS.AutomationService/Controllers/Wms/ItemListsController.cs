@@ -29,16 +29,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("{id}/execute")]
-        public async Task<ActionResult<ItemListDetails>> ExecuteAsync(int id, int areaId, int? bayId = null, string userName = null)
+        public async Task<ActionResult<ItemListDetails>> ExecuteAsync(int id, int areaId, ItemListEvadabilityType type, int? bayId = null, string userName = null)
         {
-            await this.itemListsWmsWebService.ExecuteAsync(id, areaId, bayId, userName);
+            await this.itemListsWmsWebService.ExecuteAsync(id, areaId, type, bayId, userName);
             return this.Ok();
         }
 
         [HttpGet("{id}/execute-num")]
-        public async Task<ActionResult<ItemListDetails>> ExecuteNumAsync(string id, int areaId, int? bayId = null, string userName = null)
+        public async Task<ActionResult<ItemListDetails>> ExecuteNumAsync(string id, int areaId, ItemListEvadabilityType type, int? bayId = null, string userName = null)
         {
-            await this.itemListsWmsWebService.ExecuteNumAsync(id, areaId, bayId, userName);
+            await this.itemListsWmsWebService.ExecuteNumAsync(id, areaId, type, bayId, userName);
             return this.Ok();
         }
 

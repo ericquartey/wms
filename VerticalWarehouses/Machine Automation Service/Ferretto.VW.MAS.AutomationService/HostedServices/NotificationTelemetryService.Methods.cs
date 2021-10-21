@@ -51,6 +51,12 @@ namespace Ferretto.VW.MAS.AutomationService
                 return;
             }
 
+            if (error.Code == (int)DataModels.MachineErrorCode.ConditionsNotMetForRunning)
+            {
+                this.Logger.LogTrace($"Do not send low priority error {error.Code} to telemetry service.");
+                return;
+            }
+
             var si = serviceProvider
                 .GetRequiredService<IServicingProvider>()
                 .GetActual();

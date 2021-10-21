@@ -34,6 +34,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
 using Ferretto.VW.MAS.DeviceManager.InverterReading;
+using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -326,7 +327,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             // NEW block
                             case MessageType.Positioning:
                                 if (messageCurrentStateMachine is PositioningStateMachine ||
-                                    messageCurrentStateMachine is ExtBayPositioningStateMachine)
+                                    messageCurrentStateMachine is ExtBayPositioningStateMachine ||
+                                    messageCurrentStateMachine is HorizontalResolutionStateMachine)
                                 {
                                     if (messageCurrentStateMachine is PositioningStateMachine machine)
                                     {
@@ -346,6 +348,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     }
 
                                     if (messageCurrentStateMachine is ExtBayPositioningStateMachine)
+                                    {
+                                        // deallocate only Positioning state machine
+                                        this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                        this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                        this.SendCleanDebug();
+                                    }
+
+                                    if (messageCurrentStateMachine is HorizontalResolutionStateMachine)
                                     {
                                         // deallocate only Positioning state machine
                                         this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
@@ -634,7 +644,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             {
                                 bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex, receivedMessage.Type);
                             }
-                            catch(EntityNotFoundException)
+                            catch (EntityNotFoundException)
                             {
                                 return;
                             }

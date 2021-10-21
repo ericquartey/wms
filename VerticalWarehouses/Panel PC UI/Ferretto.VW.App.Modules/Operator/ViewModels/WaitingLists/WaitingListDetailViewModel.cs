@@ -141,9 +141,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            // Handle the current not dispatchable list
+            if (!this.list.IsDispatchable)
+            {
+                this.Logger.Debug($"Show the evadability options view for item list {this.list.Id}");
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.WaitingLists.EVADABILITYOPTIONS,
+                    new WaitingListExecuteData
+                    {
+                        ListId = this.list.Id,
+                        ListDescription = this.list.Description,
+                        BayId = null,
+                        AreaId = this.areaId.Value,
+                        AuthenticationUserName = this.authenticationService.UserName,
+                    },
+                    trackCurrentView: true);
+
+                return;
+            }
+
             try
             {
-                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, null, this.authenticationService.UserName);
+                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, ItemListEvadabilityType.PartiallyExecuteAndWait, null, this.authenticationService.UserName);
                 await this.LoadListRowsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), this.list.Code),

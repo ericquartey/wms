@@ -3,6 +3,14 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.Models
 {
+    // Use in the UI graphical controls appearance (ref. data Grid)
+    public enum ItemListDispatchableTag
+    {
+        No,
+
+        Yes,
+    }
+
     public enum ListExecutionMode
     {
         None,
@@ -29,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.Description = itemList.Description;
             this.ShipmentUnitCode = itemList.ShipmentUnitCode;
             this.ShipmentUnitDescription = itemList.ShipmentUnitDescription;
+            this.IsDispatchable = itemList.IsDispatchable;
+            this.DispatchableTag = itemList.IsDispatchable ? ItemListDispatchableTag.Yes : ItemListDispatchableTag.No;
 
             if (itemList.Machines?.Any(m => m.Id == machineId) == true)
             {
@@ -55,6 +65,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
                     Priority = itemList.Priority,
                     ShipmentUnitCode = itemList.ShipmentUnitCode,
                     ShipmentUnitDescription = itemList.ShipmentUnitDescription,
+                    IsDispatchable = itemList.IsDispatchable,
                     Status = itemList.Status,
                 }, machineId)
         {
@@ -63,6 +74,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         #endregion
 
         #region Properties
+
+        public ItemListDispatchableTag DispatchableTag { get; }
 
         public ListExecutionMode ExecutionMode { get; }
 

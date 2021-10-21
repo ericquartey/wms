@@ -1764,11 +1764,11 @@
   <data name="InvalidArgument" xml:space="preserve">
     <value>Invalid argument</value>
   </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>Item loaded</value>
+  </data>
   <data name="UpBlock" xml:space="preserve">
     <value>--hor</value>
-  </data>
-  <data name="ItemBarcodeAcquired" xml:space="preserve">
-    <value>Item is acquired. Barcode: </value>
   </data>
   <data name="DownBlock" xml:space="preserve">
     <value>--dolní</value>

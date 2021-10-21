@@ -32,8 +32,13 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 {
                     return true;
                 }
-                else if ((entity.Instance is Shutter ||
+                if ((entity.Instance is Shutter ||
                     entity.Instance is ShutterManualParameters) &&
+                    this.sessionService.UserAccessLevel >= UserAccessLevel.Installer)
+                {
+                    return true;
+                }
+                if ((entity.Instance is BayPosition) && entity.Property.Name == "IsBlocked" &&
                     this.sessionService.UserAccessLevel >= UserAccessLevel.Installer)
                 {
                     return true;

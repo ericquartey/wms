@@ -122,9 +122,9 @@ namespace Ferretto.VW.App.Services
                         .Publish(new MachineModeChangedEventArgs(this.MachineMode));
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // do nothing
+                this.logger.Debug(ex.Message);
             }
         }
 

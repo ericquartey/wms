@@ -832,6 +832,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var direction = (bay.Side == WarehouseSide.Back) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            if (axis.HorizontalCalibrateSpeed == 0)
+            {
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheHorizontalCalibrateSpeedCannotBeZero", CommonUtils.Culture.Actual) };
+                throw new InvalidOperationException(policy.Reason);
+            }
 
             var targetPosition = 100;
 
@@ -862,7 +867,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 requestingBay,
                 BayNumber.ElevatorBay);
 
-            // open other bays
+            // close other bays
             var bays = this.baysDataProvider.GetAll();
             foreach (var otherBay in bays)
             {
@@ -898,6 +903,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            if (axis.HomingCreepSpeed == 0)
+            {
+                policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheHomingCreepSpeedCannotBeZero", CommonUtils.Culture.Actual) };
+                throw new InvalidOperationException(policy.Reason);
+            }
 
             var targetPosition = this.HorizontalPosition + 400;
 
@@ -946,7 +957,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.machineVolatileDataProvider.IsHomingExecuted = false;
             }
-            if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || sender == MessageActor.AutomationService)
+            if (!this.machineVolatileDataProvider.IsOneTonMachine.Value || Math.Abs(verticalDisplacement) <= 0.1)
             {
                 // Perform the horizontal movement for regular machine (no combined movements)
                 this.MoveHorizontalManual_ForRegularMachine(
@@ -1016,6 +1027,68 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Profile Calibration Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
+        public void MoveHorizontalResolution(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        {
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var policy = this.CanCalibrateZeroPlate();
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var verticalPosition = this.elevatorDataProvider.VerticalPosition;
+            var otherBay = this.baysDataProvider.GetAll().FirstOrDefault(b => b.Number != requestingBay
+                        && b.Side != bay.Side
+                        && b.Positions.Any(p => Math.Abs(p.Height - verticalPosition) < 700));
+            if (otherBay != null && otherBay.Shutter != null && otherBay.Shutter.Type != ShutterType.NotSpecified)
+            {
+                var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(otherBay.Number);
+                var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
+                if (position != ShutterPosition.Opened)
+                {
+                    throw new InvalidOperationException(string.Format(Resources.Shutters.ResourceManager.GetString("TheShutterOfBayIsNotCompletelyOpen", CommonUtils.Culture.Actual), (int)otherBay.Number));
+                }
+            }
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+
+            var profileTypeLoad = this.SelectProfileType(direction, false);
+            var profileTypeDeposit = this.SelectProfileType(direction, true);
+            var targetPosition = axis.Profiles.Single(p => p.Name == profileTypeLoad).TotalDistance +
+                axis.Profiles.Single(p => p.Name == profileTypeDeposit).TotalDistance;
+
+            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+
+            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalResolutionCalibration();
+
+            var speed = new[] { axis.ManualMovements.FeedRateAfterZero * axis.FullLoadMovement.Speed };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Absolute,
+                MovementMode.HorizontalResolution,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBound: 0,
+                upperBound: 0,
+                delay: 0,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} resolution Command",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,

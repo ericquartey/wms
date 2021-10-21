@@ -244,10 +244,12 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             if (e.Enable)
             {
+                this.logger.LogInformation("SocketLink Starting service on port " + this.wmsSettingsProvider.SocketLinkPort);
                 this.Enable();
             }
             else
             {
+                this.logger.LogInformation("SocketLink Stopping sync service");
                 this.Disable();
             }
         }

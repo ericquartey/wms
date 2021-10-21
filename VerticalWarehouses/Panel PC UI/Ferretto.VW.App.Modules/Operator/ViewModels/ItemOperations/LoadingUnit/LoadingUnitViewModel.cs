@@ -9,9 +9,11 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
@@ -64,6 +66,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canInputQuantity;
 
+        private bool chargeItemTextViewVisibility;
+
+        private int confirmButtonColumnIndexPosition;
+
         private DelegateCommand confirmItemOperationCommand;
 
         private DelegateCommand confirmOperationCommand;
@@ -80,7 +86,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand insertOperationCommand;
 
-        private bool isAddItemFeatureAvailable;
+        private bool isAddItemFeatureForDraperyManagementAvailable;
 
         private bool isAddItemVisible;
 
@@ -98,6 +104,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isSearching;
 
+        private string itemSearchKeyTitleName;
+
         private SubscriptionToken itemWeightToken;
 
         private ItemWeightChangedMessage lastItemQuantityMessage;
@@ -111,6 +119,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private List<ItemInfo> products = new List<ItemInfo>();
 
         private SubscriptionToken productsChangedToken;
+
+        private bool productsDataGridViewVisibility;
 
         private double quantityIncrement;
 
@@ -133,6 +143,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string selectedItemTxt;
 
         private ItemInfo selectedProduct;
+
+        private object socketLinkOperationToken;
 
         private CancellationTokenSource tokenSource;
 
@@ -204,8 +216,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.canInputQuantity, value);
         }
 
+        public bool ChargeItemTextViewVisibility
+        {
+            get => this.chargeItemTextViewVisibility;
+            set => this.SetProperty(ref this.chargeItemTextViewVisibility, value, this.RaiseCanExecuteChanged);
+        }
+
+        public int ConfirmButtonColumnIndexPosition
+        {
+            get => this.confirmButtonColumnIndexPosition;
+            set => this.SetProperty(ref this.confirmButtonColumnIndexPosition, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand ConfirmItemOperationCommand =>
-            this.confirmItemOperationCommand
+                            this.confirmItemOperationCommand
             ??
             (this.confirmItemOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmItemOperationAsync(), this.CanConfirmItemOperation));
@@ -250,10 +274,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         /// <summary>
         /// Gets or sets a value indicating whether it makes visible the 'Add' button according to a well-defined configuration machine parameter.
         /// </summary>
-        public bool IsAddItemFeatureAvailable
+        public bool IsAddItemFeatureForDraperyManagementAvailable
         {
-            get => this.isAddItemFeatureAvailable;
-            set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
+            get => this.isAddItemFeatureForDraperyManagementAvailable;
+            set => this.SetProperty(ref this.isAddItemFeatureForDraperyManagementAvailable, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsAddItemVisible
@@ -353,6 +377,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsWaitingForReason { get; private set; }
 
+        public string ItemSearchKeyTitleName
+        {
+            get => this.itemSearchKeyTitleName;
+            set => this.SetProperty(ref this.itemSearchKeyTitleName, value, this.RaiseCanExecuteChanged);
+        }
+
         public string MeasureUnit
         {
             get => this.measureUnit;
@@ -366,6 +396,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async (param) => await this.ToggleOperation(param), this.CanDoOperation));
 
         public IList<ItemInfo> Products => new List<ItemInfo>(this.products);
+
+        public bool ProductsDataGridViewVisibility
+        {
+            get => this.productsDataGridViewVisibility;
+            set => this.SetProperty(ref this.productsDataGridViewVisibility, value, this.RaiseCanExecuteChanged);
+        }
 
         public double QuantityIncrement
         {
@@ -426,7 +462,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.SetProperty(ref this.searchItem, value))
                 {
                     this.IsSearching = true;
-                    // this.TriggerSearchAsync().GetAwaiter();  // Do not perform the searching routine
+
+                    // Perform the searching routine (only if not drapery management)
+                    if (!this.IsAddItemFeatureForDraperyManagementAvailable)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                        {
+                            this.selectedProduct = null;
+                            this.RaisePropertyChanged(nameof(this.SelectedProduct));
+                        }
+
+                        // Searching routine
+                        this.TriggerSearchAsync().GetAwaiter();
+                    }
                 }
             }
         }
@@ -653,6 +701,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsBusyLoading = false;
+            this.ProductsDataGridViewVisibility = this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
+            await this.GetSocketLinkOperation();
+
+            this.socketLinkOperationToken = this.socketLinkOperationToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SocketLinkOperationChangeMessageData>>()
+                    .Subscribe(
+                        this.OnSocketLinkOperationChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             await base.OnAppearedAsync();
 
@@ -679,8 +738,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await this.OnAppearItem();
 
-            this.IsAddItemFeatureAvailable = await this.identityService.IsEnableAddItemAsync();
-            if (this.isAddItemFeatureAvailable) { this.SearchItem = string.Empty; }
+            this.IsAddItemFeatureForDraperyManagementAvailable = await this.identityService.IsEnableAddItemAsync();
+
+            // Update UI according to normal configuration or drapery management configuration
+            this.ItemSearchKeyTitleName = Localized.Get(OperatorApp.ItemSearchKeySearch);
+            this.ConfirmButtonColumnIndexPosition = 1;
+            if (this.IsAddItemFeatureForDraperyManagementAvailable)
+            {
+                this.ItemSearchKeyTitleName = Localized.Get(OperatorApp.BarcodeLabel);
+                this.SearchItem = string.Empty;
+                this.ConfirmButtonColumnIndexPosition = 0;
+            }
+
             this.Reasons = null;
             this.IsWaitingForReason = false;
 
@@ -723,8 +792,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     var quantity = this.ItemsCompartments.FirstOrDefault(ic => ic.Id == activeOperation.CompartmentId
                         && ic.ItemId == activeOperation.ItemId
-                        && (activeOperation.Lot == null || ic.Lot == activeOperation.Lot)
-                        && (activeOperation.SerialNumber == null || ic.ItemSerialNumber == activeOperation.SerialNumber)
+                        && (activeOperation.Lot == null || activeOperation.Lot == "*" || ic.Lot == activeOperation.Lot)
+                        && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || ic.ItemSerialNumber == activeOperation.SerialNumber)
                         )?.Stock ?? activeOperation.RequestedQuantity;
 
                     var canComplete = await this.MissionOperationsService.CompleteAsync(activeOperation.Id, quantity);
@@ -865,6 +934,112 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.removeOperationCommand?.RaiseCanExecuteChanged();
         }
 
+        private async Task AddItemOperationAsync()
+        {
+            // Note:
+            // The add item operation to loading unit (standard case) is based on the product selected by the user.
+            //
+
+            if (this.SelectedProduct == null)
+            {
+                this.Logger.Debug($"Invalid item selected");
+
+                this.ShowNotification(Localized.Get("OperatorApp.InvalidArgument"), Services.Models.NotificationSeverity.Error);
+                return;
+            }
+
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                var loadingUnitId = this.LoadingUnit.Id;
+                var selectedItemId = this.SelectedProduct?.Id;
+                //var compartmentId = this.SelectedItemCompartment.Id;
+                var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : -1;
+                var item = await this.itemsWebService.GetByIdAsync(selectedItemId.Value);
+
+                var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
+                {
+                    ItemId = selectedItemId.Value,
+                    LoadingUnitId = loadingUnitId,
+                    CompartmentId = compartmentId,
+                    ItemDescription = item.Description,
+                    QuantityIncrement = this.QuantityIncrement,
+                    QuantityTolerance = this.QuantityTolerance,
+                    MeasureUnitTxt = string.Empty,
+                };
+
+                // Show the view to adding item into current loading unit
+                this.navigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemOperations.ADDITEMINTOLOADINGUNIT,
+                    itemAddedToLoadingUnitInfo,
+                    trackCurrentView: true);
+            }
+            catch
+            {
+                this.Logger.Error($"Invalid operation performed.");
+                this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
+            }
+
+            this.IsWaitingForResponse = false;
+        }
+
+        private async Task AddItemOperationDraperyManagementAsync()
+        {
+            // Note:
+            // The add item operation to loading unit for drapery is based only the barcode value (for the item/drapery) given by the user.
+            // No one product is selected in the grid items (the grid items is not visible).
+            //
+
+            if (string.IsNullOrEmpty(this.SearchItem))
+            {
+                this.Logger.Debug($"Invalid search item - barcode value");
+
+                this.ShowNotification(Localized.Get("OperatorApp.InvalidArgument"), Services.Models.NotificationSeverity.Error);
+                return;
+            }
+
+            this.IsWaitingForResponse = true;
+
+            if (this.SearchItem != null)
+            {
+                var loadingUnitId = this.LoadingUnit.Id;
+                var barcode = this.SearchItem;
+
+                try
+                {
+                    this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
+
+                    var draperyItemInfoList = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
+                    if (draperyItemInfoList != null)
+                    {
+                        var draperyItemInfo = draperyItemInfoList.First();
+
+                        this.Logger.Debug($"Show the adding view for drapery item [description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
+
+                        this.navigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
+                            draperyItemInfo,
+                            trackCurrentView: true);
+                    }
+                    else
+                    {
+                        this.Logger.Error($"An error occurs");
+                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
+                    }
+                }
+                catch
+                {
+                    this.Logger.Error($"Invalid operation performed.");
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
+                }
+            }
+
+            this.IsWaitingForResponse = false;
+        }
+
         private void AdjustItemsAppearance()
         {
             try
@@ -918,16 +1093,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmItemOperation()
         {
-            return
-                this.IsWmsEnabledAndHealthy
-                &&
-                !this.IsWaitingForResponse
-                &&
-                //this.SelectedProduct != null   // actually the product is not selected
-                //&&
-                !this.IsBusyConfirmingRecallOperation
-                &&
+            var retValue = this.IsWmsEnabledAndHealthy &&
+                !this.IsWaitingForResponse &&
+                !this.IsBusyConfirmingRecallOperation &&
                 !this.IsBusyConfirmingOperation;
+
+            if (!this.IsAddItemFeatureForDraperyManagementAvailable)
+            {
+                // check if selected product is valid
+                retValue = retValue && (this.SelectedProduct != null);
+            }
+
+            return retValue;
         }
 
         private bool CanConfirmOperation()
@@ -949,38 +1126,38 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (param == OperatorApp.Box)
             {
                 return
-                this.SelectedCompartment != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyConfirmingRecallOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.IsWmsHealthy;
+                    this.SelectedCompartment != null
+                    &&
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsBusyConfirmingRecallOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.IsWmsHealthy;
             }
-            if (param == OperatorApp.Add)
+            else if (param == OperatorApp.Add)
             {
                 return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyConfirmingRecallOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.IsWmsHealthy;
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsBusyConfirmingRecallOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.IsWmsHealthy;
             }
 
             return
-            this.SelectedItemCompartment?.ItemId != null
-            &&
-            !this.IsWaitingForResponse
-            &&
-            !this.IsBusyConfirmingRecallOperation
-            &&
-            !this.IsBusyConfirmingOperation
-            &&
-            this.IsWmsHealthy;
+                this.SelectedItemCompartment?.ItemId != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.IsWmsHealthy;
         }
 
         private bool CanExecuteItemPick()
@@ -1036,8 +1213,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (activeOperation != null && activeOperation.CompartmentId > 0 && activeOperation.ItemId > 0)
                 {
                     this.SelectedItemCompartment = this.ItemsCompartments.FirstOrDefault(s => s.Id == activeOperation.CompartmentId && s.ItemId == activeOperation.ItemId
-                        && (activeOperation.Lot == null || s.Lot == activeOperation.Lot)
-                        && (activeOperation.SerialNumber == null || s.ItemSerialNumber == activeOperation.SerialNumber));
+                        && (activeOperation.Lot == null || activeOperation.Lot == "*" || s.Lot == activeOperation.Lot)
+                        && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || s.ItemSerialNumber == activeOperation.SerialNumber));
                     this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
                 }
                 else if (!this.MachineService.Loadunits.Any(l => l.Id == this.LoadingUnit?.Id && l.Status == LoadingUnitStatus.InBay))
@@ -1059,59 +1236,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmItemOperationAsync()
         {
-            // Note:
-            // The add item operation to loading unit is based only the barcode value (for the item) given by the user.
-            // No one product is selected in the grid items (the grid items is not visible).
-            //
-            // TODO: insert code to handle the generic (manual) add operation to loading unit
-            //
-
-            if (string.IsNullOrEmpty(this.SearchItem))
+            if (this.IsAddItemFeatureForDraperyManagementAvailable)
             {
-                this.Logger.Debug($"Invalid search item - barcode value");
-
-                this.ShowNotification(Localized.Get("OperatorApp.InvalidArgument"), Services.Models.NotificationSeverity.Error);
-                return;
+                await this.AddItemOperationDraperyManagementAsync();
             }
-
-            this.IsWaitingForResponse = true;
-
-            if (this.SearchItem != null)
+            else
             {
-                var loadingUnitId = this.LoadingUnit.Id;
-                var barcode = this.SearchItem;
-
-                try
-                {
-                    this.Logger.Debug($"Insert drapery barcode {barcode} into loading unit Id {loadingUnitId}");
-
-                    var draperyItemInfoList = await this.LoadingUnitsWebService.LoadDraperyItemInfoAsync(loadingUnitId, barcode);
-                    if (draperyItemInfoList != null)
-                    {
-                        var draperyItemInfo = draperyItemInfoList.First();
-
-                        this.Logger.Debug($"Show the adding view for drapery item [description: {draperyItemInfo.Description}] into loading unit {loadingUnitId}");
-
-                        this.navigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT,
-                            draperyItemInfo,
-                            trackCurrentView: true);
-                    }
-                    else
-                    {
-                        this.Logger.Error($"An error occurs");
-                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
-                    }
-                }
-                catch
-                {
-                    this.Logger.Error($"Invalid operation performed.");
-                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
-                }
+                await this.AddItemOperationAsync();
             }
-
-            this.IsWaitingForResponse = false;
         }
 
         private async Task ConfirmOperationAsync()
@@ -1319,6 +1451,39 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private async Task GetSocketLinkOperation()
+        {
+            try
+            {
+                var operation = await this.missionOperationsWebService.GetSocketLinkOperationAsync();
+                if (operation != null
+                    && (!operation.IsCompleted ?? true)
+                    )
+                {
+                    var newOperation = new SocketLinkOperationChangeMessageData
+                    {
+                        Id = operation.Id,
+                        ItemCode = operation.ItemCode,
+                        ItemDescription = operation.ItemDescription,
+                        ItemListCode = operation.ItemListCode,
+                        Message = operation.Message,
+                        OperationType = operation.OperationType,
+                        BayNumber = (CommonUtils.Messages.Enumerations.BayNumber)this.MachineService.BayNumber,
+                        RequestedQuantity = operation.RequestedQuantity ?? 0,
+                        CompartmentX1Position = operation.CompartmentX1Position,
+                        CompartmentX2Position = operation.CompartmentX2Position,
+                        CompartmentY1Position = operation.CompartmentY1Position,
+                        CompartmentY2Position = operation.CompartmentY2Position,
+                    };
+                    this.SocketLinkOperationChange(newOperation);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void HideOperation()
         {
             this.IsAdjustmentVisible = false;
@@ -1341,6 +1506,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.Products));
 
             this.IsBusyLoading = true;
+            this.ProductsDataGridViewVisibility = this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
+            this.ChargeItemTextViewVisibility = !this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
         }
 
         private async Task OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
@@ -1355,6 +1522,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource = new CancellationTokenSource();
             await this.ReloadAllItems(this.tokenSource.Token);
             await this.RefreshItemsAsync();
+        }
+
+        private void OnSocketLinkOperationChanged(NotificationMessageUI<SocketLinkOperationChangeMessageData> e)
+        {
+            this.SocketLinkOperationChange(e.Data);
         }
 
         private async Task RefreshItemsAsync()
@@ -1379,14 +1551,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.areaId.HasValue)
                 {
-                    var totalProducts = await this.areasWebService.GetProductsAsync(
-                        this.areaId.Value,
-                        0,
-                        0,
-                        this.searchItem,
-                        false,
-                        true,
-                        cancellationToken);
+                    // retrieve all products from warehouse
+                    var totalProducts = await this.areasWebService.GetAllProductsAsync(this.searchItem, cancellationToken);
 
                     if (totalProducts != null)
                     {
@@ -1502,20 +1668,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ClearNotifications();
 
-                var items = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    0,
-                    1,
-                    itemCode,
-                    false,
-                    false);
+                // retrieve all products from warehouse
+                var items = await this.areasWebService.GetAllProductsAsync(itemCode);
 
                 if (items.Any())
                 {
                     this.SearchItem = itemCode;
                     this.products.AddRange(items.Select(i => new ItemInfo(i, this.machineService.Bay.Id)));
                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
-                    //}
                 }
                 else
                 {
@@ -1548,6 +1708,46 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.RaisePropertyChanged(nameof(this.Products));
+            }
+        }
+
+        private void SocketLinkOperationChange(SocketLinkOperationChangeMessageData e)
+        {
+            var isOperation = !string.IsNullOrEmpty(e.Id);
+
+            if ((BayNumber)e.BayNumber == this.MachineService.BayNumber)
+            {
+                this.IsSocketLinkOperationVisible = isOperation;
+                if (isOperation)
+                {
+                    this.SocketLinkOperation = new SocketLinkOperation
+                    {
+                        Id = e.Id,
+                        ItemCode = e.ItemCode,
+                        ItemDescription = e.ItemDescription,
+                        ItemListCode = e.ItemListCode,
+                        Message = e.Message,
+                        OperationType = e.OperationType,
+                        RequestedQuantity = e.RequestedQuantity,
+                        CompartmentX1Position = e.CompartmentX1Position,
+                        CompartmentX2Position = e.CompartmentX2Position,
+                        CompartmentY1Position = e.CompartmentY1Position,
+                        CompartmentY2Position = e.CompartmentY2Position,
+                    };
+
+                    this.InputQuantity = this.SocketLinkOperation.RequestedQuantity;
+                    this.QuantityTolerance = 0;
+
+                    this.navigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.SOCKETLINKOPERATION,
+                        this.SocketLinkOperation,
+                        trackCurrentView: false);
+                }
+                else
+                {
+                    this.SocketLinkOperation = null;
+                }
             }
         }
 
@@ -1631,7 +1831,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     ||
                     this.IsAddItemVisible
                     ||
-                    this.IsBoxOperationVisible;
+                    this.IsBoxOperationVisible
+                    ||
+                    this.IsSocketLinkOperationVisible;
 
                 this.CanInputQuantity = this.IsOperationVisible;
 

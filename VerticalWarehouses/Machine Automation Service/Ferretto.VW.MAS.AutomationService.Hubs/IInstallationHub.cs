@@ -63,6 +63,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task SocketLinkLaserPointerChange(IBaseNotificationMessageUI message);
 
+        Task SocketLinkOperationChange(IBaseNotificationMessageUI message);
+
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
         Task SystemTimeChanged();

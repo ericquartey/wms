@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
+                    client.Timeout = TimeSpan.FromSeconds(2);
                     var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
                     var statusString = await result.Content.ReadAsStringAsync();
                     if (Enum.TryParse<HealthStatus>(statusString, out var status))

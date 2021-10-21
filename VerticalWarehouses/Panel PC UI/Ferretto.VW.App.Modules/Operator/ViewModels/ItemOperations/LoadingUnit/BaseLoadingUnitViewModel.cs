@@ -62,6 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isNewOperationAvailable;
 
+        private bool isSocketLinkOperationVisible;
+
         private bool isUpperPosition;
 
         private DelegateCommand itemCompartmentDownCommand;
@@ -94,9 +96,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private TrayControlCompartment selectedCompartment;
 
+        private TrayControlCompartment selectedCompartmentForImmediateAdding;
+
         private CompartmentDetails selectedItem;
 
         private CompartmentDetails selectedItemCompartment;
+
+        private SocketLinkOperation socketLinkOperation;
 
         #endregion
 
@@ -208,10 +214,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public bool IsSocketLinkOperationVisible
+        {
+            get => this.isSocketLinkOperationVisible;
+            set
+            {
+                this.SetProperty(ref this.isSocketLinkOperationVisible, value);
+            }
+        }
+
         public bool IsWmsEnabledAndHealthy =>
             this.IsWmsHealthy
-            &&
-            this.WmsDataProvider.IsEnabled;
+                && this.WmsDataProvider.IsEnabled;
 
         public override bool IsWmsHealthy
         {
@@ -320,9 +334,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.currentItemCompartmentIndex = this.itemsCompartments.ToList().IndexOf(newSelectedItemCompartment);
                         this.SelectedItemCompartment = newSelectedItemCompartment;
                     }
+
+                    // cache the selected compartment for the adding item operation
+                    this.selectedCompartmentForImmediateAdding = this.selectedCompartment;
                 }
             }
         }
+
+        public TrayControlCompartment SelectedCompartmentForImmediateAdding => this.selectedCompartmentForImmediateAdding;
 
         public CompartmentDetails SelectedItem
         {
@@ -334,6 +353,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.selectedItemCompartment;
             set => this.SetProperty(ref this.selectedItemCompartment, value, this.SetSelectedItemAndCompartment);
+        }
+
+        public SocketLinkOperation SocketLinkOperation
+        {
+            get => this.socketLinkOperation;
+            set => this.SetProperty(ref this.socketLinkOperation, value);
         }
 
         protected IMissionOperationsService MissionOperationsService { get; }
@@ -524,6 +549,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.SelectedItemCompartment));
             this.RaisePropertyChanged(nameof(this.ItemSerialNumberVisibility));
             this.RaisePropertyChanged(nameof(this.ItemLotVisibility));
+            this.RaisePropertyChanged(nameof(this.SocketLinkOperation));
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -834,8 +860,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (activeOperation != null && activeOperation.ItemId > 0 && activeOperation.CompartmentId == this.selectedCompartment.Id)
             {
                 this.selectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == activeOperation.ItemId
-                    && (activeOperation.Lot == null || ic.Lot == activeOperation.Lot)
-                    && (activeOperation.SerialNumber == null || ic.ItemSerialNumber == activeOperation.SerialNumber));
+                    && (activeOperation.Lot == null || activeOperation.Lot == "*" || ic.Lot == activeOperation.Lot)
+                    && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || ic.ItemSerialNumber == activeOperation.SerialNumber));
             }
 
             if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id
