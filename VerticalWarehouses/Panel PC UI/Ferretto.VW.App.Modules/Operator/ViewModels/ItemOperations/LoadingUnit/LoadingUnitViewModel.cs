@@ -9,9 +9,11 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
@@ -141,6 +143,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string selectedItemTxt;
 
         private ItemInfo selectedProduct;
+
+        private object socketLinkOperationToken;
 
         private CancellationTokenSource tokenSource;
 
@@ -698,6 +702,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBusyLoading = false;
             this.ProductsDataGridViewVisibility = this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
+            await this.GetSocketLinkOperation();
+
+            this.socketLinkOperationToken = this.socketLinkOperationToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SocketLinkOperationChangeMessageData>>()
+                    .Subscribe(
+                        this.OnSocketLinkOperationChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             await base.OnAppearedAsync();
 
@@ -1112,38 +1126,38 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (param == OperatorApp.Box)
             {
                 return
-                this.SelectedCompartment != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyConfirmingRecallOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.IsWmsHealthy;
+                    this.SelectedCompartment != null
+                    &&
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsBusyConfirmingRecallOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.IsWmsHealthy;
             }
-            if (param == OperatorApp.Add)
+            else if (param == OperatorApp.Add)
             {
                 return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyConfirmingRecallOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.IsWmsHealthy;
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsBusyConfirmingRecallOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.IsWmsHealthy;
             }
 
             return
-            this.SelectedItemCompartment?.ItemId != null
-            &&
-            !this.IsWaitingForResponse
-            &&
-            !this.IsBusyConfirmingRecallOperation
-            &&
-            !this.IsBusyConfirmingOperation
-            &&
-            this.IsWmsHealthy;
+                this.SelectedItemCompartment?.ItemId != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyConfirmingRecallOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.IsWmsHealthy;
         }
 
         private bool CanExecuteItemPick()
@@ -1437,6 +1451,39 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private async Task GetSocketLinkOperation()
+        {
+            try
+            {
+                var operation = await this.missionOperationsWebService.GetSocketLinkOperationAsync();
+                if (operation != null
+                    && (!operation.IsCompleted ?? true)
+                    )
+                {
+                    var newOperation = new SocketLinkOperationChangeMessageData
+                    {
+                        Id = operation.Id,
+                        ItemCode = operation.ItemCode,
+                        ItemDescription = operation.ItemDescription,
+                        ItemListCode = operation.ItemListCode,
+                        Message = operation.Message,
+                        OperationType = operation.OperationType,
+                        BayNumber = (CommonUtils.Messages.Enumerations.BayNumber)this.MachineService.BayNumber,
+                        RequestedQuantity = operation.RequestedQuantity ?? 0,
+                        CompartmentX1Position = operation.CompartmentX1Position,
+                        CompartmentX2Position = operation.CompartmentX2Position,
+                        CompartmentY1Position = operation.CompartmentY1Position,
+                        CompartmentY2Position = operation.CompartmentY2Position,
+                    };
+                    this.SocketLinkOperationChange(newOperation);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void HideOperation()
         {
             this.IsAdjustmentVisible = false;
@@ -1475,6 +1522,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource = new CancellationTokenSource();
             await this.ReloadAllItems(this.tokenSource.Token);
             await this.RefreshItemsAsync();
+        }
+
+        private void OnSocketLinkOperationChanged(NotificationMessageUI<SocketLinkOperationChangeMessageData> e)
+        {
+            this.SocketLinkOperationChange(e.Data);
         }
 
         private async Task RefreshItemsAsync()
@@ -1671,6 +1723,46 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private void SocketLinkOperationChange(SocketLinkOperationChangeMessageData e)
+        {
+            var isOperation = !string.IsNullOrEmpty(e.Id);
+
+            if ((BayNumber)e.BayNumber == this.MachineService.BayNumber)
+            {
+                this.IsSocketLinkOperationVisible = isOperation;
+                if (isOperation)
+                {
+                    this.SocketLinkOperation = new SocketLinkOperation
+                    {
+                        Id = e.Id,
+                        ItemCode = e.ItemCode,
+                        ItemDescription = e.ItemDescription,
+                        ItemListCode = e.ItemListCode,
+                        Message = e.Message,
+                        OperationType = e.OperationType,
+                        RequestedQuantity = e.RequestedQuantity,
+                        CompartmentX1Position = e.CompartmentX1Position,
+                        CompartmentX2Position = e.CompartmentX2Position,
+                        CompartmentY1Position = e.CompartmentY1Position,
+                        CompartmentY2Position = e.CompartmentY2Position,
+                    };
+
+                    this.InputQuantity = this.SocketLinkOperation.RequestedQuantity;
+                    this.QuantityTolerance = 0;
+
+                    this.navigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.SOCKETLINKOPERATION,
+                        this.SocketLinkOperation,
+                        trackCurrentView: false);
+                }
+                else
+                {
+                    this.SocketLinkOperation = null;
+                }
+            }
+        }
+
         private async Task ToggleOperation(string operationType)
         {
             if (operationType is null)
@@ -1751,7 +1843,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     ||
                     this.IsAddItemVisible
                     ||
-                    this.IsBoxOperationVisible;
+                    this.IsBoxOperationVisible
+                    ||
+                    this.IsSocketLinkOperationVisible;
 
                 this.CanInputQuantity = this.IsOperationVisible;
 

@@ -269,6 +269,12 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.SocketLinkLaserPointerChange(message);
         }
 
+        private async Task OnSocketLinkOperationChange(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.SocketLinkOperationChange(message);
+        }
+
         //private async Task OnSocketLinkEnableChanged(IServiceProvider serviceProvider)
         //{
         //    var dataHubClient = serviceProvider.GetRequiredService<WMS.Data.WebAPI.Contracts.IDataHubClient>();

@@ -106,6 +106,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding item on loading unit .
+        /// </summary>
+        public static string AddingItemPageHeader {
+            get {
+                return ResourceManager.GetString("AddingItemPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Additional Information.
         /// </summary>
         public static string AdditionalText {
@@ -2527,6 +2536,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding item ....
+        /// </summary>
+        public static string ItemAdding {
+            get {
+                return ResourceManager.GetString("ItemAdding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adding item failed.
+        /// </summary>
+        public static string ItemAddingFailed {
+            get {
+                return ResourceManager.GetString("ItemAddingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid operation. Item and tote must be acquired..
         /// </summary>
         public static string ItemAndToteInvalidPickOperation {
@@ -2676,6 +2703,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemListType_Put {
             get {
                 return ResourceManager.GetString("ItemListType_Put", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item loaded.
+        /// </summary>
+        public static string ItemLoaded {
+            get {
+                return ResourceManager.GetString("ItemLoaded", resourceCulture);
             }
         }
         
@@ -4579,11 +4615,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Signalling defect on process....
+        /// </summary>
+        public static string SignallingDefectOnProcess {
+            get {
+                return ResourceManager.GetString("SignallingDefectOnProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Signalling defect successful.
         /// </summary>
         public static string SignallingDefectSuccess {
             get {
                 return ResourceManager.GetString("SignallingDefectSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Socket Link.
+        /// </summary>
+        public static string SocketLink {
+            get {
+                return ResourceManager.GetString("SocketLink", resourceCulture);
             }
         }
         

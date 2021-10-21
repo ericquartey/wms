@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private bool isEnabled;
 
+        private bool isSocketLinkEnabled;
+
         #endregion
 
         #region Constructors
@@ -44,6 +46,8 @@ namespace Ferretto.VW.App.Modules.Operator
         #region Properties
 
         public bool IsEnabled => this.isEnabled;
+
+        public bool IsSocketLinkEnabled => this.isSocketLinkEnabled;
 
         #endregion
 
@@ -176,6 +180,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     try
                     {
                         this.isEnabled = await this.wmsStatusWebService.IsEnabledAsync();
+                        this.isSocketLinkEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
                     }
                     catch
                     {

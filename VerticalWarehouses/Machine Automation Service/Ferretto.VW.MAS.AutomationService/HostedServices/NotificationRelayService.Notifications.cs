@@ -146,6 +146,10 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.OnSocketLinkLaserPointerChange(message);
                     break;
 
+                case MessageType.SocketLinkOperationChange:
+                    await this.OnSocketLinkOperationChange(message);
+                    break;
+
                 case MessageType.RepetitiveHorizontalMovements:
                     await this.OnRepetitiveHorizontalMovementsChanged(message);
                     break;

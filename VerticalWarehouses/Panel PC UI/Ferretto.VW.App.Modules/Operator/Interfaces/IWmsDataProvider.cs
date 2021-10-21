@@ -8,6 +8,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         bool IsEnabled { get; }
 
+        bool IsSocketLinkEnabled { get; }
+
         #endregion
 
         #region Methods

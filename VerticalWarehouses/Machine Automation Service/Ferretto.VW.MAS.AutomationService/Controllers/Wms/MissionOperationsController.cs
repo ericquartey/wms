@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IHubContext<OperatorHub> hubContext;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         private readonly IMissionOperationsProvider missionOperationsProvider;
 
         private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
@@ -40,6 +42,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsWmsWebService missionsWmsWebService,
             IBaysDataProvider baysDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IHubContext<OperatorHub> hubContext)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
             this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
         #endregion
@@ -105,6 +109,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
         }
 
+        [HttpGet("socket-link-operation")]
+        public async Task<ActionResult<SocketLinkOperation>> GetSocketLinkOperationAsync()
+        {
+            return this.Ok(this.machineVolatileDataProvider.SocketLinkOperation[this.BayNumber]);
+        }
+
         [HttpGet("get-unit-id")]
         public ActionResult<int> GetUnitId(int missionId)
         {
@@ -120,6 +130,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
+            return this.Ok();
+        }
+
+        [HttpPost("{id}/socket-link-complete")]
+        public async Task<ActionResult> SocketLinkCompleteAsync(string id, double quantity, DateTimeOffset completedTime)
+        {
+            var operation = this.machineVolatileDataProvider.SocketLinkOperation[this.BayNumber];
+            if (operation is null || operation.Id != id)
+            {
+                throw new InvalidOperationException($"Socket link operation {id} not active.");
+            }
+            //if (operation.IsCompleted)
+            //{
+            //    throw new InvalidOperationException($"Socket link operation {id} already completed.");
+            //}
+            operation.IsCompleted = true;
+            operation.ConfirmedQuantity = quantity;
+            operation.CompletedTime = completedTime;
+            this.machineVolatileDataProvider.SocketLinkOperation[this.BayNumber] = operation;
             return this.Ok();
         }
 

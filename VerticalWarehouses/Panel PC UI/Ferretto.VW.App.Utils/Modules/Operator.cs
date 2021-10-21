@@ -63,6 +63,8 @@
 
             public const string PUT_DETAILS = "ItemPutDetailsViewModel";
 
+            public const string SOCKETLINKOPERATION = "SocketLinkOperationViewModel";
+
             public const string WAIT = "ItemOperationWaitViewModel";
 
             public static string DRAPERYCONFIRM = "ItemDraperyConfirmViewModel";

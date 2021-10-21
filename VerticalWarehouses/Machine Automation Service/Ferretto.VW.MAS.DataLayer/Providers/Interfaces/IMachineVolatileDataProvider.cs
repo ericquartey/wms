@@ -58,6 +58,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int? RequiredCycles { get; set; }
 
+        Dictionary<BayNumber, SocketLinkOperation> SocketLinkOperation { get; set; }
+
         bool StopTest { get; set; }
 
         MachineMode UiFilteredMode { get; }

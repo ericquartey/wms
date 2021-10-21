@@ -12,6 +12,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Prism.Events;
 using static Ferretto.VW.MAS.SocketLink.SocketLinkCommand;
 using Ferretto.VW.MAS.TimeManagement.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.SocketLink
 {
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Fields
 
-        private const string VERSION = "4.11";
+        private const string VERSION = "4.12";
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -29,9 +30,13 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
+        private readonly ILogger<SocketLinkProvider> logger;
+
         private readonly IMachineModeProvider machineModeProvider;
 
         private readonly IMachineProvider machineProvider;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
@@ -48,20 +53,24 @@ namespace Ferretto.VW.MAS.SocketLink
             IErrorsProvider errorsProvider,
             IBaysDataProvider baysDataProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            ILogger<SocketLinkProvider> logger,
             IMachineModeProvider machineModeProvider,
             IMachineProvider machineProvider,
             IMissionsDataProvider missionsDataProvider,
-            IMissionSchedulingProvider missionSchedulingProvider)
+            IMissionSchedulingProvider missionSchedulingProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider)
         {
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
             this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
             this.baysDataProvider = baysDataProvider ?? throw new System.ArgumentNullException(nameof(baysDataProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.machineModeProvider = machineModeProvider ?? throw new ArgumentNullException(nameof(machineModeProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
             this.timeChangedEvent = eventAggregator.GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>();
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
         #endregion
@@ -362,6 +371,100 @@ namespace Ferretto.VW.MAS.SocketLink
             }
 
             return payLoadArray;
+        }
+
+        private bool NewSocketLinkOperation(
+            BayNumber bayNumber,
+            string id,
+            string message,
+            double quantity,
+            string operationType,
+            string itemCode,
+            string itemDescription,
+            string itemListCode,
+            string compartPosition
+            )
+        {
+            var operation = this.machineVolatileDataProvider.SocketLinkOperation[bayNumber];
+            //if (operation != null
+            //    && operation.Id == id
+            //    && operation.IsCompleted)
+            //{
+            //    this.logger.LogDebug($"Socket link operation already completed. BayNumber:{bayNumber}, id:{id}, quantity{quantity:0.000}");
+            //    return false;
+            //}
+            var positions = new Dictionary<int, int?>();
+            if (!string.IsNullOrEmpty(compartPosition))
+            {
+                var arrayOfInt = compartPosition.Split(',');
+                var count = 0;
+                foreach (var num in arrayOfInt)
+                {
+                    if (int.TryParse(num, out var res))
+                    {
+                        positions.Add(count, res);
+                    }
+                    count++;
+                }
+            }
+
+            if (operation is null
+                || operation.Id != id
+                || operation.RequestedQuantity != quantity
+                || operation.Message != message
+                || operation.OperationType != operationType
+                || operation.ItemCode != itemCode
+                )
+            {
+                var newOperation = new SocketLinkOperation
+                {
+                    Id = id,
+                    ItemCode = itemCode,
+                    ItemDescription = itemDescription,
+                    ItemListCode = itemListCode,
+                    Message = message,
+                    OperationType = operationType,
+                    BayNumber = bayNumber,
+                    RequestedQuantity = quantity,
+                    CompartmentX1Position = positions.GetValueOrDefault(0, null),
+                    CompartmentX2Position = positions.GetValueOrDefault(1, null),
+                    CompartmentY1Position = positions.GetValueOrDefault(2, null),
+                    CompartmentY2Position = positions.GetValueOrDefault(3, null)
+                };
+
+                this.machineVolatileDataProvider.SocketLinkOperation[bayNumber] = newOperation;
+
+                var data = new SocketLinkOperationChangeMessageData(
+                    bayNumber,
+                    id,
+                    message,
+                    quantity,
+                    operationType,
+                    itemCode,
+                    itemDescription,
+                    itemListCode,
+                    newOperation.CompartmentX1Position,
+                    newOperation.CompartmentX2Position,
+                    newOperation.CompartmentY1Position,
+                    newOperation.CompartmentY2Position
+                    );
+
+                this.eventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(
+                        new NotificationMessage(
+                            data,
+                            $"Operation, Bay={bayNumber}, Operation={id}",
+                            MessageActor.Any,
+                            MessageActor.DeviceManager,
+                            MessageType.SocketLinkOperationChange,
+                            bayNumber,
+                            bayNumber,
+                            MessageStatus.OperationStart));
+
+                this.logger.LogDebug($"Socket link operation accepted. BayNumber:{bayNumber}; id:{id}; quantity:{quantity:0.000}");
+            }
+            return true;
         }
 
         /// <summary>
@@ -773,20 +876,20 @@ namespace Ferretto.VW.MAS.SocketLink
                         if (string.IsNullOrEmpty(id))
                         {
                             // clear message
-                            // TODO: add method to clear picking message
+                            this.ResetSocketLinkOperation(bay.Number);
                             cmdResponse.AddPayload((int)PickingCommandResponse.messageCorrectlyReceived);
                         }
                         else
                         {
                             if (this.machineModeProvider.GetCurrent() == CommonUtils.Messages.MachineMode.Automatic)
                             {
-                                // TODO: add method to shows  picking message
+                                this.NewSocketLinkOperation(bay.Number, id, message, (double)quantity, operationType, articleCode, articleDescription, listNumber, compartPosition);
                                 cmdResponse.AddPayload((int)PickingCommandResponse.messageCorrectlyReceived);
                             }
                             else
                             {
                                 cmdResponse.AddPayload((int)PickingCommandResponse.machineNotReady);
-                                cmdResponse.AddPayload("Machine not ready (no authomatic mode)");
+                                cmdResponse.AddPayload("Machine not ready (no automatic mode)");
                             }
                         }
                     }
@@ -818,7 +921,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
                     var trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
-                    var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == MissionType.OUT).Count();
+                    var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Count(m => m.MissionType == MissionType.OUT);
 
                     cmdResponse.AddPayload(cmdReceived.GetWarehouseNumber());                                   // <WarehouseNumber>
                     cmdResponse.AddPayload((int)bay.Number);                                                    // <BayNumber>
@@ -846,10 +949,22 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(trayNumber);                                                         // <TrayIdentfierInBayN>
                     cmdResponse.AddPayload(numberMissionOnBay);                                                 // <NumberOfTraysCurrentlyInTheQueueBayN>
 
-                    cmdResponse.AddPayload((int)PickingConfirm.NotConfirmed);                                   // <PickingConfirmedBayN> TODO
-                    cmdResponse.AddPayload("123456789");                                                        // <PickingIdN> TODO
-                    cmdResponse.AddPayload("99");                                                               // <PickingQuantityN> TODO
-                    cmdResponse.AddPayload(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));                       // <PickingTimestampN> TODO
+                    var operation = this.machineVolatileDataProvider.SocketLinkOperation[bay.Number];
+                    if (operation != null)
+                    {
+                        var isCompleted = (operation.IsCompleted.HasValue && operation.IsCompleted.Value) ? 1 : 0;
+                        cmdResponse.AddPayload(isCompleted);                                                        // <PickingConfirmedBayN>
+                        cmdResponse.AddPayload(operation.Id);                                                       // <PickingIdN>
+                        if (isCompleted != 0)
+                        {
+                            var qty = (decimal)operation.ConfirmedQuantity;
+                            cmdResponse.AddPayload(qty.ToString(CultureInfo.InvariantCulture));                             // <PickingQuantityN>
+                            if (operation.CompletedTime.HasValue)
+                            {
+                                cmdResponse.AddPayload(operation.CompletedTime.Value.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));            // <PickingTimestampN>
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -1153,6 +1268,36 @@ namespace Ferretto.VW.MAS.SocketLink
             }
 
             return cmdResponse;
+        }
+
+        private void ResetSocketLinkOperation(BayNumber bayNumber)
+        {
+            this.machineVolatileDataProvider.SocketLinkOperation[bayNumber] = null;
+            var data = new SocketLinkOperationChangeMessageData(
+                bayNumber,
+                id: null,
+                message: null,
+                quantity: null,
+                operationType: null,
+                itemCode: null,
+                itemDescription: null,
+                itemListCode: null
+                );
+
+            this.eventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(
+                    new NotificationMessage(
+                        data,
+                        $"Operation reset, Bay={bayNumber}",
+                        MessageActor.Any,
+                        MessageActor.DeviceManager,
+                        MessageType.SocketLinkOperationChange,
+                        bayNumber,
+                        bayNumber,
+                        MessageStatus.OperationEnd));
+
+            this.logger.LogDebug($"Socket link operation reset. BayNumber:{bayNumber}");
         }
 
         private bool WarehouseNumberIsValid(SocketLinkCommand command)

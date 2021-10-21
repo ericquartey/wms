@@ -71,6 +71,11 @@ namespace Ferretto.VW.MAS.DataLayer
             this.ElevatorVerticalPositionOld = -10000;
             this.RandomCells = false;
 
+            this.SocketLinkOperation = new Dictionary<BayNumber, SocketLinkOperation>();
+            this.SocketLinkOperation.Add(BayNumber.BayOne, null);
+            this.SocketLinkOperation.Add(BayNumber.BayTwo, null);
+            this.SocketLinkOperation.Add(BayNumber.BayThree, null);
+
             //x this.EnableLocalDbSavingOnTelemetry = false;
             //x this.EnableLocalDbSavingOnServer = false;
             if (dataLayerService.IsReady)
@@ -189,6 +194,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool RandomCells { get; set; }
 
         public int? RequiredCycles { get; set; }
+
+        public Dictionary<BayNumber, SocketLinkOperation> SocketLinkOperation { get; set; }
 
         public bool StopTest { get; set; }
 
