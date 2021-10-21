@@ -29,6 +29,7 @@
 - Aggiunta immediata articolo presente a magazzino su un cassetto
 - Gestione liste di prelievo in attesa non evadibili
 - Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
+- Aggiunta vista delle operazioni in baia con Socket Link
 
 ## Bug Risolti
 - La procedura di controllo peso è obbligatoria
