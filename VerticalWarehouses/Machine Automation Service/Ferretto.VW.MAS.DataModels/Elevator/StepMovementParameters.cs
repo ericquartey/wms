@@ -4,6 +4,26 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public class StepMovementParameters : MovementParameters
     {
+        #region Constructors
+
+        public StepMovementParameters()
+        {
+        }
+
+        public StepMovementParameters(StepMovementParameters param)
+        {
+            this.AdjustAccelerationByWeight = param.AdjustAccelerationByWeight;
+            this.AdjustSpeedByWeight = param.AdjustSpeedByWeight;
+            this.Number = param.Number;
+            this.Position = param.Position;
+            this.Acceleration = param.Acceleration;
+            this.Deceleration = param.Deceleration;
+            this.Speed = param.Speed;
+            this.Id = param.Id;
+        }
+
+        #endregion
+
         #region Properties
 
         public bool AdjustAccelerationByWeight { get; set; }

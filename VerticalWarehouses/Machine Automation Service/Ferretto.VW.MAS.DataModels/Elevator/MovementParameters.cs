@@ -12,6 +12,22 @@
 
         #endregion
 
+        #region Constructors
+
+        public MovementParameters()
+        {
+        }
+
+        public MovementParameters(MovementParameters param)
+        {
+            this.acceleration = param.Acceleration;
+            this.deceleration = param.Deceleration;
+            this.speed = param.Speed;
+            this.Id = param.Id;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>

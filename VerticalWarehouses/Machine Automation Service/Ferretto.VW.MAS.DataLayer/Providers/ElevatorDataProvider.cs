@@ -190,7 +190,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
                 }
 
-                return cacheEntry;
+                return cacheEntry.Clone();
             }
         }
 
@@ -463,10 +463,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
-                this.cache.Remove(cacheKey);
-
-                var axis = this.GetAxis(Orientation.Horizontal);
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(e => e.Orientation == Orientation.Horizontal);
 
                 axis.ChainOffset = Math.Round(newDistance, 2);
 
@@ -478,6 +475,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 //}
                 this.dataContext.ElevatorAxes.Update(axis);
                 this.dataContext.SaveChanges();
+
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
             }
         }
 
@@ -485,14 +485,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
-                this.cache.Remove(cacheKey);
-
-                var axis = this.GetAxis(Orientation.Horizontal);
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(e => e.Orientation == Orientation.Horizontal);
 
                 axis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(axis);
                 this.dataContext.SaveChanges();
+
+                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
+                this.cache.Remove(cacheKey);
 
                 this.logger.LogDebug($"Elevator axis Horizontal resolution save {newResolution}");
             }
@@ -532,8 +532,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (Math.Abs(position - this.GetAxis(orientation).LastIdealPosition) > 1)
                 {
-                    this.cache.Remove(GetAxisCacheKey(orientation));
-
                     var posAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
 
                     posAxis.LastIdealPosition = position;
@@ -543,6 +541,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.logger.LogDebug($"Elevator axis {orientation} last position save {position}");
 
                     // reload cache
+                    this.cache.Remove(GetAxisCacheKey(orientation));
                     _ = this.GetAxis(orientation);
 
                     if (orientation == Orientation.Horizontal)
@@ -557,10 +556,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var cacheKey = GetAxisCacheKey(Orientation.Horizontal);
-                this.cache.Remove(cacheKey);
-
-                var axis = this.GetAxis(Orientation.Vertical);
+                var axis = this.dataContext.ElevatorAxes.Include(a => a.WeightMeasurement).SingleOrDefault(e => e.Orientation == Orientation.Vertical);
 
                 axis.WeightMeasurement.MeasureConst0 = measureConst0;
 
@@ -570,6 +566,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.ElevatorAxes.Update(axis);
                 this.dataContext.SaveChanges();
+
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
             }
         }
 
@@ -577,14 +576,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(e => e.Orientation == Orientation.Vertical);
+
+                axis.LowerBound = newLowerBound;
+                this.dataContext.ElevatorAxes.Update(axis);
+                this.dataContext.SaveChanges();
+
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
                 this.cache.Remove(cacheKey);
-
-                var verticalAxis = this.GetAxis(Orientation.Vertical);
-
-                verticalAxis.LowerBound = newLowerBound;
-                this.dataContext.ElevatorAxes.Update(verticalAxis);
-                this.dataContext.SaveChanges();
             }
         }
 
@@ -592,14 +591,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Remove(cacheKey);
-
-                var verticalAxis = this.GetAxis(Orientation.Vertical);
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(e => e.Orientation == Orientation.Vertical);
 
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
                 this.dataContext.SaveChanges();
+
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
             }
         }
 
@@ -607,14 +606,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Remove(cacheKey);
-
-                var verticalAxis = this.GetAxis(Orientation.Vertical);
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(e => e.Orientation == Orientation.Vertical);
 
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
                 this.dataContext.SaveChanges();
+
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
 
                 var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
                 this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
@@ -625,14 +624,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Remove(cacheKey);
-
-                var verticalAxis = this.GetAxis(Orientation.Vertical);
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(e => e.Orientation == Orientation.Vertical);
 
                 verticalAxis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
                 this.dataContext.SaveChanges();
+
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Remove(cacheKey);
 
                 var procedureParameters = this.setupProceduresDataProvider.GetVerticalResolutionCalibration();
                 this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
