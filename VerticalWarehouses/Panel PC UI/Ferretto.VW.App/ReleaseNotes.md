@@ -29,12 +29,14 @@
 - Aggiunta immediata articolo presente a magazzino su un cassetto
 - Gestione liste di prelievo in attesa non evadibili
 - Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
+- Aggiunta vista delle operazioni in baia con Socket Link
 
 ## Bug Risolti
 - La procedura di controllo peso è obbligatoria
 - Eliminato caso di mancata pesata nei movimenti guidati
 - Corretto ripristino del collegamento con il WMS
 - Inviamo il comando HOME al laser quando lo stato diventa Automatico
+- Corretto caso di errore di "sensore di zero non attivo dopo un deposito"
 
 ## Compatibile con adapter 0.4.26
 ***

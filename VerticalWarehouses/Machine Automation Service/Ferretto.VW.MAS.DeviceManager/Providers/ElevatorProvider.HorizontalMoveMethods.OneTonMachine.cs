@@ -75,7 +75,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var profileSteps = horizontalAxis.Profiles
                 .Single(p => p.Name == profileType)
                 .Steps
-                .OrderBy(s => s.Number);
+                .OrderBy(s => s.Number)
+                .ToList();
 
             if (!loadingUnitId.HasValue && isLoadingUnitOnBoard)
             {

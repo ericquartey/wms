@@ -10,6 +10,23 @@
 
         #endregion
 
+        #region Constructors
+
+        public ElevatorAxisManualParameters()
+        {
+        }
+
+        public ElevatorAxisManualParameters(ElevatorAxisManualParameters param)
+        {
+            this.feedRate = param.FeedRate;
+            this.feedRateAfterZero = param.FeedRateAfterZero;
+            this.TargetDistance = param.TargetDistance;
+            this.TargetDistanceAfterZero = param.TargetDistanceAfterZero;
+            this.Id = param.Id;
+        }
+
+        #endregion
+
         #region Properties
 
         public double FeedRate

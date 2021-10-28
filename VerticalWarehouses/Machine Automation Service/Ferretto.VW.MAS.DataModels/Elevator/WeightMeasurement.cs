@@ -2,6 +2,24 @@
 {
     public sealed class WeightMeasurement : DataModel
     {
+        #region Constructors
+
+        public WeightMeasurement()
+        {
+        }
+
+        public WeightMeasurement(WeightMeasurement weightMeasurement)
+        {
+            this.MeasureConst0 = weightMeasurement.MeasureConst0;
+            this.MeasureConst1 = weightMeasurement.MeasureConst1;
+            this.MeasureConst2 = weightMeasurement.MeasureConst2;
+            this.MeasureSpeed = weightMeasurement.MeasureSpeed;
+            this.MeasureTime = weightMeasurement.MeasureTime;
+            this.Id = weightMeasurement.Id;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>

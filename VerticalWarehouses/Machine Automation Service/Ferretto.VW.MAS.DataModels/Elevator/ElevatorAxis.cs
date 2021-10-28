@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -149,6 +150,26 @@ namespace Ferretto.VW.MAS.DataModels
         #endregion
 
         #region Methods
+
+        public ElevatorAxis Clone()
+        {
+            var cloned = (ElevatorAxis)this.MemberwiseClone();
+            if (this.Profiles.Any())
+            {
+                cloned.Profiles = this.Profiles.Select(p => new MovementProfile(p.Name,
+                    p.Steps.Select(s => new StepMovementParameters(s)),
+                    p.TotalDistance));
+            }
+            cloned.AssistedMovements = new ElevatorAxisManualParameters(this.AssistedMovements);
+            cloned.EmptyLoadMovement = new MovementParameters(this.EmptyLoadMovement);
+            cloned.FullLoadMovement = new MovementParameters(this.FullLoadMovement);
+            cloned.ManualMovements = new ElevatorAxisManualParameters(this.ManualMovements);
+            if (this.WeightMeasurement != null)
+            {
+                cloned.WeightMeasurement = new WeightMeasurement(this.WeightMeasurement);
+            }
+            return cloned;
+        }
 
         public MovementParameters ScaleMovementsByWeight(LoadingUnit loadingUnit, bool isLoadingUnitOnBoard)
         {
