@@ -1934,4 +1934,20 @@
   <data name="PartiallyExecuteLabel" xml:space="preserve">
     <value>Esegui parzialmente</value>
   </data>
+  <data name="Suspending" xml:space="preserve">
+    <value>Sospensione...</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SuspendOperationFailed" xml:space="preserve">
+    <value>Operazione di sospensione fallita</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SuspendOperationError" xml:space="preserve">
+    <value>Errore operazione sospensione</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SuspendOperationSuccess" xml:space="preserve">
+    <value>Operazione di sospensione con successo</value>
+    <comment>Label Message</comment>
+  </data>
 </root>

@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -34,6 +36,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string productionDate;
 
         private string requestedQuantity;
+
+        private DelegateCommand suspendCommand;
 
         #endregion
 
@@ -91,6 +95,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public string RequestedQuantity { get => this.requestedQuantity; set => this.SetProperty(ref this.requestedQuantity, value); }
 
+        public ICommand SuspendCommand =>
+                  this.suspendCommand
+                  ??
+                  (this.suspendCommand = new DelegateCommand(
+                      async () => await this.SuspendOperationAsync(),
+                      this.CanSuspendButton));
+
         #endregion
 
         #region Methods
@@ -125,6 +136,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+        }
+
+        private bool CanSuspendButton()
+        {
+            return true;
         }
 
         #endregion
