@@ -36,6 +36,7 @@
 - Eliminato caso di mancata pesata nei movimenti guidati
 - Corretto ripristino del collegamento con il WMS
 - Inviamo il comando HOME al laser quando lo stato diventa Automatico
+- Corretto caso di errore di "sensore di zero non attivo dopo un deposito"
 
 ## Compatibile con adapter 0.4.26
 ***

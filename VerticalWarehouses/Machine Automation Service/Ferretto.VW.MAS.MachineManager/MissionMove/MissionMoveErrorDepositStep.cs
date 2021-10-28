@@ -234,6 +234,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             else
             {
                 if (!this.SensorsProvider.IsSensorZeroOnCradle
+                    && !this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
+                    && !this.SensorsProvider.IsDrawerPartiallyOnCradle
+                    && this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward)
+                    )
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.ZeroSensorErrorAfterDeposit, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.ZeroSensorErrorAfterDeposit, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+                if (!this.SensorsProvider.IsSensorZeroOnCradle
                     || this.SensorsProvider.IsDrawerPartiallyOnCradle
                     )
                 {
