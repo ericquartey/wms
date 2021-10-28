@@ -30,9 +30,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("shelves/{shelfCode}/basket/{basketCode}")]
-        public async Task<IActionResult> AssociateBasketToShelf(string basketCode, string shelfCode)
+        public async Task<IActionResult> AssociateBasketToShelf(string basketCode, string shelfCode, int machineId, int bayNumber)
         {
-            await this.putToLightWmsWebService.AssociateBasketToShelfAsync(basketCode, shelfCode);
+            await this.putToLightWmsWebService.AssociateBasketToShelfAsync(basketCode, shelfCode, machineId, bayNumber);
 
             return this.Ok();
         }
@@ -41,9 +41,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("shelves/{shelfCode}/complete-basket/{basketCode}")]
-        public async Task<IActionResult> CompleteBasket(string basketCode, string shelfCode)
+        public async Task<IActionResult> CompleteBasket(string basketCode, string shelfCode, int machineId, int bayNumber)
         {
-            await this.putToLightWmsWebService.CompleteBasketAsync(basketCode, shelfCode);
+            await this.putToLightWmsWebService.CompleteBasketAsync(basketCode, shelfCode, machineId, bayNumber);
 
             return this.Ok();
         }
@@ -52,9 +52,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("shelves/{shelfCode}/full-basket/{basketCode}")]
-        public async Task<IActionResult> RemoveFullBasket(string basketCode, string shelfCode)
+        public async Task<IActionResult> RemoveFullBasket(string basketCode, string shelfCode, int machineId, int bayNumber)
         {
-            await this.putToLightWmsWebService.RemoveFullBasketAsync(basketCode, shelfCode);
+            await this.putToLightWmsWebService.RemoveFullBasketAsync(basketCode, shelfCode, machineId, bayNumber);
 
             return this.Ok();
         }

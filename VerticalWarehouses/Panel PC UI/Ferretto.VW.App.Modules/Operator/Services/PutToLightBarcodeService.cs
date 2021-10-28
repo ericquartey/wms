@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
@@ -11,7 +12,11 @@ namespace Ferretto.VW.App.Modules.Operator
     {
         #region Fields
 
+        private readonly BayNumber bayNumber;
+
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachinePutToLightWebService putToLightWebService;
 
@@ -27,10 +32,14 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public PutToLightBarcodeService(
             IMachinePutToLightWebService putToLightWebService,
+            IMachineIdentityWebService identityService,
             IEventAggregator eventAggregator)
         {
             this.putToLightWebService = putToLightWebService;
+            this.identityService = identityService;
             this.eventAggregator = eventAggregator;
+
+            this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
 
         #endregion
@@ -76,7 +85,16 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                await this.putToLightWebService.AssociateBasketToShelfAsync(this.selectedBasketCode, this.selectedShelfCode);
+                var machineIdentity = await this.identityService.GetAsync();
+                if (machineIdentity is null)
+                {
+                    this.NotifyError(new Exception($"Identificativo macchina non definito"));
+                    return;
+                }
+
+                var machineId = machineIdentity.Id;
+
+                await this.putToLightWebService.AssociateBasketToShelfAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess($"Il collo '{this.selectedBasketCode}' è stato associato allo scaffale '{this.selectedShelfCode}'.");
 
                 this.ResetUserSelection();
@@ -91,7 +109,16 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                await this.putToLightWebService.CompleteBasketAsync(this.selectedBasketCode, this.selectedShelfCode);
+                var machineIdentity = await this.identityService.GetAsync();
+                if (machineIdentity is null)
+                {
+                    this.NotifyError(new Exception($"Identificativo macchina non definito"));
+                    return;
+                }
+
+                var machineId = machineIdentity.Id;
+
+                await this.putToLightWebService.CompleteBasketAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess($"Il collo {this.selectedBasketCode} è stato chiuso.");
 
                 this.ResetUserSelection();
@@ -156,7 +183,16 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                await this.putToLightWebService.RemoveFullBasketAsync(this.selectedBasketCode, this.selectedShelfCode);
+                var machineIdentity = await this.identityService.GetAsync();
+                if (machineIdentity is null)
+                {
+                    this.NotifyError(new Exception($"Identificativo macchina non definito"));
+                    return;
+                }
+
+                var machineId = machineIdentity.Id;
+
+                await this.putToLightWebService.RemoveFullBasketAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess($"Il collo {this.selectedBasketCode} è stato marcato come pieno.");
 
                 this.ResetUserSelection();

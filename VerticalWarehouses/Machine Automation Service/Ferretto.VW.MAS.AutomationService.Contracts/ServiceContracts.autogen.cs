@@ -2509,25 +2509,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineMissionOperationsWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> AbortAsync(int id);
+        System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MissionOperation> ExecuteAsync(int id);
+        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MissionOperation> ExecuteAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, string userName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MissionOperation> ExecuteAsync(int id, string userName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MissionOperation> ExecuteAsync(int id, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<OperationReason>> GetAllReasonsAsync(MissionOperationType type);
@@ -2565,11 +2565,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetUnitIdAsync(int missionId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment);
+        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SocketLinkCompleteAsync(string id, double quantity, System.DateTimeOffset completedTime);
@@ -2578,31 +2578,38 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SocketLinkCompleteAsync(string id, double quantity, System.DateTimeOffset completedTime, System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MissionOperation> SuspendAsync(int id, string userName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MissionOperation> SuspendAsync(int id, string userName, System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.6.2.0 (NJsonSchema v10.1.23.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachinePutToLightWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode);
+        System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode, int machineId, int bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RemoveFullBasketAsync(string basketCode, string shelfCode);
+        System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode, int machineId, int bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task RemoveFullBasketAsync(string basketCode, string shelfCode, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveFullBasketAsync(string basketCode, string shelfCode, int machineId, int bayNumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveFullBasketAsync(string basketCode, string shelfCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -6968,6 +6975,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Incomplete = 73,
     
         New = 78,
+    
+        Suspended = 83,
     
         Executing = 88,
     

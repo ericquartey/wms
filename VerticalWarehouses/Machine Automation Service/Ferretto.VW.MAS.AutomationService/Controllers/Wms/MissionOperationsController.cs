@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("{id}/abort")]
-        public async Task<ActionResult> AbortAsync(int id)
+        public async Task<ActionResult> AbortAsync(int id, string userName = null)
         {
             await this.missionOperationsProvider.AbortAsync(id);
 
@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode)
+        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, string userName = null)
         {
             await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, toteBarcode);
 
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/execute")]
-        public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id)
+        public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id, string userName = null)
         {
             var operation = await this.missionOperationsWmsWebService.ExecuteAsync(id);
 
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/partially-complete")]
-        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false)
+        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null)
         {
             await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment);
 
@@ -150,6 +150,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             operation.CompletedTime = completedTime;
             this.machineVolatileDataProvider.SocketLinkOperation[this.BayNumber] = operation;
             return this.Ok();
+        }
+
+        [HttpPost("{id}/suspend")]
+        public async Task<ActionResult<MissionOperation>> SuspendAsync(int id, string userName = null)
+        {
+            var operation = await this.missionOperationsWmsWebService.SuspendItemAsync(id, userName);
+
+            return this.Ok(operation);
         }
 
         #endregion
