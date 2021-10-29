@@ -119,6 +119,8 @@ namespace Ferretto.VW.Simulator.Services
 
         public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[7]; this.SetProperty(ref inv, value); } }
 
+        public bool IsErrorGenerator { get; set; }
+
         public bool IsStartedSimulator { get; private set; }
 
         public Machine Machine
@@ -218,6 +220,14 @@ namespace Ferretto.VW.Simulator.Services
         #endregion
 
         #region Methods
+
+        public async Task ProcessErrorGeneratorAsync()
+        {
+            this.IsErrorGenerator = !this.IsErrorGenerator;
+            this.Logger.Trace($"ErrorGenerator: {this.IsErrorGenerator}");
+
+            this.RaisePropertyChanged(nameof(this.IsErrorGenerator));
+        }
 
         /// <summary>
         /// Start simulator, inizialize socket (???)
@@ -641,7 +651,15 @@ namespace Ferretto.VW.Simulator.Services
                 {
                     var message = InverterMessage.FromBytes(extractedMessage);
 
-                    this.ReplyToInverterMessage(client, message);
+                    if (this.IsErrorGenerator
+                        && (ushort)random.Next(1000) == 50)
+                    {
+                        this.Logger.Debug($"Generate Inverter error");
+                    }
+                    else
+                    {
+                        this.ReplyToInverterMessage(client, message);
+                    }
 
                     Thread.Sleep(DELAY_INVERTER_CLIENT * random.Next(1, 10));
                 }
@@ -711,7 +729,15 @@ namespace Ferretto.VW.Simulator.Services
 
                     this.UpdateRemoteIO(device);
 
-                    var result = client.Client.Send(responseMessage);
+                    if (this.IsErrorGenerator
+                        && (ushort)random.Next(1000) == 50)
+                    {
+                        this.Logger.Debug($"Generate I/O error, index: {index}");
+                    }
+                    else
+                    {
+                        var result = client.Client.Send(responseMessage);
+                    }
                     Thread.Sleep(DELAY_IO_CLIENT);
                 }
             }

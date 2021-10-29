@@ -475,6 +475,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
+                <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -517,6 +518,30 @@
                                        VerticalAlignment="Center"
                                        SensorState="{Binding MachineService.RemoteIOs01.Inputs[0].Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                        Text="{x:Static res:General.Safety}" />
+
+            <Button Grid.Column="3"
+                    Margin="5,10,5,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ErrorGeneratorCommand}"
+                    Content="{x:Static res:General.StartErrorGenerator}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BNC}}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BTVIC}}" />
+
+            <Button Grid.Column="3"
+                    Margin="10,10,5,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ErrorGeneratorCommand}"
+                    Content="{x:Static res:General.StopErrorGenerator}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsErrorGenerator}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BTVC}}" />
 
         </Grid>
 

@@ -27,6 +27,8 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
 
         InverterModel Inverters07 { get; set; }
 
+        bool IsErrorGenerator { get; set; }
+
         bool IsStartedSimulator { get; }
 
         Machine Machine { get; set; }
@@ -40,6 +42,8 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
         #endregion
 
         #region Methods
+
+        Task ProcessErrorGeneratorAsync();
 
         Task ProcessStartSimulatorAsync();
 
