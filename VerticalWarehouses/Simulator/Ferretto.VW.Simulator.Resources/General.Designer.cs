@@ -133,6 +133,15 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Generate errors.
+        /// </summary>
+        public static string StartErrorGenerator {
+            get {
+                return ResourceManager.GetString("StartErrorGenerator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start simulation.
         /// </summary>
         public static string StartSimulatorCommand {
@@ -147,6 +156,15 @@ namespace Ferretto.VW.Simulator.Resources {
         public static string StatusWord {
             get {
                 return ResourceManager.GetString("StatusWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No errors.
+        /// </summary>
+        public static string StopErrorGenerator {
+            get {
+                return ResourceManager.GetString("StopErrorGenerator", resourceCulture);
             }
         }
         

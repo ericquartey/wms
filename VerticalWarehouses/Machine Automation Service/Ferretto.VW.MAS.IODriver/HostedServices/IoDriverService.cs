@@ -171,8 +171,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private void InitializeIoDevice()
         {
-            var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
-            var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
+            var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:Drivers:RemoteIO:UseMock");
+            var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:Drivers:RemoteIO:ReadTimeoutMilliseconds", -1);
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
