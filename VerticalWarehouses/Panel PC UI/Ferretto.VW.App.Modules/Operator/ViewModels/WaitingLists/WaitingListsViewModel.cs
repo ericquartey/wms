@@ -329,8 +329,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
+                var bay = await this.bayManager.GetBayAsync();
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id);
 
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
