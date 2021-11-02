@@ -1,21 +1,29 @@
 ﻿using System;
+using System.Timers;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
-    internal sealed class SwitchAxisSwitchOnMotorState : IoStateBase
+    internal sealed class SwitchAxisSwitchOnMotorState : IoStateBase, IDisposable
     {
         #region Fields
 
-        private const int CheckDelayTime = 100;
+        private const int ResponseTimeoutMilliseconds = 2000;
 
         private readonly Axis axisToSwitchOn;
 
+        private readonly IErrorsProvider errorProvider;
+
         private readonly IoIndex index;
 
+        private readonly Timer responseTimer = new Timer(ResponseTimeoutMilliseconds) { AutoReset = false };
+
         private readonly IoStatus status;
+
+        private bool isDisposed = false;
 
         private DateTime startTime;
 
@@ -34,6 +42,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
             this.index = index;
+            this.responseTimer.Elapsed += this.OnResponseTimedOut;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
 
             logger.LogTrace("1:Method Start");
         }
@@ -41,6 +51,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
+        }
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
@@ -100,6 +116,28 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             }
 
             this.ParentStateMachine.EnqueueMessage(switchOnAxisIoMessage);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
+            {
+                if (disposing)
+                {
+                    this.responseTimer.Dispose();
+                }
+
+                this.isDisposed = true;
+            }
+        }
+
+        private void OnResponseTimedOut(object sender, ElapsedEventArgs e)
+        {
+            this.Logger.LogError("Switch axis motor timeout.");
+            this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, additionalText: $"Switch axis motor Index {this.index}");
+
+            this.ParentStateMachine.ChangeState(
+                new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, hasError: true, this.Logger, this.ParentStateMachine));
         }
 
         #endregion
