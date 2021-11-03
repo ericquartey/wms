@@ -25,21 +25,19 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
-- Aggiunta immediata articolo presente a magazzino su un cassetto
-- Gestione liste di prelievo in attesa non evadibili
-- Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
-- Aggiunta vista delle operazioni in baia con Socket Link
+## Nuove Funzionalità 1.0.31 rispetto la 1.0.30
+- 
 
 ## Bug Risolti
-- La procedura di controllo peso è obbligatoria
-- Eliminato caso di mancata pesata nei movimenti guidati
-- Corretto ripristino del collegamento con il WMS
-- Inviamo il comando HOME al laser quando lo stato diventa Automatico
-- Corretto caso di errore di "sensore di zero non attivo dopo un deposito"
+- Aggiunti timeout di ricezione con Inverter e Scheda di I/O
+- La procedura di controllo celle non ritorna al pannello 1 in caso di allarme
+- Aggiunto backup del database secondario - corregge il database incompleto in telemetria
+- Abilitato il pulsante per uscire dalla procedura di risoluzione orizzontale
 
 ## Compatibile con adapter 0.4.26
 ***
+
+[Versione 1.0.30](#id1030)
 
 [Versione 1.0.29](#id1029)
 
@@ -101,6 +99,22 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1030"></a>
+## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
+- Aggiunta immediata articolo presente a magazzino su un cassetto
+- Gestione liste di prelievo in attesa non evadibili
+- Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
+- Aggiunta vista delle operazioni in baia con Socket Link
+
+## Bug Risolti
+- La procedura di controllo peso è obbligatoria
+- Eliminato caso di mancata pesata nei movimenti guidati
+- Corretto ripristino del collegamento con il WMS
+- Inviamo il comando HOME al laser quando lo stato diventa Automatico
+- Corretto caso di errore di "sensore di zero non attivo dopo un deposito"
+
+## Compatibile con adapter 0.4.26
 
 <a id="id1029"></a>
 ## Nuove Funzionalità 1.0.29 rispetto la 1.0.28
