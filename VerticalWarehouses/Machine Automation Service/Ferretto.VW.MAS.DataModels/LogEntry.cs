@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -21,6 +22,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MessageStatus Status { get; set; }
 
+        [NotMapped]
+        public BayNumber TargetBay { get; set; }
+
         public DateTime TimeStamp { get; set; }
 
         public MessageType Type { get; set; }
@@ -31,7 +35,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public override string ToString()
         {
-            return $"{this.BayNumber,-15}|{this.Source,-20}|{this.Destination,-20}|{this.Type,-20}|{this.Status,-20}|{this.ErrorLevel,-20}|{this.Description,-100}|{this.Data}";
+            return $"{this.BayNumber,-15}|{this.TargetBay,-15}|{this.Source,-20}|{this.Destination,-20}|{this.Type,-20}|{this.Status,-20}|{this.ErrorLevel,-20}|{this.Description,-100}|{this.Data}";
         }
 
         #endregion
