@@ -33,6 +33,7 @@
 - La procedura di controllo celle non ritorna al pannello 1 in caso di allarme
 - Aggiunto backup del database secondario - corregge il database incompleto in telemetria
 - Abilitato il pulsante per uscire dalla procedura di risoluzione orizzontale
+- La distanza necessaria per la pesata è ridotta a 80mm
 
 ## Compatibile con adapter 0.4.26
 ***
