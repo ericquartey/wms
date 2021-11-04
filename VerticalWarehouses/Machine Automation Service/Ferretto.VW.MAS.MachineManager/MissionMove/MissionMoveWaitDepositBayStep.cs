@@ -160,8 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (bay.IsExternal && bay.IsDouble)
             {
                 // are there waiting mission on the bay?
-                if (!this.IsWaitingGoInternalBay()
-                    )
+                if (!this.IsWaitingGoInternalBay())
                 {
                     this.Mission.Status = MissionStatus.Executing;
 
@@ -180,6 +179,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Mission.Status = MissionStatus.Executing;
 
                     // No need to wait, go ahead with no worries
+                    if (!bay.IsExternal && bay.IsDouble && bay.Carousel is null)
+                    {
+                        // only for BID
+                        this.BaysDataProvider.Light(this.Mission.TargetBay, false);
+                    }
                     var newStep = new MissionMoveDepositUnitStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     newStep.OnEnter(null);
                 }
