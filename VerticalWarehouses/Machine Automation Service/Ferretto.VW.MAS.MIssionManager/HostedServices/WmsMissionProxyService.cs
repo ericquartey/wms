@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -276,6 +278,11 @@ namespace Ferretto.VW.MAS.MissionManager
                                 bay.Number,
                                 wmsMission.Id,
                                 wmsMission.Priority);
+                        }
+                        catch (EntityNotFoundException)
+                        {
+                            var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                            errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, bayNumber, $"{ErrorDescriptions.LoadUnitNumber} {wmsMission.LoadingUnitId}");
                         }
                         catch (Exception ex)
                         {
