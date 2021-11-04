@@ -1675,11 +1675,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sensors[(int)IOMachineSensors.LuPresentInMachineSide]
                 &&
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
-            if (movementMode == MovementMode.PositionAndMeasureWeight && !isLoadingUnitOnBoard)
+            if (movementMode == MovementMode.PositionAndMeasureWeight
+                && !isLoadingUnitOnBoard)
             {
                 this.logger.LogWarning($"Do not measure weight on empty elevator!");
                 movementMode = MovementMode.Position;
             }
+            var measureDistance = verticalAxis.WeightMeasurement.MeasureSpeed * verticalAxis.WeightMeasurement.MeasureTime / 10 + 50;
+            if (movementMode == MovementMode.PositionAndMeasureWeight
+                && this.VerticalPosition > upperBound - measureDistance)
+            {
+                this.logger.LogWarning($"Not enough space to measure weight!");
+                this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, requestingBay);
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("TargetPositionOutOfBounds", CommonUtils.Culture.Actual), targetPosition, lowerBound, upperBound));
+            }
+
             if (computeElongation && !isLoadingUnitOnBoard)
             {
                 if (this.machineVolatileDataProvider.IsOneTonMachine.Value)
