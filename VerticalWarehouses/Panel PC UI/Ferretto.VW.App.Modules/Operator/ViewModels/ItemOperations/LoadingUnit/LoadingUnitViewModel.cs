@@ -1342,6 +1342,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             noteError = true;
                             this.ShowNotification(Localized.Get("OperatorApp.NoteNotValid"), Services.Models.NotificationSeverity.Error);
+                            this.IsBusyConfirmingOperation = false;
                         }
                     }
                     else

@@ -718,7 +718,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanApply()
         {
-            return !this.SensorsService.IsZeroChain;
+            return true;
         }
 
         private bool CanBaseExecute()
