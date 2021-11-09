@@ -26,7 +26,9 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.31 rispetto la 1.0.30
-- 
+- Aggiunta possibilità di sospendere una riga della lista
+- Le conferme di prelievo e versamento inviano l'utente al WMS
+- Aggiunti gli identificativi di macchina e baia ai messaggi del Put To Light e alla gestione delle liste
 
 ## Bug Risolti
 - Aggiunti timeout di ricezione con Inverter e Scheda di I/O
@@ -36,8 +38,9 @@
 - La distanza necessaria per la pesata è ridotta a 80mm
 - Aggiunto allarme di cassetto inesistente richiesto da WMS
 - BID: la luce di baia si spegne subito al cambio cassetto
+- Bilancia contapezzi: usa un valore decimale, non più intero
 
-## Compatibile con adapter 0.4.26
+## Compatibile con adapter 0.4.27
 ***
 
 [Versione 1.0.30](#id1030)

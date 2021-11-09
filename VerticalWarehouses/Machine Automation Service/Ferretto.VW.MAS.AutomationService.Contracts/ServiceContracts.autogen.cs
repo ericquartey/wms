@@ -6595,6 +6595,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("totalStock", Required = Newtonsoft.Json.Required.Always)]
         public double TotalStock { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("unitWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? UnitWeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? Width { get; set; }
     
@@ -6986,6 +6989,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public enum MissionOperationType
     {
         NotSpecified = 0,
+    
+        Positive = 43,
+    
+        Negative = 45,
     
         Bypass = 66,
     
@@ -7437,6 +7444,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         NotSpecified = 0,
     
+        Positive = 43,
+    
+        Negative = 45,
+    
         Check = 67,
     
         Inventory = 73,
@@ -7815,6 +7826,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         PartiallyExecute = 69,
     
+        Execute = 78,
+    
         PartiallyExecuteAndWait = 87,
     
     }
@@ -7993,6 +8006,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("totalAvailable", Required = Newtonsoft.Json.Required.Always)]
         public double TotalAvailable { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("unitWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? UnitWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("uploadImageData", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public byte[] UploadImageData { get; set; }
