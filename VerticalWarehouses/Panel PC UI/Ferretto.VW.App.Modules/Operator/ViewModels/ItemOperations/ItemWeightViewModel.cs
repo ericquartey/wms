@@ -237,7 +237,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var item = await this.itemsWebService.GetByIdAsync(this.itemId);
 
                 this.ItemCode = item.Code;
-                this.AverageWeight = item.UnitWeight;
+                if (item.UnitWeight.HasValue)
+                {
+                    this.AverageWeight = item.UnitWeight;
+                }
+                else
+                {
+                    this.AverageWeight = item.AverageWeight;
+                }
 
                 if (this.AverageWeight.HasValue && this.AverageWeight > 0)
                 {
