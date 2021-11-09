@@ -571,6 +571,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.ReasonId = null;
             this.OrderId = null;
+            this.OrderEnable = false;
 
             try
             {
