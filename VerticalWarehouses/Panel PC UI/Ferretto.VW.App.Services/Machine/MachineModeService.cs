@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Services
 
             this.MachineMode = e.MachineMode;
 
-            if (this.MachineMode == MachineMode.Shutdown && this.MachinePower == MachinePowerState.Unpowered)
+            if (this.MachineMode == MachineMode.Shutdown && this.MachinePower != MachinePowerState.Powered)
             {
                 this.logger.Debug($"Machine shutdown detected");
                 this.Shutdown();
@@ -227,7 +227,7 @@ namespace Ferretto.VW.App.Services
 
             this.MachinePower = e.MachinePowerState;
 
-            if (this.MachineMode == MachineMode.Shutdown && this.MachinePower == MachinePowerState.Unpowered)
+            if (this.MachineMode == MachineMode.Shutdown && this.MachinePower != MachinePowerState.Powered)
             {
                 this.logger.Debug($"Machine shutdown detected");
                 this.Shutdown();
