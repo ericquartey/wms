@@ -41,6 +41,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.IsDraperyItem = item.IsDraperyItem;
             this.PickTolerance = item.PickTolerance;
             this.AverageWeight = item.AverageWeight;
+            this.UnitWeight = item.UnitWeight;
             this.IsQtyOnMachine = item.Machines?.Any(m => m.Id == machineId && m.AvailableQuantityItem > 0) == true;
 
             if (item.Machines?.Any() == true)

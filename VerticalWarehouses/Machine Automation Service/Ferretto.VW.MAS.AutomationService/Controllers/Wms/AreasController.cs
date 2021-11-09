@@ -34,9 +34,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("{id}/item-lists")]
-        public async Task<ActionResult<IEnumerable<ItemList>>> GetItemListsAsync(int id)
+        public async Task<ActionResult<IEnumerable<ItemList>>> GetItemListsAsync(int id, int machineId, int bayNumber)
         {
-            return this.Ok(await this.areasWmsWebService.GetItemListsAsync(id));
+            return this.Ok(await this.areasWmsWebService.GetItemListsAsync(id, machineId, bayNumber));
         }
 
         [HttpGet("{id}/products")]

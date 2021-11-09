@@ -68,6 +68,28 @@ namespace Ferretto.VW.MAS.DataLayer
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var primaryDb = configuration.GetDataLayerPrimaryConnectionString().Split('=')[1]?.Trim('\'');
             var secondaryDb = configuration.GetDataLayerSecondaryConnectionString().Split('=')[1]?.Trim('\'');
+            if (!string.IsNullOrEmpty(secondaryDb)
+                && System.IO.File.Exists(secondaryDb)
+                )
+            {
+                // create a backup
+                var currentDir = System.IO.Path.GetDirectoryName(secondaryDb);
+                var currentName = System.IO.Path.GetFileNameWithoutExtension(secondaryDb);
+                var currentExt = System.IO.Path.GetExtension(secondaryDb);
+                var bakFile = $"{currentDir}/{currentName}.bak{currentExt}";
+                try
+                {
+                    if (System.IO.File.Exists(bakFile))
+                    {
+                        System.IO.File.Delete(bakFile);
+                    }
+                    System.IO.File.Move(secondaryDb, bakFile);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex.Message);
+                }
+            }
             if (!string.IsNullOrEmpty(primaryDb)
                 && System.IO.File.Exists(primaryDb)
                 && !string.IsNullOrEmpty(secondaryDb)

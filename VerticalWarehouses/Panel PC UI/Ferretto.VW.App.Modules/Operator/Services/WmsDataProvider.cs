@@ -193,7 +193,16 @@ namespace Ferretto.VW.App.Modules.Operator
             });
         }
 
-        public async Task UpdateItemStockAsync(int compartmentId, int itemId, double stock, int? reasonId = null, string reasonNotes = null, string lot = null, string serialNumber = null, string userName = null)
+        public async Task UpdateItemStockAsync(
+            int compartmentId,
+            int itemId,
+            double stock,
+            int? reasonId = null,
+            string reasonNotes = null,
+            string lot = null,
+            string serialNumber = null,
+            string userName = null,
+            int? orderId = null)
         {
             try
             {
@@ -208,6 +217,7 @@ namespace Ferretto.VW.App.Modules.Operator
                         Lot = lot,
                         SerialNumber = serialNumber,
                         UserName = userName,
+                        MaterialStatusId = orderId,     // TODO siderpol - create new field OrderId
                     });
                 this.logger.Debug($"User requested to update compartment {compartmentId}, item {itemId} with quantity {stock}.");
             }

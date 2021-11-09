@@ -25,21 +25,25 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
-- Aggiunta immediata articolo presente a magazzino su un cassetto
-- Gestione liste di prelievo in attesa non evadibili
-- Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
-- Aggiunta vista delle operazioni in baia con Socket Link
+## Nuove Funzionalità 1.0.31 rispetto la 1.0.30
+- Aggiunta possibilità di sospendere una riga della lista
+- Le conferme di prelievo e versamento inviano l'utente al WMS
+- Aggiunti gli identificativi di macchina e baia ai messaggi del Put To Light e alla gestione delle liste
 
 ## Bug Risolti
-- La procedura di controllo peso è obbligatoria
-- Eliminato caso di mancata pesata nei movimenti guidati
-- Corretto ripristino del collegamento con il WMS
-- Inviamo il comando HOME al laser quando lo stato diventa Automatico
-- Corretto caso di errore di "sensore di zero non attivo dopo un deposito"
+- Aggiunti timeout di ricezione con Inverter e Scheda di I/O
+- La procedura di controllo celle non ritorna al pannello 1 in caso di allarme
+- Aggiunto backup del database secondario - corregge il database incompleto in telemetria
+- Abilitato il pulsante per uscire dalla procedura di risoluzione orizzontale
+- La distanza necessaria per la pesata è ridotta a 80mm
+- Aggiunto allarme di cassetto inesistente richiesto da WMS
+- BID: la luce di baia si spegne subito al cambio cassetto
+- Bilancia contapezzi: usa un valore decimale, non più intero
 
-## Compatibile con adapter 0.4.26
+## Compatibile con adapter 0.4.27
 ***
+
+[Versione 1.0.30](#id1030)
 
 [Versione 1.0.29](#id1029)
 
@@ -101,6 +105,22 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1030"></a>
+## Nuove Funzionalità 1.0.30 rispetto la 1.0.29
+- Aggiunta immediata articolo presente a magazzino su un cassetto
+- Gestione liste di prelievo in attesa non evadibili
+- Aggiunta della procedura di installazione "Risoluzione asse orizzontale"
+- Aggiunta vista delle operazioni in baia con Socket Link
+
+## Bug Risolti
+- La procedura di controllo peso è obbligatoria
+- Eliminato caso di mancata pesata nei movimenti guidati
+- Corretto ripristino del collegamento con il WMS
+- Inviamo il comando HOME al laser quando lo stato diventa Automatico
+- Corretto caso di errore di "sensore di zero non attivo dopo un deposito"
+
+## Compatibile con adapter 0.4.26
 
 <a id="id1029"></a>
 ## Nuove Funzionalità 1.0.29 rispetto la 1.0.28

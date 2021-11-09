@@ -169,18 +169,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.CurrentPanel = this.Panels?.ElementAtOrDefault(value - 1);
 
-                    this.CurrentPanelMinValue =
+                    if (this.CurrentPanel != null)
+                    {
+                        this.CurrentPanelMinValue =
                         this.CurrentPanel.Cells
                             .Where(w => w.BlockLevel.Equals(BlockLevel.None))
                             .DefaultIfEmpty(new Cell())
                             .Min(m => m.Id);
-                    this.CurrentPanelMaxValue =
-                        this.CurrentPanel.Cells
-                            .Where(w => w.BlockLevel.Equals(BlockLevel.None))
-                            .DefaultIfEmpty(new Cell())
-                            .Max(m => m.Id);
+                        this.CurrentPanelMaxValue =
+                            this.CurrentPanel.Cells
+                                .Where(w => w.BlockLevel.Equals(BlockLevel.None))
+                                .DefaultIfEmpty(new Cell())
+                                .Max(m => m.Id);
 
-                    this.CurrentCellId = this.CurrentPanelMinValue;
+                        this.CurrentCellId = this.CurrentPanelMinValue;
+                    }
                 }
             }
         }
@@ -249,7 +252,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.SetProperty(ref this.panels, panels))
                 {
-                    this.CurrentPanelNumber = 1;
+                    this.CurrentPanelNumber = this.lastPanel;
                     this.PanelsCheck = this.panels.Count(c => c.IsChecked);
                     this.PanelsCheckPercent = (double)this.panels.Count(c => c.IsChecked) / (double)this.panels.Count() * 100.0;
 
@@ -379,9 +382,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.UpdateStatusButtonFooter();
 
-            if (this.lastPanel != 0)
+            if (this.lastPanel == 0)
             {
-                this.CurrentPanel = this.Panels?.ElementAtOrDefault(this.lastPanel - 1);
+                this.lastPanel = 1;
+            }
+            if (this.Panels != null)
+            {
+                this.CurrentPanel = this.Panels.ElementAtOrDefault(this.lastPanel - 1);
                 this.CurrentPanelNumber = this.lastPanel;
             }
 

@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public const int TotalInputs = 16;
 
-        private const short COMTOUT_DEFAULT = 20000;
+        private const short COMTOUT_DEFAULT = 2000;
 
         /// <summary>
         /// Corresponds to 50ms.

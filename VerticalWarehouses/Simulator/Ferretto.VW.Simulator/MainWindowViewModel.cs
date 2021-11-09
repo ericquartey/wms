@@ -23,6 +23,8 @@ namespace Ferretto.VW.Simulator
 
         private string configurationName;
 
+        private ICommand errorGeneratorCommand;
+
         private string errorMessage;
 
         private ICommand importConfigurationCommand;
@@ -69,6 +71,11 @@ namespace Ferretto.VW.Simulator
                 }
             }
         }
+
+        public ICommand ErrorGeneratorCommand =>
+                    this.errorGeneratorCommand
+            ??
+            (this.errorGeneratorCommand = new DelegateCommand(async () => await this.machineService.ProcessErrorGeneratorAsync()));
 
         public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
 

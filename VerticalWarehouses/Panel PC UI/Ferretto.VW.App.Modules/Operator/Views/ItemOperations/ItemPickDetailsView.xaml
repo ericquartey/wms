@@ -138,7 +138,7 @@
                                          VerticalAlignment="Top"
                                          ContentText="{Binding MissionOperation.PackingListDescription}"
                                          LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
-                                         Visibility="{Binding IsPackingListDescriptionAvailable, Converter={StaticResource BTVC}}"/>
+                                         Visibility="{Binding IsPackingListDescriptionAvailable, Converter={StaticResource BTVC}}" />
 
                 <!--<controls:PpcLabeledText Grid.Row="4"
                                          Grid.Column="0"
@@ -310,6 +310,15 @@
                     </Grid>
                 </Border>
             </Border>
+
+            <controls:PpcButton Grid.Row="3"
+                                Margin="15,8,15,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding SuspendCommand}"
+                                Content="{resources:Loc OperatorApp.Suspend}"
+                                Style="{StaticResource ConfirmButton}" />
+
         </Grid>
     </Grid>
 </ctrls:View>

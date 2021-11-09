@@ -164,7 +164,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, ItemListEvadabilityType.PartiallyExecuteAndWait, null, this.authenticationService.UserName);
+                await this.itemListsWebService.ExecuteAsync(this.list.Id, this.areaId.Value, ItemListEvadabilityType.Execute, null, this.authenticationService.UserName);
                 await this.LoadListRowsAsync();
                 this.ShowNotification(
                     string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), this.list.Code),

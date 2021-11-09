@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -42,6 +43,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
@@ -125,7 +128,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IBarcodeReaderService barcodeReaderService,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IMachineMissionsWebService machineMissionsWebService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
@@ -136,6 +140,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
@@ -525,18 +530,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ExecuteItemAsync()
         {
-            if (this.isBusyRequestingItemPick)
+            var noteEnabled = await this.machineMissionsWebService.IsEnabeNoteRulesAsync();
+            if (noteEnabled
+                && (string.IsNullOrEmpty(this.reasonNotes)
+                    || !this.reasonNotes.Except(" ").Any()
+                    )
+                )
             {
-                await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
+                this.ShowNotification(Localized.Get("OperatorApp.NoteNotValid"), Services.Models.NotificationSeverity.Error);
             }
             else
             {
-                await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
-            }
+                if (this.isBusyRequestingItemPick)
+                {
+                    await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
+                }
+                else
+                {
+                    await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
+                }
 
-            this.selectedItem = null;
-            this.AvailableQuantity = null;
-            this.RaisePropertyChanged(nameof(this.SelectedItem));
+                this.selectedItem = null;
+                this.AvailableQuantity = null;
+                this.RaisePropertyChanged(nameof(this.SelectedItem));
+            }
         }
 
         //public async Task ExecuteItemPickAsync()

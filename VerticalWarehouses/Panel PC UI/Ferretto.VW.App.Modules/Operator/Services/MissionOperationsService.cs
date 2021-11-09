@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly BayNumber bayNumber;
 
         private readonly IEventAggregator eventAggregator;
@@ -54,7 +56,8 @@ namespace Ferretto.VW.App.Modules.Operator
             IMachineAccessoriesWebService machineAccessoriesWebService,
             IMachineBaysWebService machineBaysWebService,
             IEventAggregator eventAggregator,
-            IOperatorHubClient operatorHubClient)
+            IOperatorHubClient operatorHubClient,
+            IAuthenticationService authenticationService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
@@ -63,6 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
@@ -99,7 +103,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     labelPrinterName,
                     barcode,
                     wastedQuantity,
-                    toteBarcode);
+                    toteBarcode,
+                    this.authenticationService.UserName);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -231,7 +236,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     wastedQuantity,
                     labelPrinterName,
                     emptyCompartment,
-                    fullCompartment);
+                    fullCompartment,
+                    this.authenticationService.UserName);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -285,6 +291,33 @@ namespace Ferretto.VW.App.Modules.Operator
                         false);
 
             await this.RefreshActiveMissionAsync();
+        }
+
+        public async Task<bool> SuspendAsync(int operationId)
+        {
+            this.logger.Debug($"User requested to suspend operation '{operationId}'");
+
+            var operationToSuspend = await this.missionOperationsWebService.GetByIdAsync(operationId);
+            this.logger.Debug($"Operation to suspend has status '{operationToSuspend.Status}'.");
+
+            if (operationToSuspend.Status is MissionOperationStatus.Executing)
+            {
+                try
+                {
+                    var operationSuspended = await this.missionOperationsWebService.SuspendAsync(operationId, this.authenticationService.UserName);
+                    operationSuspended.Status = MissionOperationStatus.Suspended;
+
+                    await this.RefreshActiveMissionAsync();
+
+                    return true;
+                }
+                catch (Exception exc)
+                {
+                    System.Diagnostics.Debug.WriteLine(exc.Message);
+                }
+            }
+
+            return false;
         }
 
         private async Task<string> GetLabelPrinterNameAsync()
@@ -403,7 +436,7 @@ namespace Ferretto.VW.App.Modules.Operator
                         this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}.");
                         newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
 
-                        await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id);
+                        await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
                     }
                 }
                 else

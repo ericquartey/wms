@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 Source = command.Source,
                 TimeStamp = DateTime.Now,
                 Type = command.Type,
+                TargetBay = command.TargetBay,
             };
 
             this.Create(logEntry);
@@ -67,6 +68,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 Type = notification.Type,
                 ErrorLevel = notification.ErrorLevel,
                 Status = notification.Status,
+                TargetBay = notification.TargetBay,
             };
 
             this.Create(logEntry);

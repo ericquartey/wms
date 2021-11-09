@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IWeightingScaleService weightingScaleService;
 
-        private float? averageWeight;
+        private double? averageWeight;
 
         private string itemCode;
 
@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ICommand AddCommand => this.addCommand;
 
-        public float? AverageWeight
+        public double? AverageWeight
         {
             get => this.averageWeight;
             set => this.SetProperty(ref this.averageWeight, value);
@@ -237,11 +237,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var item = await this.itemsWebService.GetByIdAsync(this.itemId);
 
                 this.ItemCode = item.Code;
-                this.AverageWeight = item.AverageWeight;
+                if (item.UnitWeight.HasValue)
+                {
+                    this.AverageWeight = item.UnitWeight;
+                }
+                else
+                {
+                    this.AverageWeight = item.AverageWeight;
+                }
 
                 if (this.AverageWeight.HasValue && this.AverageWeight > 0)
                 {
-                    await this.weightingScaleService.SetAverageUnitaryWeightAsync(this.AverageWeight.Value);
+                    await this.weightingScaleService.SetAverageUnitaryWeightAsync((float)this.AverageWeight.Value);
                 }
                 else
                 {

@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
+        private readonly double measureDistance;
+
         private readonly ElevatorAxis verticalParams;
 
         #endregion
@@ -28,6 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.data = data;
             this.verticalParams = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
+            this.measureDistance = this.verticalParams.WeightMeasurement.MeasureSpeed * this.verticalParams.WeightMeasurement.MeasureTime / 10 + 50;
         }
 
         #endregion
@@ -37,7 +40,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            var position = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(this.verticalParams.UpperBound, Orientation.Vertical);
+            //var position = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(this.verticalParams.UpperBound, Orientation.Vertical);
+            var position = this.data.StartPosition + this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(this.measureDistance, Orientation.Vertical);
             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPosition, position));
             this.Logger.LogDebug($"Set target position: {position}; inverter {this.InverterStatus.SystemIndex}");
         }

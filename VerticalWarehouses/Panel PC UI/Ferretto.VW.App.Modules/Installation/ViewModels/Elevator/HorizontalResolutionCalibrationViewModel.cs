@@ -718,7 +718,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanApply()
         {
-            return !this.SensorsService.IsZeroChain;
+            return true;
         }
 
         private bool CanBaseExecute()
@@ -1284,7 +1284,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     break;
 
                 case HorizontalResolutionCalibrationStep.RunningCalibration:
-                    this.ShowPrevStepSinglePage(true, false);
+                    this.ShowPrevStepSinglePage(true, !this.IsMoving);
                     this.ShowNextStepSinglePage(true, false);
                     break;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -12,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<DataLayerContext> logger;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -19,10 +22,12 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Constructors
 
         public CellPanelsProvider(DataLayerContext dataContext,
-            ISetupProceduresDataProvider setupProceduresDataProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILogger<DataLayerContext> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -102,6 +107,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.CellPanels.Update(cellPanel);
 
                 this.dataContext.SaveChanges();
+                this.logger.LogDebug($"Update height of panel {cellPanelId} by {heightDifference:0.00}");
 
                 if (!this.dataContext.CellPanels.Where(w => w.Cells.Any(a => a.BlockLevel.Equals(BlockLevel.None))).Any(c => !c.IsChecked))
                 {

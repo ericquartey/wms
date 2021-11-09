@@ -2324,4 +2324,26 @@
     <value>Socket Link</value>
     <comment>Action</comment>
   </data>
+  <data name="Suspending" xml:space="preserve">
+    <value>Suspending...</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SuspendOperationFailed" xml:space="preserve">
+    <value>Suspend operation failed</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SuspendOperationError" xml:space="preserve">
+    <value>Error on suspend operation</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SuspendOperationSuccess" xml:space="preserve">
+    <value>Success</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Select order</value>
+  </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Select order</value>
+  </data>
 </root>
