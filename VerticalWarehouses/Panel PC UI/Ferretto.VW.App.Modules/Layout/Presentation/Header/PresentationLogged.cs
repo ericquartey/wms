@@ -181,6 +181,7 @@ namespace Ferretto.VW.App.Modules.Layout
             if (this.machineService.MachinePower >= MachinePowerState.PoweringUp
                 && !this.machineService.MachineStatus.IsError
                 && !this.machineService.IsMissionInError
+                && this.machineService.BayNumber == BayNumber.BayOne
                 )
             {
                 description = Localized.Get("InstallationApp.ShutdownDescription");
