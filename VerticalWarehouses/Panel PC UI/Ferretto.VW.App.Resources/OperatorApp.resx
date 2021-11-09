@@ -2340,4 +2340,7 @@
     <value>Success</value>
     <comment>Label Message</comment>
   </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Select order</value>
+  </data>
 </root>

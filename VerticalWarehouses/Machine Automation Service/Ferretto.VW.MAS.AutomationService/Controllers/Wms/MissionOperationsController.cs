@@ -109,6 +109,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
         }
 
+        [HttpGet("orders")]
+        public async Task<ActionResult<IEnumerable<OperationReason>>> GetOrdersAsync()
+        {
+            // TODO siderpol (orders cannot be null or the combo box will crash)
+            var orders = new List<OperationReason>
+            {
+                new OperationReason { Name = "", Id = -1 }
+                //new OperationReason { Name = "commessa 1", Id = 1 },
+                //new OperationReason { Name = "commessa 2", Id = 2 },
+                //new OperationReason { Name = "commessa 3", Id = 3 },
+            };
+            return this.Ok(orders);
+        }
+
         [HttpGet("socket-link-operation")]
         public async Task<ActionResult<SocketLinkOperation>> GetSocketLinkOperationAsync()
         {

@@ -4255,6 +4255,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Partially execute and complete.
+        /// </summary>
+        public static string PartiallyExecuteAndCompleteLabel {
+            get {
+                return ResourceManager.GetString("PartiallyExecuteAndCompleteLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Partially execute and wait.
+        /// </summary>
+        public static string PartiallyExecuteAndWaitLabel {
+            get {
+                return ResourceManager.GetString("PartiallyExecuteAndWaitLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Partially execute.
+        /// </summary>
+        public static string PartiallyExecuteLabel {
+            get {
+                return ResourceManager.GetString("PartiallyExecuteLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {
@@ -4539,6 +4566,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectCompartment {
             get {
                 return ResourceManager.GetString("SelectCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select order.
+        /// </summary>
+        public static string SelectOrders {
+            get {
+                return ResourceManager.GetString("SelectOrders", resourceCulture);
             }
         }
         
@@ -5421,6 +5457,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WaitingListDetailDataGridHeaderRow {
             get {
                 return ResourceManager.GetString("WaitingListDetailDataGridHeaderRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evadability mode selection for the list.
+        /// </summary>
+        public static string WaitingListEvadabilityModeSelectionPageHeader {
+            get {
+                return ResourceManager.GetString("WaitingListEvadabilityModeSelectionPageHeader", resourceCulture);
             }
         }
         

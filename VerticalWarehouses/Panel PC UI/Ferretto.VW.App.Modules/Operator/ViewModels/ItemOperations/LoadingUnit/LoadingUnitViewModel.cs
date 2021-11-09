@@ -116,6 +116,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand<string> operationCommand;
 
+        private bool orderEnable;
+
+        private int? orderId;
+
+        private IEnumerable<OperationReason> orders;
+
         private List<ItemInfo> products = new List<ItemInfo>();
 
         private SubscriptionToken productsChangedToken;
@@ -395,6 +401,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.operationCommand = new DelegateCommand<string>(
                 async (param) => await this.ToggleOperation(param), this.CanDoOperation));
 
+        public bool OrderEnable
+        {
+            get => this.orderEnable;
+            set => this.SetProperty(ref this.orderEnable, value);
+        }
+
+        public int? OrderId
+        {
+            get => this.orderId;
+            set => this.SetProperty(ref this.orderId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public IEnumerable<OperationReason> Orders
+        {
+            get => this.orders;
+            set => this.SetProperty(ref this.orders, value);
+        }
+
         public IList<ItemInfo> Products => new List<ItemInfo>(this.products);
 
         public bool ProductsDataGridViewVisibility
@@ -546,6 +570,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public async Task<bool> CheckReasonsAsync()
         {
             this.ReasonId = null;
+            this.OrderId = null;
 
             try
             {
@@ -562,7 +587,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.IsAdjustmentVisible)
                 {
-                    missionOperationType = MissionOperationType.Inventory;
+                    missionOperationType = (this.InputQuantity > this.SelectedItem.Stock) ? MissionOperationType.Positive : MissionOperationType.Negative;
+                    this.Orders = await this.missionOperationsWebService.GetOrdersAsync();
+                    this.OrderId = 0;
+                    this.OrderEnable = this.orders?.Any(o => o.Name.Length > 0) == true;
+                    if (this.OrderEnable)
+                    {
+                        this.OrderId = this.orders.First(o => o.Name.Length > 0).Id;
+                    }
                 }
 
                 if (missionOperationType != MissionOperationType.NotSpecified)
@@ -583,6 +615,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ShowNotification(ex);
                 this.Reasons = null;
+                this.Orders = null;
             }
             finally
             {
@@ -751,6 +784,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.Reasons = null;
+            this.Orders = null;
             this.IsWaitingForReason = false;
 
             Task.Run(async () =>
@@ -907,7 +941,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        protected async override Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
+        protected override async Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
 
@@ -1086,6 +1120,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void CancelReason()
         {
             this.Reasons = null;
+            this.Orders = null;
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
             this.IsWaitingForReason = false;
@@ -1312,7 +1347,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 this.reasonNotes,
                                 this.SelectedItem.Lot,
                                 this.SelectedItem.ItemSerialNumber,
-                                userName: this.authenticationService.UserName);
+                                this.authenticationService.UserName,
+                                this.orderId);
 
                             var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
                             if (item.AverageWeight != null && item.AverageWeight != 0)
@@ -1355,7 +1391,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.reasonNotes,
                             this.SelectedItem.Lot,
                             this.SelectedItem.ItemSerialNumber,
-                            this.authenticationService.UserName);
+                            this.authenticationService.UserName,
+                            this.orderId);
 
                         var item = await this.itemsWebService.GetByIdAsync(this.SelectedItemCompartment.ItemId.Value);
                         if (item.AverageWeight != null && item.AverageWeight != 0)
@@ -1421,6 +1458,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsWaitingForResponse = false;
                     this.IsWaitingForReason = false;
                     this.Reasons = null;
+                    this.Orders = null;
                     this.RaiseCanExecuteChanged();
                 }
             }

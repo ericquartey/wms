@@ -1950,4 +1950,7 @@
     <value>Operazione di sospensione con successo</value>
     <comment>Label Message</comment>
   </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Seleziona commessa</value>
+  </data>
 </root>
