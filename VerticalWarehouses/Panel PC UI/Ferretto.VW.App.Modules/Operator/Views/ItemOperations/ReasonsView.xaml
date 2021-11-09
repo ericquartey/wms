@@ -216,14 +216,15 @@
                   SelectedValuePath="Id"
                   Style="{StaticResource ReasonComboBoxStyle}" />
 
-          <StackPanel Grid.Row="2"
+          <!--<StackPanel Grid.Row="2"
                     Grid.RowSpan="2"
                     Visibility="{Binding OrderEnable, Converter={StaticResource BTVC}}">
                     
                 <TextBlock 
                    FontSize="{DynamicResource FontSize_Normal}"
                    Foreground="{DynamicResource Text_Foreground}"
-                   Text="{res:Loc OperatorApp.SelectOrders}"/>
+                   Text="{res:Loc OperatorApp.SelectOrders}"
+                    Visibility="{Binding OrderEnable, Converter={StaticResource BTVC}}"/>
           
                 <ComboBox x:Name="orderCB"
                   Margin="0,15,0,0"
@@ -231,9 +232,10 @@
                   ItemsSource="{Binding Orders}"
                   SelectedValue="{Binding OrderId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedValuePath="Id"
-                  Style="{StaticResource ReasonComboBoxStyle}"/>
+                  Style="{StaticResource ReasonComboBoxStyle}"
+                  Visibility="{Binding OrderEnable, Converter={StaticResource BTVC}}"/>
 
-                </StackPanel>
+                </StackPanel>-->
 
           <StackPanel Grid.Row="4"
                     Grid.RowSpan="2"
