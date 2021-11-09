@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/abort")]
         public async Task<ActionResult> AbortAsync(int id, string userName = null)
         {
-            await this.missionOperationsProvider.AbortAsync(id);
+            await this.missionOperationsProvider.AbortAsync(id, userName);
 
             return this.Ok();
         }
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, string userName = null)
         {
-            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, toteBarcode);
+            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, toteBarcode, userName);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/execute")]
         public async Task<ActionResult<MissionOperation>> ExecuteAsync(int id, string userName = null)
         {
-            var operation = await this.missionOperationsWmsWebService.ExecuteAsync(id);
+            var operation = await this.missionOperationsWmsWebService.ExecuteAsync(id, userName);
 
             return this.Ok(operation);
         }
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/partially-complete")]
         public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null)
         {
-            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment);
+            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment, userName);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

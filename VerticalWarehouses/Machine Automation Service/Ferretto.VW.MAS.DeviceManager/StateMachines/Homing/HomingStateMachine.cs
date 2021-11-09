@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Homing.Models;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -238,7 +239,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         {
                             var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                            errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay);
+                            errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForHoming, this.machineData.RequestingBay, errorText);
                         }
                     }
 
@@ -277,7 +278,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     )
                 {
                     ok = false;
-                    errorText = $"Invalid presence sensors: zero {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}, completely on board {this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle}";
+                    errorText = $"Invalid presence sensors: Zero sensor: {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}, completely on board: {this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle}";
                 }
                 else if (this.machineData.CalibrationType == Calibration.FindSensor
                     && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
@@ -309,6 +310,45 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                                     break;
                                 }
                             }
+                        }
+                    }
+                }
+                if (ok
+                    && (this.machineData.RequestedAxisToCalibrate == Axis.Horizontal
+                        || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical)
+                    )
+                {
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                        var axis = elevatorDataProvider.GetAxis(Orientation.Horizontal);
+                        if (axis.HomingFastSpeed == 0
+                            || axis.HomingCreepSpeed == 0
+                            || axis.HomingFastSpeed < axis.HomingCreepSpeed
+                            )
+                        {
+                            ok = false;
+                            errorText = string.Format(Resources.Elevator.ResourceManager.GetString("HorizontalHomingParametersError", CommonUtils.Culture.Actual));
+                        }
+                    }
+                }
+                if (ok
+                    && (this.machineData.RequestedAxisToCalibrate == Axis.Vertical
+                        || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical)
+                    )
+                {
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                        var axis = elevatorDataProvider.GetAxis(Orientation.Vertical);
+                        if (axis.HomingAcceleration == 0
+                            || axis.HomingFastSpeed == 0
+                            || axis.HomingCreepSpeed == 0
+                            || axis.HomingFastSpeed < axis.HomingCreepSpeed
+                            )
+                        {
+                            ok = false;
+                            errorText = string.Format(Resources.Elevator.ResourceManager.GetString("VerticalHomingParametersError", CommonUtils.Culture.Actual));
                         }
                     }
                 }
