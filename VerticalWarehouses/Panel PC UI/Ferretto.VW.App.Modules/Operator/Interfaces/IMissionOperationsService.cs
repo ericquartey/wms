@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         Task StartAsync();
 
+        Task<bool> SuspendAsync(int operationId);
+
         #endregion
     }
 }

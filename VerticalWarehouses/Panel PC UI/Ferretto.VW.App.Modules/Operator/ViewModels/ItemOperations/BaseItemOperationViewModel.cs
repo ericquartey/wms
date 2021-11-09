@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -170,6 +171,44 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public virtual void OnMisionOperationRetrieved()
         {
             // do nothing
+        }
+
+        public async Task SuspendOperationAsync()
+        {
+            this.ClearNotifications();
+
+            var messageBoxResult = this.DialogService.ShowMessage(
+               Localized.Get("InstallationApp.SuspendOperation"),
+               Localized.Get("InstallationApp.SuspendOperation"),
+               DialogType.Question,
+               DialogButtons.YesNo);
+            if (messageBoxResult is DialogResult.Yes)
+            {
+                try
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.Suspending"), Services.Models.NotificationSeverity.Info);
+
+                    var bResult = await this.MissionOperationsService.SuspendAsync(this.MissionOperation.Id);
+
+                    // Notification messages
+                    if (!bResult)
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.SuspendOperationFailed"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.SuspendOperationSuccess"), Services.Models.NotificationSeverity.Success);
+
+                        // Go back to the Pick/Put view
+                        this.NavigationService.GoBack();
+                    }
+                }
+                catch (Exception exc)
+                {
+                    this.Logger.Debug($"Suspend operation. Error: {exc}");
+                    this.ShowNotification(Localized.Get("OperatorApp.SuspendOperationError"), Services.Models.NotificationSeverity.Error);
+                }
+            }
         }
 
         protected async Task RetrieveMissionOperationAsync()
