@@ -268,6 +268,56 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
+        private bool CheckUpcomingItemLists(IEnumerable<ItemList> newLists)
+        {
+            var isEqual = true;
+
+            IList<ItemListExecution> tmpLists = new List<ItemListExecution>();
+            newLists.ForEach(l => tmpLists.Add(new ItemListExecution(l, this.machineId)));
+
+            isEqual = tmpLists.Count == this.lists.Count;
+
+            if (tmpLists.Count == 0)
+            {
+                return false;
+            }
+
+            if (!isEqual)
+            {
+                return false;
+            }
+
+            //isEqual = tmpLists.SequenceEqual(this.lists);
+
+            var i = tmpLists.ToList();
+            var j = this.Lists.ToList();
+
+            isEqual = true;
+            int jx = 0;
+            while (jx < i.Count && isEqual)
+            {
+                var a = i[jx];
+                var b = j[jx];
+                jx++;
+
+                if (a.Id != b.Id ||
+                    a.IsDispatchable != b.IsDispatchable ||
+                    a.Code != b.Code ||
+                    a.Description != b.Description ||
+                    a.ItemListRowsCount != b.ItemListRowsCount ||
+                    a.ItemListType != b.ItemListType ||
+                    a.Priority != b.Priority ||
+                    a.ShipmentUnitCode != b.ShipmentUnitCode ||
+                    a.ShipmentUnitDescription != b.ShipmentUnitDescription ||
+                    a.Status != b.Status)
+                {
+                    isEqual = false;
+                }
+            }
+
+            return isEqual;
+        }
+
         private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
         {
             var listCode = e.GetListCode();
@@ -329,8 +379,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
+                var bay = await this.bayManager.GetBayAsync();
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id);
 
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
