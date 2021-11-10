@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Services
 
             if (this.MachineMode == MachineMode.Shutdown && this.MachinePower != MachinePowerState.Powered)
             {
-                this.logger.Debug($"Machine shutdown detected");
+                this.logger.Debug($"Machine shutdown detected 1");
                 this.Shutdown();
             }
         }
@@ -229,7 +229,7 @@ namespace Ferretto.VW.App.Services
 
             if (this.MachineMode == MachineMode.Shutdown && this.MachinePower != MachinePowerState.Powered)
             {
-                this.logger.Debug($"Machine shutdown detected");
+                this.logger.Debug($"Machine shutdown detected 2");
                 this.Shutdown();
             }
         }
@@ -242,6 +242,29 @@ namespace Ferretto.VW.App.Services
         }
 
         private void Shutdown()
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            if (bayNumber == BayNumber.BayOne)
+            {
+                _ = Task.Delay(1000).ContinueWith((t) => this.StopMas());
+            }
+
+            this.logger.Warn("Shutdown pc");
+            var psi = new ProcessStartInfo("shutdown", "/s /t 5");
+            psi.CreateNoWindow = true;
+            psi.UseShellExecute = false;
+
+            // NO TEST
+            Process.Start(psi);
+
+            if (bayNumber != BayNumber.BayOne)
+            {
+                this.logger.Warn("Close application");
+                System.Windows.Application.Current.Shutdown();
+            }
+        }
+
+        private void StopMas()
         {
             this.logger.Warn("Close MAS service");
             var sc = new ServiceController();
@@ -257,16 +280,10 @@ namespace Ferretto.VW.App.Services
             finally
             {
                 sc.Dispose();
+
+                this.logger.Warn("Close application");
+                System.Windows.Application.Current.Shutdown();
             }
-
-            this.logger.Warn("Shutdown pc");
-            var psi = new ProcessStartInfo("shutdown", "/s /t 5");
-            psi.CreateNoWindow = true;
-            psi.UseShellExecute = false;
-            Process.Start(psi);
-
-            this.logger.Warn("Close application");
-            System.Windows.Application.Current.Shutdown();
         }
 
         #endregion
