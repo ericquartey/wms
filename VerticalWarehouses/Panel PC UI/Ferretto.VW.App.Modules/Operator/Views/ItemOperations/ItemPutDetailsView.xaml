@@ -312,7 +312,8 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding SuspendCommand}"
                                 Content="{resources:Loc OperatorApp.Suspend}"
-                                Style="{StaticResource ConfirmButton}" />
+                                Style="{StaticResource ConfirmButton}"
+                                Visibility="Hidden"/>
 
         </Grid>
     </Grid>
