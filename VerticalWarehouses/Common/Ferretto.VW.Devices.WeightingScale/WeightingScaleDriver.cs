@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NLog;
 
@@ -17,6 +18,8 @@ namespace Ferretto.VW.Devices.WeightingScale
         public const int PORT_DEFAULT = 4001;
 
         private const string NEW_LINE = "\r\n";
+
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         private readonly ConcurrentQueue<string> errorsQueue = new ConcurrentQueue<string>();
 
@@ -62,6 +65,7 @@ namespace Ferretto.VW.Devices.WeightingScale
             this.ipAddress = ipAddress;
             this.port = port;
 
+            await this._semaphore.WaitAsync();
             try
             {
                 if (this.client is null)
@@ -73,7 +77,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                 {
                     this.logger.Trace($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
-                    await this.client.ConnectAsync(this.IpAddress, this.Port).ConfigureAwait(true);
+                    await this.client.ConnectAsync(this.IpAddress, this.Port);
                     this.stream = this.client.GetStream();
                     this.logger.Debug($"Connected");
                 }
@@ -82,6 +86,10 @@ namespace Ferretto.VW.Devices.WeightingScale
             {
                 this.logger.Error(e);
                 this.Disconnect();
+            }
+            finally
+            {
+                this._semaphore.Release();
             }
         }
 

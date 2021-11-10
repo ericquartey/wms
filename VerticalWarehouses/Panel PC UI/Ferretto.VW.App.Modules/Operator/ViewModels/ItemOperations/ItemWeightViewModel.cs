@@ -121,7 +121,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.weight;
             set
             {
-                this.MeasuredQuantity = (int?)Math.Round((this.averageWeight.HasValue && this.averageWeight.Value != 0) ? this.weight / this.averageWeight.Value : this.weight);
+                this.MeasuredQuantity = (int?)Math.Round((this.averageWeight.HasValue && this.averageWeight.Value != 0) ? value / this.averageWeight.Value : value);
                 if (this.MeasuredQuantity < 0)
                 {
                     this.MeasuredQuantity = 0;

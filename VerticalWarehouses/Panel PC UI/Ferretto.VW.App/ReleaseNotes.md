@@ -26,7 +26,6 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.31 rispetto la 1.0.30
-- Aggiunta possibilità di sospendere una riga della lista
 - Le conferme di prelievo e versamento inviano l'utente al WMS
 - Aggiunti gli identificativi di macchina e baia ai messaggi del Put To Light e alla gestione delle liste
 
