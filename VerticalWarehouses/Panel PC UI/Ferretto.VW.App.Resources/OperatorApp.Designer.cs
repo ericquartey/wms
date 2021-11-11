@@ -4066,7 +4066,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid notes field operation not confirmed.
+        ///   Looks up a localized string similar to Invalid reason or notes, operation not confirmed.
         /// </summary>
         public static string NoteNotValid {
             get {

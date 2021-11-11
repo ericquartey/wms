@@ -534,7 +534,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (noteEnabled
                 && (string.IsNullOrEmpty(this.reasonNotes)
                     || !this.reasonNotes.Except(" ").Any()
-                    )
+                    || !this.reasonId.HasValue)
                 )
             {
                 this.ShowNotification(Localized.Get("OperatorApp.NoteNotValid"), Services.Models.NotificationSeverity.Error);

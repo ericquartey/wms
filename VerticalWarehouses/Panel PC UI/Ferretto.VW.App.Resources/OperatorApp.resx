@@ -1991,7 +1991,7 @@
     <value>Wait deposit bay</value>
   </data>
   <data name="NoteNotValid" xml:space="preserve">
-    <value>Invalid notes field operation not confirmed</value>
+    <value>Invalid reason or notes, operation not confirmed</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>

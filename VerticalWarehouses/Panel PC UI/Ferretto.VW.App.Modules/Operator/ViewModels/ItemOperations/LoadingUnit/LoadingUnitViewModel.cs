@@ -1338,7 +1338,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     if (noteEnabled)
                     {
                         if (!string.IsNullOrEmpty(this.reasonNotes) &&
-                           this.reasonNotes.Except(" ").Any())
+                           this.reasonNotes.Except(" ").Any()
+                           && this.reasonId.HasValue)
                         {
                             await this.WmsDataProvider.UpdateItemStockAsync(
                                 this.SelectedItemCompartment.Id,
