@@ -1318,7 +1318,7 @@
     <comment>Header text</comment>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
-    <value>Adjustment quantity [{0}]</value>
+    <value>Stock quantity [{0}]</value>
     <comment>Label</comment>
   </data>
   <data name="PutQuantity" xml:space="preserve">
@@ -2343,7 +2343,7 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>Select order</value>
   </data>
-  <data name="SelectOrders" xml:space="preserve">
+  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
     <value>Select order</value>
   </data>
 </root>

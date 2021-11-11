@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjustment quantity [{0}].
+        ///   Looks up a localized string similar to Stock quantity [{0}].
         /// </summary>
         public static string AdjustmentQuantity {
             get {
@@ -4579,6 +4579,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select order.
+        /// </summary>
+        public static string SelectOrders_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("SelectOrders_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select reason.
         /// </summary>
         public static string SelectReasons {
@@ -5025,6 +5034,42 @@ namespace Ferretto.VW.App.Resources {
         public static string SupportType_Insert {
             get {
                 return ResourceManager.GetString("SupportType_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suspending....
+        /// </summary>
+        public static string Suspending {
+            get {
+                return ResourceManager.GetString("Suspending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on suspend operation.
+        /// </summary>
+        public static string SuspendOperationError {
+            get {
+                return ResourceManager.GetString("SuspendOperationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suspend operation failed.
+        /// </summary>
+        public static string SuspendOperationFailed {
+            get {
+                return ResourceManager.GetString("SuspendOperationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string SuspendOperationSuccess {
+            get {
+                return ResourceManager.GetString("SuspendOperationSuccess", resourceCulture);
             }
         }
         
