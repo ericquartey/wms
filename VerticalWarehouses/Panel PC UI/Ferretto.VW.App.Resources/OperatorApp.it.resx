@@ -1012,7 +1012,7 @@
     <value>Scomparto</value>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
-    <value>Quantità da rettificare  [{0}]</value>
+    <value>Giacenza  [{0}]</value>
   </data>
   <data name="PutQuantity" xml:space="preserve">
     <value>Quantità da versare [{0}]</value>
@@ -1638,7 +1638,7 @@
     <value>Attesa deposito baia</value>
   </data>
   <data name="NoteNotValid" xml:space="preserve">
-    <value>Campo note non valido operazione non confermata</value>
+    <value>Causale o note non valide, operazione non confermata</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Attenzione</value>
@@ -1953,7 +1953,7 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>Seleziona commessa</value>
   </data>
-  <data name="SelectOrders" xml:space="preserve">
+  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
     <value>Seleziona commessa</value>
   </data>
 </root>
