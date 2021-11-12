@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                                 )
                             {
                                 this.Logger.LogError($"Intrusion detected in Bay {this.machineData.RequestingBay} by height {profileHeight}!");
-                                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SecurityBarrierWasTriggered, this.machineData.RequestingBay);
+                                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SecurityBarrierWasTriggered, this.machineData.RequestingBay, Resources.General.ResourceManager.GetString("IntrusionDetected", CommonUtils.Culture.Actual));
                                 // stop timers
                                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                                 this.ParentStateMachine.ChangeState(new CheckIntrusionErrorState(this.stateData, this.Logger));

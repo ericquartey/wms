@@ -322,7 +322,9 @@
         </Grid>
 
         <localControls:ReasonsView Grid.Row="1"
-                                   Visibility="{Binding Reasons, Converter={StaticResource RTVC}}" />
+                                   Visibility="{Binding IsReasonVisible, Converter={StaticResource BTVC}}" />
 
+        <localControls:ReasonsAndOrdersView Grid.Row="1" 
+                                            Visibility="{Binding IsOrderVisible, Converter={StaticResource BTVC}}" />
     </Grid>
 </ctrls:View>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.ReasonsView"
+﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.Views.ReasonsAndOrdersView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
@@ -215,6 +215,24 @@
                   SelectedValue="{Binding ReasonId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedValuePath="Id"
                   Style="{StaticResource ReasonComboBoxStyle}" />
+
+          <StackPanel Grid.Row="2"
+                    Grid.RowSpan="2">
+                    
+                <TextBlock 
+                   FontSize="{DynamicResource FontSize_Normal}"
+                   Foreground="{DynamicResource Text_Foreground}"
+                   Text="{res:Loc OperatorApp.SelectOrders}"/>
+          
+                <ComboBox x:Name="orderCB"
+                  Margin="0,15,0,0"
+                  DisplayMemberPath="Name"
+                  ItemsSource="{Binding Orders}"
+                  SelectedValue="{Binding OrderId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedValuePath="Id"
+                  Style="{StaticResource ReasonComboBoxStyle}"/>
+
+                </StackPanel>
 
           <StackPanel Grid.Row="4"
                     Grid.RowSpan="2"

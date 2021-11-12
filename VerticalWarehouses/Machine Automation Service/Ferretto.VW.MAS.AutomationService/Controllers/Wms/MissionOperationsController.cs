@@ -112,14 +112,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("orders")]
         public async Task<ActionResult<IEnumerable<OperationReason>>> GetOrdersAsync()
         {
-            // TODO siderpol (orders cannot be null or the combo box will crash)
+            // TODO siderpol
             var orders = new List<OperationReason>
             {
-                new OperationReason { Name = "", Id = -1 }
                 //new OperationReason { Name = "commessa 1", Id = 1 },
                 //new OperationReason { Name = "commessa 2", Id = 2 },
                 //new OperationReason { Name = "commessa 3", Id = 3 },
             };
+            orders = null;
             return this.Ok(orders);
         }
 
