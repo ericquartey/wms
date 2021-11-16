@@ -150,4 +150,7 @@
   <data name="DataEntryError" xml:space="preserve">
     <value>Errore nei dati inseriti</value>
   </data>
+  <data name="IntrusionDetected" xml:space="preserve">
+    <value>Rilevata intrusione dalla barriera di controllo altezza</value>
+  </data>
 </root>

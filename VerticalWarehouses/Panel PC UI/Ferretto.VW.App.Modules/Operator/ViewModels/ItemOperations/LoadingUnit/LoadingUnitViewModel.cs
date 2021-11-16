@@ -98,9 +98,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOperationVisible;
 
+        private bool isOrderVisible;
+
         private bool isPickVisible;
 
         private bool isPutVisible;
+
+        private bool isReasonVisible;
 
         private bool isSearching;
 
@@ -345,6 +349,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isOperationVisible, value);
         }
 
+        public bool IsOrderVisible
+        {
+            get => this.isOrderVisible;
+            set => this.SetProperty(ref this.isOrderVisible, value);
+        }
+
         public bool IsPickVisible
         {
             get => this.isPickVisible;
@@ -375,6 +385,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public bool IsReasonVisible
+        {
+            get => this.isReasonVisible;
+            set => this.SetProperty(ref this.isReasonVisible, value);
+        }
+
         public bool IsSearching
         {
             get => this.isSearching;
@@ -400,12 +416,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.operationCommand = new DelegateCommand<string>(
                 async (param) => await this.ToggleOperation(param), this.CanDoOperation));
-
-        public bool OrderEnable
-        {
-            get => this.orderEnable;
-            set => this.SetProperty(ref this.orderEnable, value);
-        }
 
         public int? OrderId
         {
@@ -571,7 +581,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.ReasonId = null;
             this.OrderId = null;
-            this.OrderEnable = false;
 
             try
             {
@@ -591,10 +600,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     missionOperationType = (this.InputQuantity > this.SelectedItem.Stock) ? MissionOperationType.Positive : MissionOperationType.Negative;
                     this.Orders = await this.missionOperationsWebService.GetOrdersAsync();
                     this.OrderId = 0;
-                    this.OrderEnable = this.orders?.Any(o => o.Name.Length > 0) == true;
-                    if (this.OrderEnable)
+                    if (this.orders?.Any() == true)
                     {
-                        this.OrderId = this.orders.First(o => o.Name.Length > 0).Id;
+                        if (this.orders.Count() == 1)
+                        {
+                            this.OrderId = this.orders.First().Id;
+                        }
                     }
                 }
 
@@ -611,12 +622,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.ReasonId = this.reasons.First().Id;
                     }
                 }
+                this.IsOrderVisible = this.Reasons != null && this.Reasons.Any() && this.Orders != null && this.Orders.Any();
+                this.IsReasonVisible = this.Reasons != null && this.Reasons.Any() && (this.Orders == null || !this.Orders.Any());
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.Reasons = null;
                 this.Orders = null;
+                this.IsOrderVisible = false;
+                this.IsReasonVisible = false;
             }
             finally
             {
@@ -786,6 +801,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.Reasons = null;
             this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
             this.IsWaitingForReason = false;
 
             Task.Run(async () =>
@@ -1122,6 +1139,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.Reasons = null;
             this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
             this.IsWaitingForReason = false;
@@ -1338,7 +1357,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     if (noteEnabled)
                     {
                         if (!string.IsNullOrEmpty(this.reasonNotes) &&
-                           this.reasonNotes.Except(" ").Any())
+                           this.reasonNotes.Except(" ").Any()
+                           && this.reasonId.HasValue)
                         {
                             await this.WmsDataProvider.UpdateItemStockAsync(
                                 this.SelectedItemCompartment.Id,
@@ -1460,6 +1480,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsWaitingForReason = false;
                     this.Reasons = null;
                     this.Orders = null;
+                    this.IsOrderVisible = false;
+                    this.IsReasonVisible = false;
                     this.RaiseCanExecuteChanged();
                 }
             }

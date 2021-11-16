@@ -98,7 +98,7 @@ namespace Ferretto.VW.App.Resources
 
                 string translation = null;
 
-                if (this.resourceManagerDictionary.ContainsKey(baseName))
+                if (baseName != null && this.resourceManagerDictionary.ContainsKey(baseName))
                 {
                     translation = this.resourceManagerDictionary[baseName].GetString(stringName, this.currentCulture);
                 }
@@ -122,7 +122,7 @@ namespace Ferretto.VW.App.Resources
 
                 string translation = null;
 
-                if (Instance.resourceManagerDictionary.ContainsKey(baseName))
+                if (baseName != null && Instance.resourceManagerDictionary.ContainsKey(baseName))
                 {
                     translation = Instance.resourceManagerDictionary[baseName].GetString(stringName, Instance.currentCulture);
                 }
@@ -144,7 +144,14 @@ namespace Ferretto.VW.App.Resources
 
             var idx = name.LastIndexOf('.');
 
-            return (name.Substring(0, idx), name.Substring(idx + 1));
+            if (idx >= 0)
+            {
+                return (name.Substring(0, idx), name.Substring(idx + 1));
+            }
+            else
+            {
+                return (null, name);
+            }
         }
 
         // WPF bindings register PropertyChanged event if the object supports it and update themselves when it is raised
