@@ -138,6 +138,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 .Count();
         }
 
+        public async Task<IEnumerable<OperationReason>> GetOrdersAsync()
+        {
+            return await this.missionOperationsWmsWebService.GetAllOrdersAsync();
+        }
+
         public async Task<IEnumerable<OperationReason>> GetReasonsAsync(MissionOperationType type)
         {
             return await this.missionOperationsWmsWebService.GetAllReasonsAsync(type);

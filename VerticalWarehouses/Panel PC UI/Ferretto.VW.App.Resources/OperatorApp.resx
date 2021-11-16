@@ -2346,4 +2346,8 @@
   <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
     <value>Select order</value>
   </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Suspend</value>
+    <comment>Label Message</comment>
+  </data>
 </root>
