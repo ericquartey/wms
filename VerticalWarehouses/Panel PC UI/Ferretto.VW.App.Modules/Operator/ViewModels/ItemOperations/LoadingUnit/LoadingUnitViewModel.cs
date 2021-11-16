@@ -58,6 +58,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         //x private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly bool orderEnable;
+
         private List<ProductInMachine> allProducts = new List<ProductInMachine>();
 
         private int? areaId;
@@ -119,8 +121,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string measureUnit;
 
         private DelegateCommand<string> operationCommand;
-
-        private bool orderEnable;
 
         private int? orderId;
 

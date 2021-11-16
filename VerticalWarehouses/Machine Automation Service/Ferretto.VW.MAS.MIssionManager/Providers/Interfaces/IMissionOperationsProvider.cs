@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         int GetCountByBay(BayNumber bayNumber);
 
+        Task<IEnumerable<OperationReason>> GetOrdersAsync();
+
         Task<IEnumerable<OperationReason>> GetReasonsAsync(MissionOperationType type);
 
         int GetUnitId(int missionId, BayNumber bayNumber);
