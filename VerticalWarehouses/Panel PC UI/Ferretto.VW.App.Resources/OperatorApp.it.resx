@@ -1956,4 +1956,7 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>Seleziona commessa</value>
   </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Sospendi</value>
+  </data>
 </root>
