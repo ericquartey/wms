@@ -193,7 +193,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmButton()
         {
-            return this.InputQuantity.HasValue;
+            return this.InputQuantity.HasValue
+                && this.LoadingUnitId > 0;
         }
 
         private async Task ConfirmCommandAsync()
