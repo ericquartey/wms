@@ -268,6 +268,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
+        /// <summary>
+        /// Check if upcoming list are equal to the current one.
+        /// </summary>
+        /// <param name="newLists">Upcoming list read from EjLog</param>
+        /// <returns>true if equal, false otherwise</returns>
         private bool CheckUpcomingItemLists(IEnumerable<ItemList> newLists)
         {
             var isEqual = true;
@@ -287,8 +292,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return false;
             }
 
-            //isEqual = tmpLists.SequenceEqual(this.lists);
-
             var i = tmpLists.ToList();
             var j = this.Lists.ToList();
 
@@ -300,6 +303,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var b = j[jx];
                 jx++;
 
+                // check equality about the class members
                 if (a.Id != b.Id ||
                     a.IsDispatchable != b.IsDispatchable ||
                     a.Code != b.Code ||
@@ -382,6 +386,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var bay = await this.bayManager.GetBayAsync();
                 var lastItemListId = this.selectedList?.Id;
                 var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id);
+
+                // check upcoming lists retrieved from EjLog
+                if (this.CheckUpcomingItemLists(newLists))
+                {
+                    this.IsWaitingForResponse = false;
+                    return;
+                }
 
                 this.lists.Clear();
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
