@@ -154,5 +154,7 @@
         ServicingSchedule,
 
         SocketLinkOperationChange,
+
+        Logout,
     }
 }

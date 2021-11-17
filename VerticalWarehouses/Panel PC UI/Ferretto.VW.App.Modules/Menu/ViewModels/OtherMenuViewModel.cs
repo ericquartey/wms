@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand errorInverterParametersCommand;
 
+        private DelegateCommand logoutSettingsCommand;
+
         #endregion
 
         #region Constructors
@@ -57,6 +59,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             DatabaseBackup,
             
             ErrorInverterParameters,
+
+            LogoutSettings,
         }
 
         #endregion
@@ -114,6 +118,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommandOther(MenuOther.ErrorInverterParameters),
                 this.CanExecute));
 
+        public ICommand LogoutSettingsCommand =>
+            this.logoutSettingsCommand
+            ??
+            (this.logoutSettingsCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.LogoutSettings),
+                this.CanExecute));
+
         #endregion
 
         #region Methods
@@ -128,6 +139,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
             this.menuDatabaseBackupCommand?.RaiseCanExecuteChanged();
             this.errorInverterParametersCommand?.RaiseCanExecuteChanged();
+            this.logoutSettingsCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecute()
@@ -219,7 +231,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             data: null,
                             trackCurrentView: true);
                         break;
-                        
+
+                    case MenuOther.LogoutSettings:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.LOGOUTSETTINGS,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
                     default:
                         Debugger.Break();
                         break;

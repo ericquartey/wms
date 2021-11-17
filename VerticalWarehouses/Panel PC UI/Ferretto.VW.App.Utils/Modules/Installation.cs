@@ -41,6 +41,8 @@
 
         public const string DATABASEBACKUP = "DatabaseBackupViewModel";
 
+        public const string LOGOUTSETTINGS = "LogoutSettingsViewModel";
+
         public const string DATETIME = "DateTimeViewModel";
 
         public const string EXTERNALBAYCALIBRATION = "ExternalBayCalibrationViewModel";

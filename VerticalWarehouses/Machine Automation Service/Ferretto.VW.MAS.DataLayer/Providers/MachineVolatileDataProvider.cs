@@ -342,6 +342,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.lastMachinePowerState = this.MachinePowerState;
             this.lastMode = this.mode;
+
+            this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<ILogoutSettingsProvider>().UpdateStatus(TimeSpan.FromMilliseconds(TIMERINTERVAL).TotalMinutes);
         }
 
         #endregion
