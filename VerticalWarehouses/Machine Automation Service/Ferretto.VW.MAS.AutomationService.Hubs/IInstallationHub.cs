@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task BayLightChanged(bool isLightOn, BayNumber bayNumber);
 
+        Task LogoutChanged(IBaseNotificationMessageUI message);
+
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
         Task CombinedMovementsNotify(IBaseNotificationMessageUI message);

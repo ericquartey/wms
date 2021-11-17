@@ -240,6 +240,12 @@ namespace Ferretto.VW.App.Services
                         .Publish(slo);
                     break;
 
+                case NotificationMessageUI<LogoutMessageData> l:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<LogoutMessageData>>()
+                        .Publish(l);
+                    break;
+
                 default:
                     this.logger.Debug($"Signal-R hub message {e.NotificationMessage.GetType().Name} was ignored.");
                     break;

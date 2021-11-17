@@ -114,6 +114,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<WmsSettings> WmsSettings { get; set; }
 
+        public DbSet<LogoutSettings> LogoutSettings { get; set; }
+
         #endregion
 
         #region Methods
