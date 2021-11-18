@@ -4,6 +4,7 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -100,17 +101,20 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          <DataGridTextColumn x:Name="Column4"
-                              Width="1*"
-                              Binding="{Binding Path=IsActive}"
-                              Header="{res:Loc InstallationApp.AutoLogoutIsActive}">
-            <DataGridTextColumn.ElementStyle>
-              <Style TargetType="TextBlock">
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="VerticalAlignment" Value="Center" />
-              </Style>
-            </DataGridTextColumn.ElementStyle>
-          </DataGridTextColumn>
+          <DataGridTemplateColumn x:Name="Column4"
+                                  Width="1*"
+                                  Header="{res:Loc InstallationApp.AutoLogoutIsActive}">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <icon:PackIconMaterial Width="auto"
+                                       Height="auto"
+                                       Margin="10"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Kind="{Binding Path=IsActive, Converter={StaticResource BTIKC}}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
         </DataGrid.Columns>
       </DataGrid>
     </Border>
