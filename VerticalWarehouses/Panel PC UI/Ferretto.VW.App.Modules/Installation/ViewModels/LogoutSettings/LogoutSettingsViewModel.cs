@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -68,6 +66,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public bool IsEnabled => true;
+
         #endregion
 
         #region Methods
@@ -109,8 +109,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private bool CanSave()
         {
             return !this.IsBusy &&
-                this.selectedLogoutSettings != null &&
-                (this.selectedLogoutSettings.IsActive && this.selectedLogoutSettings.Timeout > 0);
+                this.selectedLogoutSettings != null;
         }
 
         public override void Disappear()
@@ -125,13 +124,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                    this.IsBusy = true;
+                this.IsBusy = true;
 
-                    this.ClearNotifications();
+                this.ClearNotifications();
 
+                if (this.selectedLogoutSettings.IsActive && this.selectedLogoutSettings.Timeout <= 0)
+                {
+                    this.ShowNotification(Localized.Get("InstallationApp.WrongDataSave"), Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
                     await this.machineLogoutSettingsWebService.AddLogoutSettingsAsync(this.SelectedLogoutSettings);
 
                     this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
+                }
+
             }
             catch (Exception ex)
             {

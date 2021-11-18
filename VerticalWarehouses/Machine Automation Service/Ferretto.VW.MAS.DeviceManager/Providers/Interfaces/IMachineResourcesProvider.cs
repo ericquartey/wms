@@ -108,6 +108,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool TeleOkBay3 { get; }
 
+        bool PreFireAlarm { get; }
+
+        bool FireAlarm { get; }
+
         #endregion
 
         #region Methods

@@ -99,6 +99,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.GetBox());
         }
 
+        [HttpPost("get/firealarm/enable")]
+        public ActionResult<bool> GetFireAlarmEnable()
+        {
+            return this.Ok(this.machineProvider.IsFireAlarmActive());
+        }
+
         [HttpPost("get/ItemUniqueIdLength")]
         public ActionResult<int> GetItemUniqueIdLength()
         {

@@ -444,4 +444,10 @@
   <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
     <value>The height is lower than minimum. Please check alignment and cleaning of measuring devices</value>
   </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Sensor PreFireAlarm active</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Sensor FireAlarm active</value>
+  </data>
 </root>

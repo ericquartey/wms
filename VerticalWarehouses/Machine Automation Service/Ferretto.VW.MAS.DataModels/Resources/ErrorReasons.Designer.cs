@@ -268,6 +268,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sensor FireAlarm active.
+        /// </summary>
+        public static string FireAlarm {
+            get {
+                return ResourceManager.GetString("FireAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First load unit  test failed: Not all cells could be tested!.
         /// </summary>
         public static string FirstTestFailed {
@@ -849,6 +858,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string NoLoadUnitInSource {
             get {
                 return ResourceManager.GetString("NoLoadUnitInSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor PreFireAlarm active.
+        /// </summary>
+        public static string PreFireAlarm {
+            get {
+                return ResourceManager.GetString("PreFireAlarm", resourceCulture);
             }
         }
         

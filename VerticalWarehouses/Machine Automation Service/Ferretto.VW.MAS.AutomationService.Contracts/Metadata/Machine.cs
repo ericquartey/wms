@@ -169,6 +169,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(23)]
             public int VerticalCyclesToCalibrate { get; set; }
 
+            //[Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FireAlarm))]
+            [Id(28)]
+            public bool FireAlarm { get; set; }
+
             #endregion
         }
 

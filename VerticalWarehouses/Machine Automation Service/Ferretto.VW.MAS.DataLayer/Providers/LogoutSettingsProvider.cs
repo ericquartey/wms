@@ -148,11 +148,18 @@ namespace Ferretto.VW.MAS.DataLayer
             if (logoutSettings != null && logoutSettings.Any())
             {
                 var active = logoutSettings.Where(s => s.IsActive).ToList();
+                var resetElements = logoutSettings.Where(s => s.RemainingTime != s.Timeout).ToList();
 
                 if (active != null && active.Any() && !anyActiveMission)
                 {
                     foreach (var logout in active)
                     {
+                        if(resetElements.Any(s => s.Id == logout.Id))
+                        {
+                            var itemToRemove = resetElements.Single(s => s.Id == logout.Id);
+                            resetElements.Remove(itemToRemove);
+                        }
+
                         var actualTime = DateTime.Now.TimeOfDay;
 
                         var timeCondition = logout.BeginTime > logout.EndTime ? actualTime >= logout.BeginTime || actualTime <= logout.EndTime : actualTime >= logout.BeginTime && actualTime <= logout.EndTime;
@@ -184,8 +191,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
                 }
-
-                var resetElements = logoutSettings.Where(s => s.RemainingTime != s.Timeout && !s.IsActive).ToList();
 
                 if (resetElements != null && resetElements.Any())
                 {

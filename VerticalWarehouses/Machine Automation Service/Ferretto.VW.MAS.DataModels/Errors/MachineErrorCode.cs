@@ -281,6 +281,12 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitHeightFromBayTooLow), (int)MachineErrorSeverity.Normal)]
         LoadUnitHeightFromBayTooLow,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(PreFireAlarm), (int)MachineErrorSeverity.Normal)]
+        PreFireAlarm,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(FireAlarm), (int)MachineErrorSeverity.High)]
+        FireAlarm,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 

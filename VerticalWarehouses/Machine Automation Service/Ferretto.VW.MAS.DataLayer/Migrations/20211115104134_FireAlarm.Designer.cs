@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20211115104134_FireAlarm")]
+    partial class FireAlarm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1265,26 +1267,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LogEntries");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogoutSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<TimeSpan>("BeginTime");
-
-                    b.Property<TimeSpan>("EndTime");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<double>("RemainingTime");
-
-                    b.Property<int>("Timeout");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LogoutSettings");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Machine", b =>

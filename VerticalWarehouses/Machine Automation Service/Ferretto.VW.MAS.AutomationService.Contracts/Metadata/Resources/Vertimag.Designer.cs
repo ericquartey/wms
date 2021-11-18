@@ -691,6 +691,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fire alarm.
+        /// </summary>
+        public static string FireAlarm {
+            get {
+                return ResourceManager.GetString("FireAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Load Movement.
         /// </summary>
         public static string FullLoadMovement {

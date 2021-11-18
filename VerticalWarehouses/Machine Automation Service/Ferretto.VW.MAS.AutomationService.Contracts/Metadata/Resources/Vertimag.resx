@@ -600,4 +600,7 @@
   <data name="Machine_IsDisableQtyItemEditingPick" xml:space="preserve">
     <value>Not editing available quantity of item in picking</value>
   </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Fire alarm</value>
+  </data>
 </root>
