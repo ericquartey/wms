@@ -950,6 +950,8 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(numberMissionOnBay);                                                 // <NumberOfTraysCurrentlyInTheQueueBayN>
 
                     var operation = this.machineVolatileDataProvider.SocketLinkOperation[bay.Number];
+                    var qty = 0.0M;
+                    var timeStamp = string.Empty;
                     if (operation != null)
                     {
                         var isCompleted = (operation.IsCompleted.HasValue && operation.IsCompleted.Value) ? 1 : 0;
@@ -957,14 +959,20 @@ namespace Ferretto.VW.MAS.SocketLink
                         cmdResponse.AddPayload(operation.Id);                                                       // <PickingIdN>
                         if (isCompleted != 0)
                         {
-                            var qty = (decimal)operation.ConfirmedQuantity;
-                            cmdResponse.AddPayload(qty.ToString(CultureInfo.InvariantCulture));                             // <PickingQuantityN>
+                            qty = (decimal)operation.ConfirmedQuantity;
                             if (operation.CompletedTime.HasValue)
                             {
-                                cmdResponse.AddPayload(operation.CompletedTime.Value.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));            // <PickingTimestampN>
+                                timeStamp = operation.CompletedTime.Value.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
                             }
                         }
                     }
+                    else
+                    {
+                        cmdResponse.AddPayload(string.Empty);                                       // <PickingConfirmedBayN>
+                        cmdResponse.AddPayload(string.Empty);                                       // <PickingIdN>
+                    }
+                    cmdResponse.AddPayload(qty.ToString(CultureInfo.InvariantCulture));      // <PickingQuantityN>
+                    cmdResponse.AddPayload(timeStamp);                                       // <PickingTimestampN>
                 }
                 else
                 {

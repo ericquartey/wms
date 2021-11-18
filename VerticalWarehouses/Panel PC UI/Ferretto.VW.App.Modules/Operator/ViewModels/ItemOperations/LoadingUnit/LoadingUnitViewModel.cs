@@ -14,6 +14,8 @@ using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
@@ -1485,6 +1487,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private string GetActiveViewModel()
+        {
+            var activeView = this.NavigationService.GetActiveView();
+            var model = (activeView as System.Windows.FrameworkElement)?.DataContext;
+            return model?.GetType()?.Name;
+        }
+
         private async Task GetItemInfoAsync()
         {
             if (this.SelectedItemCompartment?.ItemId is null)
@@ -1777,9 +1786,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if ((BayNumber)e.BayNumber == this.MachineService.BayNumber)
             {
-                this.IsSocketLinkOperationVisible = isOperation;
-                if (isOperation)
+                var view = this.GetActiveViewModel();
+                if (isOperation
+                    && (view == Utils.Modules.Operator.ItemOperations.LOADING_UNIT
+                        || view == Utils.Modules.Operator.ItemOperations.SOCKETLINKOPERATION
+                        || view == Utils.Modules.Operator.OPERATOR_MENU
+                        || view == Utils.Modules.Operator.ItemOperations.WAIT)
+                    )
                 {
+                    this.IsSocketLinkOperationVisible = isOperation;
                     this.SocketLinkOperation = new SocketLinkOperation
                     {
                         Id = e.Id,
@@ -1806,6 +1821,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
+                    this.IsSocketLinkOperationVisible = false;
                     this.SocketLinkOperation = null;
                 }
             }

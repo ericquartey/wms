@@ -212,7 +212,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.logger.Debug($"User requested to complete socket link operation '{this.SocketLinkOperation?.Id}' with quantity {this.InputQuantity.Value}.");
             await this.missionOperationsWebService.SocketLinkCompleteAsync(this.SocketLinkOperation?.Id, this.InputQuantity.Value, DateTimeOffset.UtcNow);
-            this.NavigationService.GoBack();
+            this.NavigationService.GoBackTo(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.WAIT,
+                "ConfirmCommandAsync");
         }
 
         private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
