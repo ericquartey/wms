@@ -2311,15 +2311,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error in logout parameters .
-        /// </summary>
-        public static string ErrorLogoutParameters {
-            get {
-                return ResourceManager.GetString("ErrorLogoutParameters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error during initial update phase..
         /// </summary>
         public static string ErrorOnInitialPhaseUpdate {
@@ -7293,6 +7284,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WriteSingle {
             get {
                 return ResourceManager.GetString("WriteSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong data cannot be saved .
+        /// </summary>
+        public static string WrongDataSave {
+            get {
+                return ResourceManager.GetString("WrongDataSave", resourceCulture);
             }
         }
         

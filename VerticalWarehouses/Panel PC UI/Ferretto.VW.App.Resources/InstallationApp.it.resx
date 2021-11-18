@@ -2535,4 +2535,7 @@
   <data name="AutoLogoutSetings" xml:space="preserve">
     <value>Auto-logout</value>
   </data>
+  <data name="WrongDataSave" xml:space="preserve">
+    <value>Dati errati impossibile salvare</value>
+  </data>
 </root>
