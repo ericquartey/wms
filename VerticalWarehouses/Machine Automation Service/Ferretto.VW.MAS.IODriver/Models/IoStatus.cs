@@ -105,6 +105,12 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool UseSetupOutputLines { get; set; }
 
+        [Column(Order = (int)IoPorts.HookTrolley)]
+        public bool PreFireAlarm => this.inputs[(int)IoPorts.HookTrolley];
+
+        [Column(Order = (int)IoPorts.FinePickingRobot)]
+        public bool FireAlarm => this.inputs[(int)IoPorts.FinePickingRobot];
+
         #endregion
 
         #region Methods

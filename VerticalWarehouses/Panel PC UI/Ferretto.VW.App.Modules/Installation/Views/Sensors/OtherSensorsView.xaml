@@ -67,6 +67,15 @@
                                    Text="{res:Loc InstallationApp.BayTelescopic}"
                                    Visibility="{Binding IsBay3TelescopicPresent, Converter={StaticResource BTVC}}" />
 
+        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
+                                   Text="{res:Loc InstallationApp.PreFireAlarm}"
+                                   Visibility="{Binding IsFireAlarmActive, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay1}"
+                                   Text="{res:Loc InstallationApp.FireAlarm}"
+                                   Visibility="{Binding IsFireAlarmActive, Converter={StaticResource BTVC}}" />
+
+
       </StackPanel>
 
       <StackPanel Grid.Row="2"
@@ -81,11 +90,11 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay1}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-          
+
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay1}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGateInternal}"
                                    Visibility="{Binding IsBay1ExternalDoublePresent, Converter={StaticResource BTVC}}" />
-        </StackPanel>
+      </StackPanel>
 
       <StackPanel Grid.Row="2"
                   Grid.Column="1"
@@ -101,7 +110,7 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay2}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-                    <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay2}"
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay2}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGateInternal}"
                                    Visibility="{Binding IsBay2ExternalDoublePresent, Converter={StaticResource BTVC}}" />
       </StackPanel>
@@ -117,7 +126,7 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay3}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-                        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay3}"
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay3}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGateInternal}"
                                    Visibility="{Binding IsBay3ExternalDoublePresent, Converter={StaticResource BTVC}}" />
       </StackPanel>

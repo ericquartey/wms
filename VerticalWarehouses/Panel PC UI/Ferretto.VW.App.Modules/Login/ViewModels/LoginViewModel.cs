@@ -98,6 +98,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
+            this.Users = new ObservableCollection<string>(this.BaseUser);
 #if DEBUG
             this.UserLogin = new UserLogin
             {
@@ -117,7 +118,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
                 async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
 
-            this.Users = new ObservableCollection<string>(this.BaseUser);
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)

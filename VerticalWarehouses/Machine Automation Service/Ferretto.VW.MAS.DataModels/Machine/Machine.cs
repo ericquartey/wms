@@ -131,6 +131,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int VerticalCyclesToCalibrate { get; set; } = 50;
 
+        public bool FireAlarm { get; set; }
+
         #endregion
 
         #region Methods

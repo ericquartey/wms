@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private readonly Sensors sensors = new Sensors();
@@ -86,6 +88,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBay3Present;
 
+        private bool isFireAlarmActive;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -95,12 +99,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected BaseSensorsViewModel(
             IMachineSensorsWebService machineSensorsWebService,
             IMachineBaysWebService machineBaysWebService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Installer)
         {
             this.machineSensorsWebService = machineSensorsWebService ?? throw new System.ArgumentNullException(nameof(machineSensorsWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new System.ArgumentNullException(nameof(machineIdentityWebService));
 
             this.InitializeNavigationMenu();
         }
@@ -168,6 +174,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBay3PositionUpPresent { get => this.isBay3PositionUpPresent; private set => this.SetProperty(ref this.isBay3PositionUpPresent, value); }
 
         public bool IsBay3Present { get => this.isBay3Present; private set => this.SetProperty(ref this.isBay3Present, value); }
+
+        public bool IsFireAlarmActive { get => this.isFireAlarmActive; private set => this.SetProperty(ref this.isFireAlarmActive, value); }
 
         public bool IsOneTonMachine => this.bayManager.Identity.IsOneTonMachine;
 
@@ -261,6 +269,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBay3PositionDownPresent = (bay3?.IsDouble ?? false) || (!bay3?.Positions?.Any(o => o.IsUpper) ?? false);
             this.IsBay3PositionUpPresent = (bay3?.IsDouble ?? false) || (bay3?.Positions?.Any(o => o.IsUpper) ?? false);
+
+            this.IsFireAlarmActive = await this.machineIdentityWebService.GetFireAlarmEnableAsync();
 
             this.sensors.Update(sensorsStates.ToArray());
         }

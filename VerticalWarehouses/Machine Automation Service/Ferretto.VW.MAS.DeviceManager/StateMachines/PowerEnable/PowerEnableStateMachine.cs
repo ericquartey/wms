@@ -138,6 +138,11 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 isMarchPossible = false;
                 reason.Append("Micro Carter Active Bay1 Right; ");
             }
+            if (this.machineData.MachineSensorStatus.FireAlarm)
+            {
+                isMarchPossible = false;
+                reason.Append("Fire alarm active; ");
+            }
 
             foreach (var bay in this.baysDataProvider.GetAll())
             {

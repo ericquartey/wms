@@ -450,4 +450,10 @@
   <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
     <value>Height too low</value>
   </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Pre fire alarm</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Fire alarm</value>
+  </data>
 </root>

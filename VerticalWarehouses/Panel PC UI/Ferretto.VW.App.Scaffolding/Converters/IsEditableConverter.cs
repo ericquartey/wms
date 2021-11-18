@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using CommonServiceLocator;
-using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -16,6 +15,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         #region Fields
 
         private readonly ISessionService sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
+        private readonly IMachineService machineService = ServiceLocator.Current.GetInstance<IMachineService>();
 
         #endregion
 
@@ -28,6 +28,10 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 // detour to the 'Metadata'
                 value = entity.Metadata;
 
+                if (entity.Property.Name == "FireAlarm" && this.machineService.Bays.Any(s => s.IsExternal && s.IsDouble))
+                {
+                    return false;
+                }
                 if ((entity.Property.Name == "Center" || entity.Property.Name == "Race") && this.sessionService.UserAccessLevel == UserAccessLevel.Installer)
                 {
                     return true;

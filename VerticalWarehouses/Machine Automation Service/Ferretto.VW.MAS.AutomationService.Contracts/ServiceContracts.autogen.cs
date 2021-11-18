@@ -1241,6 +1241,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetBoxEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetFireAlarmEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetFireAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetItemUniqueIdLengthAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3689,6 +3696,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadUnitHeightFromBayTooLow = 89,
     
+        PreFireAlarm = 90,
+    
+        FireAlarm = 91,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -4833,6 +4844,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("VerticalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int VerticalCyclesToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FireAlarm", Required = Newtonsoft.Json.Required.Always)]
+        public bool FireAlarm { get; set; }
     
         public string ToJson() 
         {
