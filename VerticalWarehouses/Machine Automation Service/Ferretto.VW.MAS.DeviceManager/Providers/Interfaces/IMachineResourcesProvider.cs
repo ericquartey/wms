@@ -76,10 +76,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsMachineInRunningState { get; }
 
-        bool IsMicroCarterLeftSide { get; }
-
-        bool IsMicroCarterRightSide { get; }
-
         bool IsMushroomEmergencyButtonBay1 { get; }
 
         bool IsMushroomEmergencyButtonBay2 { get; }
@@ -111,6 +107,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         bool PreFireAlarm { get; }
 
         bool FireAlarm { get; }
+
+        bool IsMicroCarterLeftSideBay1 { get; }
+
+        bool IsMicroCarterRightSideBay1 { get; }
+
+        bool IsMicroCarterLeftSideBay2 { get; }
+
+        bool IsMicroCarterRightSideBay2 { get; }
+
+        bool IsMicroCarterLeftSideBay3 { get; }
+
+        bool IsMicroCarterRightSideBay3 { get; }
 
         #endregion
 
