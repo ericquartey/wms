@@ -51,12 +51,13 @@
       <Grid Margin="10">
         <DataGrid Name="DataGrid"
                   Height="auto"
+                  HorizontalScrollBarVisibility="Auto"
                   ItemsSource="{Binding Instructions}"
                   RowHeight="40"
                   SelectedItem="{Binding SelectedInstruction}">
           <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
-                                Width="60"
+                                Width="auto"
                                 Binding="{Binding Path=Id}"
                                 Header="{res:Loc OperatorApp.Id}">
               <DataGridTextColumn.CellStyle>
@@ -67,13 +68,14 @@
               </DataGridTextColumn.CellStyle>
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
-                                Width="220"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.Description}"
                                 Header="{res:Loc OperatorApp.Description}">
               <DataGridTextColumn.CellStyle>
@@ -84,6 +86,7 @@
               </DataGridTextColumn.CellStyle>
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                   <Setter Property="TextWrapping" Value="Wrap" />
@@ -102,7 +105,7 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>-->
             <DataGridTemplateColumn x:Name="Column3"
-                                    Width="100"
+                                    Width="auto"
                                     Header="{res:Loc OperatorApp.IsToDo}">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
@@ -127,7 +130,7 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>-->
             <DataGridTemplateColumn x:Name="Column4"
-                                    Width="1*"
+                                    Width="auto"
                                     Header="{res:Loc OperatorApp.IsDone}">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
@@ -141,22 +144,24 @@
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTextColumn x:Name="Column5"
-                                Width="100"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.Axis, Converter={StaticResource ATSC}}"
                                 Header="{res:Loc OperatorApp.Axis}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column6"
-                                Width="120"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.BayNumber, Converter={StaticResource BNTSC}}"
                                 Header="{res:Loc OperatorApp.BayNumber}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
@@ -174,7 +179,7 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>-->
             <DataGridTemplateColumn x:Name="Column7"
-                                    Width="100"
+                                    Width="auto"
                                     Header="{res:Loc InstallationApp.Shutter}">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
@@ -188,78 +193,85 @@
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTextColumn x:Name="Column8"
-                                Width="100"
+                                Width="auto"
                                 Binding="{Binding Path=InstructionStatus, Converter={StaticResource MSSEC}}"
                                 Header="{res:Loc OperatorApp.InstructionStatus}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column9"
-                                Width="120"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.MaxDays}"
                                 Header="{res:Loc OperatorApp.MaxDays}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column10"
-                                Width="180"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.MaxRelativeCount}"
                                 Header="{res:Loc OperatorApp.MaxRelativeCount}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column11"
-                                Width="150"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.MaxTotalCount}"
                                 Header="{res:Loc OperatorApp.MaxTotalCount}"
                                 Visibility="Collapsed">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column12"
-                                Width="150"
+                                Width="auto"
                                 Binding="{Binding Path=Definition.CounterName, Converter={StaticResource CNC}}"
                                 Header="{res:Loc OperatorApp.CounterName}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column13"
-                                Width="120"
+                                Width="auto"
                                 Binding="{Binding Path=DoubleCounter}"
                                 Header="{res:Loc OperatorApp.TotalMissions}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column14"
-                                Width="120"
+                                Width="auto"
                                 Binding="{Binding Path=IntCounter}"
                                 Header="{res:Loc OperatorApp.Days}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
