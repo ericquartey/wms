@@ -147,9 +147,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineSecurityRunning => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
-        public bool IsMicroCarterLeftSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide];
+        public bool IsMicroCarterLeftSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1];
 
-        public bool IsMicroCarterRightSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide];
+        public bool IsMicroCarterRightSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1];
+
+        public bool IsMicroCarterLeftSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2];
+
+        public bool IsMicroCarterRightSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2];
+
+        public bool IsMicroCarterLeftSideBay3 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3];
+
+        public bool IsMicroCarterRightSideBay3 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3];
 
         public bool IsMushroomEmergencyButtonBay1 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1];
 
@@ -455,19 +463,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             errorCode = MachineErrorCode.NoError;
             bayNumber = BayNumber.None;
 
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
-            {
-                isMarchPossible = false;
-                reason.Append("Micro Carter Active Bay1 Left; ");
-                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
-            }
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
-            {
-                isMarchPossible = false;
-                reason.Append("Micro Carter Active Bay1 Right; ");
-                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
-            }
-
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
@@ -488,6 +483,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay1; ");
                             }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay1 Left; ");
+                                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay1 Right; ");
+                                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
 
                             break;
 
@@ -504,6 +513,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay2; ");
                             }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay2 Left; ");
+                                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay2 Right; ");
+                                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
 
                             break;
 
@@ -519,6 +542,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             {
                                 //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay3; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay3 Left; ");
+                                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay3 Right; ");
+                                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                                bayNumber = bay.Number;
                             }
 
                             break;
@@ -645,8 +682,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     fireAlarmStatusChange = this.IsFireAlarmActive() ? index == (int)IOMachineSensors.RobotOptionBay1 : false;
 
                                     if (index == (int)IOMachineSensors.MushroomEmergencyButtonBay1
-                                        || index == (int)IOMachineSensors.MicroCarterLeftSide
-                                        || index == (int)IOMachineSensors.MicroCarterRightSide
+                                        || index == (int)IOMachineSensors.MicroCarterLeftSideBay1
+                                        || index == (int)IOMachineSensors.MicroCarterRightSideBay1
                                         || index == (int)IOMachineSensors.AntiIntrusionBarrierBay1
                                         || index == (int)IOMachineSensors.AntiIntrusionBarrier2Bay1)
                                     {
