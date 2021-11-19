@@ -44,11 +44,11 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 if (this.dataContext.LogoutSettings != null &&
-                                !this.dataContext.LogoutSettings.Any())
+                        this.dataContext.LogoutSettings.Count() != 3)
                 {
-                    this.dataContext.LogoutSettings.Add(new LogoutSettings());
-                    this.dataContext.LogoutSettings.Add(new LogoutSettings());
-                    this.dataContext.LogoutSettings.Add(new LogoutSettings());
+                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
+                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
+                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
 
                     this.dataContext.SaveChanges();
                 }
