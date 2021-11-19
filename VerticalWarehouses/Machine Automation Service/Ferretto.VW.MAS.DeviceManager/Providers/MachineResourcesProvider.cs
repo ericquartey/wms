@@ -76,6 +76,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
+        public bool FireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
+
         public bool IsAntiIntrusionBarrier2Bay1 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay1];
 
         public bool IsAntiIntrusionBarrier2Bay2 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay2];
@@ -149,13 +151,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMicroCarterLeftSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1];
 
-        public bool IsMicroCarterRightSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1];
-
         public bool IsMicroCarterLeftSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2];
 
-        public bool IsMicroCarterRightSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2];
-
         public bool IsMicroCarterLeftSideBay3 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3];
+
+        public bool IsMicroCarterRightSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1];
+
+        public bool IsMicroCarterRightSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2];
 
         public bool IsMicroCarterRightSideBay3 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3];
 
@@ -187,15 +189,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsSensorZeroTopOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S6IND];
 
+        public bool PreFireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : false;
+
         public bool TeleOkBay1 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1];
 
         public bool TeleOkBay2 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay2];
 
         public bool TeleOkBay3 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay3];
-
-        public bool PreFireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : false;
-
-        public bool FireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
 
         #endregion
 
@@ -352,15 +352,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     case BayNumber.BayThree:
                         return this.IsDrawerInBay3InternalPosition;
                 }
-            }
-        }
-
-        private bool IsFireAlarmActive()
-        {
-            using (var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                return machineProvider.IsFireAlarmActive();
             }
         }
 
@@ -728,13 +719,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     {
                                         if (this.FireAlarm)
                                         {
-                                            if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
-                                            {
-                                                var args = new StatusUpdateEventArgs();
-                                                args.NewState = false;
-                                                this.OnRunningStateChanged(args);
-                                            }
-
                                             using (var scope = this.serviceScopeFactory.CreateScope())
                                             {
                                                 var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
@@ -744,12 +728,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                                     errorProvider.RecordNew(MachineErrorCode.FireAlarm);
                                                 }
                                             }
+
+                                            if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
+                                            {
+                                                var args = new StatusUpdateEventArgs();
+                                                args.NewState = false;
+                                                this.OnRunningStateChanged(args);
+                                            }
                                         }
                                     }
                                     if (/*this.enableNotificatons
                                         &&*/ preFireAlarmStatusChange)
                                     {
-                                        if (this.PreFireAlarm)
+                                        if (this.PreFireAlarm && !this.FireAlarm)
                                         {
                                             using (var scope = this.serviceScopeFactory.CreateScope())
                                             {
@@ -861,6 +852,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var handler = this.SecurityStateChanged;
             handler?.Invoke(this, e);
+        }
+
+        private bool IsFireAlarmActive()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                return machineProvider.IsFireAlarmActive();
+            }
         }
 
         private void IsTeleOk()
