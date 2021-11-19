@@ -259,6 +259,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
                     }
                     this.BaysDataProvider.SetLoadingUnit(bayPosition.Id, this.Mission.LoadUnitId);
+                    this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Bay position id {bayPosition.Id}");
                 }
 
                 transaction.Commit();

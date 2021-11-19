@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
 
-                this.logger.LogInformation("Created internal MAS bay mission.");
+                this.logger.LogInformation($"Created internal MAS bay mission for load unit {loadingUnitId}.");
 
                 return entry.Entity;
             }
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 transaction.Commit();
 
-                this.logger.LogInformation($"Created MAS bay mission from WMS mission id={wmsId}");
+                this.logger.LogInformation($"Created MAS bay mission from WMS mission id={wmsId} for load unit {loadingUnitId}");
 
                 return entry.Entity;
             }
@@ -257,7 +257,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
 
-                this.logger.LogInformation($"Created internal MAS recall mission for loading unit {loadingUnitId}.");
+                this.logger.LogInformation($"Created internal MAS recall mission for load unit {loadingUnitId}.");
 
                 return entry.Entity;
             }
