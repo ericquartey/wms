@@ -8,6 +8,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
     public class ItemInventoryViewModel : BaseItemOperationMainViewModel
     {
+        #region Fields
+
+        private bool isCurrentDraperyItemFullyRequested;
+
+        #endregion
+
         #region Constructors
 
         public ItemInventoryViewModel(
@@ -51,6 +57,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemInventory.ToString();
 
+        public bool IsCurrentDraperyItemFullyRequested
+        {
+            get => this.isCurrentDraperyItemFullyRequested;
+            set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
@@ -76,6 +88,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            // Setup only reserved for Tendaggi Paradiso
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
+
             await base.OnAppearedAsync();
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.InventoryQuantityDetected"), this.MeasureUnit);
