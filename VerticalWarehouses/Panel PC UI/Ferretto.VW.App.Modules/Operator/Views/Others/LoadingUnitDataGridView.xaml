@@ -20,6 +20,7 @@
               FontSize="{StaticResource FontSize_High}"
               HeadersVisibility="Column"
               HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+              HorizontalScrollBarVisibility="Disabled"
               IsReadOnly="True"
               IsSynchronizedWithCurrentItem="True"
               ItemsSource="{Binding ItemsSource}"
