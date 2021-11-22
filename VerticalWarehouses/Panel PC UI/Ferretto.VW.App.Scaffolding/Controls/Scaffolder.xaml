@@ -467,7 +467,7 @@
                 SelectionChanged="ListView_SelectionChanged">
         <ListView.View>
           <GridView>
-            <GridViewColumn Width="auto"
+            <GridViewColumn Width="55"
                             Header="Id">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
@@ -481,7 +481,7 @@
                 </DataTemplate>
               </GridViewColumn.CellTemplate>
             </GridViewColumn>
-            <GridViewColumn Width="450"
+            <GridViewColumn Width="445"
                             Header="Nome">
               <GridViewColumn.CellTemplate>
                 <DataTemplate>
