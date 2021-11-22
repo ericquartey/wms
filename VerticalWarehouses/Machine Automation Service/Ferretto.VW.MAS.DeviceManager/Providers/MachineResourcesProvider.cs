@@ -651,8 +651,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             var ioSecurityChange = false;
                             var ioRunningStateChange = false;
                             var ioInverterFaultChange = false;
-                            var fireAlarmStatusChange = true;
-                            var preFireAlarmStatusChange = true;
                             var isFireAlarmActive = this.IsFireAlarmActive();
                             for (var index = 0; index < REMOTEIO_INPUTS; index++)
                             {
@@ -669,9 +667,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     {
                                         ioInverterFaultChange = true;
                                     }
-
-                                    preFireAlarmStatusChange = isFireAlarmActive ? index == (int)IOMachineSensors.TrolleyOptionBay1 : false;
-                                    fireAlarmStatusChange = isFireAlarmActive ? index == (int)IOMachineSensors.RobotOptionBay1 : false;
 
                                     if (index == (int)IOMachineSensors.MushroomEmergencyButtonBay1
                                         || index == (int)IOMachineSensors.MicroCarterLeftSideBay1
@@ -714,58 +709,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         args.NewState = true;
                                         this.OnFaultStateChanged(args);
                                     }
-
-                                    if (/*this.enableNotificatons
-                                        && */fireAlarmStatusChange)
-                                    {
-                                        if (isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //FireAlarm
-                                        {
-                                            using (var scope = this.serviceScopeFactory.CreateScope())
-                                            {
-                                                var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                                                var current = errorProvider.GetCurrent();
-                                                if (current?.Code != (int)MachineErrorCode.FireAlarm)
-                                                {
-                                                    errorProvider.RecordNew(MachineErrorCode.FireAlarm);
-                                                }
-                                            }
-
-                                            if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
-                                            {
-                                                var args = new StatusUpdateEventArgs();
-                                                args.NewState = false;
-                                                this.OnRunningStateChanged(args);
-                                            }
-                                        }
-                                    }
-                                    if (/*this.enableNotificatons
-                                        &&*/ preFireAlarmStatusChange)
-                                    {
-                                        if (isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] && !newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //PreFireAlarm && !FireAlarm
-                                        {
-                                            using (var scope = this.serviceScopeFactory.CreateScope())
-                                            {
-                                                var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                                                var current = errorProvider.GetCurrent();
-                                                if (current?.Code != (int)MachineErrorCode.PreFireAlarm)
-                                                {
-                                                    errorProvider.RecordNew(MachineErrorCode.PreFireAlarm);
-
-                                                    if (this.machineVolatileDataProvider.Mode == MachineMode.Manual ||
-                                                        this.machineVolatileDataProvider.Mode == MachineMode.Manual2 ||
-                                                        this.machineVolatileDataProvider.Mode == MachineMode.Manual3)
-                                                    {
-                                                        this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                                                    }
-                                                    else
-                                                    {
-                                                        this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(BayNumber.All);
-                                                        this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
                                 }
 
                                 if (!this.sensorStatus[(int)IOMachineSensors.RunningState]
@@ -780,6 +723,51 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 this.IsTeleOk();
 
                                 updateDone = true;
+                            }
+
+                            if (ioIndex == 0 && isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //FireAlarm
+                            {
+                                using (var scope = this.serviceScopeFactory.CreateScope())
+                                {
+                                    var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                    var current = errorProvider.GetCurrent();
+                                    if (current?.Code != (int)MachineErrorCode.FireAlarm)
+                                    {
+                                        errorProvider.RecordNew(MachineErrorCode.FireAlarm);
+                                    }
+                                }
+
+                                if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
+                                {
+                                    var args = new StatusUpdateEventArgs();
+                                    args.NewState = false;
+                                    this.OnRunningStateChanged(args);
+                                }
+                            }
+
+                            if (ioIndex == 0 && isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] && !newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //PreFireAlarm
+                            {
+                                using (var scope = this.serviceScopeFactory.CreateScope())
+                                {
+                                    var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                    var current = errorProvider.GetCurrent();
+                                    if (current?.Code != (int)MachineErrorCode.PreFireAlarm)
+                                    {
+                                        errorProvider.RecordNew(MachineErrorCode.PreFireAlarm);
+
+                                        if (this.machineVolatileDataProvider.Mode == MachineMode.Manual ||
+                                            this.machineVolatileDataProvider.Mode == MachineMode.Manual2 ||
+                                            this.machineVolatileDataProvider.Mode == MachineMode.Manual3)
+                                        {
+                                            this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                        }
+                                        else
+                                        {
+                                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(BayNumber.All);
+                                            this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                        }
+                                    }
+                                }
                             }
 
                             break;
