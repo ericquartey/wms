@@ -584,7 +584,7 @@ namespace Ferretto.VW.App.Controls
         {
             if(this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
             {
-                this.logger.Debug($"NavigateToLoginPage.LogOutAsync();");
+                this.logger.Debug($"Auto logout message processed");
 
                 await this.authenticationService.LogOutAsync();
 

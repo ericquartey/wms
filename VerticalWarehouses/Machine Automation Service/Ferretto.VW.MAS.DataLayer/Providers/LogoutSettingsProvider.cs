@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
@@ -28,11 +31,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public LogoutSettingsProvider(
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
-            IMissionsDataProvider missionsDataProvider) : base(eventAggregator)
+            IMissionsDataProvider missionsDataProvider,
+            ILogger<DataLayerService> logger) : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -179,6 +184,8 @@ namespace Ferretto.VW.MAS.DataLayer
                                                            BayNumber.All,
                                                            MessageStatus.NotSpecified);
                                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                                this.logger.LogDebug($"Send auto logout message after {logout.Timeout}min, LogoutSettings.Id: {logout.Id}");
                             }
                             else
                             {
