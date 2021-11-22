@@ -653,6 +653,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             var ioInverterFaultChange = false;
                             var fireAlarmStatusChange = true;
                             var preFireAlarmStatusChange = true;
+                            var isFireAlarmActive = this.IsFireAlarmActive();
                             for (var index = 0; index < REMOTEIO_INPUTS; index++)
                             {
                                 if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
@@ -669,8 +670,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         ioInverterFaultChange = true;
                                     }
 
-                                    preFireAlarmStatusChange = this.IsFireAlarmActive() ? index == (int)IOMachineSensors.TrolleyOptionBay1 : false;
-                                    fireAlarmStatusChange = this.IsFireAlarmActive() ? index == (int)IOMachineSensors.RobotOptionBay1 : false;
+                                    preFireAlarmStatusChange = isFireAlarmActive ? index == (int)IOMachineSensors.TrolleyOptionBay1 : false;
+                                    fireAlarmStatusChange = isFireAlarmActive ? index == (int)IOMachineSensors.RobotOptionBay1 : false;
 
                                     if (index == (int)IOMachineSensors.MushroomEmergencyButtonBay1
                                         || index == (int)IOMachineSensors.MicroCarterLeftSideBay1
@@ -717,7 +718,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     if (/*this.enableNotificatons
                                         && */fireAlarmStatusChange)
                                     {
-                                        if (this.FireAlarm)
+                                        if (isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //FireAlarm
                                         {
                                             using (var scope = this.serviceScopeFactory.CreateScope())
                                             {
@@ -740,7 +741,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     if (/*this.enableNotificatons
                                         &&*/ preFireAlarmStatusChange)
                                     {
-                                        if (this.PreFireAlarm && !this.FireAlarm)
+                                        if (isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] && !newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //PreFireAlarm && !FireAlarm
                                         {
                                             using (var scope = this.serviceScopeFactory.CreateScope())
                                             {
