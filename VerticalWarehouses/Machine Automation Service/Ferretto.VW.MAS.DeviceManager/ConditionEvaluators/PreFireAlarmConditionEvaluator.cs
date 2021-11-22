@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
-    internal class PreFireAllarmConditionEvaluator : IPreFireAllarmConditionEvaluator
+    internal class PreFireAlarmConditionEvaluator : IPreFireAlarmConditionEvaluator
     {
         #region Fields
 
@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         #region Constructors
 
-        public PreFireAllarmConditionEvaluator(IMachineResourcesProvider machineResourcesProvider)
+        public PreFireAlarmConditionEvaluator(IMachineResourcesProvider machineResourcesProvider)
         {
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
         }
