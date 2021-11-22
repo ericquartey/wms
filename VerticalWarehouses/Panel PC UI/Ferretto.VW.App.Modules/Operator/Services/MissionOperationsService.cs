@@ -433,7 +433,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     }
                     else
                     {
-                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}.");
+                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo}.");
                         newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
 
                         await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);

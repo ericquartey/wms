@@ -765,6 +765,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MachineMode.SwitchingToFullTest3:
                     {
                         var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+                        if (machineResourcesProvider.PreFireAlarm)
+                        {
+                            this.Logger.LogError("FireAlarm Active");
+                            errorsProvider.RecordNew(MachineErrorCode.PreFireAlarm, BayNumber.All);
+                        }
+
                         if (errorsProvider.GetCurrent() != null)
                         {
                             //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
@@ -777,7 +785,6 @@ namespace Ferretto.VW.MAS.MissionManager
                         // if homing is not possible we switch anyway to automatic mode
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         var activeMissions = missionsDataProvider.GetAllActiveMissions();
-                        var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
                         if (activeMissions.Any(m => m.IsMissionToRestore() || m.Step >= MissionStep.Error || m.Status == MissionStatus.New))
                         {
@@ -1283,7 +1290,11 @@ namespace Ferretto.VW.MAS.MissionManager
                                 return true;
                             }
 
-                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id && m.TargetBay == bay.Number))
+                            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.LoadUnitId == position.LoadingUnit.Id
+                                    && m.TargetBay == bay.Number
+                                    && (m.Status != MissionStatus.New || m.MissionType == MissionType.IN)
+                                    )
+                                )
                             {
                                 this.Logger.LogInformation($"Insert load unit {position.LoadingUnit.Id} from {position.Location} to cell");
                                 var missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;

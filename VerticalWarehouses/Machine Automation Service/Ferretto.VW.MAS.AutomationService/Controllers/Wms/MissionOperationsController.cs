@@ -112,15 +112,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("orders")]
         public async Task<ActionResult<IEnumerable<OperationReason>>> GetOrdersAsync()
         {
-            // TODO siderpol (orders cannot be null or the combo box will crash)
-            var orders = new List<OperationReason>
-            {
-                new OperationReason { Name = "", Id = -1 }
-                //new OperationReason { Name = "commessa 1", Id = 1 },
-                //new OperationReason { Name = "commessa 2", Id = 2 },
-                //new OperationReason { Name = "commessa 3", Id = 3 },
-            };
-            return this.Ok(orders);
+            // TODO siderpol
+
+            return this.Ok(await this.missionOperationsProvider.GetOrdersAsync());
         }
 
         [HttpGet("socket-link-operation")]

@@ -25,22 +25,22 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.31 rispetto la 1.0.30
-- Le conferme di prelievo e versamento inviano l'utente al WMS
-- Aggiunti gli identificativi di macchina e baia ai messaggi del Put To Light e alla gestione delle liste
+## Nuove Funzionalità 1.0.32 rispetto la 1.0.31
+- Aggiunto campo Commessa nelle rettifiche (se sono definite su WMS)
+- Aggiunto logout a tempo per utente Operator
+- Aggiunto allarme antincendio
 
 ## Bug Risolti
-- Aggiunti timeout di ricezione con Inverter e Scheda di I/O
-- La procedura di controllo celle non ritorna al pannello 1 in caso di allarme
-- Aggiunto backup del database secondario - corregge il database incompleto in telemetria
-- Abilitato il pulsante per uscire dalla procedura di risoluzione orizzontale
-- La distanza necessaria per la pesata è ridotta a 80mm
-- Aggiunto allarme di cassetto inesistente richiesto da WMS
-- BID: la luce di baia si spegne subito al cambio cassetto
-- Bilancia contapezzi: usa un valore decimale, non più intero
+- Aggiunto allarme per l' intrusione con la barriera di controllo altezza
+- Correzioni alle liste in attesa
+- Sostituiti i testi "vero" "falso" con un segno di spunta
+- Aggiunti allarmi di pannelli aperti per baie 2 e 3
+- Corretto blocco delle missioni con errore di magazzino pieno
 
-## Compatibile con adapter 0.4.27
+## Compatibile con adapter 0.4.27 e 0.4.28
 ***
+
+[Versione 1.0.31](#id1031)
 
 [Versione 1.0.30](#id1030)
 
@@ -104,6 +104,23 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1031"></a>
+## Nuove Funzionalità 1.0.31 rispetto la 1.0.30
+- Le conferme di prelievo e versamento inviano l'utente al WMS
+- Aggiunti gli identificativi di macchina e baia ai messaggi del Put To Light e alla gestione delle liste
+
+## Bug Risolti
+- Aggiunti timeout di ricezione con Inverter e Scheda di I/O
+- La procedura di controllo celle non ritorna al pannello 1 in caso di allarme
+- Aggiunto backup del database secondario - corregge il database incompleto in telemetria
+- Abilitato il pulsante per uscire dalla procedura di risoluzione orizzontale
+- La distanza necessaria per la pesata è ridotta a 80mm
+- Aggiunto allarme di cassetto inesistente richiesto da WMS
+- BID: la luce di baia si spegne subito al cambio cassetto
+- Bilancia contapezzi: usa un valore decimale, non più intero
+
+## Compatibile con adapter 0.4.27
 
 <a id="id1030"></a>
 ## Nuove Funzionalità 1.0.30 rispetto la 1.0.29

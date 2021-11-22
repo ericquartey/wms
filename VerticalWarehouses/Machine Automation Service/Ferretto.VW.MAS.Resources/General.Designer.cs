@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Intrusion detected by height reading barrier.
+        /// </summary>
+        public static string IntrusionDetected {
+            get {
+                return ResourceManager.GetString("IntrusionDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maintenance status expired.
         /// </summary>
         public static string MaintenanceStateExpired {

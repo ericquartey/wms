@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Modules;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -20,6 +21,12 @@ namespace Ferretto.VW.App.Controls
         #region Fields
 
         protected bool isWaitingForResponse;
+
+        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
+        private readonly IAuthenticationService authenticationService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IAuthenticationService>();
+
+        private readonly IInstallationHubClient installationHubClient = CommonServiceLocator.ServiceLocator.Current.GetInstance<IInstallationHubClient>();
 
         private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
 
@@ -44,6 +51,8 @@ namespace Ferretto.VW.App.Controls
         private SubscriptionToken healthStatusChangedToken;
 
         private SubscriptionToken homingChangesToken;
+
+        private SubscriptionToken logoutChangesToken;
 
         private bool isBrowserOpened;
 
@@ -212,6 +221,13 @@ namespace Ferretto.VW.App.Controls
                 this.EventAggregator?.GetEvent<PubSubEvent<MachineModeChangedEventArgs>>().Unsubscribe(this.machineModeChangedToken);
                 this.machineModeChangedToken?.Dispose();
                 this.machineModeChangedToken = null;
+            }
+
+            if (this.logoutChangesToken != null)
+            {
+                this.EventAggregator?.GetEvent<PubSubEvent<LogoutMessageData>>().Unsubscribe(this.logoutChangesToken);
+                this.logoutChangesToken?.Dispose();
+                this.logoutChangesToken = null;
             }
 
             //this.ClearSteps();
@@ -554,6 +570,29 @@ namespace Ferretto.VW.App.Controls
                         false,
                         m => m.Data != null &&
                              this.IsVisible);
+
+            this.logoutChangesToken = this.logoutChangesToken
+              ?? this.EventAggregator
+                  .GetEvent<NotificationEventUI<LogoutMessageData>>()
+                  .Subscribe(
+                      (m) => this.OnLogoutMessageReceived(m),
+                      ThreadOption.UIThread,
+                      false);
+        }
+
+        private async void OnLogoutMessageReceived(NotificationMessageUI<LogoutMessageData> message)
+        {
+            if(this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+            {
+                this.logger.Debug($"Auto logout message processed");
+
+                await this.authenticationService.LogOutAsync();
+
+                this.NavigationService.Appear(
+                    nameof(Login),
+                    Login.LOGIN,
+                    "NavigateToLoginPage");
+            }
         }
 
         private void UpdateHealth()

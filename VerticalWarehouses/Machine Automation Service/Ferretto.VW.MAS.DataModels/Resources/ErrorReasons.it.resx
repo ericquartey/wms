@@ -444,4 +444,10 @@
   <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
     <value>L'altezza rilevata è inferiore alla minima. Verificare allineamento e pulizia delle barriere di misura</value>
   </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Sensore pre-allarme antincendio attivo</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Sensore allarme antincendio attivo</value>
+  </data>
 </root>

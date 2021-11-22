@@ -76,6 +76,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
+        public bool FireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
+
         public bool IsAntiIntrusionBarrier2Bay1 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay1];
 
         public bool IsAntiIntrusionBarrier2Bay2 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay2];
@@ -147,9 +149,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineSecurityRunning => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
-        public bool IsMicroCarterLeftSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide];
+        public bool IsMicroCarterLeftSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1];
 
-        public bool IsMicroCarterRightSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide];
+        public bool IsMicroCarterLeftSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2];
+
+        public bool IsMicroCarterLeftSideBay3 => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3];
+
+        public bool IsMicroCarterRightSideBay1 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1];
+
+        public bool IsMicroCarterRightSideBay2 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2];
+
+        public bool IsMicroCarterRightSideBay3 => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3];
 
         public bool IsMushroomEmergencyButtonBay1 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1];
 
@@ -178,6 +188,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool IsSensorZeroTopOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S6IND];
 
         public bool IsSensorZeroTopOnBay3 => this.sensorStatus[(int)IOMachineSensors.ACUBay3S6IND];
+
+        public bool PreFireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : false;
 
         public bool TeleOkBay1 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1];
 
@@ -442,19 +454,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             errorCode = MachineErrorCode.NoError;
             bayNumber = BayNumber.None;
 
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
-            {
-                isMarchPossible = false;
-                reason.Append("Micro Carter Active Bay1 Left; ");
-                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
-            }
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
-            {
-                isMarchPossible = false;
-                reason.Append("Micro Carter Active Bay1 Right; ");
-                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
-            }
-
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
@@ -475,6 +474,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay1; ");
                             }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay1 Left; ");
+                                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay1 Right; ");
+                                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
 
                             break;
 
@@ -490,6 +503,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                             {
                                 //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay2; ");
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay2 Left; ");
+                                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay2 Right; ");
+                                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                                bayNumber = bay.Number;
                             }
 
                             break;
@@ -507,12 +534,33 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 //isMarchPossible = false;
                                 reason.Append("Anti Intrusion Barrier Active Bay3; ");
                             }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay3 Left; ");
+                                errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
+                            else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3])
+                            {
+                                isMarchPossible = false;
+                                reason.Append("Micro Carter Active Bay3 Right; ");
+                                errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                                bayNumber = bay.Number;
+                            }
 
                             break;
 
                         default:
                             break;
                     }
+                }
+
+                if (this.FireAlarm)
+                {
+                    isMarchPossible = false;
+                    reason.Append("FireAlarm Active; ");
+                    errorCode = MachineErrorCode.FireAlarm;
                 }
             }
 
@@ -620,8 +668,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     }
 
                                     if (index == (int)IOMachineSensors.MushroomEmergencyButtonBay1
-                                        || index == (int)IOMachineSensors.MicroCarterLeftSide
-                                        || index == (int)IOMachineSensors.MicroCarterRightSide
+                                        || index == (int)IOMachineSensors.MicroCarterLeftSideBay1
+                                        || index == (int)IOMachineSensors.MicroCarterRightSideBay1
                                         || index == (int)IOMachineSensors.AntiIntrusionBarrierBay1
                                         || index == (int)IOMachineSensors.AntiIntrusionBarrier2Bay1)
                                     {
@@ -638,6 +686,56 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                                 if (ioIndex == 0)
                                 {
+                                    var isFireAlarmActive = this.IsFireAlarmActive();
+                                    if (isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //FireAlarm
+                                    {
+                                        using (var scope = this.serviceScopeFactory.CreateScope())
+                                        {
+                                            var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                            var current = errorProvider.GetCurrent();
+                                            if (current?.Code != (int)MachineErrorCode.FireAlarm)
+                                            {
+                                                if (current?.Code == (int)MachineErrorCode.PreFireAlarm)
+                                                {
+                                                    errorProvider.Resolve((int)current?.Id, force: true);
+                                                }
+                                                errorProvider.RecordNew(MachineErrorCode.FireAlarm);
+                                            }
+                                        }
+
+                                        if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
+                                        {
+                                            var args = new StatusUpdateEventArgs();
+                                            args.NewState = false;
+                                            this.OnRunningStateChanged(args);
+                                        }
+                                    }
+
+                                    if (isFireAlarmActive && newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] && !newSensorStatus[(int)IOMachineSensors.RobotOptionBay1]) //PreFireAlarm
+                                    {
+                                        using (var scope = this.serviceScopeFactory.CreateScope())
+                                        {
+                                            var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                            var current = errorProvider.GetCurrent();
+                                            if (current?.Code != (int)MachineErrorCode.PreFireAlarm)
+                                            {
+                                                errorProvider.RecordNew(MachineErrorCode.PreFireAlarm);
+
+                                                if (this.machineVolatileDataProvider.Mode == MachineMode.Manual ||
+                                                    this.machineVolatileDataProvider.Mode == MachineMode.Manual2 ||
+                                                    this.machineVolatileDataProvider.Mode == MachineMode.Manual3)
+                                                {
+                                                    this.logger.LogInformation($"Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                                }
+                                                else
+                                                {
+                                                    this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(BayNumber.All);
+                                                    this.logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
+                                                }
+                                            }
+                                        }
+                                    }
+
                                     if (this.enableNotificatons
                                         && ioRunningStateChange
                                         )
@@ -747,6 +845,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             var handler = this.SecurityStateChanged;
             handler?.Invoke(this, e);
+        }
+
+        private bool IsFireAlarmActive()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                return machineProvider.IsFireAlarmActive();
+            }
         }
 
         private void IsTeleOk()

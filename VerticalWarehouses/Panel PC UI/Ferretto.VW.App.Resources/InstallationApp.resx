@@ -2584,4 +2584,31 @@
   <data name="SuspendOperation" xml:space="preserve">
     <value>Suspend current operation</value>
   </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Fire alarm</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Pre fire alarm</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Begin time</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="AutoLogoutIsActive" xml:space="preserve">
+    <value>Logout active</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Timeout (min)</value>
+  </data>
+  <data name="AutoLogoutSetings" xml:space="preserve">
+    <value>Auto-logout</value>
+  </data>
+  <data name="WrongDataSave" xml:space="preserve">
+    <value>Wrong data cannot be saved </value>
+  </data>
 </root>

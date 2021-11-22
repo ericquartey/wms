@@ -4,11 +4,9 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:iom="clr-namespace:Ferretto.VW.CommonUtils.Enumerations;assembly=Ferretto.VW.CommonUtils"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
@@ -26,6 +24,7 @@
           Margin="5,0,15,0">
 
       <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
@@ -46,12 +45,6 @@
         <controls:PpcSensorControl SensorState="{Binding Sensors.RunningState}"
                                    Text="{res:Loc InstallationApp.SecurityFunctionActive}" />
 
-        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSide}"
-                                   Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
-
-        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSide}"
-                                   Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
-
         <controls:PpcSensorControl SensorState="{Binding Sensors.InverterInFault1}"
                                    Text="{res:Loc InstallationApp.InverterInFault}" />
 
@@ -67,6 +60,15 @@
                                    Text="{res:Loc InstallationApp.BayTelescopic}"
                                    Visibility="{Binding IsBay3TelescopicPresent, Converter={StaticResource BTVC}}" />
 
+        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
+                                   Text="{res:Loc InstallationApp.PreFireAlarm}"
+                                   Visibility="{Binding IsFireAlarmActive, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay1}"
+                                   Text="{res:Loc InstallationApp.FireAlarm}"
+                                   Visibility="{Binding IsFireAlarmActive, Converter={StaticResource BTVC}}" />
+
+
       </StackPanel>
 
       <StackPanel Grid.Row="2"
@@ -81,11 +83,17 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay1}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-          
+
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay1}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGateInternal}"
                                    Visibility="{Binding IsBay1ExternalDoublePresent, Converter={StaticResource BTVC}}" />
-        </StackPanel>
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSideBay1}"
+                                   Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSideBay1}"
+                                   Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
+      </StackPanel>
 
       <StackPanel Grid.Row="2"
                   Grid.Column="1"
@@ -101,12 +109,20 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay2}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-                    <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay2}"
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay2}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGateInternal}"
                                    Visibility="{Binding IsBay2ExternalDoublePresent, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSideBay2}"
+                                   Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSideBay2}"
+                                   Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
       </StackPanel>
+
       <StackPanel Grid.Row="3"
                   Orientation="Vertical"
+                  Margin="0,15,0,0"
                   Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}">
         <TextBlock VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -117,9 +133,16 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrierBay3}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGate}" />
-                        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay3}"
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.AntiIntrusionBarrier2Bay3}"
                                    Text="{res:Loc InstallationApp.AntiIntrusionGateInternal}"
                                    Visibility="{Binding IsBay3ExternalDoublePresent, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterLeftSideBay3}"
+                                   Text="{res:Loc InstallationApp.MicroCarterLeftSide}" />
+
+        <controls:PpcSensorControl SensorState="{Binding Sensors.MicroCarterRightSideBay3}"
+                                   Text="{res:Loc InstallationApp.MicroCarterRightSide}" />
       </StackPanel>
 
     </Grid>

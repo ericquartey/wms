@@ -911,6 +911,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 90,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 91,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1257,6 +1267,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("LogEntries");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogoutSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<TimeSpan>("BeginTime");
+
+                    b.Property<TimeSpan>("EndTime");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<double>("RemainingTime");
+
+                    b.Property<int>("Timeout");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LogoutSettings");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Machine", b =>
                 {
                     b.Property<int>("Id")
@@ -1271,6 +1301,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("ExpireCountPrecent");
 
                     b.Property<int>("ExpireDays");
+
+                    b.Property<bool>("FireAlarm");
 
                     b.Property<double>("Height");
 
@@ -1289,6 +1321,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsEnableAddItem");
 
                     b.Property<bool>("IsHeartBeat");
+
+                    b.Property<bool>("IsOrderList");
 
                     b.Property<bool>("IsRequestConfirmForLastOperationOnLoadingUnit");
 

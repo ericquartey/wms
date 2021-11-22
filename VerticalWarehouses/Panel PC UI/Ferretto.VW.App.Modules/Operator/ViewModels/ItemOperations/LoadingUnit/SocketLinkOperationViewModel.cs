@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int loadingUnitId;
 
+        private object loadingUnitToken;
+
         private string operationText;
 
         private double quantityIncrement;
@@ -183,6 +185,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         ThreadOption.UIThread,
                         false);
 
+            this.loadingUnitToken = this.loadingUnitToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        async e => await this.OnLoadingUnitMovedAsync(e),
+                        ThreadOption.BackgroundThread,
+                        false);
+
             await base.OnAppearedAsync();
         }
 
@@ -193,14 +204,37 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmButton()
         {
-            return this.InputQuantity.HasValue;
+            return this.InputQuantity.HasValue
+                && this.LoadingUnitId > 0;
         }
 
         private async Task ConfirmCommandAsync()
         {
             this.logger.Debug($"User requested to complete socket link operation '{this.SocketLinkOperation?.Id}' with quantity {this.InputQuantity.Value}.");
             await this.missionOperationsWebService.SocketLinkCompleteAsync(this.SocketLinkOperation?.Id, this.InputQuantity.Value, DateTimeOffset.UtcNow);
-            this.NavigationService.GoBack();
+            this.NavigationService.GoBackTo(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.WAIT,
+                "ConfirmCommandAsync");
+        }
+
+        private async Task OnLoadingUnitMovedAsync(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            if (message.Data.MissionType is CommonUtils.Messages.Enumerations.MissionType.OUT
+               &&
+               message.Status is CommonUtils.Messages.Enumerations.MessageStatus.OperationWaitResume)
+            {
+                try
+                {
+                    this.logger.Debug($"Outgoing loading unit is waiting for an operation.");
+                    this.LoadingUnitId = message.Data.LoadUnitId.Value;
+                    this.TitleText = $"{Localized.Get("OperatorApp.LoadUnit")} {this.LoadingUnitId} {Localized.Get("OperatorApp.LoadingUnitInBay")}";
+                }
+                catch
+                {
+                    // do nothing
+                }
+            }
         }
 
         private void OnSocketLinkOperationChanged(NotificationMessageUI<SocketLinkOperationChangeMessageData> e)

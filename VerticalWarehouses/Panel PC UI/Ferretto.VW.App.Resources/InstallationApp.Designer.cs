@@ -313,6 +313,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout active.
+        /// </summary>
+        public static string AutoLogoutIsActive {
+            get {
+                return ResourceManager.GetString("AutoLogoutIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-logout.
+        /// </summary>
+        public static string AutoLogoutSetings {
+            get {
+                return ResourceManager.GetString("AutoLogoutSetings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available packages.
         /// </summary>
         public static string AvailablePackages {
@@ -651,6 +669,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BeforeStart {
             get {
                 return ResourceManager.GetString("BeforeStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin time.
+        /// </summary>
+        public static string BeginTime {
+            get {
+                return ResourceManager.GetString("BeginTime", resourceCulture);
             }
         }
         
@@ -1825,6 +1852,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete installer snaphot file &apos;{0}&apos;..
         /// </summary>
         public static string DeleteSnapshotFile {
@@ -2176,6 +2212,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End time.
+        /// </summary>
+        public static string EndTime {
+            get {
+                return ResourceManager.GetString("EndTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are active errors.
         /// </summary>
         public static string ErrorActiveWarning {
@@ -2505,6 +2550,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FinalPosition {
             get {
                 return ResourceManager.GetString("FinalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fire alarm.
+        /// </summary>
+        public static string FireAlarm {
+            get {
+                return ResourceManager.GetString("FireAlarm", resourceCulture);
             }
         }
         
@@ -5038,6 +5092,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pre fire alarm.
+        /// </summary>
+        public static string PreFireAlarm {
+            get {
+                return ResourceManager.GetString("PreFireAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Printer name.
         /// </summary>
         public static string PrinterName {
@@ -6253,6 +6316,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Suspend current operation.
+        /// </summary>
+        public static string SuspendOperation {
+            get {
+                return ResourceManager.GetString("SuspendOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Engine Completed.
         /// </summary>
         public static string SwitchEngineCompleted {
@@ -6456,6 +6528,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Time {
             get {
                 return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout (min).
+        /// </summary>
+        public static string Timeout {
+            get {
+                return ResourceManager.GetString("Timeout", resourceCulture);
             }
         }
         
@@ -7203,6 +7284,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WriteSingle {
             get {
                 return ResourceManager.GetString("WriteSingle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrong data cannot be saved .
+        /// </summary>
+        public static string WrongDataSave {
+            get {
+                return ResourceManager.GetString("WrongDataSave", resourceCulture);
             }
         }
         

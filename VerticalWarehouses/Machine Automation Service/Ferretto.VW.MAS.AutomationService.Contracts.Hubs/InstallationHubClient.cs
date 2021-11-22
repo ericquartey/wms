@@ -128,6 +128,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<CombinedMovementsMessageData>>(
                 nameof(IInstallationHub.CombinedMovementsNotify), this.OnCombinedMovementsNotify);
+
+            connection.On<NotificationMessageUI<LogoutMessageData>>(
+                nameof(IInstallationHub.LogoutChanged), this.OnLogoutChanged);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -138,6 +141,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnBayLightChanged(bool isLightOn, BayNumber bayNumber)
         {
             this.BayLightChanged?.Invoke(this, new BayLightChangedEventArgs(isLightOn, bayNumber));
+        }
+
+        private void OnLogoutChanged(NotificationMessageUI<LogoutMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)

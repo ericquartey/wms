@@ -23,7 +23,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                 .AddScoped<IBayTelescopicZeroConditionEvaluator, BayTelescopicZeroConditionEvaluator>()
                 .AddScoped<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>()
                 .AddScoped<IElevatorOverrunConditionEvaluator, ElevatorOverrunConditionEvaluator>()
-                .AddScoped<IElevatorUnderrunConditionEvaluator, ElevatorUnderrunConditionEvaluator>();
+                .AddScoped<IElevatorUnderrunConditionEvaluator, ElevatorUnderrunConditionEvaluator>()
+                .AddScoped<IPreFireAlarmConditionEvaluator, PreFireAlarmConditionEvaluator>()
+                .AddScoped<IFireAlarmConditionEvaluator, FireAlarmConditionEvaluator>();
 
             services
                 .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.IODriver
@@ -11,13 +12,18 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IIoDevicesProvider ioDevicesProvider;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
 
-        public SecurityIsClearedConditionEvaluator(IIoDevicesProvider ioDevicesProvider)
+        public SecurityIsClearedConditionEvaluator(
+            IIoDevicesProvider ioDevicesProvider,
+            IMachineProvider machineProvider)
         {
             this.ioDevicesProvider = ioDevicesProvider ?? throw new ArgumentNullException(nameof(ioDevicesProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
         }
 
         #endregion
@@ -32,6 +38,8 @@ namespace Ferretto.VW.MAS.IODriver
                 return false;
             }
 
+            var fireAlarm = this.machineProvider.IsFireAlarmActive() ? !mainDevice.PreFireAlarm && !mainDevice.FireAlarm : true;
+
             return !mainDevice.ResetSecurity
                 &&
                 !mainDevice.MushroomEmergency
@@ -40,7 +48,9 @@ namespace Ferretto.VW.MAS.IODriver
                 &&
                 !mainDevice.AntiIntrusionShutterBay
                 &&
-                !mainDevice.MicroCarterRightSideBay;
+                !mainDevice.MicroCarterRightSideBay
+                &&
+                fireAlarm;
         }
 
         #endregion

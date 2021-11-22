@@ -165,6 +165,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.InverterParameters:
                     await this.OnInverterParameterChanged(message);
                     break;
+
+                case MessageType.Logout:
+                    await this.OnLogoutChanged(message);
+                    break;
             }
         }
 

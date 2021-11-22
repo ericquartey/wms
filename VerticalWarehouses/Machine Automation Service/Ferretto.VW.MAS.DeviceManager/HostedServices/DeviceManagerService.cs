@@ -1003,7 +1003,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.Logger.LogDebug($"Emergency button status are [1:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{this.machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
                 this.Logger.LogDebug($"Anti intrusion barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
                 this.Logger.LogDebug($"Anti intrusion inner barrier status are [1:{this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay1}, 2:{this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay2}, 3:{this.machineResourcesProvider.IsAntiIntrusionBarrier2Bay3}]");
-                this.Logger.LogDebug($"Micro carter status are [Left:{this.machineResourcesProvider.IsMicroCarterLeftSide}, Right:{this.machineResourcesProvider.IsMicroCarterRightSide}]");
+                this.Logger.LogDebug($"Micro carter left status are [1:{this.machineResourcesProvider.IsMicroCarterLeftSideBay1}, 2:{this.machineResourcesProvider.IsMicroCarterLeftSideBay2}, 3:{this.machineResourcesProvider.IsMicroCarterLeftSideBay3}]");
+                this.Logger.LogDebug($"Micro carter right status are [1:{this.machineResourcesProvider.IsMicroCarterRightSideBay1}, 2:{this.machineResourcesProvider.IsMicroCarterRightSideBay2}, 3:{this.machineResourcesProvider.IsMicroCarterRightSideBay3}]");
 
                 var errorCode = MachineErrorCode.SecurityWasTriggered;
                 if (this.machineResourcesProvider.IsMushroomEmergencyButtonBay1)
@@ -1051,19 +1052,47 @@ namespace Ferretto.VW.MAS.DeviceManager
                         .GetRequiredService<IErrorsProvider>()
                         .RecordNew(errorCode, BayNumber.BayThree);
                 }
-                if (this.machineResourcesProvider.IsMicroCarterLeftSide)
+                if (this.machineResourcesProvider.IsMicroCarterLeftSideBay1)
                 {
                     errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
                     scope.ServiceProvider
                         .GetRequiredService<IErrorsProvider>()
-                        .RecordNew(errorCode);
+                        .RecordNew(errorCode, BayNumber.BayOne);
                 }
-                if (this.machineResourcesProvider.IsMicroCarterRightSide)
+                if (this.machineResourcesProvider.IsMicroCarterLeftSideBay2)
+                {
+                    errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayTwo);
+                }
+                if (this.machineResourcesProvider.IsMicroCarterLeftSideBay3)
+                {
+                    errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayThree);
+                }
+                if (this.machineResourcesProvider.IsMicroCarterRightSideBay1)
                 {
                     errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
                     scope.ServiceProvider
                         .GetRequiredService<IErrorsProvider>()
-                        .RecordNew(errorCode);
+                        .RecordNew(errorCode, BayNumber.BayOne);
+                }
+                if (this.machineResourcesProvider.IsMicroCarterRightSideBay2)
+                {
+                    errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayTwo);
+                }
+                if (this.machineResourcesProvider.IsMicroCarterRightSideBay3)
+                {
+                    errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(errorCode, BayNumber.BayThree);
                 }
                 if (errorCode == MachineErrorCode.SecurityWasTriggered)
                 {

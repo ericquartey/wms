@@ -5,11 +5,14 @@
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
+            ParentModuleName="{ctrls:NameOf Type={x:Type modules:Operator}}"
+            ParentViewName="{x:Static modules:Operator.OPERATOR_MENU}"
             mc:Ignorable="d">
     <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
@@ -42,7 +45,7 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
-                       Height="60"
+                       Height="110"
                        HorizontalAlignment="Right"
                        TextWrapping="Wrap"
                        FontSize="{DynamicResource FontSize_High}"
@@ -50,7 +53,7 @@
                        Text="{Binding OperationText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBox Grid.Column="1"
-                     Height="60"
+                     Height="110"
                      Margin="25,0,15,0"
                      TextWrapping="Wrap"
                      FontSize="{DynamicResource FontSize_High}"

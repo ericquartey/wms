@@ -52,7 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddScoped<IUsersProvider, UsersProvider>()
                 .AddScoped<IMachineMissionsProvider, MachineMissionsProvider>()
                 .AddScoped<IMachineProvider, MachineProvider>()
-                .AddScoped<IStatisticsDataProvider, StatisticsDataProvider>();
+                .AddScoped<IStatisticsDataProvider, StatisticsDataProvider>()
+                .AddScoped<ILogoutSettingsProvider, LogoutSettingsProvider>();
 
             services
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()

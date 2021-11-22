@@ -691,6 +691,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fire alarm.
+        /// </summary>
+        public static string FireAlarm {
+            get {
+                return ResourceManager.GetString("FireAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Load Movement.
         /// </summary>
         public static string FullLoadMovement {
@@ -957,6 +966,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Machine_IsHeartBeat {
             get {
                 return ResourceManager.GetString("Machine_IsHeartBeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order List.
+        /// </summary>
+        public static string Machine_IsOrderList {
+            get {
+                return ResourceManager.GetString("Machine_IsOrderList", resourceCulture);
             }
         }
         
