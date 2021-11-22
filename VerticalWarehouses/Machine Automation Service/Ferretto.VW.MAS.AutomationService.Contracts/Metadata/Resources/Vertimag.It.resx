@@ -600,4 +600,7 @@
   <data name="FireAlarm" xml:space="preserve">
     <value>Allarme Antincendio</value>
   </data>
+  <data name="Machine_IsOrderList" xml:space="preserve">
+    <value>Elenco Commesse</value>
+  </data>
 </root>

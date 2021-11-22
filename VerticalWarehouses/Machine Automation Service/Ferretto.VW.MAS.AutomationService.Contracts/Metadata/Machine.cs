@@ -47,6 +47,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(12)]
             public double ExpireDays { get; set; }
 
+            //[Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FireAlarm))]
+            [Id(28)]
+            public bool FireAlarm { get; set; }
+
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
             [Id(3)]
@@ -86,6 +91,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
             [Id(20)]
             public bool IsHeartBeat { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsOrderList))]
+            [Id(29)]
+            public bool IsOrderList { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsRequestConfirmForLastOperationOnLoadingUnit))]
@@ -168,11 +178,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
             [Id(23)]
             public int VerticalCyclesToCalibrate { get; set; }
-
-            //[Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FireAlarm))]
-            [Id(28)]
-            public bool FireAlarm { get; set; }
 
             #endregion
         }

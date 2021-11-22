@@ -598,13 +598,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else if (this.IsAdjustmentVisible)
                 {
                     missionOperationType = (this.InputQuantity > this.SelectedItem.Stock) ? MissionOperationType.Positive : MissionOperationType.Negative;
-                    this.Orders = await this.missionOperationsWebService.GetOrdersAsync();
                     this.OrderId = 0;
-                    if (this.orders?.Any() == true)
+                    var isOrderList = await this.machineMissionsWebService.IsOrderListAsync();
+                    if (isOrderList)
                     {
-                        if (this.orders.Count() == 1)
+                        this.Orders = await this.missionOperationsWebService.GetOrdersAsync();
+                        if (this.orders?.Any() == true)
                         {
-                            this.OrderId = this.orders.First().Id;
+                            if (this.orders.Count() == 1)
+                            {
+                                this.OrderId = this.orders.First().Id;
+                            }
                         }
                     }
                 }

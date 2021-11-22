@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 
+        bool IsOrderList();
+
         int PurgeMissions();
 
         void Reload(Mission mission);

@@ -519,6 +519,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsOrderList()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().IsOrderList;
+            }
+        }
+
         // removes completed missions older than 1 day
         public int PurgeMissions()
         {

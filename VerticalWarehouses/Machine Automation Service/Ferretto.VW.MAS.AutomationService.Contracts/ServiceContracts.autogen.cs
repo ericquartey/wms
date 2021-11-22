@@ -1909,6 +1909,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsEnabeNoteRulesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsOrderListAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsOrderListAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4770,6 +4777,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ExpireDays", Required = Newtonsoft.Json.Required.Always)]
         public int ExpireDays { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("FireAlarm", Required = Newtonsoft.Json.Required.Always)]
+        public bool FireAlarm { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
@@ -4796,6 +4806,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsOrderList", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOrderList { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
@@ -4844,9 +4857,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("VerticalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int VerticalCyclesToCalibrate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("FireAlarm", Required = Newtonsoft.Json.Required.Always)]
-        public bool FireAlarm { get; set; }
     
         public string ToJson() 
         {

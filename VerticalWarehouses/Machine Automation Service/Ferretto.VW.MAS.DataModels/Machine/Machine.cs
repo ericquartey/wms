@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int ExpireDays { get; set; } = 14;
 
+        public bool FireAlarm { get; set; }
+
         /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
@@ -59,6 +61,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsEnableAddItem { get; set; }
 
         public bool IsHeartBeat { get; set; }
+
+        /// <summary>
+        /// The reason view shows order list besides reason list (SIDERPOL)
+        /// </summary>
+        public bool IsOrderList { get; set; }
 
         /// <summary>
         /// Get/set a value indicating if it is requested a confirm on last operation to be performed in a loading unit.
@@ -130,8 +137,6 @@ namespace Ferretto.VW.MAS.DataModels
         public int ToteBarcodeLength { get; set; }
 
         public int VerticalCyclesToCalibrate { get; set; } = 50;
-
-        public bool FireAlarm { get; set; }
 
         #endregion
 

@@ -603,4 +603,7 @@
   <data name="FireAlarm" xml:space="preserve">
     <value>Fire alarm</value>
   </data>
+  <data name="Machine_IsOrderList" xml:space="preserve">
+    <value>Order List</value>
+  </data>
 </root>

@@ -970,6 +970,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order List.
+        /// </summary>
+        public static string Machine_IsOrderList {
+            get {
+                return ResourceManager.GetString("Machine_IsOrderList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request confirm for last operation on LU.
         /// </summary>
         public static string Machine_IsRequestConfirmForLastOperationOnLoadingUnit {
