@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.SocketLink;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -16,15 +15,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
         #region Constructors
 
-        public WmsStatusController(IWmsSettingsProvider wmsSettingsProvider)
+        public WmsStatusController(
+            IWmsSettingsProvider wmsSettingsProvider,
+            IErrorsProvider errorsProvider)
         {
             this.wmsSettingsProvider = wmsSettingsProvider;
+            this.errorsProvider = errorsProvider;
         }
 
         #endregion
@@ -42,25 +46,45 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity("WMS service is not enabled");
             }
 
-            using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
+            int numCycle = 2;
+            for (int i = 1; i <= numCycle; i++)
             {
-                try
+                using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
                 {
-                    client.Timeout = TimeSpan.FromSeconds(2);
-                    var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
-                    var statusString = await result.Content.ReadAsStringAsync();
-                    if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                    try
                     {
-                        this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
+                        client.Timeout = TimeSpan.FromSeconds(2);
+                        var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
+                        var statusString = await result.Content.ReadAsStringAsync();
+                        if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                        {
+                            this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
+                        }
+
+                        if (status == HealthStatus.Unhealthy && i == numCycle)
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
+                            return this.StatusCode((int)result.StatusCode, statusString);
+                        }
+                        else if (status != HealthStatus.Unhealthy)
+                        {
+                            return this.StatusCode((int)result.StatusCode, statusString);
+                        }
                     }
-                    return this.StatusCode((int)result.StatusCode, statusString);
-                }
-                catch
-                {
-                    this.wmsSettingsProvider.IsConnected = false;
-                    return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
+                    catch (Exception ex)
+                    {
+                        this.wmsSettingsProvider.IsConnected = false;
+
+                        if (i == numCycle)
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, additionalText: ex.Message);
+                            return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
+                        }
+                    }
                 }
             }
+
+            return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
         }
 
         [HttpGet("ip-endpoint")]

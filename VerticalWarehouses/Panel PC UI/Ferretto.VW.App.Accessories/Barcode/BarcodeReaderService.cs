@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using CommonServiceLocator;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -32,6 +33,8 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
@@ -46,7 +49,13 @@ namespace Ferretto.VW.App.Accessories
 
         private bool isStarted;
 
+        private bool needLoadRules;
+
+        private HealthStatus oldWmsStatus;
+
         private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
+
+        private Timer wmsStatusTimer;
 
         #endregion
 
@@ -60,7 +69,8 @@ namespace Ferretto.VW.App.Accessories
             IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
             IAuthenticationService authenticationService,
-            IMachineBarcodesWebService barcodesWebService)
+            IMachineBarcodesWebService barcodesWebService,
+            IHealthProbeService healthProbeService)
         {
             this.eventAggregator = eventAggregator;
             this.bayManager = bayManager;
@@ -70,8 +80,13 @@ namespace Ferretto.VW.App.Accessories
             this.navigationService = navigationService;
             this.authenticationService = authenticationService;
             this.barcodesWebService = barcodesWebService;
+            this.healthProbeService = healthProbeService;
 
             this.deviceDriver.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(e);
+            this.oldWmsStatus = HealthStatus.Unknown;
+
+            this.wmsStatusTimer = new Timer(4000);
+            this.wmsStatusTimer.Elapsed += this.WmsStatusTimer_Elapsed;
         }
 
         #endregion
@@ -123,6 +138,10 @@ namespace Ferretto.VW.App.Accessories
                 this.isDeviceEnabled = accessories.BarcodeReader?.IsEnabledNew == true;
                 if (this.isDeviceEnabled)
                 {
+                    if (!this.wmsStatusTimer.Enabled)
+                    {
+                        this.wmsStatusTimer.Start();
+                    }
                     await this.LoadRuleSetAsync();
 
                     this.deviceDriver.Connect(
@@ -170,6 +189,11 @@ namespace Ferretto.VW.App.Accessories
                 this.logger.Info("Stop barcode service");
                 this.deviceDriver.Disconnect();
                 this.ruleSet = Array.Empty<BarcodeRule>();
+
+                if (this.wmsStatusTimer.Enabled)
+                {
+                    this.wmsStatusTimer.Stop();
+                }
             }
             catch (Exception ex)
             {
@@ -363,10 +387,14 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
-            if (!this.ruleSet.Any(r => r.Id != 0))
+            if (!this.ruleSet.Any(r => r.Id != 0) ||
+                this.needLoadRules)
             {
                 await this.LoadRuleSetAsync();
+                this.needLoadRules = false;
             }
+
+            this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
 
             var activeViewModel = this.GetActiveContext();
             var activeContext = activeViewModel as IOperationalContextViewModel;
@@ -444,6 +472,15 @@ namespace Ferretto.VW.App.Accessories
             }
 
             return this.activeRule;
+        }
+
+        private void WmsStatusTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!this.needLoadRules)
+            {
+                this.needLoadRules = this.oldWmsStatus != this.healthProbeService.HealthWmsStatus;
+            }
+            this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
         }
 
         #endregion
