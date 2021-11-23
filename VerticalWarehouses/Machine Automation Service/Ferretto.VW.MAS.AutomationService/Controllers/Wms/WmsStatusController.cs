@@ -1,9 +1,7 @@
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.SocketLink;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -17,14 +15,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         private readonly IWmsSettingsProvider wmsSettingsProvider;
+        private readonly IErrorsProvider errorsProvider;
 
         #endregion
 
         #region Constructors
 
-        public WmsStatusController(IWmsSettingsProvider wmsSettingsProvider)
+        public WmsStatusController(
+            IWmsSettingsProvider wmsSettingsProvider,
+            IErrorsProvider errorsProvider)
         {
             this.wmsSettingsProvider = wmsSettingsProvider;
+            this.errorsProvider = errorsProvider;
         }
 
         #endregion
@@ -42,6 +44,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity("WMS service is not enabled");
             }
 
+            return await this.CheckHelth();
+        }
+
+        private async Task<ActionResult<string>> CheckHelth(bool retry = false)
+        {
             using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
             {
                 try
@@ -53,12 +60,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     {
                         this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
                     }
+
+                    if (status == HealthStatus.Unhealthy && !retry)
+                    {
+                        return await this.CheckHelth(true);
+                    }
+                    else if (status == HealthStatus.Unhealthy && retry)
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
+                    }
+
                     return this.StatusCode((int)result.StatusCode, statusString);
                 }
                 catch
                 {
                     this.wmsSettingsProvider.IsConnected = false;
-                    return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
+
+                    if (retry)
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
+                        return await this.CheckHelth();
+                    }
+
+                    return await this.CheckHelth(true);
                 }
             }
         }

@@ -187,13 +187,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                         {
                             await this.NavigateToLoginPageAsync();
                         }
-                        else if (this.oldWmsStatus != this.healthProbeService.HealthWmsStatus
-                            && isWmsEnabled
-                            //&& (this.healthProbeService.HealthWmsStatus == HealthStatus.Unhealthy || this.healthProbeService.HealthWmsStatus == HealthStatus.Unknown)
-                            )
-                        {
-                            await this.NavigateToLoginPageAsync();
-                        }
+                        //else if (this.oldWmsStatus != this.healthProbeService.HealthWmsStatus
+                        //    && isWmsEnabled
+                        //    //&& (this.healthProbeService.HealthWmsStatus == HealthStatus.Unhealthy || this.healthProbeService.HealthWmsStatus == HealthStatus.Unknown)
+                        //    )
+                        //{
+                        //    await this.NavigateToLoginPageAsync();
+                        //}
                         this.ServiceHealthStatus = this.healthProbeService.HealthMasStatus;
                         this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
                     }
