@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
@@ -44,47 +45,45 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity("WMS service is not enabled");
             }
 
-            return await this.CheckHelth();
-        }
-
-        private async Task<ActionResult<string>> CheckHelth(bool retry = false)
-        {
-            using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
+            int numCycle = 2;
+            for (int i = 1; i <= numCycle; i++)
             {
-                try
+                using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
                 {
-                    client.Timeout = TimeSpan.FromSeconds(2);
-                    var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
-                    var statusString = await result.Content.ReadAsStringAsync();
-                    if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                    try
                     {
-                        this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
-                    }
+                        client.Timeout = TimeSpan.FromSeconds(2);
+                        var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
+                        var statusString = await result.Content.ReadAsStringAsync();
+                        if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                        {
+                            this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
+                        }
 
-                    if (status == HealthStatus.Unhealthy && !retry)
+                        if (status == HealthStatus.Unhealthy && i == numCycle)
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
+                            return this.StatusCode((int)result.StatusCode, statusString);
+                        }
+                        else if(status != HealthStatus.Unhealthy)
+                        {
+                            return this.StatusCode((int)result.StatusCode, statusString);
+                        }
+                    }
+                    catch
                     {
-                        return await this.CheckHelth(true);
-                    }
-                    else if (status == HealthStatus.Unhealthy && retry)
-                    {
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
-                    }
+                        this.wmsSettingsProvider.IsConnected = false;
 
-                    return this.StatusCode((int)result.StatusCode, statusString);
-                }
-                catch
-                {
-                    this.wmsSettingsProvider.IsConnected = false;
-
-                    if (retry)
-                    {
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
-                        return await this.CheckHelth();
+                        if (i == numCycle)
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
+                            return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
+                        }
                     }
-
-                    return await this.CheckHelth(true);
                 }
             }
+
+            return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
         }
 
         [HttpGet("ip-endpoint")]

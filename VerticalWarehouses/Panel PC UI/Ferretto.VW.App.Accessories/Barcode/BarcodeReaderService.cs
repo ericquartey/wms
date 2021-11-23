@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly INavigationService navigationService;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly object syncRoot = new object();
 
         private BarcodeRule activeRule;
@@ -47,6 +49,8 @@ namespace Ferretto.VW.App.Accessories
         private bool isStarted;
 
         private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
+
+        private HealthStatus oldWmsStatus;
 
         #endregion
 
@@ -60,7 +64,8 @@ namespace Ferretto.VW.App.Accessories
             IBarcodeReaderDriver deviceDriver,
             INavigationService navigationService,
             IAuthenticationService authenticationService,
-            IMachineBarcodesWebService barcodesWebService)
+            IMachineBarcodesWebService barcodesWebService,
+            IHealthProbeService healthProbeService)
         {
             this.eventAggregator = eventAggregator;
             this.bayManager = bayManager;
@@ -70,8 +75,10 @@ namespace Ferretto.VW.App.Accessories
             this.navigationService = navigationService;
             this.authenticationService = authenticationService;
             this.barcodesWebService = barcodesWebService;
+            this.healthProbeService = healthProbeService;
 
             this.deviceDriver.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(e);
+            this.oldWmsStatus = HealthStatus.Unknown;
         }
 
         #endregion
@@ -363,10 +370,13 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
-            if (!this.ruleSet.Any(r => r.Id != 0))
+            if (!this.ruleSet.Any(r => r.Id != 0) ||
+                this.oldWmsStatus != this.healthProbeService.HealthWmsStatus)
             {
                 await this.LoadRuleSetAsync();
             }
+
+            this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
 
             var activeViewModel = this.GetActiveContext();
             var activeContext = activeViewModel as IOperationalContextViewModel;
