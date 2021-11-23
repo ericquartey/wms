@@ -33,9 +33,10 @@
 ## Bug Risolti
 - Aggiunto allarme per l' intrusione con la barriera di controllo altezza
 - Correzioni alle liste in attesa
-- Sostituiti i testi "vero" "falso" con un segno di spunta
+- Sostituiti i testi "vero" - "falso" con un segno di spunta
 - Aggiunti allarmi di pannelli aperti per baie 2 e 3
 - Corretto blocco delle missioni con errore di magazzino pieno
+- La perdita di connessione con WMS non provoca il logout ma mostra un allarme
 
 ## Compatibile con adapter 0.4.27 e 0.4.28
 ***
