@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using CommonServiceLocator;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -52,6 +53,10 @@ namespace Ferretto.VW.App.Accessories
 
         private HealthStatus oldWmsStatus;
 
+        private bool needLoadRules;
+
+        private Timer wmsStatusTimer;
+
         #endregion
 
         #region Constructors
@@ -79,6 +84,9 @@ namespace Ferretto.VW.App.Accessories
 
             this.deviceDriver.BarcodeReceived += async (sender, e) => await this.OnBarcodeReceivedAsync(e);
             this.oldWmsStatus = HealthStatus.Unknown;
+
+            this.wmsStatusTimer = new Timer(4000);
+            this.wmsStatusTimer.Elapsed += this.WmsStatusTimer_Elapsed;
         }
 
         #endregion
@@ -152,6 +160,11 @@ namespace Ferretto.VW.App.Accessories
                             });
                     }
                 }
+
+                if(!this.wmsStatusTimer.Enabled)
+                {
+                    this.wmsStatusTimer.Start();
+                }
             }
             catch (Exception ex)
             {
@@ -177,6 +190,11 @@ namespace Ferretto.VW.App.Accessories
                 this.logger.Info("Stop barcode service");
                 this.deviceDriver.Disconnect();
                 this.ruleSet = Array.Empty<BarcodeRule>();
+
+                if(this.wmsStatusTimer.Enabled)
+                {
+                    this.wmsStatusTimer.Stop();
+                }
             }
             catch (Exception ex)
             {
@@ -371,9 +389,10 @@ namespace Ferretto.VW.App.Accessories
             }
 
             if (!this.ruleSet.Any(r => r.Id != 0) ||
-                this.oldWmsStatus != this.healthProbeService.HealthWmsStatus)
+                this.needLoadRules)
             {
                 await this.LoadRuleSetAsync();
+                this.needLoadRules = false;
             }
 
             this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
@@ -454,6 +473,15 @@ namespace Ferretto.VW.App.Accessories
             }
 
             return this.activeRule;
+        }
+
+        private void WmsStatusTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if(!this.needLoadRules)
+            {
+                this.needLoadRules = this.oldWmsStatus != this.healthProbeService.HealthWmsStatus;
+            }
+            this.oldWmsStatus = this.healthProbeService.HealthWmsStatus;
         }
 
         #endregion
