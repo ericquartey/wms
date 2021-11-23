@@ -15,8 +15,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IWmsSettingsProvider wmsSettingsProvider;
         private readonly IErrorsProvider errorsProvider;
+
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
@@ -65,18 +66,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
                             return this.StatusCode((int)result.StatusCode, statusString);
                         }
-                        else if(status != HealthStatus.Unhealthy)
+                        else if (status != HealthStatus.Unhealthy)
                         {
                             return this.StatusCode((int)result.StatusCode, statusString);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         this.wmsSettingsProvider.IsConnected = false;
 
                         if (i == numCycle)
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, additionalText: ex.Message);
                             return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
                         }
                     }

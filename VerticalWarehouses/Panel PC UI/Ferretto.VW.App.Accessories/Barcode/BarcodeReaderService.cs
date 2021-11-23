@@ -33,13 +33,13 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly INavigationService navigationService;
-
-        private readonly IHealthProbeService healthProbeService;
 
         private readonly object syncRoot = new object();
 
@@ -49,11 +49,11 @@ namespace Ferretto.VW.App.Accessories
 
         private bool isStarted;
 
-        private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
+        private bool needLoadRules;
 
         private HealthStatus oldWmsStatus;
 
-        private bool needLoadRules;
+        private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
 
         private Timer wmsStatusTimer;
 
@@ -138,6 +138,10 @@ namespace Ferretto.VW.App.Accessories
                 this.isDeviceEnabled = accessories.BarcodeReader?.IsEnabledNew == true;
                 if (this.isDeviceEnabled)
                 {
+                    if (!this.wmsStatusTimer.Enabled)
+                    {
+                        this.wmsStatusTimer.Start();
+                    }
                     await this.LoadRuleSetAsync();
 
                     this.deviceDriver.Connect(
@@ -159,11 +163,6 @@ namespace Ferretto.VW.App.Accessories
                                 SerialNumber = this.DeviceInformation.SerialNumber
                             });
                     }
-                }
-
-                if(!this.wmsStatusTimer.Enabled)
-                {
-                    this.wmsStatusTimer.Start();
                 }
             }
             catch (Exception ex)
@@ -191,7 +190,7 @@ namespace Ferretto.VW.App.Accessories
                 this.deviceDriver.Disconnect();
                 this.ruleSet = Array.Empty<BarcodeRule>();
 
-                if(this.wmsStatusTimer.Enabled)
+                if (this.wmsStatusTimer.Enabled)
                 {
                     this.wmsStatusTimer.Stop();
                 }
@@ -477,7 +476,7 @@ namespace Ferretto.VW.App.Accessories
 
         private void WmsStatusTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if(!this.needLoadRules)
+            if (!this.needLoadRules)
             {
                 this.needLoadRules = this.oldWmsStatus != this.healthProbeService.HealthWmsStatus;
             }
