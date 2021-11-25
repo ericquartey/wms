@@ -190,6 +190,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                             this.error.Code == (int)MachineErrorCode.SensorZeroBayNotActiveAtStart)
             {
                 return !this.SensorsService.BayZeroChain &&
+                    this.MachineService.Bay.Carousel != null &&
                     ((!this.SensorsService.IsLoadingUnitInBay && this.SensorsService.IsLoadingUnitInMiddleBottomBay) ||
                     (this.SensorsService.IsLoadingUnitInBay && !this.SensorsService.IsLoadingUnitInMiddleBottomBay) ||
                     (!this.SensorsService.IsLoadingUnitInBay && !this.SensorsService.IsLoadingUnitInMiddleBottomBay));
