@@ -245,6 +245,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.selectedLoadingUnit == null)
             {
+                if (this.MachineService.Loadunits is null || !this.MachineService.Loadunits.Any())
+                {
+                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoLoadingUnitsToMove"), (int)this.MachineService.BayNumber), Services.Models.NotificationSeverity.Error);
+                    return;
+                }
                 this.loadingUnits = this.MachineService.Loadunits.ToList();
                 this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
