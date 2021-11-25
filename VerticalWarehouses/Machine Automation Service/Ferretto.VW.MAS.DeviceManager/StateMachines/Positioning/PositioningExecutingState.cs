@@ -24,9 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
-        private const int BayFindZeroLimitDown = 10;
-
-        private const int BayFindZeroLimitUp = 20;
+        private const int BayFindZeroLimit = 10;
 
         private const int DefaultStatusWordPollingInterval = 100;
 
@@ -379,7 +377,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.targetPosition = this.machineData.MessageData.TargetPosition;
                         statusWordPollingInterval = 500;
 
-                        this.Logger.LogDebug($"Start Find zero, TargetPosition{this.targetPosition} StartPosition{this.horizontalStartingPosition}");
+                        this.Logger.LogDebug($"Start Find zero, TargetPosition={this.targetPosition:0.0000} StartPosition={this.horizontalStartingPosition:0.0000}");
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
@@ -400,7 +398,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.targetPosition = this.machineData.MessageData.TargetPosition;
                         statusWordPollingInterval = 500;
 
-                        this.Logger.LogDebug($"Start Find zero, TargetPosition{this.targetPosition} StartPosition{this.horizontalStartingPosition}");
+                        this.Logger.LogDebug($"Start Find zero, TargetPosition={this.targetPosition:0.0000} StartPosition={this.bayChainStartingPosition:0.0000}");
 
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
@@ -660,7 +658,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 (byte)this.machineData.CurrentInverterIndex);
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}, target {targetPosition}");
+            this.Logger.LogDebug($"Continue Message send to inverter {this.machineData.CurrentInverterIndex}, target {targetPosition:0.0000}");
         }
 
         private bool IsBracketSensorError()
@@ -964,13 +962,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"BayChain Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition - BayFindZeroLimitDown + 1) &&
-                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition - BayFindZeroLimitDown + 1))
+                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition - BayFindZeroLimit + 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition - BayFindZeroLimit + 1))
                                         {
-                                            this.Logger.LogDebug($"BayChain Find Zero update destination position Value {this.bayChainStartingPosition + (BayFindZeroLimitUp * 2):0.0000}");
+                                            this.Logger.LogDebug($"BayChain Find Zero update destination position Value {this.bayChainStartingPosition + (BayFindZeroLimit * 2):0.0000}");
 
                                             this.bayChainFindZeroStep = HorizontalCalibrationStep.BackwardFindZeroSensor;
-                                            this.FindZeroNextPosition(this.bayChainStartingPosition + (BayFindZeroLimitUp * 2));
+                                            this.FindZeroNextPosition(this.bayChainStartingPosition + (BayFindZeroLimit * 2));
                                         }
                                         break;
 
@@ -980,8 +978,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"BayChain Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition + BayFindZeroLimitUp - 1) &&
-                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition + BayFindZeroLimitUp - 1))
+                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition + BayFindZeroLimit - 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition + BayFindZeroLimit - 1))
                                         {
                                             this.Logger.LogDebug($"BayChain Find Zero update destination position Value {this.bayChainStartingPosition:0.0000}");
 
