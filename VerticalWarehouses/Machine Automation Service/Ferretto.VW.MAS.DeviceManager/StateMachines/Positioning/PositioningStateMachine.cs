@@ -243,6 +243,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
                 }
             }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero)
+            {
+                var chainPosition = this.machineData.BaysDataProvider.GetChainPosition(this.machineData.TargetBay);
+                var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
+
+                ok = chainPosition <= bay.Carousel.LastIdealPosition + 10 && chainPosition >= bay.Carousel.LastIdealPosition - 10;
+                if (!ok)
+                {
+                    errorText = $"{ErrorDescriptions.ConditionsNotMetForHoming} in Bay {(int)this.machineData.TargetBay}";
+                    errorCode = DataModels.MachineErrorCode.ConditionsNotMetForHoming;
+                }
+            }
             return ok;
         }
 

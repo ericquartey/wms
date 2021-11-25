@@ -409,35 +409,42 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
         }
 
-        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
+        private async void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
         {
-            if (e.MachinePowerState == MachinePowerState.Powered &&
-                this.findZeroElevator)
+            try
             {
-                this.Logger.Debug("Send find zero command to MAS");
+                if (e.MachinePowerState == MachinePowerState.Powered &&
+                                this.findZeroElevator)
+                {
+                    this.Logger.Debug("Send find zero command to MAS");
 
-                this.findZeroElevator = false;
-                this.machineElevatorWebService.FindLostZeroAsync();
+                    this.findZeroElevator = false;
+                    await this.machineElevatorWebService.FindLostZeroAsync();
 
-                this.machinePowerChangedToken?.Dispose();
-                this.machinePowerChangedToken = null;
+                    this.machinePowerChangedToken?.Dispose();
+                    this.machinePowerChangedToken = null;
 
-                this.machineModeChangedToken?.Dispose();
-                this.machineModeChangedToken = null;
+                    this.machineModeChangedToken?.Dispose();
+                    this.machineModeChangedToken = null;
+                }
+                else if (e.MachinePowerState == MachinePowerState.Powered &&
+                    this.findZeroBayChain)
+                {
+                    this.Logger.Debug("Send find zero command to MAS");
+
+                    this.findZeroBayChain = false;
+                    await this.machineCarouselWebService.FindLostZeroAsync();
+
+                    this.machinePowerChangedToken?.Dispose();
+                    this.machinePowerChangedToken = null;
+
+                    this.machineModeChangedToken?.Dispose();
+                    this.machineModeChangedToken = null;
+                }
             }
-            else if (e.MachinePowerState == MachinePowerState.Powered &&
-                this.findZeroBayChain)
+            catch (Exception ex)
             {
-                this.Logger.Debug("Send find zero command to MAS");
-
-                this.findZeroBayChain = false;
-                this.machineCarouselWebService.FindLostZeroAsync();
-
-                this.machinePowerChangedToken?.Dispose();
-                this.machinePowerChangedToken = null;
-
-                this.machineModeChangedToken?.Dispose();
-                this.machineModeChangedToken = null;
+                this.ShowNotification(ex);
             }
         }
 
