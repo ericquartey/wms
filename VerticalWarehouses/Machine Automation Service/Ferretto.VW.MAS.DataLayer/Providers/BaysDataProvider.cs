@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,7 +11,6 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -709,6 +707,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.BayChain:
                         case MovementMode.BayChainManual:
                         case MovementMode.BayTest:
+                        case MovementMode.BayChainFindZero:
                         case MovementMode.DoubleExtBayTest:
                             returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;

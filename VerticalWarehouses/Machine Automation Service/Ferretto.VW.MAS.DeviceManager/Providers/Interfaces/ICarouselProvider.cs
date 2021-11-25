@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
+        void MoveFindZero(BayNumber requestingBay, MessageActor sender);
+
         void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 
         void StartTest(BayNumber bayNumber, MessageActor sender);

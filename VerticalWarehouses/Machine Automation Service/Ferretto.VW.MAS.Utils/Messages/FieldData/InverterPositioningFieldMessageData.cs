@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.ComputeElongation = positioningFieldMessageData.ComputeElongation;
             this.IsProfileCalibrate = positioningFieldMessageData.IsProfileCalibrate;
             this.IsHorizontalCalibrate = positioningFieldMessageData.IsHorizontalCalibrate;
+            this.IsBayCalibrate = positioningFieldMessageData.IsBayCalibrate;
             this.IsPickupMission = positioningFieldMessageData.IsPickupMission;
 
             this.IsWeightMeasureDone = false;
@@ -75,6 +76,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public int Direction { get; set; }
 
         public double FeedRate { get; set; }
+
+        public bool IsBayCalibrate { get; set; }
 
         public bool IsHorizontalCalibrate { get; set; }
 

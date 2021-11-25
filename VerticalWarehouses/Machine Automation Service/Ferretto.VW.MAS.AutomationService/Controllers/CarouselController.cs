@@ -50,6 +50,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.carouselProvider.CanMove(direction, this.BayNumber, movementCategory));
         }
 
+        [HttpPost("bay/find-lost-zero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindLostZero()
+        {
+            this.carouselProvider.MoveFindZero(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

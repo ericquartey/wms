@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                 this.Inverter,
                                 this.Logger));
                     }
-                    else if (this.data.IsHorizontalCalibrate)
+                    else if (this.data.IsHorizontalCalibrate || this.data.IsBayCalibrate)
                     {
                         this.ParentStateMachine.ChangeState(
                             new PositioningHorizontalCalibrateStartMovingState(

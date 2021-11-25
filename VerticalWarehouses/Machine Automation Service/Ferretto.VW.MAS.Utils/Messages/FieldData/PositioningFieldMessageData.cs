@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.IsWeightMeasure = (messageData.MovementMode == MovementMode.PositionAndMeasureWeight && this.AxisMovement == Axis.Vertical);
             this.IsProfileCalibrate = (messageData.MovementMode == MovementMode.ProfileCalibration);
             this.IsHorizontalCalibrate = (messageData.MovementMode == MovementMode.HorizontalCalibration || messageData.MovementMode == MovementMode.FindZero || messageData.MovementMode == MovementMode.HorizontalResolution);
+            this.IsBayCalibrate = messageData.MovementMode == MovementMode.BayChainFindZero;
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
@@ -83,6 +84,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public HorizontalMovementDirection Direction { get; set; }
 
         public double FeedRate { get; }
+
+        public bool IsBayCalibrate { get; set; }
 
         public bool IsHorizontalCalibrate { get; set; }
 

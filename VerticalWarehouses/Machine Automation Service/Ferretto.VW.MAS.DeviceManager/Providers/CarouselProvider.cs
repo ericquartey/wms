@@ -175,6 +175,54 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
+        public void MoveFindZero(BayNumber requestingBay, MessageActor sender)
+        {
+            var policy = ActionPolicy.Allowed;
+
+            if (this.machineResourcesProvider.IsDrawerInBayTop(requestingBay)
+                &&
+                this.machineResourcesProvider.IsDrawerInBayBottom(requestingBay))
+            {
+                policy = new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsTwoLoadingUnits", CommonUtils.Culture.Actual) };
+            }
+
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(requestingBay);
+
+            var chainPosition = this.baysDataProvider.GetChainPosition(requestingBay);
+            var targetPosition = chainPosition - 20;
+
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Absolute,
+                MovementMode.BayChainFindZero,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.BayChain} Vertical find zero Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.None);
+        }
+
         public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
         {
             return (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber)
