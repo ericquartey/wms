@@ -110,6 +110,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(result);
         }
 
+        [HttpGet("local/items")]
+        public ActionResult<bool> IsLocalMachineItems()
+        {
+            var result = this.missionsDataProvider.IsLocalMachineItems();
+            return this.Ok(result);
+        }
+
         [HttpGet("order/list")]
         public ActionResult<bool> IsOrderList()
         {

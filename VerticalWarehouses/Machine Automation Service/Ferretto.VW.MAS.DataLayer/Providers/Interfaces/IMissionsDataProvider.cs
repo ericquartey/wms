@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsEnabeNoteRules();
 
+        bool IsLocalMachineItems();
+
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 
         bool IsOrderList();
