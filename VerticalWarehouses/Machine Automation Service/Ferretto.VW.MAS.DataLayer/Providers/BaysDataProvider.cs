@@ -598,6 +598,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetCarouselBayFindZeroLimit(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.BayFindZeroLimit;
+
         public double GetChainOffset(InverterIndex inverterIndex)
         {
             lock (this.dataContext)

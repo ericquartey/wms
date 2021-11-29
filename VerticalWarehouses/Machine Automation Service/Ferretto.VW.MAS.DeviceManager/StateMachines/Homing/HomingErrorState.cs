@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
@@ -44,7 +43,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             if (message.Type == FieldMessageType.InverterPowerOff && message.Status != MessageStatus.OperationStart)
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Error);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, false, MessageVerbosity.Error);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
@@ -110,7 +109,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     (byte)currentInverterIndex));
             }
 
-            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Info);
+            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, false, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",

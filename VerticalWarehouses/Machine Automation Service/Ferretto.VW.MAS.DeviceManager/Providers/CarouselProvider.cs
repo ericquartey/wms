@@ -177,19 +177,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveFindZero(BayNumber requestingBay, MessageActor sender)
         {
-            var policy = ActionPolicy.Allowed;
+            //var policy = ActionPolicy.Allowed;
 
-            if (this.machineResourcesProvider.IsDrawerInBayTop(requestingBay)
-                &&
-                this.machineResourcesProvider.IsDrawerInBayBottom(requestingBay))
-            {
-                policy = new ActionPolicy { Reason = Resources.Bays.ResourceManager.GetString("TheBayContainsTwoLoadingUnits", CommonUtils.Culture.Actual) };
-            }
-
-            if (!policy.IsAllowed)
-            {
-                throw new InvalidOperationException(policy.Reason);
-            }
+            //if (!policy.IsAllowed)
+            //{
+            //    throw new InvalidOperationException(policy.Reason);
+            //}
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
             var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(requestingBay);

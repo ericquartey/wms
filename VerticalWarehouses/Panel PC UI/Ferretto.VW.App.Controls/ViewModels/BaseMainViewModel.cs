@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
@@ -22,17 +23,17 @@ namespace Ferretto.VW.App.Controls
 
         protected bool isWaitingForResponse;
 
-        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
-
         private readonly IAuthenticationService authenticationService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IAuthenticationService>();
-
-        private readonly IInstallationHubClient installationHubClient = CommonServiceLocator.ServiceLocator.Current.GetInstance<IInstallationHubClient>();
 
         private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
 
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
+        private readonly IInstallationHubClient installationHubClient = CommonServiceLocator.ServiceLocator.Current.GetInstance<IInstallationHubClient>();
+
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private readonly IMachineCarouselWebService machineCarouselWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineCarouselWebService>();
 
         private readonly IMachineErrorsService machineErrorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineErrorsService>();
 
@@ -41,6 +42,10 @@ namespace Ferretto.VW.App.Controls
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
 
         private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
+
+        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
+        private SubscriptionToken bayChainHomingChangesToken;
 
         private SubscriptionToken bayChainPositionChangedToken;
 
@@ -51,8 +56,6 @@ namespace Ferretto.VW.App.Controls
         private SubscriptionToken healthStatusChangedToken;
 
         private SubscriptionToken homingChangesToken;
-
-        private SubscriptionToken logoutChangesToken;
 
         private bool isBrowserOpened;
 
@@ -65,6 +68,8 @@ namespace Ferretto.VW.App.Controls
         private DelegateCommand keyboardCloseCommand;
 
         private DelegateCommand keyboardOpenCommand;
+
+        private SubscriptionToken logoutChangesToken;
 
         private SubscriptionToken machineModeChangedToken;
 
@@ -153,8 +158,6 @@ namespace Ferretto.VW.App.Controls
            ??
            (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
 
-        protected NLog.Logger Logger => this.logger;
-
         public MachineError MachineError => this.machineErrorsService.ActiveError;
 
         public IMachineModeService MachineModeService => this.machineModeService;
@@ -174,6 +177,8 @@ namespace Ferretto.VW.App.Controls
         protected bool IsConnectedByMAS => (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded);
 
         protected virtual bool IsDataRefreshSyncronous => false;
+
+        protected NLog.Logger Logger => this.logger;
 
         protected virtual bool RequireDataRefresh => true;
 
@@ -379,6 +384,17 @@ namespace Ferretto.VW.App.Controls
                 .Publish(presentationMessage);
         }
 
+        public void SubscribeToBayEvent()
+        {
+            this.bayChainHomingChangesToken = this.bayChainHomingChangesToken
+              ?? this.EventAggregator
+                  .GetEvent<NotificationEventUI<HomingMessageData>>()
+                  .Subscribe(
+                      async (m) => await this.BayChainHomingAsync(m),
+                      ThreadOption.UIThread,
+                      false);
+        }
+
         public virtual void UpdateNotifications()
         {
             this.ClearNotifications();
@@ -471,6 +487,26 @@ namespace Ferretto.VW.App.Controls
             this.RaisePropertyChanged(nameof(this.MachineStatus));
         }
 
+        private async Task BayChainHomingAsync(NotificationMessageUI<HomingMessageData> m)
+        {
+            if (m is null)
+            {
+                throw new ArgumentNullException(nameof(m));
+            }
+
+            if (m.Data.CalibrateFromPPC)
+            {
+                if (this.bayChainHomingChangesToken != null)
+                {
+                    this.EventAggregator?.GetEvent<PubSubEvent<HomingMessageData>>().Unsubscribe(this.bayChainHomingChangesToken);
+                    this.bayChainHomingChangesToken?.Dispose();
+                    this.bayChainHomingChangesToken = null;
+                }
+                Thread.Sleep(2000);
+                await this.machineCarouselWebService.HomingAsync();
+            }
+        }
+
         private void KeyboardClose()
         {
             this.IsKeyboardOpened = false;
@@ -487,6 +523,21 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthMasStatus);
+        }
+
+        private async void OnLogoutMessageReceived(NotificationMessageUI<LogoutMessageData> message)
+        {
+            if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+            {
+                this.logger.Debug($"Auto logout message processed");
+
+                await this.authenticationService.LogOutAsync();
+
+                this.NavigationService.Appear(
+                    nameof(Login),
+                    Login.LOGIN,
+                    "NavigateToLoginPage");
+            }
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -578,21 +629,6 @@ namespace Ferretto.VW.App.Controls
                       (m) => this.OnLogoutMessageReceived(m),
                       ThreadOption.UIThread,
                       false);
-        }
-
-        private async void OnLogoutMessageReceived(NotificationMessageUI<LogoutMessageData> message)
-        {
-            if(this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
-            {
-                this.logger.Debug($"Auto logout message processed");
-
-                await this.authenticationService.LogOutAsync();
-
-                this.NavigationService.Appear(
-                    nameof(Login),
-                    Login.LOGIN,
-                    "NavigateToLoginPage");
-            }
         }
 
         private void UpdateHealth()

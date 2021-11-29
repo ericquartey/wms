@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -8,11 +9,13 @@ using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
@@ -38,6 +41,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IPositioningStateData stateData;
 
+        private readonly IEventAggregator eventAggregator;
+
         #endregion
 
         #region Constructors
@@ -54,6 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
+            this.eventAggregator = this.scope.ServiceProvider.GetRequiredService<IEventAggregator>();
         }
 
         #endregion
@@ -257,6 +263,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero &&
+                this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+            {
+                this.eventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage
+                            {
+                                Data = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null, true, false, true),
+                                Destination = MessageActor.AutomationService,
+                                Source = MessageActor.DataLayer,
+                                Type = MessageType.Homing,
+                            });
+            }
 
             if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing
                 || this.machineData.MessageData.MovementMode == MovementMode.BayTest

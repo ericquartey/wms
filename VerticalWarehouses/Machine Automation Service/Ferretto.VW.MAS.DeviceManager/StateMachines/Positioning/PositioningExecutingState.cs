@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
-        private const int BayFindZeroLimit = 10;
-
         private const int DefaultStatusWordPollingInterval = 100;
 
         private const int FindZeroLimit = 80;
@@ -954,6 +952,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             if (chainPosition.HasValue)
                             {
+                                var bayFindZeroLimit = this.baysDataProvider.GetCarouselBayFindZeroLimit(this.machineData.RequestingBay);
+                                bayFindZeroLimit = bayFindZeroLimit == 0 ? 6 : bayFindZeroLimit;
                                 switch (this.bayChainFindZeroStep)
                                 {
                                     case HorizontalCalibrationStep.FindCenter:
@@ -962,13 +962,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"BayChain Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition - BayFindZeroLimit + 1) &&
-                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition - BayFindZeroLimit + 1))
+                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition - bayFindZeroLimit + 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition - bayFindZeroLimit + 1))
                                         {
-                                            this.Logger.LogDebug($"BayChain Find Zero update destination position Value {this.bayChainStartingPosition + (BayFindZeroLimit * 2):0.0000}");
+                                            this.Logger.LogDebug($"BayChain Find Zero update destination position Value {this.bayChainStartingPosition + (bayFindZeroLimit * 2):0.0000}");
 
                                             this.bayChainFindZeroStep = HorizontalCalibrationStep.BackwardFindZeroSensor;
-                                            this.FindZeroNextPosition(this.bayChainStartingPosition + (BayFindZeroLimit * 2));
+                                            this.FindZeroNextPosition(this.bayChainStartingPosition + (bayFindZeroLimit * 2));
                                         }
                                         break;
 
@@ -978,8 +978,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                             this.Stop(StopRequestReason.Stop);
                                             this.Logger.LogDebug($"BayChain Find Zero operation Stop, Value {chainPosition:0.0000}");
                                         }
-                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition + BayFindZeroLimit - 1) &&
-                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition + BayFindZeroLimit - 1))
+                                        else if ((data.CurrentPosition.Value + 1 >= this.bayChainStartingPosition + bayFindZeroLimit - 1) &&
+                                            (data.CurrentPosition.Value - 1 <= this.bayChainStartingPosition + bayFindZeroLimit - 1))
                                         {
                                             this.Logger.LogDebug($"BayChain Find Zero update destination position Value {this.bayChainStartingPosition:0.0000}");
 

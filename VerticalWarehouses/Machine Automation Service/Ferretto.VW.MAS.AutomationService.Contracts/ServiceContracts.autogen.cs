@@ -3305,6 +3305,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CarouselManualParameters ManualMovements { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("BayFindZeroLimit", Required = Newtonsoft.Json.Required.Always)]
+        public int BayFindZeroLimit { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
