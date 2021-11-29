@@ -31,6 +31,7 @@
 
 ## Bug Risolti
 - I ripristini della BES portano sempre il cassetto verso l'operatore
+- I file di log hanno un limite di 100MB
 
 ## Compatibile con adapter 0.4.27 e 0.4.28
 ***
