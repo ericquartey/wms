@@ -64,6 +64,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? inputQuantity;
 
+        private bool isBusyConfirmingOperation;
+
         private bool isBusyLoadingNextPage;
 
         private bool isBusyRequestingItemPick;
@@ -184,7 +186,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsBusyConfirmingOperation { get; private set; }
+        public bool IsBusyConfirmingOperation
+        {
+            get => this.isBusyConfirmingOperation;
+            private set => this.SetProperty(ref this.isBusyConfirmingOperation, value);
+        }
 
         public bool IsBusyLoadingNextPage
         {
@@ -599,6 +605,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPick = true;
+                this.IsBusyConfirmingOperation = true;
 
                 await this.wmsDataProvider.PickAsync(
                     itemId,
@@ -674,6 +681,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.IsBusyRequestingItemPut = true;
+                this.IsBusyConfirmingOperation = true;
                 if (!this.isGroupbyLot && this.areaId.HasValue)
                 {
                     var lotProducts = await this.areasWebService.GetProductsAsync(
@@ -752,6 +760,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBusyRequestingItemPick = true;
             this.IsWaitingForResponse = true;
+            this.IsBusyConfirmingOperation = false;
 
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
@@ -777,6 +786,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBusyRequestingItemPut = true;
             this.IsWaitingForResponse = true;
+            this.IsBusyConfirmingOperation = false;
 
             //this.itemToPickId = itemId;
             //this.itemToPickCode = itemCode;
