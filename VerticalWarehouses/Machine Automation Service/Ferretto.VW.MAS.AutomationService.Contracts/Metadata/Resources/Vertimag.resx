@@ -607,6 +607,6 @@
     <value>Order List</value>
   </data>
   <data name="Machine_IsLocalMachineItems" xml:space="preserve">
-    <value>Search items in Local machine</value>
+    <value>Search items in this machine</value>
   </data>
 </root>

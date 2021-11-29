@@ -25,21 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.32 rispetto la 1.0.31
-- Aggiunto campo Commessa nelle rettifiche (se sono definite su WMS)
-- Aggiunto logout a tempo per utente Operator
-- Aggiunto allarme antincendio
+## Nuove Funzionalità 1.0.33 rispetto la 1.0.32
+- Nella BIG l'allarme 22 (stato sensori baia) permette la ricerca dello zero
+- Aggiunto parametro "Cerca gli articoli in questa macchina"
 
 ## Bug Risolti
-- Aggiunto allarme per l' intrusione con la barriera di controllo altezza
-- Correzioni alle liste in attesa
-- Sostituiti i testi "vero" - "falso" con un segno di spunta
-- Aggiunti allarmi di pannelli aperti per baie 2 e 3
-- Corretto blocco delle missioni con errore di magazzino pieno
-- La perdita di connessione con WMS non provoca il logout ma mostra un allarme
+- I ripristini della BES portano sempre il cassetto verso l'operatore
 
 ## Compatibile con adapter 0.4.27 e 0.4.28
 ***
+
+[Versione 1.0.32](#id1032)
 
 [Versione 1.0.31](#id1031)
 
@@ -105,6 +101,22 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1032"></a>
+## Nuove Funzionalità 1.0.32 rispetto la 1.0.31
+- Aggiunto campo Commessa nelle rettifiche (se sono definite su WMS)
+- Aggiunto logout a tempo per utente Operator
+- Aggiunto allarme antincendio
+
+## Bug Risolti
+- Aggiunto allarme per l' intrusione con la barriera di controllo altezza
+- Correzioni alle liste in attesa
+- Sostituiti i testi "vero" - "falso" con un segno di spunta
+- Aggiunti allarmi di pannelli aperti per baie 2 e 3
+- Corretto blocco delle missioni con errore di magazzino pieno
+- La perdita di connessione con WMS non provoca il logout ma mostra un allarme
+
+## Compatibile con adapter 0.4.27 e 0.4.28
 
 <a id="id1031"></a>
 ## Nuove Funzionalità 1.0.31 rispetto la 1.0.30

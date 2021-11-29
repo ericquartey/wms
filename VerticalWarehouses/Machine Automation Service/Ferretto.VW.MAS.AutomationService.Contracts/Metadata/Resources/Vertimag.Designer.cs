@@ -970,7 +970,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search items in Local machine.
+        ///   Looks up a localized string similar to Search items in this machine.
         /// </summary>
         public static string Machine_IsLocalMachineItems {
             get {
