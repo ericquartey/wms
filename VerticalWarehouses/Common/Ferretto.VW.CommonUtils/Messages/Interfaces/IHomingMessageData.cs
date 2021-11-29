@@ -15,6 +15,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         bool ShowErrors { get; }
 
         bool TurnBack { get; }
+        bool CalibrateFromPPC { get; set; }
 
         #endregion
     }
