@@ -410,9 +410,17 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        public double AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
+        public double AxisPositionX
+        {
+            get => this.axisPosition[Axis.Horizontal];
+            set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); }
+        }
 
-        public double AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
+        public double AxisPositionY
+        {
+            get => this.axisPosition[Axis.Vertical];
+            set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); }
+        }
 
         public List<InverterBlockDefinition> BlockDefinitions { get; set; }
 
@@ -460,10 +468,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.isDouble = value;
         }
 
-        public bool IsElevatorOverrun
-        {
-            get => !this.digitalIO[(int)InverterSensors.ANG_ElevatorOverrunSensor].Value;
-        }
+        public bool IsElevatorOverrun => !this.digitalIO[(int)InverterSensors.ANG_ElevatorOverrunSensor].Value;
 
         public bool IsExternal
         {
@@ -608,7 +613,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public MAS.DataModels.Machine Machine
         {
-            get { return this.machine; }
+            get => this.machine;
             set
             {
                 this.machine = value;

@@ -9,8 +9,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
     {
         #region Fields
 
-        private const byte ActualDataSetIndex = 0x05; // VALUE fixed data set id used for the inverter operation
-
         private const int DatasetByteIndex = 3;
 
         private const byte ReadHeader = 0x00;
@@ -132,7 +130,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.responseMessage = false;
             this.SystemIndex = inverterIndex;
             this.DataSetIndex = (byte)dataSetIndex;
-            this.parameterId = (short)parameterId;
+            this.parameterId = parameterId;
             this.IsWriteMessage = false;
             this.heartbeatMessage = false;
         }

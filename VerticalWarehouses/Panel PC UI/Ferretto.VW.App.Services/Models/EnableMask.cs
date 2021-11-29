@@ -1,5 +1,8 @@
-﻿namespace Ferretto.VW.App.Controls
+﻿using System;
+
+namespace Ferretto.VW.App.Controls
 {
+    [Flags]
     public enum EnableMask
     {
         Undefined = 0,
