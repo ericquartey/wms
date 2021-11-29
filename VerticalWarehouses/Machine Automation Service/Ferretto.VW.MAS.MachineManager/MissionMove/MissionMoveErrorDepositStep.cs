@@ -160,8 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     case MessageStatus.OperationUpdateData:
                         {
-                            var data = notification.Data as PositioningMessageData;
-                            if (data != null
+                            if (notification.Data is PositioningMessageData data
                                 && data.MovementType == MovementType.Relative
                                 && data.AxisMovement == Axis.Horizontal
                                 && (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward) || this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward))
