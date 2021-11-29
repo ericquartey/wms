@@ -1817,8 +1817,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
-                    this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item
+                    if (this.MissionOperation != null)
+                    {
+                        var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                        this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item
+                    }
+                    else
+                    {
+                        this.IsCurrentDraperyItem = false;
+                    }
                 }
                 catch (Exception)
                 {

@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(4)]
             public CarouselManualParameters AssistedMovements { get; set; }
 
-            [Range(6, 15, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Range(1, 15, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Carousel_BayFindZeroLimit))]
             [Unit("mm")]
             [Id(8)]

@@ -123,6 +123,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.GenerateInstructionDefinitions(dataContext);
                     this.GenerateAccessories(dataContext);
                     this.GenerateSetupProcedures(dataContext);
+                    var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                    baysDataProvider.CheckBayFindZeroLimit();
 
                     // performance optimization
                     var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
@@ -134,7 +136,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     elevatorDataProvider.GetStructuralProperties();
                     var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                     machineProvider.Get();
-                    var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                     var bays = baysDataProvider.GetAll();
                     var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
 
@@ -142,7 +143,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
                     }
-                    baysDataProvider.AddElevatorPseudoBay();
                     machineVolatileDataProvider.IsOneTonMachine = machineProvider.IsOneTonMachine();
 
                     scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();

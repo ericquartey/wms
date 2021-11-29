@@ -266,6 +266,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        void IBaysDataProvider.CheckBayFindZeroLimit()
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .Where(b => b.Carousel != null))
+                {
+                    if (bay.Carousel.BayFindZeroLimit == 0)
+                    {
+                        bay.Carousel.BayFindZeroLimit = 6;
+                        this.dataContext.SaveChanges();
+                    }
+                }
+            }
+        }
+
         public bool CheckIntrusion(BayNumber bayNumber, bool enable)
         {
             var bay = this.GetByNumber(bayNumber);

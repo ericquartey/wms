@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMission(BayNumber bayNumber, Mission mission);
 
+        void CheckBayFindZeroLimit();
+
         /// <summary>
         /// Sends a CheckIntrusion command to Device Manager
         /// </summary>
