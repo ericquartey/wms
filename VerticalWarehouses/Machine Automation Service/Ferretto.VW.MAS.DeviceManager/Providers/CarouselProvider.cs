@@ -162,9 +162,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.baysDataProvider.GetChainPosition(bayNumber);
         }
 
-        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
+        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender, bool bypassSensor)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, false);
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, false, false, bypassSensor);
             this.PublishCommand(
                 homingData,
                 $"Execute homing {calibration} Command",

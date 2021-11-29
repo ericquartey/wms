@@ -2472,17 +2472,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task HomingAsync()
+        public System.Threading.Tasks.Task HomingAsync(bool bypassSensor)
         {
-            return HomingAsync(System.Threading.CancellationToken.None);
+            return HomingAsync(bypassSensor, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task HomingAsync(bool bypassSensor, System.Threading.CancellationToken cancellationToken)
         {
+            if (bypassSensor == null)
+                throw new System.ArgumentNullException("bypassSensor");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/homing");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/homing?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bypassSensor") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bypassSensor, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try

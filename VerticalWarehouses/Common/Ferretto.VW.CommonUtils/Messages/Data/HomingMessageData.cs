@@ -11,7 +11,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, int? loadingUnitId, bool showErrors, bool turnBack, bool calibrateFromPPC = false, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public HomingMessageData(Axis axisToCalibrate, Calibration calibration, int? loadingUnitId, bool showErrors, bool turnBack, bool calibrateFromPPC = false, bool bypassSensor = false, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.AxisToCalibrate = axisToCalibrate;
             this.CalibrationType = calibration;
@@ -19,6 +19,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.ShowErrors = showErrors;
             this.TurnBack = turnBack;
             this.CalibrateFromPPC = calibrateFromPPC;
+            this.BypassSensor = bypassSensor;
             this.Verbosity = verbosity;
         }
 
@@ -28,6 +29,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public Axis AxisToCalibrate { get; set; }
 
+        public bool BypassSensor { get; set; }
+
+        public bool CalibrateFromPPC { get; set; }
+
         public Calibration CalibrationType { get; set; }
 
         public int? LoadingUnitId { get; set; }
@@ -35,8 +40,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public bool ShowErrors { get; }
 
         public bool TurnBack { get; set; }
-
-        public bool CalibrateFromPPC { get; set; }
 
         public MessageVerbosity Verbosity { get; set; }
 

@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -496,7 +495,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var bay = this.baysDataProvider.GetByNumber(requestingBay);
                 if (bay.Carousel != null)
                 {
-                    this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender);
+                    this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender, false);
                 }
                 if (bay.External != null)
                 {

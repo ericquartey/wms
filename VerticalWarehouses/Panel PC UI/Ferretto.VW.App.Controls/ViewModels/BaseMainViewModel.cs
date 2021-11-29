@@ -503,7 +503,7 @@ namespace Ferretto.VW.App.Controls
                     this.bayChainHomingChangesToken = null;
                 }
                 Thread.Sleep(2000);
-                await this.machineCarouselWebService.HomingAsync();
+                await this.machineCarouselWebService.HomingAsync(true);
             }
         }
 
