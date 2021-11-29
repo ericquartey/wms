@@ -185,12 +185,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //}
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
-            var procedureParameters = this.baysDataProvider.GetManualMovementsCarousel(requestingBay);
 
             var chainPosition = this.baysDataProvider.GetChainPosition(requestingBay);
             var targetPosition = chainPosition - 20;
 
-            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var speed = new[] { bay.Carousel.HomingCreepSpeed };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
             var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
