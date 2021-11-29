@@ -5,8 +5,10 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -485,6 +487,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                if (bay != null &&
+                    bay.Carousel != null &&
+                    !machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay) &&
+                    this.SensorsProvider.IsSensorZeroOnCradle)
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, false, measure, this.Mission.LoadUnitId, positionId, MessageActor.MachineManager, this.Mission.TargetBay))
                 {

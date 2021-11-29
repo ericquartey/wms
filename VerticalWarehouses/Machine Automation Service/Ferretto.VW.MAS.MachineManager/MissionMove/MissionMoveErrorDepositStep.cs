@@ -467,6 +467,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
+                if (bay != null &&
+                    bay.Carousel != null &&
+                    !machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay) &&
+                    this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
