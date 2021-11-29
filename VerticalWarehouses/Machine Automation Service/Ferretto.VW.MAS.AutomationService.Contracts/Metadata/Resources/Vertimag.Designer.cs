@@ -376,6 +376,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find zero limit.
+        /// </summary>
+        public static string Carousel_BayFindZeroLimit {
+            get {
+                return ResourceManager.GetString("Carousel_BayFindZeroLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator Distance.
         /// </summary>
         public static string Carousel_ElevatorDistance {

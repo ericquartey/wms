@@ -606,4 +606,7 @@
   <data name="Machine_IsLocalMachineItems" xml:space="preserve">
     <value>Cerca gli articoli in questa macchina</value>
   </data>
+  <data name="Carousel_BayFindZeroLimit" xml:space="preserve">
+    <value>Limite ricerca dello zero</value>
+  </data>
 </root>
