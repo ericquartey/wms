@@ -143,6 +143,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
                     }
+                    baysDataProvider.AddElevatorPseudoBay();
                     machineVolatileDataProvider.IsOneTonMachine = machineProvider.IsOneTonMachine();
 
                     scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().GetAll();
