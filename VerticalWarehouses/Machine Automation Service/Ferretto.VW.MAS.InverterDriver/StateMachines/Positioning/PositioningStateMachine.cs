@@ -40,7 +40,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Continue(double? targetPosition)
         {
             this.data.WaitContinue = false;
-            if (targetPosition.HasValue && this.data.IsHorizontalCalibrate)
+            if (targetPosition.HasValue &&
+                (this.data.IsHorizontalCalibrate || this.data.IsBayCalibrate))
             {
                 this.data.TargetPosition = (int)targetPosition.Value;
             }

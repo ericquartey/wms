@@ -210,6 +210,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindLostZeroAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FindLostZeroAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -231,11 +238,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<double> GetPositionAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task HomingAsync();
+        System.Threading.Tasks.Task HomingAsync(bool bypassSensor);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task HomingAsync(bool bypassSensor, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction);
@@ -1909,6 +1916,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsEnabeNoteRulesAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsLocalMachineItemsAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsLocalMachineItemsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsOrderListAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3275,6 +3289,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("AssistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CarouselManualParameters AssistedMovements { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("BayFindZeroLimit", Required = Newtonsoft.Json.Required.Always)]
+        public int BayFindZeroLimit { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ElevatorDistance", Required = Newtonsoft.Json.Required.Always)]
         public double ElevatorDistance { get; set; }
@@ -4806,6 +4823,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsLocalMachineItems", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLocalMachineItems { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsOrderList", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOrderList { get; set; }

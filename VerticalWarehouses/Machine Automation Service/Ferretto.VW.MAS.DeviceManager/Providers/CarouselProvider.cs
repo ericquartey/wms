@@ -162,9 +162,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.baysDataProvider.GetChainPosition(bayNumber);
         }
 
-        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender)
+        public void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender, bool bypassSensor)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, false);
+            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, false, false, bypassSensor);
             this.PublishCommand(
                 homingData,
                 $"Execute homing {calibration} Command",
@@ -172,6 +172,46 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sender,
                 MessageType.Homing,
                 bayNumber,
+                BayNumber.None);
+        }
+
+        public void MoveFindZero(BayNumber requestingBay, MessageActor sender)
+        {
+            //var policy = ActionPolicy.Allowed;
+
+            //if (!policy.IsAllowed)
+            //{
+            //    throw new InvalidOperationException(policy.Reason);
+            //}
+
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+
+            var chainPosition = this.baysDataProvider.GetChainPosition(requestingBay);
+            var targetPosition = chainPosition - 20;
+
+            var speed = new[] { bay.Carousel.HomingCreepSpeed };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.BayChain,
+                MovementType.Absolute,
+                MovementMode.BayChainFindZero,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.BayChain} Vertical find zero Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
                 BayNumber.None);
         }
 

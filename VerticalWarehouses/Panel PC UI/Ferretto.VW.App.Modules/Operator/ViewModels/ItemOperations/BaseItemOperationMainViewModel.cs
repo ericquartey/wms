@@ -1801,8 +1801,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
                         this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment.Id
                             && s.ItemId == (this.MissionOperation?.ItemId ?? 0)
-                            && (this.MissionOperation?.Lot == null || this.MissionOperation?.Lot == "*" || s.Lot == this.MissionOperation?.Lot)
-                            && (this.MissionOperation?.SerialNumber == null || this.MissionOperation?.SerialNumber == "*" || s.ItemSerialNumber == this.MissionOperation?.SerialNumber)
+                            && (string.IsNullOrEmpty(this.MissionOperation?.Lot) || this.MissionOperation?.Lot == "*" || s.Lot == this.MissionOperation?.Lot)
+                            && (string.IsNullOrEmpty(this.MissionOperation?.SerialNumber) || this.MissionOperation?.SerialNumber == "*" || s.ItemSerialNumber == this.MissionOperation?.SerialNumber)
                             );
                         this.AvailableQuantity = this.selectedCompartmentDetail?.Stock;
                     }
@@ -1817,8 +1817,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
-                    this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item
+                    if (this.MissionOperation != null)
+                    {
+                        var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                        this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item
+                    }
+                    else
+                    {
+                        this.IsCurrentDraperyItem = false;
+                    }
                 }
                 catch (Exception)
                 {

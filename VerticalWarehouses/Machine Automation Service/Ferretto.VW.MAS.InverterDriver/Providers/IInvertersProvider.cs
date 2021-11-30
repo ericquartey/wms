@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         int ConvertMillimetersToPulses(double millimeters, IInverterStatusBase inverter);
 
+        int ConvertMillimetersToPulses(double millimeters, InverterIndex bayInverterIndex);
+
         double ConvertPulsesToMillimeters(int pulses, Orientation orientation);
 
         double ConvertPulsesToMillimeters(int pulses, IInverterStatusBase inverter);

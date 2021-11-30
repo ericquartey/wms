@@ -509,6 +509,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsLocalMachineItems()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().IsLocalMachineItems;
+            }
+        }
+
         public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
             lock (this.dataContext)

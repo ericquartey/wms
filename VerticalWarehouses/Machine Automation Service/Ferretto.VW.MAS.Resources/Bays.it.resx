@@ -156,4 +156,7 @@
   <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
     <value>Manca il sensore di presenza del cassetto in baia</value>
   </data>
+  <data name="TheBayContainsTwoLoadingUnits" xml:space="preserve">
+    <value>La baia contiene due cassetti.</value>
+  </data>
 </root>

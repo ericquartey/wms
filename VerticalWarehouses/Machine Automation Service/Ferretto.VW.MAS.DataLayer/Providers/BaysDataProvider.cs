@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,7 +11,6 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -265,6 +263,23 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.Update(bay);
 
                 return bay;
+            }
+        }
+
+        void IBaysDataProvider.CheckBayFindZeroLimit()
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .Where(b => b.Carousel != null))
+                {
+                    if (bay.Carousel.BayFindZeroLimit == 0)
+                    {
+                        bay.Carousel.BayFindZeroLimit = 6;
+                        this.dataContext.SaveChanges();
+                    }
+                }
             }
         }
 
@@ -600,6 +615,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetCarouselBayFindZeroLimit(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.BayFindZeroLimit;
+
         public double GetChainOffset(InverterIndex inverterIndex)
         {
             lock (this.dataContext)
@@ -709,6 +726,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.BayChain:
                         case MovementMode.BayChainManual:
                         case MovementMode.BayTest:
+                        case MovementMode.BayChainFindZero:
                         case MovementMode.DoubleExtBayTest:
                             returnValue = this.GetByNumber(bayNumber).Inverter.Index;
                             break;

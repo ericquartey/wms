@@ -8,6 +8,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         Axis AxisToCalibrate { get; }
 
+        bool BypassSensor { get; set; }
+
+        bool CalibrateFromPPC { get; set; }
+
         Calibration CalibrationType { get; }
 
         int? LoadingUnitId { get; }

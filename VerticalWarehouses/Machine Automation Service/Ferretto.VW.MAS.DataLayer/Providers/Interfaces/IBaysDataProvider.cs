@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMission(BayNumber bayNumber, Mission mission);
 
+        void CheckBayFindZeroLimit();
+
         /// <summary>
         /// Sends a CheckIntrusion command to Device Manager
         /// </summary>
@@ -70,6 +72,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="bayNumber">The number of the bay to retrieve.</param>
         /// <returns>The bay identified by the given number.</returns>
         Bay GetByNumber(BayNumber bayNumber);
+
+        int GetCarouselBayFindZeroLimit(BayNumber bayNumber);
 
         double GetChainOffset(InverterIndex inverterIndex);
 

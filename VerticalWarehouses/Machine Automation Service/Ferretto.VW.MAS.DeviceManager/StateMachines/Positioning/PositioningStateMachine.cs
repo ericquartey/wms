@@ -7,7 +7,6 @@ using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Models;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -241,6 +240,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
                     errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                }
+            }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero)
+            {
+                var chainPosition = this.machineData.BaysDataProvider.GetChainPosition(this.machineData.TargetBay);
+                var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
+                var bayFindZeroLimit = bay.Carousel.BayFindZeroLimit;
+                bayFindZeroLimit = bayFindZeroLimit == 0 ? 6 : bayFindZeroLimit;
+
+                ok = chainPosition <= bay.Carousel.LastIdealPosition + bayFindZeroLimit && chainPosition >= bay.Carousel.LastIdealPosition - bayFindZeroLimit;
+                if (!ok)
+                {
+                    errorText = $"{ErrorDescriptions.ConditionsNotMetForHoming} in Bay {(int)this.machineData.TargetBay}";
+                    errorCode = DataModels.MachineErrorCode.ConditionsNotMetForHoming;
                 }
             }
             return ok;

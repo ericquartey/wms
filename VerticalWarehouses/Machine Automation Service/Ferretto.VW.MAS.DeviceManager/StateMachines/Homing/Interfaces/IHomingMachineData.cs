@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
 
         Axis AxisToCalibrate { get; set; }
 
+        bool BypassSensor { get; set; }
+
         Calibration CalibrationType { get; set; }
 
         InverterIndex CurrentInverterIndex { get; set; }

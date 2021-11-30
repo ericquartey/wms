@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double GetPosition(BayNumber bayNumber);
 
-        void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender);
+        void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, BayNumber bayNumber, MessageActor sender, bool bypassSensor);
 
         bool IsOnlyBottomPositionOccupied(BayNumber bayNumber);
 
@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void Move(VerticalMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
 
         void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
+
+        void MoveFindZero(BayNumber requestingBay, MessageActor sender);
 
         void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 

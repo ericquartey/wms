@@ -376,6 +376,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find zero limit.
+        /// </summary>
+        public static string Carousel_BayFindZeroLimit {
+            get {
+                return ResourceManager.GetString("Carousel_BayFindZeroLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator Distance.
         /// </summary>
         public static string Carousel_ElevatorDistance {
@@ -966,6 +975,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string Machine_IsHeartBeat {
             get {
                 return ResourceManager.GetString("Machine_IsHeartBeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search items in this machine.
+        /// </summary>
+        public static string Machine_IsLocalMachineItems {
+            get {
+                return ResourceManager.GetString("Machine_IsLocalMachineItems", resourceCulture);
             }
         }
         

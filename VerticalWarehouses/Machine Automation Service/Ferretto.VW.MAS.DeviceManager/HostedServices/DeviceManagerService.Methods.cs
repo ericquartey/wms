@@ -5,18 +5,20 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager.CheckIntrusion;
 using Ferretto.VW.MAS.DeviceManager.CombinedMovements;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
 using Ferretto.VW.MAS.DeviceManager.Homing;
+using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
 using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
+using Ferretto.VW.MAS.DeviceManager.InverterReading;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
-using Ferretto.VW.MAS.DeviceManager.CheckIntrusion;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -24,8 +26,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Ferretto.VW.MAS.DeviceManager.InverterReading;
-using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -229,6 +229,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         this.machineVolatileDataProvider.IsOneTonMachine.Value,
                         data.ShowErrors,
                         data.TurnBack,
+                        data.BypassSensor,
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,
                         this.machineResourcesProvider,

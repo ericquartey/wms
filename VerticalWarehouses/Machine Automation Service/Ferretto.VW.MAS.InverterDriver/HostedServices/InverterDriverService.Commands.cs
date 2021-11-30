@@ -48,7 +48,15 @@ namespace Ferretto.VW.MAS.InverterDriver
                             ? Orientation.Horizontal
                             : Orientation.Vertical;
                         var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
-                        targetPosition = invertersProvider.ConvertMillimetersToPulses(positioningData.TargetPosition, axisOrientation);
+
+                        if (positioningData.IsBayCalibrate)
+                        {
+                            targetPosition = invertersProvider.ConvertMillimetersToPulses(positioningData.TargetPosition, inverterIndex);
+                        }
+                        else
+                        {
+                            targetPosition = invertersProvider.ConvertMillimetersToPulses(positioningData.TargetPosition, axisOrientation);
+                        }
                     }
                     messageCurrentStateMachine.Continue(targetPosition);
 
@@ -100,7 +108,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ProcessInverterSetTimerMessage(receivedMessage, inverter);
                         break;
 
-                        // not used
+                    // not used
                     //case FieldMessageType.InverterSwitchOff:
                     //    this.ProcessInverterSwitchOffMessage(inverter);
                     //    break;
@@ -117,7 +125,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ProcessFaultResetMessage(inverter);
                         break;
 
-                        // not used
+                    // not used
                     //case FieldMessageType.InverterDisable:
                     //    this.ProcessDisableMessage(inverter);
                     //    break;

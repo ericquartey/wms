@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator
@@ -20,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null);
+
+        Task<IEnumerable<ProductInMachine>> GetProductsAsync(int? areaId, string itemCode, CancellationToken? cancellationToken = null);
 
         Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId);
 

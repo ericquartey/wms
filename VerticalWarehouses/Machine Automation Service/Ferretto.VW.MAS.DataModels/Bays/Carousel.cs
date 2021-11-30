@@ -6,6 +6,8 @@
 
         public CarouselManualParameters AssistedMovements { get; set; }
 
+        public int BayFindZeroLimit { get; set; }
+
         /// <summary>
         /// Gets or sets the distance, in millimeters, of the elevator from the carousel.
         /// </summary>

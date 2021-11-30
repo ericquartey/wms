@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -71,11 +69,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var isLoadUnitDestinationInBay = (destination.Location == this.Mission.LoadUnitDestination);
 
-            if (this.Mission.RestoreConditions)
+            if (this.Mission.RestoreConditions && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
             {
                 this.Mission.ErrorCode = MachineErrorCode.NoError;
-                this.Logger.LogInformation($"Homing axis BayChain Start Mission:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
+                //this.Logger.LogInformation($"Homing axis BayChain Start Mission:Id={this.Mission.Id}");
+                //this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
+
+                this.Logger.LogInformation($"Restore mission axis BayChain move TowardOperator:Id={this.Mission.Id}");
+                this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
             }
             else
             {

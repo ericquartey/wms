@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Info);
+                            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, false, this.machineData.BypassSensor, MessageVerbosity.Info);
 
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 //    elevatorDataProvider.UpdateLastCalibrationCycles();
                 //}
 
-                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, MessageVerbosity.Info);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, false, false, false, this.machineData.BypassSensor, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,

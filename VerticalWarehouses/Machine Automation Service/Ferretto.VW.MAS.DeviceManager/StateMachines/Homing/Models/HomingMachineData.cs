@@ -22,6 +22,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
             InverterIndex inverterIndex,
             bool showErrors,
             bool turnBack,
+            bool bypassSensor,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -34,6 +35,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
             this.CurrentInverterIndex = inverterIndex;
             this.ShowErrors = showErrors;
             this.TurnBack = turnBack;
+            this.BypassSensor = bypassSensor;
             this.EventAggregator = eventAggregator;
             this.Logger = logger;
             this.ServiceScopeFactory = serviceScopeFactory;
@@ -44,6 +46,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         #region Properties
 
         public Axis AxisToCalibrate { get; set; }
+
+        public bool BypassSensor { get; set; }
 
         public Calibration CalibrationType { get; set; }
 

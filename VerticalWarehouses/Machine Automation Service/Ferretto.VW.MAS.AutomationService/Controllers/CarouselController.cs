@@ -50,12 +50,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.carouselProvider.CanMove(direction, this.BayNumber, movementCategory));
         }
 
+        [HttpPost("bay/find-lost-zero")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult FindLostZero()
+        {
+            this.carouselProvider.MoveFindZero(this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            this.carouselProvider.Homing(Calibration.FindSensor, null, true, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Homing(Calibration.FindSensor, null, true, this.BayNumber, MessageActor.AutomationService, false);
 
             return this.Accepted();
         }
@@ -77,9 +86,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("homing")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Homing()
+        public IActionResult Homing(bool bypassSensor)
         {
-            this.carouselProvider.Homing(Calibration.ResetEncoder, null, true, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Homing(Calibration.ResetEncoder, null, true, this.BayNumber, MessageActor.AutomationService, bypassSensor);
 
             return this.Accepted();
         }

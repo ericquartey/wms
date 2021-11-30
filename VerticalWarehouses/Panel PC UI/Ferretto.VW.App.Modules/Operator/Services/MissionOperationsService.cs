@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -14,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator
     internal sealed class MissionOperationsService : IMissionOperationsService, IDisposable
     {
         #region Fields
+
+        private readonly IMachineAreasWebService areasWebService;
 
         private readonly IAuthenticationService authenticationService;
 
@@ -57,7 +61,8 @@ namespace Ferretto.VW.App.Modules.Operator
             IMachineBaysWebService machineBaysWebService,
             IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IMachineAreasWebService areasWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
@@ -67,6 +72,8 @@ namespace Ferretto.VW.App.Modules.Operator
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
+
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
@@ -125,6 +132,46 @@ namespace Ferretto.VW.App.Modules.Operator
                 this.healthToken = null;
 
                 this.isDisposed = true;
+            }
+        }
+
+        public async Task<IEnumerable<ProductInMachine>> GetProductsAsync(int? areaId, string itemCode, CancellationToken? cancellationToken = null)
+        {
+            var isLocal = await this.missionsWebService.IsLocalMachineItemsAsync();
+            if (isLocal)
+            {
+                if (cancellationToken.HasValue)
+                {
+                    return await this.areasWebService.GetProductsAsync(
+                            areaId.Value,
+                            0,
+                            0,
+                            itemCode,
+                            false,
+                            true,
+                            cancellationToken.Value);
+                }
+                else
+                {
+                    return await this.areasWebService.GetProductsAsync(
+                            areaId.Value,
+                            0,
+                            1,
+                            itemCode,
+                            false,
+                            false);
+                }
+            }
+            else
+            {
+                if (cancellationToken.HasValue)
+                {
+                    return await this.areasWebService.GetAllProductsAsync(itemCode, cancellationToken.Value);
+                }
+                else
+                {
+                    return await this.areasWebService.GetAllProductsAsync(itemCode);
+                }
             }
         }
 

@@ -210,9 +210,16 @@
                          HorizontalAlignment="Left"
                          VerticalAlignment="Top"
                          Background="{StaticResource FerrettoOrange}"
-                         Command="{Binding MarkAsResolvedAndFindZeroCommand}"
+                         Command="{Binding MarkAsResolvedAndFindZeroElevatorCommand}"
                          Content="{res:Loc ErrorsApp.MarkAsResolvedAndFindZero}"
-                         Visibility="{Binding IsVisibleFindZero, Converter={StaticResource BTVC}}" />
+                         Visibility="{Binding IsVisibleFindZeroElevator, Converter={StaticResource BTVC}}" />
+        <local:PpcButton Margin="10,0,0,0"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Top"
+                         Background="{StaticResource FerrettoOrange}"
+                         Command="{Binding MarkAsResolvedAndFindZeroBayChainCommand}"
+                         Content="{res:Loc ErrorsApp.MarkAsResolvedAndFindZero}"
+                         Visibility="{Binding IsVisibleFindZeroBayChain, Converter={StaticResource BTVC}}" />
       </StackPanel>
 
 

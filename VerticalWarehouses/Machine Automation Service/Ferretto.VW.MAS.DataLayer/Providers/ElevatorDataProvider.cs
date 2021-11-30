@@ -24,11 +24,6 @@ namespace Ferretto.VW.MAS.DataLayer
         internal const string ElevatorCurrentCellCacheKey = "ElevatorCurrentCellCacheKey";
 
         /// <summary>
-        /// The average vertical spacing between two cells, in millimeters.
-        /// </summary>
-        private const double CellHeight = 25.0;
-
-        /// <summary>
         /// The position tolerance, in millimeters, used to validate the logical position of the elevator when located opposite a bay or a cell.
         /// </summary>
         private const double VerticalPositionValidationTolerance = 7.5;

@@ -86,6 +86,11 @@
         /// <summary>
         /// Find lost zero
         /// </summary>
-        FindZero
+        FindZero,
+
+        /// <summary>
+        /// Find lost zero bay chain
+        /// </summary>
+        BayChainFindZero
     }
 }

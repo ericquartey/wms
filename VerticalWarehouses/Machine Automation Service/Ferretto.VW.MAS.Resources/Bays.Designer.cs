@@ -106,6 +106,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The  bay contains two loading units..
+        /// </summary>
+        public static string TheBayContainsTwoLoadingUnits {
+            get {
+                return ResourceManager.GetString("TheBayContainsTwoLoadingUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay height ({0}) must be in range [{1},{2}]..
         /// </summary>
         public static string TheBayHeightMustBeInRange {

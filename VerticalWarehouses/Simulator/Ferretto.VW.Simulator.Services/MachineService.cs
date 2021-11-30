@@ -29,7 +29,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private const int DELAY_IO_CLIENT = 5;
 
-        private readonly static Random random = new Random();
+        private static readonly Random random = new Random();
 
         private readonly int DELAY_HEARTBEAT = 800;
 
@@ -103,21 +103,29 @@ namespace Ferretto.VW.Simulator.Services
 
         public ObservableCollection<InverterModel> Inverters { get; set; }
 
-        public InverterModel Inverters00 { get => this.Inverters[0]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters00
+        { get => this.Inverters[0]; set { var inv = this.Inverters[0]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters01 { get => this.Inverters[1]; set { var inv = this.Inverters[1]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters01
+        { get => this.Inverters[1]; set { var inv = this.Inverters[1]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters02 { get => this.Inverters[2]; set { var inv = this.Inverters[2]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters02
+        { get => this.Inverters[2]; set { var inv = this.Inverters[2]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters03 { get => this.Inverters[3]; set { var inv = this.Inverters[3]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters03
+        { get => this.Inverters[3]; set { var inv = this.Inverters[3]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters04 { get => this.Inverters[4]; set { var inv = this.Inverters[4]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters04
+        { get => this.Inverters[4]; set { var inv = this.Inverters[4]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters05 { get => this.Inverters[5]; set { var inv = this.Inverters[5]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters05
+        { get => this.Inverters[5]; set { var inv = this.Inverters[5]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters06 { get => this.Inverters[6]; set { var inv = this.Inverters[6]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters06
+        { get => this.Inverters[6]; set { var inv = this.Inverters[6]; this.SetProperty(ref inv, value); } }
 
-        public InverterModel Inverters07 { get => this.Inverters[7]; set { var inv = this.Inverters[7]; this.SetProperty(ref inv, value); } }
+        public InverterModel Inverters07
+        { get => this.Inverters[7]; set { var inv = this.Inverters[7]; this.SetProperty(ref inv, value); } }
 
         public bool IsErrorGenerator { get; set; }
 
@@ -125,7 +133,7 @@ namespace Ferretto.VW.Simulator.Services
 
         public Machine Machine
         {
-            get { return this.machine; }
+            get => this.machine;
             set
             {
                 this.machine = value;
@@ -211,11 +219,14 @@ namespace Ferretto.VW.Simulator.Services
 
         public int MinTorqueCurrent { get; private set; }
 
-        public IODeviceModel RemoteIOs01 { get => this.remoteIOs[0]; set { var ios = this.remoteIOs[0]; this.SetProperty(ref ios, value); } }
+        public IODeviceModel RemoteIOs01
+        { get => this.remoteIOs[0]; set { var ios = this.remoteIOs[0]; this.SetProperty(ref ios, value); } }
 
-        public IODeviceModel RemoteIOs02 { get => this.remoteIOs[1]; set { var ios = this.remoteIOs[1]; this.SetProperty(ref ios, value); } }
+        public IODeviceModel RemoteIOs02
+        { get => this.remoteIOs[1]; set { var ios = this.remoteIOs[1]; this.SetProperty(ref ios, value); } }
 
-        public IODeviceModel RemoteIOs03 { get => this.remoteIOs[2]; set { var ios = this.remoteIOs[2]; this.SetProperty(ref ios, value); } }
+        public IODeviceModel RemoteIOs03
+        { get => this.remoteIOs[2]; set { var ios = this.remoteIOs[2]; this.SetProperty(ref ios, value); } }
 
         #endregion
 

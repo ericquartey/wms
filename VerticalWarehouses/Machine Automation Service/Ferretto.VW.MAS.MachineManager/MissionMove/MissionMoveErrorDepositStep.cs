@@ -160,8 +160,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     case MessageStatus.OperationUpdateData:
                         {
-                            var data = notification.Data as PositioningMessageData;
-                            if (data != null
+                            if (notification.Data is PositioningMessageData data
                                 && data.MovementType == MovementType.Relative
                                 && data.AxisMovement == Axis.Horizontal
                                 && (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveBackward) || this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.MoveForward))
@@ -466,6 +465,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
                         return;
                     }
+                }
+
+                if (bay != null &&
+                    bay.Carousel != null &&
+                    !machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay) &&
+                    this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
 
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");

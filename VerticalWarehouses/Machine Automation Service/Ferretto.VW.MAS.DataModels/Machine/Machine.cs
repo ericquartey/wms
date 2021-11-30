@@ -63,6 +63,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsHeartBeat { get; set; }
 
         /// <summary>
+        /// search items only in local machine (Deima compatibility)
+        /// </summary>
+        public bool IsLocalMachineItems { get; set; }
+
+        /// <summary>
         /// The reason view shows order list besides reason list (SIDERPOL)
         /// </summary>
         public bool IsOrderList { get; set; }

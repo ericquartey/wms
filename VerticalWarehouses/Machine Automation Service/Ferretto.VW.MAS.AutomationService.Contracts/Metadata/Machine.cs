@@ -93,6 +93,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsHeartBeat { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsLocalMachineItems))]
+            [Id(30)]
+            public bool IsLocalMachineItems { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsOrderList))]
             [Id(29)]
             public bool IsOrderList { get; set; }

@@ -274,6 +274,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
         }
 
+        public int ConvertMillimetersToPulses(double millimeters, InverterIndex bayInverterIndex)
+        {
+            return (int)Math.Round(this.baysDataProvider.GetResolution(bayInverterIndex) * millimeters);
+        }
+
         public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
         {
             if (pulses == 0)

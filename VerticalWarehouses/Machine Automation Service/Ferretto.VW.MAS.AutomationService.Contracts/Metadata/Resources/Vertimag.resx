@@ -606,4 +606,10 @@
   <data name="Machine_IsOrderList" xml:space="preserve">
     <value>Order List</value>
   </data>
+  <data name="Machine_IsLocalMachineItems" xml:space="preserve">
+    <value>Search items in this machine</value>
+  </data>
+  <data name="Carousel_BayFindZeroLimit" xml:space="preserve">
+    <value>Find zero limit</value>
+  </data>
 </root>

@@ -38,6 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             bool isOneTonMachine,
             bool showErrors,
             bool turnBack,
+            bool bypassSensor,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
@@ -59,6 +60,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 baysDataProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
                 showErrors,
                 turnBack,
+                bypassSensor,
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
@@ -372,56 +374,59 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
 #if CHECK_BAY_SENSOR
 
-                    // Handle carousel
-                    if (bay.Carousel != null && !bay.IsExternal)
+                    if (!this.machineData.BypassSensor)
                     {
-                        // Check presence in top position
-                        //if (ok
-                        //    && this.machineData.CalibrationType == Calibration.FindSensor
-                        //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                        //    )
-                        //{
-                        //    ok = false;
-                        //    errorText = "Find Zero not possible: Top position occupied";
-                        //}
-
-                        // Check presence in bottom position
-                        if (ok
-                            && this.machineData.CalibrationType == Calibration.FindSensor
-                            && bay.Positions.Any(p => !p.IsBlocked && !p.IsUpper)
-                            && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
-                            )
+                        // Handle carousel
+                        if (bay.Carousel != null && !bay.IsExternal)
                         {
-                            ok = false;
-                            errorText = "Find Zero not possible: Bottom position occupied";
+                            // Check presence in top position
+                            //if (ok
+                            //    && this.machineData.CalibrationType == Calibration.FindSensor
+                            //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                            //    )
+                            //{
+                            //    ok = false;
+                            //    errorText = "Find Zero not possible: Top position occupied";
+                            //}
+
+                            // Check presence in bottom position
+                            if (ok
+                                && this.machineData.CalibrationType == Calibration.FindSensor
+                                && bay.Positions.Any(p => !p.IsBlocked && !p.IsUpper)
+                                && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                                )
+                            {
+                                ok = false;
+                                errorText = "Find Zero not possible: Bottom position occupied";
+                            }
+                        }
+
+                        // Handle external bay
+                        if (bay.IsExternal)
+                        {
+                            // Check presence in external position
+                            //if (ok
+                            //    && this.machineData.CalibrationType == Calibration.FindSensor
+                            //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                            //    )
+                            //{
+                            //    ok = false;
+                            //    errorText = "Find Zero not possible: External position occupied";
+                            //}
+
+                            // Check presence in internal position
+                            //if (ok
+                            //    && this.machineData.CalibrationType == Calibration.FindSensor
+                            //    && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                            //    )
+                            //{
+                            //    ok = false;
+                            //    errorText = "Find Zero not possible: Internal position occupied";
+                            //}
                         }
                     }
-
-                    // Handle external bay
-                    if (bay.IsExternal)
-                    {
-                        // Check presence in external position
-                        //if (ok
-                        //    && this.machineData.CalibrationType == Calibration.FindSensor
-                        //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                        //    )
-                        //{
-                        //    ok = false;
-                        //    errorText = "Find Zero not possible: External position occupied";
-                        //}
-
-                        // Check presence in internal position
-                        //if (ok
-                        //    && this.machineData.CalibrationType == Calibration.FindSensor
-                        //    && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
-                        //    )
-                        //{
-                        //    ok = false;
-                        //    errorText = "Find Zero not possible: Internal position occupied";
-                        //}
-                    }
-                }
 #endif
+                }
             }
             return ok;
         }

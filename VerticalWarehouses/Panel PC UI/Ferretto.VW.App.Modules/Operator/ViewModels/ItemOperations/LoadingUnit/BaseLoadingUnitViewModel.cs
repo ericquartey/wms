@@ -489,7 +489,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async override Task OnAppearedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ItemSerialNumberVisibility = false;
             this.ItemLotVisibility = false;
@@ -593,7 +593,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnDataRefreshAsync();
         }
 
-        protected async override Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
+        protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
 
@@ -860,8 +860,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (activeOperation != null && activeOperation.ItemId > 0 && activeOperation.CompartmentId == this.selectedCompartment.Id)
             {
                 this.selectedItem = this.Items.FirstOrDefault(ic => ic.ItemId == activeOperation.ItemId
-                    && (activeOperation.Lot == null || activeOperation.Lot == "*" || ic.Lot == activeOperation.Lot)
-                    && (activeOperation.SerialNumber == null || activeOperation.SerialNumber == "*" || ic.ItemSerialNumber == activeOperation.SerialNumber));
+                    && (string.IsNullOrEmpty(activeOperation.Lot) || activeOperation.Lot == "*" || ic.Lot == activeOperation.Lot)
+                    && (string.IsNullOrEmpty(activeOperation.SerialNumber) || activeOperation.SerialNumber == "*" || ic.ItemSerialNumber == activeOperation.SerialNumber));
             }
 
             if (this.itemsCompartments.FirstOrDefault(ic => ic.Id == this.selectedCompartment.Id

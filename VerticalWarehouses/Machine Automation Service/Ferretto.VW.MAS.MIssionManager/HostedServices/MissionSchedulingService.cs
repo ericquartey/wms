@@ -1154,7 +1154,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
                         if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status == MissionStatus.Executing
-                                && m.Step > MissionStep.New)
+                                && m.Step > MissionStep.New
+                                && m.Step < MissionStep.Error)
                             && !this.machineVolatileDataProvider.IsHomingActive
                             )
                         {
