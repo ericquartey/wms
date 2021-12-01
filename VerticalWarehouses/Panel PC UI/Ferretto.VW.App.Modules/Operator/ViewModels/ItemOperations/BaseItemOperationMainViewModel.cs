@@ -1762,6 +1762,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.IsBusyConfirmingPartialOperation = false;
                 //this.IsOperationConfirmed = false;
             }
+            catch (InvalidOperationException exc)
+            {
+                this.ShowNotification(new Exception(exc.Message));
+            }
             finally
             {
                 // Do not enable the interface. Wait for a new notification to arrive.

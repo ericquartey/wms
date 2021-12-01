@@ -99,7 +99,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null)
+        public async Task PickAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null, int? orderId = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -119,6 +119,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    OrderId = orderId,
                     CompartmentId = compartmentId,
                     Lot = lot,
                     SerialNumber = serialNumber,
@@ -135,7 +136,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null)
+        public async Task PutAsync(int itemId, double requestedQuantity, int? reasonId = null, string reasonNotes = null, int? compartmentId = null, string lot = null, string serialNumber = null, string userName = null, int? orderId = null)
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
@@ -155,6 +156,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     RunImmediately = true,
                     ReasonId = reasonId,
                     ReasonNotes = reasonNotes,
+                    OrderId = orderId,
                     CompartmentId = compartmentId,
                     Lot = lot,
                     SerialNumber = serialNumber,
@@ -218,6 +220,7 @@ namespace Ferretto.VW.App.Modules.Operator
                         SerialNumber = serialNumber,
                         UserName = userName,
                         MaterialStatusId = orderId,     // TODO siderpol - create new field OrderId
+                        OrderId = orderId,
                     });
                 this.logger.Debug($"User requested to update compartment {compartmentId}, item {itemId} with quantity {stock}.");
             }

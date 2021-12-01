@@ -1338,7 +1338,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItemCompartment.Id,
                         this.SelectedItem.Lot,
                         this.SelectedItem.ItemSerialNumber,
-                        userName: this.authenticationService.UserName);
+                        userName: this.authenticationService.UserName,
+                        this.orderId);
                 }
                 else if (this.IsPutVisible)
                 {
@@ -1352,7 +1353,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItemCompartment.Id,
                         this.SelectedItem.Lot,
                         this.SelectedItem.ItemSerialNumber,
-                        userName: this.authenticationService.UserName);
+                        userName: this.authenticationService.UserName,
+                        this.orderId);
                 }
                 else if (this.IsAdjustmentVisible)
                 {
@@ -1475,6 +1477,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = false;
                 this.ShowNotification(ex);
+            }
+            catch (InvalidOperationException exc)
+            {
+                this.IsBusyConfirmingOperation = false;
+                this.ShowNotification(new Exception(exc.Message));
             }
             finally
             {
