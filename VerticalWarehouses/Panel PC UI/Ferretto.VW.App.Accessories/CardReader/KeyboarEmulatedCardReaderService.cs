@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Accessories
 
         private const string TokenCaptureGroupName = "Token";
 
-        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>.+)\r", RegexOptions.Compiled);
+        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>.+)", RegexOptions.Compiled);
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
 
@@ -57,6 +57,9 @@ namespace Ferretto.VW.App.Accessories
 
         #region Events
 
+        /// <summary>
+        /// used by test view
+        /// </summary>
         public event EventHandler<string> KeysAcquired;
 
         public event EventHandler<RegexMatchEventArgs> TokenAcquired;
@@ -166,6 +169,7 @@ namespace Ferretto.VW.App.Accessories
             }
 
             this.stringBuilder.Append(e.Text);
+            this.logger.Trace($"card reading '{this.stringBuilder}'");
 
             this.KeysAcquired?.Invoke(this, e.Text);
 

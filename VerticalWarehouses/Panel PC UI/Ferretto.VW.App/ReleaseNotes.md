@@ -32,6 +32,8 @@
 ## Bug Risolti
 - I ripristini della BES portano sempre il cassetto verso l'operatore
 - I file di log hanno un limite di 100MB
+- Il lettore badge non si blocca più se si seleziona utente o password
+- Ingranditi i pulsanti della pagina di login
 
 ## Compatibile con adapter 0.4.27 e 0.4.28
 ***
