@@ -69,6 +69,7 @@
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition />
               </Grid.RowDefinitions>
 
@@ -96,6 +97,13 @@
 
                 </StackPanel>
               </Border>
+
+              <ctrls:PpcBayBadge
+                  Grid.Row="2"
+                                 Margin="0,0,20,20"
+                                 HorizontalAlignment="Right"
+                                 BayNumber="{Binding BayNumber, Mode=OneWay}" />
+                
             </Grid>
           </Border>
 
@@ -159,8 +167,9 @@
 
                 <ComboBox Name="comboBox"
                           Margin="0,5"
+                          Height="60"
                           FontFamily="{DynamicResource VWAPP_TitleFont}"
-                          FontSize="22"
+                          FontSize="24"
                           FontWeight="Light"
                           IsEditable="False"
                           ItemsSource="{Binding Users}"
@@ -189,6 +198,7 @@
                 </Label>
                 <dxe:PasswordBoxEdit x:Name="txtPassword"
                                      Margin="0,5"
+                                     Height="60"
                                      FontFamily="{DynamicResource VWAPP_TitleFont}"
                                      FontSize="22"
                                      FontWeight="Light"
@@ -198,7 +208,8 @@
                                      TouchUp="OnKeyboardOpenHandler" />
 
                 <Button Margin="0,25"
-                        Padding="5"
+                        Height="60"
+                        Padding="15"
                         HorizontalContentAlignment="Center"
                         BorderThickness="0"
                         Command="{Binding LoginCommand}"
@@ -242,13 +253,6 @@
                 </Button>
 
               </StackPanel>
-
-              <ctrls:PpcBayBadge Grid.RowSpan="3"
-                                 Grid.ColumnSpan="2"
-                                 Margin="0,0,20,20"
-                                 HorizontalAlignment="Right"
-                                 VerticalAlignment="Bottom"
-                                 BayNumber="{Binding BayNumber, Mode=OneWay}" />
 
             </Grid>
           </Border>
