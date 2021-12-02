@@ -2374,6 +2374,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insufficient space available in the warehouse.
+        /// </summary>
+        public static string InsufficientSpaceAvailable {
+            get {
+                return ResourceManager.GetString("InsufficientSpaceAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Intermediate.
         /// </summary>
         public static string Intermediate {
@@ -5034,6 +5043,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SupportType_Insert {
             get {
                 return ResourceManager.GetString("SupportType_Insert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suspend.
+        /// </summary>
+        public static string Suspend {
+            get {
+                return ResourceManager.GetString("Suspend", resourceCulture);
             }
         }
         
