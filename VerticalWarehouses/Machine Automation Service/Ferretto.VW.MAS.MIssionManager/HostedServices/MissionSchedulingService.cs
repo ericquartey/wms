@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -20,9 +21,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using System.Threading;
-using System.Diagnostics;
-using Microsoft.Extensions.Hosting;
 //using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -534,6 +532,52 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        private static bool FullTestCheckBay(IServiceProvider serviceProvider)
+        {
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
+            var machineProvider = serviceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+            var sensorsProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+
+            var bay = baysDataProvider.GetByNumber(machineProvider.BayTestNumber);
+            if (bay != null)
+            {
+                foreach (var bayPosition in bay.Positions)
+                {
+                    if (bayPosition != null &&
+                        bayPosition.LoadingUnit != null &&
+                        sensorsProvider.IsLoadingUnitInLocation(bayPosition.Location))
+                    {
+                        var missions = missionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
+                        if (!missions.Any(s => s.LoadUnitId == bayPosition.LoadingUnit.Id))
+                        {
+                            missionSchedulingProvider.QueueRecallMission(bayPosition.LoadingUnit.Id, bay.Number, MissionType.FullTestIN);
+
+                            missions = missionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
+                            var mission = missions.Single(s => s.LoadUnitId == bayPosition.LoadingUnit.Id);
+
+                            if (mission != null &&
+                                mission.Status == MissionStatus.New &&
+                                mission.MissionType == MissionType.FullTestIN)
+                            {
+                                moveLoadingUnitProvider.ActivateMoveToCell(
+                                 mission.Id,
+                                 mission.MissionType,
+                                 mission.LoadUnitId,
+                                 bay.Number,
+                                 MessageActor.MissionManager);
+
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         private static void GetPersistedMissions(IServiceProvider serviceProvider, IEventAggregator eventAggregator)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -933,12 +977,14 @@ namespace Ferretto.VW.MAS.MissionManager
                                     this.machineVolatileDataProvider.Mode = MachineMode.FirstTest3;
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest
-                                    || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
-                                        && m.Status == MissionStatus.Executing
-                                        )
+                                        || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
+                                        && m.Status == MissionStatus.Executing)
                                     )
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.FullTest;
+                                    if (!FullTestCheckBay(serviceProvider))
+                                    {
+                                        this.machineVolatileDataProvider.Mode = MachineMode.FullTest;
+                                    }
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest2
                                     || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
@@ -946,7 +992,10 @@ namespace Ferretto.VW.MAS.MissionManager
                                         )
                                     )
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.FullTest2;
+                                    if (!FullTestCheckBay(serviceProvider))
+                                    {
+                                        this.machineVolatileDataProvider.Mode = MachineMode.FullTest2;
+                                    }
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest3
                                     || activeMissions.Any(m => (m.MissionType == MissionType.FullTestIN || m.MissionType == MissionType.FullTestOUT)
@@ -954,7 +1003,10 @@ namespace Ferretto.VW.MAS.MissionManager
                                         )
                                     )
                                 {
-                                    this.machineVolatileDataProvider.Mode = MachineMode.FullTest3;
+                                    if (!FullTestCheckBay(serviceProvider))
+                                    {
+                                        this.machineVolatileDataProvider.Mode = MachineMode.FullTest3;
+                                    }
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToLoadUnitOperations
                                     || activeMissions.Any(m => m.MissionType == MissionType.LoadUnitOperation && m.Status == MissionStatus.Executing)
@@ -1243,6 +1295,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     var bays = bayProvider.GetAll();
                     MissionType missionType;
+                    var isFullTestMission = this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest || this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest2 || this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFullTest3;
                     foreach (var bay in bays)
                     {
                         foreach (var position in bay.Positions.OrderBy(b => b.Location))
@@ -1256,14 +1309,14 @@ namespace Ferretto.VW.MAS.MissionManager
                                 )
                             {
                                 this.Logger.LogInformation($"Eject load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to bay");
-                                missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.OUT : MissionType.LoadUnitOperation;
+                                missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.OUT : isFullTestMission ? MissionType.FullTestOUT : MissionType.LoadUnitOperation;
                                 moveLoadingUnitProvider.EjectFromCell(missionType, position.Location, loadUnit.Id, bay.Number, MessageActor.AutomationService);
                                 return true;
                             }
                         }
                     }
                     this.Logger.LogInformation($"Insert load unit {loadUnit.Id} from {LoadingUnitLocation.Elevator} to cell");
-                    missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : MissionType.LoadUnitOperation;
+                    missionType = (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToAutomatic) ? MissionType.IN : isFullTestMission ? MissionType.FullTestIN : MissionType.LoadUnitOperation;
                     moveLoadingUnitProvider.InsertToCell(missionType, LoadingUnitLocation.Elevator, null, loadUnit.Id, BayNumber.BayOne, MessageActor.AutomationService);
                     return true;
                 }

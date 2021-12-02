@@ -168,7 +168,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     reasonNotes: null,
                     lot: this.Item.Lot,
                     serialNumber: this.Item.SerialNumber,
-                    userName: this.authenticationService.UserName);
+                    userName: this.authenticationService.UserName,
+                    orderId: null);
 
                 this.ShowNotification(
                     string.Format(
@@ -179,6 +180,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.logger.Debug($"Item pick");
                 this.NavigationService.GoBack();
+            }
+            catch (InvalidOperationException exc)
+            {
+                this.ShowNotification(new Exception(exc.Message));
             }
             catch (Exception ex)
             {
@@ -206,7 +211,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     reasonNotes: null,
                     lot: this.Item.Lot,
                     serialNumber: this.Item.SerialNumber,
-                    userName: this.authenticationService.UserName);
+                    userName: this.authenticationService.UserName,
+                    orderId: null);
 
                 this.ShowNotification(
                    string.Format(
@@ -217,6 +223,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.logger.Debug($"Item put");
                 this.NavigationService.GoBack();
+            }
+            catch (InvalidOperationException exc)
+            {
+                this.ShowNotification(new Exception(exc.Message));
             }
             catch (Exception ex)
             {

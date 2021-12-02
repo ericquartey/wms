@@ -498,6 +498,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
+            // TODO - at this moment IsBoxEnabled prevents Add feature
             this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
 
             var accessories = await this.bayManager.GetBayAccessoriesAsync();

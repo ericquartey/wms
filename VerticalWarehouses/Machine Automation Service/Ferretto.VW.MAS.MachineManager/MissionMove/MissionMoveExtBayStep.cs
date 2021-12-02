@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 // Move during normal positioning
                 if (isLoadUnitDestinationInBay)
                 {
-                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
                     {
                         if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
                         {

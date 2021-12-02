@@ -28,14 +28,20 @@
 ## Nuove Funzionalità 1.0.33 rispetto la 1.0.32
 - Nella BIG l'allarme 22 (stato sensori baia) permette la ricerca dello zero
 - Aggiunto parametro "Cerca gli articoli in questa macchina"
+- Aggiunto parametro "Elenco commesse" per la visualizzazione delle commesse
+- Selezione della commessa nelle operazioni di pick e put
 
 ## Bug Risolti
 - I ripristini della BES portano sempre il cassetto verso l'operatore
 - I file di log hanno un limite di 100MB
 - Il lettore badge non si blocca più se si seleziona utente o password
 - Ingranditi i pulsanti della pagina di login
+- Aggiungi prodotto non è disponibile se è abilitato il contenitore
+- Ripristino baia esterna con errore di presenza
+- Il test completo riporta in magazzino i cassetti prima di partire
+- Il lato della baia si può modificare con l'utente Admin
 
-## Compatibile con adapter 0.4.27 e 0.4.28
+## Compatibile con adapter 0.4.29
 ***
 
 [Versione 1.0.32](#id1032)

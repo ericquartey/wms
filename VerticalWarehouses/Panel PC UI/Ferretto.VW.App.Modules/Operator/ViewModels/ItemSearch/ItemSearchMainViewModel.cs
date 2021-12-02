@@ -80,6 +80,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGroupbyLotEnabled;
 
+        private bool isOrderVisible;
+
+        private bool isReasonVisible;
+
         private bool isSearching;
 
         private List<ItemInfo> items = new List<ItemInfo>();
@@ -89,6 +93,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //private int? itemToPickId;
 
         private int maxKnownIndexSelection;
+
+        private int? orderId;
+
+        private IEnumerable<OperationReason> orders;
 
         private SubscriptionToken productsChangedToken;
 
@@ -266,6 +274,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
         }
 
+        public bool IsOrderVisible
+        {
+            get => this.isOrderVisible;
+            set => this.SetProperty(ref this.isOrderVisible, value);
+        }
+
+        public bool IsReasonVisible
+        {
+            get => this.isReasonVisible;
+            set => this.SetProperty(ref this.isReasonVisible, value);
+        }
+
         public bool IsSearching
         {
             get => this.isSearching;
@@ -297,6 +317,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
 
         public override bool KeepAlive => true;
+
+        public int? OrderId
+        {
+            get => this.orderId;
+            set => this.SetProperty(ref this.orderId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public IEnumerable<OperationReason> Orders
+        {
+            get => this.orders;
+            set => this.SetProperty(ref this.orders, value);
+        }
 
         public int? ReasonId
         {
@@ -421,7 +453,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             null,
                             item.Lot,
                             item.SerialNumber,
-                            userName: this.authenticationService.UserName);
+                            userName: this.authenticationService.UserName,
+                            null);
 
                     this.ShowNotification(
                         string.Format(
@@ -430,6 +463,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.InputQuantity),
                         Services.Models.NotificationSeverity.Success);
                 }
+            }
+            catch (InvalidOperationException exc)
+            {
+                this.ShowNotification(new Exception(exc.Message));
+                this.logger.Error(exc.ToString());
             }
             catch (Exception ex)
             {
@@ -441,6 +479,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public async Task<bool> CheckReasonsAsync()
         {
             this.ReasonId = null;
+            this.OrderId = null;
 
             try
             {
@@ -463,11 +502,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.ReasonId = this.reasons.First().Id;
                     }
                 }
+
+                this.OrderId = 0;
+                var isOrderList = await this.machineMissionsWebService.IsOrderListAsync();
+                if (isOrderList)
+                {
+                    this.Orders = await this.missionOperationsWebService.GetOrdersAsync();
+                    if (this.orders?.Any() == true)
+                    {
+                        if (this.orders.Count() == 1)
+                        {
+                            this.OrderId = this.orders.First().Id;
+                        }
+                    }
+                }
+
+                this.IsOrderVisible = this.Reasons != null && this.Reasons.Any() && this.Orders != null && this.Orders.Any();
+                this.IsReasonVisible = this.Reasons != null && this.Reasons.Any() && (this.Orders == null || !this.Orders.Any());
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
                 this.Reasons = null;
+                this.Orders = null;
+                this.IsOrderVisible = false;
+                this.IsReasonVisible = false;
             }
             finally
             {
@@ -612,11 +671,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes,
+                    null,
                     lot: lot,
                     serialNumber: serialNumber,
-                    userName: this.authenticationService.UserName);
+                    userName: this.authenticationService.UserName,
+                    this.orderId);
 
                 this.Reasons = null;
+                this.Orders = null;
+                this.IsOrderVisible = false;
+                this.IsReasonVisible = false;
                 this.IsWaitingForReason = false;
 
                 this.ShowNotification(
@@ -625,6 +689,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         itemCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
+            }
+            catch (InvalidOperationException exc)
+            {
+                this.ShowNotification(new Exception(exc.Message));
             }
             catch (Exception ex)
             {
@@ -702,11 +770,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value,
                     this.reasonId,
                     this.reasonNotes,
+                    null,
                     lot: lot,
                     serialNumber: serialNumber,
-                    userName: this.authenticationService.UserName);
+                    userName: this.authenticationService.UserName,
+                    this.orderId);
 
                 this.Reasons = null;
+                this.Orders = null;
+                this.IsOrderVisible = false;
+                this.IsReasonVisible = false;
                 this.IsWaitingForReason = false;
 
                 this.ShowNotification(
@@ -715,6 +788,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         itemCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
+            }
+            catch (InvalidOperationException exc)
+            {
+                this.ShowNotification(new Exception(exc.Message));
             }
             catch (Exception ex)
             {
@@ -733,6 +810,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Appear = false;
             this.InputQuantity = 0;
             this.Reasons = null;
+            this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
             this.IsWaitingForReason = false;
             this.IsBusyConfirmingOperation = false;
 
