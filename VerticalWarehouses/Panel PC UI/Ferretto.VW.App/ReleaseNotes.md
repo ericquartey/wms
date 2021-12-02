@@ -31,6 +31,7 @@
 
 ## Bug Risolti
 - Aggiungi prodotto non è disponibile se è abilitato il contenitore
+- Ripristino baia esterna con errore di presenza
 
 ## Compatibile con adapter 0.4.29
 ***
