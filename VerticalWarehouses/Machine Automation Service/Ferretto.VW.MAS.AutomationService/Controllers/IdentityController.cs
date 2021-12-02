@@ -121,22 +121,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var statistics = this.machineProvider.GetPresentStatistics();
 
-            if (this.wmsSettingsProvider.IsEnabled)
-            {
-                try
-                {
-                    var machine = this.machineProvider.Get();
+            // TODO - Implement AreaFillRate in WMS
+            //if (this.wmsSettingsProvider.IsEnabled)
+            //{
+            //    try
+            //    {
+            //        var machine = this.machineProvider.Get();
 
-                    var wmsMachine = await machinesWebService.GetByIdAsync(machine.Id);
+            //        var wmsMachine = await machinesWebService.GetByIdAsync(machine.Id);
 
-                    statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
-                }
-                catch (System.Exception)
-                {
-                    // do nothing:
-                    // if the call fails, data from WMS will not be populated
-                }
-            }
+            //        statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
+            //    }
+            //    catch (System.Exception)
+            //    {
+            //        // do nothing:
+            //        // if the call fails, data from WMS will not be populated
+            //    }
+            //}
 
             return this.Ok(statistics);
         }

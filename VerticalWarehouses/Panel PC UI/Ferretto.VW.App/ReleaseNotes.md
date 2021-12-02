@@ -30,7 +30,7 @@
 - Selezione della commessa nelle operazioni di pick e put
 
 ## Bug Risolti
-- 
+- Aggiungi prodotto non è disponibile se è abilitato il contenitore
 
 ## Compatibile con adapter 0.4.29
 ***
