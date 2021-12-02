@@ -32,6 +32,8 @@
 ## Bug Risolti
 - Aggiungi prodotto non è disponibile se è abilitato il contenitore
 - Ripristino baia esterna con errore di presenza
+- Il test completo riporta in magazzino i cassetti prima di partire
+- Il lato della baia si può modificare con l'utente Admin
 
 ## Compatibile con adapter 0.4.29
 ***
