@@ -30,6 +30,7 @@
 - Aggiunto parametro "Cerca gli articoli in questa macchina"
 - Aggiunto parametro "Elenco commesse" per la visualizzazione delle commesse
 - Selezione della commessa nelle operazioni di pick e put
+- Ferretto NuGet package 0.16.35.
 
 ## Bug Risolti
 - I ripristini della BES portano sempre il cassetto verso l'operatore
