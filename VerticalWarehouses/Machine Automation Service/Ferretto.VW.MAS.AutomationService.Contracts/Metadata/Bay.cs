@@ -133,6 +133,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(40)]
             public Shutter Shutter { get; set; }
 
+            [Range((int)WarehouseSide.Front, (int)WarehouseSide.Back, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Side))]
             [Id(8)]
             public WarehouseSide Side { get; set; }

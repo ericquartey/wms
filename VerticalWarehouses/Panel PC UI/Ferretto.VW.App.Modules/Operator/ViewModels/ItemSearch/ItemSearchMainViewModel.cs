@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
@@ -139,7 +141,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineMissionOperationsWebService missionOperationsWebService,
             IBarcodeReaderService barcodeReaderService,
             IAuthenticationService authenticationService,
-            IMachineMissionsWebService machineMissionsWebService)
+            IMachineMissionsWebService machineMissionsWebService,
+            IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
@@ -151,6 +154,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
@@ -815,6 +819,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsReasonVisible = false;
             this.IsWaitingForReason = false;
             this.IsBusyConfirmingOperation = false;
+
+            this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
             this.productsChangedToken =
               this.productsChangedToken

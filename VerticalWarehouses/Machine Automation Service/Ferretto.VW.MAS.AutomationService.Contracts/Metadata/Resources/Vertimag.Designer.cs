@@ -1105,6 +1105,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Touch helper.
+        /// </summary>
+        public static string Machine_TouchHelper {
+            get {
+                return ResourceManager.GetString("Machine_TouchHelper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical Cycles To Calibrate.
         /// </summary>
         public static string Machine_VerticalCyclesToCalibrate {

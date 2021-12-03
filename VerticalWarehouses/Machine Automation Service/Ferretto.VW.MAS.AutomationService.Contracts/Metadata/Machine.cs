@@ -179,6 +179,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(26)]
             public int ToteBarcodeLength { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_TouchHelper))]
+            [Id(31)]
+            public bool TouchHelper { get; set; }
+
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
             [Id(23)]

@@ -1276,6 +1276,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetToteBarcodeLengthAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetTouchHelperEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetTouchHelperEnableAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsDisableQtyItemEditingPickAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4874,6 +4881,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ToteBarcodeLength", Required = Newtonsoft.Json.Required.Always)]
         public int ToteBarcodeLength { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TouchHelper", Required = Newtonsoft.Json.Required.Always)]
+        public bool TouchHelper { get; set; }
     
         [Newtonsoft.Json.JsonProperty("VerticalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int VerticalCyclesToCalibrate { get; set; }
