@@ -412,9 +412,17 @@ namespace Ferretto.VW.App.Services
 
         public async Task GetCells()
         {
-            this.cells = await this.machineCellsWebService.GetAllAsync();
+            this.Cells = await this.machineCellsWebService.GetAllAsync();
             this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
+            this.FreeSpaceBack = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Back) * 25;
+            this.FreeSpaceFront = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Front) * 25;
+            var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
+            this.MaxSolidSpace = cellStat.MaxSolidSpace.Select(s => s.Value).Max();
             this.UpdateLoadUnitsId();
+            if (this.loadUnitMaxHeight == 0)
+            {
+                this.loadUnitMaxHeight = await this.machineLoadingUnitsWebService.GetLoadUnitMaxHeightAsync();
+            }
         }
 
         public async Task GetLoadUnits()
@@ -1048,9 +1056,7 @@ namespace Ferretto.VW.App.Services
                             this.logger.Trace($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                            this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
-                            this.UpdateLoadUnitsId();
+                            await this.GetCells();
 
                             var embarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
 
@@ -1079,24 +1085,14 @@ namespace Ferretto.VW.App.Services
                             }
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                            this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
-                            this.UpdateLoadUnitsId();
+                            await this.GetCells();
                             if (message?.Data is MoveLoadingUnitMessageData)
                             {
-                                var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
-                                this.FragmentTotalPercent = cellStat.FragmentTotalPercent;
-
                                 this.loadUnitMaxHeight = await this.machineLoadingUnitsWebService.GetLoadUnitMaxHeightAsync();
-
-                                this.MaxSolidSpace = cellStat.MaxSolidSpace.Select(s => s.Value).Max();
-
-                                this.FreeSpaceBack = this.cells.Where(s => s.IsFree && s.Side == WarehouseSide.Back).Count() * 25;
-                                this.FreeSpaceFront = this.cells.Where(s => s.IsFree && s.Side == WarehouseSide.Front).Count() * 25;
                             }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
-                                var missions = (await this.missionsWebService.GetAllAsync());
+                                var missions = await this.missionsWebService.GetAllAsync();
                                 this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
                                 this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
