@@ -25,25 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.33 rispetto la 1.0.32
-- Nella BIG l'allarme 22 (stato sensori baia) permette la ricerca dello zero
-- Aggiunto parametro "Cerca gli articoli in questa macchina"
-- Aggiunto parametro "Elenco commesse" per la visualizzazione delle commesse
-- Selezione della commessa nelle operazioni di pick e put
-- Ferretto NuGet package 0.16.35.
+## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
+- Aggiunto parametro per mostrare il pulsante con la tastiera
 
 ## Bug Risolti
-- I ripristini della BES portano sempre il cassetto verso l'operatore
-- I file di log hanno un limite di 100MB
-- Il lettore badge non si blocca più se si seleziona utente o password
-- Ingranditi i pulsanti della pagina di login
-- Aggiungi prodotto non è disponibile se è abilitato il contenitore
-- Ripristino baia esterna con errore di presenza
-- Il test completo riporta in magazzino i cassetti prima di partire
-- Il lato della baia si può modificare con l'utente Admin
+- Aggiunto avviso di spazio insufficiente in magazzino
+- Il lettore di badge non si blocca con tessere sconosciute
 
 ## Compatibile con adapter 0.4.29
 ***
+
+[Versione 1.0.33](#id1033)
 
 [Versione 1.0.32](#id1032)
 
@@ -111,6 +103,26 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1033"></a>
+## Nuove Funzionalità 1.0.33 rispetto la 1.0.32
+- Nella BIG l'allarme 22 (stato sensori baia) permette la ricerca dello zero
+- Aggiunto parametro "Cerca gli articoli in questa macchina"
+- Aggiunto parametro "Elenco commesse" per la visualizzazione delle commesse
+- Selezione della commessa nelle operazioni di pick e put
+- Ferretto NuGet package 0.16.35.
+
+## Bug Risolti
+- I ripristini della BES portano sempre il cassetto verso l'operatore
+- I file di log hanno un limite di 100MB
+- Il lettore badge non si blocca più se si seleziona utente o password
+- Ingranditi i pulsanti della pagina di login
+- Aggiungi prodotto non è disponibile se è abilitato il contenitore
+- Ripristino baia esterna con errore di presenza
+- Il test completo riporta in magazzino i cassetti prima di partire
+- Il lato della baia si può modificare con l'utente Admin
+
+## Compatibile con adapter 0.4.29
 
 <a id="id1032"></a>
 ## Nuove Funzionalità 1.0.32 rispetto la 1.0.31
