@@ -5,1153 +5,1190 @@
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
-    <Style x:Key="{x:Type controls:PpcButton}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <ControlTemplate.Resources>
-                        <BooleanToVisibilityConverter x:Key="BTVC" />
-                        <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
-                        <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
-                        <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
-                                                                   Invert="True" />
-                    </ControlTemplate.Resources>
-                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                        <Border Name="PpcButton_Border"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+  <Style x:Key="{x:Type controls:PpcButton}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <ControlTemplate.Resources>
+            <BooleanToVisibilityConverter x:Key="BTVC" />
+            <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
+            <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
+            <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                                       Invert="True" />
+          </ControlTemplate.Resources>
+          <Grid Visibility="{TemplateBinding VisibilityPermission}">
+            <Border Name="PpcButton_Border"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-                                <ProgressBar Grid.ColumnSpan="2"
-                                             Margin="0"
-                                             HorizontalAlignment="Stretch"
-                                             VerticalAlignment="Stretch"
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             Foreground="{DynamicResource PpcButtonForeground}"
-                                             IsIndeterminate="True"
-                                             Opacity="0.2"
-                                             Visibility="{Binding IsBusy, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
+                <ProgressBar Grid.ColumnSpan="2"
+                             Margin="0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             Foreground="{DynamicResource PpcButtonForeground}"
+                             IsIndeterminate="True"
+                             Opacity="0.2"
+                             Visibility="{Binding IsBusy, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
 
-                                <icon:PackIconMaterialLight x:Name="PpcButton_Kind"
-                                                            Grid.ColumnSpan="2"
-                                                            Width="32"
-                                                            Height="32"
-                                                            Margin="10"
-                                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                            VerticalAlignment="Center"
-                                                            Foreground="{DynamicResource Foreground}"
-                                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alarm'}"
-                                                            Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconMaterialLight.Style>
-                                        <Style TargetType="{x:Type icon:PackIconMaterialLight}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconMaterialLight.Style>
-                                </icon:PackIconMaterialLight>
-
-                                <icon:PackIconMaterial Grid.ColumnSpan="2"
-                                                       Width="32"
-                                                       Height="32"
-                                                       Margin="10"
-                                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource Foreground}"
-                                                       Kind="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Account'}"
-                                                       Tag="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconMaterial.Style>
-                                        <Style TargetType="{x:Type icon:PackIconMaterial}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconMaterial.Style>
-                                </icon:PackIconMaterial>
-
-                                <icon:PackIconFontAwesome Grid.ColumnSpan="2"
-                                                          Width="32"
-                                                          Height="32"
-                                                          Margin="10"
-                                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          VerticalAlignment="Center"
-                                                          Foreground="{DynamicResource Foreground}"
-                                                          Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='AngryRegular'}"
-                                                          Tag="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconFontAwesome.Style>
-                                        <Style TargetType="{x:Type icon:PackIconFontAwesome}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconFontAwesome.Style>
-                                </icon:PackIconFontAwesome>
-
-                                <icon:PackIconModern Grid.ColumnSpan="2"
-                                                     Width="32"
-                                                     Height="32"
-                                                     Margin="10"
-                                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="{DynamicResource Foreground}"
-                                                     Kind="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alert'}"
-                                                     Tag="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconModern.Style>
-                                        <Style TargetType="{x:Type icon:PackIconModern}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconModern.Style>
-                                </icon:PackIconModern>
-
-                                <controls:PpcIcon x:Name="PpcButton_Icon"
-                                                  Height="24"
-                                                  Margin="15,5"
-                                                  HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                  ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                                  ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                  Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
-
-                                <TextBlock x:Name="PpcButton_Abbrevation"
-                                           Grid.Column="0"
-                                           Margin="-45,13,0,0"
-                                           FontSize="24"
-                                           Foreground="White"
-                                           Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <Trigger Property="Text" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                                <Trigger Property="Text" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <TextBlock x:Name="PpcButton_Text"
-                                           Grid.Column="1"
-                                           Margin="10,0,10,0"
-                                           HorizontalAlignment="Stretch"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           Foreground="{DynamicResource Foreground}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="TextAlignment" Value="Center" />
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Kind}"
-                                                             Value="Visible">
-                                                    <Setter Property="TextAlignment" Value="Center" />
-                                                </DataTrigger>
-                                                <Trigger Property="Text" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                                <Trigger Property="Text" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
-                        </Border>
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="Validation.HasError" Value="True">
-                            <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
-                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
+                <icon:PackIconMaterialLight x:Name="PpcButton_Kind"
+                                            Grid.ColumnSpan="2"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="10"
+                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource Foreground}"
+                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alarm'}"
+                                            Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconMaterialLight.Style>
+                    <Style TargetType="{x:Type icon:PackIconMaterialLight}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconMaterialLight.Style>
+                </icon:PackIconMaterialLight>
 
-            </Setter.Value>
-        </Setter>
+                <icon:PackIconMaterial Grid.ColumnSpan="2"
+                                       Width="32"
+                                       Height="32"
+                                       Margin="10"
+                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Foreground}"
+                                       Kind="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Account'}"
+                                       Tag="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconMaterial.Style>
+                    <Style TargetType="{x:Type icon:PackIconMaterial}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconMaterial.Style>
+                </icon:PackIconMaterial>
 
-        <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
-        <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
-        <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                <icon:PackIconFontAwesome Grid.ColumnSpan="2"
+                                          Width="32"
+                                          Height="32"
+                                          Margin="10"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="Center"
+                                          Foreground="{DynamicResource Foreground}"
+                                          Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='AngryRegular'}"
+                                          Tag="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconFontAwesome.Style>
+                    <Style TargetType="{x:Type icon:PackIconFontAwesome}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconFontAwesome.Style>
+                </icon:PackIconFontAwesome>
 
-        <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
-                <Setter Property="Cursor" Value="Hand" />
+                <icon:PackIconModern Grid.ColumnSpan="2"
+                                     Width="32"
+                                     Height="32"
+                                     Margin="10"
+                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                     VerticalAlignment="Center"
+                                     Foreground="{DynamicResource Foreground}"
+                                     Kind="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alert'}"
+                                     Tag="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconModern.Style>
+                    <Style TargetType="{x:Type icon:PackIconModern}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconModern.Style>
+                </icon:PackIconModern>
+
+                <controls:PpcIcon x:Name="PpcButton_Icon"
+                                  Height="24"
+                                  Margin="15,5"
+                                  HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                  ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                  ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                  Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
+
+                <TextBlock x:Name="PpcButton_Abbrevation"
+                           Grid.Column="0"
+                           Margin="-45,13,0,0"
+                           FontSize="24"
+                           Foreground="White"
+                           Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}">
+                  <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                      <Style.Triggers>
+                        <Trigger Property="Text" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock x:Name="PpcButton_Text"
+                           Grid.Column="1"
+                           Margin="10,0,10,0"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           Foreground="{DynamicResource Foreground}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap">
+                  <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                      <Setter Property="TextAlignment" Value="Center" />
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Kind}"
+                                     Value="Visible">
+                          <Setter Property="TextAlignment" Value="Center" />
+                        </DataTrigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+              </Grid>
+            </Border>
+          </Grid>
+
+          <ControlTemplate.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+              <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+              <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
             </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-            </Trigger>
-        </Style.Triggers>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
 
-    </Style>
+      </Setter.Value>
+    </Setter>
 
-    <Style x:Key="PpcHeaderButtonStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0,0,0,8" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PpcHeaderButtonColor}" />
-        <Setter Property="Width" Value="100" />
-        <Setter Property="Height" Value="60" />
-    </Style>
+    <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
+    <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+    <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
+    <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
-    <Style x:Key="PpcButtonMachinePowerHeaderStyle"
-           BasedOn="{StaticResource PpcHeaderButtonStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Content" Value="{res:Loc InstallationApp.Off}" />
+    <Style.Triggers>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+        <Setter Property="Cursor" Value="Hand" />
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
+
+  </Style>
+
+  <Style x:Key="PpcHeaderButtonStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0,0,0,8" />
+    <Setter Property="BorderBrush" Value="{DynamicResource PpcHeaderButtonColor}" />
+    <Setter Property="Width" Value="100" />
+    <Setter Property="Height" Value="60" />
+  </Style>
+
+  <Style x:Key="TextBoxKeyboardButtonStyle"
+         BasedOn="{StaticResource {x:Type Button}}"
+         TargetType="{x:Type Button}">
+    <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+    <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+    <Setter Property="BorderThickness" Value="0,1,1,1" />
+    <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
+    <Setter Property="Opacity" Value="1" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Button}">
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="True">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsPressed" Value="true">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_Foreground_TextBox_Readonly}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_TextBox_Readonly}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Readonly}" />
+        <Setter Property="Opacity" Value="0.5" />
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="false">
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Disabled}" />
+        <Setter Property="Background" Value="{DynamicResource PpcBackgroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="PpcButtonMachinePowerHeaderStyle"
+         BasedOn="{StaticResource PpcHeaderButtonStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Content" Value="{res:Loc InstallationApp.Off}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding IsMachinePoweredOn}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.On}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsUnknownState}"
+                   Value="True">
         <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsMachinePoweredOn}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.On}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsUnknownState}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource PcpButtonUnknownStateColor}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Unknown}" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Unknown}" />
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcBadgeButtonStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="1" />
+  <Style x:Key="PpcBadgeButtonStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="{x:Null}" />
+    <Setter Property="Margin" Value="10" />
+    <Setter Property="Height" Value="auto" />
+    <Setter Property="Width" Value="auto" />
+    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_Small}" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="FontWeight" Value="Light" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <Grid Visibility="{TemplateBinding VisibilityPermission}">
+            <Border Name="PpcButton_Border"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding Foreground}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="3"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+                <TextBlock x:Name="PpcButton_Text"
+                           Margin="{TemplateBinding Padding}"
+                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap" />
+              </Grid>
+            </Border>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{x:Null}" />
-        <Setter Property="Margin" Value="10" />
-        <Setter Property="Height" Value="auto" />
-        <Setter Property="Width" Value="auto" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_Small}" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                        <Border Name="PpcButton_Border"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding Foreground}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-                                <TextBlock x:Name="PpcButton_Text"
-                                           Margin="{TemplateBinding Padding}"
-                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
-                            </Grid>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="Transparent" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcIconTextButtonStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <ControlTemplate.Resources>
-                        <BooleanToVisibilityConverter x:Key="BTVC" />
-                        <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
-                        <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
-                        <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
-                                                                   Invert="True" />
-                    </ControlTemplate.Resources>
-                    <Grid>
-                        <Border Name="PpcButton_Border"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight" />
+  <Style x:Key="PpcIconTextButtonStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <ControlTemplate.Resources>
+            <BooleanToVisibilityConverter x:Key="BTVC" />
+            <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
+            <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
+            <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
+                                                       Invert="True" />
+          </ControlTemplate.Resources>
+          <Grid>
+            <Border Name="PpcButton_Border"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight" />
 
-                        <Border Margin="1"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{x:Null}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}">
+            <Border Margin="1"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{x:Null}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}">
 
-                            <Grid x:Name="PpcButton_Grid"
-                                  Margin="{DynamicResource PpcButtonBorderThicknessActive}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+              <Grid x:Name="PpcButton_Grid"
+                    Margin="{DynamicResource PpcButtonBorderThicknessActive}">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                                <TextBlock x:Name="PpcButton_Text"
-                                           Grid.Column="0"
-                                           Margin="5"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           Foreground="{DynamicResource Foreground}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="TextAlignment" Value="Center" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Icon}"
-                                                             Value="Visible">
-                                                    <Setter Property="TextAlignment" Value="Left" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                <TextBlock x:Name="PpcButton_Text"
+                           Grid.Column="0"
+                           Margin="5"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           Foreground="{DynamicResource Foreground}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap">
+                  <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                      <Setter Property="TextAlignment" Value="Center" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Icon}"
+                                     Value="Visible">
+                          <Setter Property="TextAlignment" Value="Left" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
 
-                                <icon:PackIconMaterialLight x:Name="PpcButton_Kind"
-                                                            Grid.Column="1"
-                                                            Width="24"
-                                                            Height="24"
-                                                            Margin="5"
-                                                            HorizontalAlignment="Center"
-                                                            VerticalAlignment="Center"
-                                                            Foreground="{DynamicResource Foreground}"
-                                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alarm'}"
-                                                            Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconMaterialLight.Style>
-                                        <Style TargetType="{x:Type icon:PackIconMaterialLight}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconMaterialLight.Style>
-                                </icon:PackIconMaterialLight>
-
-                                <icon:PackIconMaterial Grid.Column="1"
-                                                       Width="24"
-                                                       Height="24"
-                                                       Margin="5"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       Foreground="{DynamicResource Foreground}"
-                                                       Kind="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Account'}"
-                                                       Tag="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconMaterial.Style>
-                                        <Style TargetType="{x:Type icon:PackIconMaterial}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconMaterial.Style>
-                                </icon:PackIconMaterial>
-
-                                <icon:PackIconFontAwesome Grid.Column="1"
-                                                          Width="24"
-                                                          Height="24"
-                                                          Margin="5"
-                                                          HorizontalAlignment="Center"
-                                                          VerticalAlignment="Center"
-                                                          Foreground="{DynamicResource Foreground}"
-                                                          Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='AngryRegular'}"
-                                                          Tag="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconFontAwesome.Style>
-                                        <Style TargetType="{x:Type icon:PackIconFontAwesome}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconFontAwesome.Style>
-                                </icon:PackIconFontAwesome>
-
-                                <icon:PackIconModern Grid.Column="1"
-                                                     Width="24"
-                                                     Height="24"
-                                                     Margin="5"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"
-                                                     Foreground="{DynamicResource Foreground}"
-                                                     Kind="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alert'}"
-                                                     Tag="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <icon:PackIconModern.Style>
-                                        <Style TargetType="{x:Type icon:PackIconModern}">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <Trigger Property="Tag" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </icon:PackIconModern.Style>
-                                </icon:PackIconModern>
-                            </Grid>
-                        </Border>
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="Validation.HasError" Value="True">
-                            <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
-                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
+                <icon:PackIconMaterialLight x:Name="PpcButton_Kind"
+                                            Grid.Column="1"
+                                            Width="24"
+                                            Height="24"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource Foreground}"
+                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alarm'}"
+                                            Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconMaterialLight.Style>
+                    <Style TargetType="{x:Type icon:PackIconMaterialLight}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
                         </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconMaterialLight.Style>
+                </icon:PackIconMaterialLight>
 
-            </Setter.Value>
-        </Setter>
+                <icon:PackIconMaterial Grid.Column="1"
+                                       Width="24"
+                                       Height="24"
+                                       Margin="5"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Foreground}"
+                                       Kind="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Account'}"
+                                       Tag="{Binding KindMaterial, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconMaterial.Style>
+                    <Style TargetType="{x:Type icon:PackIconMaterial}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconMaterial.Style>
+                </icon:PackIconMaterial>
 
-        <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
-        <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
-        <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
-        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                <icon:PackIconFontAwesome Grid.Column="1"
+                                          Width="24"
+                                          Height="24"
+                                          Margin="5"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Foreground="{DynamicResource Foreground}"
+                                          Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='AngryRegular'}"
+                                          Tag="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconFontAwesome.Style>
+                    <Style TargetType="{x:Type icon:PackIconFontAwesome}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconFontAwesome.Style>
+                </icon:PackIconFontAwesome>
 
-        <Style.Triggers>
-            <!--<DataTrigger Binding="{Binding IsActive}"
+                <icon:PackIconModern Grid.Column="1"
+                                     Width="24"
+                                     Height="24"
+                                     Margin="5"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Foreground="{DynamicResource Foreground}"
+                                     Kind="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue='Alert'}"
+                                     Tag="{Binding KindModern, RelativeSource={RelativeSource TemplatedParent}}">
+                  <icon:PackIconModern.Style>
+                    <Style TargetType="{x:Type icon:PackIconModern}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <Trigger Property="Tag" Value="{x:Null}">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                      </Style.Triggers>
+                    </Style>
+                  </icon:PackIconModern.Style>
+                </icon:PackIconModern>
+              </Grid>
+            </Border>
+          </Grid>
+
+          <ControlTemplate.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+              <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+              <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+      </Setter.Value>
+    </Setter>
+
+    <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
+    <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+    <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
+    <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_Small}" />
+    <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+
+    <Style.Triggers>
+      <!--<DataTrigger Binding="{Binding IsActive}"
                          Value="True">
                 <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
             </DataTrigger>-->
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
-                <!--<Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />-->
-                <Setter Property="Cursor" Value="Hand" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-            </Trigger>
-        </Style.Triggers>
+      <Trigger Property="IsPressed" Value="True">
+        <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+        <!--<Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />-->
+        <Setter Property="Cursor" Value="Hand" />
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
 
-    </Style>
+  </Style>
 
-    <Style x:Key="PpcButtonMachineModeHeaderStyle"
-           BasedOn="{StaticResource PpcHeaderButtonStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Content" Value="{res:Loc InstallationApp.Manual}" />
+  <Style x:Key="PpcButtonMachineModeHeaderStyle"
+         BasedOn="{StaticResource PpcHeaderButtonStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Content" Value="{res:Loc InstallationApp.Manual}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding IsMachineInManualMode2}"
+                   Value="True">
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsMachineInManualMode2}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Manual2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInManualMode3}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Manual3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInAutomaticMode}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Auto}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations2}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations3}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInSwitchingToLoadUnitOperations}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInTestMode}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Test}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInTestMode2}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Test2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInTestMode3}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Test3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInCompact}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Compact}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInCompact2}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Compact2}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInCompact3}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Compact3}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMachineInFirstTest}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.FirstTest}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding IsMissionInErrorByLoadUnitOperations}"
-                         Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
-                <Setter Property="Content" Value="{res:Loc InstallationApp.Restore}" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="PpcButtonDebugHeaderStyle"
-           BasedOn="{StaticResource PpcHeaderButtonStyle}"
-           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Manual2}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInManualMode3}"
+                   Value="True">
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-    </Style>
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Manual3}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInAutomaticMode}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Auto}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations2}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations2}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInLoadUnitOperations3}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations3}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInSwitchingToLoadUnitOperations}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.ModeLoadUnitOperations}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInTestMode}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Test}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInTestMode2}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Test2}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInTestMode3}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Test3}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInCompact}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Compact}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInCompact2}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Compact2}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInCompact3}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Compact3}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMachineInFirstTest}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.FirstTest}" />
+      </DataTrigger>
+      <DataTrigger Binding="{Binding IsMissionInErrorByLoadUnitOperations}"
+                   Value="True">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
+        <Setter Property="Content" Value="{res:Loc InstallationApp.Restore}" />
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcButtonMachineErrorHeaderStyle"
-           BasedOn="{StaticResource PpcHeaderButtonStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
-    </Style>
+  <Style x:Key="PpcButtonDebugHeaderStyle"
+         BasedOn="{StaticResource PpcHeaderButtonStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+  </Style>
 
-    <Style x:Key="PpcButtonHelpHeaderStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Width" Value="60" />
-        <Setter Property="Height" Value="60" />
-        <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/help.png" />
+  <Style x:Key="PpcButtonMachineErrorHeaderStyle"
+         BasedOn="{StaticResource PpcHeaderButtonStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+  </Style>
 
-    </Style>
+  <Style x:Key="PpcButtonHelpHeaderStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Width" Value="60" />
+    <Setter Property="Height" Value="60" />
+    <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/help.png" />
 
-    <Style x:Key="PpcButtonThemeStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Width" Value="60" />
-        <Setter Property="Height" Value="60" />
-        <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_dark.png" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                         Value="False">
-                <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
+  </Style>
 
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
+  <Style x:Key="PpcButtonThemeStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Width" Value="60" />
+    <Setter Property="Height" Value="60" />
+    <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_dark.png" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                   Value="False">
+        <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
 
-    <Style x:Key="PpcButtonTabStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0,0,0,3" />
+      </DataTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="PpcButtonTabStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0,0,0,3" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderBrush" Value="{x:Null}" />
+    <Setter Property="Height" Value="Auto" />
+    <Setter Property="Width" Value="Auto" />
+    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="FontWeight" Value="Light" />
+    <Setter Property="Margin" Value="5,0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <Grid>
+            <Border Name="PpcButton_Border"
+                    Width="{TemplateBinding Width}"
+                    Height="{TemplateBinding Height}"
+                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+                <TextBlock x:Name="PpcButton_Text"
+                           Margin="{TemplateBinding Padding}"
+                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap" />
+              </Grid>
+            </Border>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsPressed" Value="True">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{x:Null}" />
-        <Setter Property="Height" Value="Auto" />
-        <Setter Property="Width" Value="Auto" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_Very_High}" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="Margin" Value="5,0" />
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <Grid>
-                        <Border Name="PpcButton_Border"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-                                <TextBlock x:Name="PpcButton_Text"
-                                           Margin="{TemplateBinding Padding}"
-                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
-                            </Grid>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-                <Setter Property="Cursor" Value="Hand" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
+        <Setter Property="Cursor" Value="Hand" />
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcButtonMovementsGuidedTabStyle"
-           BasedOn="{StaticResource PpcButtonTabStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Style.Triggers>
-            <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+  <Style x:Key="PpcButtonMovementsGuidedTabStyle"
+         BasedOn="{StaticResource PpcButtonTabStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Style.Triggers>
+      <Trigger Property="IsActive" Value="true">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcButtonMovementsManualTabStyle"
-           BasedOn="{StaticResource PpcButtonTabStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Style.Triggers>
-            <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+  <Style x:Key="PpcButtonMovementsManualTabStyle"
+         BasedOn="{StaticResource PpcButtonTabStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Style.Triggers>
+      <Trigger Property="IsActive" Value="true">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcButtonOperatorTabStyle"
-           BasedOn="{StaticResource PpcButtonTabStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Style.Triggers>
-            <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+  <Style x:Key="PpcButtonOperatorTabStyle"
+         BasedOn="{StaticResource PpcButtonTabStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Style.Triggers>
+      <Trigger Property="IsActive" Value="true">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="PpcButtonStopStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
+  <Style x:Key="PpcButtonStopStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Background" Value="#E1323F" />
+    <Style.Triggers>
+      <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                   Value="False">
         <Setter Property="Background" Value="#E1323F" />
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsDarkThemeActive}"
-                         Value="False">
-                <Setter Property="Background" Value="#E1323F" />
-            </DataTrigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+      </DataTrigger>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="PpcButtonMenuStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+    <Setter Property="FontWeight" Value="Light" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+    <Setter Property="Width" Value="200" />
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <Grid Visibility="{TemplateBinding VisibilityPermission}">
+            <Border Name="PpcButtonMenu_MainBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition x:Name="Column">
+                    <ColumnDefinition.Style>
+                      <Style TargetType="{x:Type ColumnDefinition}">
+                        <Setter Property="Width" Value="55" />
+                        <Style.Triggers>
+                          <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Value="">
+                            <Setter Property="Width" Value="6" />
+                          </DataTrigger>
+                          <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Value="{x:Null}">
+                            <Setter Property="Width" Value="6" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </ColumnDefinition.Style>
+                  </ColumnDefinition>
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Name="PpcButtonMenu_Border"
+                        Margin="-2,-1.5"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="6,0,0,0"
+                        Opacity="1"
+                        Visibility="Collapsed" />
+
+                <Border Name="PpcButtonMenu_Badge"
+                        Margin="0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Background="Transparent">
+                  <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                      <Setter Property="Border.Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                     Value="">
+                          <Setter Property="Border.Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
+                                     Value="{x:Null}">
+                          <Setter Property="Border.Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Border.Style>
+                  <Grid Grid.Column="0"
+                        Margin="15,0,0,0">
+                    <Ellipse Width="38"
+                             Height="38"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Fill="{TemplateBinding BorderBrush}"
+                             Opacity="0.8"
+                             Stroke="White"
+                             StrokeThickness="0" />
+
+                    <TextBlock Margin="{TemplateBinding Padding}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="{TemplateBinding FontFamily}"
+                               FontSize="18"
+                               FontWeight="{TemplateBinding FontWeight}"
+                               Foreground="{DynamicResource Text_Foreground}"
+                               Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
+                  </Grid>
+                </Border>
+
+                <TextBlock Grid.Column="1"
+                           Margin="8,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="{TemplateBinding FontSize}"
+                           FontWeight="{TemplateBinding FontWeight}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap" />
+
+              </Grid>
+            </Border>
+          </Grid>
+
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsActive" Value="True">
+              <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
+              <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="2,2,2,2" />
+              <Setter TargetName="PpcButtonMenu_Badge" Property="Margin" Value="0,0,0,0" />
             </Trigger>
-        </Style.Triggers>
-    </Style>
+          </ControlTemplate.Triggers>
 
-    <Style x:Key="PpcButtonMenuStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-        <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-        <Setter Property="Width" Value="200" />
+        </ControlTemplate>
 
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                        <Border Name="PpcButtonMenu_MainBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="Column">
-                                        <ColumnDefinition.Style>
-                                            <Style TargetType="{x:Type ColumnDefinition}">
-                                                <Setter Property="Width" Value="55" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                 Value="">
-                                                        <Setter Property="Width" Value="6" />
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                 Value="{x:Null}">
-                                                        <Setter Property="Width" Value="6" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ColumnDefinition.Style>
-                                    </ColumnDefinition>
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+      </Setter.Value>
+    </Setter>
+  </Style>
 
-                                <Border Name="PpcButtonMenu_Border"
-                                        Margin="-2,-1.5"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="6,0,0,0"
-                                        Opacity="1"
-                                        Visibility="Collapsed" />
+  <Style x:Key="PpcButtonServiceScreenCastStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <Grid Visibility="{TemplateBinding VisibilityPermission}">
+            <Border Name="PpcButtonMenu_MainBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                                <Border Name="PpcButtonMenu_Badge"
-                                        Margin="0"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Background="Transparent">
-                                    <Border.Style>
-                                        <Style TargetType="{x:Type Border}">
-                                            <Setter Property="Border.Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                             Value="">
-                                                    <Setter Property="Border.Visibility" Value="Collapsed" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                             Value="{x:Null}">
-                                                    <Setter Property="Border.Visibility" Value="Collapsed" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                    <Grid Grid.Column="0"
-                                          Margin="15,0,0,0">
-                                        <Ellipse Width="38"
-                                                 Height="38"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"
-                                                 Fill="{TemplateBinding BorderBrush}"
-                                                 Opacity="0.8"
-                                                 Stroke="White"
-                                                 StrokeThickness="0" />
+                <Border Name="PpcButtonMenu_Border"
+                        Grid.ColumnSpan="2"
+                        Margin="2,2"
+                        HorizontalAlignment="Stretch"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="0,0,0,6"
+                        Opacity="1"
+                        Visibility="Collapsed" />
 
-                                        <TextBlock Margin="{TemplateBinding Padding}"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontFamily="{TemplateBinding FontFamily}"
-                                                   FontSize="18"
-                                                   FontWeight="{TemplateBinding FontWeight}"
-                                                   Foreground="{DynamicResource Text_Foreground}"
-                                                   Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    </Grid>
-                                </Border>
+                <TextBlock Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap" />
 
-                                <TextBlock Grid.Column="1"
-                                           Margin="8,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontFamily="{TemplateBinding FontFamily}"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           FontWeight="{TemplateBinding FontWeight}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
+                <Ellipse Grid.Column="1"
+                         Width="55"
+                         Height="55"
+                         Margin="0,1,6,0"
+                         Stroke="#FF000000"
+                         StrokeThickness="0">
 
-                            </Grid>
-                        </Border>
+                  <Ellipse.Style>
+                    <Style TargetType="{x:Type Ellipse}">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsScreenCast}"
+                                     Value="True">
+                          <Setter Property="Fill" Value="Red" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsScreenCast}"
+                                     Value="False">
+                          <Setter Property="Fill" Value="Transparent" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Ellipse.Style>
+                </Ellipse>
+
+                <TextBlock Grid.Column="1"
+                           Width="50"
+                           Margin="0,0,6,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           TextWrapping="Wrap">
+                  <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsScreenCast}"
+                                     Value="True">
+                          <Setter Property="Text" Value="{res:Loc InstallationApp.On}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsScreenCast}"
+                                     Value="False">
+                          <Setter Property="Text" Value="{res:Loc InstallationApp.Off}" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
+
+              </Grid>
+            </Border>
+          </Grid>
+
+        </ControlTemplate>
+
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="PpcButtonMarkStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0" />
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <Grid Visibility="{TemplateBinding VisibilityPermission}">
+            <Border Name="PpcButtonMenu_MainBorder"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+
+                <Border Name="PpcButtonMenu_Border"
+                        Grid.ColumnSpan="2"
+                        Margin="2,2"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="0,0,0,6"
+                        Opacity="1"
+                        Visibility="Collapsed" />
+
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="{TemplateBinding FontSize}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap" />
+
+              </Grid>
+            </Border>
+          </Grid>
+
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsActive" Value="True">
+              <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
+              <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="2,2,2,2" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+
+        </ControlTemplate>
+
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="PpcButtonMenuCardStyle"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
+    <Setter Property="FontWeight" Value="Light" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+    <Setter Property="Height" Value="155" />
+    <Setter Property="Width" Value="220" />
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type controls:PpcButton}">
+          <Grid Visibility="{TemplateBinding VisibilityPermission}">
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="{DynamicResource PpcCornerRadius}"
+                    Cursor="Hand"
+                    FlowDirection="LeftToRight">
+              <Grid x:Name="PpcButton_Grid">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="65" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Name="PpcButtonMenu_Border"
+                        Grid.RowSpan="2"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="5,0,0,0"
+                        Opacity="0.8"
+                        Visibility="Collapsed" />
+
+                <Border Grid.Column="0"
+                        Margin="0"
+                        Background="Transparent">
+                  <Grid>
+                    <Grid Grid.Column="0"
+                          Margin="10,10,5,5"
+                          VerticalAlignment="Top"
+                          Visibility="Visible">
+                      <Ellipse Width="38"
+                               Height="38"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Fill="{TemplateBinding BorderBrush}"
+                               Opacity="0.8"
+                               Stroke="White"
+                               StrokeThickness="0" />
+
+                      <TextBlock Margin="{TemplateBinding Padding}"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 FontFamily="{TemplateBinding FontFamily}"
+                                 FontSize="16"
+                                 FontWeight="{TemplateBinding FontWeight}"
+                                 Foreground="{DynamicResource Text_Foreground}"
+                                 Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
+                  </Grid>
+                </Border>
 
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="2,2,2,2" />
-                            <Setter TargetName="PpcButtonMenu_Badge" Property="Margin" Value="0,0,0,0" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+                <TextBlock Grid.Column="1"
+                           Margin="5,18,10,5"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="{TemplateBinding FontSize}"
+                           FontWeight="{TemplateBinding FontWeight}"
+                           Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap">
+                  <TextBlock.Style>
+                    <Style>
+                      <Setter Property="Grid.RowSpan" Value="1" />
+                      <Setter Property="Grid.Column" Value="1" />
+                      <Setter Property="Grid.ColumnSpan" Value="1" />
+                      <Setter Property="TextBlock.HorizontalAlignment" Value="Left" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                     Value="">
+                          <Setter Property="Grid.RowSpan" Value="2" />
+                          <Setter Property="Grid.Column" Value="0" />
+                          <Setter Property="Grid.ColumnSpan" Value="2" />
+                          <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </TextBlock.Style>
+                </TextBlock>
 
-                </ControlTemplate>
+                <TextBlock Grid.Row="1"
+                           Grid.ColumnSpan="2"
+                           Margin="10,10,10,5"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontFamily="{TemplateBinding FontFamily}"
+                           FontSize="{DynamicResource FontSize_Small}"
+                           FontWeight="{TemplateBinding FontWeight}"
+                           Foreground="{DynamicResource TextLight_Foreground}"
+                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                           TextWrapping="Wrap" />
 
-            </Setter.Value>
-        </Setter>
-    </Style>
+                <Grid Grid.RowSpan="2"
+                      Grid.ColumnSpan="2">
 
-    <Style x:Key="PpcButtonServiceScreenCastStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                        <Border Name="PpcButtonMenu_MainBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                  <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                      <Setter Property="Grid.Visibility" Value="Collapsed" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                     Value="True">
+                          <Setter Property="Grid.Visibility" Value="Visible" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
 
-                                <Border Name="PpcButtonMenu_Border"
-                                        Grid.ColumnSpan="2"
-                                        Margin="2,2"
-                                        HorizontalAlignment="Stretch"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="0,0,0,6"
-                                        Opacity="1"
-                                        Visibility="Collapsed" />
+                  <Polygon HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource FerrettoBlue}"
+                           Opacity="0.8"
+                           Points="146,150 200,48 200,90 170,150 " />
 
-                                <TextBlock Margin="10,0,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
+                  <TextBlock Grid.Row="0"
+                             Grid.Column="0"
+                             Margin="0,0,-2,4"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             FontFamily="{DynamicResource VWAPP_TitleFont}"
+                             FontSize="14"
+                             FontWeight="Light"
+                             Text="{res:Loc InstallationApp.Completed}">
+                    <TextBlock.LayoutTransform>
+                      <TransformGroup>
+                        <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
+                      </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                  </TextBlock>
+                </Grid>
 
-                                <Ellipse Grid.Column="1"
-                                         Width="55"
-                                         Height="55"
-                                         Margin="0,1,6,0"
-                                         Stroke="#FF000000"
-                                         StrokeThickness="0">
+                <Grid Grid.RowSpan="2"
+                      Grid.ColumnSpan="2">
 
-                                    <Ellipse.Style>
-                                        <Style TargetType="{x:Type Ellipse}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsScreenCast}"
-                                                             Value="True">
-                                                    <Setter Property="Fill" Value="Red" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsScreenCast}"
-                                                             Value="False">
-                                                    <Setter Property="Fill" Value="Transparent" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
-                                </Ellipse>
+                  <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                      <Setter Property="Grid.Visibility" Value="Collapsed" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsBypassed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                     Value="True">
+                          <Setter Property="Grid.Visibility" Value="Visible" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
 
-                                <TextBlock Grid.Column="1"
-                                           Width="50"
-                                           Margin="0,0,6,0"
-                                           HorizontalAlignment="Right"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsScreenCast}"
-                                                             Value="True">
-                                                    <Setter Property="Text" Value="{res:Loc InstallationApp.On}" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsScreenCast}"
-                                                             Value="False">
-                                                    <Setter Property="Text" Value="{res:Loc InstallationApp.Off}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                  <Polygon HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           Fill="{DynamicResource FerrettoRed}"
+                           Opacity="0.8"
+                           Points="146,150 200,48 200,90 170,150 " />
 
-                            </Grid>
-                        </Border>
-                    </Grid>
+                  <TextBlock Grid.Row="0"
+                             Grid.Column="0"
+                             Margin="0,0,0,10"
+                             HorizontalAlignment="Right"
+                             VerticalAlignment="Bottom"
+                             FontFamily="{DynamicResource VWAPP_TitleFont}"
+                             FontSize="14"
+                             FontWeight="Light"
+                             Text="Bypassato">
+                    <TextBlock.LayoutTransform>
+                      <TransformGroup>
+                        <RotateTransform Angle="300" CenterX="0.5" CenterY="0.5" />
+                      </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                  </TextBlock>
 
-                </ControlTemplate>
-
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="PpcButtonMarkStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                        <Border Name="PpcButtonMenu_MainBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-
-                                <Border Name="PpcButtonMenu_Border"
-                                        Grid.ColumnSpan="2"
-                                        Margin="2,2"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="0,0,0,6"
-                                        Opacity="1"
-                                        Visibility="Collapsed" />
-
-                                <TextBlock HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
-
-                            </Grid>
-                        </Border>
-                    </Grid>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="PpcButtonMenu_MainBorder" Property="BorderThickness" Value="2,2,2,2" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-
-                </ControlTemplate>
-
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="PpcButtonMenuCardStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_TitleFont}" />
-        <Setter Property="FontWeight" Value="Light" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-        <Setter Property="Height" Value="155" />
-        <Setter Property="Width" Value="220" />
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{DynamicResource PpcBorderBrush}"
-                                BorderThickness="{DynamicResource PpcBorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}"
-                                Cursor="Hand"
-                                FlowDirection="LeftToRight">
-                            <Grid x:Name="PpcButton_Grid">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="65" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-
-                                <Border Name="PpcButtonMenu_Border"
-                                        Grid.RowSpan="2"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="5,0,0,0"
-                                        Opacity="0.8"
-                                        Visibility="Collapsed" />
-
-                                <Border Grid.Column="0"
-                                        Margin="0"
-                                        Background="Transparent">
-                                    <Grid>
-                                        <Grid Grid.Column="0"
-                                              Margin="10,10,5,5"
-                                              VerticalAlignment="Top"
-                                              Visibility="Visible">
-                                            <Ellipse Width="38"
-                                                     Height="38"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"
-                                                     Fill="{TemplateBinding BorderBrush}"
-                                                     Opacity="0.8"
-                                                     Stroke="White"
-                                                     StrokeThickness="0" />
-
-                                            <TextBlock Margin="{TemplateBinding Padding}"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"
-                                                       FontFamily="{TemplateBinding FontFamily}"
-                                                       FontSize="16"
-                                                       FontWeight="{TemplateBinding FontWeight}"
-                                                       Foreground="{DynamicResource Text_Foreground}"
-                                                       Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
-                                        </Grid>
-                                    </Grid>
-                                </Border>
-
-                                <TextBlock Grid.Column="1"
-                                           Margin="5,18,10,5"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
-                                           FontFamily="{TemplateBinding FontFamily}"
-                                           FontSize="{TemplateBinding FontSize}"
-                                           FontWeight="{TemplateBinding FontWeight}"
-                                           Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style>
-                                            <Setter Property="Grid.RowSpan" Value="1" />
-                                            <Setter Property="Grid.Column" Value="1" />
-                                            <Setter Property="Grid.ColumnSpan" Value="1" />
-                                            <Setter Property="TextBlock.HorizontalAlignment" Value="Left" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="">
-                                                    <Setter Property="Grid.RowSpan" Value="2" />
-                                                    <Setter Property="Grid.Column" Value="0" />
-                                                    <Setter Property="Grid.ColumnSpan" Value="2" />
-                                                    <Setter Property="TextBlock.HorizontalAlignment" Value="Center" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <TextBlock Grid.Row="1"
-                                           Grid.ColumnSpan="2"
-                                           Margin="10,10,10,5"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
-                                           FontFamily="{TemplateBinding FontFamily}"
-                                           FontSize="{DynamicResource FontSize_Small}"
-                                           FontWeight="{TemplateBinding FontWeight}"
-                                           Foreground="{DynamicResource TextLight_Foreground}"
-                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap" />
-
-                                <Grid Grid.RowSpan="2"
-                                      Grid.ColumnSpan="2">
-
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <Setter Property="Grid.Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsCompleted, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="True">
-                                                    <Setter Property="Grid.Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-
-                                    <Polygon HorizontalAlignment="Right"
-                                             VerticalAlignment="Bottom"
-                                             Fill="{DynamicResource FerrettoBlue}"
-                                             Opacity="0.8"
-                                             Points="146,150 200,48 200,90 170,150 " />
-
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="0,0,-2,4"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom"
-                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                               FontSize="14"
-                                               FontWeight="Light"
-                                               Text="{res:Loc InstallationApp.Completed}">
-                                        <TextBlock.LayoutTransform>
-                                            <TransformGroup>
-                                                <RotateTransform Angle="296" CenterX="0.5" CenterY="0.5" />
-                                            </TransformGroup>
-                                        </TextBlock.LayoutTransform>
-                                    </TextBlock>
-                                </Grid>
-
-                                <Grid Grid.RowSpan="2"
-                                      Grid.ColumnSpan="2">
-
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <Setter Property="Grid.Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsBypassed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                                             Value="True">
-                                                    <Setter Property="Grid.Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-
-                                    <Polygon HorizontalAlignment="Right"
-                                             VerticalAlignment="Bottom"
-                                             Fill="{DynamicResource FerrettoRed}"
-                                             Opacity="0.8"
-                                             Points="146,150 200,48 200,90 170,150 " />
-
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="0"
-                                               Margin="0,0,0,10"
-                                               HorizontalAlignment="Right"
-                                               VerticalAlignment="Bottom"
-                                               FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                               FontSize="14"
-                                               FontWeight="Light"
-                                               Text="Bypassato">
-                                        <TextBlock.LayoutTransform>
-                                            <TransformGroup>
-                                                <RotateTransform Angle="300" CenterX="0.5" CenterY="0.5" />
-                                            </TransformGroup>
-                                        </TextBlock.LayoutTransform>
-                                    </TextBlock>
-
-                                    <!--<Polygon HorizontalAlignment="Left"
+                  <!--<Polygon HorizontalAlignment="Left"
                                              VerticalAlignment="Bottom"
                                              Fill="{DynamicResource FerrettoRed}"
                                              Opacity="0.8"
@@ -1172,98 +1209,98 @@
                                             </TransformGroup>
                                         </TextBlock.LayoutTransform>
                                     </TextBlock>-->
-                                </Grid>
+                </Grid>
 
-                            </Grid>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
+              </Grid>
+            </Border>
+          </Grid>
+        </ControlTemplate>
 
-            </Setter.Value>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="WizardIntoButton"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="WizardConfirmButton"
+         BasedOn="{StaticResource WizardIntoButton}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="ConfirmButton"
+         BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Background">
+          <Setter.Value>
+            <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
+              <GradientStop Offset="0" Color="#003559" />
+              <GradientStop Offset="0.5" Color="#003559" />
+              <GradientStop Offset="0.5" Color="#002640" />
+              <GradientStop Offset="1" Color="#002640" />
+            </LinearGradientBrush>
+          </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style x:Key="WizardIntoButton"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="WizardConfirmButton"
-           BasedOn="{StaticResource WizardIntoButton}"
-           TargetType="{x:Type controls:PpcButton}">
+      </Trigger>
+      <Trigger Property="IsEnabled" Value="True">
         <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoPureWhite}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
-    <Style x:Key="ConfirmButton"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
-                            <GradientStop Offset="0" Color="#003559" />
-                            <GradientStop Offset="0.5" Color="#003559" />
-                            <GradientStop Offset="0.5" Color="#002640" />
-                            <GradientStop Offset="1" Color="#002640" />
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="True">
-                <Setter Property="Background" Value="{DynamicResource FerrettoBlue}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="BorderTimeLine"
-           TargetType="{x:Type Border}">
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="BorderBrush" Value="{DynamicResource TimeLineCirle_BorderBrush}" />
-        <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="CornerRadius" Value="2" />
-    </Style>
-    <Style x:Key="BorderTimeLineCirle"
-           TargetType="{x:Type Border}">
-        <Setter Property="Width" Value="40" />
-        <Setter Property="Height" Value="40" />
-        <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource TimeLineCirle_BorderBrush}" />
-        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
-        <Setter Property="CornerRadius" Value="20" />
-    </Style>
-    <Style x:Key="BorderTimeLineCirleTextBlock"
-           TargetType="{x:Type TextBlock}">
-        <Setter Property="Margin" Value="-1,-1,0,0" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="Foreground" Value="{DynamicResource BorderTimeLineCirleTextBlock_Foreground}" />
-    </Style>
-    <Style x:Key="BorderTimeLinePath"
-           TargetType="{x:Type Path}">
-        <Setter Property="Width" Value="26" />
-        <Setter Property="Height" Value="26" />
-        <Setter Property="HorizontalAlignment" Value="Right" />
-        <Setter Property="Data" Value="M18,0 L0,10 18,20" />
-        <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
-        <Setter Property="Stretch" Value="Fill" />
-        <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
-        <Setter Property="StrokeThickness" Value="2" />
-    </Style>
+  <Style x:Key="BorderTimeLine"
+         TargetType="{x:Type Border}">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="BorderBrush" Value="{DynamicResource TimeLineCirle_BorderBrush}" />
+    <Setter Property="BorderThickness" Value="2" />
+    <Setter Property="CornerRadius" Value="2" />
+  </Style>
+  <Style x:Key="BorderTimeLineCirle"
+         TargetType="{x:Type Border}">
+    <Setter Property="Width" Value="40" />
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource TimeLineCirle_BorderBrush}" />
+    <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+    <Setter Property="CornerRadius" Value="20" />
+  </Style>
+  <Style x:Key="BorderTimeLineCirleTextBlock"
+         TargetType="{x:Type TextBlock}">
+    <Setter Property="Margin" Value="-1,-1,0,0" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+    <Setter Property="VerticalAlignment" Value="Center" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+    <Setter Property="Foreground" Value="{DynamicResource BorderTimeLineCirleTextBlock_Foreground}" />
+  </Style>
+  <Style x:Key="BorderTimeLinePath"
+         TargetType="{x:Type Path}">
+    <Setter Property="Width" Value="26" />
+    <Setter Property="Height" Value="26" />
+    <Setter Property="HorizontalAlignment" Value="Right" />
+    <Setter Property="Data" Value="M18,0 L0,10 18,20" />
+    <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+    <Setter Property="Stretch" Value="Fill" />
+    <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+    <Setter Property="StrokeThickness" Value="2" />
+  </Style>
 
 </ResourceDictionary>

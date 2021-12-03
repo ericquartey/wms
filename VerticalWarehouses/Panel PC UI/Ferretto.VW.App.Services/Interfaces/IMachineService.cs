@@ -27,6 +27,10 @@ namespace Ferretto.VW.App.Services
 
         List<CellPlus> CellsPlus { get; }
 
+        double FreeSpaceBack { get; }
+
+        double FreeSpaceFront { get; }
+
         bool HasBayExternal { get; }
 
         bool HasBayWithInverter { get; set; }

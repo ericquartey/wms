@@ -126,7 +126,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public async override Task OnAppearedAsync()
+        public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
@@ -159,11 +159,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.Data is BayAccessories bayAccessories)
                 {
                     this.IsAccessoryEnabled = bayAccessories.CardReader.IsEnabledNew;
-                    this.TokenRegex = bayAccessories.CardReader.TokenRegex ?? "(?<Token>.+)\\r";
+                    this.TokenRegex = bayAccessories.CardReader.TokenRegex ?? "(?<Token>.{10})";
                 }
                 else
                 {
-                    this.Logger.Warn("Improper parameters were passed to the barcode reader settings page. Leaving the page ...");
+                    this.Logger.Warn("Improper parameters were passed to the card reader settings page. Leaving the page ...");
 
                     this.NavigationService.GoBack();
                 }

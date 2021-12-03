@@ -591,6 +591,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
                 this.dataContext.SaveChanges();
+                this.logger.LogDebug($"Elevator axis vertical offset save {newOffset}");
 
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
                 this.cache.Remove(cacheKey);
@@ -606,6 +607,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
                 this.dataContext.SaveChanges();
+                this.logger.LogDebug($"Elevator axis vertical offset save {newOffset}");
 
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
                 this.cache.Remove(cacheKey);
@@ -624,6 +626,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 verticalAxis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
                 this.dataContext.SaveChanges();
+                this.logger.LogDebug($"Elevator axis vertical resolution save {newResolution}");
 
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
                 this.cache.Remove(cacheKey);

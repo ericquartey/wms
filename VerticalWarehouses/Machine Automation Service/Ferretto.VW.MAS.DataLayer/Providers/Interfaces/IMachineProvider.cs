@@ -66,6 +66,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsRequestConfirmForLastOperationOnLoadingUnit();
 
+        bool IsTouchHelperEnabled();
+
         Task SetMachineId(int newMachineId);
 
         void Update(Machine machine, DataLayerContext context);

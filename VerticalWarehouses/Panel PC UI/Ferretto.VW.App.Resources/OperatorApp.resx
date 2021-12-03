@@ -2350,4 +2350,7 @@
     <value>Suspend</value>
     <comment>Label Message</comment>
   </data>
+  <data name="InsufficientSpaceAvailable" xml:space="preserve">
+    <value>Insufficient space available in the warehouse</value>
+  </data>
 </root>

@@ -44,11 +44,7 @@ namespace Ferretto.VW.App.Modules.Login.Views
 
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
         {
-            var txt = this.txtPassword;
-            if (this.IsEnabled && !txt.IsReadOnly && txt.IsEnabled)
-            {
-                txt.PopupKeyboard(DevExpress.Xpf.Editors.PasswordBoxEdit.TextProperty, typeof(string), isPassword: true, caption: "Password", timeout: TimeSpan.FromSeconds(60));
-            }
+            this.OpenKeyboard();
         }
 
         private void OnKeyboardOpenHandlerOld(object sender, InputEventArgs e)
@@ -61,6 +57,25 @@ namespace Ferretto.VW.App.Modules.Login.Views
             ppcKeyboard.ShowInTaskbar = false;
             PpcMessagePopup.ShowDialog(ppcKeyboard);
             this.txtPassword.Password = vmKeyboard.ScreenText;
+        }
+
+        private void OpenKeyboard()
+        {
+            var txt = this.txtPassword;
+            if (this.IsEnabled && !txt.IsReadOnly && txt.IsEnabled)
+            {
+                txt.PopupKeyboard(DevExpress.Xpf.Editors.PasswordBoxEdit.TextProperty, typeof(string), isPassword: true, caption: "Password", timeout: TimeSpan.FromSeconds(60));
+            }
+        }
+
+        private void OpenKeyboard_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.OpenKeyboard();
+        }
+
+        private void OpenKeyboard_TouchUp(object sender, TouchEventArgs e)
+        {
+            this.OpenKeyboard();
         }
 
         #endregion

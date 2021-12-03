@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
 using Ferretto.VW.App.Controls.Keyboards;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Key = System.Windows.Input.Key;
 
 namespace Ferretto.VW.App.Controls.Controls
@@ -46,6 +49,8 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(PpcTextBox),
             new PropertyMetadata(string.Empty));
 
+        private IMachineIdentityWebService machineIdentityWebService;
+
         #endregion
 
         #region Constructors
@@ -55,6 +60,9 @@ namespace Ferretto.VW.App.Controls.Controls
             this.InitializeComponent();
             var customInputFieldControlFocusable = this;
             this.LayoutRoot.DataContext = customInputFieldControlFocusable;
+
+            this.Loaded += (s, e) => { this.OnAppearedAsync(); };
+            this.Unloaded += (s, e) => { this.Disappear(); };
         }
 
         #endregion
@@ -101,12 +109,31 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
+        protected void Disappear()
+        {
+            this.machineIdentityWebService = null;
+        }
+
+        protected async void OnAppearedAsync()
+        {
+            this.machineIdentityWebService = ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
+            var enable = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
+            this.KeyboardButton.Visibility = enable && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void KeyboardButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.OpenKeyboard();
+        }
+
+        private void KeyboardButton_TouchUp(object sender, TouchEventArgs e)
+        {
+            this.OpenKeyboard();
+        }
+
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
         {
-            if (this.IsEnabled && !this.IsReadOnly && this.InputTextBox.IsEnabled && !this.InputTextBox.IsReadOnly)
-            {
-                this.InputTextBox.PopupKeyboard(caption: this.LabelText, timeout: TimeSpan.FromSeconds(60));
-            }
+            this.OpenKeyboard();
         }
 
         private void OnKeyboardOpenHandlerOld(object sender, InputEventArgs e)
@@ -162,6 +189,14 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 var b = this.GetBindingExpression(InputTextProperty);
                 b?.UpdateSource();
+            }
+        }
+
+        private void OpenKeyboard()
+        {
+            if (this.IsEnabled && !this.IsReadOnly && this.InputTextBox.IsEnabled && !this.InputTextBox.IsReadOnly)
+            {
+                this.InputTextBox.PopupKeyboard(caption: this.LabelText, timeout: TimeSpan.FromSeconds(60));
             }
         }
 

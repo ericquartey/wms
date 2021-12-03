@@ -241,6 +241,10 @@ namespace Ferretto.VW.App.Services
 
         public double FragmentTotalPercent { get; private set; }
 
+        public double FreeSpaceBack { get; private set; }
+
+        public double FreeSpaceFront { get; private set; }
+
         public bool HasBayExternal
         {
             get => this.hasBayExternal;
@@ -327,12 +331,6 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.loadingUnits, value, this.LoadUnitsNotificationProperty);
         }
 
-        internal bool LUPresentInBay1 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay1 || this.sensorsService.Sensors.LUPresentMiddleBottomBay1) : this.sensorsService.Sensors.LUPresentInBay1;
-
-        internal bool LUPresentInBay2 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay2 || this.sensorsService.Sensors.LUPresentMiddleBottomBay2) : this.sensorsService.Sensors.LUPresentInBay2;
-
-        internal bool LUPresentInBay3 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay3 || this.sensorsService.Sensors.LUPresentMiddleBottomBay3) : this.sensorsService.Sensors.LUPresentInBay3;
-
         public MachineMode MachineMode => this.machineModeService.MachineMode;
 
         public MachinePowerState MachinePower => this.machineModeService.MachinePower;
@@ -340,6 +338,12 @@ namespace Ferretto.VW.App.Services
         public Models.MachineStatus MachineStatus { get; }
 
         public double MaxSolidSpace { get; private set; }
+
+        internal bool LUPresentInBay1 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay1 || this.sensorsService.Sensors.LUPresentMiddleBottomBay1) : this.sensorsService.Sensors.LUPresentInBay1;
+
+        internal bool LUPresentInBay2 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay2 || this.sensorsService.Sensors.LUPresentMiddleBottomBay2) : this.sensorsService.Sensors.LUPresentInBay2;
+
+        internal bool LUPresentInBay3 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay3 || this.sensorsService.Sensors.LUPresentMiddleBottomBay3) : this.sensorsService.Sensors.LUPresentInBay3;
 
         internal string Notification
         {
@@ -408,9 +412,17 @@ namespace Ferretto.VW.App.Services
 
         public async Task GetCells()
         {
-            this.cells = await this.machineCellsWebService.GetAllAsync();
+            this.Cells = await this.machineCellsWebService.GetAllAsync();
             this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
+            this.FreeSpaceBack = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Back) * 25;
+            this.FreeSpaceFront = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Front) * 25;
+            var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
+            this.MaxSolidSpace = cellStat.MaxSolidSpace.Select(s => s.Value).Max();
             this.UpdateLoadUnitsId();
+            if (this.loadUnitMaxHeight == 0)
+            {
+                this.loadUnitMaxHeight = await this.machineLoadingUnitsWebService.GetLoadUnitMaxHeightAsync();
+            }
         }
 
         public async Task GetLoadUnits()
@@ -1044,9 +1056,7 @@ namespace Ferretto.VW.App.Services
                             this.logger.Trace($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                            this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
-                            this.UpdateLoadUnitsId();
+                            await this.GetCells();
 
                             var embarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
 
@@ -1075,21 +1085,14 @@ namespace Ferretto.VW.App.Services
                             }
 
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                            this.Cells = await this.machineCellsWebService.GetAllAsync();
-                            this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
-                            this.UpdateLoadUnitsId();
+                            await this.GetCells();
                             if (message?.Data is MoveLoadingUnitMessageData)
                             {
-                                var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
-                                this.FragmentTotalPercent = cellStat.FragmentTotalPercent;
-
                                 this.loadUnitMaxHeight = await this.machineLoadingUnitsWebService.GetLoadUnitMaxHeightAsync();
-
-                                this.MaxSolidSpace = cellStat.MaxSolidSpace.Select(s => s.Value).Max();
                             }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
-                                var missions = (await this.missionsWebService.GetAllAsync());
+                                var missions = await this.missionsWebService.GetAllAsync();
                                 this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
                                 this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
@@ -1781,21 +1784,25 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayPositionsDisabled"), NotificationSeverity.Warning);
                         }
+                        else if (this.FreeSpaceFront < this.loadUnitMaxHeight && this.FreeSpaceBack < this.loadUnitMaxHeight)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.InsufficientSpaceAvailable"), NotificationSeverity.Warning);
+                        }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
-                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
                         }
                         //else if (this.FragmentTotalPercent > MaximumFragmentation)
                         //{
-                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
                         //}
                         else if (this.IsAnyExpired)
                         {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), NotificationSeverity.Warning);
                         }
                         else if (this.IsAnyExpiring)
                         {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), NotificationSeverity.Warning);
                         }
                         else
                         {
@@ -1830,21 +1837,25 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.LoadingUnitOnElevator"), NotificationSeverity.Error);
                         }
+                        else if (this.FreeSpaceFront < this.loadUnitMaxHeight && this.FreeSpaceBack < this.loadUnitMaxHeight)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.InsufficientSpaceAvailable"), NotificationSeverity.Warning);
+                        }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
-                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
                         }
                         //else if (this.FragmentTotalPercent > MaximumFragmentation)
                         //{
-                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
                         //}
                         else if (this.IsAnyExpired)
                         {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), NotificationSeverity.Warning);
                         }
                         else if (this.IsAnyExpiring)
                         {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), NotificationSeverity.Warning);
                         }
                         break;
 
@@ -1878,21 +1889,25 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.BayHomingStarted"), NotificationSeverity.Info);
                         }
+                        else if (this.FreeSpaceFront < this.loadUnitMaxHeight && this.FreeSpaceBack < this.loadUnitMaxHeight)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.InsufficientSpaceAvailable"), NotificationSeverity.Warning);
+                        }
                         else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
                         {
-                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
                         }
                         //else if (this.FragmentTotalPercent > MaximumFragmentation)
                         //{
-                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), Services.Models.NotificationSeverity.Warning);
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
                         //}
                         else if (this.IsAnyExpired)
                         {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expired"), NotificationSeverity.Warning);
                         }
                         else if (this.IsAnyExpiring)
                         {
-                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), Services.Models.NotificationSeverity.Warning);
+                            this.ShowNotification(Resources.Localized.Get("MaintenanceMenu.Expiring"), NotificationSeverity.Warning);
                         }
                         else
                         {

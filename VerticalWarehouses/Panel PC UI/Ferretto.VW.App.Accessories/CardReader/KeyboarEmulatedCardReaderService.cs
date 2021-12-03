@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -18,9 +19,11 @@ namespace Ferretto.VW.App.Accessories
 
         private const string TokenCaptureGroupName = "Token";
 
-        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>.+)", RegexOptions.Compiled);
+        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>.{10})", RegexOptions.Compiled);
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
+
+        private readonly Timer clearReadingTimer;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -35,6 +38,8 @@ namespace Ferretto.VW.App.Accessories
         private bool isDisposed;
 
         private bool isStarted;
+
+        private DateTime startTime;
 
         private Regex tokenRegex = DefaultTokenRegex;
 
@@ -51,6 +56,8 @@ namespace Ferretto.VW.App.Accessories
 
             this.textCompositionEventHandler = new TextCompositionEventHandler(this.MainWindow_PreviewTextInput);
             Application.Current.MainWindow.PreviewTextInput += this.textCompositionEventHandler;
+            this.clearReadingTimer = new Timer(this.ClearReading);
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -90,6 +97,8 @@ namespace Ferretto.VW.App.Accessories
             try
             {
                 this.stringBuilder.Clear();
+                this.startTime = DateTime.UtcNow;
+                this.clearReadingTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
                 var accessories = await this.accessoriesWebService.GetAllAsync();
 
@@ -119,6 +128,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.logger.Debug("Stopping keyboard-emulated card reader service.");
                 this.isStarted = false;
+                this.clearReadingTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }
 
             return Task.CompletedTask;
@@ -148,6 +158,16 @@ namespace Ferretto.VW.App.Accessories
             }
         }
 
+        private void ClearReading(object state)
+        {
+            if (DateTime.UtcNow.Subtract(this.startTime) > TimeSpan.FromSeconds(2))
+            {
+                this.stringBuilder.Clear();
+                this.clearReadingTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                this.logger.Debug($"clear card reading");
+            }
+        }
+
         private void Dispose(bool disposing)
         {
             if (!this.isDisposed)
@@ -155,6 +175,7 @@ namespace Ferretto.VW.App.Accessories
                 if (disposing)
                 {
                     Application.Current.MainWindow.PreviewTextInput -= this.textCompositionEventHandler;
+                    this.clearReadingTimer.Dispose();
                 }
 
                 this.isDisposed = true;
@@ -168,7 +189,9 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
+            this.startTime = DateTime.UtcNow;
             this.stringBuilder.Append(e.Text);
+            this.clearReadingTimer.Change(2000, Timeout.Infinite);
             this.logger.Trace($"card reading '{this.stringBuilder}'");
 
             this.KeysAcquired?.Invoke(this, e.Text);

@@ -1959,4 +1959,7 @@
   <data name="Suspend" xml:space="preserve">
     <value>Sospendi</value>
   </data>
+  <data name="InsufficientSpaceAvailable" xml:space="preserve">
+    <value>Spazio disponibile in magazzino insufficiente</value>
+  </data>
 </root>

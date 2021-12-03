@@ -456,6 +456,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsTouchHelperEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().TouchHelper;
+            }
+        }
+
         public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;
