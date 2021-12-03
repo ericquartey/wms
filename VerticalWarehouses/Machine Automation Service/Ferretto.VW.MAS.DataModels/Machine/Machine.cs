@@ -141,6 +141,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public int ToteBarcodeLength { get; set; }
 
+        public bool TouchHelper { get; set; }
+
         public int VerticalCyclesToCalibrate { get; set; } = 50;
 
         #endregion

@@ -117,7 +117,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.tokenReaderTokenStatusChangedEventHandler = new EventHandler<TokenStatusChangedEventArgs>(
                 async (sender, e) => await this.OnTokenReaderTokenAcquired(sender, e));
-
         }
 
         private async Task OnCardReaderTokenAcquired(object sender, RegexMatchEventArgs e)
@@ -295,6 +294,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
+
             this.sessionService.IsLogged = false;
             this.Users.Clear();
 

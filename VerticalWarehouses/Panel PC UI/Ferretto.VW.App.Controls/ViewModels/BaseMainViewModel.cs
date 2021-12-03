@@ -61,6 +61,8 @@ namespace Ferretto.VW.App.Controls
 
         private bool isEnabled;
 
+        private bool isKeyboardButtonVisible;
+
         private bool isKeyboardOpened;
 
         private bool isWmsHealthy;
@@ -122,6 +124,18 @@ namespace Ferretto.VW.App.Controls
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
+        }
+
+        public bool IsKeyboardButtonVisible
+        {
+            get => this.isKeyboardButtonVisible;
+            set
+            {
+                if (this.SetProperty(ref this.isKeyboardButtonVisible, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public bool IsKeyboardOpened
