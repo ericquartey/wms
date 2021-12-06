@@ -17,7 +17,6 @@ namespace Ferretto.VW.App.Controls.Styles
 
         public ScrollViewerStyle()
         {
-            this.InitializeComponent();
         }
 
         #endregion
