@@ -96,22 +96,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.tableIndex = InverterTableIndex.TableTravelP7;
             this.stepId = 0;
             this.isBlockDefined = false;
+            var maxSpeed = 30000;   // just a not zero minimum value
             if (this.data.TargetSpeed.Length > 2)
             {
-                var maxSpeed = 20000;   // just minimum value not zero
                 for (var i = 1; i < this.data.TargetSpeed.Length - 1; i++)
                 {
                     // ignore first and last step
                     maxSpeed = Math.Max(maxSpeed, this.data.TargetSpeed[i]);
                 }
-                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, maxSpeed));
-                this.Logger.LogDebug($"Set PositionTargetSpeed for emergency stop: {maxSpeed}");
             }
-            else
-            {
-                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-            }
+            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, maxSpeed));
+            this.Logger.LogDebug($"Set PositionTargetSpeed for emergency stop: {maxSpeed}");
         }
 
         /// <inheritdoc />
