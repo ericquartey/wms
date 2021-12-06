@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -92,10 +94,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.tableIndex = InverterTableIndex.TableTravelP7;
-            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-            this.Logger.LogDebug($"Set table index: {this.tableIndex}");
             this.stepId = 0;
             this.isBlockDefined = false;
+            if (!this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
+                && this.data.TargetSpeed.Length > 2)
+            {
+                var maxSpeed = 20000;   // just not zero a minimum value
+                for (var i = 1; i < this.data.TargetSpeed.Length - 1; i++)
+                {
+                    // ignore first and last step
+                    maxSpeed = Math.Max(maxSpeed, this.data.TargetSpeed[i]);
+                }
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, maxSpeed));
+                this.Logger.LogDebug($"Set PositionTargetSpeed for emergency stop: {maxSpeed}");
+            }
+            else
+            {
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+            }
         }
 
         /// <inheritdoc />
@@ -127,6 +144,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 switch (message.ParameterId)
                 {
+                    case InverterParameterId.PositionTargetSpeed:
+                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
+                        this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+                        break;
+
                     case InverterParameterId.BlockDefinition:
                         if (!this.isPositionDefined)
                         {

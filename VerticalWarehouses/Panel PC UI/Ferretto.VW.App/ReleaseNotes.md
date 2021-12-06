@@ -31,6 +31,7 @@
 ## Bug Risolti
 - Aggiunto avviso di spazio insufficiente in magazzino
 - Il lettore di badge non si blocca con tessere sconosciute
+- Anche i movimenti orizzontali impostano la velocità, per la fermata di emergenza
 
 ## Compatibile con adapter 0.4.29
 ***
