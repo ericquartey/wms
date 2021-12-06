@@ -556,7 +556,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly..
+        ///   Looks up a localized string similar to Verify that the destination bay of the tray is actually empty. Check that the bay loading unit sensors are working correctly..
         /// </summary>
         public static string LoadUnitDestinationBay {
             get {
@@ -970,7 +970,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper bay position is already occupied by a drawer..
+        ///   Looks up a localized string similar to Upper bay position is already occupied by a tray..
         /// </summary>
         public static string TopLevelBayOccupied {
             get {
