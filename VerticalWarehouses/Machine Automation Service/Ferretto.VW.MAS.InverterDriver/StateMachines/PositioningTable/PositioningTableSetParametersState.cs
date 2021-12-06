@@ -96,10 +96,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.tableIndex = InverterTableIndex.TableTravelP7;
             this.stepId = 0;
             this.isBlockDefined = false;
-            if (!this.ParentStateMachine.GetRequiredService<IMachineVolatileDataProvider>().IsOneTonMachine.Value
-                && this.data.TargetSpeed.Length > 2)
+            if (this.data.TargetSpeed.Length > 2)
             {
-                var maxSpeed = 20000;   // just not zero a minimum value
+                var maxSpeed = 20000;   // just minimum value not zero
                 for (var i = 1; i < this.data.TargetSpeed.Length - 1; i++)
                 {
                     // ignore first and last step
