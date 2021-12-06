@@ -15,6 +15,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private DelegateCommand errorInverterParametersCommand;
+
+        private DelegateCommand logoutSettingsCommand;
+
         private DelegateCommand menuComunicationWMSCommand;
 
         private DelegateCommand menuDatabaseBackupCommand;
@@ -26,10 +30,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand menuParametersCommand;
 
         private DelegateCommand menuUsersCommand;
-
-        private DelegateCommand errorInverterParametersCommand;
-
-        private DelegateCommand logoutSettingsCommand;
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             DateTime,
 
             DatabaseBackup,
-            
+
             ErrorInverterParameters,
 
             LogoutSettings,
@@ -69,8 +69,22 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public ICommand ErrorInverterParametersCommand =>
+            this.errorInverterParametersCommand
+            ??
+            (this.errorInverterParametersCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.ErrorInverterParameters),
+                this.CanExecute));
+
+        public ICommand LogoutSettingsCommand =>
+            this.logoutSettingsCommand
+            ??
+            (this.logoutSettingsCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.LogoutSettings),
+                this.CanExecute));
+
         public ICommand MenuComunicationWmsCommand =>
-            this.menuComunicationWMSCommand
+                            this.menuComunicationWMSCommand
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.ComunicationWms),
@@ -109,20 +123,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuUsersCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Users),
-                this.CanExecuteCommand));
-
-        public ICommand ErrorInverterParametersCommand =>
-            this.errorInverterParametersCommand
-            ??
-            (this.errorInverterParametersCommand = new DelegateCommand(
-                () => this.MenuCommandOther(MenuOther.ErrorInverterParameters),
-                this.CanExecute));
-
-        public ICommand LogoutSettingsCommand =>
-            this.logoutSettingsCommand
-            ??
-            (this.logoutSettingsCommand = new DelegateCommand(
-                () => this.MenuCommandOther(MenuOther.LogoutSettings),
                 this.CanExecute));
 
         #endregion

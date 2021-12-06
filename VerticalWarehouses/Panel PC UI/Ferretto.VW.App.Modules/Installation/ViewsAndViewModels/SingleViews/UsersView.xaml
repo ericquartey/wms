@@ -1,12 +1,12 @@
 ﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.UsersView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:UsersViewModel,
                                              IsDesignTimeCreatable=False}"
@@ -14,26 +14,81 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+  <Grid Margin="15,0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.UserManagement}" />
+    <TextBlock Grid.Row="0"
+               Grid.Column="1"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc InstallationApp.UserManagement}" />
 
-        <Grid Grid.Row="1"
-              Grid.Column="1" />
+    <Grid Grid.Row="1"
+          Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+      </Grid.RowDefinitions>
+
+      <TextBlock Margin="0,10,0,0"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="Installer:" />
+
+      <StackPanel Grid.Row="1"
+                  Margin="0,10"
+                  Orientation="Horizontal">
+        <controls:PpcTextBox Width="250"
+                             VerticalAlignment="Center"
+                             InputText="{Binding InstallerNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc InstallationApp.NewPassword}" />
+        <controls:PpcTextBox Width="250"
+                             VerticalAlignment="Center"
+                             InputText="{Binding InstallerNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc InstallationApp.ConfirmNewPassword}" />
+        <controls:PpcButton Margin="15,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding ChangeInstallerPasswordCommand}"
+                            Content="{res:Loc InstallationApp.Save}" />
+      </StackPanel>
+
+      <TextBlock Grid.Row="2"
+                 Margin="0,10,0,0"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="Operator:" />
+
+      <StackPanel Grid.Row="3"
+                  Margin="0,10"
+                  Orientation="Horizontal">
+        <controls:PpcTextBox Width="250"
+                             VerticalAlignment="Center"
+                             InputText="{Binding OperatorNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc InstallationApp.NewPassword}" />
+        <controls:PpcTextBox Width="250"
+                             VerticalAlignment="Center"
+                             InputText="{Binding OperatorNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding IsEnabledEditing}"
+                             LabelText="{res:Loc InstallationApp.ConfirmNewPassword}" />
+        <controls:PpcButton Margin="15,0,0,0"
+                            VerticalAlignment="Center"
+                            Command="{Binding ChangeOperatorPasswordCommand}"
+                            Content="{res:Loc InstallationApp.Save}" />
+      </StackPanel>
 
     </Grid>
+
+  </Grid>
 </ctrls:View>

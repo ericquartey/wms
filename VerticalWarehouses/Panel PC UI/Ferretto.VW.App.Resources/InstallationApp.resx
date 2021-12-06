@@ -2611,4 +2611,10 @@
   <data name="WrongDataSave" xml:space="preserve">
     <value>Wrong data cannot be saved </value>
   </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
 </root>

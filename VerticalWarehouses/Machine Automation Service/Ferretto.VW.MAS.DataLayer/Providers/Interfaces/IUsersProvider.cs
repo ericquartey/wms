@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int? Authenticate(string userName, string password, string supportToken);
 
+        void ChangePassword(string userName, string newPassword);
+
         IEnumerable<UserParameters> GetAllUserWithCulture();
 
         string GetServiceToken();

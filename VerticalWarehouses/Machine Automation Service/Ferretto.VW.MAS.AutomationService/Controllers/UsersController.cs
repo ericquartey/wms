@@ -177,6 +177,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 });
         }
 
+        [HttpPost("change-password")]
+        public IActionResult ChangePassword(string userName, string newPassword)
+        {
+            this.logger.LogInformation($"Change password for user '{userName}' by '{this.BayNumber}'.");
+
+            this.usersProvider.ChangePassword(userName, newPassword);
+            return this.Ok();
+        }
+
         [HttpPost("all-user")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

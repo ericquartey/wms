@@ -56,7 +56,6 @@
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding MenuUsersCommand}"
                             Content="{res:Loc InstallationApp.manageUserMenuDescription}"
-                            IsEnabled="False"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
