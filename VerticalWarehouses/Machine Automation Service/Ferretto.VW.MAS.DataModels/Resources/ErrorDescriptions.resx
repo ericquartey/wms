@@ -277,7 +277,7 @@
     <value>The load unit is in another bay</value>
   </data>
   <data name="LoadUnitSourceElevator" xml:space="preserve">
-    <value>Drawer not present on the elevator</value>
+    <value>Tray not present on the elevator</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
     <value>Invalid sensors</value>

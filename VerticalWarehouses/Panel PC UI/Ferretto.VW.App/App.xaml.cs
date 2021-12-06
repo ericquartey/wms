@@ -167,9 +167,6 @@ namespace Ferretto.VW.App
         {
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
 
-            this.DeactivateBay();
-            this.DeactivateAccessories();
-
             NLog.LogManager.Flush();
             NLog.LogManager.Shutdown();
         }

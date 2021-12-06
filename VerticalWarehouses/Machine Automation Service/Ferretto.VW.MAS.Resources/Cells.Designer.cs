@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The drawer cannot be placed in front of a deactivated cell..
+        ///   Looks up a localized string similar to The tray cannot be placed in front of a deactivated cell..
         /// </summary>
         public static string TheLoadingCannotBePlacedOppositeADeactivatedCell {
             get {

@@ -718,7 +718,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to carry out a series of boarding and disembarking tests of a drawer using the bay selected in the appropriate input fields. For the test it is possible to vary the acceleration, deceleration and speed feed rate according to what is indicated in the appropriate field. The test continues until the required number of cycles is reached or until the stop button is pressed..
+        ///   Looks up a localized string similar to The procedure allows you to carry out a series of boarding and disembarking tests of a tray using the bay selected in the appropriate input fields. For the test it is possible to vary the acceleration, deceleration and speed feed rate according to what is indicated in the appropriate field. The test continues until the required number of cycles is reached or until the stop button is pressed..
         /// </summary>
         public static string HelpDLUTDescription {
             get {
@@ -772,7 +772,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The page presents the main data relating to the inventory operation to be carried out on the various items allocated in the drawer in the bay. The procedure, once the compartment containing the requested item has been indicated, waits for the operator to insert the quantity of pieces currently in stock..
+        ///   Looks up a localized string similar to The page presents the main data relating to the inventory operation to be carried out on the various items allocated in the tray in the bay. The procedure, once the compartment containing the requested item has been indicated, waits for the operator to insert the quantity of pieces currently in stock..
         /// </summary>
         public static string HelpDrawerActivityInventoryDescription {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure provides all the detailed information relating to the withdrawal operation scheduled on the drawer present in the bay where the user operates. The drawing, if present, shows the division of the drawer and the highlighted area indicates the compartment on which to operate. If present, the image of the item being handled is also shown..
+        ///   Looks up a localized string similar to The procedure provides all the detailed information relating to the withdrawal operation scheduled on the tray present in the bay where the user operates. The drawing, if present, shows the division of the tray and the highlighted area indicates the compartment on which to operate. If present, the image of the item being handled is also shown..
         /// </summary>
         public static string HelpDrawerActivityPickingDescription {
             get {
@@ -1069,7 +1069,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It reports the current phase of the handling cycle of the various drawers..
+        ///   Looks up a localized string similar to It reports the current phase of the handling cycle of the various trays..
         /// </summary>
         public static string HelpDrawerCompactingDetailCurrentStep {
             get {
@@ -1078,7 +1078,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The page shows the progress of the compaction procedure. The drawer being moved and from which cell it is withdrawn and to which cell it is destined is indicated. The progress of the procedure is also shown with an indication of the fragments and the space to be recovered in addition to the space already recovered..
+        ///   Looks up a localized string similar to The page shows the progress of the compaction procedure. The tray being moved and from which cell it is withdrawn and to which cell it is destined is indicated. The progress of the procedure is also shown with an indication of the fragments and the space to be recovered in addition to the space already recovered..
         /// </summary>
         public static string HelpDrawerCompactingDetailDescription {
             get {
@@ -1087,7 +1087,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the cell number where the drawer will be moved during handling..
+        ///   Looks up a localized string similar to Indicates the cell number where the tray will be moved during handling..
         /// </summary>
         public static string HelpDrawerCompactingDetailDestinationCell {
             get {
@@ -1096,7 +1096,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the code of the drawer currently being moved..
+        ///   Looks up a localized string similar to Indicates the code of the tray currently being moved..
         /// </summary>
         public static string HelpDrawerCompactingDetailDrawer {
             get {
@@ -1132,7 +1132,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the source cell where the drawer being handled was stored..
+        ///   Looks up a localized string similar to Indicates the source cell where the tray being handled was stored..
         /// </summary>
         public static string HelpDrawerCompactingDetailSourceCell {
             get {
@@ -1204,7 +1204,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shows the size of the drawers stored inside the machine..
+        ///   Looks up a localized string similar to Shows the size of the trays stored inside the machine..
         /// </summary>
         public static string HelpDrawerSpaceSaturationDimension {
             get {
@@ -1213,7 +1213,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the number of mapped compartments, present inside the drawer regardless of their status..
+        ///   Looks up a localized string similar to Indicates the number of mapped compartments, present inside the tray regardless of their status..
         /// </summary>
         public static string HelpDrawerSpaceSaturationGridCompartments {
             get {
@@ -1222,7 +1222,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the drawer number..
+        ///   Looks up a localized string similar to Indicates the tray number..
         /// </summary>
         public static string HelpDrawerSpaceSaturationGridDrawer {
             get {
@@ -1231,7 +1231,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the number of missions the drawer has been subject to..
+        ///   Looks up a localized string similar to Indicates the number of missions the tray has been subject to..
         /// </summary>
         public static string HelpDrawerSpaceSaturationGridMissions {
             get {
@@ -1249,7 +1249,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reports the total number of drawers allocated in the machine..
+        ///   Looks up a localized string similar to Reports the total number of trays allocated in the machine..
         /// </summary>
         public static string HelpDrawerSpaceSaturationTotalDrawer {
             get {
@@ -1258,7 +1258,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows access to the statistical analysis procedure relating to the weight allocated in the various drawers..
+        ///   Looks up a localized string similar to Allows access to the statistical analysis procedure relating to the weight allocated in the various trays..
         /// </summary>
         public static string HelpDrawerSpaceSaturationWeightAnalisys {
             get {
@@ -1267,7 +1267,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The page indicates that the system has completed the operations planned on the last drawer arrived in the bay. It is awaiting the arrival of the next drawer which will cause the opening of the page dedicated to the planned operations..
+        ///   Looks up a localized string similar to The page indicates that the system has completed the operations planned on the last tray arrived in the bay. It is awaiting the arrival of the next tray which will cause the opening of the page dedicated to the planned operations..
         /// </summary>
         public static string HelpDrawerWaitDescription {
             get {
@@ -1294,7 +1294,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure provides data on the weight allocated in the various drawers and, globally, inside the machine. For each drawer, further information is provided, including the current height, the maximum weight that can be loaded for each drawer, the tare, the current total weight, as well as the percentage of the current weight compared to the maximum provided both in graphical and numerical form. A global indication valid for the whole machine is also provided..
+        ///   Looks up a localized string similar to The procedure provides data on the weight allocated in the various trays and, globally, inside the machine. For each tray, further information is provided, including the current height, the maximum weight that can be loaded for each tray, the tare, the current total weight, as well as the percentage of the current weight compared to the maximum provided both in graphical and numerical form. A global indication valid for the whole machine is also provided..
         /// </summary>
         public static string HelpDrawerWeightSaturationDescription {
             get {
@@ -1303,7 +1303,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reports the current weight of the drawer..
+        ///   Looks up a localized string similar to Reports the current weight of the tray..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridActualWeight {
             get {
@@ -1312,7 +1312,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the drawer number..
+        ///   Looks up a localized string similar to Indicates the tray number..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridDrawer {
             get {
@@ -1321,7 +1321,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the weight of the empty drawer..
+        ///   Looks up a localized string similar to Indicates the weight of the empty tray..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridGross {
             get {
@@ -1330,7 +1330,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current drawer height..
+        ///   Looks up a localized string similar to Current tray height..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridHeight {
             get {
@@ -1339,7 +1339,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the maximum weight allowed for the drawer..
+        ///   Looks up a localized string similar to Indicates the maximum weight allowed for the tray..
         /// </summary>
         public static string HelpDrawerWeightSaturationGridMaxWeight {
             get {
@@ -1393,7 +1393,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the maximum number of drawers allocated in the machine..
+        ///   Looks up a localized string similar to Indicates the maximum number of trays allocated in the machine..
         /// </summary>
         public static string HelpDrawerWeightSaturationTotalDrawers {
             get {
@@ -1456,7 +1456,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The system calculates the reliability coefficient of the machine as the ratio between the number of errors counted and the total of the moved drawers..
+        ///   Looks up a localized string similar to The system calculates the reliability coefficient of the machine as the ratio between the number of errors counted and the total of the moved trays..
         /// </summary>
         public static string HelpErrorsStatisticsReliability {
             get {
@@ -1465,7 +1465,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The field shows the total number of drawers handled since the beginning of the installation. A drawer is considered to be moved when moved from a source to a destination..
+        ///   Looks up a localized string similar to The field shows the total number of trays handled since the beginning of the installation. A tray is considered to be moved when moved from a source to a destination..
         /// </summary>
         public static string HelpErrorsStatisticsTotalDrawersMoved {
             get {
@@ -1474,7 +1474,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The field shows a statistical data calculated by the system that refers to the average of the drawers moved without errors..
+        ///   Looks up a localized string similar to The field shows a statistical data calculated by the system that refers to the average of the trays moved without errors..
         /// </summary>
         public static string HelpErrorsStatisticsTotalDrawersNoError {
             get {
@@ -1573,7 +1573,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to View the page dedicated to immediate call by drawer..
+        ///   Looks up a localized string similar to View the page dedicated to immediate call by tray..
         /// </summary>
         public static string HelpGeneralInfoButtonDrawerCall {
             get {
@@ -1672,7 +1672,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total number of drawers inserted in the machine..
+        ///   Looks up a localized string similar to Total number of trays inserted in the machine..
         /// </summary>
         public static string HelpGeneralInfoTotalDrawers {
             get {
@@ -1708,7 +1708,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to adjust the drawer height detection barrier. The height reached signal must also be used in the pre-positioning phase of the test template..
+        ///   Looks up a localized string similar to The procedure allows you to adjust the tray height detection barrier. The height reached signal must also be used in the pre-positioning phase of the test template..
         /// </summary>
         public static string HelpGHCDescription {
             get {
@@ -1780,7 +1780,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to call the selected drawer in the bay on which the operator is working..
+        ///   Looks up a localized string similar to The procedure allows you to call the selected tray in the bay on which the operator is working..
         /// </summary>
         public static string HelpImmediateDrawerCallDescription {
             get {
@@ -1789,7 +1789,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The button allows you to recall the drawer currently selected in the grid. The button is active if the drawer can be called up by the current user..
+        ///   Looks up a localized string similar to The button allows you to recall the tray currently selected in the grid. The button is active if the tray can be called up by the current user..
         /// </summary>
         public static string HelpImmediateDrawerCallDrawerCall {
             get {
@@ -1798,7 +1798,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the cell in which it is stored in the drawer..
+        ///   Looks up a localized string similar to Indicates the cell in which it is stored in the tray..
         /// </summary>
         public static string HelpImmediateDrawerCallGridCell {
             get {
@@ -1807,7 +1807,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the number of the drawer to which the grid data refers..
+        ///   Looks up a localized string similar to Indicates the number of the tray to which the grid data refers..
         /// </summary>
         public static string HelpImmediateDrawerCallGridDrawer {
             get {
@@ -1816,7 +1816,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current height of the selected drawer..
+        ///   Looks up a localized string similar to Current height of the selected tray..
         /// </summary>
         public static string HelpImmediateDrawerCallGridHeight {
             get {
@@ -1825,7 +1825,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the side of the machine where the drawer is stored..
+        ///   Looks up a localized string similar to Indicates the side of the machine where the tray is stored..
         /// </summary>
         public static string HelpImmediateDrawerCallGridSide {
             get {
@@ -1834,7 +1834,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reports the current status of the drawer. The red color indicates that the drawer cannot be recalled by the currently connected user..
+        ///   Looks up a localized string similar to Reports the current status of the tray. The red color indicates that the tray cannot be recalled by the currently connected user..
         /// </summary>
         public static string HelpImmediateDrawerCallGridStatus {
             get {
@@ -1843,7 +1843,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the current weight of the selected drawer..
+        ///   Looks up a localized string similar to Indicates the current weight of the selected tray..
         /// </summary>
         public static string HelpImmediateDrawerCallGridWeight {
             get {
@@ -1852,7 +1852,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shows the number of the drawer to be recalled..
+        ///   Looks up a localized string similar to Shows the number of the tray to be recalled..
         /// </summary>
         public static string HelpImmediateDrawerCallRequestedDrawer {
             get {
@@ -2113,7 +2113,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to insert the empty drawers inside the machine at the end of the commissioning procedure. The drawers are inserted inside the free blocks choosing them according to the lowest priority..
+        ///   Looks up a localized string similar to The procedure allows you to insert the empty trays inside the machine at the end of the commissioning procedure. The trays are inserted inside the free blocks choosing them according to the lowest priority..
         /// </summary>
         public static string HelpLDRDescription {
             get {
@@ -2122,7 +2122,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of the drawer being inserted. It can be generated by the appropriate button or inserted in the appropriate field..
+        ///   Looks up a localized string similar to Number of the tray being inserted. It can be generated by the appropriate button or inserted in the appropriate field..
         /// </summary>
         public static string HelpLDRDrawerToInsert {
             get {
@@ -2131,7 +2131,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawers already inserted in the car..
+        ///   Looks up a localized string similar to Trays already inserted in the car..
         /// </summary>
         public static string HelpLDRInsertedDrawers {
             get {
@@ -2140,7 +2140,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Indicates the maximum capacity allowed for the drawer currently being inserted..
+        ///   Looks up a localized string similar to Indicates the maximum capacity allowed for the tray currently being inserted..
         /// </summary>
         public static string HelpLDRMaxLoad {
             get {
@@ -2149,7 +2149,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The button sets the next drawer to be inserted. the number is the one following the last one entered..
+        ///   Looks up a localized string similar to The button sets the next tray to be inserted. the number is the one following the last one entered..
         /// </summary>
         public static string HelpLDRNextDrawer {
             get {
@@ -2158,7 +2158,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Starts the procedure for inserting the selected drawer..
+        ///   Looks up a localized string similar to Starts the procedure for inserting the selected tray..
         /// </summary>
         public static string HelpLDRStart {
             get {
@@ -2167,7 +2167,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total number of drawers to be inserted..
+        ///   Looks up a localized string similar to Total number of trays to be inserted..
         /// </summary>
         public static string HelpLDRTotalDrawers {
             get {
@@ -2185,7 +2185,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to use the drawer selected in the appropriate input field to test the lower and upper cells of the machine as well as the cells below and above the cell blocks indicated as disabled. The purpose of the procedure is to verify that there is no mechanical interference in these areas..
+        ///   Looks up a localized string similar to The procedure allows you to use the tray selected in the appropriate input field to test the lower and upper cells of the machine as well as the cells below and above the cell blocks indicated as disabled. The purpose of the procedure is to verify that there is no mechanical interference in these areas..
         /// </summary>
         public static string HelpLFDDescription {
             get {
@@ -2194,7 +2194,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of the drawer being inserted..
+        ///   Looks up a localized string similar to Number of the tray being inserted..
         /// </summary>
         public static string HelpLFDDrawerNumber {
             get {
@@ -2203,7 +2203,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start the drawer insertion procedure. The procedure ends when the planned cycles are completed..
+        ///   Looks up a localized string similar to Start the tray insertion procedure. The procedure ends when the planned cycles are completed..
         /// </summary>
         public static string HelpLFDInsertDrawer {
             get {
@@ -2212,7 +2212,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum capacity of the drawer during loading..
+        ///   Looks up a localized string similar to Maximum capacity of the tray during loading..
         /// </summary>
         public static string HelpLFDMaxLoad {
             get {
@@ -2221,7 +2221,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recall the drawer used for the test in the bay..
+        ///   Looks up a localized string similar to Recall the tray used for the test in the bay..
         /// </summary>
         public static string HelpLFDRecallDrawer {
             get {
@@ -2365,7 +2365,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The field shows the total number of drawers that have affected bay n. 2. The count increases when a drawer is brought into the bay and then returned to the warehouse..
+        ///   Looks up a localized string similar to The field shows the total number of trays that have affected bay n. 2. The count increases when a tray is brought into the bay and then returned to the warehouse..
         /// </summary>
         public static string HelpMachineStatisticsBay1 {
             get {
@@ -2374,7 +2374,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The field shows the total number of drawers that have affected bay n. 2. The count increases when a drawer is brought into the bay and then returned to the warehouse..
+        ///   Looks up a localized string similar to The field shows the total number of trays that have affected bay n. 2. The count increases when a tray is brought into the bay and then returned to the warehouse..
         /// </summary>
         public static string HelpMachineStatisticsBay2 {
             get {
@@ -2383,7 +2383,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The field shows the total number of drawers that have affected bay n. 3. The count increases when a drawer is brought into the bay and then returned to the warehouse..
+        ///   Looks up a localized string similar to The field shows the total number of trays that have affected bay n. 3. The count increases when a tray is brought into the bay and then returned to the warehouse..
         /// </summary>
         public static string HelpMachineStatisticsBay3 {
             get {
@@ -2662,7 +2662,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The button opens the page for managing the operations scheduled on the drawer in the bay..
+        ///   Looks up a localized string similar to The button opens the page for managing the operations scheduled on the tray in the bay..
         /// </summary>
         public static string HelpOpMainDrawerOp {
             get {
@@ -2941,7 +2941,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Displays the statistical data page of the various drawers present in the machine..
+        ///   Looks up a localized string similar to Displays the statistical data page of the various trays present in the machine..
         /// </summary>
         public static string HelpStatisticsGeneralDataButtonDrawersStatistics {
             get {
@@ -2968,7 +2968,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The page displays some statistical information relating to the use of the drawer area and the total weight loaded in relation to the characteristics of the machine. Information on the use of the machine is also displayed..
+        ///   Looks up a localized string similar to The page displays some statistical information relating to the use of the tray area and the total weight loaded in relation to the characteristics of the machine. Information on the use of the machine is also displayed..
         /// </summary>
         public static string HelpStatisticsGeneralDataDescription {
             get {
@@ -2977,7 +2977,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total number of drawers moved since the start of installation..
+        ///   Looks up a localized string similar to Total number of trays moved since the start of installation..
         /// </summary>
         public static string HelpStatisticsGeneralDataLoadedWeight {
             get {
@@ -2986,7 +2986,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total number of drawers moved since the start of installation..
+        ///   Looks up a localized string similar to Total number of trays moved since the start of installation..
         /// </summary>
         public static string HelpStatisticsGeneralDataMovedDrawers {
             get {
@@ -3013,7 +3013,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The utilization coefficient indicates the ratio between the time spent in automatic moving drawers and that of ignition..
+        ///   Looks up a localized string similar to The utilization coefficient indicates the ratio between the time spent in automatic moving trays and that of ignition..
         /// </summary>
         public static string HelpStatisticsGeneralDataUseRatio {
             get {
