@@ -292,14 +292,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
+        private void SetBaseUser()
+        {
+            if (!this.Users.ToList().SequenceEqual(this.BaseUser))
+            {
+                this.Users.Clear();
+                this.Users.AddRange(this.BaseUser);
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
             this.sessionService.IsLogged = false;
-            this.Users.Clear();
 
-            this.Users.AddRange(this.BaseUser);
+            this.SetBaseUser();
 
             this.ClearNotifications();
 
@@ -351,17 +359,28 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 var wmsUsersName = this.WmsUsers.Select(s => s.Login).ToList();
 
-                var userToAdd = wmsUsersName.Except(this.BaseUser);
+                var isOperatorEnabled = await this.usersService.GetOperatorEnabledWithWMSAsync();
 
-                this.Users.AddRange(userToAdd);
+                if (isOperatorEnabled)
+                {
+                    var userToAdd = wmsUsersName.Except(this.BaseUser);
+                    this.Users.AddRange(userToAdd);
+                }
+                else
+                {
+                    var newBaseUser = this.BaseUser.Where(s => s != "operator").ToList();
+
+                    var userToAdd = wmsUsersName.Except(newBaseUser);
+
+                    this.Users.Remove("operator");
+                    this.Users.AddRange(userToAdd);
+                }
             }
             catch (Exception)
             {
                 //this.ShowNotification("WMS NO USERS", Services.Models.NotificationSeverity.Error);
 
-                this.Users.Clear();
-
-                this.Users.AddRange(this.BaseUser);
+                this.SetBaseUser();
             }
             finally
             {

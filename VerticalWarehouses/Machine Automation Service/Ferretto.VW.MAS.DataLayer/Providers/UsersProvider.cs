@@ -89,6 +89,36 @@ namespace Ferretto.VW.MAS.DataLayer
             throw new EntityNotFoundException(userName);
         }
 
+        public void ChangePassword(string userName, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
+            }
+
+            if (string.IsNullOrWhiteSpace(newPassword))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(newPassword));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
+                if (user != null)
+                {
+                    var newPasswordHash = GeneratePasswordHash(newPassword, user.PasswordSalt);
+                    user.PasswordHash = newPasswordHash;
+
+                    this.dataContext.Update(user);
+                    this.dataContext.SaveChanges();
+                    return;
+                }
+            }
+
+            throw new EntityNotFoundException(userName);
+        }
+
         public UserParameters Create(string userName, string password, int accessLevel)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -162,6 +192,38 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return secretKey;
             }
+        }
+
+        public bool IsOperatorEnabledWithWMS()
+        {
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
+
+                if (user != null)
+                {
+                    return user.IsEnabledWithWMS;
+                }
+            }
+            throw new EntityNotFoundException("Operator");
+        }
+
+        public void SetOperatorEnabledWithWMS(bool isEnabled)
+        {
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
+
+                if (user != null)
+                {
+                    user.IsEnabledWithWMS = isEnabled;
+
+                    this.dataContext.Update(user);
+                    this.dataContext.SaveChanges();
+                    return;
+                }
+            }
+            throw new EntityNotFoundException("Operator");
         }
 
         public void SetUserCulture(string culture, string name)

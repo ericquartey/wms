@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maintenance, compact drawers, update.
+        ///   Looks up a localized string similar to Maintenance, compact trays, update.
         /// </summary>
         public static string MaintenanceDescription {
             get {

@@ -5,9 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
 using Ferretto.VW.App.Controls.Keyboards;
 using Ferretto.VW.App.Keyboards;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Key = System.Windows.Input.Key;
 
 namespace Ferretto.VW.App.Controls
@@ -102,6 +104,10 @@ namespace Ferretto.VW.App.Controls
 
         private bool isStyleSet;
 
+        private IMachineIdentityWebService machineIdentityWebService;
+
+        private bool touchHelperEnabled;
+
         #endregion
 
         #region Constructors
@@ -116,6 +122,9 @@ namespace Ferretto.VW.App.Controls
             {
                 this.Loaded += this.PpcSpinEdit_Loaded;
             }
+
+            this.Unloaded += (s, e) => { this.Disappear(); };
+            this.IsEnabledChanged += this.PpcSpinEdit_IsEnabledChanged; ;
         }
 
         #endregion
@@ -213,6 +222,11 @@ namespace Ferretto.VW.App.Controls
             this.isStyleSet = true;
         }
 
+        protected void Disappear()
+        {
+            this.machineIdentityWebService = null;
+        }
+
         private static PropertyInfo GetProperty(Type type, string fieldPathName)
         {
             var pathTokens = fieldPathName.Split('.');
@@ -242,6 +256,16 @@ namespace Ferretto.VW.App.Controls
             return property;
         }
 
+        private static void OnIncrementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcSpinEdit ppcSpinEdit
+                &&
+                e.NewValue is decimal increment)
+            {
+                ppcSpinEdit.InnerSpinEdit.Increment = increment;
+            }
+        }
+
         //private static void OnButtonSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         //{
         //    if (d is PpcSpinEdit ppcSpinEdit
@@ -254,17 +278,6 @@ namespace Ferretto.VW.App.Controls
         //        ppcSpinEdit.Button_Min.Width = val;
         //    }
         //}
-
-        private static void OnIncrementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PpcSpinEdit ppcSpinEdit
-                &&
-                e.NewValue is decimal increment)
-            {
-                ppcSpinEdit.InnerSpinEdit.Increment = increment;
-            }
-        }
-
         private static void OnMaskChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PpcSpinEdit ppcSpinEdit
@@ -291,28 +304,19 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
+        private void KeyboardButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.OpenKeyboard();
+        }
+
+        private void KeyboardButton_TouchUp(object sender, TouchEventArgs e)
+        {
+            this.OpenKeyboard();
+        }
+
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
         {
-            if (this.IsEnabled && this.InnerSpinEdit.IsEnabled && !this.InnerSpinEdit.IsReadOnly)
-            {
-                var type = this.InnerSpinEdit.EditValueType;
-
-                // ensure type is not null
-                if (type == null)
-                {
-                    if (this.EditValue != null)
-                    {
-                        var objType = this.EditValue.GetType();
-                        type = Nullable.GetUnderlyingType(objType) ?? objType;
-                    }
-                    else
-                    {
-                        type = typeof(int);
-                    }
-                }
-
-                this.InnerSpinEdit.PopupKeyboard(DevExpress.Xpf.Editors.SpinEdit.EditValueProperty, type, KeyboardLayoutCodes.Numpad, this.LabelText, TimeSpan.FromSeconds(60));
-            }
+            this.OpenKeyboard();
         }
 
         private void OnKeyboardOpenHandlerOld(object sender, InputEventArgs e)
@@ -374,8 +378,44 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        private void PpcSpinEdit_Loaded(object sender, RoutedEventArgs e)
+        private void OpenKeyboard()
         {
+            if (this.IsEnabled && this.InnerSpinEdit.IsEnabled && !this.InnerSpinEdit.IsReadOnly)
+            {
+                var type = this.InnerSpinEdit.EditValueType;
+
+                // ensure type is not null
+                if (type == null)
+                {
+                    if (this.EditValue != null)
+                    {
+                        var objType = this.EditValue.GetType();
+                        type = Nullable.GetUnderlyingType(objType) ?? objType;
+                    }
+                    else
+                    {
+                        type = typeof(int);
+                    }
+                }
+
+                this.InnerSpinEdit.PopupKeyboard(DevExpress.Xpf.Editors.SpinEdit.EditValueProperty, type, KeyboardLayoutCodes.Numpad, this.LabelText, TimeSpan.FromSeconds(60));
+            }
+        }
+
+        private void PpcSpinEdit_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.touchHelperEnabled)
+            {
+                this.KeyboardButton.Visibility = this.touchHelperEnabled && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private async void PpcSpinEdit_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.machineIdentityWebService = ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
+            this.touchHelperEnabled = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
+            this.KeyboardButton.Visibility = this.touchHelperEnabled && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+
             if (this.IsStyleSet)
             {
                 return;

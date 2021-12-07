@@ -51,6 +51,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private IMachineIdentityWebService machineIdentityWebService;
 
+        private bool touchHelperEnabled;
+
         #endregion
 
         #region Constructors
@@ -63,6 +65,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
             this.Loaded += (s, e) => { this.OnAppearedAsync(); };
             this.Unloaded += (s, e) => { this.Disappear(); };
+            this.IsEnabledChanged += this.PpcTextBox_IsEnabledChanged;
         }
 
         #endregion
@@ -117,8 +120,8 @@ namespace Ferretto.VW.App.Controls.Controls
         protected async void OnAppearedAsync()
         {
             this.machineIdentityWebService = ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
-            var enable = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
-            this.KeyboardButton.Visibility = enable && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+            this.touchHelperEnabled = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
+            this.KeyboardButton.Visibility = this.touchHelperEnabled && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void KeyboardButton_Click(object sender, RoutedEventArgs e)
@@ -197,6 +200,14 @@ namespace Ferretto.VW.App.Controls.Controls
             if (this.IsEnabled && !this.IsReadOnly && this.InputTextBox.IsEnabled && !this.InputTextBox.IsReadOnly)
             {
                 this.InputTextBox.PopupKeyboard(caption: this.LabelText, timeout: TimeSpan.FromSeconds(60));
+            }
+        }
+
+        private void PpcTextBox_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.touchHelperEnabled)
+            {
+                this.KeyboardButton.Visibility = this.touchHelperEnabled && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
