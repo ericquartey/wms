@@ -140,7 +140,7 @@
                     Height="25"
                     Command="ScrollBar.LineUpCommand"
                     Content="M 0 4 L 8 4 L 4 0 Z"
-                    Loaded="UpDownButton_Loaded"
+                    Loaded="UpDownVerticalButton_Loaded"
                     Style="{StaticResource ScrollBarLineButton}" />
       <Track Name="PART_Track"
              Grid.Row="1"
@@ -164,7 +164,7 @@
                     Height="25"
                     Command="ScrollBar.LineDownCommand"
                     Content="M 0 0 L 4 4 L 8 0 Z"
-                    Loaded="UpDownButton_Loaded"
+                    Loaded="UpDownVerticalButton_Loaded"
                     Style="{StaticResource ScrollBarLineButton}" />
     </Grid>
   </ControlTemplate>
@@ -188,7 +188,7 @@
                     Width="25"
                     Command="ScrollBar.LineLeftCommand"
                     Content="M 4 0 L 4 8 L 0 4 Z"
-                    Loaded="UpDownButton_Loaded"
+                    Loaded="UpDownHorizontalButton_Loaded"
                     Style="{StaticResource ScrollBarLineButton}" />
       <Track Name="PART_Track"
              Grid.Column="1"
@@ -212,7 +212,7 @@
                     Width="25"
                     Command="ScrollBar.LineRightCommand"
                     Content="M 0 0 L 4 4 L 0 8 Z"
-                    Loaded="UpDownButton_Loaded"
+                    Loaded="UpDownHorizontalButton_Loaded"
                     Style="{StaticResource ScrollBarLineButton}" />
     </Grid>
   </ControlTemplate>

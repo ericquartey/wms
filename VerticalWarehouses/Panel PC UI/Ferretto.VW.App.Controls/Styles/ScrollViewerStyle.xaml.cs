@@ -23,7 +23,20 @@ namespace Ferretto.VW.App.Controls.Styles
 
         #region Methods
 
-        private async void UpDownButton_Loaded(object sender, EventArgs e)
+        private async void UpDownHorizontalButton_Loaded(object sender, EventArgs e)
+        {
+            if (this.machineIdentityWebService is null)
+            {
+                this.machineIdentityWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
+            }
+
+            var touchHelperEnabled = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
+
+            var button = sender as RepeatButton;
+            button.Width = touchHelperEnabled ? 50 : 25;
+        }
+
+        private async void UpDownVerticalButton_Loaded(object sender, EventArgs e)
         {
             if (this.machineIdentityWebService is null)
             {
