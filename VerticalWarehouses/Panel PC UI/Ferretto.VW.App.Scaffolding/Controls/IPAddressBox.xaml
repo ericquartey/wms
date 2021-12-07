@@ -4,99 +4,120 @@
              xmlns:behaviors="clr-namespace:Ferretto.VW.App.Scaffolding.Behaviors"
              xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
              xmlns:ctrlBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
-             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:local="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <UserControl.Resources>
-        <converters:IPAddressToStringConverter x:Key="IPAddressToStringConverter" />
+  <UserControl.Resources>
+    <converters:IPAddressToStringConverter x:Key="IPAddressToStringConverter" />
 
-        <Style x:Key="IPAddressDot"
-               TargetType="{x:Type TextBlock}">
-            <Setter Property="Foreground" Value="{DynamicResource IPAddressDotColor}" />
-            <Setter Property="Margin" Value="3,0,6,0" />
-            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Text" Value="." />
-        </Style>
+    <Style x:Key="IPAddressDot"
+           TargetType="{x:Type TextBlock}">
+      <Setter Property="Foreground" Value="{DynamicResource IPAddressDotColor}" />
+      <Setter Property="Margin" Value="3,0,6,0" />
+      <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+      <Setter Property="Text" Value="." />
+    </Style>
 
-        <Style x:Key="ByteTextBox"
-               BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-               TargetType="{x:Type TextBox}">
-            <Setter Property="MaxLength" Value="3" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-        </Style>
-    </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <TextBox IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
-                 Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=0, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
-                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
-                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
-                <behaviors:TextBoxAutoSelectBehavior />
-                <behaviors:NumericTextBoxFilterBehavior Max="255"
-                                                        Min="0" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Grid.Column="1"
-                   Style="{DynamicResource IPAddressDot}" />
-        <TextBox Grid.Column="2"
-                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
-                 Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=1, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
-                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
-                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
-                <behaviors:TextBoxAutoSelectBehavior />
-                <behaviors:NumericTextBoxFilterBehavior Max="255"
-                                                        Min="0" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Grid.Column="3"
-                   Style="{StaticResource IPAddressDot}" />
-        <TextBox Grid.Column="4"
-                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
-                 Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=2, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
-                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
-                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
-                <behaviors:TextBoxAutoSelectBehavior />
-                <behaviors:NumericTextBoxFilterBehavior Max="255"
-                                                        Min="0" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-        <TextBlock Grid.Column="5"
-                   Style="{StaticResource IPAddressDot}" />
-        <TextBox Grid.Column="6"
-                 IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
-                 Style="{StaticResource ByteTextBox}"
-                 Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=3, Mode=TwoWay}">
-            <interactivity:Interaction.Behaviors>
-                <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
-                <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
-                <behaviors:TextBoxAutoSelectBehavior />
-                <behaviors:NumericTextBoxFilterBehavior Max="255"
-                                                        Min="0" />
-            </interactivity:Interaction.Behaviors>
-        </TextBox>
-    </Grid>
+    <Style x:Key="ByteTextBox"
+           BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+           TargetType="{x:Type TextBox}">
+      <Setter Property="MaxLength" Value="3" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <TextBox GotFocus="GotFocus"
+             IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             Style="{StaticResource ByteTextBox}"
+             Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=0, Mode=TwoWay}">
+      <interactivity:Interaction.Behaviors>
+        <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+        <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
+        <behaviors:TextBoxAutoSelectBehavior />
+        <behaviors:NumericTextBoxFilterBehavior Max="255"
+                                                Min="0" />
+      </interactivity:Interaction.Behaviors>
+    </TextBox>
+    <TextBlock Grid.Column="1"
+               Style="{DynamicResource IPAddressDot}" />
+    <TextBox Grid.Column="2"
+             GotFocus="GotFocus"
+             IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             Style="{StaticResource ByteTextBox}"
+             Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=1, Mode=TwoWay}">
+      <interactivity:Interaction.Behaviors>
+        <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+        <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
+        <behaviors:TextBoxAutoSelectBehavior />
+        <behaviors:NumericTextBoxFilterBehavior Max="255"
+                                                Min="0" />
+      </interactivity:Interaction.Behaviors>
+    </TextBox>
+    <TextBlock Grid.Column="3"
+               Style="{StaticResource IPAddressDot}" />
+    <TextBox Grid.Column="4"
+             GotFocus="GotFocus"
+             IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             Style="{StaticResource ByteTextBox}"
+             Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=2, Mode=TwoWay}">
+      <interactivity:Interaction.Behaviors>
+        <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+        <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
+        <behaviors:TextBoxAutoSelectBehavior />
+        <behaviors:NumericTextBoxFilterBehavior Max="255"
+                                                Min="0" />
+      </interactivity:Interaction.Behaviors>
+    </TextBox>
+    <TextBlock Grid.Column="5"
+               Style="{StaticResource IPAddressDot}" />
+    <TextBox Grid.Column="6"
+             GotFocus="GotFocus"
+             IsEnabled="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}}"
+             Style="{StaticResource ByteTextBox}"
+             Text="{Binding Path=IPAddress, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource FindAncestor, AncestorType=local:IPAddressBox}, Converter={StaticResource IPAddressToStringConverter}, ConverterParameter=3, Mode=TwoWay}">
+      <interactivity:Interaction.Behaviors>
+        <ctrlBehaviors:KeyboardPopupBehavior KeyboardLayoutCode="Numpad" />
+        <!--<behaviors:TextBoxKeyboardBehavior Keyboard="Numpad" />-->
+        <behaviors:TextBoxAutoSelectBehavior />
+        <behaviors:NumericTextBoxFilterBehavior Max="255"
+                                                Min="0" />
+      </interactivity:Interaction.Behaviors>
+    </TextBox>
+    <Button Name="KeyboardButton"
+            Grid.Column="7"
+            Margin="5,0"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            BorderThickness="1"
+            Click="KeyboardButton_Click"
+            Style="{StaticResource TextBoxKeyboardButtonStyle}"
+            TouchUp="KeyboardButton_TouchUp">
+      <icons:PackIconFontAwesome Width="20"
+                                 Height="20"
+                                 Margin="3"
+                                 HorizontalAlignment="Center"
+                                 VerticalAlignment="Center"
+                                 Kind="KeyboardSolid" />
+    </Button>
+  </Grid>
 </UserControl>
