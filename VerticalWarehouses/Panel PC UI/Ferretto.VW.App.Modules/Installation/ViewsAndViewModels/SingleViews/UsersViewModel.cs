@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineUsersWebService usersService;
 
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+
         private DelegateCommand changeInstallerPasswordCommand;
 
         private DelegateCommand changeOperatorPasswordCommand;
@@ -30,20 +32,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isEnabledEditing;
 
+        private bool isOperatorEnabledWithWMS;
+
+        private bool isWmsEnabled;
+
         private string operatorNewPassword;
 
         private string operatorNewPasswordConfirm;
+
+        private DelegateCommand saveIsOperatorEnabledWithWMSCommand;
 
         #endregion
 
         #region Constructors
 
         public UsersViewModel(IMachineUsersWebService usersService,
+            IMachineWmsStatusWebService wmsStatusWebService,
             ISessionService sessionService)
             : base(PresentationMode.Installer)
         {
             this.usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
         }
 
         #endregion
@@ -84,6 +94,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isEnabledEditing, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsOperatorEnabledWithWMS
+        {
+            get => this.isOperatorEnabledWithWMS;
+            set => this.SetProperty(ref this.isOperatorEnabledWithWMS, value, this.RaiseCanExecuteChanged);
+        }
+
         public string OperatorNewPassword
         {
             get => this.operatorNewPassword;
@@ -95,6 +111,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.operatorNewPasswordConfirm;
             set => this.SetProperty(ref this.operatorNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand SaveIsOperatorEnabledWithWMSCommand =>
+                                                                  this.saveIsOperatorEnabledWithWMSCommand
+          ??
+          (this.saveIsOperatorEnabledWithWMSCommand = new DelegateCommand(
+              async () => await this.SaveIsOperatorEnabledWithWMS(),
+              this.CanExecute));
 
         #endregion
 
@@ -119,6 +142,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.IsEnabledEditing = true;
+
+            this.isWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
+
+            this.IsOperatorEnabledWithWMS = await this.usersService.GetOperatorEnabledWithWMSAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -126,6 +153,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.RaiseCanExecuteChanged();
             this.changeOperatorPasswordCommand?.RaiseCanExecuteChanged();
             this.changeInstallerPasswordCommand?.RaiseCanExecuteChanged();
+            this.saveIsOperatorEnabledWithWMSCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecute()
+        {
+            return this.isEnabledEditing &&
+                this.sessionService.UserAccessLevel > UserAccessLevel.Operator;
         }
 
         private bool CanExecuteInstallerCommand()
@@ -143,7 +177,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.operatorNewPasswordConfirm) &&
                 !string.IsNullOrEmpty(this.operatorNewPassword) &&
                 this.operatorNewPasswordConfirm == this.operatorNewPassword &&
-                this.sessionService.UserAccessLevel > UserAccessLevel.Operator;
+                this.sessionService.UserAccessLevel > UserAccessLevel.Operator &&
+                !this.isWmsEnabled;
         }
 
         private async Task ChangePassword(UserAccessLevel userAccessLevel)
@@ -162,6 +197,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     await this.usersService.ChangePasswordAsync("operator", this.operatorNewPassword);
                     this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
                 }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsEnabledEditing = true;
+            }
+        }
+
+        private async Task SaveIsOperatorEnabledWithWMS()
+        {
+            try
+            {
+                this.IsEnabledEditing = false;
+                await this.usersService.SetOperatorEnabledWithWMSAsync(this.IsOperatorEnabledWithWMS);
+                this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

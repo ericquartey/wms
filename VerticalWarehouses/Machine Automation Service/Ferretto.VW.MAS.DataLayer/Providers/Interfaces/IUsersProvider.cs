@@ -15,7 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<UserParameters> GetAllUserWithCulture();
 
         string GetServiceToken();
-
+        bool IsOperatorEnabledWithWMS();
+        void SetOperatorEnabledWithWMS(bool isEnabled);
         void SetUserCulture(string culture, string name);
 
         #endregion

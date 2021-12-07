@@ -194,6 +194,38 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsOperatorEnabledWithWMS()
+        {
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
+
+                if (user != null)
+                {
+                    return user.IsEnabledWithWMS;
+                }
+            }
+            throw new EntityNotFoundException("Operator");
+        }
+
+        public void SetOperatorEnabledWithWMS(bool isEnabled)
+        {
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
+
+                if (user != null)
+                {
+                    user.IsEnabledWithWMS = isEnabled;
+
+                    this.dataContext.Update(user);
+                    this.dataContext.SaveChanges();
+                    return;
+                }
+            }
+            throw new EntityNotFoundException("Operator");
+        }
+
         public void SetUserCulture(string culture, string name)
         {
             lock (this.dataContext)

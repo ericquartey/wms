@@ -359,12 +359,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 var wmsUsersName = this.WmsUsers.Select(s => s.Login).ToList();
 
-                var newBaseUser = this.BaseUser.Where(s => s != "operator").ToList();
+                var isOperatorEnabled = await this.usersService.GetOperatorEnabledWithWMSAsync();
 
-                var userToAdd = wmsUsersName.Except(newBaseUser);
+                if (isOperatorEnabled)
+                {
+                    var userToAdd = wmsUsersName.Except(this.BaseUser);
+                    this.Users.AddRange(userToAdd);
+                }
+                else
+                {
+                    var newBaseUser = this.BaseUser.Where(s => s != "operator").ToList();
 
-                this.Users.Remove("operator");
-                this.Users.AddRange(userToAdd);
+                    var userToAdd = wmsUsersName.Except(newBaseUser);
+
+                    this.Users.Remove("operator");
+                    this.Users.AddRange(userToAdd);
+                }
             }
             catch (Exception)
             {

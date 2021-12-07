@@ -215,6 +215,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(users);
         }
 
+        [HttpGet("operator-enabled-wms")]
+        public ActionResult<bool> GetOperatorEnabledWithWMS()
+        {
+            return this.Ok(this.usersProvider.IsOperatorEnabledWithWMS());
+        }
+
         [HttpPost("token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -234,6 +240,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             CommonUtils.Culture.Actual = culture;
 
             this.logger.LogInformation("Change culture to " + culture.ToString());
+        }
+
+        [HttpPost("set-operator-enabled-wms")]
+        public IActionResult SetOperatorEnabledWithWMS(bool isEnabled)
+        {
+            this.usersProvider.SetOperatorEnabledWithWMS(isEnabled);
+            return this.Ok();
         }
 
         [HttpPost("set-culture")]

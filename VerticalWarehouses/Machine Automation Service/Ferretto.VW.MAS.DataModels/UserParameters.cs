@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int AccessLevel { get; set; }
 
+        public bool IsEnabledWithWMS { get; set; }
+
         public bool IsService => string.CompareOrdinal(this.Name, "service") == 0;
 
         public string Language { get; set; }
