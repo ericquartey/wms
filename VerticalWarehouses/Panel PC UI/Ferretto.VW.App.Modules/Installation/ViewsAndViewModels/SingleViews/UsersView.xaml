@@ -68,7 +68,8 @@
                 VerticalContentAlignment="Center"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp">
+                TouchUp="KeyboardButton_TouchUp"
+                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
           <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
@@ -93,7 +94,8 @@
                 VerticalContentAlignment="Center"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp">
+                TouchUp="KeyboardButton_TouchUp"
+                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
           <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
@@ -132,7 +134,8 @@
                 VerticalContentAlignment="Center"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp">
+                TouchUp="KeyboardButton_TouchUp"
+                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
           <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
@@ -157,7 +160,8 @@
                 VerticalContentAlignment="Center"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp">
+                TouchUp="KeyboardButton_TouchUp"
+                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
           <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
@@ -177,7 +181,7 @@
         <controls:PpcCheckBox VerticalAlignment="Center"
                               IsChecked="{Binding IsOperatorEnabledWithWMS, Mode=TwoWay}"
                               IsEnabled="{Binding IsEnabledEditing}"
-                              LabelText="Abilitato con il WMS" />
+                              LabelText="{res:Loc InstallationApp.EnabledWithWMS}" />
         <controls:PpcButton Margin="15,0,0,0"
                             VerticalAlignment="Center"
                             Command="{Binding SaveIsOperatorEnabledWithWMSCommand}"

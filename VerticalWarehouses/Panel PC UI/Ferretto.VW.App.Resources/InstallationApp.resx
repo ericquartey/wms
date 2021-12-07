@@ -2617,4 +2617,7 @@
   <data name="NewPassword" xml:space="preserve">
     <value>New password</value>
   </data>
+  <data name="EnabledWithWMS" xml:space="preserve">
+    <value>Enabled with WMS active</value>
+  </data>
 </root>

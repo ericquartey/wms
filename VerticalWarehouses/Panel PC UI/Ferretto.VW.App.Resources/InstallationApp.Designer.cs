@@ -2221,6 +2221,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enabled with WMS active.
+        /// </summary>
+        public static string EnabledWithWMS {
+            get {
+                return ResourceManager.GetString("EnabledWithWMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End time.
         /// </summary>
         public static string EndTime {

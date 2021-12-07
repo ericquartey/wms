@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly ISessionService sessionService;
 
         private readonly IMachineUsersWebService usersService;
@@ -48,12 +50,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public UsersViewModel(IMachineUsersWebService usersService,
             IMachineWmsStatusWebService wmsStatusWebService,
-            ISessionService sessionService)
+            ISessionService sessionService,
+            IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Installer)
         {
             this.usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
         }
 
         #endregion
@@ -113,7 +117,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand SaveIsOperatorEnabledWithWMSCommand =>
-                                                                  this.saveIsOperatorEnabledWithWMSCommand
+          this.saveIsOperatorEnabledWithWMSCommand
           ??
           (this.saveIsOperatorEnabledWithWMSCommand = new DelegateCommand(
               async () => await this.SaveIsOperatorEnabledWithWMS(),
@@ -146,6 +150,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.isWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
 
             this.IsOperatorEnabledWithWMS = await this.usersService.GetOperatorEnabledWithWMSAsync();
+
+            this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
