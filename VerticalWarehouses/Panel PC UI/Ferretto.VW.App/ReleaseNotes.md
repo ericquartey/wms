@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
 - Aggiunto parametro per mostrare il pulsante con la tastiera
+- Aggiunta Gestione Utenti: si possono cambiare le password di Operator e Installer e disabilitare Operator
 
 ## Bug Risolti
 - Aggiunto avviso di spazio insufficiente in magazzino

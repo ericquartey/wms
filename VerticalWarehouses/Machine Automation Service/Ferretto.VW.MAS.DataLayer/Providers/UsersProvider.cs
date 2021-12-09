@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (user != null)
                 {
-                    return user.IsEnabledWithWMS;
+                    return !user.IsDisabledWithWMS;
                 }
             }
             throw new EntityNotFoundException("Operator");
@@ -216,7 +216,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (user != null)
                 {
-                    user.IsEnabledWithWMS = isEnabled;
+                    user.IsDisabledWithWMS = !isEnabled;
 
                     this.dataContext.Update(user);
                     this.dataContext.SaveChanges();
