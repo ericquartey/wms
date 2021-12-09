@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20211207085857_UserIsEnabledWithWMS")]
-    partial class UserIsEnabledWithWMS
+    [Migration("20211209134623_IsDisabledWithWMS")]
+    partial class IsDisabledWithWMS
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1871,7 +1871,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("AccessLevel");
 
-                    b.Property<bool>("IsEnabledWithWMS");
+                    b.Property<bool>("IsDisabledWithWMS");
 
                     b.Property<string>("Language");
 

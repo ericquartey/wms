@@ -1869,7 +1869,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("AccessLevel");
 
-                    b.Property<bool>("IsEnabledWithWMS");
+                    b.Property<bool>("IsDisabledWithWMS");
 
                     b.Property<string>("Language");
 

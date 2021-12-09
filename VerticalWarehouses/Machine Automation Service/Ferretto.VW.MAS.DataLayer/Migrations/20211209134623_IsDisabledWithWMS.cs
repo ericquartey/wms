@@ -2,12 +2,12 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class UserIsEnabledWithWMS : Migration
+    public partial class IsDisabledWithWMS : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsEnabledWithWMS",
+                name: "IsDisabledWithWMS",
                 table: "Users",
                 nullable: false,
                 defaultValue: false);
@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsEnabledWithWMS",
+                name: "IsDisabledWithWMS",
                 table: "Users");
         }
     }
