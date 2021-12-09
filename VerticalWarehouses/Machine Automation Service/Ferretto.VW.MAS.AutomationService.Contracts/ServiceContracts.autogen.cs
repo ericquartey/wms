@@ -7455,8 +7455,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
         public int AccessLevel { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsEnabledWithWMS", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsEnabledWithWMS { get; set; }
+        [Newtonsoft.Json.JsonProperty("IsDisabledWithWMS", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDisabledWithWMS { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsService", Required = Newtonsoft.Json.Required.Always)]
         public bool IsService { get; set; }
