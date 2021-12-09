@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,2368 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Rodage Courroie</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>En bas</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Se déconnecter</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Volet de fermeture</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Élévateur</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manuel</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Éteinte</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Allumée</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>En haut</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Origine de l’axe vertical</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Le homing de l’axe vertical n’a pas été effectué.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Limite inférieure (mm)</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Décalage (mm)</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Résultat</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Résolution (imp/mm)</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Démarrer</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Arrêt</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Limite supérieure (mm)</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Baies</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Berceau</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Barrière anti-intrusion</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Moteur du berceau sélectionné</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Moteur de l’élévateur sélectionné</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Fin de course d’urgence</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Présence UDC dans berceau côté machine</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Présence UDC dans berceau côté opérateur</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Microrupteur carter côté gauche</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Microrupteur carter côté droit</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Bouton coup-de-poing d'arrêt d'urgence</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Fonction de sécurité active</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Capteur de cliquet à zéro </value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Capteur zéro axe vertical</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Test du volet de fermeture</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Déplacer</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Aller à la cote initiale</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Cote initiale (mm)</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Nouvelle résolution (imp/mm)</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Résolution actuelle (imp/mm)</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Course mesurée (mm)</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Calibrage de la résolution de l’axe vertical</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Fermé</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Cycles terminés (session)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Position actuelle (mm)</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Retard entre les cycles (s)</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Ouverte</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Cycles requis</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Test du volet de fermeture baie 1</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Cote actuelle (mm)</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Correction de la barrière (mm)</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Réglage de la barrière de mesure de la hauteur du tiroir baie 1</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Vitesse (mm/s)</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Erreur de système (mm)</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolérance requise (+/-) (mm)</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Calibrage du décalage de l’axe vertical</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Contrôle du poids</value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Tolérance requise (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Poids saisi (kg)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Poids mesuré (kg)</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Course de test (mm)</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Décalage correct (mm)</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Décalage actuel (mm)</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Fermer la procédure</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Cote de la cellule sélectionnée (mm)</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Valeur du pas (mm)</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Cote Cellule (mm)</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Cellule sélectionnée</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Panneau actuel</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Correction du panneau (mm)</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Nombre total de panneaux :</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Retour</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Avant</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Corriger</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>État de l’installation</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Rodage de la courroie</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Origine de l’axe vertical</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Résolution de l’axe vertical</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Contrôle des cotes des cellules</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Cote initiale mesurée (mm)</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Déplacer dans la position</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Correction Cote Cellule (mm)</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Vérification du décalage vertical</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Capteur A du volet de fermeture</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Capteur B du volet de fermeture</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Cote finale (mm)</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Démarrer la procédure</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Fermer la procédure</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Panneau suivant</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Vérification de la position des panneaux de l’étagère</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>Cote finale lue (mm)</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Hauteur atteinte</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Élévateur</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Modification des cotes du groupe de cellules</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Cellule initiale</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Cellule finale</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Correction requise (mm)</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Côté sélectionné</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Chargement des tiroirs.</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Total des tiroirs</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Capacité de charge max. (kg)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Tiroirs insérés</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Tiroir à insérer</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Prochain tiroir</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Démarrer insertion</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Chargement du premier tiroir et test des cellules</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Total des cellules à tester</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Total des cellules testées</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Cellule en phase de test</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Tiroir à insérer</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Capacité de charge maximale du tiroir (kg)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Insérer tiroir</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Rappeler tiroir</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Contrôle des cotes de la baie</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Position dans la baie</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Cote baie (mm)</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Position actuelle (mm)</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>Valeur de la correction (mm)</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Prochaine position</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Test de chargement-déchargement du tiroir dans la baie.</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Vitesse d’avancement %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Cycles requis</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Position actuelle de la chaîne</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Cycles terminés</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Arrêter le cycle</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Démarrer le cycle</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Attention :</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>Les commandes manuelles sont actuellement en mesure d’effectuer de petits déplacements à faible vitesse sans verrouillages.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Enregistrer le fichier de configuration.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Rétablir le fichier de configuration.</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Dossier sélectionné</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Enregistrer la configuration</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Confirmer l’enregistrement</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Annuler l’enregistrement</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Charger la configuration</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Confirmer le chargement</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Annuler le chargement</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Calibrage de l’axe horizontal terminé</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Calibrage de l’axe horizontal en exécution ({0} sur {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Démarrage du calibrage de l’axe horizontal </value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Changement du moteur terminé</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Changement du moteur commencé</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Calibrage de l’axe vertical en exécution ({0} sur {1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Démarrage du calibrage de l’axe vertical</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Erreur de calibrage de l’axe vertical ({0} sur {1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Erreur de calibrage de l’axe horizontal ({0} sur {1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Erreur d’échange des axes</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Rappeler de la cellule à la baie</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Chargement de la baie vers la cellule</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Chargement du tiroir et rappel du tiroir</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Initialisation...</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Baie 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Baie 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Baie 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Test du Volet de fermeture de la Baie</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Fermé</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>À mi-chemin</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Ouvert</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Étape 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Étape 2</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Côté Cellule</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Position basse</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Position haute</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Déplacement (mm)</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Baie Externe</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Appliquer Correction</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Saisir l’id du tiroir</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Vérifier</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Côté</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baie</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Position Baie</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Position Verticale (mm)</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Tiroir dans la Baie</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Aller à la baie</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Cellules</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Élévateur</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Tiroir Chargé</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Poids Tiroir (kg)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Position Horizontale (mm)</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>La procédure a été interrompue.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reconfigurer</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Cycles terminés (cumulatif)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Analyse du Poids</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Tare du Tiroir (kg)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Poids Net (kg)</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Le pare-feu est activé sur ce terminal.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Procédure terminée.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>Aller à la cote</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Cote</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Confirmez-vous l’opération ?</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Id tiroir</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Étalonnage de la baie</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Carrousel en bas</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Carrousel en haut</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Étalonnage de la chaîne</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Numéro du Tiroir</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Fermer le volet de fermeture</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Ouvrir le volet de fermeture</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Aller au tiroir</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Présence UDC côté machine</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Présence UDC côté opérateur</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>L’information a été mise à jour.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Enregistrement réussi</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Id de la cellule de destination</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Insertion du tiroir de la baie vers la cellule</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Zéro chaîne</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Déplacement du tiroir de cellule à cellule</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Retrait du tiroir (mouvement de la cellule vers la baie)</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Confirmer l’extraction du tiroir</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Test du Volet de fermeture</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Cote pos. basse (mm)</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Cote pos. haute (mm)</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Présence en pos. basse</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Présence en pos. haute</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Tiroir en pos. haute</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Tiroir en pos. basse</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Code du tiroir</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cellule</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Rétablissement réussi</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Rétablir</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Fichier sur dispositif trouvé</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Insérer le dispositif avec le fichier de rétablissement - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Erreur de lecture du fichier</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Exportation réussie</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Confirmez-vous l’écrasement du fichier ?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>Un fichier est déjà présent sur le dispositif.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Confirmer le rétablissement</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Rétablissement de la configuration</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Êtes-vous sûr d'appliquer la configuration ?</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Inconnu</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Test réussi</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Arrière</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Effectuer la pesée</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Effectuer la mesure</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Charger</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Décharger</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Cellule {0}</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>dans la Baie {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Mouvements Guidés</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Mouvements Manuels</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Étalonnage</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Hauteur atteinte</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Réinitialisation machine</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Réinitialisation de la machine réussie.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Volet de fermeture en bas</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Volet de fermeture en haut</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Basse</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Haute</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Étalonnage de la barrière</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Sécurité</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Capteurs de sécurité</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Heure</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Année</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Mois</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Jour</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 Date et heure de système</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>Synchronisation automatique WMS</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Configurer date et heure manuellement</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Date et/ou heure saisies non valides.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Confirmez-vous la mise à jour à {0} '{1}' ?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Confirmer la mise à jour</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Mise à jour réussie.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Erreur en phase initiale de mise à jour.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>{0} est un fichier de configuration importable.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Unités de stockage disponibles.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>{0} configurations disponibles pour importation.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>L’unité de stockage n’est plus disponible.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Importation PAS possible depuis le fichier « {0} ».</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Importation possible depuis le fichier « {0} ».</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Origine</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Application d’installation démarrée avec succès.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Erreur durant l’exécution de l’application d’installation.</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Cellule non valide</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId doit être positif.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>InputFormCellId nécessaire.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId doit être positif.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>InputToCellId nécessaire.</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Le pas doit être positif.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Le pas est nécessaire.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Modification réussie</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Décalage de l’axe vertical mis à jour</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Rodage Courroie</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>la cellule saisie n’est pas libre</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>La cellule sélectionnée n’est pas présente.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Il faut sélectionner une cellule.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Contrôle de la somme de contrôle des fichiers terminé correctement.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Efface le dossier temporaire '{0}'.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>La position de destination doit être strictement positive.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>La position de destination est hors de la plage des axes ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>DestinationPosition nécessaire.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Tiroir id {0} extrait</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Erreur lors du contrôle du fichier {0}</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Erreur lors du contrôle de la somme de contrôle du fichier :</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Erreur lors du contrôle du fichier '{0}'. Aucune somme de contrôle trouvée.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Erreur lors de l’effacement du dossier temporaire :</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Erreur lors de l’extraction des fichiers :</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Erreur au démarrage :</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Extraction réussie.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Aller à la cellule libre</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Mouvement de l’axe horizontal en cours...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles doit être strictement positif.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>InputDelayBetweenCycles nécessaire.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement doit être strictement positif.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>InputDisplacement nécessaire.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>InputNetWeight doit être strictement positif.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>InputNetWeight nécessaire.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired doit être strictement positif.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>InputWeightRequired doit être spécifié.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Id cellule saisi non valide</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Id cellule sur tiroir saisi non valide</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Type de choix de destination non valide</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Id du tiroir dans la baie non valide</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Le tiroir sélectionné n’est pas valide</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Id du tiroir inséré non valide</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Type de choix d’origine non valide</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId doit être strictement positif.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>LoadingUnitId nécessaire.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Position mesurée hors de la plage des axes ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Opération échouée.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Nombre de cycles nécessaires terminé.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Début du contrôle de la somme de contrôle des fichiers '{0}'.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Extraction des fichiers de '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Démarrage de l’application '{0}'.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>La position de départ doit être strictement positive.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Position de départ hors de la plage des axes ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>TestToRun doit être strictement positif.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Mouvement de l’axe vertical en cours...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>La tolérance du poids doit être strictement positive.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Opérations sur tiroir</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Compacter</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Calibrage du carrousel</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay doit être supérieur à 0</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound doit être supérieur à InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound doit être supérieur à {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound doit être supérieur à 0</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>InputLowerBound nécessaire.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>InputRequiredCycles doit être supérieur à 0</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>InputRequiredCycles nécessaire.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound doit être supérieur à InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound doit être supérieur à {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperBound doit être supérieur à 0</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>InputUpperBound nécessaire.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Contrôle de la position haute</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Positionner l’élévateur à la hauteur de la baie et ouvrir le volet de fermeture si présent.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Nouvelle cote pos. basse (mm)</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Nouvelle cote pos. haute (mm)</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Vérifier l’alignement de la baie et de l’élévateur. S’ils ne sont pas alignés, procéder à la correction de la position de l’élévateur.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Confirmer les modifications.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Contrôle de la position basse</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Déplacer l’élévateur</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Aucune modification n’a été faite.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Vérifier les nouvelles cotes et appuyer sur Enregistrer pour rendre les modifications effectives.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Entraxe (mm)</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>Premier Test</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>La cellule sélectionnée est bloquée</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Avant de commencer</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Calibrage en cours...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Effectuer la procédure d’étalonnage de la baie pour positionner l’étagère au niveau du capteur.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Contrôler qu’il n’y ait pas de tiroirs dans la baie avant de commencer. Appuyer sur DÉMARRER pour lancer la procédure</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Terminée</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Confirmer la correction</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Erreur (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Temps restant</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Répéter</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Appuyer sur Répéter pour effectuer de nouveau la procédure.</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Sélectionner + si l’on est au-dessus du capteur ou - si l’on est en dessous et appliquer la correction en appuyant sur Appliquer correction.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Arrêt en phase en cours...</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Arrêter la procédure</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Levages effectués</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Confirmer la mise en service</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>La procédure permet de déplacer un tiroir d’une cellule d’origine vers la cellule de destination. Pour lancer la procédure, saisir l’id du tiroir, l’id de la cellule de destination puis appuyer sur Démarrer</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>La procédure permet de déplacer un tiroir de la baie d’origine vers la cellule de destination. Pour lancer la procédure, saisir l’ID du tiroir, puis appuyer sur Démarrer</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Sélectionner la position de prélèvement du tiroir</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Déplacement du tiroir de baie en baie</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>La procédure permet de déplacer un tiroir de la baie d’origine vers la baie de destination. Pour lancer la procédure, saisir l’ID du tiroir, puis appuyer sur Démarrer</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Sélectionner la position de destination du tiroir</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>La procédure permet d’enlever un tiroir. Pour lancer la procédure, saisir l’ID du tiroir, puis appuyer sur Démarrer</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Gestion des Tiroirs</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Sélectionner la position de destination du tiroir</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Confirmer le nouveau décalage</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Corriger la position de l’élévateur jusqu’à ce qu’il soit parfaitement aligné et appuyer sur Suivant.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Courant [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Effectuer la mesure d’une cellule</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Effectuer le positionnement de l’élévateur devant une cellule.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Effectuer le calibrage de l’origine</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Placer l’élévateur à une hauteur qui permet de fixer l’instrument de mesure.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Déplacer à la position élévateur</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Aller à la cote</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Nouveau décalage (mm)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Fixer l’instrument de mesure</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Procéder au retrait d’un des carters latéraux et au positionnement de l’instrument de mesure. Terminer en repositionnant le carter et rétablir l’état de marche.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>En raison du changement du décalage qui vient d’être effectué, le calibrage de l’origine de l’axe vertical est à nouveau requis. Appuyer sur Démarrer pour commencer.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Cellule sélectionnée</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Cote de départ</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Temps [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Vérifier la nouvelle valeur de décalage calculée et appuyer sur Enregistrer pour rendre la modification effective. Tous les positionnements ultérieurs tiendront compte de la correction.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Test complet</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>La procédure permet d’effectuer le test complet de tous les tiroirs présents dans la machine. Pour lancer la procédure saisir le nombre de cycles et appuyer sur Démarrer</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Cycles de la session</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Voulez-vous vraiment appliquer la correction ?</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Fixer l’instrument de mesure :</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Souhaitez-vous confirmer la procédure de calibrage ?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Confirmer la nouvelle résolution :</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Cote de destination</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Placer l’élévateur à une hauteur qui permet de fixer l’instrument de mesure.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Effectuer la première mesure (1/2) :</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Effectuer la deuxième mesure (2/2) :</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Indiquer la cote mesurée avec l’instrument de mesure et appuyer sur Suivant</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Cote mesurée</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Le résultat suivant modifiera la valeur LowerBound de la machine, continuer ?</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Voulez-vous vraiment réinitialiser le nombre total de cycles terminés ?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Voulez-vous commencer la procédure ?</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Test arrêté en phase</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Vérifier la nouvelle valeur de résolution calculée et appuyer sur Enregistrer pour rendre le changement effectif</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Nouvelle résolution</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Confirmez-vous le rétablissement à la version précédente ?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Rétablissement en cours...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Rétablissement terminé avec des erreurs</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Effacement du fichier de capture instantanée d’installation '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Erreur lors de l’effacement du fichier de capture instantanée.</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Gestion des Tiroirs</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Courant Moyen [A]</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Appel tiroir</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Attendre la fin de la procédure, si nécessaire la touche « ARRÊT » permet un arrêt immédiat et « ARRÊT PROCÉDURE » un arrêt en phase.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Modification des cellules</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Gestion des Cellules</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>S’assurer de régler les photocellules de présence du tiroir, si elles ne sont pas réglées, cela pourrait provoquer un blocage de l’élévateur dans la partie la plus haute de la machine.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Contrôle des panneaux :</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Contrôle des photocellules :</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Supprimer tiroir</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Élévateur en arrière</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Élévateur en bas</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Élévateur en avant</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Élévateur en haut</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Faire rentrer le tiroir</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Aller à la cellule</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Insérer tiroir</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Procédure pas terminée</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Répéter la procédure car elle ne s’est pas terminée correctement</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Enregistrer tiroir</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Panneaux testés</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Nombre total de cycles terminés</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Tiroirs</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Modification des tiroirs</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Calibrage de la barrière</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Mesure de la baie</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Calibrage du côté gauche (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Résultat du calibrage :</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Calibrage du côté droit (mm)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>La donnée doit être positive.</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Élévateur en position :</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Correction de la barrière</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} fichiers d’installation trouvés</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>gauche</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Mesure côté gauche</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>La valeur maximum autorisée est 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>La valeur est manquante</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Aucun fichier d’installation trouvé</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Un fichier d’installation a été trouvé</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>À la fin de la procédure, la page changera automatiquement.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>Version actuelle du PanelPc</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Panneaux</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Positionner l’élévateur à la hauteur de la baie.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Positionner le gabarit à</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>Sur la base du résultat du calibrage, il est possible de décider de terminer ou non l’opération, avec un résultat inférieur à 1 mm.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Si le résultat du calibrage dépasse 1 mm, les modifications suggérées doivent être appliquées et la mesure répétée.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Charger un tiroir dans la baie ou en rappeler un pour commencer la procédure guidée de l’étalonnage de la baie.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Positionner le gabarit de réglage dans le coin supérieur droit du tiroir dans la baie, s’assurer de positionner les aimants de manière à ce qu’il reste bien fixé au tiroir. Enfin, ouvrir le volet de fermeture.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Positionner le gabarit de réglage dans le coin supérieur gauche du tiroir dans la baie, s’assurer de positionner les aimants de manière à ce qu’il reste bien fixé au tiroir.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Répéter Calibrage</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Rétablissement</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>droite</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Mesure du côté droit</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Chemin d’accès du Répertoire</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistiques</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Erreur de système</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Une fois le gabarit positionné, ouvrir le volet de fermeture et appuyer sur la touche MESURE qui lancera la procédure.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Données de mise en service</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Tolérance requise</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Tiroir dans la Baie :</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Tiroir en position haute</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Tiroir en position basse</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Mise à jour du Logiciel</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Gestion des utilisateurs</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Attendez...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Attendre la fin de la procédure automatique.</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Effectue l’échantillonnage des valeurs de courant pour l’acquisition du poids</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Analyse du profil de poids</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Permet le réglage de la barrière de détection de la hauteur du tiroir</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrage de la barrière</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Permet de vérifier et de corriger la cote des différentes positions sur les baies</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Contrôle de la baie</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Effectue une série de cycles de déplacement de l’axe vertical</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Rodage de la courroie</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Voulez-vous vraiment ignorer l’exécution de ce test ?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Effectue le calibrage du carrousel</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrage du carrousel</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Gestion des cellules</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Chargement du premier tiroir et test des cellules</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Test des cellules limite</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Applique une correction à un groupe de cellules</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Modifie le bloc des cellules (obsolète)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Vérifie la cote des cellules, divisées par panneau, en gardant une trace des positionnements de vérification effectués</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Contrôle des cotes des cellules</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Vérifie la cote d’une ou plusieurs cellules</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Contrôle des cotes des cellules (obsolète)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Terminer les tests sur les autres baies</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Test Complet</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Voulez-vous confirmer l’achèvement de la mise en service ?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Configuration Date et Heure de Système</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Date et Heure</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Chargement/Déchargement</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Permet d’effectuer une série de tests répétitifs pour le volet de fermeture</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Test du volet de fermeture</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Procédure d’insertion d’un nouveau tiroir</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Insertion</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Chargement du paramétrage du variateur avec les paramètres standards</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Paramétrage du Variateur</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Gestion des utilisateurs locaux</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Gestion des Utilisateurs</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Procédure de déplacement du tiroir de baie en baie</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Déplacement de baie en bais</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Procédure de déplacement du tiroir de cellule à cellule</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Déplacement de cellule à cellule</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Effectue le calibrage du décalage de l’axe vertical</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Décalage de l’axe vertical</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Modification, importation et exportation des paramètres machine</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Procédure de retrait du tiroir</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Retrait</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Effectue le calibrage de la résolution de l’axe vertical</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Résolution de l’axe vertical</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Gestion du tiroir</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Effectue le calibrage de l’origine de l’axe vertical</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Origine de l’axe vertical</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>Configuration des paramètres de communication avec le WMS</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>Communication WMS</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Allumé</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Éteint</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Retendre la courroie à 56 Hz</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Contrôler État</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>État de l’installation terminé.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>État de l’installation pas terminé. {0}/{1} procédures effectuées.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Distance correcte</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Inclinaison du gabarit</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Longueur du gabarit</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Enregistrer les paramètres</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>Configuration WMS</value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Adresse de l’hôte</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Calibrage horizontal de la chaîne</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Effectuer le calibrage horizontal de la chaîne </value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Effectuer la procédure d’étalonnage de la chaîne. Le capteur de zéro horizontal doit être actif.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>La fonction de calibrage horizontal de la chaîne permet d’étalonner la valeur correcte grâce à sa procédure spécifique. La procédure se déroule par étapes successives jusqu’à son achèvement.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Calibrage horizontal</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Confirmer la procédure</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Mesure effectuée</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Appliquer la mesure suivante à la machine</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Effectuer de nouveau la procédure</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Réinitialisation de la session</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Reset totali</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Arrêter le Test</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Sélectionner le tiroir à appeler dans la baie</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Exécuter la commande pour fermer le volet de fermeture</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Exécuter la commande pour ouvrir le volet de fermeture</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>La fonction de chargement/déchargement des tiroirs permet de tester le bon fonctionnement des mouvements des tiroirs à travers une série de cycles. La procédure se déroule par étapes successives jusqu’à son achèvement.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Test effectué</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Voici le nombre de cycles effectués</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Saisissez le nombre de cycles à effectuer</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>Le WMS est hors ligne</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Vérification en cours</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Déconnecté</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Connecté</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Terminer le test</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Base de données</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Ajouter tous les tiroirs au test</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Ajouter tiroir au test</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Supprimer tous les tiroirs du test</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Supprimer le tiroir du test</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Programmation du variateur en cours d’exécution</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Programmation du variateur réussie</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Programmation du variateur arrêtée</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Programmation du variateur terminée avec erreurs</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Début de programmation du variateur suivant</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Lecture seule</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Déplacer vers l’élévateur</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Activé</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Configurer dispositif</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Ports de système</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Aucun port série détecté. Vérifiez que le dispositif soit raccordé au panneau.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Scanner ces codes-barres pour configurer le lecteur en émulation série.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Le port série que vous recherchez n’est pas dans la liste ? Configurer le dispositif.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Activer Émulation COM</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Démarrer la Configuration</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Terminer la Configuration</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Version du Micrologiciel</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Date de Production</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Numéro du Modèle</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Numéro de série</value>
+  </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Longue</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Déplacer vers l’opérateur</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Étalonnage de la baie externe</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Courte</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Très longue</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Très courte</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Importer dans la mémoire</value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Importation réussie</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Importer le fichier de configuration</value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Configuration par défaut chargée</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Homing de la chaîne de la baie en cours</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Tiroir en position externe</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Tiroir en position interne</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Effectuer le calibrage de la baie externe</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Calibrage de la baie externe</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Effectuer la procédure d’étalonnage de la baie pour le positionnement au niveau du capteur</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Mouvements effectués</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Course (mm)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Appuyer sur DÉMARRER pour lancer la procédure</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>Parcours '{0}' non trouvé</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Séquences reconnues (regex)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Démarrer Test</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Séquence acquise</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Code reconnu.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Enregistrer les modifications avant de commencer le test.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Passer la carte sur le lecteur.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Code-barres reçu</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Contrôler les ports série</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Opérateur</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Nom de l’imprimante</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Hauteur</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>État</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Poids</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>Dans la Baie</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>Dans l’Élévateur</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>Dans l’Emplacement</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Mouvement vers la Baie</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Transfert</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Indéfini</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Poids brut (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>Dans la machine</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Poids net max. (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Missions</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Tare (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Niveau du blocage</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Capteur activé</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Capteur désactivé</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Faux</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Légende</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Libre</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Panneau</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorité</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Vrai</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>Baie chaîne</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Horizontal et vertical</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Vertical</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Élévateur dans la baie</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Nombre total de tiroirs dans la baie 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Nombre total de tiroirs dans la baie 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Nombre total de tiroirs dans la baie 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Monter la caméra</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Déplacer la caméra dans la position correcte</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Envoyer capture d’écran</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Envoyer journaux</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Transmission de pages-écrans</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Enregistrer cellule</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Fréquence de mise à jour en heures</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Dispositifs amovibles connectés</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Packs disponibles</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Enregistrer journal</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Enregistrer journal</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Chargement des journaux depuis le service télémétrie...</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Journaux chargés depuis le service télémétrie</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Accessoires</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Tare</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Sélectionner le lecteur de destination.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Zéro de la chaîne du carrousel</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Assistance à distance</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Cette opération supprimera le tiroir du plan de l’entrepôt</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Mouvement supplémentaire vers l’opérateur</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Mouvement supplémentaire vers l’élévateur</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Variateur en erreur</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Mise en miroir vidéo expirée</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Économie d’énergie</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Ext.</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Int.</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Numéro de Série du Jeton</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Sélectionner le modèle</value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Bloquer le tiroir</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Débloquer le tiroir</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Bloqué</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Actualiser la tare</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Procédure de mise à jour de la tare des tiroirs</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Confirmez-vous que le tiroir sélectionné est vide ?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Calibrage du poids</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>La fonction de calibrage du poids permet de régler l’algorithme de lecture du poids à l’aide de poids étalons</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Charger un tiroir dans la baie ou en appeler un pour démarrer la procédure guidée de calibrage du poids</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Pesée avec tiroir vide</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Appuyez sur le bouton pour obtenir les données de courant en déplaçant le tiroir et saisissez son poids net. À la fin, appuyez sur Suivant pour confirmer l’opération</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Courant absorbé</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Première pesée avec poids intermédiaire</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Pesée avec tiroir à pleine charge</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Changer le tiroir</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Changement du numéro de la machine</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Nouvel Id machine</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Changer l’Id</value>
+  </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Appuyez sur démarrer pour commencer le calibrage</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Décharger</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Charger</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Étalonnage de l’élévateur</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Insérer clé USB</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Lecture du variateur réussie</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Lecture du variateur terminée avec des erreurs</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Lecture du variateur arrêtée</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Début de lecture du variateur suivant</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Code d’écriture</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Code de lecture</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Nombre de décimales</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Lecture du variateur en cours d’exécution</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Lire tout</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Écraser le fichier de destination</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Enregistrer la configuration du variateur</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Écrire élément individuel</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Écrire tout</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Commande envoyée</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Erreurs et Valeurs actuelles</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Erreurs</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Valeurs actuelles</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Importer et enregistrer </value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Avant de finir</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Sauvegarde de la base de données de la machine</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Copie interne</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>Sur serveur</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>Sur télémétrie</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Configuration de la sauvegarde de la base de données</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Il y a des erreurs actives</value>
+  </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Manuel2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Manuel3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Test2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Test3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Compacter2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Compacter3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Opérations sur tiroir2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Opérations sur tiroir3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Désactiver les 30 premières cellules au-dessus de la baie correspondante</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Attribution des cellules aléatoire</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Tiroir en position interne haute</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Tiroir en position interne basse</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Baie 1 externe double</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Baie 2 externe double</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Baie 3 externe double</value>
+  </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Machine en mouvement</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Décalage Laser (mm)</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Laser</value>
+  </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Valeurs de courant erronées - les 3 doivent être différentes !</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Valeurs de poids erronées - les 3 doivent être différentes !</value>
+  </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Zéro chaîne pos. haute</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Zéro chaîne pos. basse</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Recharger</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Fermer le navigateur</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Ouvrir le navigateur</value>
+  </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>Il y a des missions actives pour ce tiroir par le WMS</value>
+  </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>Baie télescopique en place</value>
+  </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Longueur maximum du message</value>
+  </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>Barrière anti-intrusion interne</value>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>éteindre panneau</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Exécuter l’étalonnage de l’élévateur et éteindre le panneau</value>
+  </data>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Éteindre le panneau (l’étalonnage de l’élévateur n’est pas possible maintenant)</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Ouvrir dossier</value>
+  </data>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Fichier de configuration Vertimag</value>
+  </data>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Ouvrir fichier</value>
+  </data>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Dossier Variateurs</value>
+  </data>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Fichier de génération des paramètres des Variateurs</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Importer</value>
+  </data>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Aucun fichier de paramètres trouvé</value>
+  </data>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Variateur [{0}] type '{1}' configuration des paramètres</value>
+  </data>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>total des paramètres {0}</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Base de données</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Lecture seule</value>
+  </data>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Exportation de la configuration</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Exporter fichier</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Aucune ligne</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Exportation réussie.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Enregistrer le fichier de configuration</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Fichier de configuration</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Précédent</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Importation de la configuration</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Sélectionner un fichier</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Dossier des paramètres des variateurs</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Choisir le fichier de configuration</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Dossier de configuration</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Le dossier n’existe pas</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>Fichier non valide ou non inséré</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Fichier non enregistré</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Fichiers de modèle</value>
+  </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Fichier de configuration Vertimag variateur</value>
+  </data>
 </root>

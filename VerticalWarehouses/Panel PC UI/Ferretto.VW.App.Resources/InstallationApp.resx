@@ -431,11 +431,11 @@
     <value>Selected side</value>
   </data>
   <data name="LoadingDrawersPageHeader" xml:space="preserve">
-    <value>Load Trays</value>
+    <value>Load Drawers</value>
     <comment>Page header</comment>
   </data>
   <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
-    <value>Total Trays</value>
+    <value>Total drawers</value>
     <comment>Label text</comment>
   </data>
   <data name="LoadingDrawersMaxWeight" xml:space="preserve">
@@ -443,15 +443,15 @@
     <comment>Label text</comment>
   </data>
   <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
-    <value>Inserted Trays</value>
+    <value>Inserted drawers</value>
     <comment>Label text</comment>
   </data>
   <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
-    <value>Tray to insert</value>
+    <value>Drawer to insert</value>
     <comment>Label text</comment>
   </data>
   <data name="LoadingDrawersNextDrawer" xml:space="preserve">
-    <value>Next Tray</value>
+    <value>Next drawer</value>
     <comment>Command</comment>
   </data>
   <data name="LoadingDrawersStartInsertion" xml:space="preserve">
@@ -459,7 +459,7 @@
     <comment>Command</comment>
   </data>
   <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
-    <value>Load First Tray and Test Cells</value>
+    <value>Load First Drawer and Test Cells</value>
   </data>
   <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
     <value>Total cells to test</value>
@@ -471,16 +471,16 @@
     <value>Testing cell</value>
   </data>
   <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
-    <value>Tray to insert</value>
+    <value>Drawer to insert</value>
   </data>
   <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
-    <value>Max weight Tray portance (kg)</value>
+    <value>Max weight drawer portance (kg)</value>
   </data>
   <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
-    <value>Insert Tray</value>
+    <value>Insert Drawer</value>
   </data>
   <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
-    <value>Call Tray</value>
+    <value>Call Drawer</value>
   </data>
   <data name="BayHeightCheck" xml:space="preserve">
     <value>Bays Position Height Check</value>
@@ -598,7 +598,7 @@
     <value>Start store from bay to cell</value>
   </data>
   <data name="DrawerStoreAndRecall" xml:space="preserve">
-    <value>Tray store and Tray recall</value>
+    <value>Drawer store and drawer recall</value>
   </data>
   <data name="InitializingWithEllipsis" xml:space="preserve">
     <value>Initializing ...</value>
@@ -742,7 +742,7 @@
     <value>Chain calibration</value>
   </data>
   <data name="DrawerNumber" xml:space="preserve">
-    <value>Tray Number</value>
+    <value>Drawer Number</value>
   </data>
   <data name="GateClose" xml:space="preserve">
     <value>Close shutter</value>
@@ -751,7 +751,7 @@
     <value>Open shutter</value>
   </data>
   <data name="GoToDrawer" xml:space="preserve">
-    <value>Go to Tray</value>
+    <value>Go to drawer</value>
   </data>
   <data name="LuPresenceOnMachineCradle" xml:space="preserve">
     <value>LU Presence on Machine Side</value>
@@ -1048,7 +1048,7 @@
     <value>DestinationPosition is required.</value>
   </data>
   <data name="DrawerIdExtracted" xml:space="preserve">
-    <value>Tray id {0} extracted</value>
+    <value>Drawer id {0} extracted</value>
   </data>
   <data name="ErrorCheckFile" xml:space="preserve">
     <value>Error on checking file {0}</value>
@@ -1105,19 +1105,19 @@
     <value>Invalid cell id entered</value>
   </data>
   <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
-    <value>Invalid cell id on inserted Tray </value>
+    <value>Invalid cell id on inserted drawer </value>
   </data>
   <data name="InvalidDestinationChoiceType" xml:space="preserve">
     <value>Invalid destination choice type</value>
   </data>
   <data name="InvalidDrawerIdInBay" xml:space="preserve">
-    <value>Invalid Tray id in bay</value>
+    <value>Invalid drawer id in bay</value>
   </data>
   <data name="InvalidDrawerSelected" xml:space="preserve">
-    <value>Invalid Tray selected</value>
+    <value>Invalid drawer selected</value>
   </data>
   <data name="InvalidEnteredDrawerId" xml:space="preserve">
-    <value>Invalid entered Tray Id</value>
+    <value>Invalid entered drawer Id</value>
   </data>
   <data name="InvalidSourceChoiceType" xml:space="preserve">
     <value>Invalid source choice type</value>
@@ -1255,7 +1255,7 @@
     <value>Perform the bay calibration procedure to move the shelf to the sensor.</value>
   </data>
   <data name="CheckDrawersThenStart" xml:space="preserve">
-    <value>Check that there are no trays in the bay before starting. Press on START to begin the procedure</value>
+    <value>Check that there are no drawers in the bay before starting. Press on START to begin the procedure</value>
   </data>
   <data name="Complete" xml:space="preserve">
     <value>Complete</value>
@@ -1291,31 +1291,31 @@
     <value>Confirm setup</value>
   </data>
   <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
-    <value>The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the Tray id, the id of the destination cell and then press Start</value>
+    <value>The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the drawer id, the id of the destination cell and then press Start</value>
   </data>
   <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
-    <value>The procedure allows you to move a Tray from the source bay to the destination cell. To start the procedure, enter the Tray ID and then press Start</value>
+    <value>The procedure allows you to move a drawer from the source bay to the destination cell. To start the procedure, enter the drawer ID and then press Start</value>
   </data>
   <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
-    <value>Select the Tray pick position</value>
+    <value>Select the drawer pick position</value>
   </data>
   <data name="LoadingUnitFromBayToBay" xml:space="preserve">
-    <value>Tray movement from bay to bay</value>
+    <value>Drawer movement from bay to bay</value>
   </data>
   <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
-    <value>The procedure allows you to move a Tray from the source bay to the destination one. To start the procedure, enter the Tray ID and then press Start</value>
+    <value>The procedure allows you to move a drawer from the source bay to the destination one. To start the procedure, enter the drawer ID and then press Start</value>
   </data>
   <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
-    <value>Select the target location of the Tray</value>
+    <value>Select the target location of the drawer</value>
   </data>
   <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
-    <value>The procedure allows you to remove a Tray. To start the procedure, enter the Tray ID and then press Start</value>
+    <value>The procedure allows you to remove a drawer. To start the procedure, enter the drawer ID and then press Start</value>
   </data>
   <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
-    <value>Tray management</value>
+    <value>Drawer management</value>
   </data>
   <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
-    <value>Select the target location of the Tray</value>
+    <value>Select the target location of the drawer</value>
   </data>
   <data name="ConfirmNewOffset" xml:space="preserve">
     <value>Confirm new offset</value>
@@ -1372,7 +1372,7 @@
     <value>Full Test</value>
   </data>
   <data name="FullTestDescription" xml:space="preserve">
-    <value>The procedure allows the complete test of all the trays present in the machine. To start the procedure, enter the number of cycles and then press Start</value>
+    <value>The procedure allows the complete test of all the drawers present in the machine. To start the procedure, enter the number of cycles and then press Start</value>
   </data>
   <data name="FullTestSessionCycles" xml:space="preserve">
     <value>Session cycles</value>
@@ -1444,7 +1444,7 @@
     <value>Error on deleting snapshot file.</value>
   </data>
   <data name="DrawerManagement" xml:space="preserve">
-    <value>Tray management</value>
+    <value>Drawer management</value>
   </data>
   <data name="AverageCurrent" xml:space="preserve">
     <value>Average Current [A]</value>
@@ -1462,7 +1462,7 @@
     <value>Cell Management</value>
   </data>
   <data name="CellPanelsCheckDescription" xml:space="preserve">
-    <value>Be sure to adjust the Tray presence photocells, if not adjusted, the lift could block in the upper part of the machine.</value>
+    <value>Be sure to adjust the drawer presence photocells, if not adjusted, the lift could block in the upper part of the machine.</value>
   </data>
   <data name="CellPanelsCheckPanel" xml:space="preserve">
     <value>Panel control:</value>
@@ -1486,7 +1486,7 @@
     <value>Elevator up</value>
   </data>
   <data name="FallsUnit" xml:space="preserve">
-    <value>Falls Tray</value>
+    <value>Falls drawer</value>
   </data>
   <data name="GoToCell" xml:space="preserve">
     <value>Go to cell</value>
@@ -1588,10 +1588,10 @@
     <value>Load a bay unit or recall one to start the bay calibration wizard.</value>
   </data>
   <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
-    <value>Place the adjustment template in the upper right corner of the Tray in the bay, make sure to position the magnets so that it remains firmly on the Tray. Then open the shutter.</value>
+    <value>Place the adjustment template in the upper right corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer. Then open the shutter.</value>
   </data>
   <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
-    <value>Place the adjustment template in the upper left corner of the Tray in the bay, make sure to position the magnets so that it remains firmly on the Tray.</value>
+    <value>Place the adjustment template in the upper left corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer.</value>
   </data>
   <data name="RepeteCalibration" xml:space="preserve">
     <value>Repeat calibration</value>
@@ -1651,7 +1651,7 @@
     <value>Weight profile analysis</value>
   </data>
   <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
-    <value>Allows adjustment of the Tray height detection barrier</value>
+    <value>Allows adjustment of the drawer height detection barrier</value>
   </data>
   <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
     <value>Barrier calibration</value>
@@ -1681,7 +1681,7 @@
     <value>Cell management</value>
   </data>
   <data name="CellTestMenuDescription" xml:space="preserve">
-    <value>Load first Tray and test cells</value>
+    <value>Load first drawer and test cells</value>
   </data>
   <data name="CellTestMenuTitle" xml:space="preserve">
     <value>Border cells test</value>
@@ -2261,7 +2261,7 @@
     <value>Remote support</value>
   </data>
   <data name="DeleteUnitDialog" xml:space="preserve">
-    <value>This will remove the Tray from the warehouse map</value>
+    <value>This will remove the drawer from the warehouse map</value>
   </data>
   <data name="ExtBayMovementForExtraction" xml:space="preserve">
     <value>Extra movement toward operator</value>
@@ -2307,10 +2307,10 @@
     <value>Update tare</value>
   </data>
   <data name="UpdateTareProcedureHeader" xml:space="preserve">
-    <value>Tray tare update procedure</value>
+    <value>Drawer tare update procedure</value>
   </data>
   <data name="UpdateTareProcedure" xml:space="preserve">
-    <value>Do you confirm that the selected Tray is empty?</value>
+    <value>Do you confirm that the selected drawer is empty?</value>
   </data>
   <data name="WeightCalibration" xml:space="preserve">
     <value>Weight calibration</value>
@@ -2319,13 +2319,13 @@
     <value>The weight calibration function allows you to vary the weight reading using sample weights</value>
   </data>
   <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
-    <value>Load a Tray in the bay or call one to start the weight calibration wizard</value>
+    <value>Load a drawer in the bay or call one to start the weight calibration wizard</value>
   </data>
   <data name="EmptyUnitWeighing" xml:space="preserve">
     <value>Weighing with empty unit</value>
   </data>
   <data name="UnitWeighingDescription" xml:space="preserve">
-    <value>Press the button to obtain the current data by moving the Tray and enter its net weight. When finished, press Next to confirm the operation</value>
+    <value>Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation</value>
   </data>
   <data name="AbsorbedCurrent" xml:space="preserve">
     <value>Absorbed current</value>
@@ -2518,7 +2518,7 @@
     <value>Open browser</value>
   </data>
   <data name="WmsMissionActive" xml:space="preserve">
-    <value>There are active missions for this Tray by the WMS</value>
+    <value>There are active missions for this drawer by the WMS</value>
   </data>
   <data name="BayTelescopic" xml:space="preserve">
     <value>Bay telescopic</value>
@@ -2549,7 +2549,7 @@
     <value>Support</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>Shutdown procedure</value>
+    <value>Shutdown panel</value>
   </data>
   <data name="ShutdownDescription" xml:space="preserve">
     <value>Perform elevator calibration and shutdown the panel</value>

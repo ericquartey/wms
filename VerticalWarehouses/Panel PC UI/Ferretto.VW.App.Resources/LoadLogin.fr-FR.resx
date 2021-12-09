@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Connexion aux services établie</value>
+  </data>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Connexion au Service d’Automatisation perdue, reconnexion en cours...</value>
+  </data>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Impossible de se connecter au service d’automatisation</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Identifiants non valides.</value>
+  </data>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Module chargé.</value>
+  </data>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Saisissez le mot de passe</value>
+  </data>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Le mot de passe est trop court.</value>
+  </data>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Le mot de passe doit être spécifié.</value>
+  </data>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Les services sont en phase d’initialisation</value>
+  </data>
+  <data name="TempKey" xml:space="preserve">
+    <value>Clé temporaire : {0}</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Le code-barres ne correspond pas à un utilisateur enregistré.</value>
+  </data>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Le nom d’utilisateur doit être spécifié.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>La carte n’est pas associée à un utilisateur enregistré.</value>
+  </data>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Connexion par lecture de carte ...</value>
+  </data>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Authentification de l’utilisateur en cours...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Jeton inséré. Authentification en cours...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Jeton enlevé.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Échec de l’authentification par jeton.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Impossible de s’authentifier avec le jeton car le WMS est inaccessible.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Session utilisateur « service » expirée</value>
+  </data>
 </root>

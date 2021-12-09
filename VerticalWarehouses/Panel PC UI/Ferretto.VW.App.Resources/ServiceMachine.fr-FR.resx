@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Mode automatique manquant</value>
+  </data>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Étalonnage de la baie non exécuté.</value>
+  </data>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Impossible d’effectuer le calibrage du carrousel. \r\n La chaîne de la baie n’est pas en position zéro.</value>
+  </data>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Occupée</value>
+  </data>
+  <data name="CellFree" xml:space="preserve">
+    <value>Libre</value>
+  </data>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Homing non effectué.</value>
+  </data>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Incohérence des capteurs de présence du tiroir dans la baie.</value>
+  </data>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Incohérence de l’état de charge et des capteurs.</value>
+  </data>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Incohérence du capteur de cliquet à zéro et présence de tiroir.</value>
+  </data>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Présence de tiroir sur l’élévateur.</value>
+  </data>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Tiroir prêt à l’opération.</value>
+  </data>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Demande tiroir {0} exécutée correctement.</value>
+  </data>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Le tiroir à bord de l’élévateur a une hauteur erronée</value>
+  </data>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>La machine n’est pas en mode manuel...</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Machine éteinte</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Missions en erreur...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Missions depuis Wms présentes mais Wms non actif</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Mouvement chaîne baie en cours...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Mouvement élévateur en cours...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Mouvement horizontal en cours...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Mouvement en cours... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Mouvement en cours... (Mission : {0}, Tiroir : {1}, État : {2}, Mouvement : de {3} {4}, à {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Mouvement du tiroir en cours...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Mouvement du volet de fermeture en cours...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Mouvement vertical en cours...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Aucun tiroir présent dans la baie.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Absence de capteur de cliquet à zéro ou présence de tiroir.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Position {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Volet de fermeture ouvert ou en position inconnue.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Test en cours...</value>
+  </data>
+  <data name="ShutdownInProgress" xml:space="preserve">
+    <value>Arrêt du panneau en cours</value>
+  </data>
 </root>

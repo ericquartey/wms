@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Compaction" xml:space="preserve">
+    <value>Compactage</value>
+  </data>
+  <data name="CompactionAbbreviation" xml:space="preserve">
+    <value>COM</value>
+  </data>
+  <data name="CompactionDescription" xml:space="preserve">
+    <value>Optimisation de l’espace d’entrepôt</value>
+  </data>
+  <data name="Expired" xml:space="preserve">
+    <value>Il y a des opérations de maintenance échues</value>
+  </data>
+  <data name="Expiring" xml:space="preserve">
+    <value>Il y a des opérations de maintenance qui arrivent à échéance</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="MaintenanceAbbreviation" xml:space="preserve">
+    <value>MAINT</value>
+  </data>
+  <data name="MaintenanceDescription" xml:space="preserve">
+    <value>Compteurs et maintenance de la machine</value>
+  </data>
+  <data name="Updating" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="UpdatingAbbreviation" xml:space="preserve">
+    <value>UPD</value>
+  </data>
+  <data name="UpdatingDescription" xml:space="preserve">
+    <value>Mise à jour du logiciel Vertimag</value>
+  </data>
 </root>
