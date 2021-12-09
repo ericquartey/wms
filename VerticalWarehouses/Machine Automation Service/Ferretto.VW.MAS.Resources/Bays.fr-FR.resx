@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>La cote de la baie ({0}) doit être dans l’intervalle [{1},{2}].</value>
+  </data>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>La position de baie spécifiée n’est pas valide.</value>
+  </data>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>La baie spécifiée n’a pas de carrousel.</value>
+  </data>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>La baie contient au moins un tiroir.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>La baie contient un tiroir dans sa position supérieure.</value>
+  </data>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>La chaîne de la baie n’est pas en position zéro.</value>
+  </data>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical n’est pas un axe valide pour la méthode GetInverterIndexByMovementType ()</value>
+  </data>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>La hauteur maximum du chariot n’est pas valide.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>La baie contient un tiroir dans sa position externe</value>
+  </data>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>La baie spécifiée n’est pas une baie externe</value>
+  </data>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>La baie externe ne peut pas effectuer de mouvement non valide</value>
+  </data>
+  <data name="TheBayPositionIsBlocked" xml:space="preserve">
+    <value>La position de baie est bloquée</value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Le capteur de présence du tiroir dans la baie est manquant</value>
+  </data>
 </root>

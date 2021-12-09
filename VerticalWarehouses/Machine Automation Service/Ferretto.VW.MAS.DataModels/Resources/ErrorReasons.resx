@@ -202,7 +202,7 @@
     <value>If the loading unit has been removed, check the loading unit presence sensors in the bay, otherwise remove the loading unit from the bay.</value>
   </data>
   <data name="LoadUnitDestinationBay" xml:space="preserve">
-    <value>Verify that the destination bay of the tray is actually empty. Check that the bay loading unit sensors are working correctly.</value>
+    <value>Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly.</value>
   </data>
   <data name="LoadUnitNotFound" xml:space="preserve">
     <value>The selected load unit is not available. Check the load unit number entered and the logical position of the load unit.</value>
@@ -232,7 +232,7 @@
     <value>Sensors error. The Bay Zero Sensor is not active.</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>Upper bay position is already occupied by a tray.</value>
+    <value>Upper bay position is already occupied by a drawer.</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>The elevator chain zero sensor is active but the elevator is full.</value>

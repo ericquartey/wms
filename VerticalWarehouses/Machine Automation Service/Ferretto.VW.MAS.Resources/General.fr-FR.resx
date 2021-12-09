@@ -117,55 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
-    <value>The cell already contains another loading unit.</value>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>La demande n’est pas formulée correctement.</value>
   </data>
-  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
-    <value>The cell is unexpectedly free.</value>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>Erreur interne du serveur.</value>
   </data>
-  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
-    <value>The cell unexpectedly contains another loading unit.</value>
+  <data name="MaintenanceStateExpired" xml:space="preserve">
+    <value>État de maintenance échue</value>
   </data>
-  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
-    <value>The loading unit cannot occupy a blocked cell.</value>
+  <data name="MaintenanceStateExpiring" xml:space="preserve">
+    <value>État de maintenance presque à échéance</value>
   </data>
-  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
-    <value>The loading unit is already located in another cell.</value>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Il n’y a pas d’entité avec l’identifiant '{0}' spécifié.</value>
   </data>
-  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
-    <value>The specified height is not between the adjacent cells' heights.</value>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Élément non trouvé.</value>
   </data>
-  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
-    <value>The specified height would cause the panel to overlap with other panels.</value>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Le service est en phase d’initialisation.</value>
   </data>
-  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
-    <value>The target cell is space only, it cannot support a load unit.</value>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Le service a terminé la phase d’initialisation.</value>
   </data>
-  <data name="TheTargetCellIsBlocked" xml:space="preserve">
-    <value>The target cell is blocked.</value>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>La demande n’a pas pu être traitée, compte tenu de l’état actuel.</value>
   </data>
-  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
-    <value>The specified cell is not within the elevator's vertical bounds.</value>
-  </data>
-  <data name="NoEmptyCellsAvailable" xml:space="preserve">
-    <value>NoEmptyCellsAvailable</value>
-  </data>
-  <data name="TheCellIsNotFree" xml:space="preserve">
-    <value>The cell is not free.</value>
-  </data>
-  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
-    <value>The specified cell cannot fit the load unit</value>
-  </data>
-  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
-    <value>The Specified height is out of the elevator vertical bounds</value>
-  </data>
-  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
-    <value>The drawer cannot be placed in front of a deactivated cell.</value>
-  </data>
-  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
-    <value>The target cell is disabled.</value>
-  </data>
-  <data name="TheTargetCellIsUnusable" xml:space="preserve">
-    <value>The target cell is unusable.</value>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>La valeur ne peut être nulle ou ne contenir que des espaces.</value>
   </data>
 </root>

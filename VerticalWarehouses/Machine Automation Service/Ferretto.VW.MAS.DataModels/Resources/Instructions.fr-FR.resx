@@ -117,55 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
-    <value>The cell already contains another loading unit.</value>
+  <data name="AirFiltersCheck" xml:space="preserve">
+    <value>Contrôle des filtres à air</value>
   </data>
-  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
-    <value>The cell is unexpectedly free.</value>
+  <data name="BearingsCheck" xml:space="preserve">
+    <value>Contrôle des roulements</value>
   </data>
-  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
-    <value>The cell unexpectedly contains another loading unit.</value>
+  <data name="BearingsGrease" xml:space="preserve">
+    <value>Graissage des roulements</value>
   </data>
-  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
-    <value>The loading unit cannot occupy a blocked cell.</value>
+  <data name="BeltAdjust" xml:space="preserve">
+    <value>Tension de la courroie</value>
   </data>
-  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
-    <value>The loading unit is already located in another cell.</value>
+  <data name="BeltFasten" xml:space="preserve">
+    <value>Vérification de la fixation de la courroie</value>
   </data>
-  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
-    <value>The specified height is not between the adjacent cells' heights.</value>
+  <data name="BeltSubstitute" xml:space="preserve">
+    <value>Remplacement de la courroie</value>
   </data>
-  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
-    <value>The specified height would cause the panel to overlap with other panels.</value>
+  <data name="CableChainCheck" xml:space="preserve">
+    <value>Contrôle de la chaîne porte-câbles</value>
   </data>
-  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
-    <value>The target cell is space only, it cannot support a load unit.</value>
+  <data name="CablesCheck" xml:space="preserve">
+    <value>Contrôle des câbles</value>
   </data>
-  <data name="TheTargetCellIsBlocked" xml:space="preserve">
-    <value>The target cell is blocked.</value>
+  <data name="ChainAdjust" xml:space="preserve">
+    <value>Tension de la chaîne</value>
   </data>
-  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
-    <value>The specified cell is not within the elevator's vertical bounds.</value>
+  <data name="ChainGrease" xml:space="preserve">
+    <value>Graissage de la chaîne</value>
   </data>
-  <data name="NoEmptyCellsAvailable" xml:space="preserve">
-    <value>NoEmptyCellsAvailable</value>
+  <data name="ChainSubstitute" xml:space="preserve">
+    <value>Remplacement de la chaîne</value>
   </data>
-  <data name="TheCellIsNotFree" xml:space="preserve">
-    <value>The cell is not free.</value>
+  <data name="ContactorsSubstitute" xml:space="preserve">
+    <value>Remplacement des contacteurs</value>
   </data>
-  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
-    <value>The specified cell cannot fit the load unit</value>
+  <data name="ElectricalComponentsCheck" xml:space="preserve">
+    <value>Contrôle des composants électriques</value>
   </data>
-  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
-    <value>The Specified height is out of the elevator vertical bounds</value>
+  <data name="FirstCellCheck" xml:space="preserve">
+    <value>Contrôle de la première cellule</value>
   </data>
-  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
-    <value>The drawer cannot be placed in front of a deactivated cell.</value>
+  <data name="GuidesCheck" xml:space="preserve">
+    <value>Contrôle des guides</value>
   </data>
-  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
-    <value>The target cell is disabled.</value>
+  <data name="GuidesSubstitute" xml:space="preserve">
+    <value>Remplacement des guides</value>
   </data>
-  <data name="TheTargetCellIsUnusable" xml:space="preserve">
-    <value>The target cell is unusable.</value>
+  <data name="LampsCheck" xml:space="preserve">
+    <value>Contrôle des voyants grillés</value>
+  </data>
+  <data name="LinkCheck" xml:space="preserve">
+    <value>Contrôle du joint</value>
+  </data>
+  <data name="LinksGrease" xml:space="preserve">
+    <value>Graissage du joint</value>
+  </data>
+  <data name="LinkSubstitute" xml:space="preserve">
+    <value>Remplacement du joint</value>
+  </data>
+  <data name="MicroSwitchesCheck" xml:space="preserve">
+    <value>Contrôle des micro-interrupteurs</value>
+  </data>
+  <data name="MicroSwitchesMount" xml:space="preserve">
+    <value>Fixation des micro-interrupteurs</value>
+  </data>
+  <data name="MicroSwitchesSubstitute" xml:space="preserve">
+    <value>Remplacement des micro-interrupteurs</value>
+  </data>
+  <data name="MotorChainAdjust" xml:space="preserve">
+    <value>Tension de la chaîne du moteur</value>
+  </data>
+  <data name="MotorChainGrease" xml:space="preserve">
+    <value>Graissage de la chaîne du moteur</value>
+  </data>
+  <data name="MotorChainSubstitute" xml:space="preserve">
+    <value>Remplacement de la chaîne du moteur</value>
+  </data>
+  <data name="MotorGearOil" xml:space="preserve">
+    <value>Vérification et remplissage du niveau d’huile du motoréducteur</value>
+  </data>
+  <data name="MotorGearSubstitute" xml:space="preserve">
+    <value>Remplacement du motoréducteur</value>
+  </data>
+  <data name="OpticalSensorsClean" xml:space="preserve">
+    <value>Nettoyage des capteurs optiques</value>
+  </data>
+  <data name="OpticalSensorsMount" xml:space="preserve">
+    <value>Fixation des capteurs optiques</value>
+  </data>
+  <data name="PinPawlFastenersCheck" xml:space="preserve">
+    <value>Contrôle des goujons d’accrochage du cliquet</value>
+  </data>
+  <data name="PinPawlFastenersGrease" xml:space="preserve">
+    <value>Graissage des goujons d’accrochage du cliquet</value>
+  </data>
+  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
+    <value>Remplacement des goujons d’accrochage du cliquet</value>
+  </data>
+  <data name="PlasticCamsCheck" xml:space="preserve">
+    <value>Vérification de l’état des cames en plastique</value>
+  </data>
+  <data name="RandomCellCheck" xml:space="preserve">
+    <value>Contrôle aléatoire de la cellule</value>
+  </data>
+  <data name="SensorCheck" xml:space="preserve">
+    <value>Tests de fonctionnement des capteurs</value>
+  </data>
+  <data name="SensorsClean" xml:space="preserve">
+    <value>Nettoyage des capteurs</value>
+  </data>
+  <data name="SensorsMount" xml:space="preserve">
+    <value>Fixation des capteurs</value>
+  </data>
+  <data name="ShaftCheck" xml:space="preserve">
+    <value>Vérification de l’arbre du volet de fermeture</value>
+  </data>
+  <data name="SupportsCheck" xml:space="preserve">
+    <value>Vérification des jeux des supports</value>
+  </data>
+  <data name="WheelsCheck" xml:space="preserve">
+    <value>Vérification des roues de contraste</value>
+  </data>
+  <data name="WheelsSubstitute" xml:space="preserve">
+    <value>Remplacement des roues de contraste</value>
   </data>
 </root>

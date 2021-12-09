@@ -379,19 +379,19 @@
     <value>Machine Load Depth</value>
   </data>
   <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
-    <value>Max Tray Height</value>
+    <value>Max Drawer Height</value>
   </data>
   <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
-    <value>Max Tray NetWeight</value>
+    <value>Max Drawer NetWeight</value>
   </data>
   <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
-    <value>Min Tray Height</value>
+    <value>Min Drawer Height</value>
   </data>
   <data name="Machine_LoadUnitTare" xml:space="preserve">
     <value>Load unit Tare</value>
   </data>
   <data name="Machine_LoadUnitVeryHeavyPercent" xml:space="preserve">
-    <value>Net weight for very heavy Tray, 0 disables</value>
+    <value>Net weight for very heavy drawer, 0 disables</value>
   </data>
   <data name="Machine_LoadUnitWidth" xml:space="preserve">
     <value>LoadUnit Width</value>
@@ -580,7 +580,7 @@
     <value>Telescopic</value>
   </data>
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
-    <value>Enabled add drapery item</value>
+    <value>Enabled add item</value>
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Barcode automatic put</value>

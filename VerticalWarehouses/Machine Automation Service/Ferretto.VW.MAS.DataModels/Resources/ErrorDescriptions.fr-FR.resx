@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,337 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Conditions pour le positionnement non satisfaites.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Conditions pour la mise en marche non satisfaites.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Tiroir non chargé complètement.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Élévateur non chargé en prélèvement</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Élévateur non vide en dépôt</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Incohérence de l’état des capteurs</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Incohérence de l’état des capteurs</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Erreur du variateur.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Impossible d’écrire le paramètre du variateur pendant l’exécution.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Les données de la base de données du variateur ne correspondent pas.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Erreur de somme de contrôle EEPROM du variateur.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Erreur de lecture EEPROM du variateur.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Erreur d’écriture EEPROM du variateur.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Base de données du variateur non valide.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Paramètre du variateur non valide.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Le nœud spécifié n’est pas disponible.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Le paramètre du variateur est en lecture seule.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Le paramètre du variateur est en écriture uniquement.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Erreur de syntaxe du message envoyé au variateur.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Paramètre inconnu passé au variateur.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Incohérence entre la longueur du message au variateur et le type de donnée du message.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Une erreur a été détectée dans l’un des variateurs.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>La fonction de sécurité a été déclenchée.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Cellule de destination non valide</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Berceau élévateur occupé</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Incohérence de la base de données de position d’origine du tiroir</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Aucun tiroir présent dans la baie indiquée</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Tiroir détecté dans la baie d’extraction</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Baie de destination du tiroir occupée</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Tiroir non disponible</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Le tiroir sélectionné n’est pas chargé dans l’entrepôt</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Baie d’origine du tiroir vide</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>cellule d’origine non valide</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Erreur des capteurs de baie</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Capteurs de présence non valides</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Tiroir détecté sur l’élévateur</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Absence du capteur de zéro avec élévateur vide</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Incohérence de l’état des capteurs de la baie</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Niveau haut de la baie occupé</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Incohérence de l’état des capteurs</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Le poids maximum chargé sur le tiroir est excessif.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Volet de fermeture fermé</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Volet de fermeture ouvert</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Destination inférieure à la limite inférieure</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Le variateur est en train d’effectuer une autre commande</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Destination supérieure à la limite supérieure</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Une erreur a été détectée dans le dispositif E/S.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Tiroir détecté dans la cellule</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Mode machine non valide</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Barrière de sécurité occupée</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Bouton d'arrêt d'urgence enfoncé</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Le panneau latéral gauche est ouvert.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Tiroir détecté dans une autre baie</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Tiroir non présent sur l’élévateur</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Erreur des capteurs de baie</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Niveau haut de la baie vide</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Erreur d’exécution de la mission</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Erreur d’exécution de la mission</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Erreur d’exécution de la mission</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Aucune erreur</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Poids trop faible</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Poids total de l’entrepôt dépassé</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Entrepôt plein</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Baie occupée avec tiroir inconnu</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Élévateur occupé avec tiroir inconnu</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Erreur de connexion avec le variateur</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Erreur de connexion avec le dispositif E/S</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Erreur de connexion avec le laser</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Rétablissement automatique du mouvement non autorisé</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Le type de destination n’est pas valide</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Position inférieure de baie non définie</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Position supérieure de baie non définie</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Le type de mission n’est pas valide</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Mouvement de la chaîne de la baie non autorisé : le tiroir est trop lourd.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>La commande de rentrée depuis picking n’est pas valide</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Erreur de mise à jour des archives des cellules. Une ou plusieurs cellules de destination sont logiquement occupées</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Conditions pour le calibrage non satisfaites.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Erreur de hauteur</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Erreur de l’état du volet de fermeture</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Baie de destination sans étalonnage.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test non terminé</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Entrepôt pas vide.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Erreur de positionnement de la baie</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Le panneau latéral droit est ouvert</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Position verticale erronée.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>La configuration de l’accélération du mouvement de l’axe {0} n’est pas valide : accélération à vide inférieure à la pleine charge</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>La configuration de la vitesse du mouvement de l’axe {0} n’est pas valide : vitesse à vide inférieure à la pleine charge</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test non terminé</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Baie non valide</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Position de baie non valide</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Configuration de l’accélération du mouvement de l’axe {0} non valide.</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Configuration de décélération du mouvement de l’axe non valide {0}.</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Configuration de la vitesse du mouvement de l’axe {0} non valide.</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Erreur de positionnement à l’extrémité supérieure</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Baie externe occupée</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Baie externe vide</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>Erreur de WMS</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Déplacement non valide</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Erreur de positionnement à l’extrémité inférieure</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Tiroir non disponible</value>
+  </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Numéro du tiroir</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Erreur des capteurs de baie</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Erreur de positionnement</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Erreur de commande du variateur</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Erreur de commande de la carte d’entrées/sorties</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Erreur de syntaxe du message envoyé au variateur.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>La baie télescopique n’est pas accrochée correctement</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>La tare du tiroir est 0</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Erreur de position verticale</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Erreur de position verticale</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Hauteur trop basse</value>
+  </data>
 </root>

@@ -117,55 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
-    <value>The cell already contains another loading unit.</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>L’erreur ne peut pas être supérieure à 1 mm</value>
   </data>
-  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
-    <value>The cell is unexpectedly free.</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Vérification du tiroir :</value>
   </data>
-  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
-    <value>The cell unexpectedly contains another loading unit.</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Code Détail</value>
   </data>
-  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
-    <value>The loading unit cannot occupy a blocked cell.</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>À la fin de la procédure d’identification du tiroir, passer en mode automatique.</value>
   </data>
-  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
-    <value>The loading unit is already located in another cell.</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>À la fin de la procédure d’identification du tiroir, passer en mode manuel.</value>
   </data>
-  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
-    <value>The specified height is not between the adjacent cells' heights.</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Sélection du tiroir</value>
   </data>
-  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
-    <value>The specified height would cause the panel to overlap with other panels.</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Code d’Erreur</value>
   </data>
-  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
-    <value>The target cell is space only, it cannot support a load unit.</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Description de l’erreur</value>
   </data>
-  <data name="TheTargetCellIsBlocked" xml:space="preserve">
-    <value>The target cell is blocked.</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Causes possibles</value>
   </data>
-  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
-    <value>The specified cell is not within the elevator's vertical bounds.</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Rétablissement de l’erreur</value>
   </data>
-  <data name="NoEmptyCellsAvailable" xml:space="preserve">
-    <value>NoEmptyCellsAvailable</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Vu</value>
   </data>
-  <data name="TheCellIsNotFree" xml:space="preserve">
-    <value>The cell is not free.</value>
+  <data name="Forwards" xml:space="preserve">
+    <value>Suivant</value>
   </data>
-  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
-    <value>The specified cell cannot fit the load unit</value>
+  <data name="HighPosition" xml:space="preserve">
+    <value>Position haute</value>
   </data>
-  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
-    <value>The Specified height is out of the elevator vertical bounds</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
-    <value>The drawer cannot be placed in front of a deactivated cell.</value>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Tiroir non valide, saisir : </value>
   </data>
-  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
-    <value>The target cell is disabled.</value>
+  <data name="Inverter" xml:space="preserve">
+    <value>Variateur</value>
   </data>
-  <data name="TheTargetCellIsUnusable" xml:space="preserve">
-    <value>The target cell is unusable.</value>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Rétablissement de l’erreur ERREUR VARIATEUR</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Position basse</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Marquer comme résolu</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>Aucun article n’a été chargé sur la page.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Sélectionner l’id du tiroir présent sur l’élévateur.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Tiroir sur l’élévateur</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Sélection du tiroir (Baie 1) :</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Sélection du tiroir (Baie 2) :</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Sélection du tiroir (Baie 3) :</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Sélectionner l'id du/des tiroir(s) présent(s) dans la baie.</value>
+  </data>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Marquer comme résolu et chercher le zéro</value>
   </data>
 </root>
