@@ -68,6 +68,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canInputQuantity;
 
+        private bool canStockDifferenceQty;
+
         private bool chargeItemTextViewVisibility;
 
         private int confirmButtonColumnIndexPosition;
@@ -156,6 +158,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private object socketLinkOperationToken;
 
+        private double? stockDifferenceQty;
+
         private CancellationTokenSource tokenSource;
 
         private double? unitHeight;
@@ -224,6 +228,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.canInputQuantity;
             set => this.SetProperty(ref this.canInputQuantity, value);
+        }
+
+        public bool CanStockDifferenceQty
+        {
+            get => this.canStockDifferenceQty;
+            set => this.SetProperty(ref this.canStockDifferenceQty, value);
         }
 
         public bool ChargeItemTextViewVisibility
@@ -540,6 +550,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 this.RaiseCanExecuteChanged();
             }
+        }
+
+        public double? StockDifferenceQty
+        {
+            get => this.stockDifferenceQty;
+            set => this.SetProperty(ref this.stockDifferenceQty, value, () =>
+            {
+                if (value.HasValue)
+                {
+                    if ((value + this.SelectedItemCompartment.Stock) > 0)
+                    {
+                        this.InputQuantity = value + this.SelectedItemCompartment.Stock;
+                    }
+                }
+
+                this.RaiseCanExecuteChanged();
+            });
         }
 
         public double? UnitHeight
@@ -1888,6 +1915,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else
                     {
                         this.InputQuantity = this.SelectedItemCompartment.Stock;
+                        this.StockDifferenceQty = 0;
                     }
 
                     this.IsAdjustmentVisible = !this.IsAdjustmentVisible;
@@ -1922,7 +1950,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     ||
                     this.IsSocketLinkOperationVisible;
 
-                this.CanInputQuantity = this.IsOperationVisible;
+                var isUpdatingStockByDifference = await this.identityService.IsUpdatingStockByDifferenceAsync();
+
+                //this.CanInputQuantity = this.IsOperationVisible;
+                this.CanInputQuantity = this.IsOperationVisible && !isUpdatingStockByDifference;
+                this.CanStockDifferenceQty = this.IsOperationVisible && isUpdatingStockByDifference;
 
                 this.RaisePropertyChanged();
                 this.RaiseCanExecuteChanged();

@@ -1004,7 +1004,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
                 return ResourceManager.GetString("Machine_IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Updating stock by difference.
+        /// </summary>
+        public static string Machine_IsUpdatingStockByDifference { 
+            get
+            {
+                return ResourceManager.GetString("Machine_IsUpdatingStockByDifference", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Machine Load Depth.
         /// </summary>

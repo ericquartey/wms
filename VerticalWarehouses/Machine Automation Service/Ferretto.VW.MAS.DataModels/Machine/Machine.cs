@@ -78,6 +78,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
 
         /// <summary>
+        /// Get/set a value indicating if the stock value is updating by difference.
+        /// </summary>
+        public bool IsUpdatingStockByDifference { get; set; }
+
+        /// <summary>
         /// When this value is greater than zero it is used to separate item barcode from serial number barcode (see Deima project)
         /// </summary>
         public int ItemUniqueIdLength { get; set; }

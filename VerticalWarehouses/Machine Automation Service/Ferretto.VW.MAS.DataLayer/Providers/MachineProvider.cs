@@ -464,6 +464,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsUpdatingStockByDifference()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsUpdatingStockByDifference ?? false;
+            }
+        }
+
         public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;

@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsTouchHelperEnabled();
 
+        bool IsUpdatingStockByDifference();
+
         Task SetMachineId(int newMachineId);
 
         void Update(Machine machine, DataLayerContext context);

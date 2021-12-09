@@ -108,6 +108,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsUpdatingStockByDifference))]
+            [Id(32)]
+            public bool IsUpdatingStockByDifference { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ItemUniqueIdLength))]
             [Id(19)]
             public int ItemUniqueIdLength { get; set; }

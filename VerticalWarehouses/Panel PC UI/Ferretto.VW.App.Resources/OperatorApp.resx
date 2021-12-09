@@ -2353,4 +2353,8 @@
   <data name="InsufficientSpaceAvailable" xml:space="preserve">
     <value>Insufficient space available in the warehouse</value>
   </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Stock variation</value>
+    <comment>Label</comment>
+  </data>
 </root>

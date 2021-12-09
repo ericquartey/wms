@@ -361,6 +361,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.socketLinkOperation, value);
         }
 
+        protected IMachineIdentityWebService MachineIdentityWebService { get; }
+
         protected IMissionOperationsService MissionOperationsService { get; }
 
         protected IWmsDataProvider WmsDataProvider { get; }

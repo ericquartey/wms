@@ -172,6 +172,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsRequestConfirmForLastOperationOnLoadingUnit());
         }
 
+        [HttpPost("get/IsUpdatingStockByDifference")]
+        public ActionResult<bool> IsUpdatingStockByDifference()
+        {
+            return this.Ok(this.machineProvider.IsUpdatingStockByDifference());
+        }
+
         [HttpPost("set/machine/id")]
         public async Task<IActionResult> SetMachineIdAsync(int newMachineId)
         {

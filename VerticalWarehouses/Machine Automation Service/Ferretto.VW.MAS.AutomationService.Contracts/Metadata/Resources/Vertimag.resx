@@ -615,4 +615,7 @@
   <data name="Machine_TouchHelper" xml:space="preserve">
     <value>Touch helper</value>
   </data>
+  <data name="Machine_IsUpdatingStockByDifference" xml:space="preserve">
+   <value>Update the stock by difference</value>
+  </data>
 </root>
