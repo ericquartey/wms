@@ -395,6 +395,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException($"Load Unit with Overload (Id={loadingUnit.Id})");
             }
 
+            luHeightOld = luDb.Height;
             if (luDb.CellId.HasValue &&
                 (luDb.CellId != loadingUnit.CellId ||
                 luDb.Height != loadingUnit.Height ||
@@ -414,18 +415,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 (luDb.CellId != loadingUnit.CellId ||
                  luDb.Height != loadingUnit.Height))
             {
-                luHeightOld = luDb.Height;
-                lock (this.dataContext)
+                if (luDb.Height != loadingUnit.Height)
                 {
-                    luDb.Height = loadingUnit.Height;
-                    this.dataContext.SaveChanges();
+                    lock (this.dataContext)
+                    {
+                        luDb.Height = loadingUnit.Height;
+                        this.dataContext.SaveChanges();
+                    }
                 }
+
                 if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
                 {
                     lock (this.dataContext)
                     {
                         luDb.Height = luHeightOld;
-                        luDb.CellId = cellIdOld;
                         this.dataContext.SaveChanges();
                     }
 
