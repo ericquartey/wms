@@ -4705,6 +4705,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiselection.
+        /// </summary>
+        public static string Multiselection {
+            get {
+                return ResourceManager.GetString("Multiselection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emergency Red Button.
         /// </summary>
         public static string MushroomHeadButton {
