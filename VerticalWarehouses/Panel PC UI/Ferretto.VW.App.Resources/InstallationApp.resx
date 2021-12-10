@@ -2620,4 +2620,7 @@
   <data name="EnabledWithWMS" xml:space="preserve">
     <value>Enabled with WMS active</value>
   </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>Multiselection</value>
+  </data>
 </root>

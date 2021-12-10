@@ -2547,4 +2547,7 @@
   <data name="EnabledWithWMS" xml:space="preserve">
     <value>Abilitato con il WMS attivo</value>
   </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>Multiselezione</value>
+  </data>
 </root>

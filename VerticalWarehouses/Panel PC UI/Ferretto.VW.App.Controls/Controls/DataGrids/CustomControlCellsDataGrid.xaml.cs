@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -19,11 +22,6 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(IEnumerable),
             typeof(CustomControlCellsDataGrid));
 
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem),
-            typeof(object),
-            typeof(CustomControlCellsDataGrid));
-
         private string firstSort;
 
         private ListSortDirection lastDirection;
@@ -35,8 +33,18 @@ namespace Ferretto.VW.App.Controls.Controls
         public CustomControlCellsDataGrid()
         {
             this.InitializeComponent();
-            this.DataGrid.DataContext = this;
+            this.CellsDataGrid.DataContext = this;
             this.firstSort = "";
+        }
+
+        #endregion
+
+        #region Events
+
+        public event SelectionChangedEventHandler DataGridSelectionChanged
+        {
+            add { this.CellsDataGrid.SelectionChanged += value; }
+            remove { this.CellsDataGrid.SelectionChanged -= value; }
         }
 
         #endregion
@@ -49,15 +57,26 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(ItemsSourceProperty, value);
         }
 
-        public object SelectedItem
-        {
-            get => (object)this.GetValue(SelectedItemProperty);
-            set => this.SetValue(SelectedItemProperty, value);
-        }
-
         #endregion
 
         #region Methods
+
+        private static DependencyObject GetVisualParentOfType<T>(DependencyObject startObject)
+        {
+            DependencyObject parent = startObject;
+
+            while (IsNotNullAndNotOfType<T>(parent))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            return parent is T ? parent : null;
+        }
+
+        private static bool IsNotNullAndNotOfType<T>(DependencyObject obj)
+        {
+            return obj != null && !(obj is T);
+        }
 
         private void AddSortColumn(DataGrid sender, string sortColumn, ListSortDirection direction)
         {
@@ -101,6 +120,26 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.AddSortColumn((DataGrid)sender, this.firstSort, direction);
             }
             e.Handled = true;
+        }
+
+        private void MouseEnterHandler(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                e.OriginalSource is DataGridRow row)
+            {
+                row.IsSelected = !row.IsSelected;
+                e.Handled = true;
+            }
+        }
+
+        private void PreviewMouseDownHandler(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && e.OriginalSource is FrameworkElement element &&
+                GetVisualParentOfType<DataGridRow>(element) is DataGridRow row)
+            {
+                row.IsSelected = !row.IsSelected;
+                e.Handled = true;
+            }
         }
 
         #endregion

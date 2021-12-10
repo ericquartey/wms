@@ -29,6 +29,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.SupportType = from.SupportType;
                 this.LoadingUnit = loadUnit;
                 this.LoadUnitId = null;
+                this.Description = from.Description;
             }
         }
 
