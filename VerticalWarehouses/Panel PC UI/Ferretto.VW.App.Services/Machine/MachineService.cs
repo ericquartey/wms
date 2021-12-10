@@ -136,6 +136,8 @@ namespace Ferretto.VW.App.Services
 
         private string notification;
 
+        private IEnumerable<Cell> originalCells;
+
         private SubscriptionToken positioningOperationChangedToken;
 
         private SubscriptionToken receiveHomingUpdateToken;
@@ -339,6 +341,8 @@ namespace Ferretto.VW.App.Services
 
         public double MaxSolidSpace { get; private set; }
 
+        public IEnumerable<Cell> OriginalCells => this.originalCells;
+
         internal bool LUPresentInBay1 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay1 || this.sensorsService.Sensors.LUPresentMiddleBottomBay1) : this.sensorsService.Sensors.LUPresentInBay1;
 
         internal bool LUPresentInBay2 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay2 || this.sensorsService.Sensors.LUPresentMiddleBottomBay2) : this.sensorsService.Sensors.LUPresentInBay2;
@@ -413,6 +417,10 @@ namespace Ferretto.VW.App.Services
         public async Task GetCells()
         {
             this.Cells = await this.machineCellsWebService.GetAllAsync();
+            if (this.originalCells is null)
+            {
+                this.originalCells = await this.machineCellsWebService.GetAllAsync();
+            }
             this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
             this.FreeSpaceBack = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Back) * 25;
             this.FreeSpaceFront = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Front) * 25;

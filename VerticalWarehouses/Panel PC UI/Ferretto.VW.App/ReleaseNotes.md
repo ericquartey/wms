@@ -30,7 +30,9 @@
 - Gestione celle: attivazione della multi-selezione
 
 ## Bug Risolti
-- Gestione cassetti: correzione al salvataggio
+- Gestione cassetti: correzione al salvataggio dei dati quando si cambia la cella
+- Procedura di controllo quote: Applica correzione è limitato a 5mm rispetto alle quote iniziali
+- Movimenti guidati: correzione dei pulsanti con l'icona della tastiera
 
 ## Compatibile con adapter 0.4.29
 ***
