@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <None Remove="Images\Flags\HU.png" />
-    <None Remove="Images\Flags\HU_x.png" />
   </ItemGroup>
 
   <ItemGroup>

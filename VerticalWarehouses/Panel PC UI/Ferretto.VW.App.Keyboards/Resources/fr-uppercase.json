@@ -156,14 +156,14 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "Q"
+              "CommandText": "A"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "W"
+              "CommandText": "Z"
             }
           }
         },
@@ -246,7 +246,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "A"
+              "CommandText": "Q"
             }
           }
         },
@@ -309,7 +309,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00d2"
+              "CommandText": "M"
             }
           }
         },
@@ -361,7 +361,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "Z"
+              "CommandText": "W"
             }
           },
           "Width": "Auto"
@@ -409,7 +409,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "M"
+              "CommandText": "\u00c7"
             }
           },
           "Width": "Auto"
@@ -433,7 +433,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "<"
+              "CommandText": "^"
             }
           },
           "Width": "Auto"
@@ -441,7 +441,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": ">"
+              "CommandText": "\u007e"
             }
           },
           "Width": "Auto"

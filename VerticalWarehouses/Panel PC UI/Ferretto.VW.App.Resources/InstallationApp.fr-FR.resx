@@ -2059,13 +2059,13 @@
     <value>Poids</value>
   </data>
   <data name="LoadingUnitStatus_InBay" xml:space="preserve">
-    <value>Dans la Baie</value>
+    <value>dans la Baie</value>
   </data>
   <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
-    <value>Dans l’Élévateur</value>
+    <value>dans l’Élévateur</value>
   </data>
   <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
-    <value>Dans l’Emplacement</value>
+    <value>dans la cellule</value>
   </data>
   <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
     <value>Mouvement vers la Baie</value>
@@ -2083,7 +2083,7 @@
     <value>Poids brut (kg)</value>
   </data>
   <data name="IsIntoMachine" xml:space="preserve">
-    <value>Dans la machine</value>
+    <value>dans la machine</value>
   </data>
   <data name="MaxNetWeight" xml:space="preserve">
     <value>Poids net max. (kg)</value>

@@ -227,11 +227,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             "es-ES",
                             "Español");
 
-                //case "fr-FR":
-                //    return new Culture(
-                //            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/FR.png",
-                //            "fr-FR",
-                //            "Français");
+                case "fr-FR":
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/FR.png",
+                            "fr-FR",
+                            "Français");
 
                 case "pl-PL":
                     return new Culture(
@@ -333,10 +333,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             "es-ES",
                             "Español"));
 
-            //res.Add(new Culture(
-            //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/FR.png",
-            //                "fr-FR",
-            //                "Français"));
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/FR.png",
+                            "fr-FR",
+                            "Français"));
 
             //res.Add(new Culture(
             //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SK.png",

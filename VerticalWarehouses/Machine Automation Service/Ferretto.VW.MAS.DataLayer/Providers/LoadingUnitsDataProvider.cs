@@ -228,6 +228,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public LoadingUnit GetCellById(int id)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext.LoadingUnits
+                .Include(l => l.Cell)
+                .ThenInclude(l => l.Panel)
+                .SingleOrDefault(p => p.Id.Equals(id));
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
+
+                return loadingUnit;
+            }
+        }
+
         public double GetLoadUnitMaxHeight()
         {
             lock (this.dataContext)
