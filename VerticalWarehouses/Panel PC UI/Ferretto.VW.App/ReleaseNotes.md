@@ -25,17 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
-- Aggiunto parametro per mostrare il pulsante con la tastiera
-- Aggiunta Gestione Utenti: si possono cambiare le password di Operator e Installer e disabilitare Operator
+## Nuove Funzionalità 1.0.35 rispetto la 1.0.34
+- Aggiunta lingua francese
+- Gestione celle: attivazione della multi-selezione
 
 ## Bug Risolti
-- Aggiunto avviso di spazio insufficiente in magazzino
-- Il lettore di badge non si blocca con tessere sconosciute
-- Anche i movimenti orizzontali impostano la velocità, per la fermata di emergenza
+- Gestione cassetti: correzione al salvataggio
 
 ## Compatibile con adapter 0.4.29
 ***
+
+[Versione 1.0.34](#id1034)
 
 [Versione 1.0.33](#id1033)
 
@@ -105,6 +105,18 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1034"></a>
+## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
+- Aggiunto parametro per mostrare il pulsante con la tastiera
+- Aggiunta Gestione Utenti: si possono cambiare le password di Operator e Installer e disabilitare Operator
+
+## Bug Risolti
+- Aggiunto avviso di spazio insufficiente in magazzino
+- Il lettore di badge non si blocca con tessere sconosciute
+- Anche i movimenti orizzontali impostano la velocità, per la fermata di emergenza
+
+## Compatibile con adapter 0.4.29
 
 <a id="id1033"></a>
 ## Nuove Funzionalità 1.0.33 rispetto la 1.0.32
