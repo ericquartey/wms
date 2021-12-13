@@ -467,6 +467,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCanStartPosition));
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
             this.RaisePropertyChanged(nameof(this.CurrentPanel));
+            this.RaisePropertyChanged(nameof(this.CurrentCell));
             this.RaisePropertyChanged(nameof(this.CurrentPanelIsChecked));
 
             this.displacementCommand?.RaiseCanExecuteChanged();
@@ -486,6 +487,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 var currentPanelNumber = this.CurrentPanelNumber;
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
+                this.CurrentPanelNumber = 0;
                 this.CurrentPanelNumber = currentPanelNumber;
 
                 this.Displacement = 0;
