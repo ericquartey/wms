@@ -311,11 +311,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     if (len >= 20)
                     {
-                        fontSize = _FontSize_Very_Small;
+                        fontSize = _FontSize_Normal;
                     }
                     else
                     {
-                        fontSize = _FontSize_Normal;
+                        fontSize = _FontSize_High;
                     }
                 }
             }
