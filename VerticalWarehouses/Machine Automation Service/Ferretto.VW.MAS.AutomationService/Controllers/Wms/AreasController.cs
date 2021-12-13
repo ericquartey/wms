@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("{id}/item-lists")]
         public async Task<ActionResult<IEnumerable<ItemList>>> GetItemListsAsync(int id, int machineId, int bayNumber)
         {
-            return this.Ok(await this.areasWmsWebService.GetItemListsAsync(id, machineId, bayNumber));
+            var itemLists = await this.areasWmsWebService.GetItemListsAsync(id, machineId, bayNumber);
+            return this.Ok(itemLists.OrderBy(l => l.Priority).ThenBy(l => l.CreationDate));
         }
 
         [HttpGet("{id}/products")]
