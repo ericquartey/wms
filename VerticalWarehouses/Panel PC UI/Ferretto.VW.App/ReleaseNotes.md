@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.35 rispetto la 1.0.34
 - Aggiunta lingua francese
+- Aggiunta lingua ebraica
 - Gestione celle: attivazione della multi-selezione
 
 ## Bug Risolti

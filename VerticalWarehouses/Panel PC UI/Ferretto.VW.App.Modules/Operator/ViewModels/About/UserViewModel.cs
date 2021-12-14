@@ -263,6 +263,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             "el-GR",
                             "Ελληνικά");
 
+                case "he-IL":
+                    return new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/IL.png",
+                            "he-IL",
+                            "יהודי");
+
                 case "hr-HR":
                     return new Culture(
                              $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",
@@ -342,6 +348,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //                $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SK.png",
             //                "sk-SK",
             //                "Slovenský"));
+
+            res.Add(new Culture(
+                            $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/IL.png",
+                            "he-IL",
+                            "יהודי"));
 
             res.Add(new Culture(
                              $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",
