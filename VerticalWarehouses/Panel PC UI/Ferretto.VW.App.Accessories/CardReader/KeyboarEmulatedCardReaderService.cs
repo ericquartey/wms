@@ -160,11 +160,28 @@ namespace Ferretto.VW.App.Accessories
 
         private void ClearReading(object state)
         {
-            if (DateTime.UtcNow.Subtract(this.startTime) > TimeSpan.FromSeconds(2))
+            lock (this.stringBuilder)
             {
-                this.stringBuilder.Clear();
-                this.clearReadingTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                this.logger.Debug($"clear card reading");
+                if (DateTime.UtcNow.Subtract(this.startTime) > TimeSpan.FromMilliseconds(200)
+                    && this.stringBuilder.Length > 0)
+                {
+                    var match = this.tokenRegex.Match(this.stringBuilder.ToString());
+
+                    if (match.Groups[TokenCaptureGroupName].Success)
+                    {
+                        var token = match.Groups[TokenCaptureGroupName].Value;
+
+                        this.logger.Debug($"Found token '{token}'.");
+
+                        this.TokenAcquired?.Invoke(
+                            this,
+                            new RegexMatchEventArgs(token, match.Groups[TokenCaptureGroupName].Index));
+                    }
+
+                    this.stringBuilder.Clear();
+                    this.clearReadingTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    //this.logger.Debug($"clear card reading");
+                }
             }
         }
 
@@ -189,26 +206,14 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
-            this.startTime = DateTime.UtcNow;
-            this.stringBuilder.Append(e.Text);
-            this.clearReadingTimer.Change(2000, Timeout.Infinite);
-            this.logger.Trace($"card reading '{this.stringBuilder}'");
-
-            this.KeysAcquired?.Invoke(this, e.Text);
-
-            var match = this.tokenRegex.Match(this.stringBuilder.ToString());
-
-            if (match.Groups[TokenCaptureGroupName].Success)
+            lock (this.stringBuilder)
             {
-                var token = match.Groups[TokenCaptureGroupName].Value;
+                this.startTime = DateTime.UtcNow;
+                this.stringBuilder.Append(e.Text);
+                this.clearReadingTimer.Change(200, Timeout.Infinite);
+                this.logger.Trace($"card reading '{this.stringBuilder}'");
 
-                this.logger.Debug($"Found token '{token}'.");
-
-                this.TokenAcquired?.Invoke(
-                    this,
-                    new RegexMatchEventArgs(token, match.Groups[TokenCaptureGroupName].Index));
-
-                this.stringBuilder.Clear();
+                this.KeysAcquired?.Invoke(this, e.Text);
             }
 
             e.Handled = true;

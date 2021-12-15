@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Installation.Models;
@@ -223,7 +224,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnTokenAcquired(object sender, RegexMatchEventArgs e)
         {
-            this.acquiredTokens.Add(e.Token);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.acquiredTokens.Add(e.Token);
+            });
 
             this.ShowNotification(VW.App.Resources.InstallationApp.CodeRecognized, Services.Models.NotificationSeverity.Success);
         }
