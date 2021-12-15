@@ -796,11 +796,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
-                                e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
-                                if (!e.HasMismatch)
+                                try
                                 {
-                                    this.logger.Debug($"GetByBarcodeAsync '{item?.Code}'.");
+                                    var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
+                                    e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
+                                    if (!e.HasMismatch)
+                                    {
+                                        this.logger.Debug($"GetByBarcodeAsync '{item?.Code}'.");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
                                 }
                             }
                         }
@@ -814,7 +821,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Warning);
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Error);
                             }
                         }
                         else
@@ -1181,6 +1188,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.ClearNotifications();
+
             this.IsBusyLoading = false;
             //string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
 

@@ -6,12 +6,12 @@
 
         Info,
 
-        Error,
+        Low,
 
         Warning,
 
-        Low,
-
         Success,
+
+        Error,
     }
 }

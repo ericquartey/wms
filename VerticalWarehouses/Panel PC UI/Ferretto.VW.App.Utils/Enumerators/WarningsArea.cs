@@ -8,6 +8,8 @@
 
         Menu,
 
+        User,
+
         Picking,
 
         Information,

@@ -10,7 +10,7 @@ using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    [Warning(WarningsArea.Picking)]
+    [Warning(WarningsArea.User)]
     public class ItemOperationWaitViewModel : BaseOperatorViewModel
     {
         #region Fields
