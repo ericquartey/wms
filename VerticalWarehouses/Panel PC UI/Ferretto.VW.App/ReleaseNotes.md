@@ -34,6 +34,8 @@
 - Gestione cassetti: correzione al salvataggio dei dati quando si cambia la cella
 - Procedura di controllo quote: Applica correzione è limitato a 5mm rispetto alle quote iniziali
 - Movimenti guidati: correzione dei pulsanti con l'icona della tastiera
+- Il lettore di badge funziona anche senza \r nel token
+- Nelle viste del cassetto in baia ci sono meno messaggi di movimentazione
 
 ## Compatibile con adapter 0.4.29
 ***
