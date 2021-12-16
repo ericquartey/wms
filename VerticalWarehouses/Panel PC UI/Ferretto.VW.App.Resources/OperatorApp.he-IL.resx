@@ -1,0 +1,1857 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>פעולה</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>הפעל</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>זמן משימה</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>משקל יחידה ממוצע בפועל</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>הוסף</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>הוספת פריט למגש</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>מידע נוסף</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>עדכון</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>עדכון כמות</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>התרעות</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>רשימת התרעות מכונה</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>פריט</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>כמות זמינה [{0}]</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>כמות זמינה</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>ציר</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>חזור</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>הברקוד '{0}' לא מכיל את מק"ט הפריט</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>הברקוד '{0}' לא מכיל את כמות הפריטים</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>הברקוד '{0}' לא מכיל את מזהה הרשימה</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>ברקוד</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>חלק מהברקוד '{0}' לא תואם את הפריט</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>חלק מהברקוד '{0}' לא תואם את הפריט. הפעל מחדש</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>השלם כמות לפני אישור</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>הברקוד '{0}' לא מזוהה</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>אישור פעולה באמצעות סורק ברקוד</value>
+  </data>
+  <data name="BarcodeServiceError" xml:space="preserve">
+    <value>שגיאת ברקוד</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>חלון עבודה</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>חלון עבודה 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>חלון עבודה 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>חלון עבודה 2</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>הודעות חלון עבודה</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>מספר חלון עבודה</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>הכל</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>חלון עבודה מספר אחד</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>חלון עבודה מספר שלוש</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>חלון עבודה מספר שניים</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>מעלית</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>פעולות חלון עבודה</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>חלון עבודה</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>חסום</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>בדיקה נדרשת</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>ריק</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>רווח בלבד</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>לא מוגדר</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>מתחת למדף כבד</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>קופסא</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>קוד קופסא</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>תא לא פנוי</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>בטל ליקוט</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>בטל אחסנה</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>בטל הפעלת רשימה</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>מעלית ארגוטק 1 במצב תחתון</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>מעלית חלון עבודה 1 למעלה</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>מעלית חלון עבודה 2 למטה</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>מעלית חלון עבודה 2 למעלה</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>מעלית חלון עבודה 3 למעלה</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>מעלית חלון עבודה 3 למעלה</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>כיול מעלית בפעולה</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>תא</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>סה"כ תאים</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>סה"כ תאים קדמיים</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>סטטיסטיקה: תאים</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>אחר</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>סה"כ תאים מאחור</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>סה"כ תאים בשימוש</value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>טעינת פריט</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>בדיקת חריגת גובה</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>תהליך בדיקה בוטל</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>בדוק מוצר</value>
+  </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>בקשת בדיקה לפריט {0} (מגש{1}) התקבלה</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>סגור שורה</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>סגור דלת חלון עבודה</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value> דלת חלון עבודה במצב סגור</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>קוד</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>תנועות משולבות</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>אישור</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>פירוט</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>מיקום</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>למטה</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>מק"ט</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>תיאור פריט</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>קוד רשימה</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>תיאור רשימה</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>שורת רשימה</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>סוג רשימה</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>מספר אצוות ייצור</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>הערה</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>קוד רשימת אריזה</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>תיאור רשימת אריזה</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>למעלה</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>מתבצע סידור מחדש</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>תא</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>מלאי</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>מאשר</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>מאשר - קיימת פעולה נוספת לביצוע</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>מאשר ליקוט מגליל בד</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>מאשר שורה</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>אישור - כמות</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>אישור - ריק</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>שינוי</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>אשר: קיים</value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>אשר כמות מבוקשת</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>אישור טיפול אחזקה</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>האם אתה מאשר את טיפול האחזקה?</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>שם מונה</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>מונים</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>תאריך</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>יום</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>ימים</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>מחק משימה</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>יעד</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>קוד מפורט</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>שורות רשימה לביצוע</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>פרטים</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>הודעות מכונה</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>בדיקות</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(הנתונים מחושבים החל מתאריך השירות האחרון, בהשוואה לערך נוכחי)</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>כיוון</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>לא ניתן להפעיל פילטר Uwf</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>למטה</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>גליל בד</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>פריט \ קוד</value>
+  </data>
+  <data name="DraperyAvailable" xml:space="preserve">
+    <value>גליל בד קיים</value>
+  </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>בד לא תקין</value>
+  </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>נדרש גליל בד שלם</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>גליל בד אוחסן</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>גליל בד חסר</value>
+  </data>
+  <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
+    <value>גליל בד קיים עם קוד '{0}'</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>פרטי פעולת מלאי</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>פעולת מלאי</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>כמות מאוחסנת</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>מדפים לתא אחסון</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>פרטי ליקוט פריט</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>קבוצה</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>מצב פריט</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>סוג אריזה</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>תאריך ייצור</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>כמות מבוקשת</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>שורת רשימה</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>פעולות ליקוט</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>כמות שלוקטה</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>כמות מבוקשת</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>עדכן כמות מקסימום</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>פרטי פעולת אחסון</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>שורת רשימה</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>מצב פריט</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>סוג אריזה</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>תאריך ייצור</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>כמות מבוקשת</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>פעולת אחסון</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>כמות שאוחסנה [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>כמות מבוקשת [{0}]</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>ייעול אחסנת מדפים</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>ייעול אחסת מדפים צד קדמי</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>הסתיימה פעולת סידור מדפים</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>תהליך סידור מדפים</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>מרווח מקסימלי ששוחזר</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>ייעול אחסנת מדפים צד אחורי</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>מרווח לשחזור</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>חלוקת מדפים גדולה מדי: הפעל פעולת ייעול סידור מדפים</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>תאים</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>מספר תא</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>אחסנה</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>אחסנה %</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>משימות</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>פעולות מתוזמנות:</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>מחכה למדף חדש</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>סטטיסטיקה: בדיקת משקל פריט</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>סטטיסטיקה: בדיקת משקל יחידה</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>משקל מותר מקסימלי (ק"ג)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>ניצול משקל מותר (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>סה"כ יחידות</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>ניצול משקל מותר (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>משקל פריטים מאוחסנים ק"ג</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>הוצא מדף</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>מעלית</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>סה"כ פעולות מעלית משירות אחרון</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>ציר מעלית אופקי</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>ציר מעלית אנכי</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>ריק</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>אפשר פילטר Uwf</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>שגיאת תנועות</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>תנועת מדפים ללא שגיאה</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>תיאור שגיאה</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>סטטיסטיקה: ניתוח שגיאות</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>מדד אמינות</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>סה"כ יחידות שנעו</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>סה"כ שגיאות</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>הפעל שורה</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>הפעלת רשימה '{0}' התקבלה</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>חלון עבודה חיצוני 1 למטה</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>חלון עבודה חיצוני 1 למעלה</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>חלון עבודה חיצוני 2 למטה</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>חלון עבודה חיצוני 2 למעלה</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>חלון עבודה חיצוני 2 למטה</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>חלון עבודה חיצוני 2 למעלה</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>מצב תקלה השתנה</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>חלוקת מדפים מאחור</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>חלוקת מדפים מלפנים</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>סה"כ חלוקת מדפים</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>תאים פנויים</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>תאים פנויים</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>תאים פנויים - מיקום בלבד</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>מלא</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>כללי</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>מידע כללי</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>תאריך קבלה</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>שירות אחרון</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>דגם</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>שירות הבא</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>סטטוס מצב תפעולי</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>מידע כללי</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>מספר סידורי</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>גירסת תוכנה</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>כמות מדפים</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>סטטוס WMS</value>
+  </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>ערך שגוי</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>גובה</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>כיול עצמי</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>ציר אנכי</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>כיול אנכי בפעולה</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>מספר סידורי</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>פעולות ליקוט ביחידה N</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>פעולות אחסנה ביחידה N</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>אם ליקטת פריט, אנא החזר אותו לתא</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>קרא למדף</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>קריאת מדף מיידית</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>מדף מבוקש</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>הכנס קוספא</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>תאריך התקנה</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>סטטוס שורה</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>סטטוס</value>
+  </data>
+  <data name="InsufficientSpaceAvailable" xml:space="preserve">
+    <value>אין מספיק מקום במכונה</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>ביניים</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>חלון עבודה 1 למטה</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>חלון עבודה 1 למעלה</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>חלון עבודה 2 למטה</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>חלון עבודה 2 למעלה</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>חלון עבודה 3 למטה</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>חלון עבודה 3 למעלה</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>נתון לא תקין</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>פעולה לא תקפה</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>פעולות מלאי</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>פעולת מלאי בוטלה</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>כמות שנבדקה [{0}]</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>אינדקס ממיר</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>כתובת IP נוספת</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>כתובת IP אינה זמינה</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>כתובת IP חוברה בהצלחה</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>הוספת פריט...</value>
+  </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>הוספת פריט נכשלה</value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>פעולה אינה אפשרית, פריט \ קופסה אינם ידועים</value>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>פריט נמצא, ברקוד:</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>מק"ט פריט</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>תיאור פריט</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>קטגוריה</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>רמה</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>פרטי פריט</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>סוג ניהול</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>מידות יחידה</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>זמן FIFO</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>משקל ממוצע [גרם]</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>פריט נמחק</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>בדיקה</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>מלאי</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>אינו מוגדר</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>לקט</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>אחסן</value>
+  </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>פריט אוחסן</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>זמינות מכונה</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>לא מוגדר</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>כמות</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>קרא לפריט</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>תיאור פריט</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>פריט</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>מכונות</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>חפש פריט לפי קוד או תיאור</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>חיפוש</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>מיון פריטים לפי קוד</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>מלאי</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>ק"מ חלון עבודה מטיפול אחרון / סה"כ</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>ק"מ צירי מעלית מטיפול אחרון / סה"כ</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>פעולה אחרונה במדף. הנח את הפריט ולחץ OK</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>תאריך טיפול אחרון</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>רשימה</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>קיים</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>פרטי רשימה</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>בצע רשימה</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>ממתין לביצוע רשימה</value>
+  </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>אחסון גליל בד</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>מדף</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>מספר מדף אינו קיים</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>יחידה</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>בחלון העבודה</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>מחוץ לחלון העבודה</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>מדף נוכחי</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>מדף 1 נשלח לחלון העבודה {0}</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>קיימים {0} מדפים שנשלחו לחלון העבודה {1}</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>מדף</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>מספר תא מקור</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>יעד מגש</value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>חיישן זיהוי מדף בחלון העבודה חסר</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>מס מדף מקור</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>תאים נעולים</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>אצוות ייצור</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>מספר מכונה</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>מכונות</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>הסתיים</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>פקע תוקף</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>לא ידוע</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>תקין</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>שדה מילוי פרטים</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>זמן אוטומטי</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>יחידות שהוזזו</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>סה"כ זמן פעולה</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>סה"כ פעולות דלת חלון עבודה מס' 1</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>סה"כ פעולות דלת חלון עבודה מס' 2</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>סה"כ פעולות דלת חלון עבודה מס' 3</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>סה"כ פעולות ציר אנכי</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>סה"כ תנועת ציר אנכי (ק"מ)</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>זמן שימוש</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>משקל תכולה</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>סטטיסטיקות מכונה</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>סטטיסטיקת חלון עבודה</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>מדפים שנעו בבסיס 1</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>מדפים שנעו בבסיס 2</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>מדפים שנעו בבסיס 3</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>מידע ציר שרשרת</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>סה"כ פעולות ציר אופקי</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>נתוני דלת חלון עבודה</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>נתוני ציר אנכי</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>תחזוקה</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>שלח בקשה להתחברות מרחוק</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>כמות פעולות בין שני טיפולי אחזקה</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>כמות פעולות מאז טיפול אחזקה אחרון</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>סטטוס שורה</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>פירוט שירות אחזקה</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>פלטפורמה</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>זמן השבתת מכונה [שעות]</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>סה"כ תנועות</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>אחזקה: ורטימג X</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>תאריך התקנה</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>תאריך טיפול אחזקה אחרון</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>דגם</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>תאריך טיפול אחזקה הבא</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>מספר סידורי</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>מכונת מצבים</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>סמן כ'תקין' ועבור לסידור מדפים מחדש</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>מצב פריט</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>מרווח מקסימלי בתאים צמודים מאחור</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>מרווח מקסימליבתאים צמודים מלפנים</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>כמות שנספרה</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>בדיקת משקל וספירת יחידות</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>לא מוגדר</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>משימות</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>רשימת משימות</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>חזרה לחלון העבודה</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7. שרשרת חלון עבודה</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8. סגור דלת חלון עבודה</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5. העברת מדף</value>
+  </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>חלון עבודה חיצוני כפול</value>
+  </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>מעלית בחלון עבודה עולה</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13. סוף</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101. שגיאה</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>בעיה בפעולת העברת מדף</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>שגיאת טעינה</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>חלון עבודה חיצוני</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3. טעינת מעלית</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1. חדש</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2. התחל</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4. ליעד</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>המתן שרשרת</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>המתן טעינת חלון עבודה</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>עצור טעינת מדף מתא</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>המתן טעינה לחלון עבודה חיצוני</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>המתן טעינה לחלון עבודה פנימי</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6. ממתין לפעולות משתמש</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>סטטוס</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>צעד</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>זמן משימה</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>סוג משימה</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>סדר מדפים מחדש</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>בדיקה ראשונה</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>בדיקת מלאה הכנסה</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>בדיקה מלאה הוצאה</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>הכנסה</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>פעולת הטענת יחידה</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>ידני</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>סוג חסר</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>הוצאה</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>מערכת ניהול מחסן</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>פעולות מדפים</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>לקט</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>ליקוט</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>חפש פריט</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>פריט</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>חפש וקרא לפריט</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>רשימות ממתינות</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>רשימה</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>הפעלה / השעיית רשימות</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>הגדרות</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>נדרשת פעולת כיול עצמי לציר</value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>נדרשת תנועה לאחור</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>כרטיסי רשת</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>פעולות נוספות זמינות</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>תאריך טיפול אחזקה הבא</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>אף פריט לא נבחר בתא</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>קוד פריט '{0}' אינו זמין</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>מזהה רשימה '{0}' אינו זמין</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>אין מדף בתנועה לחלון העבודה</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>מיקום מדף לא ידוע</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>אין סיבה</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>הערה</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>שדה הערה שגוי, פעולה לא בוצעה</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>תאריך הופעה</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>דלת חלון עבודה במצב פתוח</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>פעולה בוטלה</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>ביטול פעולה מאושר</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>פעולה מאושרת</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>משקל יחידה ממוצע מקורי</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>תא</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>מדף</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>גובה</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>לייזר</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>צד</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>מצב</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>משקל</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>סידור מדפים מחדש</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>קריאה למדף</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>מגש</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>פעולות מדפים</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>תחזוקה</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>סטטיסטיקה</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>סוג אריזה</value>
+  </data>
+  <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
+    <value>בצע חלקית והשלם</value>
+  </data>
+  <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
+    <value>בצע חלקית והמתן</value>
+  </data>
+  <data name="PartiallyExecuteLabel" xml:space="preserve">
+    <value>בצע חלקית</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>עצירה</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>לקט</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>ליקוט פריט</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>אשר קופסא</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>כמות שלוקטה [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>כמות לליקוט [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>הבקשה לליקוט פריט [{0}] (q.ty{1} התקבלה</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>יחידות</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>מיקום</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>כמות קיימת</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>כמות כוללת</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>תאריך ייצור</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>אחסן</value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>אחסן פריט</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>אחסן קופסא</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>אחסן כמות [{0}]</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>הבקשה אחסנת פריט [{0}] (q.ty{1} התקבלה</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>כמות</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>כמות לליקוט</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>החזר מדף</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>הוצא כמות פריטים שנשפכה מהתא</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>הוצא קופסא</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>כמות נדרשת [{0}]</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>כמות נדרשת</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>הפעל מחדש</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>תאריך סיום תקלה</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>הפעל תהליך מחדש</value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>תנאי חזרה למצב עבודה רגיל</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>שחזר פעולה</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>החזר למצב קודם</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>מצב הפעלה השתנה</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>בחר תא</value>
+  </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>בחר הזמנה</value>
+  </data>
+  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
+    <value>בחר הזמנה</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>בחר סיבה</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>סידורי</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>סידורי</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>מצב תהליכים</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>תאריך משלוח</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>סמן בד לא תקין</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>שגיאה בפעולת תקלת תקשורת</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>תקלת תקשורת נכשלה</value>
+  </data>
+  <data name="SignallingDefectOnProcess" xml:space="preserve">
+    <value>תקלת תקשורת בתהליך</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>תקלת תקשורת הצליחה</value>
+  </data>
+  <data name="SocketLink" xml:space="preserve">
+    <value>Socket Link</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>התחל עדכון</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>סטטיסטיקה</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>סה"כ אחורי</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>סה"כ אחורי%</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>סה"כ קדמי</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>סה"כ קדמי %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>מצב</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>משקל נוכחי</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>מדף</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>גובה</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>מקסימום %</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>משקל מקסימלי</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>טרה</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>שגיאה</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>סה"כ</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>סהכ %</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>קיט</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>בקשה</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>מצב</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>חלק</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>כמות</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>סטטיסטיקת תאים</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>סטטיסטיקת יחידות</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>סטטיסטיקת שגיאות</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>סטטיסטיקת מכונה</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>בטל</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>הסתיים</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>מסים</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>מבצע</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>חדש</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>המתנה</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>תאריך ושעת פעולה</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>סיבת עצירה</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>למעלה</value>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>הכנסה</value>
+  </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>מושעה</value>
+  </data>
+  <data name="Suspending" xml:space="preserve">
+    <value>משעה</value>
+  </data>
+  <data name="SuspendOperationError" xml:space="preserve">
+    <value>שגיאה בתהליך השעייה</value>
+  </data>
+  <data name="SuspendOperationFailed" xml:space="preserve">
+    <value>תהליך השעייה נכשל</value>
+  </data>
+  <data name="SuspendOperationSuccess" xml:space="preserve">
+    <value>הצלחה</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>סה"כ זמן ביצוע פעולה</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>ק"מ חלון עבודה 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>ק"מ חלון עבודה 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>ק"מ חלון עבודה 3</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>סה"כ תאים</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>ק"מ ציר מעלית אופקי</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>סה"כ ק"מ </value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>משקל מכונה כולל</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>סבבים</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>סבבים</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>סה"כ זמן עבודה מטיפול אחזקה אחרון</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>סה"כ יחידות</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>סה"כ יחידות בחלון עבודה מטיפול אחזקה אחרון</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>ק"מ ציר מעלית אנכי</value>
+  </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>נדרש ארגז. ברקוד:</value>
+  </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>קבלת מספר קופסא חיצונית</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>יחידה</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>יחידה n</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>יחידה בחלון עבודה - סידור מדפים אינו אפשרי</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>יחידה</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>יחידות בחלון העבודה</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>יחידות בחלון עבודה 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>יחידות בחלון עבודה 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>יחידות בחלון עבודה 3</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>יחידות בתא</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>יחידות במעלית</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>משקל יחידה [גר]</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>לא ידוע</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>למעלה</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>עדכן משקל יחידה</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>עכדן ערך</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>עדכן משקל פריט ממוצע</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>משתמשים</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>פילטר UWF פעיל</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>פילטר UWF אינו פעיל</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>ציר אנכי</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>תצוגה</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>המתנה</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>רשימה</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>מכונות</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>סוג</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>תיאור</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>פריט</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>מכונה</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>כמות</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>שורה</value>
+  </data>
+  <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
+    <value>בחירת אופן ביצוע רשימה</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>אזהרה</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>כמות מבוזבזת</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>משקל</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>WMS Services offline</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>WMS Services online</value>
+  </data>
+</root>

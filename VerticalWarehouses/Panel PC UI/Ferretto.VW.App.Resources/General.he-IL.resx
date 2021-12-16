@@ -117,40 +117,184 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="Add" xml:space="preserve">
+    <value>הוסף</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>אודות</value>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>מיקום מכונה לא מזוהה</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>סטטיסטיקה, התרעות, בדיקות</value>
+  <data name="Automatic" xml:space="preserve">
+    <value>אוטומטי</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>התקנה</value>
+  <data name="Back" xml:space="preserve">
+    <value>חזור</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>תהליכי התקנה, תנועות ידניות ועוד</value>
+  <data name="BackShutterTest" xml:space="preserve">
+    <value>בדיקה בתהליך... לא ניתן לצאת מהעמוד</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>תחזוקה</value>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>תקלת תקשורת עם EJLog</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>תחזוקה, וצמצום מרווחי תאים, עדכון</value>
+  <data name="Bay" xml:space="preserve">
+    <value>חלון עבודה</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>תנועות</value>
+  <data name="BayNumber" xml:space="preserve">
+    <value>חלון עבודה</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>הזז</value>
+  <data name="BayOneName" xml:space="preserve">
+    <value>אחד</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>מצב חיישן, הפעלת מכונה מחדש, עוד</value>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>שלוש</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>ליקוט</value>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>שניים</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>ליקוט, אחסנה, מלאי</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>בטל</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>שינוי בהירות</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>סגור</value>
+  </data>
+  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
+    <value>האם אתה מאשר להעביר את המכונה למצב אוטומטי ולבצע את כל התנועות הממתינות?</value>
+  </data>
+  <data name="ConfirmMachineRun" xml:space="preserve">
+    <value>האם אתה מאשר לבצע הדלקה של המכונה?</value>
+  </data>
+  <data name="Connectivity" xml:space="preserve">
+    <value>קישור</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>לפני (0:0) ימים</value>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>איתור תקלות</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>מכונות</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>שגיאה</value>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>שגיאת תקשורת עם תהליכים</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>מיקום קובץ</value>
+  </data>
+  <data name="FiniteMachineState" xml:space="preserve">
+    <value>מצב מכונה סופי</value>
+  </data>
+  <data name="ForbiddenOperation" xml:space="preserve">
+    <value>פעולה אסורה</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>שעות שעברו: {0:)</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>מספר מדף אינו קיים</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>ממיר</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>כניסה</value>
+  </data>
+  <data name="LotManagedProduct" xml:space="preserve">
+    <value>בחר מספר אצוות ייצור לפריט</value>
+  </data>
+  <data name="MachineRun" xml:space="preserve">
+    <value>הפעל</value>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>ידני</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>לפני {0:0} דקות</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>הבא</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>לא</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>רשימה ריקה</value>
+  </data>
+  <data name="NotPresent" xml:space="preserve">
+    <value>לא קיים</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>עכשיו</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>ערך אינו יכול להיות חסר</value>
+  </data>
+  <data name="Present" xml:space="preserve">
+    <value>קיים</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>שמור</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>מספר סידורי</value>
+  </data>
+  <data name="ShuttingDown" xml:space="preserve">
+    <value>כיבוי...</value>
+  </data>
+  <data name="SocketLinkEnabled" xml:space="preserve">
+    <value>אפשר Socket Link</value>
+  </data>
+  <data name="SocketLinkPort" xml:space="preserve">
+    <value>יציאה</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>זמן קצוב</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>התחל</value>
+  </data>
+  <data name="StatusDebug" xml:space="preserve">
+    <value>מצב:</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>עצור</value>
+  </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>כבה</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>העבר למצב אוטומטי</value>
+  </data>
+  <data name="SwitchToManual" xml:space="preserve">
+    <value>העבר למצב ידני</value>
+  </data>
+  <data name="TokenStatus" xml:space="preserve">
+    <value>מצב מפתח אבטחה</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>גירסה {0}</value>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>אחורי</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>קדמי</value>
+  </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>מבוטל</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>אפשר WMS</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>כן</value>
   </data>
 </root>

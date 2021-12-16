@@ -117,40 +117,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>INFO</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>אימות משתמש</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>אודות</value>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>זמן תהליך 'service' הסתיים</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>סטטיסטיקה, התרעות, בדיקות</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>שירות מחובר</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>התקנה</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>שירות אוטומטי התנתק - מנסה לחדש חיבור</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>תהליכי התקנה, תנועות ידניות ועוד</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>אין אפשרות לחבר שירות אוטומטי</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>תחזוקה</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>אישורים לא תקפים</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>תחזוקה, וצמצום מרווחי תאים, עדכון</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>מבצע הזדהות באמצעות כרטיס...</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>תנועות</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>מודול הוטען</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>הזז</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>הכנס סיסמה</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>מצב חיישן, הפעלת מכונה מחדש, עוד</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>הסיסמה קצרה מדי</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>ליקוט</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>הסיסמה חייבת להיות מוגדרת</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>ליקוט, אחסנה, מלאי</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>בחינת תהליכים</value>
+  </data>
+  <data name="TempKey" xml:space="preserve">
+    <value>מפתח זמני: {0}</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>הוכנס מפתח אבטחה. אימות משתמש בתהליך</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>מפתח אבטחה הוסר</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>לא ניתן לאמת משתמש באמצעות הברקוד</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>לא ניתן לאמת משתמש באמצעות כרטיס</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>לא ניתן לאמת משתמש באמצעות מפתח אבטחה</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>לא ניתן לאמת משתמש באמצעות מבטח אבטחה, משום ששרת WMS לא זמין</value>
+  </data>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>חובה להגדיר שם משתמש</value>
   </data>
 </root>
