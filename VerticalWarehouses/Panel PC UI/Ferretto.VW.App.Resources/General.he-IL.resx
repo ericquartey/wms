@@ -136,10 +136,10 @@
     <value>תקלת תקשורת עם EJLog</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>חלון עבודה</value>
+    <value>עמדה</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>חלון עבודה</value>
+    <value>עמדה</value>
   </data>
   <data name="BayOneName" xml:space="preserve">
     <value>אחד</value>
@@ -169,7 +169,7 @@
     <value>קישור</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>לפני (0:0) ימים</value>
+    <value>לפני {0:0} ימים</value>
   </data>
   <data name="Debug" xml:space="preserve">
     <value>איתור תקלות</value>
@@ -193,7 +193,7 @@
     <value>פעולה אסורה</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>שעות שעברו: {0:)</value>
+    <value>שעות שעברו: {0:0}</value>
   </data>
   <data name="IdLoadingUnitNotExists" xml:space="preserve">
     <value>מספר מדף אינו קיים</value>

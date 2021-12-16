@@ -142,7 +142,7 @@
     <value>עדכון</value>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
-    <value>עדכון כמות</value>
+    <value>עדכון כמות [{0}]</value>
   </data>
   <data name="Alarms" xml:space="preserve">
     <value>התרעות</value>
@@ -196,43 +196,43 @@
     <value>שגיאת ברקוד</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>חלון עבודה</value>
+    <value>עמדה</value>
   </data>
   <data name="Bay1" xml:space="preserve">
-    <value>חלון עבודה 1</value>
+    <value>עמדה 1</value>
   </data>
   <data name="Bay2" xml:space="preserve">
-    <value>חלון עבודה 2</value>
+    <value>עמדה 2</value>
   </data>
   <data name="Bay3" xml:space="preserve">
-    <value>חלון עבודה 2</value>
+    <value>עמדה 3</value>
   </data>
   <data name="BayNotifications" xml:space="preserve">
-    <value>הודעות חלון עבודה</value>
+    <value>הודעות עמדה</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>מספר חלון עבודה</value>
+    <value>מספר עמדה</value>
   </data>
   <data name="BayNumberAll" xml:space="preserve">
     <value>הכל</value>
   </data>
   <data name="BayNumberBayOne" xml:space="preserve">
-    <value>חלון עבודה מספר אחד</value>
+    <value>עמדה 1</value>
   </data>
   <data name="BayNumberBayThree" xml:space="preserve">
-    <value>חלון עבודה מספר שלוש</value>
+    <value>עמדה 3</value>
   </data>
   <data name="BayNumberBayTwo" xml:space="preserve">
-    <value>חלון עבודה מספר שניים</value>
+    <value>עמדה 2</value>
   </data>
   <data name="BayNumberElevatorBay" xml:space="preserve">
     <value>מעלית</value>
   </data>
   <data name="BayOperations" xml:space="preserve">
-    <value>פעולות חלון עבודה</value>
+    <value>פעולות עמדה</value>
   </data>
   <data name="BayTarget" xml:space="preserve">
-    <value>חלון עבודה</value>
+    <value>עמדה</value>
   </data>
   <data name="BlockLevelBlocked" xml:space="preserve">
     <value>חסום</value>
@@ -271,25 +271,25 @@
     <value>בטל הפעלת רשימה</value>
   </data>
   <data name="CarouselBay1Down" xml:space="preserve">
-    <value>מעלית ארגוטק 1 במצב תחתון</value>
+    <value>מעלית ארגוטק עמדה 1 למטה</value>
   </data>
   <data name="CarouselBay1Up" xml:space="preserve">
-    <value>מעלית חלון עבודה 1 למעלה</value>
+    <value>מעלית ארגוטק עמדה 1 למעלה</value>
   </data>
   <data name="CarouselBay2Down" xml:space="preserve">
-    <value>מעלית חלון עבודה 2 למטה</value>
+    <value>מעלית ארגוטק עמדה 2 למטה</value>
   </data>
   <data name="CarouselBay2Up" xml:space="preserve">
-    <value>מעלית חלון עבודה 2 למעלה</value>
+    <value>מעלית ארגוטק עמדה 2 למעלה</value>
   </data>
   <data name="CarouselBay3Down" xml:space="preserve">
-    <value>מעלית חלון עבודה 3 למעלה</value>
+    <value>מעלית ארגוטק עמדה31 למטה</value>
   </data>
   <data name="CarouselBay3Up" xml:space="preserve">
-    <value>מעלית חלון עבודה 3 למעלה</value>
+    <value>מעלית ארגוטק עמדה31 למעלה</value>
   </data>
   <data name="CarouselCalibration" xml:space="preserve">
-    <value>כיול מעלית בפעולה</value>
+    <value>כיול מעלית ארגוטק מתבצע</value>
   </data>
   <data name="Cell" xml:space="preserve">
     <value>תא</value>
@@ -331,10 +331,10 @@
     <value>סגור שורה</value>
   </data>
   <data name="CloseShutterBayNumber" xml:space="preserve">
-    <value>סגור דלת חלון עבודה</value>
+    <value>סגור דלת עמדה</value>
   </data>
   <data name="CloseShutterPosition" xml:space="preserve">
-    <value> דלת חלון עבודה במצב סגור</value>
+    <value>דלת עמדה במצב סגור</value>
   </data>
   <data name="Code" xml:space="preserve">
     <value>קוד</value>
@@ -691,22 +691,22 @@
     <value>הפעלת רשימה '{0}' התקבלה</value>
   </data>
   <data name="ExternalBay1Down" xml:space="preserve">
-    <value>חלון עבודה חיצוני 1 למטה</value>
+    <value>עמדה חיצונית 1 למטה</value>
   </data>
   <data name="ExternalBay1Up" xml:space="preserve">
-    <value>חלון עבודה חיצוני 1 למעלה</value>
+    <value>עמדה חיצונית 1 למעלה</value>
   </data>
   <data name="ExternalBay2Down" xml:space="preserve">
-    <value>חלון עבודה חיצוני 2 למטה</value>
+    <value>עמדה חיצונית 2 למטה</value>
   </data>
   <data name="ExternalBay2Up" xml:space="preserve">
-    <value>חלון עבודה חיצוני 2 למעלה</value>
+    <value>עמדה חיצונית 2 למעלה</value>
   </data>
   <data name="ExternalBay3Down" xml:space="preserve">
-    <value>חלון עבודה חיצוני 2 למטה</value>
+    <value>עמדה חיצונית 3 למטה</value>
   </data>
   <data name="ExternalBay3Up" xml:space="preserve">
-    <value>חלון עבודה חיצוני 2 למעלה</value>
+    <value>עמדה חיצונית 3 למעלה</value>
   </data>
   <data name="FaultStateChanged" xml:space="preserve">
     <value>מצב תקלה השתנה</value>
@@ -823,28 +823,28 @@
     <value>ביניים</value>
   </data>
   <data name="InternalBay1Down" xml:space="preserve">
-    <value>חלון עבודה 1 למטה</value>
+    <value>עמדה 1 למטה</value>
   </data>
   <data name="InternalBay1Up" xml:space="preserve">
-    <value>חלון עבודה 1 למעלה</value>
+    <value>עמדה 1 למעלה</value>
   </data>
   <data name="InternalBay2Down" xml:space="preserve">
-    <value>חלון עבודה 2 למטה</value>
+    <value>עמדה 2 למטה</value>
   </data>
   <data name="InternalBay2Up" xml:space="preserve">
-    <value>חלון עבודה 2 למעלה</value>
+    <value> עמדה 2 למעלה</value>
   </data>
   <data name="InternalBay3Down" xml:space="preserve">
-    <value>חלון עבודה 3 למטה</value>
+    <value> עמדה 3 למטה</value>
   </data>
   <data name="InternalBay3Up" xml:space="preserve">
-    <value>חלון עבודה 3 למעלה</value>
+    <value>עמדה 3 למעלה</value>
   </data>
   <data name="InvalidArgument" xml:space="preserve">
     <value>נתון לא תקין</value>
   </data>
   <data name="InvalidOperation" xml:space="preserve">
-    <value>פעולה לא תקפה</value>
+    <value>פעולה לא תקפה {0}</value>
   </data>
   <data name="InventoryOperation" xml:space="preserve">
     <value>פעולות מלאי</value>
@@ -961,7 +961,7 @@
     <value>מלאי</value>
   </data>
   <data name="KmBayTotal" xml:space="preserve">
-    <value>ק"מ חלון עבודה מטיפול אחרון / סה"כ</value>
+    <value>צבירת מרחק עמדה (ק"מ) מטיפול אחרון / סה"כ</value>
   </data>
   <data name="KmElevatorAxis" xml:space="preserve">
     <value>ק"מ צירי מעלית מטיפול אחרון / סה"כ</value>
@@ -1066,13 +1066,13 @@
     <value>סה"כ זמן פעולה</value>
   </data>
   <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
-    <value>סה"כ פעולות דלת חלון עבודה מס' 1</value>
+    <value>סה"כ פעולות דלת עמדה מס' 1</value>
   </data>
   <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
-    <value>סה"כ פעולות דלת חלון עבודה מס' 2</value>
+    <value>סה"כ פעולות דלת  עמדה מס' 2</value>
   </data>
   <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
-    <value>סה"כ פעולות דלת חלון עבודה מס' 3</value>
+    <value>סה"כ פעולות דלת  עמדה מס' 3</value>
   </data>
   <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
     <value>סה"כ פעולות ציר אנכי</value>
@@ -1090,7 +1090,7 @@
     <value>סטטיסטיקות מכונה</value>
   </data>
   <data name="MachineStatisticsSectionBays" xml:space="preserve">
-    <value>סטטיסטיקת חלון עבודה</value>
+    <value>סטטיסטיקות עמדה</value>
   </data>
   <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
     <value>מדפים שנעו בבסיס 1</value>
@@ -1108,7 +1108,7 @@
     <value>סה"כ פעולות ציר אופקי</value>
   </data>
   <data name="MachineStatisticsSectionShutters" xml:space="preserve">
-    <value>נתוני דלת חלון עבודה</value>
+    <value>נתוני דלת עמדה</value>
   </data>
   <data name="MachineStatisticsSectionVertical" xml:space="preserve">
     <value>נתוני ציר אנכי</value>
@@ -1192,19 +1192,19 @@
     <value>חזרה לחלון העבודה</value>
   </data>
   <data name="MissionStateBayChain" xml:space="preserve">
-    <value>7. שרשרת חלון עבודה</value>
+    <value>7. שרשרת עמדה</value>
   </data>
   <data name="MissionStateCloseShutter" xml:space="preserve">
-    <value>8. סגור דלת חלון עבודה</value>
+    <value>8. סגור דלת עמדה</value>
   </data>
   <data name="MissionStateDepositUnit" xml:space="preserve">
     <value>5. העברת מדף</value>
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
-    <value>חלון עבודה חיצוני כפול</value>
+    <value>עמדה חיצונית כפולה</value>
   </data>
   <data name="MissionStateElevatorBayUp" xml:space="preserve">
-    <value>מעלית בחלון עבודה עולה</value>
+    <value>מעלית בעמדה עולה</value>
   </data>
   <data name="MissionStateEnd" xml:space="preserve">
     <value>13. סוף</value>
@@ -1219,7 +1219,7 @@
     <value>שגיאת טעינה</value>
   </data>
   <data name="MissionStateExtBay" xml:space="preserve">
-    <value>חלון עבודה חיצוני</value>
+    <value>עמדה חיצונית</value>
   </data>
   <data name="MissionStateLoadElevator" xml:space="preserve">
     <value>3. טעינת מעלית</value>
@@ -1237,16 +1237,16 @@
     <value>המתן שרשרת</value>
   </data>
   <data name="MissionStateWaitDepositBay" xml:space="preserve">
-    <value>המתן טעינת חלון עבודה</value>
+    <value>המתן טעינת עמדה מתבצעת</value>
   </data>
   <data name="MissionStateWaitDepositCell" xml:space="preserve">
     <value>עצור טעינת מדף מתא</value>
   </data>
   <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
-    <value>המתן טעינה לחלון עבודה חיצוני</value>
+    <value>המתן טעינה בעמדה חיצונית</value>
   </data>
   <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
-    <value>המתן טעינה לחלון עבודה פנימי</value>
+    <value>המתן טעינה לעמדה פנימית</value>
   </data>
   <data name="MissionStateWaitPick" xml:space="preserve">
     <value>6. ממתין לפעולות משתמש</value>
@@ -1348,7 +1348,7 @@
     <value>מזהה רשימה '{0}' אינו זמין</value>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>אין מדף בתנועה לחלון העבודה</value>
+    <value>אין מדף בתנועה לחלון העבודה {0}</value>
   </data>
   <data name="NoLocation" xml:space="preserve">
     <value>מיקום מדף לא ידוע</value>
@@ -1366,7 +1366,7 @@
     <value>תאריך הופעה</value>
   </data>
   <data name="OpenShutterPosition" xml:space="preserve">
-    <value>דלת חלון עבודה במצב פתוח</value>
+    <value>דלת עמדה במצב פתוח</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>פעולה בוטלה</value>
@@ -1450,7 +1450,7 @@
     <value>כמות לליקוט [{0}]</value>
   </data>
   <data name="PickRequestWasAccepted" xml:space="preserve">
-    <value>הבקשה לליקוט פריט [{0}] (q.ty{1} התקבלה</value>
+    <value>הבקשה לליקוט פריט [{0}]  q.ty{1} התקבלה</value>
   </data>
   <data name="Pieces" xml:space="preserve">
     <value>יחידות</value>
@@ -1480,7 +1480,7 @@
     <value>אחסן כמות [{0}]</value>
   </data>
   <data name="PutRequestWasAccepted" xml:space="preserve">
-    <value>הבקשה אחסנת פריט [{0}] (q.ty{1} התקבלה</value>
+    <value>הבקשה אחסנת פריט [{0}] q.ty{1} התקבלה</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>כמות</value>
@@ -1696,13 +1696,13 @@
     <value>סה"כ זמן ביצוע פעולה</value>
   </data>
   <data name="TotalBayKilometers1" xml:space="preserve">
-    <value>ק"מ חלון עבודה 1</value>
+    <value>ק"מ עמדה 1</value>
   </data>
   <data name="TotalBayKilometers2" xml:space="preserve">
-    <value>ק"מ חלון עבודה 2</value>
+    <value>ק"מ  עמדה 2</value>
   </data>
   <data name="TotalBayKilometers3" xml:space="preserve">
-    <value>ק"מ חלון עבודה 3</value>
+    <value>ק"מ  עמדה 3</value>
   </data>
   <data name="TotalCells" xml:space="preserve">
     <value>סה"כ תאים</value>
@@ -1729,7 +1729,7 @@
     <value>סה"כ יחידות</value>
   </data>
   <data name="TotalUnitsInBay" xml:space="preserve">
-    <value>סה"כ יחידות בחלון עבודה מטיפול אחזקה אחרון</value>
+    <value>סה"כ יחידות בעמדה מטיפול אחזקה אחרון</value>
   </data>
   <data name="TotalVerticalAxisKilometers" xml:space="preserve">
     <value>ק"מ ציר מעלית אנכי</value>
@@ -1747,22 +1747,22 @@
     <value>יחידה n</value>
   </data>
   <data name="UnitInBayWarning" xml:space="preserve">
-    <value>יחידה בחלון עבודה - סידור מדפים אינו אפשרי</value>
+    <value>קיימים פריטים בעמדה - סידור מדפים אינו אפשרי</value>
   </data>
   <data name="Units" xml:space="preserve">
     <value>יחידה</value>
   </data>
   <data name="UnitsInBay" xml:space="preserve">
-    <value>יחידות בחלון העבודה</value>
+    <value>יחידות בעמדה</value>
   </data>
   <data name="UnitsInBay1" xml:space="preserve">
-    <value>יחידות בחלון עבודה 1</value>
+    <value>יחידות בעמדה 1</value>
   </data>
   <data name="UnitsInBay2" xml:space="preserve">
-    <value>יחידות בחלון עבודה 2</value>
+    <value>יחידות בעמדה 2</value>
   </data>
   <data name="UnitsInBay3" xml:space="preserve">
-    <value>יחידות בחלון עבודה 3</value>
+    <value>יחידות בעמדה 3</value>
   </data>
   <data name="UnitsInCell" xml:space="preserve">
     <value>יחידות בתא</value>
@@ -1853,5 +1853,11 @@
   </data>
   <data name="WmsServicesOnline" xml:space="preserve">
     <value>WMS Services online</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>חסר</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>כמות זמינה לפני חלק פגום</value>
   </data>
 </root>

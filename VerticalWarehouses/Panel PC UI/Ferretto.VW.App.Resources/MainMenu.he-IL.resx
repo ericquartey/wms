@@ -141,9 +141,6 @@
   <data name="Movements" xml:space="preserve">
     <value>תנועות</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>הזז</value>
-  </data>
   <data name="MovementsDescription" xml:space="preserve">
     <value>מצב חיישן, הפעלת מכונה מחדש, עוד</value>
   </data>
