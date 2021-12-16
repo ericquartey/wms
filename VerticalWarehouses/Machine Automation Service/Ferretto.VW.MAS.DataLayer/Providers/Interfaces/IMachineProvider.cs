@@ -58,6 +58,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsEnableAddItem();
 
+        bool IsEnableHandlingItemOperations();
+
         bool IsFireAlarmActive();
 
         bool IsHeartBeat();

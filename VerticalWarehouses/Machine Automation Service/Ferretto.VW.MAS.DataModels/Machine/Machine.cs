@@ -60,6 +60,11 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool IsEnableAddItem { get; set; }
 
+        /// <summary>
+        /// Get/set a value indicating if the pick operation and put operation for a given item can be performed in the loading unit view.
+        /// </summary>
+        public bool IsEnableHandlingItemOperations { get; set; }
+
         public bool IsHeartBeat { get; set; }
 
         /// <summary>

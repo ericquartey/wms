@@ -492,6 +492,161 @@
             </Grid>
         </Border>
 
+
+
+        <Border Grid.Row="1"
+                Background="{StaticResource PpcBackground}"
+                BorderBrush="{StaticResource PpcBorderBrush}"
+                BorderThickness="{StaticResource PpcBorderThickness}"
+                CornerRadius="2,0,0,2"
+                Visibility="{Binding IsPickItemPutItemOperationsVisible, Converter={StaticResource BTVC}}">
+
+            <Grid Margin="10,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0"
+                      Margin="50,25,50,5"
+                      Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Center"
+                               FontSize="{DynamicResource FontSize_Normal}"
+                               Foreground="{DynamicResource FerrettoPureWhite}">
+                        <Run Text="{res:Loc OperatorApp.BarcodeLabel}" />
+                    </TextBlock>
+
+                    <TextBox Grid.Column="1"
+                             Height="32"
+                             Margin="25,0,90,0"
+                             FontSize="{DynamicResource FontSize_Normal}"
+                             Text="{Binding ItemBarcode}" />
+
+                </Grid>
+
+                <!--
+                <Grid Grid.Row="1"
+                      Margin="50,5,50,5"
+                      Visibility="Visible">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Center"
+                               FontSize="{DynamicResource FontSize_Normal}"
+                               Foreground="{DynamicResource FerrettoPureWhite}">
+                        <Run Text="{res:Loc OperatorApp.Article}" />
+                    </TextBlock>
+
+                    <TextBox Grid.Column="1"
+                             Height="32"
+                             Margin="25,0,90,0"
+                             FontSize="{DynamicResource FontSize_Normal}"
+                             Text="{Binding ItemName}" />
+
+                </Grid>
+                -->
+
+                <controls:PpcLabeledText Grid.Row="1"
+                                         Margin="150,0,90,0"
+                                         HorizontalAlignment="Left"
+                                         ContentText="{Binding ItemName}"
+                                         LabelText="{res:Loc OperatorApp.Article}" />
+
+                <!--
+                <Grid Grid.Row="2"
+                      Margin="50,5,50,5"
+                      Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Center"
+                               FontSize="{DynamicResource FontSize_Normal}"
+                               Foreground="{DynamicResource FerrettoPureWhite}">
+                        <Run Text="{res:Loc OperatorApp.Lot}" />
+                    </TextBlock>
+
+                    <TextBox Grid.Column="1"
+                             Height="32"
+                             Margin="25,0,90,0"
+                             FontSize="{DynamicResource FontSize_Normal}"
+                             Text="{Binding ItemLot}" />
+
+                </Grid>
+                -->
+
+                <controls:PpcLabeledText Grid.Row="2"
+                                         Margin="150,0,90,0"
+                                         HorizontalAlignment="Left"
+                                         ContentText="{Binding ItemLot}"
+                                         LabelText="{res:Loc OperatorApp.Lot}" />
+
+                <Grid Grid.Row="3"
+                      Margin="50,20,50,5"
+                      Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ctrls:PpcSpinEdit Grid.Column="0"
+                                       Width="230"
+                                       Height="90"
+                                       Margin="15,4,15,0"
+                                       HorizontalAlignment="Center"
+                                       EditValue="{Binding HandlingItemInputQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                                       Increment="{Binding HandlingItemQtyIncrement}"
+                                       IsEnabled="True"
+                                       LabelText="{Binding HandlingItemMeasureUnitTxt}"
+                                       Mask="{Binding HandlingItemQtyTolerance, StringFormat=F{0}}"
+                                       MinValue="0" />
+
+                    <Grid Grid.Column="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:PpcButton Grid.Column="0"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding ItemPickAlternativeCommand}"
+                                            Content="{res:Loc OperatorApp.ItemListType_Pick}"
+                                            Style="{StaticResource ConfirmButton}" />
+
+                        <controls:PpcButton Grid.Column="1"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding ItemPutAlternativeCommand}"
+                                            Content="{res:Loc OperatorApp.ItemListType_Put}"
+                                            Style="{StaticResource ConfirmButton}" />
+
+                    </Grid>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
+
         <Grid>
             <!--<Path Style="{StaticResource AdjustIndicatorStyle}"
             Visibility="{Binding IsAdjustmentVisible, Converter={StaticResource BTVC}}" />-->

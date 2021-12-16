@@ -25,17 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
-- Aggiunto parametro per mostrare il pulsante con la tastiera
-- Aggiunta Gestione Utenti: si possono cambiare le password di Operator e Installer e disabilitare Operator
+## Nuove Funzionalità 1.0.35 rispetto la 1.0.34
+- Aggiunto un parametro per specificare l'aggiornamento della giacenza di un articolo 
+  tramite un valore di differenza (Idroinox)
+- Aggiunto un parametro per eseguire le operazioni di prelievo e versamento nella vista di 
+  cassetto in baia (Idroinox)
+- Ferretto NuGet package 0.16.36.
 
 ## Bug Risolti
-- Aggiunto avviso di spazio insufficiente in magazzino
-- Il lettore di badge non si blocca con tessere sconosciute
-- Anche i movimenti orizzontali impostano la velocità, per la fermata di emergenza
+- 
 
-## Compatibile con adapter 0.4.29
+## Compatibile con adapter 0.4.30
 ***
+
+[Versione 1.0.34](#id1034)
 
 [Versione 1.0.33](#id1033)
 
@@ -105,6 +108,17 @@
 
 [Versione 1.0.0](#id100)
 ***
+<a id="id1034"></a>
+## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
+- Aggiunto parametro per mostrare il pulsante con la tastiera
+- Aggiunta Gestione Utenti: si possono cambiare le password di Operator e Installer e disabilitare Operator
+
+## Bug Risolti
+- Aggiunto avviso di spazio insufficiente in magazzino
+- Il lettore di badge non si blocca con tessere sconosciute
+- Anche i movimenti orizzontali impostano la velocità, per la fermata di emergenza
+
+## Compatibile con adapter 0.4.29
 
 <a id="id1033"></a>
 ## Nuove Funzionalità 1.0.33 rispetto la 1.0.32

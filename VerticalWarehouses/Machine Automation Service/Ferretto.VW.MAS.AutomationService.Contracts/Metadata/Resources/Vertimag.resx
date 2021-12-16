@@ -618,4 +618,7 @@
   <data name="Machine_IsUpdatingStockByDifference" xml:space="preserve">
    <value>Update the stock by difference</value>
   </data>
+  <data name="Machine_IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Enabled item operations into bay view</value>
+   </data>
 </root>

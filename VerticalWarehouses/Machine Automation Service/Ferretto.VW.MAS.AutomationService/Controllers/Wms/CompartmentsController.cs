@@ -53,10 +53,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPut("{id}/items/{itemId}/update-fill")]
+        public async Task<IActionResult> UpdateItemStockAfterFillingAsync(int id, int itemId, double quantity, ItemOptions itemOptions)
+        {
+            await this.compartmentsWmsWebService.UpdateItemStockAfterFillingAsync(id, itemId, quantity, itemOptions);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
+
+            return this.Ok();
+        }
+
+        [HttpPut("{id}/items/{itemId}/update-pick")]
+        public async Task<IActionResult> UpdateItemStockAfterPickingAsync(int id, int itemId, double quantity, ItemOptions itemOptions)
+        {
+            await this.compartmentsWmsWebService.UpdateItemStockAfterPickingAsync(id, itemId, quantity, itemOptions);
+
+            await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
+
+            return this.Ok();
+        }
+
         [HttpPut("{id}/items/{itemId}/stock")]
         public async Task<IActionResult> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions)
         {
-            await this.compartmentsWmsWebService.UpdateItemStockAsync(id, itemId, stock, itemOptions);
+            await this.compartmentsWmsWebService.UpdateItemStockAfterFillingAsync(id, itemId, stock, itemOptions);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

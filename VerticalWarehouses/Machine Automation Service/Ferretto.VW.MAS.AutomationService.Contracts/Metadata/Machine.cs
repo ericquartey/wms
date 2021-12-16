@@ -88,6 +88,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsEnableAddItem { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsEnableHandlingItemOperations))]
+            [Id(33)]
+            public bool IsEnableHandlingItemOperations { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
             [Id(20)]
             public bool IsHeartBeat { get; set; }

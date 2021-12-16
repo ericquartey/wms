@@ -2357,4 +2357,16 @@
     <value>Stock variation</value>
     <comment>Label</comment>
   </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Retrieving item failed</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Item not available</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operation successfully</value>
+    <comment>Label Message</comment>
+  </data>
 </root>
