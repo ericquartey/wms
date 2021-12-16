@@ -128,6 +128,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 var claims = await this.authenticationService.LogInAsync(e.Token);
 
                 await this.NavigateToMainMenuAsync(claims);
+
+                this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
             }
             catch (Exception ex)
             {
@@ -162,6 +164,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 var claims = await this.authenticationService.LogInAsync(e.SerialNumber);
 
                 await this.NavigateToMainMenuAsync(claims);
+
+                this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
             }
             catch (Exception ex)
             {
@@ -259,6 +263,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     var claims = await this.authenticationService.LogInAsync(bearerToken);
 
                     await this.NavigateToMainMenuAsync(claims);
+
+                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
                 }
                 catch (Exception ex)
                 {
@@ -476,6 +482,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                        this.UserLogin.SupportToken);
 
                     await this.NavigateToMainMenuAsync(claims);
+
+                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
                 }
                 else
                 {
@@ -490,6 +498,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                        UserAccessLevel.Operator);
 
                     await this.NavigateToMainMenuAsync(claims);
+
+                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

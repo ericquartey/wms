@@ -26,14 +26,21 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.35 rispetto la 1.0.34
+- Aggiunta lingua francese
+- Aggiunta lingua ebraica
+- Gestione celle: attivazione della multi-selezione
 - Aggiunto un parametro per specificare l'aggiornamento della giacenza di un articolo 
   tramite un valore di differenza (Idroinox)
-- Aggiunto un parametro per eseguire le operazioni di prelievo e versamento nella vista di 
-  cassetto in baia (Idroinox)
-- Ferretto NuGet package 0.16.36.
+- Aggiunto un parametro per eseguire le operazioni di prelievo e versamento per un articolo
+  nella vista di cassetto in baia (Idroinox)
+- Ferretto NuGet package 0.16.38.
 
 ## Bug Risolti
-- 
+- Gestione cassetti: correzione al salvataggio dei dati quando si cambia la cella
+- Procedura di controllo quote: Applica correzione è limitato a 5mm rispetto alle quote iniziali
+- Movimenti guidati: correzione dei pulsanti con l'icona della tastiera
+- Il lettore di badge funziona anche senza \r nel token
+- Nelle viste del cassetto in baia ci sono meno messaggi di movimentazione
 
 ## Compatibile con adapter 0.4.30
 ***
@@ -108,6 +115,7 @@
 
 [Versione 1.0.0](#id100)
 ***
+
 <a id="id1034"></a>
 ## Nuove Funzionalità 1.0.34 rispetto la 1.0.33
 - Aggiunto parametro per mostrare il pulsante con la tastiera

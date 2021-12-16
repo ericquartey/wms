@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Activation éclairage baie</value>
+  </data>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Capteur carter protection GAUCHE</value>
+  </data>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Capteur carter protection DROIT</value>
+  </data>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Bouton coup-de-poing d'arrêt d'urgence</value>
+  </data>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Autorisation à la marche depuis la console</value>
+  </data>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Sélection du moteur du berceau (feedback)</value>
+  </data>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Sélection du moteur de l’élévateur (feedback)</value>
+  </data>
+  <data name="InnerLightCurtain" xml:space="preserve">
+    <value>Barrière optique interne</value>
+  </data>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Activation de la lecture de hauteur (barrière de mesure)</value>
+  </data>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Cumulatif Variateur En Erreur</value>
+  </data>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>Dispositif E/S  {0:00}</value>
+  </data>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>Nom du Dispositif E/S</value>
+  </data>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Barrière optique anti-intrusion</value>
+  </data>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>Étalonnage de la barrière</value>
+  </data>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Capteur de présence tiroir inférieur/baie intermédiaire</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Présence tiroir sur berceau côté machine</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Sélection du moteur du berceau</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Sélection du moteur de l’élévateur</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Présence tiroir sur berceau côté opérateur</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Réinitialisation de la fonction de sécurité (impulsion 300 ms)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Option robot - Touche de fin de picking (ou fin de picking du robot)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Option robot - Mission terminée entrepôt</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Option robot - Entrepôt prêt/en panne</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>État de la fonction de sécurité</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Option chariot - Accrochage chariot</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Capteur de présence de tiroir dans la baie</value>
+  </data>
 </root>

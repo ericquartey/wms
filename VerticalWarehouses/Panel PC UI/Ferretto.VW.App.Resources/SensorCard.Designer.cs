@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray.
+        ///   Looks up a localized string similar to Drawer.
         /// </summary>
         public static string Drawer {
             get {

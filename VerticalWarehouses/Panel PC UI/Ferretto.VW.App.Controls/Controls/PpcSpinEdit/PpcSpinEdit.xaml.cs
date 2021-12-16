@@ -52,6 +52,12 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(KeyboardType.NumpadCenter));
 
+        public static readonly DependencyProperty KeyboardRightProperty = DependencyProperty.Register(
+                                            nameof(KeyboardRight),
+            typeof(bool),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(false));
+
         public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
             nameof(LabelText),
             typeof(string),
@@ -173,6 +179,12 @@ namespace Ferretto.VW.App.Controls
         {
             get => (ICommand)this.GetValue(KeyboardOpenCommandProperty);
             set => this.SetValue(KeyboardOpenCommandProperty, value);
+        }
+
+        public bool KeyboardRight
+        {
+            get => (bool)this.GetValue(KeyboardRightProperty);
+            set => this.SetValue(KeyboardRightProperty, value);
         }
 
         public string LabelText

@@ -136,6 +136,8 @@ namespace Ferretto.VW.App.Services
 
         private string notification;
 
+        private IEnumerable<Cell> originalCells;
+
         private SubscriptionToken positioningOperationChangedToken;
 
         private SubscriptionToken receiveHomingUpdateToken;
@@ -339,6 +341,8 @@ namespace Ferretto.VW.App.Services
 
         public double MaxSolidSpace { get; private set; }
 
+        public IEnumerable<Cell> OriginalCells => this.originalCells;
+
         internal bool LUPresentInBay1 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay1 || this.sensorsService.Sensors.LUPresentMiddleBottomBay1) : this.sensorsService.Sensors.LUPresentInBay1;
 
         internal bool LUPresentInBay2 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay2 || this.sensorsService.Sensors.LUPresentMiddleBottomBay2) : this.sensorsService.Sensors.LUPresentInBay2;
@@ -413,6 +417,10 @@ namespace Ferretto.VW.App.Services
         public async Task GetCells()
         {
             this.Cells = await this.machineCellsWebService.GetAllAsync();
+            if (this.originalCells is null)
+            {
+                this.originalCells = await this.machineCellsWebService.GetAllAsync();
+            }
             this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
             this.FreeSpaceBack = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Back) * 25;
             this.FreeSpaceFront = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Front) * 25;
@@ -1036,10 +1044,10 @@ namespace Ferretto.VW.App.Services
                                 else
                                 {
                                     this.logger.Debug(msg);
-                                    if (message.Status == MessageStatus.OperationWaitResume)
-                                    {
-                                        this.ClearNotifications();
-                                    }
+                                    //if (message.Status == MessageStatus.OperationWaitResume)
+                                    //{
+                                    //    this.ClearNotifications();
+                                    //}
                                 }
                                 //this.Notification = string.Format(ServiceMachine.MovementInProgress, $"(Missione: {this.MachineStatus?.CurrentMissionId}, " +
                                 //    $"Cassetto: {moveLoadingUnitMessageData.LoadUnitId}, " +
@@ -1151,7 +1159,8 @@ namespace Ferretto.VW.App.Services
 
                                 this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({this.MachineStatus.IsMovingLoadingUnit});");
 
-                                if (!this.MachineStatus.IsMovingLoadingUnit)
+                                if (!this.MachineStatus.IsMovingLoadingUnit &&
+                                    this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator)
                                 {
                                     this.ClearNotifications();
                                 }
@@ -1748,6 +1757,43 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.AutomaticMissing"), NotificationSeverity.Warning);
                         }
+                        else if (this.IsWmsEnabled && !isWmsHealthy)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("InstallationApp.WmsOffline"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsMissionWms && !this.IsWmsEnabled)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionsWmsNotActive"), NotificationSeverity.Warning);
+                        }
+                        else if (this.IsSensorMissing())
+                        {
+                            this.ShowNotification(Resources.Localized.Get("OperatorApp.LoadUnitInBaySensorMissing"), NotificationSeverity.Warning);
+                        }
+                        else if (this.bay.Positions.All(p => p.IsBlocked))
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.BayPositionsDisabled"), NotificationSeverity.Warning);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
+                        }
+                        break;
+
+                    case WarningsArea.User:
+                        if (this.machineModeService.MachineMode == MachineMode.Shutdown || this.machineModeService.MachineMode == MachineMode.SwitchingToShutdown)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutdownInProgress"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.MachineOff"), NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachineMode != MachineMode.Automatic
+                            && this.machineModeService.MachineMode != MachineMode.SwitchingToAutomatic
+                            )
+                        {
+                            this.ShowNotification(Resources.Localized.Get("ServiceMachine.AutomaticMissing"), NotificationSeverity.Warning);
+                        }
                         else if (this.IsMissionInError)
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.MissionInError"), NotificationSeverity.Warning);
@@ -1925,10 +1971,8 @@ namespace Ferretto.VW.App.Services
                 {
                     switch (this.GetWarningAreaAttribute())
                     {
-                        case WarningsArea.Picking:
-                            if (this.machineModeService.MachineMode == MachineMode.Automatic &&
-                                this.MachineStatus.IsMovingLoadingUnit &&
-                                this.MachineStatus.CurrentMission != null)
+                        case WarningsArea.User:
+                            if (this.MachineStatus.CurrentMission != null)
                             {
                                 //switch (this.MachineStatus.CurrentMission.MissionStep)
                                 switch (this.MachineStatus.CurrentMissionDescription)
@@ -1949,7 +1993,7 @@ namespace Ferretto.VW.App.Services
                                         break;
 
                                     case "BayChain":
-                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.MovementBayChainInProgress"), NotificationSeverity.Warning);
+                                        this.ShowNotification(Resources.Localized.Get("ServiceMachine.MovementBayChainInProgress"), NotificationSeverity.Info);
                                         break;
 
                                     case "CloseShutter":
@@ -1977,7 +2021,8 @@ namespace Ferretto.VW.App.Services
                 view == WarningsArea.Menu ||
                 view == WarningsArea.Maintenance ||
                 view == WarningsArea.Information ||
-                view == WarningsArea.Picking)
+                view == WarningsArea.Picking ||
+                view == WarningsArea.User)
             {
                 return;
             }

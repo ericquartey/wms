@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray identification completed, switch to automatic mode..
+        ///   Looks up a localized string similar to Drawer identification completed, switch to automatic mode..
         /// </summary>
         public static string DrawerIdentificationCompleted {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray identification completed, switch to manual mode..
+        ///   Looks up a localized string similar to Drawer identification completed, switch to manual mode..
         /// </summary>
         public static string DrawerIdentificationCompletedManual {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray selection.
+        ///   Looks up a localized string similar to Drawer selection.
         /// </summary>
         public static string DrawerSelection {
             get {

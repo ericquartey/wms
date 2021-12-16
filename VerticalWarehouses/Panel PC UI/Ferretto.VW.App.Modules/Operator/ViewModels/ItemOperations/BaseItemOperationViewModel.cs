@@ -307,16 +307,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (value != null)
             {
                 var len = value.Length;
-                if (len >= 12)
+                if (len >= 25)
                 {
-                    if (len >= 20)
-                    {
-                        fontSize = _FontSize_Very_Small;
-                    }
-                    else
-                    {
-                        fontSize = _FontSize_Normal;
-                    }
+                    fontSize = _FontSize_Very_Small;
+                }
+                else if (len >= 20)
+                {
+                    fontSize = _FontSize_Normal;
+                }
+                else if (len >= 12)
+                {
+                    fontSize = _FontSize_High;
                 }
             }
 

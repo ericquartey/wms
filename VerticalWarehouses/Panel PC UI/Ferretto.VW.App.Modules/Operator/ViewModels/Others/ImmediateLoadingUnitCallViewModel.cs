@@ -17,7 +17,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    [Warning(WarningsArea.Picking)]
+    [Warning(WarningsArea.User)]
     public class ImmediateLoadingUnitCallViewModel : BaseOperatorViewModel
     {
         #region Fields

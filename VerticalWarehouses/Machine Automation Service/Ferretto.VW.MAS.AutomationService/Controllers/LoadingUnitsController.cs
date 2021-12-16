@@ -478,6 +478,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
                 }
                 var loadUnitDetail = new LoadingUnitDetails();
+                loadingUnit = this.loadingUnitsDataProvider.GetCellById(loadingUnit.Id);
                 loadUnitDetail.Id = loadingUnit.Id;
                 loadUnitDetail.Height = loadingUnit.Height;
                 loadUnitDetail.CellId = loadingUnit.CellId;

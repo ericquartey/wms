@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,4 +117,331 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Vérifier que le cliquet soit à zéro ou que le tiroir soit complètement chargé sur l’élévateur.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Vérifier que les boutons d’arrêt d’urgence soient désactivés et que tous les capteurs de sécurité soient désactivés.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Le tiroir pourrait s’être coincé.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Le tiroir ne semble pas être complètement sur l’élévateur après la phase de chargement.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Le tiroir ne semble pas être complètement sorti de l’élévateur après la phase de déchargement.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Le capteur de cliquet à zéro n’est pas actif après une opération de dépôt.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Les capteurs de présence sur l’élévateur ne sont pas actifs après une opération de chargement.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Vérifier que les boutons d’arrêt d’urgence soient désactivés et que tous les capteurs de sécurité soient désactivés.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Vérifier que la cellule de destination du tiroir dans la base de données soit correctement configurée</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Vérifier que le berceau de l’élévateur soit vide. Vérifier le bon fonctionnement des capteurs de présence du tiroir sur le berceau.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Vérifier que la position d’origine du tiroir dans la base de données soit correctement configurée</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>S’assurer qu’un tiroir soit présent dans la baie et que les capteurs de présence fonctionnent correctement</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Si le tiroir a été enlevé, vérifier les capteurs de présence de tiroir dans la baie, sinon enlever le tiroir de la baie.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Vérifier que la baie de destination du tiroir soit réellement vide. Vérifier que les capteurs de présence du tiroir dans la baie fonctionnent correctement.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Le tiroir sélectionné n’est pas disponible. Vérifier le numéro de tiroir inséré et la position logique du tiroir.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Le tiroir sélectionné est présent dans la base de données mais n’est pas chargé dans l’entrepôt. Vérifier la configuration de la base de données.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Vérifier que le tiroir soit bien présent dans la baie d’origine. Vérifier que les capteurs de présence du tiroir dans la baie fonctionnent correctement.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Vérifier que la cellule d’origine du tiroir dans la base de données soit correctement configurée</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Niveau bas de la baie occupé.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Capteurs de présence non valides</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Présence à bord de l’élévateur avec élévateur logiquement déchargé.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Incohérence de l’état des capteurs. Le capteur de cliquet à zéro n’est pas actif.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Incohérence de l’état des capteurs. Le capteur de zéro de la baie n’est pas actif.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Niveau haut de la baie occupé</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Le capteur de cliquet à zéro est actif en même temps que les capteurs de présence sur l’élévateur.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Décharger le tiroir dans la baie et enlever le poids en excès.  Ensuite, repasser en mode automatique.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Volet de fermeture pas en position ouverte. Vérifier l’état des capteurs.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Volet de fermeture pas en position fermée. Vérifier l’état des capteurs.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Erreur de destination de l’axe sous le niveau minimum. Vérifier les paramètres de la machine.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>La baie a déjà une commande en cours d’exécution et ne peut pas en accepter une autre</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Erreur de destination de l’axe au-dessus du niveau maximum. Vérifier les paramètres de la machine.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Erreur lors de la gestion du dispositif E/S ou de l’exécution d’une commande.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Tiroir déjà présent dans la cellule.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>La machine n’est pas en mesure d’accepter la mission requise à cause du mode machine non valide.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Une barrière de sécurité est interrompue. Libérer la zone et réessayer.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Un bouton coup-de-poing d'arrêt d'urgence a été enfoncé. Vérifier l’état et réessayer.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Tiroir déjà présent dans une autre baie.</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Impossible de déterminer le tiroir à bord de l’élévateur.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Niveau de baie basse vide</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Niveau haut de la baie vide. Vérifier que le tiroir soit correctement installé et qu’il ne se soit pas déplacé vers la machine. Vérifier que le levier du capteur de présence ne soit pas coincé.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Il y a déjà une mission en cours pour cette baie.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Il y a déjà une mission en cours pour ce tiroir.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Une mission est déjà en cours d’exécution pour ce type de mission.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Aucune erreur détectée.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Poids du tiroir inférieur au poids attendu.  Ensuite, repasser en mode automatique.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Limite de poids total de la machine dépassé. Vérifier l’état de charge de la machine et de ses tiroirs.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>L’entrepôt est plein et il est impossible de déterminer une cellule libre pour le tiroir sélectionné.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Vérifier l’id du tiroir dans la baie. Vérifier que les capteurs de présence du tiroir dans la baie fonctionnent correctement. Mettre la machine en mode Automatique.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Vérifier l’id du tiroir sur l’élévateur. Vérifier que les capteurs de présence du tiroir sur l’élévateur fonctionnent correctement. Mettre la machine en mode Automatique.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Problème de connexion avec variateur(s). Contrôler l’état des connexions Ethernet.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Erreur de connexion au dispositif E/S. Contrôler l’état des connexions Ethernet.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Erreur de connexion avec le laser. Contrôler l’état des connexions Ethernet.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>The {0} Axis movement Acceleration {1} is invalid: Accélération à vide inférieure à l'accélération à pleine charge</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>La vitesse {1} de déplacement de l'axe {0} n'est pas valide : Vitesse à vide inférieure à la vitesse à pleine charge</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Contrôler les capteurs de présence de l’élévateur et de la baie</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Le type de destination n’est pas valide</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Position inférieure de baie non définie</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Position supérieure de baie non définie</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Le type de mission n’est pas valide</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Décharger le tiroir dans la baie et enlever le poids en excès. Une fois terminé, suivre les instructions de l’alarme.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>La commande de rentrée depuis picking n’est pas valide</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Erreur de mise à jour des archives des cellules. Une ou plusieurs cellules de destination sont logiquement occupées</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Vérifier que le cliquet soit à zéro ou que le tiroir soit complètement chargé sur l’élévateur. Contrôler en outre que le volet de fermeture soit fermé.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Réduire la hauteur du matériel dans le tiroir. Ensuite, repasser en mode automatique.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Volet de fermeture pas en position fermée ou ouverte. Vérifier l’état des capteurs.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Baie de destination sans étalonnage.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Le test du premier tiroir a échoué : toutes les cellules n’ont pas été testées.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>L’entrepôt n’est pas vide. Le test de chargement du premier tiroir n’est pas autorisé.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Le capteur de zéro de la baie n’est pas actif à la fin du positionnement</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Le panneau latéral gauche est ouvert. Vérifier que les panneaux de la machine soient bien positionnés et fermés.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Le panneau latéral droit est ouvert. Vérifier que les panneaux de la machine soient bien positionnés et fermés.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>La position verticale de l’élévateur a changé après le démarrage de la machine.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Le test complet a échoué : tous les cycles prévus n’ont pas été effectués.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>La baie sélectionnée n’est pas valide</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>La position sélectionnée de la baie n’est pas valide</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>L’élévateur a atteint le capteur de surcourse en haut</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>La baie externe est occupée</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>La baie externe est vide</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>The {0} Axis movement Acceleration {1} is lower than full load acceleration or higher than Empty load acceleration</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>La vitesse {1} de déplacement de l'axe {0} est inférieure à la vitesse à pleine charge ou supérieure à la vitesse à vide</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>Le WMS a répondu avec un code d’erreur</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Le tiroir est trop haut ou trop bas pour cette baie. Le prélever avec une autre baie ou le déplacer manuellement</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>L’élévateur a atteint le capteur de surcourse en bas</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>La position de baie est désactivée</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Erreur des capteurs de présence de baie</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Le mouvement est arrêté depuis trop longtemps</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Erreur lors de la gestion de la carte d’entrées/sorties ou de l’exécution d’une commande.</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>La baie télescopique n’est pas à sa place. La positionner correctement pour rétablir les mouvements automatiques</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Corriger le paramètre de la tare du tiroir</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Le capteur de zéro de l’axe vertical est actif en position haute. Le calibrage vertical est nécessaire</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Le capteur de zéro de l’axe vertical n’est pas actif en position basse. Le calibrage vertical est nécessaire</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>La hauteur détectée est inférieure à celle minimum. Vérifier l’alignement et le nettoyage des barrières de mesure</value>
+  </data>
 </root>

@@ -127,13 +127,13 @@
     <value>Detail Code</value>
   </data>
   <data name="DrawerIdentificationCompleted" xml:space="preserve">
-    <value>Tray identification completed, switch to automatic mode.</value>
+    <value>Drawer identification completed, switch to automatic mode.</value>
   </data>
   <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
-    <value>Tray identification completed, switch to manual mode.</value>
+    <value>Drawer identification completed, switch to manual mode.</value>
   </data>
   <data name="DrawerSelection" xml:space="preserve">
-    <value>Tray selection</value>
+    <value>Drawer selection</value>
   </data>
   <data name="ErrorCode" xml:space="preserve">
     <value>Error Code</value>

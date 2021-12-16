@@ -4390,6 +4390,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public BlockLevel BlockLevel { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Description { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsFree", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFree { get; set; }
     

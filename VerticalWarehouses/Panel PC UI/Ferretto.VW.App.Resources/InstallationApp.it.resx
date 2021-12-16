@@ -2476,7 +2476,7 @@
     <value>Sostegno</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>procedura di spegnimento</value>
+    <value>spegni pannello</value>
   </data>
   <data name="ShutdownDescription" xml:space="preserve">
     <value>Esegui la taratura elevatore e spegni il pannello</value>
@@ -2546,5 +2546,8 @@
   </data>
   <data name="EnabledWithWMS" xml:space="preserve">
     <value>Abilitato con il WMS attivo</value>
+  </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>Multiselezione</value>
   </data>
 </root>

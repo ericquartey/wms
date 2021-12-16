@@ -241,7 +241,7 @@
       </Border>
 
       <controls:PpcButton Grid.Row="3"
-                          Width="100"
+                          Width="110"
                           Margin="15,15,15,0"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
@@ -250,7 +250,7 @@
                           Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
       <controls:PpcButton Grid.Row="3"
-                          Width="100"
+                          Width="110"
                           Margin="0,15,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Top"
@@ -260,6 +260,7 @@
 
             <controls:PpcButton Grid.Row="3"
                           Margin="15,15,15,0"
+                                Width="110"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Command="{Binding ConfirmOperationCanceledCommand}"
@@ -271,6 +272,7 @@
 
             <controls:PpcButton Grid.Row="4"
                           Margin="15,8,15,0"
+                                Width="110"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Command="{Binding FullOperationCommand}"
@@ -298,6 +300,7 @@
 
             <controls:PpcButton Grid.Row="4"
                           Margin="15,8,15,0"
+                                Width="110"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Command="{Binding ConfirmOperationCommand}"
@@ -308,6 +311,7 @@
 
             <controls:PpcButton Grid.Row="4"
                           Margin="15,8,15,0"
+                                Width="110"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Command="{Binding ConfirmPartialOperationCommand}"
@@ -318,6 +322,7 @@
 
             <controls:PpcButton Grid.Row="4"
                           Margin="15,8,15,0"
+                                Width="110"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Command="{Binding PutBoxCommand}"

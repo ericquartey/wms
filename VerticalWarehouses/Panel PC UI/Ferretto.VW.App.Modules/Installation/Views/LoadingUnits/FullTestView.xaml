@@ -45,7 +45,7 @@
     <TextBlock Grid.Row="1"
                Grid.ColumnSpan="4"
                Height="Auto"
-               Margin="0,0,15,0"
+               Margin="0,0,0,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
                Text="{res:Loc InstallationApp.FullTestDescription}" />
@@ -53,35 +53,35 @@
     <controls:CardSensorAxisVertical Grid.Row="2"
                                      Grid.Column="0"
                                      Height="90"
-                                     Margin="0,20,15,0" />
+                                     Margin="0,10,15,0" />
     <controls:CardSensorAxisHorizontal Grid.Row="2"
                                        Grid.Column="1"
                                        Height="90"
-                                       Margin="0,20,15,0" />
+                                       Margin="0,10,15,0" />
     <controls:CardSensorPosition Grid.Row="2"
                                  Grid.Column="2"
                                  Height="90"
-                                 Margin="0,20,15,0" />
+                                 Margin="0,10,15,0" />
     <controls:CardSensorDrawer Grid.Row="2"
                                Grid.Column="3"
                                Height="90"
-                               Margin="0,20,15,0" />
+                               Margin="0,10,15,0" />
 
     <controls:CardSensorBay Grid.Row="3"
                             Grid.Column="0"
                             Height="90"
-                            Margin="0,15,15,0" />
+                            Margin="0,10,15,0" />
 
     <controls:CardSensorShutter Grid.Row="3"
                                 Grid.Column="1"
                                 Height="90"
-                                Margin="0,15,15,0"
+                                Margin="0,10,15,0"
                                 Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
     <ctrls:PpcSpinEdit Grid.Row="3"
                        Grid.Column="2"
                        Height="90"
-                       Margin="0,15,15,0"
+                       Margin="0,10,15,0"
                        EditValue="{Binding RequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                        LabelText="{res:Loc InstallationApp.RequiredCycles}"
@@ -91,7 +91,7 @@
     <Border Grid.Row="3"
             Grid.Column="3"
             Height="90"
-            Margin="0,15,15,0"
+            Margin="0,10,15,0"
             Background="{DynamicResource PpcBackground}">
       <Border BorderBrush="{DynamicResource PpcBorderBrush}"
               BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -155,14 +155,14 @@
     <controls:CustomControlFullTestLoadingUnitsDataGrid Grid.Row="4"
                                                         Grid.Column="0"
                                                         Grid.ColumnSpan="2"
-                                                        Margin="0,15,15,0"
+                                                        Margin="0,10,15,0"
                                                         ItemsSource="{Binding LoadingUnits}"
                                                         SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
     <controls:CustomControlFullTestLoadingUnitsDataGrid Grid.Row="4"
                                                         Grid.Column="2"
                                                         Grid.ColumnSpan="2"
-                                                        Margin="0,15,15,0"
+                                                        Margin="0,10,15,0"
                                                         ItemsSource="{Binding TestUnits}"
                                                         SelectedItem="{Binding SelectedTU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

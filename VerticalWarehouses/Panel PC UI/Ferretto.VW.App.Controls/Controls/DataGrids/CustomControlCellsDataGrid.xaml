@@ -7,7 +7,7 @@
   <Border BorderBrush="{DynamicResource PpcBorderBrush}"
           BorderThickness="{DynamicResource PpcBorderThickness}"
           CornerRadius="2">
-    <DataGrid Name="DataGrid"
+    <DataGrid Name="CellsDataGrid"
               Width="auto"
               Height="auto"
               AutoGenerateColumns="False"
@@ -21,11 +21,8 @@
               HeadersVisibility="Column"
               HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
               IsReadOnly="True"
-              IsSynchronizedWithCurrentItem="True"
               ItemsSource="{Binding ItemsSource}"
               RowHeight="30"
-              SelectedItem="{Binding SelectedItem}"
-              SelectionMode="Single"
               Sorting="dataGridName_Sorting"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
               VerticalScrollBarVisibility="Auto">
@@ -156,6 +153,10 @@
 
       <DataGrid.Style>
         <Style TargetType="DataGrid">
+          <EventSetter Event="MouseEnter"
+                       Handler="MouseEnterHandler" />
+          <EventSetter Event="PreviewMouseDown"
+                       Handler="PreviewMouseDownHandler" />
           <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
           <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
         </Style>

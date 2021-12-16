@@ -92,7 +92,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             {
                 if (this.NotificationMessage != null)
                 {
-                    if (this.NotificationSeverity != NotificationSeverity.Success)
+                    if (this.NotificationSeverity != NotificationSeverity.Success
+                        && this.NotificationSeverity != NotificationSeverity.Error)
                     {
                         this.NotificationMessage = null;
                     }
@@ -109,8 +110,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             {
                 return;
             }
-
-            this.NotificationSeverity = message.NotificationSeverity;
 
             if (message.Exception != null)
             {
@@ -180,13 +179,14 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                         this.NotificationMessage = message.Exception.Message;
                         break;
                 }
+                this.NotificationSeverity = message.NotificationSeverity;
 
                 this.logger.Error(message.Exception);
             }
             else
             {
                 this.NotificationMessage = message.Msg;
-
+                this.NotificationSeverity = message.NotificationSeverity;
                 switch (message.NotificationSeverity)
                 {
                     case NotificationSeverity.Error:

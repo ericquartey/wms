@@ -27,6 +27,14 @@
     <None Remove="Resources\es-numeric.json" />
     <None Remove="Resources\es-numpad.json" />
     <None Remove="Resources\es-uppercase.json" />
+    <None Remove="Resources\fr-lowercase.json" />
+    <None Remove="Resources\fr-numeric.json" />
+    <None Remove="Resources\fr-numpad.json" />
+    <None Remove="Resources\fr-uppercase.json" />
+    <None Remove="Resources\he-lowercase.json" />
+    <None Remove="Resources\he-numeric.json" />
+    <None Remove="Resources\he-numpad.json" />
+    <None Remove="Resources\he-uppercase.json" />
     <None Remove="Resources\hr-lowercase.json" />
     <None Remove="Resources\hr-numeric.json" />
     <None Remove="Resources\hr-numpad.json" />
@@ -58,6 +66,10 @@
     <Resource Include="Resources\de-numeric.json" />
     <Resource Include="Resources\de-numpad.json" />
     <Resource Include="Resources\de-uppercase.json" />
+    <Resource Include="Resources\he-lowercase.json" />
+    <Resource Include="Resources\he-numeric.json" />
+    <Resource Include="Resources\he-numpad.json" />
+    <Resource Include="Resources\he-uppercase.json" />
     <Resource Include="Resources\es-lowercase.json" />
     <Resource Include="Resources\es-numeric.json" />
     <Resource Include="Resources\es-numpad.json" />
@@ -81,6 +93,11 @@
     <Resource Include="Resources\el-lowercase.json" />
     <Resource Include="Resources\el-numeric.json" />
     <Resource Include="Resources\el-numpad.json" />
+    <Resource Include="Resources\el-uppercase.json" />
+    <Resource Include="Resources\fr-numpad.json" />
+    <Resource Include="Resources\fr-numeric.json" />
+    <Resource Include="Resources\fr-uppercase.json" />
+    <Resource Include="Resources\fr-lowercase.json" />
     <Resource Include="Resources\pl-lowercase.json" />
     <Resource Include="Resources\pl-numeric.json" />
     <Resource Include="Resources\pl-numpad.json" />
@@ -91,7 +108,6 @@
     <Resource Include="Resources\ru-numpad.json" />
     <Resource Include="Resources\it-numpad.json" />
     <Resource Include="Resources\it-numeric.json" />
-    <Resource Include="Resources\el-uppercase.json" />
     <Resource Include="Resources\it-uppercase.json" />
     <Resource Include="Resources\it-lowercase.json" />
     <Resource Include="Resources\sl-lowercase.json" />

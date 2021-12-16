@@ -14,7 +14,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    [Warning(WarningsArea.Picking)]
+    [Warning(WarningsArea.User)]
     public class ItemSearchUnitsViewModel : BaseOperatorViewModel
     {
         #region Fields

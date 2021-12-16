@@ -251,6 +251,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
+                    b.Property<string>("Description");
+
                     b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");

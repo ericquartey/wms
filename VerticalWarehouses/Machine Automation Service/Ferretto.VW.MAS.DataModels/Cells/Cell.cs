@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public BlockLevel BlockLevel { get; set; }
 
+        public string Description { get; set; }
+
         public bool IsFree { get; set; }
 
         [JsonIgnore]
