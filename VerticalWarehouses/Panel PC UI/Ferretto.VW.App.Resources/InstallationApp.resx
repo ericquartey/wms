@@ -2623,4 +2623,7 @@
   <data name="Multiselection" xml:space="preserve">
     <value>Multiselection</value>
   </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Server path</value>
+  </data>
 </root>

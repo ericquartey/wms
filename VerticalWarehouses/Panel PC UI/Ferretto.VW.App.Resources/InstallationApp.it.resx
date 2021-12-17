@@ -2550,4 +2550,7 @@
   <data name="Multiselection" xml:space="preserve">
     <value>Multiselezione</value>
   </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Percorso server</value>
+  </data>
 </root>

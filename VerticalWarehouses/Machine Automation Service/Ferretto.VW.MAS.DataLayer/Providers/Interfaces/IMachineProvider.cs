@@ -12,9 +12,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Add(Machine machine);
 
+        void CheckBackupServer();
+
         void ClearAll();
 
         Machine Get();
+
+        string GetBackupServer();
+
+        string GetBackupServerPassword();
+
+        string GetBackupServerUsername();
 
         bool GetBox();
 
@@ -35,6 +43,10 @@ namespace Ferretto.VW.MAS.DataLayer
         ///     The raw database contents (raw bytes)
         /// </returns>
         byte[] GetRawDatabaseContent();
+
+        string GetSecondaryDatabase();
+
+        string GetSerialNumber();
 
         IEnumerable<ServicingInfo> GetServicingInfo();
 
@@ -76,7 +88,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateBayLoadUnitStatistics(BayNumber bayNumber, int loadUnitId);
 
-        void UpdateDbSaveOnServer(bool enable);
+        void UpdateDbSaveOnServer(bool enable, string server, string username, string password);
 
         void UpdateDbSaveOnTelemetry(bool enable);
 

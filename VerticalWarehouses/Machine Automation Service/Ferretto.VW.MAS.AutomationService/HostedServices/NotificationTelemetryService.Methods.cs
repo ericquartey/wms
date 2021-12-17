@@ -197,10 +197,10 @@ namespace Ferretto.VW.MAS.AutomationService
                         if (machineDataProvider.IsDbSaveOnServer())
                         {
                             var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                            var wmsSettings = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
+                            var machine = machineDataProvider.Get();
 
                             // save the database to server
-                            dataLayer.CopyMachineDatabaseToServer(wmsSettings.ServiceUrl.Host);
+                            dataLayer.CopyMachineDatabaseToServer(machine.BackupServer, machine.BackupServerUsername, machine.BackupServerPassword, machineDataProvider.GetSecondaryDatabase(), machine.SerialNumber);
                         }
                     }
                     catch (Exception ex)

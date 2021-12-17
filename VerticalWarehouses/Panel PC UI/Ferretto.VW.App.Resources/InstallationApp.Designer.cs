@@ -5902,6 +5902,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server path.
+        /// </summary>
+        public static string ServerPath {
+            get {
+                return ResourceManager.GetString("ServerPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set manual system date time.
         /// </summary>
         public static string SetManualSystemDateTime {

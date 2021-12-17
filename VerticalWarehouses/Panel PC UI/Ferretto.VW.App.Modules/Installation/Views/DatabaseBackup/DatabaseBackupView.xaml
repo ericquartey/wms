@@ -4,79 +4,147 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+            xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid x:Name="Root"
-          Margin="15,0,0,0">
+  <Grid x:Name="Root"
+        Margin="15,0,0,0">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="50" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="50" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="50" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="100" />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="Title"
-                   Grid.ColumnSpan="3"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{res:Loc InstallationApp.MachineDatabaseBackupMode}" />
+    <TextBlock x:Name="Title"
+               Grid.ColumnSpan="3"
+               VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc InstallationApp.MachineDatabaseBackupMode}" />
 
-        <controls:PpcCheckBox Grid.Row="2"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="2"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsBackupOnServer, Mode=TwoWay}"
-                              IsEnabled="{Binding IsBackupOnServerEnabled}"
-                              LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnServer}" />
+    <controls:PpcCheckBox Grid.Row="2"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsBackupOnServer, Mode=TwoWay}"
+                          IsEnabled="{Binding IsBackupOnServerEnabled}"
+                          LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnServer}" />
 
-        <controls:PpcCheckBox Grid.Row="4"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="2"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IsBackupOnTelemetry, Mode=TwoWay}"
-                              IsEnabled="{Binding IsBackupOnTelemetryEnabled}"
-                              LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnTelemetry}" />
+    <Grid Grid.Row="3"
+          Grid.Column="2"
+          Grid.ColumnSpan="2"
+          Visibility="{Binding IsBackupOnServer, Converter={StaticResource BTVC}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
 
-        <controls:PpcCheckBox Grid.Row="6"
-                              Grid.Column="1"
-                              Grid.ColumnSpan="2"
-                              VerticalAlignment="Center"
-                              Foreground="DarkGray"
-                              IsChecked="True"
-                              IsEnabled="False"
-                              LabelText="{res:Loc InstallationApp.DatabaseBackupModeInternal}" />
-        
-        <controls:PpcSensorControl Grid.Row="6"
-                                   Grid.Column="2"
-                                   VerticalAlignment="Center"
-                                   SensorState="{Binding IsStandbyDbOk}"
-                                   Text="Status"/>
+      <controls:PpcTextBox HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           InputText="{Binding ServerPath, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsBackupOnServerEnabled}"
+                           LabelText="{res:Loc InstallationApp.ServerPath}" />
 
-        <controls:PpcButton Grid.Row="7"
-                            Grid.ColumnSpan="4"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding SaveCommand}"
-                            Content="{res:Loc General.Save}"
-                            IsBusy="{Binding IsBusy}" />
+      <controls:PpcButton Grid.Column="1"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding TestCommand}"
+                          Content="Test"
+                          IsBusy="{Binding IsBusy}" />
 
+      <controls:PpcTextBox Grid.Row="1"
+                           HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch"
+                           InputText="{Binding ServerUsername, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsBackupOnServerEnabled}"
+                           LabelText="Server username" />
+
+      <StackPanel Grid.Row="1"
+                  Grid.Column="1"
+                  VerticalAlignment="Bottom"
+                  Orientation="Horizontal">
+        <dxe:PasswordBoxEdit x:Name="ServerPassword"
+                             Width="250"
+                             Height="40"
+                             Margin="0,5"
+                             IsEnabled="{Binding IsBackupOnServerEnabled}"
+                             MouseDoubleClick="OnKeyboardOpenHandler"
+                             NullText="Server password"
+                             Password="{Binding ServerPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                             Style="{StaticResource PpcPasswordBox}"
+                             TouchUp="OnKeyboardOpenHandler" />
+        <Button Name="KeyboardButton"
+                Height="40"
+                Margin="0,5"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Click="KeyboardButton_Click"
+                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                TouchUp="KeyboardButton_TouchUp"
+                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+          <icons:PackIconFontAwesome Width="20"
+                                     Height="20"
+                                     Margin="3"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Kind="KeyboardSolid" />
+        </Button>
+      </StackPanel>
     </Grid>
+
+    <controls:PpcCheckBox Grid.Row="5"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsBackupOnTelemetry, Mode=TwoWay}"
+                          IsEnabled="{Binding IsBackupOnTelemetryEnabled}"
+                          LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnTelemetry}" />
+
+    <controls:PpcCheckBox Grid.Row="7"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2"
+                          VerticalAlignment="Center"
+                          Foreground="DarkGray"
+                          IsChecked="True"
+                          IsEnabled="False"
+                          LabelText="{res:Loc InstallationApp.DatabaseBackupModeInternal}" />
+
+    <controls:PpcSensorControl Grid.Row="7"
+                               Grid.Column="2"
+                               VerticalAlignment="Center"
+                               SensorState="{Binding IsStandbyDbOk}"
+                               Text="Status" />
+
+    <controls:PpcButton Grid.Row="8"
+                        Grid.ColumnSpan="4"
+                        Margin="15,15,15,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Command="{Binding SaveCommand}"
+                        Content="{res:Loc General.Save}"
+                        IsBusy="{Binding IsBusy}" />
+
+  </Grid>
 </ctrls:View>
