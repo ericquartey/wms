@@ -3780,6 +3780,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         FireAlarm = 91,
     
+        BackupDatabaseOnServer = 92,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

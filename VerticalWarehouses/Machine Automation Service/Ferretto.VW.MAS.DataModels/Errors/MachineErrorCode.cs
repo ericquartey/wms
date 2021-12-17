@@ -289,6 +289,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorCondition(typeof(IFireAlarmConditionEvaluator))]
         FireAlarm,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BackupDatabaseOnServer), (int)MachineErrorSeverity.Normal)]
+        BackupDatabaseOnServer,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 

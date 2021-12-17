@@ -29,6 +29,7 @@
 - Aggiunta lingua francese
 - Aggiunta lingua ebraica
 - Gestione celle: attivazione della multi-selezione
+- Aggiunta configurazione del backup su server del cliente
 
 ## Bug Risolti
 - Gestione cassetti: correzione al salvataggio dei dati quando si cambia la cella

@@ -124,6 +124,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup database on server.
+        /// </summary>
+        public static string BackupDatabaseOnServer {
+            get {
+                return ResourceManager.GetString("BackupDatabaseOnServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The inverter is executing another command.
         /// </summary>
         public static string BayInvertersBusy {

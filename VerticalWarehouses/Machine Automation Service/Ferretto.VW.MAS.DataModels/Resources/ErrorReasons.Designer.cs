@@ -97,6 +97,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy database fail.
+        /// </summary>
+        public static string BackupDatabaseOnServer {
+            get {
+                return ResourceManager.GetString("BackupDatabaseOnServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay is already executing a command and cannot process any more.
         /// </summary>
         public static string BayInvertersBusy {

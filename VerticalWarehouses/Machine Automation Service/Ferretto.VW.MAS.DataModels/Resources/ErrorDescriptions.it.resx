@@ -456,4 +456,7 @@
   <data name="FireAlarm" xml:space="preserve">
     <value>Antincendio</value>
   </data>
+  <data name="BackupDatabaseOnServer" xml:space="preserve">
+    <value>Backup database su server</value>
+  </data>
 </root>
