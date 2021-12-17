@@ -5,11 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DevExpress.Data;
-using DevExpress.Xpf.Core.DragDrop.Native;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.TokenReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -64,6 +63,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private System.Collections.Generic.IEnumerable<User> wmsUsers;
 
         private readonly IMachineUsersWebService usersService;
+
+        private IEnumerable<UserParameters> userList;
 
         #endregion
 
@@ -354,7 +355,33 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
             }
 
+            this.userList = await this.usersService.GetAllUserWithCultureAsync();
+
+            this.SelectedUserChanged();
+
             await this.SetUsers();
+        }
+
+        private void SelectedUserChanged()
+        {
+            switch (this.UserLogin.UserName.ToLower())
+            {
+                case "installer":
+                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                    break;
+
+                case "service":
+                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                    break;
+
+                case "admin":
+                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                    break;
+
+                default:
+                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name.ToLower() == "operator").Language);
+                    break;
+            }
         }
 
         private async Task SetUsers()
@@ -593,6 +620,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }));
 
             this.loginCommand?.RaiseCanExecuteChanged();
+
+            this.SelectedUserChanged();
         }
 
         #endregion
