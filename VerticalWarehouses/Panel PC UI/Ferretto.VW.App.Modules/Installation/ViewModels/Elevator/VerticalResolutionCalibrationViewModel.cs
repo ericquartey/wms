@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IDialogService dialogService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
@@ -103,13 +105,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalResolutionCalibrationViewModel(
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
-            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService)
+            IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
+            IDialogService dialogService)
           : base(PresentationMode.Installer)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.CurrentStep = CalibrationStep.PositionMeter;
         }
@@ -697,6 +701,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 catch (TaskCanceledException)
                 {
                     this.IsRetrievingNewResolution = false;
+                }
+                finally
+                {
+                    if (Math.Abs(this.newResolution.Value - this.currentResolution.Value) > 0.06)
+                    {
+                        var message = Localized.Get("InstallationApp.ResultOutOfStandard")
+                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.UseMachineFullStroke")
+                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.AttachMeterToElevator")
+                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.MetricCordPerpendicular")
+                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.UseLaserLevelToGetValue")
+                            + "\r\n " + Localized.Get("InstallationApp.WantRepeatProcedure");
+                        var messageBoxResult = this.dialogService.ShowMessage(message, Localized.Get("OperatorApp.Warning"), DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult is DialogResult.Yes)
+                        {
+                            this.MeasuredPosition1 = null;
+                            this.MeasuredPosition2 = null;
+                            this.CurrentStep = CalibrationStep.PositionMeter;
+                        }
+                    }
                 }
             }
         }

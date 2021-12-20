@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to attach the meter measure securely to the elevator.
+        /// </summary>
+        public static string AttachMeterToElevator {
+            get {
+                return ResourceManager.GetString("AttachMeterToElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
         public static string Auto {
@@ -4381,6 +4390,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to the metric cord must be perfectly perpendicular to the elevator and parallel to the belt .
+        /// </summary>
+        public static string MetricCordPerpendicular {
+            get {
+                return ResourceManager.GetString("MetricCordPerpendicular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Micro carter left side.
         /// </summary>
         public static string MicroCarterLeftSide {
@@ -5592,6 +5610,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RestoreSuccessful {
             get {
                 return ResourceManager.GetString("RestoreSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Out of standard result. Here are some tips:.
+        /// </summary>
+        public static string ResultOutOfStandard {
+            get {
+                return ResourceManager.GetString("ResultOutOfStandard", resourceCulture);
             }
         }
         
@@ -6910,6 +6937,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to help yourself with the use of a laser level to create repeatable reading feedback .
+        /// </summary>
+        public static string UseLaserLevelToGetValue {
+            get {
+                return ResourceManager.GetString("UseLaserLevelToGetValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to try to use the full stroke of the machine.
+        /// </summary>
+        public static string UseMachineFullStroke {
+            get {
+                return ResourceManager.GetString("UseMachineFullStroke", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Management.
         /// </summary>
         public static string UserManagement {
@@ -7122,6 +7167,15 @@ namespace Ferretto.VW.App.Resources {
         public static string WaitAutomaticProcedureEnd {
             get {
                 return ResourceManager.GetString("WaitAutomaticProcedureEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Si vuole ripetere la procedura?.
+        /// </summary>
+        public static string WantRepeatProcedure {
+            get {
+                return ResourceManager.GetString("WantRepeatProcedure", resourceCulture);
             }
         }
         
