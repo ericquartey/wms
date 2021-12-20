@@ -177,6 +177,7 @@ namespace Ferretto.VW.App.Controls.Keyboards
         private void PpcKeyboards_Unloaded(object sender, RoutedEventArgs e)
         {
             Localized.Instance.CurrentKeyboardCulture = Localized.Instance.CurrentCulture;
+            Localized.Instance.LastKeyboardCulture = null;
 
             this.Unloaded -= this.PpcKeyboards_Unloaded;
             this.textBox.TextChanged -= this.TextBox_TextChanged;
