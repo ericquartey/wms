@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
@@ -702,25 +703,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsRetrievingNewResolution = false;
                 }
-                finally
-                {
-                    if (Math.Abs(this.newResolution.Value - this.currentResolution.Value) > 0.06)
-                    {
-                        var message = Localized.Get("InstallationApp.ResultOutOfStandard")
-                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.UseMachineFullStroke")
-                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.AttachMeterToElevator")
-                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.MetricCordPerpendicular")
-                            + "\r\n \u25E6 " + Localized.Get("InstallationApp.UseLaserLevelToGetValue")
-                            + "\r\n " + Localized.Get("InstallationApp.WantRepeatProcedure");
-                        var messageBoxResult = this.dialogService.ShowMessage(message, Localized.Get("OperatorApp.Warning"), DialogType.Question, DialogButtons.YesNo);
-                        if (messageBoxResult is DialogResult.Yes)
-                        {
-                            this.MeasuredPosition1 = null;
-                            this.MeasuredPosition2 = null;
-                            this.CurrentStep = CalibrationStep.PositionMeter;
-                        }
-                    }
-                }
             }
         }
 
@@ -737,6 +719,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.MeasuredDistance.Value,
                         exepectedDistance,
                         cancellationToken);
+
+                if (Math.Abs(this.newResolution.Value - this.currentResolution.Value) > 0.06)
+                {
+                    Application.Current.Dispatcher.Invoke((Action)delegate
+                    {
+                        var message = Localized.Get("InstallationApp.ResultOutOfStandard")
+                        + "\r\n \u25E6 " + Localized.Get("InstallationApp.UseMachineFullStroke")
+                        + "\r\n \u25E6 " + Localized.Get("InstallationApp.AttachMeterToElevator")
+                        + "\r\n \u25E6 " + Localized.Get("InstallationApp.MetricCordPerpendicular")
+                        + "\r\n \u25E6 " + Localized.Get("InstallationApp.UseLaserLevelToGetValue")
+                        + "\r\n " + Localized.Get("InstallationApp.WantRepeatProcedure");
+                        var messageBoxResult = this.dialogService.ShowMessage(message, Localized.Get("OperatorApp.Warning"), DialogType.Question, DialogButtons.YesNo);
+                        if (messageBoxResult is DialogResult.Yes)
+                        {
+                            this.MeasuredPosition1 = null;
+                            this.MeasuredPosition2 = null;
+                            this.CurrentStep = CalibrationStep.PositionMeter;
+                        }
+                    });
+                }
 
                 this.IsRetrievingNewResolution = false;
             }
