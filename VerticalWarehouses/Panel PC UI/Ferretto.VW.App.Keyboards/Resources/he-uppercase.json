@@ -354,8 +354,8 @@
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
-              "Caption": "{icon:CaretSquareUpRegular}",
-              "CommandText": "{layout:Uppercase}"
+              "Caption": "{icon:CaretSquareUpSolid}",
+              "CommandText": "{layout:Lowercase}"
             }
           }
         },
@@ -452,8 +452,8 @@
           "KeyStyleResource": "AccentKeyboardButtonStyle",
           "Key": {
             "Command": {
-              "Caption": "{icon:CaretSquareUpRegular}",
-              "CommandText": "{layout:Uppercase}"
+              "Caption": "{icon:CaretSquareUpSolid}",
+              "CommandText": "{layout:Lowercase}"
             }
           }
         }
