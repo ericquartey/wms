@@ -450,4 +450,7 @@
   <data name="FireAlarm" xml:space="preserve">
     <value>Sensor FireAlarm active</value>
   </data>
+  <data name="BackupDatabaseOnServer" xml:space="preserve">
+    <value>Copy database fail</value>
+  </data>
 </root>

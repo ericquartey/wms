@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void CopyMachineDatabaseToServer(string server, string username, string password, string database, string serialNumber)
         {
-            const int NUMBER_OF_RETRIES = 5;
+            const int NUMBER_OF_RETRIES = 2;
 
             for (var i = 0; i < NUMBER_OF_RETRIES; i++)
             {
@@ -22,6 +22,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (this.ExecuteBackupScript(server, username, password, database, serialNumber) == true)
                 {
                     break;
+                }
+                if (i == NUMBER_OF_RETRIES - 1)
+                {
+                    throw new ApplicationException(server);
                 }
             }
         }
@@ -90,10 +94,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         if (process.HasExited)
                         {
-                            success = true;
                             switch (process.ExitCode)
                             {
                                 case 0:
+                                    success = true;
                                     this.Logger.LogInformation($"Database Backup executed.");
                                     break;
 
@@ -106,7 +110,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     break;
 
                                 case 2:
-                                    error = "Database Backup error: CTRL+C pressed to terminate copying.";
+                                    error = "Database Backup error.";
                                     break;
 
                                 case 5:
@@ -144,8 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (!string.IsNullOrEmpty(error))
             {
-                this.Logger.LogInformation(error);
-                throw new InvalidOperationException(error);
+                this.Logger.LogError(error);
             }
 
             return success;
