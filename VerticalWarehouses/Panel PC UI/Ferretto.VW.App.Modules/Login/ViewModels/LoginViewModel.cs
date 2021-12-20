@@ -310,6 +310,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.userList = await this.usersService.GetAllUserWithCultureAsync();
             this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
             this.sessionService.IsLogged = false;
@@ -355,8 +356,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
             }
 
-            this.userList = await this.usersService.GetAllUserWithCultureAsync();
-
             this.SelectedUserChanged();
 
             await this.SetUsers();
@@ -364,23 +363,26 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private void SelectedUserChanged()
         {
-            switch (this.UserLogin?.UserName?.ToLower())
+            if (this.userList != null)
             {
-                case "installer":
-                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                    break;
+                switch (this.UserLogin.UserName.ToLower())
+                {
+                    case "installer":
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                        break;
 
-                case "service":
-                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                    break;
+                    case "service":
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                        break;
 
-                case "admin":
-                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                    break;
+                    case "admin":
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                        break;
 
-                default:
-                    Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name.ToLower() == "operator").Language);
-                    break;
+                    default:
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name.ToLower() == "operator").Language);
+                        break;
+                }
             }
         }
 

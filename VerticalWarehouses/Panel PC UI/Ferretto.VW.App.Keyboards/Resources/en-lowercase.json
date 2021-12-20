@@ -452,7 +452,8 @@
           "Key": {
             "Command": {
               "Caption": "{icon:CaretSquareUpRegular}",
-              "CommandText": "{layout:Uppercase}"
+              "CommandText": "{layout:Uppercase}",
+              "SecondaryCommandText": "{layout:Lowercase}"
             }
           }
         }

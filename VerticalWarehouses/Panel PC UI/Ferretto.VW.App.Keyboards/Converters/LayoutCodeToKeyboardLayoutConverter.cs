@@ -22,8 +22,20 @@ namespace Ferretto.VW.App.Keyboards.Converters
                 var currentCulture = CultureInfo.GetCultureInfo("en-EN");
                 var type = value.ToString().Replace(".en-EN", "");
 
+                Localized.Instance.LastKeyboardCulture = Localized.Instance.CurrentKeyboardCulture;
                 Localized.Instance.CurrentKeyboardCulture = currentCulture;
                 resourceName = string.Concat(currentCulture.TwoLetterISOLanguageName, "-", type, ".json").ToLowerInvariant();
+            }
+            //keyboard button secondary command turn at the original keyboard culture
+            else if (Localized.Instance.LastKeyboardCulture != null &&
+                (value.ToString() == "Lowercase." + Localized.Instance.LastKeyboardCulture.Name ||
+                value.ToString() == "Uppercase." + Localized.Instance.LastKeyboardCulture.Name))
+            {
+                var type = value.ToString().Replace("." + Localized.Instance.LastKeyboardCulture.Name, "");
+
+                Localized.Instance.CurrentKeyboardCulture = Localized.Instance.LastKeyboardCulture;
+                Localized.Instance.LastKeyboardCulture = null;
+                resourceName = string.Concat(Localized.Instance.CurrentKeyboardCulture.TwoLetterISOLanguageName, "-", type, ".json").ToLowerInvariant();
             }
             else
             {
