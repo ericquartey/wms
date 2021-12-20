@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Keyboards.Converters
 {
@@ -17,10 +18,18 @@ namespace Ferretto.VW.App.Keyboards.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Ferretto.VW.App.Keyboards.KeyboardKeyCommand command)
+            if (value is KeyboardKeyCommand command)
             {
                 if (!string.IsNullOrEmpty(command.Caption))
                 {
+                    //check the SecondaryCommandText to change button text
+                    if (command.SecondaryCommandText != null &&
+                        Localized.Instance.LastKeyboardCulture != null &&
+                        (command.SecondaryCommandText.ToLowerInvariant().Contains("uppercase") || command.SecondaryCommandText.ToLowerInvariant().Contains("lowercase")))
+                    {
+                        return Localized.Instance.LastKeyboardCulture.ThreeLetterISOLanguageName.ToUpperInvariant();
+                    }
+
                     var match = Regex.Match(command.Caption, IconPattern);
                     if (match?.Success == true)
                     {
