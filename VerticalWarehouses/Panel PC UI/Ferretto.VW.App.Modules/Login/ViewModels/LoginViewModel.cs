@@ -364,7 +364,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private void SelectedUserChanged()
         {
-            switch (this.UserLogin.UserName.ToLower())
+            switch (this.UserLogin?.UserName?.ToLower())
             {
                 case "installer":
                     Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);

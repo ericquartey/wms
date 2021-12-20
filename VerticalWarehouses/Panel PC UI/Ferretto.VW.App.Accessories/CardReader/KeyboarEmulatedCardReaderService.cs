@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Accessories
 
         private const string TokenCaptureGroupName = "Token";
 
-        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>.{10})", RegexOptions.Compiled);
+        private static readonly Regex DefaultTokenRegex = new Regex("(?<Token>\\d+)", RegexOptions.Compiled);
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
 
