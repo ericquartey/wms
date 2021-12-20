@@ -19,7 +19,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    [Warning(WarningsArea.Picking)]
+    [Warning(WarningsArea.User)]
     public class ItemSearchMainViewModel : BaseOperatorViewModel, IOperationalContextViewModel, IOperationReasonsSelector
     {
         #region Fields

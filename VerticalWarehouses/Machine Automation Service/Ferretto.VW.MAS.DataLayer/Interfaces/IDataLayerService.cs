@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Interfaces
 
         #region Methods
 
-        void CopyMachineDatabaseToServer(string host);
+        void CopyMachineDatabaseToServer(string server, string username, string password, string database, string serialNumber);
 
         #endregion
 

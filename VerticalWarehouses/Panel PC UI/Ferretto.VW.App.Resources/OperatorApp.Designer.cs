@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stock quantity [{0}].
+        ///   Looks up a localized string similar to Adjustment quantity [{0}].
         /// </summary>
         public static string AdjustmentQuantity {
             get {
@@ -1510,7 +1510,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray moving.
+        ///   Looks up a localized string similar to Drawer moving.
         /// </summary>
         public static string DrawerCompactingDetailDrawer {
             get {
@@ -1600,7 +1600,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compaction Tray procedure.
+        ///   Looks up a localized string similar to Compaction drawer procedure.
         /// </summary>
         public static string DrawerCompactingHeader {
             get {
@@ -1672,7 +1672,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray Id.
+        ///   Looks up a localized string similar to Drawer Id.
         /// </summary>
         public static string DrawerSaturationDataGridHeaderDrawerId {
             get {
@@ -1717,7 +1717,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray measure (mm).
+        ///   Looks up a localized string similar to Drawer measure (mm).
         /// </summary>
         public static string DrawerSpaceSaturazionDrawerMeasure {
             get {
@@ -1735,7 +1735,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Statistics: Tray space saturation..
+        ///   Looks up a localized string similar to Statistics: drawer space saturation..
         /// </summary>
         public static string DrawerSpaceSaturazionHeader {
             get {
@@ -1771,7 +1771,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for new Tray.
+        ///   Looks up a localized string similar to Waiting for new drawer.
         /// </summary>
         public static string DrawerWaitPageHeader {
             get {
@@ -2203,7 +2203,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray quantity.
+        ///   Looks up a localized string similar to Drawer quantity.
         /// </summary>
         public static string GeneralInfoTotDrawers {
             get {
@@ -2311,7 +2311,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Call Tray.
+        ///   Looks up a localized string similar to Call Drawer.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
             get {
@@ -2320,7 +2320,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Immediate Tray call.
+        ///   Looks up a localized string similar to Immediate drawer call.
         /// </summary>
         public static string ImmediateDrawerCallHeader {
             get {
@@ -2860,7 +2860,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is the last operation on this Tray placed the article and press OK.
+        ///   Looks up a localized string similar to This is the last operation on this drawer placed the article and press OK.
         /// </summary>
         public static string LastOperationMessage {
             get {
@@ -3247,7 +3247,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trays moved in bay 1.
+        ///   Looks up a localized string similar to Drawers moved in bay 1.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay1 {
             get {
@@ -3256,7 +3256,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trays moved in bay 2.
+        ///   Looks up a localized string similar to Drawers moved in bay 2.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay2 {
             get {
@@ -3265,7 +3265,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trays moved in bay 3.
+        ///   Looks up a localized string similar to Drawers moved in bay 3.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay3 {
             get {
@@ -3877,7 +3877,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray operations.
+        ///   Looks up a localized string similar to Drawer operations.
         /// </summary>
         public static string NavigationMainMenuDrawerOperation {
             get {
@@ -4075,7 +4075,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid reason or notes, operation not confirmed.
+        ///   Looks up a localized string similar to Invalid notes field operation not confirmed.
         /// </summary>
         public static string NoteNotValid {
             get {
@@ -4147,7 +4147,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray.
+        ///   Looks up a localized string similar to Drawer.
         /// </summary>
         public static string OtherDrawerDataGridHeaderDrawer {
             get {
@@ -4210,7 +4210,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray Call.
+        ///   Looks up a localized string similar to Drawer Call.
         /// </summary>
         public static string OtherNavigationImmediateDrawerCall {
             get {
@@ -4228,7 +4228,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray operations.
+        ///   Looks up a localized string similar to Drawer operations.
         /// </summary>
         public static string OtherNavigationImmediateDrawerCallDescription {
             get {
@@ -4462,7 +4462,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recall Tray.
+        ///   Looks up a localized string similar to Recall Drawer.
         /// </summary>
         public static string RecallDrawer {
             get {
@@ -4768,7 +4768,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray.
+        ///   Looks up a localized string similar to Drawer.
         /// </summary>
         public static string StatisticsDrawerWeightSaturationDataGridHeaderDrawer {
             get {

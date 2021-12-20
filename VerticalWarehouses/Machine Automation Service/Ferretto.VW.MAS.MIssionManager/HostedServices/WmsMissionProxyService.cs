@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public async override Task StartAsync(CancellationToken cancellationToken)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
 
@@ -249,7 +249,9 @@ namespace Ferretto.VW.MAS.MissionManager
                         this.Logger.LogDebug("A total of {newMissionsCount} new WMS mission(s) are available.", newWmsMissions.Count());
                     }
 
-                    foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Executing)))
+                    foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Executing))
+                                                                .OrderBy(m => m.Operations != null ? m.Operations.Min(o => o.Priority) : 0)
+                                                                .ThenBy(m => m.CreationDate))
                     {
                         var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
                         try

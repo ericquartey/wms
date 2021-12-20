@@ -97,6 +97,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy database fail.
+        /// </summary>
+        public static string BackupDatabaseOnServer {
+            get {
+                return ResourceManager.GetString("BackupDatabaseOnServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay is already executing a command and cannot process any more.
         /// </summary>
         public static string BayInvertersBusy {
@@ -556,7 +565,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verify that the destination bay of the tray is actually empty. Check that the bay loading unit sensors are working correctly..
+        ///   Looks up a localized string similar to Verify that the destination bay of the drawer is actually empty. Check that the bay loading unit sensors are working correctly..
         /// </summary>
         public static string LoadUnitDestinationBay {
             get {
@@ -970,7 +979,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper bay position is already occupied by a tray..
+        ///   Looks up a localized string similar to Upper bay position is already occupied by a drawer..
         /// </summary>
         public static string TopLevelBayOccupied {
             get {

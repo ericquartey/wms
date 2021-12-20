@@ -18,7 +18,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineDatabaseBackupWebService machineDatabaseBackupWebService;
 
-        private readonly IMachineWmsStatusWebService machineWmsStatusWebService;
+        private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private bool areSettingsChanged;
 
@@ -36,16 +36,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand saveCommand;
 
+        private string serverPassword;
+
+        private string serverPath;
+
+        private string serverUsername;
+
+        private DelegateCommand testCommand;
+
         #endregion
 
         #region Constructors
 
         public DatabaseBackupViewModel(IMachineDatabaseBackupWebService machineDatabaseBackupWebService,
-            IMachineWmsStatusWebService machineWmsStatusWebService)
+            IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Installer)
         {
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineDatabaseBackupWebService = machineDatabaseBackupWebService ?? throw new ArgumentNullException(nameof(machineDatabaseBackupWebService));
-            this.machineWmsStatusWebService = machineWmsStatusWebService ?? throw new ArgumentNullException(nameof(machineWmsStatusWebService));
         }
 
         #endregion
@@ -135,6 +143,51 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public string ServerPassword
+        {
+            get => this.serverPassword;
+            set
+            {
+                if (this.SetProperty(ref this.serverPassword, value))
+                {
+                    //this.areSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string ServerPath
+        {
+            get => this.serverPath;
+            set
+            {
+                if (this.SetProperty(ref this.serverPath, value))
+                {
+                    //this.areSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public string ServerUsername
+        {
+            get => this.serverUsername;
+            set
+            {
+                if (this.SetProperty(ref this.serverUsername, value))
+                {
+                    //this.areSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public ICommand TestCommand =>
+                    this.testCommand
+            ??
+            (this.testCommand = new DelegateCommand(
+                async () => await this.TestAsync(), this.CanTest));
+
         #endregion
 
         #region Methods
@@ -162,12 +215,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackupOnTelemetry = await this.machineDatabaseBackupWebService.GetBackupOnTelemetryAsync();
             this.IsStandbyDbOk = await this.machineDatabaseBackupWebService.GetStandbyDbAsync();
 
+            this.ServerPath = await this.machineDatabaseBackupWebService.GetBackupServerAsync();
+            this.ServerPassword = await this.machineDatabaseBackupWebService.GetBackupServerPasswordAsync();
+            this.ServerUsername = await this.machineDatabaseBackupWebService.GetBackupServerUsernameAsync();
+
+            this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
+
             this.IsBusy = false;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.saveCommand?.RaiseCanExecuteChanged();
+            this.testCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.IsKeyboardButtonVisible));
         }
 
         private bool CanSave()
         {
             return !this.IsBusy;
+        }
+
+        private bool CanTest()
+        {
+            return !this.IsBusy &&
+                !string.IsNullOrEmpty(this.serverPath) &&
+                !string.IsNullOrEmpty(this.serverUsername);
         }
 
         private async Task SaveAsync()
@@ -180,9 +256,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.areSettingsChanged)
                 {
-                    await this.machineDatabaseBackupWebService.SetBackupOnServerAsync(this.IsBackupOnServer);
+                    await this.machineDatabaseBackupWebService.SetBackupOnServerAsync(this.IsBackupOnServer, this.serverPath, this.serverUsername, this.serverPassword);
                     await this.machineDatabaseBackupWebService.SetBackupOnTelemetryAsync(this.IsBackupOnTelemetry);
                 }
+
+                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task TestAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                this.ClearNotifications();
+
+                await this.machineDatabaseBackupWebService.TestBackupOnServerAsync(this.serverPath, this.serverUsername, this.serverPassword);
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
             }

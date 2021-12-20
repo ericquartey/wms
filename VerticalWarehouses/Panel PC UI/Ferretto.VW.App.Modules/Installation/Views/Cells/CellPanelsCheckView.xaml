@@ -321,8 +321,8 @@
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{res:Loc InstallationApp.StepValue}"
                                    Mask="##0.0"
-                                   MaxValue="265.0"
-                                   MinValue="-265.0" />
+                                   MaxValue="5.0"
+                                   MinValue="-5.0" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
@@ -603,8 +603,8 @@
                                    IsEnabled="{Binding IsCanStepValue}"
                                    LabelText="{res:Loc InstallationApp.StepValue}"
                                    Mask="##0.0"
-                                   MaxValue="265.0"
-                                   MinValue="-265.0" />
+                                   MaxValue="5.0"
+                                   MinValue="-5.0" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"

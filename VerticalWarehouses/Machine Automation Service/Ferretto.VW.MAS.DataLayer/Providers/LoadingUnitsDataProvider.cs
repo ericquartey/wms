@@ -228,6 +228,24 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public LoadingUnit GetCellById(int id)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext.LoadingUnits
+                .Include(l => l.Cell)
+                .ThenInclude(l => l.Panel)
+                .SingleOrDefault(p => p.Id.Equals(id));
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
+
+                return loadingUnit;
+            }
+        }
+
         public double GetLoadUnitMaxHeight()
         {
             lock (this.dataContext)
@@ -377,6 +395,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException($"Load Unit with Overload (Id={loadingUnit.Id})");
             }
 
+            luHeightOld = luDb.Height;
             if (luDb.CellId.HasValue &&
                 (luDb.CellId != loadingUnit.CellId ||
                 luDb.Height != loadingUnit.Height ||
@@ -396,18 +415,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 (luDb.CellId != loadingUnit.CellId ||
                  luDb.Height != loadingUnit.Height))
             {
-                luHeightOld = luDb.Height;
-                lock (this.dataContext)
+                if (luDb.Height != loadingUnit.Height)
                 {
-                    luDb.Height = loadingUnit.Height;
-                    this.dataContext.SaveChanges();
+                    lock (this.dataContext)
+                    {
+                        luDb.Height = loadingUnit.Height;
+                        this.dataContext.SaveChanges();
+                    }
                 }
+
                 if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
                 {
                     lock (this.dataContext)
                     {
                         luDb.Height = luHeightOld;
-                        luDb.CellId = cellIdOld;
                         this.dataContext.SaveChanges();
                     }
 

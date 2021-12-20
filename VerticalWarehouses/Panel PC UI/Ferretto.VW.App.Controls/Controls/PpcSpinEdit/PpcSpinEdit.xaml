@@ -4,7 +4,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:k="clr-namespace:Ferretto.VW.App.Controls.Controls.Keyboards"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:rules="clr-namespace:Ferretto.VW.App.Controls.ValidationRules"
              Style="{StaticResource PpcSpinEditStyle}"
@@ -88,6 +87,11 @@
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
       <TextBlock Grid.Row="0"
                  Margin="4,0"
                  FontSize="{StaticResource FontSize_Normal}"
@@ -109,13 +113,31 @@
         </TextBlock.Style>
       </TextBlock>
       <Button Name="KeyboardButton"
-              Margin="4,0"
               HorizontalContentAlignment="Right"
-              VerticalContentAlignment="Top"
               BorderThickness="0"
               Click="KeyboardButton_Click"
-              Style="{StaticResource TextBoxKeyboardButtonStyle}"
               TouchUp="KeyboardButton_TouchUp">
+        <Button.Style>
+          <Style BasedOn="{StaticResource TextBoxKeyboardButtonStyle}"
+                 TargetType="{x:Type Button}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding KeyboardRight}"
+                           Value="false">
+                <Setter Property="Grid.Row" Value="0" />
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="VerticalContentAlignment" Value="Top" />
+                <Setter Property="Margin" Value="4,0" />
+              </DataTrigger>
+              <DataTrigger Binding="{Binding KeyboardRight}"
+                           Value="true">
+                <Setter Property="Grid.Row" Value="1" />
+                <Setter Property="Grid.Column" Value="1" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Margin" Value="4" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
         <icons:PackIconFontAwesome Width="20"
                                    Height="20"
                                    Margin="0,1,0,9"

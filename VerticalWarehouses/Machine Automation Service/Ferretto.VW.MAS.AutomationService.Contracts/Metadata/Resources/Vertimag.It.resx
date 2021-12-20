@@ -577,7 +577,7 @@
     <value>Telescopica</value>
   </data>
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
-    <value>Abilita aggiungi pezza</value>
+    <value>Abilita aggiungi articolo</value>
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Versamento automatico con barcode</value>

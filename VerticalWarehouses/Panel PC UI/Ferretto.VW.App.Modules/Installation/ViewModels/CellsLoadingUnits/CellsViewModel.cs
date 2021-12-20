@@ -23,13 +23,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
+        private BlockLevel cellsBlockLevels;
+
         private SubscriptionToken cellsToken;
+
+        private string description;
 
         private bool isBusy;
 
         private DelegateCommand saveCommand;
 
         private CellPlus selectedCell;
+
+        private List<CellPlus> selectedCells = new List<CellPlus>();
+
+        private bool anyCellSelected;
 
         #endregion
 
@@ -46,9 +54,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool AnyCellSelected
+        {
+            get => this.anyCellSelected;
+            set => this.SetProperty(ref this.anyCellSelected, value);
+        }
+
         public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest).ToList();
 
         public ObservableCollection<CellPlus> Cells => IEnumConvert(this.MachineService.CellsPlus.OrderBy(s => s.Side).ThenBy(s => s.Id));
+
+        public BlockLevel CellsBlockLevels
+        {
+            get => this.cellsBlockLevels;
+            set => this.SetProperty(ref this.cellsBlockLevels, value);
+        }
+
+        public string Description
+        {
+            get => this.description;
+            set => this.SetProperty(ref this.description, value);
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -65,12 +91,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.Save(),
-                () => !this.IsMoving && this.SelectedCell != null));
+                () => !this.IsMoving && this.SelectedCells != null && this.SelectedCells.Any()));
 
         public CellPlus SelectedCell
         {
             get => this.selectedCell;
             set => this.SetProperty(ref this.selectedCell, value);
+        }
+
+        public List<CellPlus> SelectedCells
+        {
+            get => this.selectedCells;
+            set
+            {
+                this.SetProperty(ref this.selectedCells, value);
+
+                if (this.selectedCells != null && !this.selectedCells.Any())
+                {
+                    this.SelectedCell = null;
+                    this.AnyCellSelected = false;
+                }
+                else if (this.selectedCells != null && this.selectedCells.Count == 1)
+                {
+                    this.SelectedCell = this.selectedCells.Single();
+                    this.AnyCellSelected = true;
+                }
+                else if (this.selectedCells != null && this.selectedCells.Count > 1)
+                {
+                    this.SelectedCell = null;
+                    this.CellsBlockLevels = this.selectedCells.First().BlockLevel;
+                    this.Description = string.Empty;
+                    this.AnyCellSelected = true;
+                }
+            }
         }
 
         #endregion
@@ -92,11 +145,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
-
-            if (this.Cells.Any())
-            {
-                this.SelectedCell = this.Cells?.ToList()[0];
-            }
 
             this.RaisePropertyChanged(nameof(this.Cells));
 
@@ -128,7 +176,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.ClearNotifications();
 
-                await this.machineCellsWebService.SaveCellAsync(this.SelectedCell);
+                if (this.selectedCells.Count == 1)
+                {
+                    await this.machineCellsWebService.SaveCellAsync(this.SelectedCell);
+                }
+                else
+                {
+                    foreach (var cell in this.selectedCells)
+                    {
+                        cell.BlockLevel = this.cellsBlockLevels;
+                        cell.Description = this.description;
+                        await this.machineCellsWebService.SaveCellAsync(cell);
+                    }
+                }
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
             }

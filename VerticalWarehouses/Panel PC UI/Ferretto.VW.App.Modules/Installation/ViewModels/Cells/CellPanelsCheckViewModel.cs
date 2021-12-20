@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
 
+        private readonly IMachineService machineService;
+
         private DelegateCommand applyCorrectionCommand;
 
         private Cell currentCell;
@@ -93,13 +95,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineErrorsWebService machineErrorsWebService,
             IMachineMissionsWebService machineMissionsWebService,
             IMachineCellPanelsWebService machineCellPanelsWebService,
-            IMachineElevatorWebService machineElevatorWebService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineService machineService)
             : base(PresentationMode.Installer)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -463,6 +467,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCanStartPosition));
             this.RaisePropertyChanged(nameof(this.IsCanStepValue));
             this.RaisePropertyChanged(nameof(this.CurrentPanel));
+            this.RaisePropertyChanged(nameof(this.CurrentCell));
             this.RaisePropertyChanged(nameof(this.CurrentPanelIsChecked));
 
             this.displacementCommand?.RaiseCanExecuteChanged();
@@ -482,6 +487,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 var currentPanelNumber = this.CurrentPanelNumber;
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
+                this.CurrentPanelNumber = 0;
                 this.CurrentPanelNumber = currentPanelNumber;
 
                 this.Displacement = 0;
@@ -502,7 +508,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanApplyCorrection()
         {
-            return !this.IsMoving;
+            var isOk = true;
+            var originalCells = this.machineService.OriginalCells;
+            if (this.Displacement != 0 &&
+                originalCells != null &&
+                this.CurrentCellId > 0)
+            {
+                var cell = originalCells.FirstOrDefault(c => c.Id == this.CurrentCellId);
+                if (cell != null && Math.Abs(this.CurrentCell.Position + this.Displacement - cell.Position) > 5)
+                {
+                    isOk = false;
+                }
+            }
+            return isOk && !this.IsMoving && this.Displacement != 0;
         }
 
         private bool CanBaseExecute()
@@ -517,16 +535,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisplacementCommand()
         {
             return this.CanBaseExecute() &&
-                   this.CurrentCellId > 0 &&
-                   this.StepValue != 0;
+                this.CurrentCell != null &&
+                this.CurrentCellId > 0 &&
+                !this.IsMoving &&
+                this.StepValue != 0 &&
+                (this.CurrentCell.Id == this.MachineStatus?.LogicalPositionId ||
+                    Math.Abs(this.CurrentCell.Position - (this.MachineStatus?.ElevatorVerticalPosition ?? 0D)) <= 5);
         }
 
         private bool CanGoToCellHeight()
         {
-            return this.CurrentCell != null &&
+            bool dbg =
+                this.CurrentCell != null &&
                    !this.IsMoving &&
-                   (Convert.ToInt32(this.CurrentCell.Position) != Convert.ToInt32(this.MachineStatus?.ElevatorVerticalPosition ?? 0D) ||
-                    this.CurrentCell.Id != this.MachineStatus?.LogicalPositionId);
+                   (Math.Abs(this.CurrentCell.Position - (this.MachineStatus?.ElevatorVerticalPosition ?? 0D)) > 0.9 ||
+                        this.CurrentCell.Id != this.MachineStatus?.LogicalPositionId);
+            return dbg;
         }
 
         private bool CanGoToMeasuredFront()

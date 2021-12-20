@@ -251,6 +251,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("BlockLevel");
 
+                    b.Property<string>("Description");
+
                     b.Property<bool>("IsFree");
 
                     b.Property<int>("PanelId");
@@ -1293,6 +1295,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BackupServer");
+
+                    b.Property<string>("BackupServerPassword");
+
+                    b.Property<string>("BackupServerUsername");
 
                     b.Property<bool>("Box");
 

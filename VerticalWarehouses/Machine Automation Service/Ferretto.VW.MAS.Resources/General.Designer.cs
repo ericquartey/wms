@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WMS error: Bad Request..
+        ///   Looks up a localized string similar to Bad Request..
         /// </summary>
         public static string BadRequestTitle {
             get {

@@ -961,7 +961,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enabled add drapery item.
+        ///   Looks up a localized string similar to Enabled add item.
         /// </summary>
         public static string Machine_IsEnableAddItem {
             get {
@@ -1015,7 +1015,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Tray Height.
+        ///   Looks up a localized string similar to Max Drawer Height.
         /// </summary>
         public static string Machine_LoadUnitMaxHeight {
             get {
@@ -1024,7 +1024,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Tray NetWeight.
+        ///   Looks up a localized string similar to Max Drawer NetWeight.
         /// </summary>
         public static string Machine_LoadUnitMaxNetWeight {
             get {
@@ -1033,7 +1033,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Min Tray Height.
+        ///   Looks up a localized string similar to Min Drawer Height.
         /// </summary>
         public static string Machine_LoadUnitMinHeight {
             get {
@@ -1051,7 +1051,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net weight for very heavy Tray, 0 disables.
+        ///   Looks up a localized string similar to Net weight for very heavy drawer, 0 disables.
         /// </summary>
         public static string Machine_LoadUnitVeryHeavyPercent {
             get {

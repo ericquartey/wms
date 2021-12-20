@@ -917,6 +917,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     //    .SingleOrDefault(l => l.Id == loadingUnitId);
 
                     cell.LoadingUnit = loadingUnit;
+                    loadingUnit.Cell = cell;
 
                     var weight = loadingUnit.GrossWeight;
                     if (cell.Side == WarehouseSide.Front)

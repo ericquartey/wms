@@ -2476,7 +2476,7 @@
     <value>Sostegno</value>
   </data>
   <data name="Shutdown" xml:space="preserve">
-    <value>procedura di spegnimento</value>
+    <value>spegni pannello</value>
   </data>
   <data name="ShutdownDescription" xml:space="preserve">
     <value>Esegui la taratura elevatore e spegni il pannello</value>
@@ -2546,5 +2546,29 @@
   </data>
   <data name="EnabledWithWMS" xml:space="preserve">
     <value>Abilitato con il WMS attivo</value>
+  </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>Multiselezione</value>
+  </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Percorso server</value>
+  </data>
+  <data name="ResultOutOfStandard" xml:space="preserve">
+    <value>Risultato fuori standard. Ecco alcuni consigli:</value>
+  </data>
+  <data name="UseMachineFullStroke" xml:space="preserve">
+    <value>cercare di utilizzare la corsa completa della macchina</value>
+  </data>
+  <data name="AttachMeterToElevator" xml:space="preserve">
+    <value>attaccare il metro saldamente all'elevatore</value>
+  </data>
+  <data name="MetricCordPerpendicular" xml:space="preserve">
+    <value>la cordella metrica deve stare perfettamente in perpendicolare rispetto all'elevatore e parallela rispetto alla cinghia</value>
+  </data>
+  <data name="UseLaserLevelToGetValue" xml:space="preserve">
+    <value>aiutarsi con l'utilizzo di una livella laser per creare un riscontro di lettura ripetibile</value>
+  </data>
+  <data name="WantRepeatProcedure" xml:space="preserve">
+    <value>Si vuole ripetere la procedura?</value>
   </data>
 </root>

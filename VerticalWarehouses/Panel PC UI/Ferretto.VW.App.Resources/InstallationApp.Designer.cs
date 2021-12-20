@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to attach the meter measure securely to the elevator.
+        /// </summary>
+        public static string AttachMeterToElevator {
+            get {
+                return ResourceManager.GetString("AttachMeterToElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
         public static string Auto {
@@ -385,7 +394,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Allows adjustment of the Tray height detection barrier.
+        ///   Looks up a localized string similar to Allows adjustment of the drawer height detection barrier.
         /// </summary>
         public static string BarrierCalibrationMenuDescription {
             get {
@@ -979,7 +988,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Be sure to adjust the Tray presence photocells, if not adjusted, the lift could block in the upper part of the machine..
+        ///   Looks up a localized string similar to Be sure to adjust the drawer presence photocells, if not adjusted, the lift could block in the upper part of the machine..
         /// </summary>
         public static string CellPanelsCheckDescription {
             get {
@@ -1105,7 +1114,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load first Tray and test cells.
+        ///   Looks up a localized string similar to Load first drawer and test cells.
         /// </summary>
         public static string CellTestMenuDescription {
             get {
@@ -1231,7 +1240,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check that there are no trays in the bay before starting. Press on START to begin the procedure.
+        ///   Looks up a localized string similar to Check that there are no drawers in the bay before starting. Press on START to begin the procedure.
         /// </summary>
         public static string CheckDrawersThenStart {
             get {
@@ -1888,7 +1897,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This will remove the Tray from the warehouse map.
+        ///   Looks up a localized string similar to This will remove the drawer from the warehouse map.
         /// </summary>
         public static string DeleteUnitDialog {
             get {
@@ -2050,7 +2059,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray id {0} extracted.
+        ///   Looks up a localized string similar to Drawer id {0} extracted.
         /// </summary>
         public static string DrawerIdExtracted {
             get {
@@ -2059,7 +2068,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray management.
+        ///   Looks up a localized string similar to Drawer management.
         /// </summary>
         public static string DrawerManagement {
             get {
@@ -2068,7 +2077,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray Number.
+        ///   Looks up a localized string similar to Drawer Number.
         /// </summary>
         public static string DrawerNumber {
             get {
@@ -2077,7 +2086,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray store and Tray recall.
+        ///   Looks up a localized string similar to Drawer store and drawer recall.
         /// </summary>
         public static string DrawerStoreAndRecall {
             get {
@@ -2527,7 +2536,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Falls Tray.
+        ///   Looks up a localized string similar to Falls drawer.
         /// </summary>
         public static string FallsUnit {
             get {
@@ -2635,7 +2644,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows the complete test of all the trays present in the machine. To start the procedure, enter the number of cycles and then press Start.
+        ///   Looks up a localized string similar to The procedure allows the complete test of all the drawers present in the machine. To start the procedure, enter the number of cycles and then press Start.
         /// </summary>
         public static string FullTestDescription {
             get {
@@ -2770,7 +2779,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Go to Tray.
+        ///   Looks up a localized string similar to Go to drawer.
         /// </summary>
         public static string GoToDrawer {
             get {
@@ -3373,7 +3382,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to move a Tray from the source bay to the destination cell. To start the procedure, enter the Tray ID and then press Start.
+        ///   Looks up a localized string similar to The procedure allows you to move a drawer from the source bay to the destination cell. To start the procedure, enter the drawer ID and then press Start.
         /// </summary>
         public static string InsertLoadingUnitFromBayToCellDescription {
             get {
@@ -3382,7 +3391,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the Tray pick position.
+        ///   Looks up a localized string similar to Select the drawer pick position.
         /// </summary>
         public static string InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition {
             get {
@@ -3517,7 +3526,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid cell id on inserted Tray .
+        ///   Looks up a localized string similar to Invalid cell id on inserted drawer .
         /// </summary>
         public static string InvalidCellIdOnInsertedDrawer {
             get {
@@ -3544,7 +3553,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Tray id in bay.
+        ///   Looks up a localized string similar to Invalid drawer id in bay.
         /// </summary>
         public static string InvalidDrawerIdInBay {
             get {
@@ -3553,7 +3562,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Tray selected.
+        ///   Looks up a localized string similar to Invalid drawer selected.
         /// </summary>
         public static string InvalidDrawerSelected {
             get {
@@ -3562,7 +3571,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid entered Tray Id.
+        ///   Looks up a localized string similar to Invalid entered drawer Id.
         /// </summary>
         public static string InvalidEnteredDrawerId {
             get {
@@ -3850,7 +3859,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray to insert.
+        ///   Looks up a localized string similar to Drawer to insert.
         /// </summary>
         public static string LoadFirstDrawerDrawerToInsert {
             get {
@@ -3859,7 +3868,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max weight Tray portance (kg).
+        ///   Looks up a localized string similar to Max weight drawer portance (kg).
         /// </summary>
         public static string LoadFirstDrawerMaxWeight {
             get {
@@ -3868,7 +3877,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load First Tray and Test Cells.
+        ///   Looks up a localized string similar to Load First Drawer and Test Cells.
         /// </summary>
         public static string LoadFirstDrawerPageHeader {
             get {
@@ -3877,7 +3886,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Call Tray.
+        ///   Looks up a localized string similar to Call Drawer.
         /// </summary>
         public static string LoadFirstDrawerRecallDrawer {
             get {
@@ -3886,7 +3895,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert Tray.
+        ///   Looks up a localized string similar to Insert Drawer.
         /// </summary>
         public static string LoadFirstDrawerStartLoading {
             get {
@@ -3931,7 +3940,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray to insert.
+        ///   Looks up a localized string similar to Drawer to insert.
         /// </summary>
         public static string LoadingDrawersDrawerToInsert {
             get {
@@ -3940,7 +3949,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inserted Trays.
+        ///   Looks up a localized string similar to Inserted drawers.
         /// </summary>
         public static string LoadingDrawersInsertedDrawers {
             get {
@@ -3958,7 +3967,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next Tray.
+        ///   Looks up a localized string similar to Next drawer.
         /// </summary>
         public static string LoadingDrawersNextDrawer {
             get {
@@ -3967,7 +3976,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load Trays.
+        ///   Looks up a localized string similar to Load Drawers.
         /// </summary>
         public static string LoadingDrawersPageHeader {
             get {
@@ -3985,7 +3994,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Trays.
+        ///   Looks up a localized string similar to Total drawers.
         /// </summary>
         public static string LoadingDrawersTotalDrawers {
             get {
@@ -4030,7 +4039,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray movement from bay to bay.
+        ///   Looks up a localized string similar to Drawer movement from bay to bay.
         /// </summary>
         public static string LoadingUnitFromBayToBay {
             get {
@@ -4039,7 +4048,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to move a Tray from the source bay to the destination one. To start the procedure, enter the Tray ID and then press Start.
+        ///   Looks up a localized string similar to The procedure allows you to move a drawer from the source bay to the destination one. To start the procedure, enter the drawer ID and then press Start.
         /// </summary>
         public static string LoadingUnitFromBayToBayDescription {
             get {
@@ -4048,7 +4057,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the target location of the Tray.
+        ///   Looks up a localized string similar to Select the target location of the drawer.
         /// </summary>
         public static string LoadingUnitFromBayToBaySelectDrawerPosition {
             get {
@@ -4066,7 +4075,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the Tray id, the id of the destination cell and then press Start.
+        ///   Looks up a localized string similar to The procedure moves a tray from a source cell to the destination cell. To start the procedure enter the drawer id, the id of the destination cell and then press Start.
         /// </summary>
         public static string LoadingUnitFromCellToCellDescription {
             get {
@@ -4381,6 +4390,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to the metric cord must be perfectly perpendicular to the elevator and parallel to the belt .
+        /// </summary>
+        public static string MetricCordPerpendicular {
+            get {
+                return ResourceManager.GetString("MetricCordPerpendicular", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Micro carter left side.
         /// </summary>
         public static string MicroCarterLeftSide {
@@ -4606,7 +4624,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to remove a Tray. To start the procedure, enter the Tray ID and then press Start.
+        ///   Looks up a localized string similar to The procedure allows you to remove a drawer. To start the procedure, enter the drawer ID and then press Start.
         /// </summary>
         public static string MoveLoadingUnitFromCellToBayDescription {
             get {
@@ -4615,7 +4633,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray management.
+        ///   Looks up a localized string similar to Drawer management.
         /// </summary>
         public static string MoveLoadingUnitFromCellToBayDrawerManagement {
             get {
@@ -4624,7 +4642,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the target location of the Tray.
+        ///   Looks up a localized string similar to Select the target location of the drawer.
         /// </summary>
         public static string MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition {
             get {
@@ -4701,6 +4719,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MultipleConfigurationsDetected {
             get {
                 return ResourceManager.GetString("MultipleConfigurationsDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiselection.
+        /// </summary>
+        public static string Multiselection {
+            get {
+                return ResourceManager.GetString("Multiselection", resourceCulture);
             }
         }
         
@@ -5200,7 +5227,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Place the adjustment template in the upper right corner of the Tray in the bay, make sure to position the magnets so that it remains firmly on the Tray. Then open the shutter..
+        ///   Looks up a localized string similar to Place the adjustment template in the upper right corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer. Then open the shutter..
         /// </summary>
         public static string ProfileHeighCheckProcedureDescription {
             get {
@@ -5209,7 +5236,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Place the adjustment template in the upper left corner of the Tray in the bay, make sure to position the magnets so that it remains firmly on the Tray..
+        ///   Looks up a localized string similar to Place the adjustment template in the upper left corner of the drawer in the bay, make sure to position the magnets so that it remains firmly on the drawer..
         /// </summary>
         public static string ProfileHeightCheckProcedureLeftUnitDescription {
             get {
@@ -5587,6 +5614,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Out of standard result. Here are some tips:.
+        /// </summary>
+        public static string ResultOutOfStandard {
+            get {
+                return ResourceManager.GetString("ResultOutOfStandard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retry procedure.
         /// </summary>
         public static string RetryProcedure {
@@ -5893,6 +5929,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server path.
+        /// </summary>
+        public static string ServerPath {
+            get {
+                return ResourceManager.GetString("ServerPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set manual system date time.
         /// </summary>
         public static string SetManualSystemDateTime {
@@ -5911,7 +5956,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shutdown procedure.
+        ///   Looks up a localized string similar to Shutdown panel.
         /// </summary>
         public static string Shutdown {
             get {
@@ -6793,7 +6838,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Press the button to obtain the current data by moving the Tray and enter its net weight. When finished, press Next to confirm the operation.
+        ///   Looks up a localized string similar to Press the button to obtain the current data by moving the drawer and enter its net weight. When finished, press Next to confirm the operation.
         /// </summary>
         public static string UnitWeighingDescription {
             get {
@@ -6865,7 +6910,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you confirm that the selected Tray is empty?.
+        ///   Looks up a localized string similar to Do you confirm that the selected drawer is empty?.
         /// </summary>
         public static string UpdateTareProcedure {
             get {
@@ -6874,7 +6919,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray tare update procedure.
+        ///   Looks up a localized string similar to Drawer tare update procedure.
         /// </summary>
         public static string UpdateTareProcedureHeader {
             get {
@@ -6888,6 +6933,24 @@ namespace Ferretto.VW.App.Resources {
         public static string UpperBound {
             get {
                 return ResourceManager.GetString("UpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to help yourself with the use of a laser level to create repeatable reading feedback .
+        /// </summary>
+        public static string UseLaserLevelToGetValue {
+            get {
+                return ResourceManager.GetString("UseLaserLevelToGetValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to try to use the full stroke of the machine.
+        /// </summary>
+        public static string UseMachineFullStroke {
+            get {
+                return ResourceManager.GetString("UseMachineFullStroke", resourceCulture);
             }
         }
         
@@ -7108,6 +7171,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Si vuole ripetere la procedura?.
+        /// </summary>
+        public static string WantRepeatProcedure {
+            get {
+                return ResourceManager.GetString("WantRepeatProcedure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Weight.
         /// </summary>
         public static string Weight {
@@ -7144,7 +7216,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Load a Tray in the bay or call one to start the weight calibration wizard.
+        ///   Looks up a localized string similar to Load a drawer in the bay or call one to start the weight calibration wizard.
         /// </summary>
         public static string WeightCalibrationDescriptionProcedure {
             get {
@@ -7216,7 +7288,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There are active missions for this Tray by the WMS.
+        ///   Looks up a localized string similar to There are active missions for this drawer by the WMS.
         /// </summary>
         public static string WmsMissionActive {
             get {
