@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var startTime = DateTime.Now;
             var statusCode = this.StatusCode((int)HealthStatus.Unhealthy, "Unhealthy");
             //var timeout = this.wmsSettingsProvider.SocketLinkTimeout > 0 ? this.wmsSettingsProvider.SocketLinkTimeout : 5000;
-            var timeout = 10000;
+            var timeout = 5000;
             for (int i = 1; i <= numCycle && (DateTime.Now - startTime).TotalMilliseconds < timeout; i++)
             {
                 using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                             this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
                         }
 
-                        if (status != HealthStatus.Unhealthy)
+                        if (this.wmsSettingsProvider.IsConnected)
                         {
                             statusCode = this.StatusCode((int)result.StatusCode, statusString);
                             break;

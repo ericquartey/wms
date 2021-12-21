@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.NotifyErrorCreation(newError, bayNumber);
 
-            this.logger.LogError($"Error: {code} ({(int)code}); Bay {bayNumber}; {newError.Description}");
+            this.logger.LogError($"Error: {code} ({(int)code}); Bay {bayNumber}; {newError.Description}; {newError.AdditionalText}");
 
             if (newError.Severity == (int)MachineErrorSeverity.NeedsHoming)
             {
