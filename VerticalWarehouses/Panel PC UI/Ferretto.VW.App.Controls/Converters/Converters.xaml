@@ -58,6 +58,8 @@
 
   <conv:DebugDummyConverter x:Key="DEBUG" />
 
+  <conv:MachineServiceStatusToColorConverter x:Key="MSSTCC" />
+
   <!--  truthy to ui  -->
   <conv:TruthyToUiConverter x:Key="TTUI" />
   <conv:MultiBooleanToUiConverter x:Key="MBTUI" />
