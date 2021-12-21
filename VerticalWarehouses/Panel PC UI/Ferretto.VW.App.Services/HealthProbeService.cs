@@ -13,7 +13,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private const int DefaultPollInterval = 5000;
+        private const int DefaultPollInterval = 10000;
 
         private readonly Uri baseMasAddress;
 
