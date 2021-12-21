@@ -37,6 +37,7 @@
 - Movimenti guidati: correzione dei pulsanti con l'icona della tastiera
 - Il lettore di badge funziona anche senza \r nel token
 - Nelle viste del cassetto in baia ci sono meno messaggi di movimentazione
+- Il timeout con WMS è portato a 5 secondi
 
 ## Compatibile con adapter 0.4.29
 ***
