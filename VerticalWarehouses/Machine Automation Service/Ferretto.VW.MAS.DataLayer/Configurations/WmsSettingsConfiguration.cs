@@ -39,7 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                     SocketLinkIsEnabled = false,
                     SocketLinkPort = 7075,
                     SocketLinkTimeout = 600,
-                    SocketLinkPolling = 120
+                    SocketLinkPolling = 120,
+                    ConnectionTimeout = 5
                 });
         }
 

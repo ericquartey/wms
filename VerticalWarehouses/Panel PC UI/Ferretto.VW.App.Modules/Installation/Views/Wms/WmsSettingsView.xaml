@@ -83,7 +83,8 @@
     <Grid Grid.Row="3"
           Grid.ColumnSpan="2"
           Margin="55,0,0,0"
-          IsEnabled="{Binding IsWmsEnabled}">
+          IsEnabled="{Binding IsWmsEnabled}"
+          Visibility="{Binding IsWmsEnabled, Converter={StaticResource BTVC}}">
       <Grid.RowDefinitions>
         <RowDefinition />
         <RowDefinition />
@@ -162,6 +163,11 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{Binding Path=HealthStatus, Converter={StaticResource ETHSC}}" />
             </StackPanel>-->
+      <ctrls:PpcSpinEdit Grid.Row="2"
+                         EditValue="{Binding ConnectionTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         LabelText="{res:Loc General.SocketLinkTimeout}"
+                         MaxValue="999"
+                         MinValue="1" />
 
     </Grid>
 
@@ -179,7 +185,8 @@
     <Grid Grid.Row="5"
           Grid.ColumnSpan="2"
           Margin="55,0,0,0"
-          IsEnabled="{Binding SocketLinkIsEnabled}">
+          IsEnabled="{Binding SocketLinkIsEnabled}"
+          Visibility="{Binding SocketLinkIsEnabled, Converter={StaticResource BTVC}}">
       <Grid.RowDefinitions>
         <RowDefinition />
         <RowDefinition />

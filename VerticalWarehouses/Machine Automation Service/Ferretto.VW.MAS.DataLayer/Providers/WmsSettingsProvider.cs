@@ -38,6 +38,35 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Properties
 
+        public int ConnectionTimeout
+        {
+            get
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return 0;
+                }
+
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().ConnectionTimeout;
+                }
+            }
+            set
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+
+                lock (this.dataContext)
+                {
+                    this.dataContext.WmsSettings.Single().ConnectionTimeout = value;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public bool IsConnected
         {
             get
