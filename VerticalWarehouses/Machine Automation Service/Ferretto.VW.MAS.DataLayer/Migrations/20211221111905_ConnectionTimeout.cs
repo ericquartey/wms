@@ -8,11 +8,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "ErrorStatistics",
-                keyColumn: "Code",
-                keyValue: 92);
-
             migrationBuilder.DropColumn(
                 name: "ConnectionTimeout",
                 table: "WmsSettings");
@@ -25,11 +20,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "WmsSettings",
                 nullable: false,
                 defaultValue: 5);
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 92, 0 });
         }
 
         #endregion

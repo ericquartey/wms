@@ -36,6 +36,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("get-connection-timeout")]
+        public ActionResult<int> GetConnectionTimeout()
+        {
+            return this.Ok(this.wmsSettingsProvider.ConnectionTimeout);
+        }
+
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -61,12 +67,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<int> GetSocketLinkPolling()
         {
             return this.Ok(this.wmsSettingsProvider.SocketLinkPolling);
-        }
-
-        [HttpGet("get-connection-timeout")]
-        public ActionResult<int> GetConnectionTimeout()
-        {
-            return this.Ok(this.wmsSettingsProvider.ConnectionTimeout);
         }
 
         [HttpGet("get-socketlink-port")]
@@ -151,12 +151,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var statusCode = this.StatusCode((int)HealthStatus.Unhealthy, "Unhealthy");
             //var timeout = this.wmsSettingsProvider.SocketLinkTimeout > 0 ? this.wmsSettingsProvider.SocketLinkTimeout : 5000;
 
-            if(this.wmsSettingsProvider.ConnectionTimeout == 0)
+            if (this.wmsSettingsProvider.ConnectionTimeout == 0)
             {
                 this.wmsSettingsProvider.ConnectionTimeout = 5;
             }
 
-            var timeout = this.wmsSettingsProvider.ConnectionTimeout;
+            var timeout = this.wmsSettingsProvider.ConnectionTimeout * 1000;
             for (int i = 1; i <= numCycle && (DateTime.Now - startTime).TotalMilliseconds < timeout; i++)
             {
                 using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
