@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.wmsSettingsProvider.ConnectionTimeout = 5;
             }
 
-            var timeout = this.wmsSettingsProvider.ConnectionTimeout;
+            var timeout = this.wmsSettingsProvider.ConnectionTimeout * 1000;
             for (int i = 1; i <= numCycle && (DateTime.Now - startTime).TotalMilliseconds < timeout; i++)
             {
                 using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
