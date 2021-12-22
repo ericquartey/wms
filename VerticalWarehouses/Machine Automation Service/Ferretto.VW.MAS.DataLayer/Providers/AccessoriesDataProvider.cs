@@ -199,10 +199,21 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.TokenReader)
                     .Single(b => b.Number == bayNumber);
 
-                bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
-                bay.Accessories.TokenReader.PortName = portName;
+                if (bay.Accessories.TokenReader is null)
+                {
+                    bay.Accessories.TokenReader = new TokenReader();
+                    bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
+                    bay.Accessories.TokenReader.PortName = portName;
 
-                this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
+                    this.dataContext.Accessories.Add(bay.Accessories.TokenReader);
+                }
+                else
+                {
+                    bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
+                    bay.Accessories.TokenReader.PortName = portName;
+
+                    this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
+                }
                 this.dataContext.SaveChanges();
             }
         }
