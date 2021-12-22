@@ -1014,6 +1014,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetIsCheckIntrusion(BayNumber bayNumber, bool value)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                bay.IsCheckIntrusion = value;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
         {
             lock (this.dataContext)
