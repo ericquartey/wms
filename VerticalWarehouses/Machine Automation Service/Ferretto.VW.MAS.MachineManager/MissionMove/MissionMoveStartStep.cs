@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
         #endregion
@@ -32,7 +30,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             : base(mission, serviceProvider, eventAggregator)
         {
             this.machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-            this.baysDataProvider = this.ServiceProvider.GetRequiredService<IBaysDataProvider>();
         }
 
         #endregion
@@ -157,18 +154,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (this.Mission.MissionType == MissionType.Compact)
                 {
-                    var bay = this.baysDataProvider.GetByNumber(this.Mission.TargetBay);
-                    if (bay.Positions.Count() == 1 &&
-                        !bay.IsExternal &&
-                        bay.Shutter == null &&
-                        bay.IsCheckIntrusion &&
-                        this.machineResourcesProvider.IsDrawerInBayTop(bay.Number))
+                    if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
                     {
-                        if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
-                        {
-                            this.Logger.LogInformation($"Disable intrusion Mission:Id={this.Mission.Id}");
-                            disableIntrusion = true;
-                        }
+                        this.Logger.LogInformation($"Disable intrusion Mission:Id={this.Mission.Id}");
+                        disableIntrusion = true;
                     }
                 }
 
