@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "ConnectionTimeout",
                 table: "WmsSettings",
                 nullable: false,
-                defaultValue: 5);
+                defaultValue: 5000);
         }
 
         #endregion

@@ -255,9 +255,6 @@
   <data name="SocketLinkPort" xml:space="preserve">
     <value>יציאה</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>זמן קצוב</value>
-  </data>
   <data name="Start" xml:space="preserve">
     <value>התחל</value>
   </data>
@@ -296,5 +293,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>כן</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>זמן קצוב (ms)</value>
   </data>
 </root>

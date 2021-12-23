@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                     SocketLinkPort = 7075,
                     SocketLinkTimeout = 600,
                     SocketLinkPolling = 120,
-                    ConnectionTimeout = 5
+                    ConnectionTimeout = 5000
                 });
         }
 

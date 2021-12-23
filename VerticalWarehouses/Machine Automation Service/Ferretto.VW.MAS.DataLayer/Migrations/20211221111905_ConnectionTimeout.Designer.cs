@@ -1960,7 +1960,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = -1,
-                            ConnectionTimeout = 0,
+                            ConnectionTimeout = 5000,
                             IsConnected = false,
                             IsEnabled = false,
                             IsTimeSyncEnabled = false,

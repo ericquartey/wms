@@ -297,9 +297,6 @@
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Port</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Dépassement du délai maximum</value>
-  </data>
   <data name="Connectivity" xml:space="preserve">
     <value>Connectivité</value>
   </data>
@@ -317,5 +314,8 @@
   </data>
   <data name="LotManagedProduct" xml:space="preserve">
     <value>Spécifier le lot pour cet article</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>Dépassement du délai maximum (ms)</value>
   </data>
 </root>

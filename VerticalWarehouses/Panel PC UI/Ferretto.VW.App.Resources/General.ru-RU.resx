@@ -297,9 +297,6 @@
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Порт</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Время ожидания</value>
-  </data>
   <data name="Connectivity" xml:space="preserve">
     <value>Возможность подключения</value>
   </data>
@@ -314,5 +311,8 @@
   </data>
   <data name="BadRequestTitle" xml:space="preserve">
     <value>Неправильный запрос.</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>Время ожидания (ms)</value>
   </data>
 </root>
