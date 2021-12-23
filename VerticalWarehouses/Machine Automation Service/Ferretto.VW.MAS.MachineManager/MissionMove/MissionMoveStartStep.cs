@@ -2,6 +2,7 @@
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
         #endregion
@@ -29,6 +32,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             : base(mission, serviceProvider, eventAggregator)
         {
             this.machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+            this.baysDataProvider = this.ServiceProvider.GetRequiredService<IBaysDataProvider>();
         }
 
         #endregion
@@ -148,6 +152,23 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, this.Mission.TargetBay);
                         throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                }
+
+                if (this.Mission.MissionType == MissionType.Compact)
+                {
+                    var bay = this.baysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    if (bay.Positions.Count() == 1 &&
+                        !bay.IsExternal &&
+                        bay.Shutter == null &&
+                        bay.IsCheckIntrusion &&
+                        this.machineResourcesProvider.IsDrawerInBayTop(bay.Number))
+                    {
+                        if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
+                        {
+                            this.Logger.LogInformation($"Disable intrusion Mission:Id={this.Mission.Id}");
+                            disableIntrusion = true;
+                        }
                     }
                 }
 
@@ -288,6 +309,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 this.Logger.LogInformation($"Machine status switched to {this.MachineVolatileDataProvider.Mode}");
             }
+
             return true;
         }
 

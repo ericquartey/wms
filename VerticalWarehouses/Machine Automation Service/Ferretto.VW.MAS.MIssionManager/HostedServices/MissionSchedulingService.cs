@@ -43,12 +43,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private LoadingUnitLocation loadUnitSource;
 
-        private bool resetCheckIntrusionBay1 = false;
-
-        private bool resetCheckIntrusionBay2 = false;
-
-        private bool resetCheckIntrusionBay3 = false;
-
         #endregion
 
         #region Constructors
@@ -652,28 +646,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private void CheckIntrusionState(IServiceProvider serviceProvider)
-        {
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-
-            var requestingBay = this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact ? BayNumber.BayOne : this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact2 ? BayNumber.BayTwo : this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact3 ? BayNumber.BayThree : BayNumber.None;
-
-            var bay = baysDataProvider.GetByNumber(requestingBay);
-            if (bay.Positions.Count() == 1 &&
-                !bay.IsExternal &&
-                bay.Shutter == null &&
-                bay.IsCheckIntrusion &&
-                machineResourcesProvider.IsDrawerInBayTop(bay.Number))
-            {
-                baysDataProvider.SetIsCheckIntrusion(bay.Number, false);
-
-                this.resetCheckIntrusionBay1 = bay.Number == BayNumber.BayOne ? true : this.resetCheckIntrusionBay1;
-                this.resetCheckIntrusionBay2 = bay.Number == BayNumber.BayTwo ? true : this.resetCheckIntrusionBay2;
-                this.resetCheckIntrusionBay3 = bay.Number == BayNumber.BayThree ? true : this.resetCheckIntrusionBay3;
-            }
-        }
-
         private bool CloseShutter(IBaysDataProvider bayProvider, IMachineResourcesProvider sensorsProvider, IShutterProvider shutterProvider)
         {
             if (this.machineVolatileDataProvider.IsShutterHomingActive.Any(x => x.Value))
@@ -843,13 +815,6 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             this.Logger.LogError("FireAlarm Active");
                             errorsProvider.RecordNew(MachineErrorCode.PreFireAlarm, BayNumber.All);
-                        }
-
-                        if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact ||
-                                this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact2 ||
-                                this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact3)
-                        {
-                            this.CheckIntrusionState(serviceProvider);
                         }
 
                         if (errorsProvider.GetCurrent() != null)
@@ -1289,12 +1254,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     // wait for ppc app to shutdown MAS and system
                     break;
 
-                case MachineMode.Manual:
-                case MachineMode.Manual2:
-                case MachineMode.Manual3:
-                    this.ResetIntrusionState(serviceProvider);
-                    break;
-
                 default:
                     {
                         this.Logger.LogDebug("Mission scheduling is not allowed: machine is not in automatic mode.");
@@ -1730,27 +1689,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
             // actions executed every hour
             this.servicingProvider.UpdateServiceStatus();
-        }
-
-        private void ResetIntrusionState(IServiceProvider serviceProvider)
-        {
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-
-            if (this.resetCheckIntrusionBay1)
-            {
-                this.resetCheckIntrusionBay1 = false;
-                baysDataProvider.SetIsCheckIntrusion(BayNumber.BayOne, true);
-            }
-            if (this.resetCheckIntrusionBay2)
-            {
-                this.resetCheckIntrusionBay2 = false;
-                baysDataProvider.SetIsCheckIntrusion(BayNumber.BayTwo, true);
-            }
-            if (this.resetCheckIntrusionBay3)
-            {
-                this.resetCheckIntrusionBay3 = false;
-                baysDataProvider.SetIsCheckIntrusion(BayNumber.BayThree, true);
-            }
         }
 
         private void RestoreFullTest(IServiceProvider serviceProvider)

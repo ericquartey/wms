@@ -137,7 +137,6 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetChainPosition(BayNumber bayNumber, double value);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
-        void SetIsCheckIntrusion(BayNumber bayNumber, bool value);
 
         /// <summary>
         /// Specifies that the given loading unit is now located in a bay position.
