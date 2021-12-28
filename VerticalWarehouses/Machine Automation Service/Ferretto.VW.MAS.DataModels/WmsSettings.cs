@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public int ConnectionTimeout { get; set; }
+
         public bool IsConnected { get; set; }
 
         public bool IsEnabled { get; set; }

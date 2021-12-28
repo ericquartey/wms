@@ -36,6 +36,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("get-connection-timeout")]
+        public ActionResult<int> GetConnectionTimeout()
+        {
+            return this.Ok(this.wmsSettingsProvider.ConnectionTimeout);
+        }
+
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -100,7 +106,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPut]
-        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling)
+        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout)
         {
             if (isEnabled && string.IsNullOrEmpty(httpUrl))
             {
@@ -114,6 +120,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.wmsSettingsProvider.IsEnabled = isEnabled;
             this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
+            this.wmsSettingsProvider.ConnectionTimeout = connectionTimeout;
 
             this.wmsSettingsProvider.SocketLinkIsEnabled = socketLinkIsEnabled;
             this.wmsSettingsProvider.SocketLinkPort = socketLinkPort;
@@ -142,8 +149,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var startTime = DateTime.Now;
             var statusCode = this.StatusCode((int)HealthStatus.Unhealthy, "Unhealthy");
-            //var timeout = this.wmsSettingsProvider.SocketLinkTimeout > 0 ? this.wmsSettingsProvider.SocketLinkTimeout : 5000;
-            var timeout = 5000;
+            var timeout = this.wmsSettingsProvider.ConnectionTimeout > 0 ? this.wmsSettingsProvider.ConnectionTimeout : 5000;
+
             for (int i = 1; i <= numCycle && (DateTime.Now - startTime).TotalMilliseconds < timeout; i++)
             {
                 using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })

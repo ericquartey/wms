@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        int ConnectionTimeout { get; set; }
+
         bool IsConnected { get; set; }
 
         bool IsEnabled { get; set; }

@@ -89,7 +89,7 @@ namespace Ferretto.VW.Devices.TokenReader
                 }
                 catch (Exception ex)
                 {
-                    this.logger.Error(ex, $"Port {this.SerialPort.PortName}: error.");
+                    this.logger.Error($"Port {this.SerialPort.PortName}: error. {ex.Message}");
 
                     this.SerialPort.Close();
                     this.SerialPort.Open();

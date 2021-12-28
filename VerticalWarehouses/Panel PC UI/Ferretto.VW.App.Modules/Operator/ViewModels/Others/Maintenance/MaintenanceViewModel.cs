@@ -41,8 +41,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string machineSerial;
 
-        private string mainteinanceRequest;
-
         private DelegateCommand maintenanceDetailButtonCommand;
 
         private ServicingInfo selectedServicingInfo;
@@ -126,12 +124,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.machineSerial, value);
         }
 
-        public string MainteinanceRequest
-        {
-            get => this.mainteinanceRequest;
-            set => this.SetProperty(ref this.mainteinanceRequest, value);
-        }
-
         public ICommand MaintenanceDetailButtonCommand =>
                     this.maintenanceDetailButtonCommand
             ??
@@ -140,42 +132,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ServicingInfo SelectedServicingInfo
         {
             get => this.selectedServicingInfo;
-            set
-            {
-                if (this.SetProperty(ref this.selectedServicingInfo, value, this.RaiseCanExecuteChanged))
-                {
-                    try
-                    {
-                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Valid)
-                        {
-                            this.mainteinanceRequest = "Green";
-                        }
-
-                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expired)
-                        {
-                            this.mainteinanceRequest = "Red";
-                        }
-
-                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Expiring)
-                        {
-                            this.mainteinanceRequest = "Orange";
-                        }
-
-                        if (this.selectedServicingInfo?.ServiceStatus == MachineServiceStatus.Completed)
-                        {
-                            this.mainteinanceRequest = "White";
-                        }
-
-                        this.RaisePropertyChanged(nameof(this.MainteinanceRequest));
-
-                        this.GetStatistics();
-                    }
-                    catch (Exception)
-                    {
-                        // do nothing
-                    }
-                }
-            }
+            set => this.SetProperty(ref this.selectedServicingInfo, value, this.RaiseCanExecuteChanged);
         }
 
         public IEnumerable<ServicingInfo> ServicingInfo

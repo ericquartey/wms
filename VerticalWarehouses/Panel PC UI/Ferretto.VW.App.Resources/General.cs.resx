@@ -294,9 +294,6 @@
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Port</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Čas lim</value>
-  </data>
   <data name="MarkupNameOfSyntax" xml:space="preserve">
     <value>Syntaxe pro NameOf je Type = {x: Type&lt;className&gt; }.!</value>
   </data>
@@ -317,5 +314,8 @@
   </data>
   <data name="BadRequestTitle" xml:space="preserve">
     <value>Požadavek není správně formulován.</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>Čas lim (ms)</value>
   </data>
 </root>

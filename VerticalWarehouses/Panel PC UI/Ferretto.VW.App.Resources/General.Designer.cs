@@ -547,15 +547,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Timeout.
-        /// </summary>
-        public static string SocketLinkTimeout {
-            get {
-                return ResourceManager.GetString("SocketLinkTimeout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Start {
@@ -615,6 +606,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TargetNullValue {
             get {
                 return ResourceManager.GetString("TargetNullValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout (ms).
+        /// </summary>
+        public static string TimeoutMs {
+            get {
+                return ResourceManager.GetString("TimeoutMs", resourceCulture);
             }
         }
         

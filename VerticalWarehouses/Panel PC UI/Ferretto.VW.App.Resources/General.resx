@@ -312,10 +312,6 @@
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Port</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Timeout</value>
-    <comment>Timeout in seconds (0 = off)</comment>
-  </data>
   <data name="Connectivity" xml:space="preserve">
     <value>Connectivity</value>
   </data>
@@ -339,5 +335,8 @@
   </data>
   <data name="BadRequestTitle" xml:space="preserve">
     <value>WMS error: Bad Request.</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>Timeout (ms)</value>
   </data>
 </root>

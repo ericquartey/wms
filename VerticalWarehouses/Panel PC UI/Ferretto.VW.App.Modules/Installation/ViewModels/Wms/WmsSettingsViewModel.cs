@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand checkEndpointCommand;
 
+        private int connectionTimeout;
+
         private HealthStatus healthStatus;
 
         private bool isAllDisabled;
@@ -83,6 +85,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.checkEndpointCommand = new DelegateCommand(
                 async () => await this.CheckEndpointAsync(), this.CanCheckEndpoint));
+
+        public int ConnectionTimeout
+        {
+            get => this.connectionTimeout;
+            set
+            {
+                if (this.SetProperty(ref this.connectionTimeout, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -242,6 +257,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
                 this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
+                this.ConnectionTimeout = await this.wmsStatusWebService.GetConnectionTimeoutAsync();
 
                 this.SocketLinkIsEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
                 this.SocketLinkPort = await this.wmsStatusWebService.GetSocketLinkPortAsync();
@@ -349,7 +365,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling);
+                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling, this.ConnectionTimeout);
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
 

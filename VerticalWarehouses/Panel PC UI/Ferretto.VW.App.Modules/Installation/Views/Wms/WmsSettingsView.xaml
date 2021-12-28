@@ -83,11 +83,12 @@
     <Grid Grid.Row="3"
           Grid.ColumnSpan="2"
           Margin="55,0,0,0"
-          IsEnabled="{Binding IsWmsEnabled}">
+          IsEnabled="{Binding IsWmsEnabled}"
+          Visibility="{Binding IsWmsEnabled, Converter={StaticResource BTVC}}">
       <Grid.RowDefinitions>
-        <RowDefinition />
-        <RowDefinition />
-        <RowDefinition />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
@@ -103,8 +104,8 @@
                  Text="{res:Loc InstallationApp.WmsHostAddress}" />
       <TextBox Grid.Row="1"
                Width="430"
-               Height="30"
-               VerticalAlignment="Top"
+               Height="40"
+               VerticalAlignment="Center"
                VerticalContentAlignment="Center"
                Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                Text="{Binding Path=WmsHttpUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -116,12 +117,11 @@
       </TextBox>
       <controls:PpcButton Grid.Row="1"
                           Grid.Column="1"
-                          Margin="10,0,0,10"
+                          Margin="10,0,0,0"
                           HorizontalAlignment="Left"
                           Command="{Binding CheckEndpointCommand}"
                           Content="{res:Loc InstallationApp.CheckStatus}"
                           IsBusy="{Binding IsCheckingEndpoint}" />
-
       <StackPanel Grid.Row="1"
                   Grid.Column="2"
                   HorizontalAlignment="Left"
@@ -162,6 +162,10 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{Binding Path=HealthStatus, Converter={StaticResource ETHSC}}" />
             </StackPanel>-->
+      <controls:PpcTextBox Grid.Row="2"
+                           Width="140"
+                           InputText="{Binding ConnectionTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{res:Loc General.TimeoutMs}" />
 
     </Grid>
 
@@ -179,7 +183,8 @@
     <Grid Grid.Row="5"
           Grid.ColumnSpan="2"
           Margin="55,0,0,0"
-          IsEnabled="{Binding SocketLinkIsEnabled}">
+          IsEnabled="{Binding SocketLinkIsEnabled}"
+          Visibility="{Binding SocketLinkIsEnabled, Converter={StaticResource BTVC}}">
       <Grid.RowDefinitions>
         <RowDefinition />
         <RowDefinition />
@@ -207,7 +212,7 @@
                            VerticalAlignment="Stretch"
                            InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
-                           LabelText="{res:Loc General.SocketLinkTimeout}" />
+                           LabelText="{res:Loc General.TimeoutMs}" />
 
       <controls:PpcTextBox Grid.Row="0"
                            Grid.Column="2"
