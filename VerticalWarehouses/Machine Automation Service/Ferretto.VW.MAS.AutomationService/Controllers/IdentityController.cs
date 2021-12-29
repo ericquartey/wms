@@ -54,7 +54,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(machinesWebService));
             }
 
-            var servicingInfo = this.servicingProvider.GetInstallationInfo();
+            var servicingInfo = this.servicingProvider.GetLastValid();
+            var installationInfo = this.servicingProvider.GetInstallationInfo();
+            if (servicingInfo is null)
+            {
+                servicingInfo = installationInfo;
+            }
+            else
+            {
+                servicingInfo.InstallationDate = installationInfo.InstallationDate;
+            }
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
