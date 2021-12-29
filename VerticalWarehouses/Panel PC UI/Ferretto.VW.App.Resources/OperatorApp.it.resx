@@ -1962,4 +1962,7 @@
   <data name="InsufficientSpaceAvailable" xml:space="preserve">
     <value>Spazio disponibile in magazzino insufficiente</value>
   </data>
+  <data name="ScaleNotResponding" xml:space="preserve">
+    <value>La bilancia non risponde.</value>
+  </data>
 </root>

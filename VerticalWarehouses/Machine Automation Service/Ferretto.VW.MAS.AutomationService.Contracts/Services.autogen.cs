@@ -978,14 +978,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port)
+        public System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber)
         {
-            return UpdateWeightingScaleSettingsAsync(isEnabled, ipAddress, port, System.Threading.CancellationToken.None);
+            return UpdateWeightingScaleSettingsAsync(isEnabled, ipAddress, port, modelNumber, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (isEnabled == null)
                 throw new System.ArgumentNullException("isEnabled");
@@ -993,11 +993,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (port == null)
                 throw new System.ArgumentNullException("port");
     
+            if (modelNumber == null)
+                throw new System.ArgumentNullException("modelNumber");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/accessories/weighting-scale?");
             urlBuilder_.Append(System.Uri.EscapeDataString("isEnabled") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isEnabled, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("ipAddress") + "=").Append(System.Uri.EscapeDataString(ipAddress != null ? ConvertToString(ipAddress, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("port") + "=").Append(System.Uri.EscapeDataString(ConvertToString(port, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("modelNumber") + "=").Append(System.Uri.EscapeDataString(ConvertToString(modelNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

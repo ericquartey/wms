@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
 using Ferretto.VW.Devices.WeightingScale;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Accessories.Interfaces
 {
@@ -66,7 +67,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// Stops the continuous weight acquisition.
         /// </summary>
         /// <exception cref="System.Exception" />
-        void StopWeightAcquisition();
+        void StopWeightAcquisitionAsync();
 
         /// <summary>
         /// Updates the average unitary weight of the specified item.
@@ -83,7 +84,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// <param name="ipAddress">The ip address of the device.</param>
         /// <param name="port">The system name of the tcp port to which the device is listening.</param>
         /// <exception cref="System.Exception" />
-        Task UpdateSettingsAsync(bool isEnabled, string ipAddress, int port);
+        Task UpdateSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber);
 
         #endregion
     }

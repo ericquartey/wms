@@ -58,7 +58,7 @@
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding AverageWeight, StringFormat={}{0:F1}}"
+                                 ContentText="{Binding AverageWeight, StringFormat={}{0:F3}}"
                                  LabelText="{resources:Loc OperatorApp.UnitWeight}" />
 
         <controls:PpcLabeledText Grid.Row="0"
@@ -119,16 +119,16 @@
     </Border>
 
 
-    <controls:PpcButton Grid.Row="2"
+        <controls:PpcButton Grid.Row="2"
                         Grid.Column="0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Command="{Binding UpdateAverageWeightCommand}"
                         Content="{resources:Loc OperatorApp.UpdateAverageWeight}"
                         Visibility="Hidden" />
-    <!--  Visibility="{Binding ItemHasPieces, Converter={StaticResource BTVC}}"  -->
+        <!--  Visibility="{Binding ItemHasPieces, Converter={StaticResource BTVC}}"  -->
 
-    <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="2"
                 Grid.Column="2"
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Right"

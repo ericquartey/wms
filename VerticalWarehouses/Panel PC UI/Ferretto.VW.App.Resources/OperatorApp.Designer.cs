@@ -4570,6 +4570,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The scale is not responding..
+        /// </summary>
+        public static string ScaleNotResponding {
+            get {
+                return ResourceManager.GetString("ScaleNotResponding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select compartment.
         /// </summary>
         public static string SelectCompartment {
