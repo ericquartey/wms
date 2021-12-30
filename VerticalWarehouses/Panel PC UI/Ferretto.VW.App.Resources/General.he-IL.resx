@@ -166,7 +166,7 @@
     <value>האם אתה מאשר לבצע הדלקה של המכונה?</value>
   </data>
   <data name="Connectivity" xml:space="preserve">
-    <value>קישור</value>
+    <value>חיבור</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
     <value>לפני {0:0} ימים</value>
@@ -193,10 +193,10 @@
     <value>פעולה אסורה</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>שעות שעברו: {0:0}</value>
+    <value>{0:0} שעות שעברו</value>
   </data>
   <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>מספר מדף אינו קיים</value>
+    <value>מספר מגש אינו קיים</value>
   </data>
   <data name="Inverter" xml:space="preserve">
     <value>ממיר</value>
@@ -296,5 +296,8 @@
   </data>
   <data name="TimeoutMs" xml:space="preserve">
     <value>זמן קצוב (ms)</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>זמן קצוב</value>
   </data>
 </root>

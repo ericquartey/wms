@@ -339,4 +339,7 @@
   <data name="TimeoutMs" xml:space="preserve">
     <value>Timeout (ms)</value>
   </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value></value>
+  </data>
 </root>
