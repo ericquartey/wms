@@ -150,4 +150,7 @@
   <data name="OperationDescription" xml:space="preserve">
     <value>ליקוט, אחסנה, מלאי</value>
   </data>
+  <data name="MovementsAbbreviation" xml:space="preserve">
+    <value>הזז</value>
+  </data>
 </root>

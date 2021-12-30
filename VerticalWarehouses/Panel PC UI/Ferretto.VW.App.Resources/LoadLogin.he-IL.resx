@@ -127,7 +127,7 @@
     <value>שירות מחובר</value>
   </data>
   <data name="ConnectionLost" xml:space="preserve">
-    <value>שירות אוטומטי התנתק - מנסה לחדש חיבור</value>
+    <value>שירות אוטומטי התנתק - מנסה להתחבר מחדש</value>
   </data>
   <data name="ConnectionNotPossible" xml:space="preserve">
     <value>אין אפשרות לחבר שירות אוטומטי</value>
@@ -172,9 +172,9 @@
     <value>לא ניתן לאמת משתמש באמצעות מפתח אבטחה</value>
   </data>
   <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
-    <value>לא ניתן לאמת משתמש באמצעות מבטח אבטחה, משום ששרת WMS לא זמין</value>
+    <value>לא ניתן לאמת משתמש באמצעות מפתח אבטחה, משום ששרת WMS לא זמין</value>
   </data>
   <data name="UserNameMustBeSpecified" xml:space="preserve">
-    <value>חובה להגדיר שם משתמש</value>
+    <value>יש להגדיר שם משתמש</value>
   </data>
 </root>

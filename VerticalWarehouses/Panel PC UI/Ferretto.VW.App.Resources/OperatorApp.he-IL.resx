@@ -250,7 +250,7 @@
     <value>לא מוגדר</value>
   </data>
   <data name="BlockLevelUnderWeight" xml:space="preserve">
-    <value>מתחת למדף כבד</value>
+    <value>מתחת למגש כבד</value>
   </data>
   <data name="Box" xml:space="preserve">
     <value>קופסא</value>
@@ -286,7 +286,7 @@
     <value>מעלית ארגוטק עמדה31 למטה</value>
   </data>
   <data name="CarouselBay3Up" xml:space="preserve">
-    <value>מעלית ארגוטק עמדה31 למעלה</value>
+    <value>מעלית ארגוטק עמדה 3 למעלה</value>
   </data>
   <data name="CarouselCalibration" xml:space="preserve">
     <value>כיול מעלית ארגוטק מתבצע</value>
@@ -376,7 +376,7 @@
     <value>מספר אצוות ייצור</value>
   </data>
   <data name="CommonNote" xml:space="preserve">
-    <value>הערה</value>
+    <value>הערה:</value>
   </data>
   <data name="CommonPackingListCode" xml:space="preserve">
     <value>קוד רשימת אריזה</value>
@@ -475,7 +475,7 @@
     <value>כיוון</value>
   </data>
   <data name="DisableUwf" xml:space="preserve">
-    <value>לא ניתן להפעיל פילטר Uwf</value>
+    <value>פילטר Uwf מבוטל</value>
   </data>
   <data name="Down" xml:space="preserve">
     <value>למטה</value>
@@ -514,7 +514,7 @@
     <value>כמות מאוחסנת</value>
   </data>
   <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
-    <value>מדפים לתא אחסון</value>
+    <value>מגשים לתא אחסון</value>
   </data>
   <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
     <value>פרטי ליקוט פריט</value>
@@ -577,28 +577,28 @@
     <value>כמות מבוקשת [{0}]</value>
   </data>
   <data name="DrawerCompacting" xml:space="preserve">
-    <value>ייעול אחסנת מדפים</value>
+    <value>ייעול אחסנת מגשים</value>
   </data>
   <data name="DrawerCompactingAntCompact" xml:space="preserve">
-    <value>ייעול אחסת מדפים צד קדמי</value>
+    <value>ייעול אחסת מגשים צד קדמי</value>
   </data>
   <data name="DrawerCompactingAntStop" xml:space="preserve">
-    <value>הסתיימה פעולת סידור מדפים</value>
+    <value>הסתיימה פעולת סידור מגשים</value>
   </data>
   <data name="DrawerCompactingHeader" xml:space="preserve">
-    <value>תהליך סידור מדפים</value>
+    <value>תהליך סידור מגשים</value>
   </data>
   <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
     <value>מרווח מקסימלי ששוחזר</value>
   </data>
   <data name="DrawerCompactingRearCompact" xml:space="preserve">
-    <value>ייעול אחסנת מדפים צד אחורי</value>
+    <value>ייעול אחסנת מגשים צד אחורי</value>
   </data>
   <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
     <value>מרווח לשחזור</value>
   </data>
   <data name="DrawerCompactingWarning" xml:space="preserve">
-    <value>חלוקת מדפים גדולה מדי: הפעל פעולת ייעול סידור מדפים</value>
+    <value>חלוקת מגשים גדולה מדי: הפעל פעולת ייעול סידור מגשים</value>
   </data>
   <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
     <value>תאים</value>
@@ -619,7 +619,7 @@
     <value>פעולות מתוזמנות:</value>
   </data>
   <data name="DrawerWaitPageHeader" xml:space="preserve">
-    <value>מחכה למדף חדש</value>
+    <value>מחכה למגש חדש</value>
   </data>
   <data name="DrawerWeightSaturationHeader" xml:space="preserve">
     <value>סטטיסטיקה: בדיקת משקל פריט</value>
@@ -643,7 +643,7 @@
     <value>משקל פריטים מאוחסנים ק"ג</value>
   </data>
   <data name="EjectLoadUnit" xml:space="preserve">
-    <value>הוצא מדף</value>
+    <value>הוצא מגש</value>
   </data>
   <data name="Elevator" xml:space="preserve">
     <value>מעלית</value>
@@ -667,7 +667,7 @@
     <value>שגיאת תנועות</value>
   </data>
   <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
-    <value>תנועת מדפים ללא שגיאה</value>
+    <value>תנועת מגשים ללא שגיאה</value>
   </data>
   <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
     <value>תיאור שגיאה</value>
@@ -712,13 +712,13 @@
     <value>מצב תקלה השתנה</value>
   </data>
   <data name="FragmentBack" xml:space="preserve">
-    <value>חלוקת מדפים מאחור</value>
+    <value>חלוקת מגשים מאחור</value>
   </data>
   <data name="FragmentFront" xml:space="preserve">
-    <value>חלוקת מדפים מלפנים</value>
+    <value>חלוקת מגשים מלפנים</value>
   </data>
   <data name="FragmentTotal" xml:space="preserve">
-    <value>סה"כ חלוקת מדפים</value>
+    <value>סה"כ חלוקת מגשים</value>
   </data>
   <data name="FreeCells" xml:space="preserve">
     <value>תאים פנויים</value>
@@ -763,7 +763,7 @@
     <value>גירסת תוכנה</value>
   </data>
   <data name="GeneralInfoTotDrawers" xml:space="preserve">
-    <value>כמות מדפים</value>
+    <value>כמות מגשים</value>
   </data>
   <data name="GeneralInfoWmsStatus" xml:space="preserve">
     <value>סטטוס WMS</value>
@@ -796,13 +796,13 @@
     <value>אם ליקטת פריט, אנא החזר אותו לתא</value>
   </data>
   <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
-    <value>קרא למדף</value>
+    <value>קרא למגש</value>
   </data>
   <data name="ImmediateDrawerCallHeader" xml:space="preserve">
-    <value>קריאת מדף מיידית</value>
+    <value>קריאה מיידית למגש</value>
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
-    <value>מדף מבוקש</value>
+    <value>מגש מבוקש</value>
   </data>
   <data name="InsertBox" xml:space="preserve">
     <value>הכנס קוספא</value>
@@ -967,7 +967,7 @@
     <value>ק"מ צירי מעלית מטיפול אחרון / סה"כ</value>
   </data>
   <data name="LastOperationMessage" xml:space="preserve">
-    <value>פעולה אחרונה במדף. הנח את הפריט ולחץ OK</value>
+    <value>פעולה אחרונה במגש הנח את הפריט ולחץ OK</value>
   </data>
   <data name="LastServiceDate" xml:space="preserve">
     <value>תאריך טיפול אחרון</value>
@@ -991,10 +991,10 @@
     <value>אחסון גליל בד</value>
   </data>
   <data name="LoadingUnit" xml:space="preserve">
-    <value>מדף</value>
+    <value>מגש</value>
   </data>
   <data name="LoadingUnitId" xml:space="preserve">
-    <value>מספר מדף אינו קיים</value>
+    <value>מספר מגש אינו קיים</value>
   </data>
   <data name="LoadingUnitIdInfo" xml:space="preserve">
     <value>יחידה</value>
@@ -1006,16 +1006,16 @@
     <value>מחוץ לחלון העבודה</value>
   </data>
   <data name="LoadingUnitPresenceId" xml:space="preserve">
-    <value>מדף נוכחי</value>
+    <value>מגש נוכחי</value>
   </data>
   <data name="LoadingUnitSendToBay" xml:space="preserve">
-    <value>מדף 1 נשלח לחלון העבודה {0}</value>
+    <value>מגש 1 נשלח לחלון העבודה {0}</value>
   </data>
   <data name="LoadingUnitsSendToBay" xml:space="preserve">
-    <value>קיימים {0} מדפים שנשלחו לחלון העבודה {1}</value>
+    <value>קיימים {0} מגשים שנשלחו לחלון העבודה {1}</value>
   </data>
   <data name="LoadUnit" xml:space="preserve">
-    <value>מדף</value>
+    <value>מגש</value>
   </data>
   <data name="LoadUnitCellSourceId" xml:space="preserve">
     <value>מספר תא מקור</value>
@@ -1024,10 +1024,10 @@
     <value>יעד מגש</value>
   </data>
   <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
-    <value>חיישן זיהוי מדף בחלון העבודה חסר</value>
+    <value>חיישן זיהוי מגש בחלון העבודה חסר</value>
   </data>
   <data name="LoadUnitSource" xml:space="preserve">
-    <value>מס מדף מקור</value>
+    <value>מס מגש מקור</value>
   </data>
   <data name="LockedCells" xml:space="preserve">
     <value>תאים נעולים</value>
@@ -1093,13 +1093,13 @@
     <value>סטטיסטיקות עמדה</value>
   </data>
   <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
-    <value>מדפים שנעו בבסיס 1</value>
+    <value>מגשים שנעו בבסיס 1</value>
   </data>
   <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
-    <value>מדפים שנעו בבסיס 2</value>
+    <value>מגשים שנעו בבסיס 2</value>
   </data>
   <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
-    <value>מדפים שנעו בבסיס 3</value>
+    <value>מגשים שנעו בבסיס 3</value>
   </data>
   <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
     <value>מידע ציר שרשרת</value>
@@ -1162,7 +1162,7 @@
     <value>מכונת מצבים</value>
   </data>
   <data name="MarkAsResolvedAndGo" xml:space="preserve">
-    <value>סמן כ'תקין' ועבור לסידור מדפים מחדש</value>
+    <value>סמן כ'תקין' ועבור לסידור מגשים מחדש</value>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>מצב פריט</value>
@@ -1198,7 +1198,7 @@
     <value>8. סגור דלת עמדה</value>
   </data>
   <data name="MissionStateDepositUnit" xml:space="preserve">
-    <value>5. העברת מדף</value>
+    <value>5. העברת מגש</value>
   </data>
   <data name="MissionStateDoubleExtBay" xml:space="preserve">
     <value>עמדה חיצונית כפולה</value>
@@ -1213,7 +1213,7 @@
     <value>101. שגיאה</value>
   </data>
   <data name="MissionStateErrorDeposit" xml:space="preserve">
-    <value>בעיה בפעולת העברת מדף</value>
+    <value>בעיה בפעולת העברת מגש</value>
   </data>
   <data name="MissionStateErrorLoad" xml:space="preserve">
     <value>שגיאת טעינה</value>
@@ -1240,7 +1240,7 @@
     <value>המתן טעינת עמדה מתבצעת</value>
   </data>
   <data name="MissionStateWaitDepositCell" xml:space="preserve">
-    <value>עצור טעינת מדף מתא</value>
+    <value>עצור טעינת מגש מתא</value>
   </data>
   <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
     <value>המתן טעינה בעמדה חיצונית</value>
@@ -1264,7 +1264,7 @@
     <value>סוג משימה</value>
   </data>
   <data name="MissionTypeCompact" xml:space="preserve">
-    <value>סדר מדפים מחדש</value>
+    <value>סדר מגשים מחדש</value>
   </data>
   <data name="MissionTypeFirstTest" xml:space="preserve">
     <value>בדיקה ראשונה</value>
@@ -1294,7 +1294,7 @@
     <value>מערכת ניהול מחסן</value>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
-    <value>פעולות מדפים</value>
+    <value>פעולות מגשים</value>
   </data>
   <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
     <value>לקט</value>
@@ -1348,10 +1348,10 @@
     <value>מזהה רשימה '{0}' אינו זמין</value>
   </data>
   <data name="NoLoadingUnitsToMove" xml:space="preserve">
-    <value>אין מדף בתנועה לחלון העבודה {0}</value>
+    <value>אין מגש בתנועה לחלון העבודה {0}</value>
   </data>
   <data name="NoLocation" xml:space="preserve">
-    <value>מיקום מדף לא ידוע</value>
+    <value>מיקום מגש לא ידוע</value>
   </data>
   <data name="NoReason" xml:space="preserve">
     <value>אין סיבה</value>
@@ -1360,7 +1360,7 @@
     <value>הערה</value>
   </data>
   <data name="NoteNotValid" xml:space="preserve">
-    <value>שדה הערה שגוי, פעולה לא בוצעה</value>
+    <value>שדה הערה שגוי, פעולה לא אושרה</value>
   </data>
   <data name="OccurrenceDate" xml:space="preserve">
     <value>תאריך הופעה</value>
@@ -1384,7 +1384,7 @@
     <value>תא</value>
   </data>
   <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
-    <value>מדף</value>
+    <value>מגש</value>
   </data>
   <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
     <value>גובה</value>
@@ -1402,16 +1402,16 @@
     <value>משקל</value>
   </data>
   <data name="OtherNavigationCompaction" xml:space="preserve">
-    <value>סידור מדפים מחדש</value>
+    <value>סידור מגשים מחדש</value>
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
-    <value>קריאה למדף</value>
+    <value>קריאה למגש</value>
   </data>
   <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
     <value>מגש</value>
   </data>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
-    <value>פעולות מדפים</value>
+    <value>פעולות מגשים</value>
   </data>
   <data name="OtherNavigationMaintenance" xml:space="preserve">
     <value>תחזוקה</value>
@@ -1423,7 +1423,7 @@
     <value>סוג אריזה</value>
   </data>
   <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
-    <value>בצע חלקית והשלם</value>
+    <value>בצע חלקית וסיים</value>
   </data>
   <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
     <value>בצע חלקית והמתן</value>
@@ -1441,7 +1441,7 @@
     <value>ליקוט פריט</value>
   </data>
   <data name="PickBox" xml:space="preserve">
-    <value>אשר קופסא</value>
+    <value>ליקוט קופסא</value>
   </data>
   <data name="PickedQuantity" xml:space="preserve">
     <value>כמות שלוקטה [{0}]</value>
@@ -1450,7 +1450,7 @@
     <value>כמות לליקוט [{0}]</value>
   </data>
   <data name="PickRequestWasAccepted" xml:space="preserve">
-    <value>הבקשה לליקוט פריט [{0}]  q.ty{1} התקבלה</value>
+    <value>הבקשה לליקוט פריט [{0}] q.ty{1} התקבלה</value>
   </data>
   <data name="Pieces" xml:space="preserve">
     <value>יחידות</value>
@@ -1480,7 +1480,7 @@
     <value>אחסן כמות [{0}]</value>
   </data>
   <data name="PutRequestWasAccepted" xml:space="preserve">
-    <value>הבקשה אחסנת פריט [{0}] q.ty{1} התקבלה</value>
+    <value>בקשת אחסנת פריט [{0}] q.ty{1} התקבלה</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>כמות</value>
@@ -1489,7 +1489,7 @@
     <value>כמות לליקוט</value>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
-    <value>החזר מדף</value>
+    <value>החזר מגש</value>
   </data>
   <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
     <value>הוצא כמות פריטים שנשפכה מהתא</value>
@@ -1513,7 +1513,7 @@
     <value>הפעל תהליך מחדש</value>
   </data>
   <data name="RestoreConditions" xml:space="preserve">
-    <value>תנאי חזרה למצב עבודה רגיל</value>
+    <value>שחזר תנאים למצב עבודה רגיל</value>
   </data>
   <data name="RestoreStep" xml:space="preserve">
     <value>שחזר פעולה</value>
@@ -1525,7 +1525,7 @@
     <value>מצב הפעלה השתנה</value>
   </data>
   <data name="SelectCompartment" xml:space="preserve">
-    <value>בחר תא</value>
+    <value>בחר תא אחסון</value>
   </data>
   <data name="SelectOrders" xml:space="preserve">
     <value>בחר הזמנה</value>
@@ -1552,16 +1552,16 @@
     <value>סמן בד לא תקין</value>
   </data>
   <data name="SignallingDefectError" xml:space="preserve">
-    <value>שגיאה בפעולת תקלת תקשורת</value>
+    <value>שגיאה בפעולת סימון בד לא תקין</value>
   </data>
   <data name="SignallingDefectFailed" xml:space="preserve">
-    <value>תקלת תקשורת נכשלה</value>
+    <value>סימון בד לא תקין - נכשל</value>
   </data>
   <data name="SignallingDefectOnProcess" xml:space="preserve">
-    <value>תקלת תקשורת בתהליך</value>
+    <value>סימון בד לא תקין - בתהליך</value>
   </data>
   <data name="SignallingDefectSuccess" xml:space="preserve">
-    <value>תקלת תקשורת הצליחה</value>
+    <value>סימון בד לא תקין - הצליח</value>
   </data>
   <data name="SocketLink" xml:space="preserve">
     <value>Socket Link</value>
@@ -1591,7 +1591,7 @@
     <value>משקל נוכחי</value>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
-    <value>מדף</value>
+    <value>מגש</value>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
     <value>גובה</value>
@@ -1654,7 +1654,7 @@
     <value>הסתיים</value>
   </data>
   <data name="StatusCompleting" xml:space="preserve">
-    <value>מסים</value>
+    <value>מסיים</value>
   </data>
   <data name="StatusExecuting" xml:space="preserve">
     <value>מבצע</value>
@@ -1735,7 +1735,7 @@
     <value>ק"מ ציר מעלית אנכי</value>
   </data>
   <data name="ToteBarcodeAcquired" xml:space="preserve">
-    <value>נדרש ארגז. ברקוד:</value>
+    <value>נרכש ארגז. ברקוד:</value>
   </data>
   <data name="ToteBarcodeToAcquire" xml:space="preserve">
     <value>קבלת מספר קופסא חיצונית</value>
@@ -1747,7 +1747,7 @@
     <value>יחידה n</value>
   </data>
   <data name="UnitInBayWarning" xml:space="preserve">
-    <value>קיימים פריטים בעמדה - סידור מדפים אינו אפשרי</value>
+    <value>קיימים פריטים בעמדה - סידור מגשים אינו אפשרי</value>
   </data>
   <data name="Units" xml:space="preserve">
     <value>יחידה</value>
@@ -1765,7 +1765,7 @@
     <value>יחידות בעמדה 3</value>
   </data>
   <data name="UnitsInCell" xml:space="preserve">
-    <value>יחידות בתא</value>
+    <value>יחידות בתא אחסנה</value>
   </data>
   <data name="UnitsInElevator" xml:space="preserve">
     <value>יחידות במעלית</value>
