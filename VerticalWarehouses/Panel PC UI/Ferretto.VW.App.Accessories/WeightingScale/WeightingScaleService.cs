@@ -213,8 +213,8 @@ namespace Ferretto.VW.App.Accessories
                 }
 
                 // set the device driver according to configuration
-                this.deviceDriver = accessories.WeightingScale.DeviceInformation.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString() ? this.deviceDriverMinebea : this.deviceDriverDini;
-                this.logger.Debug($"Weighting scale driver configured as {accessories.WeightingScale.DeviceInformation.ModelNumber}.");
+                this.deviceDriver = accessories.WeightingScale.DeviceInformation?.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString() ? this.deviceDriverMinebea : this.deviceDriverDini;
+                this.logger.Debug($"Weighting scale driver configured as {accessories.WeightingScale.DeviceInformation?.ModelNumber}.");
 
                 await this.deviceDriver.ConnectAsync(accessories.WeightingScale.IpAddress, accessories.WeightingScale.TcpPort);
 
