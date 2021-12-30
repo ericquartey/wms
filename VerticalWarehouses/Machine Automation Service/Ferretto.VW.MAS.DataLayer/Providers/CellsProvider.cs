@@ -597,7 +597,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         });
 
                 var occupiedOrUnusableCellsCount = this.dataContext.Cells
-                    .Count(c => !c.IsFree || c.BlockLevel == BlockLevel.Blocked || c.BlockLevel == BlockLevel.Undefined);
+                    .Count(c => !c.IsFree || c.IsNotAvailable);
 
                 var cellStatistics = new CellStatisticsSummary()
                 {
@@ -1063,7 +1063,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return 0;
             }
-            freeCells = cellsBySide.Count(c => c.IsFree && (c.BlockLevel == BlockLevel.None || c.BlockLevel == BlockLevel.SpaceOnly));
+            freeCells = cellsBySide.Count(c => c.IsAvailable);
             if (freeCells == 0)
             {
                 return 0;

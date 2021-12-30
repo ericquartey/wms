@@ -187,6 +187,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average Height.
+        /// </summary>
+        public static string AverageHeight {
+            get {
+                return ResourceManager.GetString("AverageHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average occupied space.
+        /// </summary>
+        public static string AverageOccupiedSpace {
+            get {
+                return ResourceManager.GetString("AverageOccupiedSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Axis.
         /// </summary>
         public static string Axis {

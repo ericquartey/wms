@@ -1965,4 +1965,10 @@
   <data name="ScaleNotResponding" xml:space="preserve">
     <value>La bilancia non risponde.</value>
   </data>
+  <data name="AverageHeight" xml:space="preserve">
+    <value>Altezza media utile</value>
+  </data>
+  <data name="AverageOccupiedSpace" xml:space="preserve">
+    <value>Passo verticale medio</value>
+  </data>
 </root>

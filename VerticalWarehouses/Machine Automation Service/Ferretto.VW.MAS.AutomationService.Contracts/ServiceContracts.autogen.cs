@@ -4404,8 +4404,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsAvailable", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAvailable { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsFree", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFree { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsNotAvailable", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsNotAvailable { get; set; }
     
         [Newtonsoft.Json.JsonProperty("PanelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }
