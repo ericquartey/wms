@@ -169,8 +169,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.TotalMissionCounter = await this.machineAboutWebService.MissionTotalNumberAsync();
                 this.TotalDrawersWeight = this.MachineService.Loadunits.Sum(s => s.GrossWeight);
                 this.TotalDrawersCounter = this.MachineService.Loadunits.Count();
-                this.AverageOccupiedSpace = (int)Math.Round(this.MachineService.Cells.Count(c => !c.IsFree) * 25.0 / this.MachineService.Loadunits.Count(lu => lu.IsIntoMachineOrBlocked));
-                this.AverageHeight = this.AverageOccupiedSpace - 30;
+                var loadUnits = this.MachineService.Loadunits.Count(lu => lu.IsIntoMachineOrBlocked);
+                this.AverageOccupiedSpace = loadUnits > 0 ?
+                    (int)Math.Round(this.MachineService.Cells.Count(c => !c.IsFree) * 25.0 / loadUnits)
+                    : 0;
+                this.AverageHeight = this.AverageOccupiedSpace > 30 ? this.AverageOccupiedSpace - 30 : 0;
 
                 this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.healthProbeService.HealthMasStatus);
 
