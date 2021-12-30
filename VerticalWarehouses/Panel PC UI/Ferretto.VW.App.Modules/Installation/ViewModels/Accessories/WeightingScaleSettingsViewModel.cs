@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IPAddress ipAddress;
 
+        private WeightingScaleModelNumber modelNumberCombo;
+
         private int port;
 
         #endregion
@@ -66,6 +68,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public WeightingScaleModelNumber ModelNumberCombo
+        {
+            get => this.modelNumberCombo;
+            set
+            {
+                if (this.SetProperty(ref this.modelNumberCombo, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public IEnumerable<WeightingScaleModelNumber> ModelNumbers => Enum.GetValues(typeof(WeightingScaleModelNumber)).OfType<WeightingScaleModelNumber>().ToList();
 
         public int Port
         {
@@ -129,6 +146,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsAccessoryEnabled = bayAccessories.WeightingScale.IsEnabledNew;
                     this.IpAddress = bayAccessories.WeightingScale.IpAddress;
                     this.Port = bayAccessories.WeightingScale.TcpPort;
+                    this.ModelNumber = bayAccessories.WeightingScale.DeviceInformation?.ModelNumber;
+                    this.ModelNumberCombo = this.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString() ? WeightingScaleModelNumber.MinebeaIntec : WeightingScaleModelNumber.DiniArgeo;
 
                     this.SetDeviceInformation(bayAccessories.WeightingScale.DeviceInformation);
                 }
@@ -141,7 +160,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.FirmwareVersion = liveInformation.FirmwareVersion;
                 this.SerialNumber = liveInformation.SerialNumber;
                 this.ManufactureDate = liveInformation.ManufactureDate;
-                this.ModelNumber = liveInformation.ModelNumber;
+                //this.ModelNumber = liveInformation.ModelNumber;
 
                 this.AreSettingsChanged = false;
             }
@@ -151,6 +170,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.ModelNumberCombo));
+            this.RaisePropertyChanged(nameof(this.ModelNumbers));
+        }
+
         protected override async Task SaveAsync()
         {
             try
@@ -158,7 +185,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Logger.Debug("Saving Weighting Scale settings ...");
                 this.ClearNotifications();
                 this.IsWaitingForResponse = true;
-                await this.weightingScaleService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.IpAddress.ToString(), this.Port);
+                await this.weightingScaleService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.IpAddress.ToString(), this.Port, this.modelNumberCombo);
 
                 this.Logger.Debug("Weighting Scale settings saved.");
 

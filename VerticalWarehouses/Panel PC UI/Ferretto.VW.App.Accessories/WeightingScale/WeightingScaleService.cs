@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
+//using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.Devices.WeightingScale;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
 {
@@ -17,15 +21,21 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
 
-        private readonly IWeightingScaleDriver deviceDriver;
+        private readonly IWeightingScaleDriver deviceDriverDini;
+
+        private readonly IWeightingScaleDriver deviceDriverMinebea;
 
         private readonly Devices.DeviceInformation deviceInformation = new Devices.DeviceInformation();
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineItemsWebService machineItemsWebService;
 
         private readonly Timer weightPollTimer;
+
+        private IWeightingScaleDriver deviceDriver;
 
         private bool isDeviceEnabled;
 
@@ -36,13 +46,18 @@ namespace Ferretto.VW.App.Accessories
         #region Constructors
 
         public WeightingScaleService(
-            IWeightingScaleDriver deviceDriver,
+            IWeightingScaleDriverDini deviceDriverDini,
+            IWeightingScaleDriverMinebea deviceDriverMinebea,
             IMachineAccessoriesWebService accessoriesWebService,
-            IMachineItemsWebService machineItemsWebService)
+            IMachineItemsWebService machineItemsWebService,
+            IEventAggregator eventAggregator)
         {
-            this.deviceDriver = deviceDriver;
+            this.deviceDriverDini = deviceDriverDini;
+            this.deviceDriverMinebea = deviceDriverMinebea;
+            this.deviceDriver = deviceDriverDini;
             this.accessoriesWebService = accessoriesWebService;
             this.machineItemsWebService = machineItemsWebService;
+            this.eventAggregator = eventAggregator;
 
             this.weightPollTimer = new Timer(async s => await this.OnWeightPollTimerTickAsync());
         }
@@ -197,24 +212,32 @@ namespace Ferretto.VW.App.Accessories
                         "Cannot perform the operation because the weighting scale service is not enabled.");
                 }
 
+                // set the device driver according to configuration
+                this.deviceDriver = accessories.WeightingScale.DeviceInformation.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString() ? this.deviceDriverMinebea : this.deviceDriverDini;
+                this.logger.Debug($"Weighting scale driver configured as {accessories.WeightingScale.DeviceInformation.ModelNumber}.");
+
                 await this.deviceDriver.ConnectAsync(accessories.WeightingScale.IpAddress, accessories.WeightingScale.TcpPort);
 
                 this.deviceInformation.FirmwareVersion = await this.deviceDriver.RetrieveVersionAsync();
 
-                if (!this.DeviceInformation.IsEmpty)
+                if (!string.IsNullOrEmpty(this.deviceInformation.FirmwareVersion))
                 {
                     await this.accessoriesWebService.UpdateWeightingScaleDeviceInfoAsync(
                         new DeviceInformation
                         {
                             FirmwareVersion = this.DeviceInformation.FirmwareVersion,
                             ManufactureDate = this.DeviceInformation.ManufactureDate,
-                            ModelNumber = this.DeviceInformation.ModelNumber,
+                            ModelNumber = accessories.WeightingScale.DeviceInformation.ModelNumber,
                             SerialNumber = this.DeviceInformation.SerialNumber
                         });
                 }
 
                 this.logger.Debug("The weighting scale service has started.");
                 this.isStarted = false;
+
+                await this.ClearMessageAsync();
+
+                await this.StartWeightAcquisitionAsync();
             }
             catch (Exception ex)
             {
@@ -260,18 +283,22 @@ namespace Ferretto.VW.App.Accessories
             //}
 
             this.logger.Info("Stopping the weighting scale service ...");
+            if (this.UnitaryWeight > 0)
+            {
+                this.deviceDriver.SetAverageUnitaryWeightAsync(0.0F);
+            }
 
             this.isStarted = false;
             this.weightPollTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
-            this.deviceDriver.Disconnect();
+            this.deviceDriver.DisconnectAsync();
 
             this.logger.Debug("The weighting scale service has stopped.");
 
             return Task.CompletedTask;
         }
 
-        public void StopWeightAcquisition()
+        public void StopWeightAcquisitionAsync()
         {
             this.logger.Debug("Stopping continuous weight acquisition ...");
             this.weightPollTimer.Change(Timeout.Infinite, Timeout.Infinite);
@@ -293,7 +320,7 @@ namespace Ferretto.VW.App.Accessories
             await this.machineItemsWebService.UpdateAverageWeightAsync(itemId, averageWeight ?? 0);
         }
 
-        public async Task UpdateSettingsAsync(bool isEnabled, string ipAddress, int port)
+        public async Task UpdateSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber)
         {
             if (this.isDisposed)
             {
@@ -302,13 +329,14 @@ namespace Ferretto.VW.App.Accessories
 
             this.logger.Debug("Updating the weighting scale settings on MAS ...");
 
-            await this.accessoriesWebService.UpdateWeightingScaleSettingsAsync(isEnabled, ipAddress, port);
+            await this.accessoriesWebService.UpdateWeightingScaleSettingsAsync(isEnabled, ipAddress, port, modelNumber);
 
             this.logger.Debug("The weighting scale settings were updated.");
 
             this.isDeviceEnabled = isEnabled;
             if (this.isDeviceEnabled)
             {
+                await this.StopAsync();
                 await this.StartAsync();
             }
             else
@@ -328,7 +356,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.logger.Debug("There are no subscribers to the WeightAcquired event.");
 
-                this.StopWeightAcquisition();
+                this.StopWeightAcquisitionAsync();
             }
             else
             {
@@ -337,7 +365,7 @@ namespace Ferretto.VW.App.Accessories
                     var weightSample = await this.deviceDriver.MeasureWeightAsync();
                     if (weightSample is null)
                     {
-                        this.logger.Warn("No sample was received from the scale.");
+                        this.ShowNotification(Resources.Localized.Get("OperatorApp.ScaleNotResponding"), NotificationSeverity.Error);
                         return;
                     }
 
@@ -352,6 +380,13 @@ namespace Ferretto.VW.App.Accessories
                     this.logger.Error(ex, "Error while performing continuous weight sampling.");
                 }
             }
+        }
+
+        private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, severity));
         }
 
         #endregion

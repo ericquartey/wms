@@ -11,7 +11,7 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         Task ConnectAsync(IPAddress ipAddress, int port);
 
-        void Disconnect();
+        Task DisconnectAsync();
 
         Task DisplayMessageAsync(string message);
 

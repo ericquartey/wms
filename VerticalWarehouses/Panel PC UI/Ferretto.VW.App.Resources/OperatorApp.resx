@@ -2353,4 +2353,13 @@
   <data name="InsufficientSpaceAvailable" xml:space="preserve">
     <value>Insufficient space available in the warehouse</value>
   </data>
+  <data name="ScaleNotResponding" xml:space="preserve">
+    <value>The scale is not responding.</value>
+  </data>
+  <data name="AverageHeight" xml:space="preserve">
+    <value>Average Height</value>
+  </data>
+  <data name="AverageOccupiedSpace" xml:space="preserve">
+    <value>Average occupied space</value>
+  </data>
 </root>

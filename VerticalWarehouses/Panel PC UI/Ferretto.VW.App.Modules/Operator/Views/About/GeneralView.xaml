@@ -432,7 +432,7 @@
                             <TextBlock Grid.Row="1"
                                        Margin="0"
                                        Style="{DynamicResource VWAPP_ViewInformationTitleTextBlockStyle}"
-                                       Text="{Binding Path=TotalDrawersWeight, StringFormat={}{0:F2}}" />
+                                       Text="{Binding Path=TotalDrawersWeight, StringFormat={}{0:F0}}" />
 
                         </Grid>
 
@@ -440,7 +440,88 @@
                 </Border>
             </Border>
 
-            <controls:PpcButton Grid.Row="7"
+            <Border Grid.Row="3"
+                    Grid.ColumnSpan="6"
+                    BorderBrush="{DynamicResource VWAPP_BACKGROUND}"
+                    BorderThickness="0,10,15,0">
+                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="2"
+                              Grid.ColumnSpan="3">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="0,20,0,0"
+                                       Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                                       Text="{Resources:Loc OperatorApp.AverageHeight}"
+                                       TextAlignment="Left" />
+
+                            <TextBlock Grid.Row="1"
+                                       Margin="0"
+                                       Style="{DynamicResource VWAPP_ViewInformationTitleTextBlockStyle}"
+                                       Text="{Binding AverageHeight}" />
+
+                            <Border Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    Margin="0,25"
+                                    VerticalAlignment="Stretch"
+                                    BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                    BorderThickness="1" />
+
+                        </Grid>
+
+                        <Grid Grid.Row="2"
+                              Grid.Column="3"
+                              Grid.ColumnSpan="3">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="0,20,0,0"
+                                       Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                                       Text="{Resources:Loc OperatorApp.AverageOccupiedSpace}" />
+
+                            <TextBlock Grid.Row="1"
+                                       Margin="0"
+                                       Style="{DynamicResource VWAPP_ViewInformationTitleTextBlockStyle}"
+                                       Text="{Binding AverageOccupiedSpace}" />
+
+                            <Border Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    Margin="0,25"
+                                    VerticalAlignment="Stretch"
+                                    BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                    BorderThickness="1" />
+
+                        </Grid>
+
+                    </Grid>
+                </Border>
+            </Border>
+
+            <controls:PpcButton Grid.Row="3"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="12"
                                 Width="60"

@@ -10,10 +10,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
+        public bool IsAvailable => this.IsFree && (this.BlockLevel == BlockLevel.None || this.BlockLevel == BlockLevel.SpaceOnly);
+
         public bool IsFree { get; set; }
 
-        [JsonIgnore]
-        public bool IsNotAvailable => this.BlockLevel == BlockLevel.Blocked || this.BlockLevel == BlockLevel.UnderWeight;
+        public bool IsNotAvailable => this.BlockLevel == BlockLevel.Blocked || this.BlockLevel == BlockLevel.UnderWeight || this.BlockLevel == BlockLevel.Undefined;
 
         /// <summary>
         /// The loading unit currently stored in the cell.

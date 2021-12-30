@@ -136,20 +136,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                     switch (this.machineService?.BayNumber)
                     {
-                        case MAS.AutomationService.Contracts.BayNumber.BayOne:
-                            return res &&
-                                (this.MachineModeService.MachineMode == MachineMode.Manual ||
-                                this.MachineModeService.MachineMode == MachineMode.Compact);
+                        case BayNumber.BayOne:
+                            return (res && this.MachineModeService.MachineMode == MachineMode.Manual)
+                                || this.MachineModeService.MachineMode == MachineMode.Compact;
 
-                        case MAS.AutomationService.Contracts.BayNumber.BayTwo:
-                            return res &&
-                                (this.MachineModeService.MachineMode == MachineMode.Manual2 ||
-                                this.MachineModeService.MachineMode == MachineMode.Compact2);
+                        case BayNumber.BayTwo:
+                            return (res && this.MachineModeService.MachineMode == MachineMode.Manual2)
+                                || this.MachineModeService.MachineMode == MachineMode.Compact2;
 
-                        case MAS.AutomationService.Contracts.BayNumber.BayThree:
-                            return res &&
-                                (this.MachineModeService.MachineMode == MachineMode.Manual3 ||
-                                this.MachineModeService.MachineMode == MachineMode.Compact3);
+                        case BayNumber.BayThree:
+                            return (res && this.MachineModeService.MachineMode == MachineMode.Manual3)
+                                || this.MachineModeService.MachineMode == MachineMode.Compact3;
 
                         default:
                             return res ||

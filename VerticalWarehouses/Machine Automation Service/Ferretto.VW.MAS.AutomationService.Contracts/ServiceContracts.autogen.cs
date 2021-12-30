@@ -102,11 +102,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task UpdateWeightingScaleDeviceInfoAsync(DeviceInformation deviceInformation, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port);
+        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -3238,6 +3238,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum WeightingScaleModelNumber
+    {
+        DiniArgeo = 0,
+    
+        MinebeaIntec = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Bay : DataModel
     {
         [Newtonsoft.Json.JsonProperty("Accessories", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -4395,8 +4404,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsAvailable", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAvailable { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsFree", Required = Newtonsoft.Json.Required.Always)]
         public bool IsFree { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsNotAvailable", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsNotAvailable { get; set; }
     
         [Newtonsoft.Json.JsonProperty("PanelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }

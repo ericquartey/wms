@@ -171,6 +171,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 case Menu.Installation:
                     if (this.MachineModeService.MachineMode == MachineMode.Automatic ||
+                        this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic ||
                         this.MachineModeService.MachineMode == MachineMode.NotSpecified ||
                         this.MachineModeService.MachinePower == MachinePowerState.NotSpecified)
                     {
@@ -182,17 +183,41 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         case MAS.AutomationService.Contracts.BayNumber.BayOne:
                             return this.MachineModeService.MachineMode == MachineMode.Manual
                                 || this.MachineModeService.MachineMode == MachineMode.Test
-                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic;
+                                || this.MachineModeService.MachineMode == MachineMode.Compact
+                                || this.MachineModeService.MachineMode == MachineMode.FirstTest
+                                || this.MachineModeService.MachineMode == MachineMode.FullTest
+                                || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToCompact
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToFirstTest
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToFullTest
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToLoadUnitOperations
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToManual;
 
                         case MAS.AutomationService.Contracts.BayNumber.BayTwo:
                             return this.MachineModeService.MachineMode == MachineMode.Manual2
                                 || this.MachineModeService.MachineMode == MachineMode.Test2
-                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic;
+                                || this.MachineModeService.MachineMode == MachineMode.Compact2
+                                || this.MachineModeService.MachineMode == MachineMode.FirstTest2
+                                || this.MachineModeService.MachineMode == MachineMode.FullTest2
+                                || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations2
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToCompact2
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToFirstTest2
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToFullTest2
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToLoadUnitOperations2
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToManual2;
 
                         case MAS.AutomationService.Contracts.BayNumber.BayThree:
                             return this.MachineModeService.MachineMode == MachineMode.Manual3
                                 || this.MachineModeService.MachineMode == MachineMode.Test3
-                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToAutomatic;
+                                || this.MachineModeService.MachineMode == MachineMode.Compact3
+                                || this.MachineModeService.MachineMode == MachineMode.FirstTest3
+                                || this.MachineModeService.MachineMode == MachineMode.FullTest3
+                                || this.MachineModeService.MachineMode == MachineMode.LoadUnitOperations3
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToCompact3
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToFirstTest3
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToFullTest3
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToLoadUnitOperations3
+                                || this.MachineModeService.MachineMode == MachineMode.SwitchingToManual3;
 
                         default:
                             return true;

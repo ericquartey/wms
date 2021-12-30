@@ -26,7 +26,8 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.36 rispetto la 1.0.35
-- 
+- Aggiunta bilancia Minebea-Intec
+- Aggiunta altezza media e passo verticale medio
 
 ## Bug Risolti
 - Corretta abilitazione del lettore di token
