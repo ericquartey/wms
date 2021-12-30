@@ -227,7 +227,7 @@ namespace Ferretto.VW.App.Accessories
                         {
                             FirmwareVersion = this.DeviceInformation.FirmwareVersion,
                             ManufactureDate = this.DeviceInformation.ManufactureDate,
-                            ModelNumber = accessories.WeightingScale.DeviceInformation.ModelNumber,
+                            ModelNumber = accessories.WeightingScale.DeviceInformation?.ModelNumber,
                             SerialNumber = this.DeviceInformation.SerialNumber
                         });
                 }
