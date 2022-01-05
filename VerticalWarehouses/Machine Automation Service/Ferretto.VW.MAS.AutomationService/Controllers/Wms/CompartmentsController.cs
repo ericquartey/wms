@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPut("{id}/items/{itemId}/stock")]
         public async Task<IActionResult> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions)
         {
-            await this.compartmentsWmsWebService.UpdateItemStockAfterFillingAsync(id, itemId, stock, itemOptions);
+            await this.compartmentsWmsWebService.UpdateItemStockAsync(id, itemId, stock, itemOptions);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

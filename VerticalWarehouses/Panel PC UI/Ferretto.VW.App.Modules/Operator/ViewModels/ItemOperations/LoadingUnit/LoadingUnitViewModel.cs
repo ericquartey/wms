@@ -1784,13 +1784,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = true;
                 this.IsWaitingForResponse = true;
+                var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : this.SelectedItemCompartment.Id;
 
                 switch (type)
                 {
                     case MissionOperationType.Pick:
                         {
                             await this.WmsDataProvider.UpdateItemStockAfterPickingAsync(
-                                this.SelectedItemCompartment.Id,
+                                compartmentId,
                                 this.Product.Item.Id,
                                 this.HandlingItemInputQty,
                                 this.reasonId,
@@ -1806,7 +1807,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     case MissionOperationType.Put:
                         {
                             await this.WmsDataProvider.UpdateItemStockAfterFillingAsync(
-                                this.SelectedItemCompartment.Id,
+                                compartmentId,
                                 this.Product.Item.Id,
                                 this.HandlingItemInputQty,
                                 this.reasonId,
@@ -1928,6 +1929,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBoxOperationVisible = false;
 
             this.IsOperationVisible = false;
+            this.MakePickItemPutItemOperationsVisible();
         }
 
         /// <summary>
