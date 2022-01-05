@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.ServiceDesk.Telemetry;
@@ -9,10 +10,11 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Telemetry.Contracts.Hub;
 using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Services
 {
-    internal sealed class MachineErrorsService : IMachineErrorsService
+    internal sealed class MachineErrorsService : BindableBase, IMachineErrorsService
     {
         #region Fields
 
@@ -141,12 +143,7 @@ namespace Ferretto.VW.App.Services
         public bool AutoNavigateOnError
         {
             get => this.autoNavigateOnError;
-            set
-            {
-                this.autoNavigateOnError = value;
-
-                this.NavigateToErrorPageAsync();
-            }
+            set => this.SetProperty(ref this.autoNavigateOnError, value, async () => await this.CheckErrorsPresenceAsync());
         }
 
         public string ViewErrorActive { get; set; }
@@ -198,19 +195,45 @@ namespace Ferretto.VW.App.Services
             {
                 viewDesc = Utils.Modules.Errors.ERRORLOADUNITMISSING;
             }
-            if (activeErrorCode == (int)MachineErrorCode.InverterFaultStateDetected)
+            else if (activeErrorCode == (int)MachineErrorCode.InverterFaultStateDetected)
             {
                 viewDesc = Utils.Modules.Errors.ERRORINVERTERFAULT;
             }
-            if ((activeErrorCode == (int)MachineErrorCode.MoveBayChainNotAllowed) ||
+            else if ((activeErrorCode == (int)MachineErrorCode.MoveBayChainNotAllowed) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitHeightFromBayExceeded) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitHeightFromBayTooLow) ||
                 (activeErrorCode == (int)MachineErrorCode.LoadUnitWeightExceeded))
             {
                 viewDesc = Utils.Modules.Errors.ERRORLOADUNITERRORS;
             }
+            else if (this.IsErrorZero(activeErrorCode))
+            {
+                viewDesc = Utils.Modules.Errors.ERRORZEROSENSOR;
+            }
 
             return viewDesc;
+        }
+
+        private bool IsErrorZero(int activeErrorCode)
+        {
+            bool isError = false;
+            switch (activeErrorCode)
+            {
+                case (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator:
+                case (int)MachineErrorCode.ZeroSensorErrorAfterDeposit:
+                case (int)MachineErrorCode.ConditionsNotMetForHoming:
+                    isError = !this.sensorsService.IsZeroChain &&
+                        !this.sensorsService.Sensors.LuPresentInMachineSide &&
+                        !this.sensorsService.Sensors.LuPresentInOperatorSide;
+                    break;
+
+                case (int)MachineErrorCode.SensorZeroBayNotActiveAtEnd:
+                case (int)MachineErrorCode.SensorZeroBayNotActiveAtStart:
+                    isError = !this.sensorsService.BayZeroChain &&
+                        this.machineService.Bay.Carousel != null;
+                    break;
+            }
+            return isError;
         }
 
         private async Task NavigateToErrorPageAsync()

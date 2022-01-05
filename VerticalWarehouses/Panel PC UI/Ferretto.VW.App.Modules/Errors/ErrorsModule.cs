@@ -26,6 +26,7 @@ namespace Ferretto.VW.App.Modules.Errors
             containerRegistry.RegisterForNavigation<ErrorInverterFaultView>();
             containerRegistry.RegisterForNavigation<ErrorLoadunitMissingView>();
             containerRegistry.RegisterForNavigation<ErrorLoadUnitErrorsView>();
+            containerRegistry.RegisterForNavigation<ErrorZeroSensorView>();
         }
 
         #endregion
