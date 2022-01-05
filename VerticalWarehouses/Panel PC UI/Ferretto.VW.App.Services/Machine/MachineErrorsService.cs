@@ -221,7 +221,6 @@ namespace Ferretto.VW.App.Services
             {
                 case (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator:
                 case (int)MachineErrorCode.ZeroSensorErrorAfterDeposit:
-                case (int)MachineErrorCode.ConditionsNotMetForHoming:
                     isError = !this.sensorsService.IsZeroChain &&
                         !this.sensorsService.Sensors.LuPresentInMachineSide &&
                         !this.sensorsService.Sensors.LuPresentInOperatorSide;
@@ -231,6 +230,17 @@ namespace Ferretto.VW.App.Services
                 case (int)MachineErrorCode.SensorZeroBayNotActiveAtStart:
                     isError = !this.sensorsService.BayZeroChain &&
                         this.machineService.Bay.Carousel != null;
+                    break;
+
+                case (int)MachineErrorCode.ConditionsNotMetForHoming:
+                    isError = !this.sensorsService.IsZeroChain &&
+                        !this.sensorsService.Sensors.LuPresentInMachineSide &&
+                        !this.sensorsService.Sensors.LuPresentInOperatorSide;
+                    if (!isError)
+                    {
+                        isError = !this.sensorsService.BayZeroChain &&
+                            this.machineService.Bay.Carousel != null;
+                    }
                     break;
             }
             return isError;
