@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -191,6 +192,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> IsUpdatingStockByDifference()
         {
             return this.Ok(this.machineProvider.IsUpdatingStockByDifference());
+        }
+
+        [HttpPost("set/bay/operation/params")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetBayOperationParams(bool isEnableHandlingItemOperations, bool isUpdatingStockByDifference)
+        {
+            this.machineProvider.SetBayOperationParams(isEnableHandlingItemOperations, isUpdatingStockByDifference);
+            return this.Accepted();
         }
 
         [HttpPost("set/machine/id")]

@@ -2378,4 +2378,11 @@
     <value>Operation successfully</value>
     <comment>Label Message</comment>
   </data>
+  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Edit Stock by difference</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Pick and Put by barcode
+</value>
+  </data>
 </root>

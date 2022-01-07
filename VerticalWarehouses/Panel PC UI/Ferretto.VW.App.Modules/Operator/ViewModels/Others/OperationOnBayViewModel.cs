@@ -14,13 +14,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineIdentityWebService identityService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private Bay bay;
 
+        private bool canSave;
+
         private bool inventory;
 
         private bool isBusy;
+
+        private bool isEnableHandlingItemOperations;
+
+        private bool isUpdatingStockByDifference;
 
         private bool pick;
 
@@ -34,10 +42,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public OperationOnBayViewModel(IMachineBaysWebService machineBaysWebService)
+        public OperationOnBayViewModel(IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService identityService)
             : base(PresentationMode.Operator)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
         }
 
         #endregion
@@ -47,29 +57,40 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public Bay Bay
         {
             get => this.bay;
-            set => this.SetProperty(ref this.bay, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.bay, value, this.CanExecute);
         }
 
         public bool Inventory
         {
             get => this.inventory;
-            set => this.SetProperty(ref this.inventory, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.inventory, value, this.CanExecute);
+        }
+
+        public bool IsEnableHandlingItemOperations
+        {
+            get => this.isEnableHandlingItemOperations;
+            set => this.SetProperty(ref this.isEnableHandlingItemOperations, value, this.CanExecute);
+        }
+
+        public bool IsUpdatingStockByDifference
+        {
+            get => this.isUpdatingStockByDifference;
+            set => this.SetProperty(ref this.isUpdatingStockByDifference, value, this.CanExecute);
         }
 
         public bool Pick
         {
             get => this.pick;
-            set => this.SetProperty(ref this.pick, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.pick, value, this.CanExecute);
         }
 
         public bool Put
         {
             get => this.put;
-            set => this.SetProperty(ref this.put, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.put, value, this.CanExecute);
         }
 
-        public ICommand SaveSettingsCommand =>
-                                            this.saveSettingsCommand
+        public ICommand SaveSettingsCommand => this.saveSettingsCommand
             ??
             (this.saveSettingsCommand = new DelegateCommand(
                 async () => await this.SaveSettingsAsync(),
@@ -78,7 +99,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public bool View
         {
             get => this.view;
-            set => this.SetProperty(ref this.view, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.view, value, this.CanExecute);
         }
 
         #endregion
@@ -87,7 +108,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.LoadData();
+            await this.LoadData();
+
+            this.canSave = false;
 
             await base.OnAppearedAsync();
         }
@@ -99,29 +122,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.saveSettingsCommand?.RaiseCanExecuteChanged();
         }
 
+        private void CanExecute()
+        {
+            this.canSave = true;
+            this.RaiseCanExecuteChanged();
+        }
+
         private bool CanSave()
         {
             return !this.MachineStatus.IsMoving &&
                 !this.isBusy &&
-                this.Bay != null &&
-                (this.Bay.Inventory != this.inventory ||
-                this.Bay.Pick != this.pick ||
-                this.Bay.Put != this.put ||
-                this.Bay.View != this.view);
+                this.canSave;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             try
             {
                 this.isBusy = true;
                 this.Bay = await this.machineBaysWebService.GetByNumberAsync(this.MachineService.BayNumber);
-                //this.Bay = this.MachineService.Bay;
-                var bays = this.MachineService.Bays;
                 this.Pick = this.Bay.Pick;
                 this.Put = this.Bay.Put;
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
+
+                this.IsEnableHandlingItemOperations = await this.identityService.IsEnableHandlingItemOperationsAsync();
+                this.IsUpdatingStockByDifference = await this.identityService.IsUpdatingStockByDifferenceAsync();
             }
             catch (Exception ex)
             {
@@ -140,7 +166,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
+                //await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
+
+                await this.identityService.SetBayOperationParamsAsync(this.IsEnableHandlingItemOperations, this.IsUpdatingStockByDifference);
+
+                this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference} ");
             }
             catch (Exception ex)
             {
@@ -148,7 +178,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.LoadData();
+                await this.LoadData();
+
+                this.canSave = false;
 
                 this.IsWaitingForResponse = false;
 

@@ -173,23 +173,23 @@
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <ctrls:PpcSpinEdit Grid.Row="0"
                                                Width="230"
-                                               Height="70"
+                                               Height="80"
                                                Margin="0,0,0,0"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
                                                EditValue="{Binding StockDifferenceQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                Increment="{Binding QuantityIncrement}"
-                                               IsEnabled="{Binding CanStockDifferenceQty}"
+                                               Visibility="{Binding CanStockDifferenceQty, Converter={StaticResource BTVC}}"
                                                LabelText="{res:Loc OperatorApp.ChangingStock}"
                                                Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
 
                             <controls:PpcButton Grid.Row="1"
-                                                Margin="0,15,0,0"
+                                                Margin="0,10,0,0"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Command="{Binding ConfirmOperationCommand}"
@@ -657,7 +657,7 @@
                                        EditValue="{Binding HandlingItemInputQty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                        Increment="{Binding HandlingItemQtyIncrement}"
                                        IsEnabled="True"
-                                       LabelText="{Binding HandlingItemMeasureUnitTxt}"
+                                       LabelText="{res:Loc OperatorApp.ChangingStock}"
                                        Mask="{Binding HandlingItemQtyTolerance, StringFormat=F{0}}"
                                        MinValue="0" />
 
@@ -669,6 +669,7 @@
                         </Grid.ColumnDefinitions>
 
                         <controls:PpcButton Grid.Column="0"
+                                            Margin="0,10,10,0"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Command="{Binding ItemPickAlternativeCommand}"
@@ -676,6 +677,7 @@
                                             Style="{StaticResource ConfirmButton}" />
 
                         <controls:PpcButton Grid.Column="1"
+                                            Margin="0,10,10,0"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
                                             Command="{Binding ItemPutAlternativeCommand}"

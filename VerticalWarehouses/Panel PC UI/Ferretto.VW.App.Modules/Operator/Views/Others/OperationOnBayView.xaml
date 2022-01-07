@@ -49,24 +49,40 @@
                             Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Pick, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.Pick}" />
+                            LabelText="{res:Loc OperatorApp.Pick}"
+                            Visibility="Collapsed"/>
       <controls:PpcCheckBox Grid.Row="2"
                             Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Put, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.Put}" />
+                            LabelText="{res:Loc OperatorApp.Put}"
+                            Visibility="Collapsed"/>
       <controls:PpcCheckBox Grid.Row="2"
                             Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding View, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.View}" />
+                            LabelText="{res:Loc OperatorApp.View}"
+                            Visibility="Collapsed"/>
 
       <controls:PpcCheckBox Grid.Row="2"
                             Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Inventory, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.ItemListType_Inventory}" />
-    </StackPanel>
+                            LabelText="{res:Loc OperatorApp.ItemListType_Inventory}"
+                            Visibility="Collapsed"/>
+        
+        <controls:PpcCheckBox Grid.Row="2"
+                        Margin="0,15,0,0"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding IsUpdatingStockByDifference, Mode=TwoWay}"
+                        LabelText="{res:Loc OperatorApp.IsUpdatingStockByDifference}"/>
+
+        <controls:PpcCheckBox Grid.Row="2"
+                            Margin="0,15,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsEnableHandlingItemOperations, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsEnableHandlingItemOperations}"/>
+        </StackPanel>
     <controls:PpcButton Grid.Row="2"
                         Margin="15,15,15,0"
                         HorizontalAlignment="Right"
