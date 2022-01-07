@@ -1212,6 +1212,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmReasonCommand?.RaiseCanExecuteChanged();
             this.insertOperationCommand?.RaiseCanExecuteChanged();
             this.removeOperationCommand?.RaiseCanExecuteChanged();
+            this.itemPickAlternativeCommand?.RaiseCanExecuteChanged();
+            this.itemPutAlternativeCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task AddItemOperationAsync()
@@ -1399,7 +1401,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               &&
               !this.IsWaitingForResponse
               &&
-              !this.IsBusyConfirmingOperation;
+              !this.IsBusyConfirmingOperation
+              &&
+              (this.ItemName?.Length > 0 || this.ItemLot?.Length > 0);
         }
 
         private bool CanConfirmItemPutAlternativeOperation()
@@ -1409,7 +1413,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               &&
               !this.IsWaitingForResponse
               &&
-              !this.IsBusyConfirmingOperation;
+              !this.IsBusyConfirmingOperation
+              &&
+              (this.ItemName?.Length > 0 || this.ItemLot?.Length > 0);
         }
 
         private bool CanConfirmOperation()

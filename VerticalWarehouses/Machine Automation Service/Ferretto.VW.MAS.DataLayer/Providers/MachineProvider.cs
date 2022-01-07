@@ -523,6 +523,27 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetBayOperationParams(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit)
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.dataContext.Machines.LastOrDefault();
+                if (isEnableHandlingItemOperations.HasValue)
+                {
+                    machine.IsEnableHandlingItemOperations = isEnableHandlingItemOperations.Value;
+                }
+                if (isUpdatingStockByDifference.HasValue)
+                {
+                    machine.IsUpdatingStockByDifference = isUpdatingStockByDifference.Value;
+                }
+                if (isRequestConfirmForLastOperationOnLoadingUnit.HasValue)
+                {
+                    machine.IsRequestConfirmForLastOperationOnLoadingUnit = isRequestConfirmForLastOperationOnLoadingUnit.Value;
+                }
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;
