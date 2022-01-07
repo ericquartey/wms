@@ -522,6 +522,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
 
             this.Mission.RestoreStep = MissionStep.NotDefined;
+            this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
             var newStep = new MissionMoveToTargetStep(this.Mission, this.ServiceProvider, this.EventAggregator);
             newStep.OnEnter(null);
         }
