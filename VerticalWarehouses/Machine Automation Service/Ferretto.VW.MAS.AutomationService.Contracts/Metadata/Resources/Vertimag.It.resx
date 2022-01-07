@@ -612,4 +612,10 @@
   <data name="Machine_TouchHelper" xml:space="preserve">
     <value>Aiuto touch screen</value>
   </data>
+  <data name="Machine_IsUpdatingStockByDifference" xml:space="preserve">
+   <value>Aggiorna la giacenza tramite differenza</value>
+  </data>
+  <data name="Machine_IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Abilita le operazioni per articolo in vista baia</value>
+   </data>
 </root>

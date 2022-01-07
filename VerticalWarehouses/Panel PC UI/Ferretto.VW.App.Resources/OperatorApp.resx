@@ -154,7 +154,7 @@
     <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
-    <value>Drawer operations</value>
+    <value>Tray operations</value>
     <comment>Label</comment>
   </data>
   <data name="NavigationMainMenuLists" xml:space="preserve">
@@ -182,7 +182,7 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerWaitPageHeader" xml:space="preserve">
-    <value>Waiting for new drawer</value>
+    <value>Waiting for new Tray</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerWaitOperation" xml:space="preserve">
@@ -250,11 +250,11 @@
     <comment>Label</comment>
   </data>
   <data name="ImmediateDrawerCallHeader" xml:space="preserve">
-    <value>Immediate drawer call</value>
+    <value>Immediate Tray call</value>
     <comment>Label</comment>
   </data>
   <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
-    <value>Call Drawer</value>
+    <value>Call Tray</value>
     <comment>Action</comment>
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
@@ -274,7 +274,7 @@
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoTotDrawers" xml:space="preserve">
-    <value>Drawer quantity</value>
+    <value>Tray quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoSwRelease" xml:space="preserve">
@@ -298,7 +298,7 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingHeader" xml:space="preserve">
-    <value>Compaction drawer procedure</value>
+    <value>Compaction Tray procedure</value>
     <comment>Page Header</comment>
   </data>
   <data name="DrawerCompactingFront" xml:space="preserve">
@@ -366,7 +366,7 @@
     <comment>Label</comment>
   </data>
   <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
-    <value>Statistics: drawer space saturation.</value>
+    <value>Statistics: Tray space saturation.</value>
     <comment>Page header</comment>
   </data>
   <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
@@ -374,7 +374,7 @@
     <comment>Label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
-    <value>Drawer measure (mm)</value>
+    <value>Tray measure (mm)</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
@@ -526,7 +526,7 @@
     <comment>Label</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
-    <value>Drawer Call</value>
+    <value>Tray Call</value>
     <comment>Label</comment>
   </data>
   <data name="StatisticsNavigationDrawers" xml:space="preserve">
@@ -694,7 +694,7 @@
     <comment>Compartimenti</comment>
   </data>
   <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
-    <value>Drawer Id</value>
+    <value>Tray Id</value>
     <comment>Id Cassetto</comment>
   </data>
   <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
@@ -714,7 +714,7 @@
     <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
-    <value>Drawer</value>
+    <value>Tray</value>
     <comment>Label</comment>
   </data>
   <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
@@ -782,7 +782,7 @@
     <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
-    <value>Drawer</value>
+    <value>Tray</value>
     <comment>Label</comment>
   </data>
   <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
@@ -882,15 +882,15 @@
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
-    <value>Drawers moved in bay 1</value>
+    <value>Trays moved in bay 1</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
-    <value>Drawers moved in bay 2</value>
+    <value>Trays moved in bay 2</value>
     <comment>Label</comment>
   </data>
   <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
-    <value>Drawers moved in bay 3</value>
+    <value>Trays moved in bay 3</value>
     <comment>Label</comment>
   </data>
   <data name="ItemSearchGridItem" xml:space="preserve">
@@ -922,7 +922,7 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
-    <value>Drawer moving</value>
+    <value>Tray moving</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
@@ -1282,7 +1282,7 @@
     <comment>Label</comment>
   </data>
   <data name="RecallDrawer" xml:space="preserve">
-    <value>Recall Drawer</value>
+    <value>Recall Tray</value>
     <comment>Action</comment>
   </data>
   <data name="Pieces" xml:space="preserve">
@@ -1318,7 +1318,7 @@
     <comment>Header text</comment>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
-    <value>Adjustment quantity [{0}]</value>
+    <value>Stock quantity [{0}]</value>
     <comment>Label</comment>
   </data>
   <data name="PutQuantity" xml:space="preserve">
@@ -1378,7 +1378,7 @@
     <comment>Label</comment>
   </data>
   <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
-    <value>Drawer operations</value>
+    <value>Tray operations</value>
     <comment>Label</comment>
   </data>
   <data name="DrawerCompacting" xml:space="preserve">
@@ -1991,13 +1991,13 @@
     <value>Wait deposit bay</value>
   </data>
   <data name="NoteNotValid" xml:space="preserve">
-    <value>Invalid notes field operation not confirmed</value>
+    <value>Invalid reason or notes, operation not confirmed</value>
   </data>
   <data name="Warning" xml:space="preserve">
     <value>Warning</value>
   </data>
   <data name="LastOperationMessage" xml:space="preserve">
-    <value>This is the last operation on this drawer placed the article and press OK</value>
+    <value>This is the last operation on this Tray placed the article and press OK</value>
   </data>
   <data name="NetworkCards" xml:space="preserve">
     <value>Network cards</value>
@@ -2361,5 +2361,21 @@
   </data>
   <data name="AverageOccupiedSpace" xml:space="preserve">
     <value>Average occupied space</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Stock variation</value>
+    <comment>Label</comment>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Retrieving item failed</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Item not available</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operation successfully</value>
+    <comment>Label Message</comment>
   </data>
 </root>

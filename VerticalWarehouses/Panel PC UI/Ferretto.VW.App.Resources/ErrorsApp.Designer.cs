@@ -151,6 +151,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find zero sensor on bay.
+        /// </summary>
+        public static string FindZeroBay {
+            get {
+                return ResourceManager.GetString("FindZeroBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find horizontal zero sensor on elevator.
+        /// </summary>
+        public static string FindZeroElevator {
+            get {
+                return ResourceManager.GetString("FindZeroElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find zero sensor.
+        /// </summary>
+        public static string FindZeroSensor {
+            get {
+                return ResourceManager.GetString("FindZeroSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press Start to begin the procedure..
+        /// </summary>
+        public static string FindZeroStartConfirm {
+            get {
+                return ResourceManager.GetString("FindZeroStartConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Seen.
         /// </summary>
         public static string FirstSeen {
@@ -160,7 +196,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forwards.
+        ///   Looks up a localized string similar to Forward.
         /// </summary>
         public static string Forwards {
             get {

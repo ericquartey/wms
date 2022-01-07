@@ -198,4 +198,16 @@
   <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
     <value>Marca come risolto e cerca lo zero</value>
   </data>
+  <data name="FindZeroElevator" xml:space="preserve">
+    <value>Ricerca del sensore di zero orizzontale dell'elevatore</value>
+  </data>
+  <data name="FindZeroStartConfirm" xml:space="preserve">
+    <value>Premere Inizia per avviare la procedura.</value>
+  </data>
+  <data name="FindZeroBay" xml:space="preserve">
+    <value>Ricerca del sensore di zero della baia</value>
+  </data>
+  <data name="FindZeroSensor" xml:space="preserve">
+    <value>Ricerca del sensore di zero</value>
+  </data>
 </root>

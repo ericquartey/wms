@@ -195,8 +195,86 @@ namespace Ferretto.VW.App.Modules.Operator
             });
         }
 
-        public async Task UpdateItemStockAsync(
+        public async Task UpdateItemStockAfterFillingAsync(
             int compartmentId,
+            int itemId,
+            double quantity,
+            int? reasonId = null,
+            string reasonNotes = null,
+            string lot = null,
+            string serialNumber = null,
+            string userName = null,
+            int? orderId = null)
+        {
+            try
+            {
+                await this.compartmentsWebService.UpdateItemStockAfterFillingAsync(
+                    compartmentId,
+                    itemId,
+                    quantity,
+                    new ItemOptions
+                    {
+                        ReasonId = reasonId,
+                        ReasonNotes = reasonNotes,
+                        Lot = lot,
+                        SerialNumber = serialNumber,
+                        UserName = userName,
+                        MaterialStatusId = null,
+                        OrderId = orderId,
+                    });
+                this.logger.Debug($"User requested to update compartment {compartmentId} stock, item {itemId} with quantity {quantity} after filling operation.");
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+            }
+        }
+
+        public async Task UpdateItemStockAfterPickingAsync(
+            int compartmentId,
+            int itemId,
+            double quantity,
+            int? reasonId = null,
+            string reasonNotes = null,
+            string lot = null,
+            string serialNumber = null,
+            string userName = null,
+            int? orderId = null)
+        {
+            try
+            {
+                await this.compartmentsWebService.UpdateItemStockAfterPickingAsync(
+                    compartmentId,
+                    itemId,
+                    quantity,
+                    new ItemOptions
+                    {
+                        ReasonId = reasonId,
+                        ReasonNotes = reasonNotes,
+                        Lot = lot,
+                        SerialNumber = serialNumber,
+                        UserName = userName,
+                        MaterialStatusId = null,
+                        OrderId = orderId,
+                    });
+                this.logger.Debug($"User requested to update compartment {compartmentId} stock, item {itemId} with quantity {quantity} after picking operation.");
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                if (ex is MasWebApiException webEx
+                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                {
+                    throw new InvalidOperationException(Resources.Localized.Get("General.ForbiddenOperation"));
+                }
+            }
+        }
+
+        public async Task UpdateItemStockAsync(
+                            int compartmentId,
             int itemId,
             double stock,
             int? reasonId = null,

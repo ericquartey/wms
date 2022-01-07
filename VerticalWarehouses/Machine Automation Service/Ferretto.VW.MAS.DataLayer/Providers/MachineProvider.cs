@@ -462,6 +462,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsEnableHandlingItemOperations()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsEnableHandlingItemOperations ?? false;
+            }
+        }
+
         public bool IsFireAlarmActive()
         {
             lock (this.dataContext)
@@ -504,6 +512,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.FirstOrDefault().TouchHelper;
+            }
+        }
+
+        public bool IsUpdatingStockByDifference()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsUpdatingStockByDifference ?? false;
             }
         }
 

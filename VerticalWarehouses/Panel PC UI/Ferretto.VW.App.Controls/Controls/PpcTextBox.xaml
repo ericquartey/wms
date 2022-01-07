@@ -5,55 +5,55 @@
              xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-  <StackPanel x:Name="LayoutRoot"
-              VerticalAlignment="Center">
-    <TextBlock Name="TextBlock_LabelText"
-               Margin="0,1,5,1"
-               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-               Text="{Binding LabelText}" />
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="auto" />
-      </Grid.ColumnDefinitions>
-      <TextBox Name="InputTextBox"
-               IsReadOnly="{Binding IsReadOnly}"
-               KeyDown="OnKeyDownHandler"
-               MouseDoubleClick="OnKeyboardOpenHandler"
-               Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-               TouchUp="OnKeyboardOpenHandler">
-        <TextBox.Style>
-          <Style BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-                 TargetType="{x:Type TextBox}">
-            <Setter Property="Margin" Value="0,3,5,5" />
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding ElementName=TextBlock_LabelText, Path=Text}"
-                           Value="True">
-                <Setter Property="Margin" Value="0" />
-              </DataTrigger>
-              <DataTrigger Binding="{Binding ElementName=KeyboardButton, Path=Visibility}"
-                           Value="Visible">
-                <Setter Property="Margin" Value="0,3,0,5" />
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </TextBox.Style>
-      </TextBox>
-      <Button Name="KeyboardButton"
-              Grid.Column="1"
-              Margin="0,3,5,5"
-              HorizontalContentAlignment="Center"
-              VerticalContentAlignment="Center"
-              Click="KeyboardButton_Click"
-              Style="{StaticResource TextBoxKeyboardButtonStyle}"
-              TouchUp="KeyboardButton_TouchUp">
-        <icons:PackIconFontAwesome Width="20"
-                                   Height="20"
-                                   Margin="3"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Kind="KeyboardSolid" />
-      </Button>
-    </Grid>
-  </StackPanel>
+    <StackPanel x:Name="LayoutRoot"
+                VerticalAlignment="Center">
+        <TextBlock Name="TextBlock_LabelText"
+                   Margin="0,1,5,1"
+                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                   Text="{Binding LabelText}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox Name="InputTextBox"
+                     IsReadOnly="{Binding IsReadOnly}"
+                     KeyDown="OnKeyDownHandler"
+                     MouseDoubleClick="OnKeyboardOpenHandler"
+                     Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     TouchUp="OnKeyboardOpenHandler">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                           TargetType="{x:Type TextBox}">
+                        <Setter Property="Margin" Value="0,3,5,5" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=TextBlock_LabelText, Path=Text}"
+                                         Value="True">
+                                <Setter Property="Margin" Value="0" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=KeyboardButton, Path=Visibility}"
+                                         Value="Visible">
+                                <Setter Property="Margin" Value="0,3,0,5" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            <Button Name="KeyboardButton"
+                    Grid.Column="1"
+                    Margin="0,3,5,5"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Click="KeyboardButton_Click"
+                    Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                    TouchUp="KeyboardButton_TouchUp">
+                <icons:PackIconFontAwesome Width="20"
+                                           Height="20"
+                                           Margin="3"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Kind="KeyboardSolid" />
+            </Button>
+        </Grid>
+    </StackPanel>
 </UserControl>

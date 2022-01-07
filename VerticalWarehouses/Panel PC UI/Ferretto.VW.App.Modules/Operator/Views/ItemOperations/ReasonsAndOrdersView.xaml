@@ -8,270 +8,269 @@
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-  <UserControl.Resources>
+    <UserControl.Resources>
 
-    <sys:Double x:Key="ComboBoxHeight">54</sys:Double>
+        <sys:Double x:Key="ComboBoxHeight">54</sys:Double>
 
-    <ControlTemplate x:Key="ScaffoldingComboBoxToggleButton"
-                     TargetType="{x:Type ToggleButton}">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition Width="30" />
-        </Grid.ColumnDefinitions>
-        <Border x:Name="Border"
-                Grid.ColumnSpan="2"
-                Background="Transparent"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="0,0,0,1"
-                CornerRadius="0" />
-        <Border Grid.Column="0"
-                Margin="1"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}"
-                BorderThickness="0"
-                CornerRadius="0" />
-        <Path x:Name="Arrow"
-              Grid.Column="1"
-              HorizontalAlignment="Center"
-              VerticalAlignment="Center"
-              Data="M 6 6 L 14 14 L 22 6 Z"
-              Fill="{DynamicResource PpcBorderBrush}" />
-      </Grid>
-      <ControlTemplate.Triggers>
-        <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-          <Setter TargetName="Border" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
-        </Trigger>
-        <Trigger Property="ToggleButton.IsChecked" Value="true">
-          <Setter TargetName="Border" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
-        </Trigger>
-        <Trigger Property="IsEnabled" Value="False">
-          <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
-          <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
-          <Setter Property="Foreground" Value="#888888" />
-          <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
-        </Trigger>
-      </ControlTemplate.Triggers>
-    </ControlTemplate>
-
-    <Style x:Key="ReasonComboBoxItemStyle"
-           TargetType="{x:Type ComboBoxItem}">
-      <Setter Property="VerticalContentAlignment" Value="Center" />
-      <Setter Property="HorizontalContentAlignment" Value="Left" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="{x:Type ComboBoxItem}">
-            <Border x:Name="Bd"
-                    Height="{DynamicResource ComboBoxHeight}"
-                    Padding="10,0"
-                    Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}">
-
-              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-            </Border>
-            <ControlTemplate.Triggers>
-              <Trigger Property="IsHighlighted" Value="True">
-                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource FerrettoBlue}" />
-                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-              </Trigger>
-              <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
-              </Trigger>
-              <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
-              </Trigger>
-            </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
-
-    <Style x:Key="ReasonComboBoxStyle"
-           TargetType="{x:Type ComboBox}">
-      <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
-      <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-      <Setter Property="Background" Value="{x:Null}" />
-      <Setter Property="ItemContainerStyle" Value="{StaticResource ReasonComboBoxItemStyle}" />
-      <Setter Property="SnapsToDevicePixels" Value="true" />
-      <Setter Property="OverridesDefaultStyle" Value="true" />
-      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-      <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
-      <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
-      <Setter Property="MinWidth" Value="50" />
-      <Setter Property="MinHeight" Value="{StaticResource ComboBoxHeight}" />
-      <Setter Property="Template">
-        <Setter.Value>
-          <ControlTemplate TargetType="ComboBox">
+        <ControlTemplate x:Key="ScaffoldingComboBoxToggleButton"
+                         TargetType="{x:Type ToggleButton}">
             <Grid>
-              <ToggleButton Name="ToggleButton"
-                            Grid.Column="2"
-                            HorizontalAlignment="Stretch"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            ClickMode="Press"
-                            Focusable="false"
-                            Foreground="{TemplateBinding Foreground}"
-                            IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                            Template="{StaticResource ScaffoldingComboBoxToggleButton}" />
-              <ContentPresenter Name="ContentSite"
-                                Margin="10,3,30,3"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Content="{TemplateBinding SelectionBoxItem}"
-                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                IsHitTestVisible="False" />
-              <TextBox x:Name="PART_EditableTextBox"
-                       Margin="0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Focusable="True"
-                       IsReadOnly="{TemplateBinding IsReadOnly}"
-                       Style="{x:Null}"
-                       Template="{StaticResource ComboBoxTextBox}"
-                       Visibility="Hidden" />
-              <Popup Name="Popup"
-                     AllowsTransparency="True"
-                     Focusable="False"
-                     IsOpen="{TemplateBinding IsDropDownOpen}"
-                     Placement="Bottom"
-                     PopupAnimation="Slide">
-                <Grid Name="DropDown"
-                      MinWidth="{TemplateBinding ActualWidth}"
-                      MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                      SnapsToDevicePixels="True">
-                  <Border x:Name="DropDownBorder"
-                          Background="{DynamicResource FerrettoDarkGray}"
-                          BorderBrush="{DynamicResource FerrettoMediumGray}"
-                          BorderThickness="2" />
-                  <ScrollViewer Margin="4,6,4,6"
-                                SnapsToDevicePixels="True">
-                    <StackPanel IsItemsHost="True"
-                                KeyboardNavigation.DirectionalNavigation="Contained" />
-                  </ScrollViewer>
-                </Grid>
-              </Popup>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border"
+                        Grid.ColumnSpan="2"
+                        Background="Transparent"
+                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="0,0,0,1"
+                        CornerRadius="0" />
+                <Border Grid.Column="0"
+                        Margin="1"
+                        Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        BorderThickness="0"
+                        CornerRadius="0" />
+                <Path x:Name="Arrow"
+                      Grid.Column="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 6 6 L 14 14 L 22 6 Z"
+                      Fill="{DynamicResource PpcBorderBrush}" />
             </Grid>
             <ControlTemplate.Triggers>
-              <Trigger Property="HasItems" Value="false">
-                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
-              </Trigger>
-              <Trigger SourceName="ToggleButton" Property="ToggleButton.IsMouseOver" Value="True">
-                <Setter TargetName="ContentSite" Property="Margin" Value="10,3,30,3" />
-              </Trigger>
-              <Trigger SourceName="ToggleButton" Property="ToggleButton.IsChecked" Value="True">
-                <Setter TargetName="ContentSite" Property="Margin" Value="10,3,30,3" />
-              </Trigger>
-              <Trigger Property="IsGrouping" Value="true">
-                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
-              </Trigger>
-              <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
-                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
-                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
-              </Trigger>
-              <Trigger Property="IsEditable" Value="true">
-                <Setter Property="IsTabStop" Value="false" />
-                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
-                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
-              </Trigger>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Border" Property="Background" Value="#EEEEEE" />
+                    <Setter TargetName="Border" Property="BorderBrush" Value="#AAAAAA" />
+                    <Setter Property="Foreground" Value="#888888" />
+                    <Setter TargetName="Arrow" Property="Fill" Value="#888888" />
+                </Trigger>
             </ControlTemplate.Triggers>
-          </ControlTemplate>
-        </Setter.Value>
-      </Setter>
-    </Style>
+        </ControlTemplate>
 
-  </UserControl.Resources>
+        <Style x:Key="ReasonComboBoxItemStyle"
+               TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border x:Name="Bd"
+                                Height="{DynamicResource ComboBoxHeight}"
+                                Padding="10,0"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
 
-  <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
-    <Border Width="600"
-            Padding="15"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="{DynamicResource VWAPP_BACKGROUND}">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource FerrettoBlue}" />
+                                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                                <Setter Property="Foreground" Value="{DynamicResource FerrettoPureWhite}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <TextBlock FontSize="{DynamicResource FontSize_Normal}"
-                   Foreground="{DynamicResource Text_Foreground}"
-                   Text="{res:Loc OperatorApp.SelectReasons}" />
+        <Style x:Key="ReasonComboBoxStyle"
+               TargetType="{x:Type ComboBox}">
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="ItemContainerStyle" Value="{StaticResource ReasonComboBoxItemStyle}" />
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+            <Setter Property="FontSize" Value="{DynamicResource FontSize_High}" />
+            <Setter Property="MinWidth" Value="50" />
+            <Setter Property="MinHeight" Value="{StaticResource ComboBoxHeight}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                                          Grid.Column="2"
+                                          HorizontalAlignment="Stretch"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          ClickMode="Press"
+                                          Focusable="false"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Template="{StaticResource ScaffoldingComboBoxToggleButton}" />
+                            <ContentPresenter Name="ContentSite"
+                                              Margin="10,3,30,3"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              IsHitTestVisible="False" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Margin="0"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Focusable="True"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     Style="{x:Null}"
+                                     Template="{StaticResource ComboBoxTextBox}"
+                                     Visibility="Hidden" />
+                            <Popup Name="Popup"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                      SnapsToDevicePixels="True">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="{DynamicResource FerrettoDarkGray}"
+                                            BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                            BorderThickness="2" />
+                                    <ScrollViewer Margin="4,6,4,6"
+                                                  SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasItems" Value="false">
+                                <Setter TargetName="DropDownBorder" Property="MinHeight" Value="95" />
+                            </Trigger>
+                            <Trigger SourceName="ToggleButton" Property="ToggleButton.IsMouseOver" Value="True">
+                                <Setter TargetName="ContentSite" Property="Margin" Value="10,3,30,3" />
+                            </Trigger>
+                            <Trigger SourceName="ToggleButton" Property="ToggleButton.IsChecked" Value="True">
+                                <Setter TargetName="ContentSite" Property="Margin" Value="10,3,30,3" />
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                            </Trigger>
+                            <Trigger SourceName="Popup" Property="Popup.AllowsTransparency" Value="true">
+                                <Setter TargetName="DropDownBorder" Property="CornerRadius" Value="0" />
+                                <Setter TargetName="DropDownBorder" Property="Margin" Value="0,2,0,0" />
+                            </Trigger>
+                            <Trigger Property="IsEditable" Value="true">
+                                <Setter Property="IsTabStop" Value="false" />
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <ComboBox x:Name="reasonCB"
-                  Grid.Row="1"
-                  Margin="0,15,0,0"
-                  DisplayMemberPath="Name"
-                  ItemsSource="{Binding Reasons}"
-                  SelectedValue="{Binding ReasonId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedValuePath="Id"
-                  Style="{StaticResource ReasonComboBoxStyle}" />
+    </UserControl.Resources>
 
-          <StackPanel Grid.Row="2"
-                    Grid.RowSpan="2">
-                    
-                <TextBlock 
-                   FontSize="{DynamicResource FontSize_Normal}"
-                   Foreground="{DynamicResource Text_Foreground}"
-                   Text="{res:Loc OperatorApp.SelectOrders}"/>
-          
-                <ComboBox x:Name="orderCB"
-                  Margin="0,15,0,0"
-                  DisplayMemberPath="Name"
-                  ItemsSource="{Binding Orders}"
-                  SelectedValue="{Binding OrderId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  SelectedValuePath="Id"
-                  Style="{StaticResource ReasonComboBoxStyle}"/>
+    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
+        <Border Width="600"
+                Padding="15"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource VWAPP_BACKGROUND}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock FontSize="{DynamicResource FontSize_Normal}"
+                           Foreground="{DynamicResource Text_Foreground}"
+                           Text="{res:Loc OperatorApp.SelectReasons}" />
+
+                <ComboBox x:Name="reasonCB"
+                          Grid.Row="1"
+                          Margin="0,15,0,0"
+                          DisplayMemberPath="Name"
+                          ItemsSource="{Binding Reasons}"
+                          SelectedValue="{Binding ReasonId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Id"
+                          Style="{StaticResource ReasonComboBoxStyle}" />
+
+                <StackPanel Grid.Row="2"
+                            Grid.RowSpan="2">
+
+                    <TextBlock FontSize="{DynamicResource FontSize_Normal}"
+                               Foreground="{DynamicResource Text_Foreground}"
+                               Text="{res:Loc OperatorApp.SelectOrders}" />
+
+                    <ComboBox x:Name="orderCB"
+                              Margin="0,15,0,0"
+                              DisplayMemberPath="Name"
+                              ItemsSource="{Binding Orders}"
+                              SelectedValue="{Binding OrderId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Id"
+                              Style="{StaticResource ReasonComboBoxStyle}" />
 
                 </StackPanel>
 
-          <StackPanel Grid.Row="4"
-                    Grid.RowSpan="2"
-                    Visibility="{Binding NoteEnabled, Converter={StaticResource BTVC}}">
-              
-          <TextBlock Grid.Row="4"
-                     Margin="0,15,0,0"
-                     FontSize="{DynamicResource FontSize_Normal}"
-                     Foreground="{DynamicResource Text_Foreground}"
-                     Text="{res:Loc OperatorApp.Note}" />
+                <StackPanel Grid.Row="4"
+                            Grid.RowSpan="2"
+                            Visibility="{Binding NoteEnabled, Converter={StaticResource BTVC}}">
 
-          <TextBox Grid.Row="5"
-                   MinHeight="100"
-                   Margin="0,15,0,0"
-                   FontSize="{DynamicResource FontSize_High}"
-                   Text="{Binding ReasonNotes, Mode=TwoWay}">
-            <i:Interaction.Behaviors>
-              <behaviors:TextBoxAutoSelectBehavior />
-              <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
-                                                       KeyboardLabel="Note" />
-            </i:Interaction.Behaviors>
-          </TextBox>
-        </StackPanel>
+                    <TextBlock Grid.Row="4"
+                               Margin="0,15,0,0"
+                               FontSize="{DynamicResource FontSize_Normal}"
+                               Foreground="{DynamicResource Text_Foreground}"
+                               Text="{res:Loc OperatorApp.Note}" />
 
-        <StackPanel Grid.Row="6"
-                    Margin="0,15,0,0"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal">
-          <cctrls:PpcButton Command="{Binding ConfirmReasonCommand}"
-                            Content="{res:Loc OperatorApp.Confirm}"
-                            IsEnabled="{Binding IsBusyConfirmingOperation, Converter={StaticResource BNC}}"/>
-          <cctrls:PpcButton Margin="15,0,0,0"
-                            Command="{Binding CancelReasonCommand}"
-                            Content="{res:Loc General.Cancel}" />
-        </StackPanel>
+                    <TextBox Grid.Row="5"
+                             MinHeight="100"
+                             Margin="0,15,0,0"
+                             FontSize="{DynamicResource FontSize_High}"
+                             Text="{Binding ReasonNotes, Mode=TwoWay}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxAutoSelectBehavior />
+                            <keyboardBehaviors:KeyboardPopupBehavior InactiveTimeout="00:01:00"
+                                                                     KeyboardLabel="Note" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                </StackPanel>
 
-      </Grid>
-    </Border>
-  </Grid>
+                <StackPanel Grid.Row="6"
+                            Margin="0,15,0,0"
+                            HorizontalAlignment="Right"
+                            Orientation="Horizontal">
+                    <cctrls:PpcButton Command="{Binding ConfirmReasonCommand}"
+                                      Content="{res:Loc OperatorApp.Confirm}"
+                                      IsEnabled="{Binding IsBusyConfirmingOperation, Converter={StaticResource BNC}}" />
+                    <cctrls:PpcButton Margin="15,0,0,0"
+                                      Command="{Binding CancelReasonCommand}"
+                                      Content="{res:Loc General.Cancel}" />
+                </StackPanel>
+
+            </Grid>
+        </Border>
+    </Grid>
 
 
 </UserControl>

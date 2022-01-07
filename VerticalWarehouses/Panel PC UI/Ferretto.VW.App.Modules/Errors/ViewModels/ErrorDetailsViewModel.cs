@@ -32,19 +32,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private bool findZeroElevator;
 
-        private bool isVisibleFindZeroBayChain;
-
-        private bool isVisibleFindZeroElevator;
-
         private bool isVisibleGoTo;
 
         private SubscriptionToken machineModeChangedToken;
-
-        private SubscriptionToken machinePowerChangedToken;
-
-        private ICommand markAsResolvedAndFindZeroBayChainCommand;
-
-        private ICommand markAsResolvedAndFindZeroElevatorCommand;
 
         private ICommand markAsResolvedAndGoCommand;
 
@@ -85,41 +75,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.errorTime, value);
         }
 
-        public bool IsVisibleFindZeroBayChain
-        {
-            get => this.isVisibleFindZeroBayChain;
-            set => this.SetProperty(ref this.isVisibleFindZeroBayChain, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsVisibleFindZeroElevator
-        {
-            get => this.isVisibleFindZeroElevator;
-            set => this.SetProperty(ref this.isVisibleFindZeroElevator, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool IsVisibleGoTo
         {
             get => this.isVisibleGoTo;
             set => this.SetProperty(ref this.isVisibleGoTo, value, this.RaiseCanExecuteChanged);
         }
-
-        public ICommand MarkAsResolvedAndFindZeroBayChainCommand =>
-          this.markAsResolvedAndFindZeroBayChainCommand
-          ??
-          (this.markAsResolvedAndFindZeroBayChainCommand = new DelegateCommand(
-              async () => await this.MarkAsResolvedAndFindZeroBayChainAsync(),
-              this.CanMarkAsResolved)
-          .ObservesProperty(() => this.Error)
-          .ObservesProperty(() => this.IsWaitingForResponse));
-
-        public ICommand MarkAsResolvedAndFindZeroElevatorCommand =>
-                  this.markAsResolvedAndFindZeroElevatorCommand
-          ??
-          (this.markAsResolvedAndFindZeroElevatorCommand = new DelegateCommand(
-              async () => await this.MarkAsResolvedAndFindZeroElevatorAsync(),
-              this.CanMarkAsResolved)
-          .ObservesProperty(() => this.Error)
-          .ObservesProperty(() => this.IsWaitingForResponse));
 
         public ICommand MarkAsResolvedAndGoCommand =>
                    this.markAsResolvedAndGoCommand
@@ -151,9 +111,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             if (!this.findZeroElevator && !this.findZeroBayChain)
             {
-                this.machinePowerChangedToken?.Dispose();
-                this.machinePowerChangedToken = null;
-
                 this.machineModeChangedToken?.Dispose();
                 this.machineModeChangedToken = null;
             }
@@ -161,20 +118,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            await base.OnAppearedAsync();
+
             this.ShowPrevStepSinglePage(false, false);
             this.ShowNextStepSinglePage(false, false);
             this.ShowAbortStep(false, false);
 
             await this.RetrieveErrorAsync();
-
-            await base.OnAppearedAsync();
-
-            this.machinePowerChangedToken = this.EventAggregator
-              .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
-              .Subscribe(
-                  this.OnMachinePowerChanged,
-                  ThreadOption.UIThread,
-                  false);
 
             this.machineModeChangedToken = this.EventAggregator
                .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
@@ -184,104 +134,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                    false);
         }
 
-        private bool CanFindZeroBayChain()
-        {
-            if (this.error.Code == (int)MachineErrorCode.SensorZeroBayNotActiveAtEnd ||
-                            this.error.Code == (int)MachineErrorCode.SensorZeroBayNotActiveAtStart)
-            {
-                return !this.SensorsService.BayZeroChain &&
-                    this.MachineService.Bay.Carousel != null;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool CanFindZeroElevator()
-        {
-            if (this.error.Code == (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator ||
-                            this.error.Code == (int)MachineErrorCode.ZeroSensorErrorAfterDeposit ||
-                            this.error.Code == (int)MachineErrorCode.ConditionsNotMetForHoming)
-            {
-                return !this.SensorsService.IsZeroChain &&
-                    !this.SensorsService.Sensors.LuPresentInMachineSide &&
-                    !this.SensorsService.Sensors.LuPresentInOperatorSide;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private bool CanMarkAsResolved()
         {
             return
                 this.Error != null
                 &&
                 !this.IsWaitingForResponse;
-        }
-
-        private async Task MarkAsResolvedAndFindZeroBayChainAsync()
-        {
-            if (this.Error is null)
-            {
-                return;
-            }
-
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
-
-                await this.MachineModeService.PowerOnAsync();
-
-                this.findZeroBayChain = true;
-
-                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
-            {
-                this.ShowNotification(ex);
-
-                this.findZeroBayChain = false;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task MarkAsResolvedAndFindZeroElevatorAsync()
-        {
-            if (this.Error is null)
-            {
-                return;
-            }
-
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
-
-                await this.MachineModeService.PowerOnAsync();
-
-                this.findZeroElevator = true;
-
-                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
-            {
-                this.ShowNotification(ex);
-
-                this.findZeroElevator = false;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private async Task MarkAsResolvedAndGoAsync()
@@ -349,34 +207,16 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.ErrorTime = null;
                 this.IsVisibleGoTo = false;
-                this.IsVisibleFindZeroElevator = false;
-                this.IsVisibleFindZeroBayChain = false;
                 return;
             }
 
             if (this.error.Code == (int)MachineErrorCode.WarehouseIsFull)
             {
                 this.IsVisibleGoTo = true;
-                this.IsVisibleFindZeroElevator = false;
-                this.IsVisibleFindZeroBayChain = false;
-            }
-            else if (this.CanFindZeroElevator())
-            {
-                this.IsVisibleGoTo = false;
-                this.IsVisibleFindZeroElevator = true;
-                this.IsVisibleFindZeroBayChain = false;
-            }
-            else if (this.CanFindZeroBayChain())
-            {
-                this.IsVisibleGoTo = false;
-                this.IsVisibleFindZeroElevator = false;
-                this.IsVisibleFindZeroBayChain = true;
             }
             else
             {
                 this.IsVisibleGoTo = false;
-                this.IsVisibleFindZeroElevator = false;
-                this.IsVisibleFindZeroBayChain = false;
             }
 
             var elapsedTime = DateTime.UtcNow - this.error.OccurrenceDate;
@@ -403,47 +243,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             if (e.MachineMode != MachineMode.Manual)
             {
                 this.findZeroElevator = false;
-            }
-        }
-
-        private async void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
-        {
-            try
-            {
-                if (e.MachinePowerState == MachinePowerState.Powered &&
-                                this.findZeroElevator)
-                {
-                    this.Logger.Debug("Send find zero command to MAS");
-
-                    this.findZeroElevator = false;
-                    await this.machineElevatorWebService.FindLostZeroAsync();
-
-                    this.machinePowerChangedToken?.Dispose();
-                    this.machinePowerChangedToken = null;
-
-                    this.machineModeChangedToken?.Dispose();
-                    this.machineModeChangedToken = null;
-                }
-                else if (e.MachinePowerState == MachinePowerState.Powered &&
-                    this.findZeroBayChain)
-                {
-                    this.Logger.Debug("Send find zero command to MAS");
-
-                    this.findZeroBayChain = false;
-                    await this.machineCarouselWebService.FindLostZeroAsync();
-
-                    this.SubscribeToBayEvent();
-
-                    this.machinePowerChangedToken?.Dispose();
-                    this.machinePowerChangedToken = null;
-
-                    this.machineModeChangedToken?.Dispose();
-                    this.machineModeChangedToken = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
             }
         }
 

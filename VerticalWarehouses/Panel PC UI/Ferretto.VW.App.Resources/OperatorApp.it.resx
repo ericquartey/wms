@@ -1012,7 +1012,7 @@
     <value>Scomparto</value>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
-    <value>Quantità da rettificare  [{0}]</value>
+    <value>Giacenza  [{0}]</value>
   </data>
   <data name="PutQuantity" xml:space="preserve">
     <value>Quantità da versare [{0}]</value>
@@ -1970,5 +1970,17 @@
   </data>
   <data name="AverageOccupiedSpace" xml:space="preserve">
     <value>Passo verticale medio</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Variazione giacenza</value>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Recupero articolo non riuscito</value>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Articolo non disponibile</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operazione eseguita con successo</value>
   </data>
 </root>

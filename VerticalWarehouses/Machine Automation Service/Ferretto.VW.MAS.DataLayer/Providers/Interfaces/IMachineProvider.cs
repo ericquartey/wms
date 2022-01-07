@@ -70,6 +70,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsEnableAddItem();
 
+        bool IsEnableHandlingItemOperations();
+
         bool IsFireAlarmActive();
 
         bool IsHeartBeat();
@@ -79,6 +81,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsRequestConfirmForLastOperationOnLoadingUnit();
 
         bool IsTouchHelperEnabled();
+
+        bool IsUpdatingStockByDifference();
 
         Task SetMachineId(int newMachineId);
 

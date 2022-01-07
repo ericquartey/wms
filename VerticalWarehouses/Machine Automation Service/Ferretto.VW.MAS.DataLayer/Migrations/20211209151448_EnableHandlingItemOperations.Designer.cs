@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20211209151448_EnableHandlingItemOperations")]
+    partial class EnableHandlingItemOperations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -250,8 +252,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("BlockLevel");
-
-                    b.Property<string>("Description");
 
                     b.Property<bool>("IsFree");
 
@@ -925,11 +925,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 92,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1300,12 +1295,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("BackupServer");
-
-                    b.Property<string>("BackupServerPassword");
-
-                    b.Property<string>("BackupServerUsername");
 
                     b.Property<bool>("Box");
 
@@ -1931,8 +1920,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ConnectionTimeout");
-
                     b.Property<bool>("IsConnected");
 
                     b.Property<bool>("IsEnabled");
@@ -1962,7 +1949,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = -1,
-                            ConnectionTimeout = 5000,
                             IsConnected = false,
                             IsEnabled = false,
                             IsTimeSyncEnabled = false,

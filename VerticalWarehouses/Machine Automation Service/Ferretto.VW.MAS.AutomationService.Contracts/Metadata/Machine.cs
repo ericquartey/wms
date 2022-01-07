@@ -88,6 +88,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsEnableAddItem { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsEnableHandlingItemOperations))]
+            [Id(33)]
+            public bool IsEnableHandlingItemOperations { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
             [Id(20)]
             public bool IsHeartBeat { get; set; }
@@ -106,6 +111,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsRequestConfirmForLastOperationOnLoadingUnit))]
             [Id(25)]
             public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsUpdatingStockByDifference))]
+            [Id(32)]
+            public bool IsUpdatingStockByDifference { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ItemUniqueIdLength))]

@@ -28,13 +28,19 @@
 ## Nuove Funzionalità 1.0.36 rispetto la 1.0.35
 - Aggiunta bilancia Minebea-Intec
 - Aggiunta altezza media e passo verticale medio
+- Aggiunta procedura guidata al posto del comando di ricerca di zero nella pagina di allarme
+- Aggiunto un parametro per specificare l'aggiornamento della giacenza di un articolo 
+  tramite un valore di differenza (Idroinox)
+- Aggiunto un parametro per eseguire le operazioni di prelievo e versamento per un articolo
+  nella vista di cassetto in baia (Idroinox)
+- Ferretto NuGet package 0.16.38.
 
 ## Bug Risolti
 - Corretta abilitazione del lettore di token
 - Nelle BIS senza serranda la compattazione bypassa il controllo intrusione
 - Aggiunto timeout di connessione con WMS
 
-## Compatibile con adapter 0.4.29
+## Compatibile con adapter 0.4.30
 ***
 
 [Versione 1.0.35](#id1035)
