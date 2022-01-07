@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnableHandlingItemOperations;
 
+        private bool isRequestConfirmForLastOperationOnLoadingUnit;
+
         private bool isUpdatingStockByDifference;
 
         private bool pick;
@@ -70,6 +72,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isEnableHandlingItemOperations;
             set => this.SetProperty(ref this.isEnableHandlingItemOperations, value, this.CanExecute);
+        }
+
+        public bool IsRequestConfirmForLastOperationOnLoadingUnit
+        {
+            get => this.isRequestConfirmForLastOperationOnLoadingUnit;
+            set => this.SetProperty(ref this.isRequestConfirmForLastOperationOnLoadingUnit, value, this.CanExecute);
         }
 
         public bool IsUpdatingStockByDifference
@@ -148,6 +156,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsEnableHandlingItemOperations = await this.identityService.IsEnableHandlingItemOperationsAsync();
                 this.IsUpdatingStockByDifference = await this.identityService.IsUpdatingStockByDifferenceAsync();
+                this.IsRequestConfirmForLastOperationOnLoadingUnit = await this.identityService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
             }
             catch (Exception ex)
             {
@@ -168,9 +177,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 //await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
 
-                await this.identityService.SetBayOperationParamsAsync(this.IsEnableHandlingItemOperations, this.IsUpdatingStockByDifference);
+                await this.identityService.SetBayOperationParamsAsync(this.IsEnableHandlingItemOperations, this.IsUpdatingStockByDifference, this.IsRequestConfirmForLastOperationOnLoadingUnit);
 
-                this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference} ");
+                this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference}; IsRequestConfirmForLastOperationOnLoadingUnit = {this.IsRequestConfirmForLastOperationOnLoadingUnit} ");
             }
             catch (Exception ex)
             {

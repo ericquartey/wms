@@ -82,6 +82,13 @@
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnableHandlingItemOperations, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsEnableHandlingItemOperations}"/>
+        
+            <controls:PpcCheckBox Grid.Row="2"
+                            Margin="0,15,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsRequestConfirmForLastOperationOnLoadingUnit, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsRequestConfirmForLastOperationOnLoadingUnit}"/>
+
         </StackPanel>
     <controls:PpcButton Grid.Row="2"
                         Margin="15,15,15,0"

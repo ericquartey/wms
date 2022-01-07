@@ -1403,7 +1403,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               &&
               !this.IsBusyConfirmingOperation
               &&
-              (this.ItemName.Length > 0 || this.ItemLot.Length > 0);
+              (this.ItemName?.Length > 0 || this.ItemLot?.Length > 0);
         }
 
         private bool CanConfirmItemPutAlternativeOperation()
@@ -1415,7 +1415,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               &&
               !this.IsBusyConfirmingOperation
               &&
-              (this.ItemName.Length > 0 || this.ItemLot.Length > 0);
+              (this.ItemName?.Length > 0 || this.ItemLot?.Length > 0);
         }
 
         private bool CanConfirmOperation()

@@ -14243,25 +14243,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task SetBayOperationParamsAsync(bool isEnableHandlingItemOperations, bool isUpdatingStockByDifference)
+        public System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit)
         {
-            return SetBayOperationParamsAsync(isEnableHandlingItemOperations, isUpdatingStockByDifference, System.Threading.CancellationToken.None);
+            return SetBayOperationParamsAsync(isEnableHandlingItemOperations, isUpdatingStockByDifference, isRequestConfirmForLastOperationOnLoadingUnit, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task SetBayOperationParamsAsync(bool isEnableHandlingItemOperations, bool isUpdatingStockByDifference, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, System.Threading.CancellationToken cancellationToken)
         {
-            if (isEnableHandlingItemOperations == null)
-                throw new System.ArgumentNullException("isEnableHandlingItemOperations");
-    
-            if (isUpdatingStockByDifference == null)
-                throw new System.ArgumentNullException("isUpdatingStockByDifference");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/set/bay/operation/params?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isEnableHandlingItemOperations") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isEnableHandlingItemOperations, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isUpdatingStockByDifference") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isUpdatingStockByDifference, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isEnableHandlingItemOperations") + "=").Append(System.Uri.EscapeDataString(isEnableHandlingItemOperations != null ? ConvertToString(isEnableHandlingItemOperations, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isUpdatingStockByDifference") + "=").Append(System.Uri.EscapeDataString(isUpdatingStockByDifference != null ? ConvertToString(isUpdatingStockByDifference, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isRequestConfirmForLastOperationOnLoadingUnit") + "=").Append(System.Uri.EscapeDataString(isRequestConfirmForLastOperationOnLoadingUnit != null ? ConvertToString(isRequestConfirmForLastOperationOnLoadingUnit, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

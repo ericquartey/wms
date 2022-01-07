@@ -2573,6 +2573,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request confirm for last operation on load unit.
+        /// </summary>
+        public static string IsRequestConfirmForLastOperationOnLoadingUnit {
+            get {
+                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsToDo.
         /// </summary>
         public static string IsToDo {

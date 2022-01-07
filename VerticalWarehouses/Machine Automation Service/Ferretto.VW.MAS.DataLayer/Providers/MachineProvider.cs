@@ -523,13 +523,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetBayOperationParams(bool isEnableHandlingItemOperations, bool isUpdatingStockByDifference)
+        public void SetBayOperationParams(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit)
         {
             lock (this.dataContext)
             {
                 var machine = this.dataContext.Machines.LastOrDefault();
-                machine.IsEnableHandlingItemOperations = isEnableHandlingItemOperations;
-                machine.IsUpdatingStockByDifference = isUpdatingStockByDifference;
+                if (isEnableHandlingItemOperations.HasValue)
+                {
+                    machine.IsEnableHandlingItemOperations = isEnableHandlingItemOperations.Value;
+                }
+                if (isUpdatingStockByDifference.HasValue)
+                {
+                    machine.IsUpdatingStockByDifference = isUpdatingStockByDifference.Value;
+                }
+                if (isRequestConfirmForLastOperationOnLoadingUnit.HasValue)
+                {
+                    machine.IsRequestConfirmForLastOperationOnLoadingUnit = isRequestConfirmForLastOperationOnLoadingUnit.Value;
+                }
                 this.dataContext.SaveChanges();
             }
         }

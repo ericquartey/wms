@@ -2385,4 +2385,7 @@
     <value>Pick and Put by barcode
 </value>
   </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Request confirm for last operation on load unit</value>
+  </data>
 </root>

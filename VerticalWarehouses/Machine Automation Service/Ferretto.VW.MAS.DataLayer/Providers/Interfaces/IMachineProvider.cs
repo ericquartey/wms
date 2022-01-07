@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsUpdatingStockByDifference();
 
-        void SetBayOperationParams(bool isEnableHandlingItemOperations, bool isUpdatingStockByDifference);
+        void SetBayOperationParams(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit);
 
         Task SetMachineId(int newMachineId);
 
