@@ -129,10 +129,17 @@ namespace Ferretto.VW.MAS.AutomationService
                         if (machineDataProvider.IsDbSaveOnServer())
                         {
                             var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                            var wmsSettings = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
-
+                            var machine = machineDataProvider.Get();
                             // save the database to server
-                            dataLayer.CopyMachineDatabaseToServer(wmsSettings.ServiceUrl.Host);
+                            try
+                            {
+                                dataLayer.CopyMachineDatabaseToServer(machine.BackupServer, machine.BackupServerUsername, machineDataProvider.GetBackupServerPassword(), machineDataProvider.GetSecondaryDatabase(), machine.SerialNumber);
+                            }
+                            catch (ApplicationException ex)
+                            {
+                                var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                errorProvider.RecordNew(DataModels.MachineErrorCode.BackupDatabaseOnServer, additionalText: ex.Message);
+                            }
                         }
                     }
                     catch (Exception ex)

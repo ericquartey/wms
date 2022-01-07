@@ -71,16 +71,42 @@
 
     <controls:PpcTextBox Grid.Row="3"
                          Grid.Column="1"
+                         Width="120"
                          Margin="5,5,5,5"
-                         HorizontalAlignment="Stretch"
+                         HorizontalAlignment="Left"
                          VerticalAlignment="Top"
                          InputText="{Binding Port, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsEnabledEditing}"
                          LabelText="{res:Loc Menu.AccessoriesPort}" />
 
-    <ctrls:WeightingScale Grid.Row="6"
+        <StackPanel Grid.Row="3"
+                    Grid.Column="2"
+                    Width="200"
+                    Margin="5,5,5,5"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top">
+
+            <TextBlock Margin="6,0,5,0"
+                     Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                     Text="{res:Loc InstallationApp.ModelNumber}" />
+
+            <ComboBox Grid.Row="0"
+                    Margin="6"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                    ItemsSource="{Binding ModelNumbers}"
+                    SelectedValue="{Binding ModelNumberCombo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                    Style="{DynamicResource PpcComboBoxStyle}">
+            </ComboBox>
+
+            <!--</Border>-->
+        </StackPanel>
+
+
+        <ctrls:WeightingScale Grid.Row="6"
                           Grid.Column="0"
-                          Grid.ColumnSpan="3" />
+                          Grid.ColumnSpan="3"
+                          Visibility="{Binding IsAccessoryEnabled, Converter={StaticResource BTVC}}"/>
 
     <controls:PpcButton Grid.Row="7"
                         Grid.Column="1"

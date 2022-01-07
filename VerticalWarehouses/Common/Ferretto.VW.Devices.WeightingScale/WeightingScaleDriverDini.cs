@@ -9,7 +9,7 @@ using NLog;
 
 namespace Ferretto.VW.Devices.WeightingScale
 {
-    public sealed class WeightingScaleDriver : IWeightingScaleDriver
+    public sealed class WeightingScaleDriverDini : IWeightingScaleDriverDini
     {
         #region Fields
 
@@ -73,7 +73,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                     this.client = new TcpClient();
                     this.stream = null;
                 }
-                if (!this.IsConnected)
+                if (!this.IsConnected && this.client != null)
                 {
                     this.logger.Trace($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
@@ -81,28 +81,29 @@ namespace Ferretto.VW.Devices.WeightingScale
                     this.stream = this.client.GetStream();
                     this.logger.Debug($"Connected");
                 }
+                this._semaphore.Release();
             }
             catch (Exception e)
             {
-                this.logger.Error(e);
-                this.Disconnect();
-            }
-            finally
-            {
                 this._semaphore.Release();
+                this.logger.Error(e);
+                await this.DisconnectAsync();
             }
         }
 
-        public void Disconnect()
+        public async Task DisconnectAsync()
         {
+            await this._semaphore.WaitAsync();
             try
             {
                 this.stream?.Close();
                 this.client?.Close();
                 this.client = null;
+                this._semaphore.Release();
             }
             catch (Exception e)
             {
+                this._semaphore.Release();
                 this.logger.Error(e);
             }
         }
@@ -201,6 +202,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                 await this.ConnectAsync(this.ipAddress, this.port);
             }
 
+            await this._semaphore.WaitAsync();
             if (this.IsConnected)
             {
                 try
@@ -214,7 +216,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                         this.stream.ReadTimeout = this.tcpTimeout;
                         this.stream.WriteTimeout = this.tcpTimeout;
                         this.stream.Write(data, 0, data.Length);
-                        this.logger.Debug($"SendCommandAsync();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                        this.logger.Debug($"SendCommandAsync();Sent: {sendMessage}<CR><LF>");
 
                         data = new byte[this.client.ReceiveBufferSize];
                         var bytes = this.stream.Read(data, 0, data.Length);
@@ -249,13 +251,19 @@ namespace Ferretto.VW.Devices.WeightingScale
                         //{
                         //    System.Threading.Thread.Sleep(100);
                         //}
+                        this._semaphore.Release();
                     }
                 }
                 catch (Exception e)
                 {
+                    this._semaphore.Release();
                     this.logger.Error(e);
-                    this.Disconnect();
+                    await this.DisconnectAsync();
                 }
+            }
+            else
+            {
+                this._semaphore.Release();
             }
             if (this.messagesReceivedQueue.Count > 0)
             {

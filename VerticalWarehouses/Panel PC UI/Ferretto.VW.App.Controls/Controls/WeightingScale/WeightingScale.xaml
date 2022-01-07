@@ -52,7 +52,7 @@
                                           HorizontalAlignment="Stretch"
                                           VerticalAlignment="Stretch"
                                           FlowDirection="LeftToRight"
-                                          SymbolCount="6"
+                                          SymbolCount="7"
                                           Text="{Binding ElementName=WeightingScaleUC, Path=WeightInfo}"
                                           TextDirection="RightToLeft">
                     <dxga:DigitalGaugeControl.Model>

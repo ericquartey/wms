@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.VW.App.Keyboards.Controls;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Keyboards
 {
@@ -27,11 +28,22 @@ namespace Ferretto.VW.App.Keyboards
             {
                 throw new ArgumentNullException(nameof(command));
             }
-            Match layoutCmdMatch, convertCmdMatch;
+            Match layoutCmdMatch, layoutCmdMatch2, convertCmdMatch;
             if ((layoutCmdMatch = Regex.Match(command.CommandText, CmdPattern))?.Success == true)
             {
-                var layoutCode = layoutCmdMatch.Groups["Cmd"].Value;
-                button.FindKeyboard()?.RequestLayoutChange(layoutCode);
+                //check the SecondaryCommandText to turn at the original keyboard language
+                if (command.SecondaryCommandText != null &&
+                    Localized.Instance.LastKeyboardCulture != null &&
+                    (layoutCmdMatch2 = Regex.Match(command.SecondaryCommandText, CmdPattern))?.Success == true)
+                {
+                    var layoutCode2 = layoutCmdMatch2.Groups["Cmd"].Value + "." + Localized.Instance.LastKeyboardCulture.Name;
+                    button.FindKeyboard()?.RequestLayoutChange(layoutCode2);
+                }
+                else
+                {
+                    var layoutCode = layoutCmdMatch.Groups["Cmd"].Value;
+                    button.FindKeyboard()?.RequestLayoutChange(layoutCode);
+                }
             }
             else if ((convertCmdMatch = Regex.Match(command.CommandText, ConvertPattern))?.Success == true)
             {

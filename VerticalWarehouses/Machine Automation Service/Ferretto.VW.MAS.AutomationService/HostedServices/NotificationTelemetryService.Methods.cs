@@ -171,13 +171,13 @@ namespace Ferretto.VW.MAS.AutomationService
             if (messageData.MissionId.HasValue)
             {
                 // Only if mission is of type IN and current Step is the MissionStep.End
-                if ((messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.IN
-                    || messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.FullTestIN
-                    || messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.Compact
-                    || messageData.MissionType == CommonUtils.Messages.Enumerations.MissionType.LoadUnitOperation
+                if ((messageData.MissionType == MissionType.IN
+                    || messageData.MissionType == MissionType.FullTestIN
+                    || messageData.MissionType == MissionType.Compact
+                    || messageData.MissionType == MissionType.LoadUnitOperation
                     ) &&
-                    messageData.MissionStep == CommonUtils.Messages.Enumerations.MissionStep.End &&
-                    messageData.StopReason == CommonUtils.Messages.Enumerations.StopRequestReason.NoReason)
+                    messageData.MissionStep == MissionStep.End &&
+                    messageData.StopReason == StopRequestReason.NoReason)
                 {
                     var scope = this.ServiceScopeFactory.CreateScope();
                     var machineDataProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
@@ -197,10 +197,18 @@ namespace Ferretto.VW.MAS.AutomationService
                         if (machineDataProvider.IsDbSaveOnServer())
                         {
                             var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                            var wmsSettings = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWmsSettingsProvider>();
+                            var machine = machineDataProvider.Get();
 
-                            // save the database to server
-                            dataLayer.CopyMachineDatabaseToServer(wmsSettings.ServiceUrl.Host);
+                            try
+                            {
+                                // save the database to server
+                                dataLayer.CopyMachineDatabaseToServer(machine.BackupServer, machine.BackupServerUsername, machineDataProvider.GetBackupServerPassword(), machineDataProvider.GetSecondaryDatabase(), machine.SerialNumber);
+                            }
+                            catch (ApplicationException ex)
+                            {
+                                var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                errorProvider.RecordNew(DataModels.MachineErrorCode.BackupDatabaseOnServer, additionalText: ex.Message);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -213,7 +221,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task OnSensorsChanged(NotificationMessage receivedMessage, SensorsChangedMessageData messageData)
         {
-            if (receivedMessage.RequestingBay == CommonUtils.Messages.Enumerations.BayNumber.BayOne) // only bay one, beacause the other bay have the same massage input
+            if (receivedMessage.RequestingBay == BayNumber.BayOne) // only bay one, beacause the other bay have the same massage input
             {
                 var ioLog = new IOLog
                 {

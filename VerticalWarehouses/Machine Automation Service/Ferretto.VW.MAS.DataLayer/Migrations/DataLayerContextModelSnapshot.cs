@@ -925,6 +925,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 92,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1295,6 +1300,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BackupServer");
+
+                    b.Property<string>("BackupServerPassword");
+
+                    b.Property<string>("BackupServerUsername");
 
                     b.Property<bool>("Box");
 
@@ -1920,6 +1931,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("ConnectionTimeout");
+
                     b.Property<bool>("IsConnected");
 
                     b.Property<bool>("IsEnabled");
@@ -1949,6 +1962,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = -1,
+                            ConnectionTimeout = 5000,
                             IsConnected = false,
                             IsEnabled = false,
                             IsTimeSyncEnabled = false,

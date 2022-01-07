@@ -160,7 +160,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.Data is BayAccessories bayAccessories)
                 {
                     this.IsAccessoryEnabled = bayAccessories.CardReader.IsEnabledNew;
-                    this.TokenRegex = bayAccessories.CardReader.TokenRegex ?? "(?<Token>.{10})";
+                    this.TokenRegex = bayAccessories.CardReader.TokenRegex ?? "(?<Token>\\d+)";
                 }
                 else
                 {

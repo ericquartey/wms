@@ -422,8 +422,8 @@ namespace Ferretto.VW.App.Services
                 this.originalCells = await this.machineCellsWebService.GetAllAsync();
             }
             this.CellsPlus = this.Cells.Select(c => new CellPlus(c, this.Loadunits.FirstOrDefault(l => l.CellId == c.Id))).ToList();
-            this.FreeSpaceBack = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Back) * 25;
-            this.FreeSpaceFront = this.cells.Count(s => s.IsFree && (s.BlockLevel == BlockLevel.None || s.BlockLevel == BlockLevel.SpaceOnly) && s.Side == WarehouseSide.Front) * 25;
+            this.FreeSpaceBack = this.cells.Count(s => s.IsAvailable && s.Side == WarehouseSide.Back) * 25;
+            this.FreeSpaceFront = this.cells.Count(s => s.IsAvailable && s.Side == WarehouseSide.Front) * 25;
             var cellStat = await this.machineCellsWebService.GetStatisticsAsync();
             this.MaxSolidSpace = cellStat.MaxSolidSpace.Select(s => s.Value).Max();
             this.UpdateLoadUnitsId();

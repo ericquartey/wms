@@ -66,10 +66,10 @@
     <Resource Include="Resources\de-numeric.json" />
     <Resource Include="Resources\de-numpad.json" />
     <Resource Include="Resources\de-uppercase.json" />
+    <Resource Include="Resources\he-uppercase.json" />
     <Resource Include="Resources\he-lowercase.json" />
     <Resource Include="Resources\he-numeric.json" />
     <Resource Include="Resources\he-numpad.json" />
-    <Resource Include="Resources\he-uppercase.json" />
     <Resource Include="Resources\es-lowercase.json" />
     <Resource Include="Resources\es-numeric.json" />
     <Resource Include="Resources\es-numpad.json" />

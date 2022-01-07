@@ -156,160 +156,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "Q"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "W"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "E"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "R"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "T"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Y"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "U"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "I"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "O"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "P"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "\u007B"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "\u007D"
-            }
-          }
-        }
-      ],
-      "HorizontalAlignment": "Left"
-    },
-    {
-      "Zone": "2ndRow",
-      "Cells": [
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "A"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "S"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "D"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "F"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "G"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "H"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "J"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "K"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "L"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "\u005C"
+              "CommandText": "\u002f"
             }
           }
         },
@@ -323,7 +170,161 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\uFF1F"
+              "CommandText": "\u05e7"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05e8"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05d0"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05d5"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05df"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05dd"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05e4"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u005b"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u005d"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u007C"
+            }
+          }
+        }
+      ],
+      "HorizontalAlignment": "Left"
+    },
+    {
+      "Zone": "2ndRow",
+      "Cells": [
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05e9"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05d3"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05d2"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05db"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05e2"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05d9"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05d7"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05dc"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05da"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u05e3"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "CommandText": "\u007b"
+            }
+          }
+        },
+        {
+          "Key": {
+            "Command": {
+              "Caption": "EN",
+              "CommandText": "{layout:uppercase.en-EN}"
             }
           }
         }
@@ -361,7 +362,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "Z"
+              "CommandText": "\u05d6"
             }
           },
           "Width": "Auto"
@@ -369,7 +370,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "X"
+              "CommandText": "\u05e1"
             }
           },
           "Width": "Auto"
@@ -377,7 +378,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "C"
+              "CommandText": "\u05d1"
             }
           },
           "Width": "Auto"
@@ -385,7 +386,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "V"
+              "CommandText": "\u05d4"
             }
           },
           "Width": "Auto"
@@ -393,7 +394,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "B"
+              "CommandText": "\u05e0"
             }
           },
           "Width": "Auto"
@@ -401,7 +402,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "N"
+              "CommandText": "\u05de"
             }
           },
           "Width": "Auto"
@@ -409,7 +410,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "M"
+              "CommandText": "\u05e6"
             }
           },
           "Width": "Auto"
@@ -417,7 +418,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "-"
+              "CommandText": "\u05ea"
             }
           },
           "Width": "Auto"
@@ -425,7 +426,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "_"
+              "CommandText": "\u05e5"
             }
           },
           "Width": "Auto"
@@ -433,7 +434,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "<"
+              "CommandText": "\u007d"
             }
           },
           "Width": "Auto"
@@ -441,7 +442,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": ">"
+              "CommandText": "?"
             }
           },
           "Width": "Auto"

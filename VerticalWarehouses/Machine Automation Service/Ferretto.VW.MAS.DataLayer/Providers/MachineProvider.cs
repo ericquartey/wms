@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -17,8 +19,10 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private const string PASSWORDKEY = "obChaz6W7brGMtT7Dn7TAw==";
+
         private static readonly Func<DataLayerContext, Machine> MachineGetCompile =
-            EF.CompileQuery((DataLayerContext context) =>
+                    EF.CompileQuery((DataLayerContext context) =>
                 context.Machines.AsNoTracking()
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.Axes)
@@ -133,14 +137,29 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new System.ArgumentNullException(nameof(machine));
             }
-
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
-
             lock (this.dataContext)
             {
                 this.dataContext.Machines.Add(machine);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void CheckBackupServer()
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.dataContext.Machines.FirstOrDefault();
+                if (machine.BackupServerUsername == null)
+                {
+                    machine.BackupServerUsername = "wmsadmin";
+                }
+                if (machine.BackupServerPassword == null)
+                {
+                    machine.BackupServerPassword = EncryptString(PASSWORDKEY, "fergrp_2012");
+                }
                 this.dataContext.SaveChanges();
             }
         }
@@ -186,6 +205,31 @@ namespace Ferretto.VW.MAS.DataLayer
                 });
 
                 return entity;
+            }
+        }
+
+        public string GetBackupServer()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().BackupServer;
+            }
+        }
+
+        public string GetBackupServerPassword()
+        {
+            lock (this.dataContext)
+            {
+                var password = this.dataContext.Machines.FirstOrDefault().BackupServerPassword;
+                return DecryptString(PASSWORDKEY, password);
+            }
+        }
+
+        public string GetBackupServerUsername()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().BackupServerUsername;
             }
         }
 
@@ -240,7 +284,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public byte[] GetRawDatabaseContent()
         {
             const int NUMBER_OF_RETRIES = 5;
-
             // Retrieve the path of primary database file
             //      example: "Database/MachineAutomationService.Simulation.Primary.db"
             var filePath = GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
@@ -250,9 +293,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.logger.LogError($"Error: {filePath} does not exist");
                 return null;
             }
-
             byte[] rawDatabase = null;
-
             for (var i = 0; i < NUMBER_OF_RETRIES; i++)
             {
                 try
@@ -266,7 +307,6 @@ namespace Ferretto.VW.MAS.DataLayer
                             stream.Read(rawDatabase, 0, rawDatabase.Length);
                         }
                     }
-
                     break;
                 }
                 catch (IOException ioExc)
@@ -291,7 +331,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     });
                 }
             }
-
             /*
             // Write the bytes array back to a file
             using (Stream file = File.OpenWrite("Database/trial.db"))
@@ -299,9 +338,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 file.Write(rawDatabase, 0, rawDatabase.Length);
             }
             */
-
             this.logger.LogInformation($"Retrieve raw secondary (is ok: {this.machineVolatile.IsStandbyDbOk}) database content from file {filePath}");
             return rawDatabase;
+        }
+
+        public string GetSecondaryDatabase()
+        {
+            return GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
+        }
+
+        public string GetSerialNumber()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().SerialNumber;
+            }
         }
 
         public IEnumerable<ServicingInfo> GetServicingInfo()
@@ -331,11 +382,9 @@ namespace Ferretto.VW.MAS.DataLayer
         public void Import(Machine machine, DataLayerContext context)
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
-
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
-
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
             context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
@@ -356,25 +405,20 @@ namespace Ferretto.VW.MAS.DataLayer
             context.ElevatorAxes.RemoveRange(context.ElevatorAxes);
             context.Elevators.RemoveRange(context.Elevators);
             context.Machines.RemoveRange(context.Machines);
-
             context.Machines.Add(machine);
         }
 
         public void ImportMachineServicingInfo(IEnumerable<ServicingInfo> servicingInfo, DataLayerContext context)
         {
             _ = servicingInfo ?? throw new System.ArgumentNullException(nameof(servicingInfo));
-
             context.ServicingInfo.RemoveRange(context.ServicingInfo);
-
             context.ServicingInfo.AddRange(servicingInfo);
         }
 
         public void ImportMachineStatistics(IEnumerable<MachineStatistics> machineStatistics, DataLayerContext context)
         {
             _ = machineStatistics ?? throw new System.ArgumentNullException(nameof(machineStatistics));
-
             context.MachineStatistics.RemoveRange(context.MachineStatistics);
-
             context.MachineStatistics.AddRange(machineStatistics);
         }
 
@@ -451,7 +495,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Select(a => a.Inverter.Id)
                     .Distinct()
                     .Count();
-
                 return elevatorInvertersCount > 1;
             }
         }
@@ -483,12 +526,10 @@ namespace Ferretto.VW.MAS.DataLayer
         public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;
-
             lock (this.dataContext)
             {
                 dataContext = this.dataContext;
             }
-
             int count = await dataContext.Database.ExecuteSqlCommandAsync("update cellpanels set MachineId = null;");
             int count1 = await dataContext.Database.ExecuteSqlCommandAsync("update bays set MachineId = null;");
             int count2 = await dataContext.Database.ExecuteSqlCommandAsync($"update machines set Id = {newMachineId};");
@@ -499,16 +540,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public void Update(Machine machine, DataLayerContext dataContext)
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
-
             if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }
-
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
-
             machine.Elevator?.Axes.ForEach((a) =>
             {
                 dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
@@ -517,19 +555,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(a.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(a.ManualMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(a.Inverter, (e) => e.Id);
-
                 a.Profiles.ForEach((p) =>
                 {
                     p.Steps.ForEach((s) => dataContext.AddOrUpdate(s, (e) => e.Id));
                     dataContext.AddOrUpdate(p, (e) => e.Id);
                 });
-
                 dataContext.AddOrUpdate(a, (e) => e.Id);
             });
-
             dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
             dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
-
             machine.Bays.ForEach((b) =>
             {
                 b.Positions.ForEach((p) =>
@@ -537,7 +571,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     dataContext.AddOrUpdate(p.LoadingUnit, (e) => e.Id);
                     dataContext.AddOrUpdate(p, (e) => e.Id);
                 });
-
                 dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
@@ -552,18 +585,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
-
                 dataContext.AddOrUpdate(b, (e) => e.Id);
             });
-
             machine.Panels.ForEach((p) =>
             {
                 p.Cells.ForEach((c) => dataContext.AddOrUpdate(c, (e) => e.Id));
                 dataContext.AddOrUpdate(p, (e) => e.Id);
             });
-
             dataContext.AddOrUpdate(machine, (e) => e.Id);
-
             dataContext.SaveChanges();
         }
 
@@ -620,26 +649,28 @@ namespace Ferretto.VW.MAS.DataLayer
                         default:
                             throw new ArgumentOutOfRangeException(nameof(bayNumber));
                     }
-
                     var loadUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == loadUnitId);
                     if (loadUnit != null)
                     {
                         loadUnit.MissionsCount++;
                     }
-
                     this.dataContext.SaveChanges();
                 }
             }
         }
 
-        public void UpdateDbSaveOnServer(bool enable)
+        public void UpdateDbSaveOnServer(bool enable, string server, string username, string password)
         {
             lock (this.dataContext)
             {
                 var machine = this.dataContext.Machines.FirstOrDefault();
+                var passwordEncrypt = EncryptString(PASSWORDKEY, password);
                 if (machine != null)
                 {
                     machine.IsDbSaveOnServer = enable;
+                    machine.BackupServer = server;
+                    machine.BackupServerUsername = username;
+                    machine.BackupServerPassword = passwordEncrypt;
                     this.dataContext.SaveChanges();
                 }
             }
@@ -675,28 +706,22 @@ namespace Ferretto.VW.MAS.DataLayer
         public void UpdateMachineServicingInfo(ServicingInfo servicingInfo, DataLayerContext dataContext)
         {
             _ = servicingInfo ?? throw new System.ArgumentNullException(nameof(servicingInfo));
-
             if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }
-
             dataContext.AddOrUpdate(servicingInfo, (e) => e.Id);
-
             dataContext.SaveChanges();
         }
 
         public void UpdateMachineStatistics(MachineStatistics machineStatistics, DataLayerContext dataContext)
         {
             _ = machineStatistics ?? throw new System.ArgumentNullException(nameof(machineStatistics));
-
             if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }
-
             dataContext.AddOrUpdate(machineStatistics, (e) => e.Id);
-
             dataContext.SaveChanges();
         }
 
@@ -729,16 +754,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public void UpdateSolo(Machine machine, DataLayerContext dataContext)
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
-
             if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }
-
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
-
             machine.Elevator?.Axes.ForEach((a) =>
             {
                 dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
@@ -747,19 +769,15 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(a.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(a.ManualMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(a.Inverter, (e) => e.Id);
-
                 a.Profiles.ForEach((p) =>
                 {
                     p.Steps.ForEach((s) => dataContext.AddOrUpdate(s, (e) => e.Id));
                     dataContext.AddOrUpdate(p, (e) => e.Id);
                 });
-
                 dataContext.AddOrUpdate(a, (e) => e.Id);
             });
-
             dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
             dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
-
             machine.Bays.ForEach((b) =>
             {
                 b.Positions.ForEach((p) =>
@@ -767,7 +785,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     dataContext.AddOrUpdate(p.LoadingUnit, (e) => e.Id);
                     dataContext.AddOrUpdate(p, (e) => e.Id);
                 });
-
                 dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
@@ -782,18 +799,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
                 dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
-
                 dataContext.AddOrUpdate(b, (e) => e.Id);
             });
-
             //machine.Panels.ForEach((p) =>
             //{
             //    p.Cells.ForEach((c) => dataContext.AddOrUpdate(c, (e) => e.Id));
             //    dataContext.AddOrUpdate(p, (e) => e.Id);
             //});
-
             dataContext.AddOrUpdate(machine, (e) => e.Id);
-
             dataContext.SaveChanges();
         }
 
@@ -867,6 +880,59 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             );
             dataContext.SaveChanges();
+        }
+
+        private static string DecryptString(string key, string cipherPassword)
+        {
+            byte[] iv = new byte[16];
+            byte[] buffer = Convert.FromBase64String(cipherPassword);
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(key);
+                aes.IV = iv;
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+                using (MemoryStream memoryStream = new MemoryStream(buffer))
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader streamReader = new StreamReader((Stream)cryptoStream))
+                        {
+                            return streamReader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+        }
+
+        private static string EncryptString(string key, string password)
+        {
+            byte[] iv = new byte[16];
+            byte[] array;
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(key);
+                aes.IV = iv;
+
+                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter((Stream)cryptoStream))
+                        {
+                            streamWriter.Write(password);
+                        }
+
+                        array = memoryStream.ToArray();
+                    }
+                }
+            }
+
+            return Convert.ToBase64String(array);
         }
 
         /// <summary>

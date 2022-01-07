@@ -1962,6 +1962,15 @@
   <data name="InsufficientSpaceAvailable" xml:space="preserve">
     <value>Spazio disponibile in magazzino insufficiente</value>
   </data>
+  <data name="ScaleNotResponding" xml:space="preserve">
+    <value>La bilancia non risponde.</value>
+  </data>
+  <data name="AverageHeight" xml:space="preserve">
+    <value>Altezza media utile</value>
+  </data>
+  <data name="AverageOccupiedSpace" xml:space="preserve">
+    <value>Passo verticale medio</value>
+  </data>
   <data name="ChangingStock" xml:space="preserve">
     <value>Variazione giacenza</value>
   </data>

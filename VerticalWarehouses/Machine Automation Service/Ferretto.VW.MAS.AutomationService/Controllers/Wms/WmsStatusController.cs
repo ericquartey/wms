@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +36,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("get-connection-timeout")]
+        public ActionResult<int> GetConnectionTimeout()
+        {
+            return this.Ok(this.wmsSettingsProvider.ConnectionTimeout);
+        }
+
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -46,45 +53,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.UnprocessableEntity("WMS service is not enabled");
             }
 
-            int numCycle = 2;
-            for (int i = 1; i <= numCycle; i++)
-            {
-                using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
-                {
-                    try
-                    {
-                        client.Timeout = TimeSpan.FromSeconds(2);
-                        var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
-                        var statusString = await result.Content.ReadAsStringAsync();
-                        if (Enum.TryParse<HealthStatus>(statusString, out var status))
-                        {
-                            this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
-                        }
-
-                        if (status == HealthStatus.Unhealthy && i == numCycle)
-                        {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError);
-                            return this.StatusCode((int)result.StatusCode, statusString);
-                        }
-                        else if (status != HealthStatus.Unhealthy)
-                        {
-                            return this.StatusCode((int)result.StatusCode, statusString);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        this.wmsSettingsProvider.IsConnected = false;
-
-                        if (i == numCycle)
-                        {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, additionalText: ex.Message);
-                            return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
-                        }
-                    }
-                }
-            }
-
-            return this.StatusCode((int)HttpStatusCode.InternalServerError, "Unhealthy");
+            int numCycle = 25;
+            return await this.CheckWmsHealth(numCycle);
         }
 
         [HttpGet("ip-endpoint")]
@@ -136,7 +106,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPut]
-        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling)
+        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout)
         {
             if (isEnabled && string.IsNullOrEmpty(httpUrl))
             {
@@ -150,6 +120,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.wmsSettingsProvider.IsEnabled = isEnabled;
             this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
+            this.wmsSettingsProvider.ConnectionTimeout = connectionTimeout;
 
             this.wmsSettingsProvider.SocketLinkIsEnabled = socketLinkIsEnabled;
             this.wmsSettingsProvider.SocketLinkPort = socketLinkPort;
@@ -172,6 +143,47 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.wmsSettingsProvider.TimeSyncIntervalMillisecondsUpdate(seconds);
+        }
+
+        private async Task<ActionResult<string>> CheckWmsHealth(int numCycle)
+        {
+            var startTime = DateTime.Now;
+            var statusCode = this.StatusCode((int)HealthStatus.Unhealthy, "Unhealthy");
+            var timeout = this.wmsSettingsProvider.ConnectionTimeout > 0 ? this.wmsSettingsProvider.ConnectionTimeout : 5000;
+
+            for (int i = 1; i <= numCycle && (DateTime.Now - startTime).TotalMilliseconds < timeout; i++)
+            {
+                using (var client = new HttpClient() { BaseAddress = this.wmsSettingsProvider.ServiceUrl })
+                {
+                    try
+                    {
+                        client.Timeout = TimeSpan.FromSeconds(2);
+                        var result = await client.GetAsync(new Uri(client.BaseAddress, "health/live"));
+                        var statusString = await result.Content.ReadAsStringAsync();
+                        if (Enum.TryParse<HealthStatus>(statusString, out var status))
+                        {
+                            this.wmsSettingsProvider.IsConnected = (status == HealthStatus.Healthy);
+                        }
+
+                        if (this.wmsSettingsProvider.IsConnected)
+                        {
+                            statusCode = this.StatusCode((int)result.StatusCode, statusString);
+                            break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.wmsSettingsProvider.IsConnected = false;
+                        statusCode = this.StatusCode((int)HealthStatus.Unhealthy, $"{i}: {ex.Message}");
+                        Thread.Sleep(1000);
+                    }
+                }
+            }
+            if (statusCode.StatusCode == (int)HealthStatus.Unhealthy)
+            {
+                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.WmsError, additionalText: statusCode.Value.ToString());
+            }
+            return statusCode;
         }
 
         #endregion

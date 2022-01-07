@@ -22,11 +22,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAboutWebService machineAboutWebService;
 
+        private int averageHeight;
+
+        private int averageOccupiedSpace;
+
         private Brush machineServiceStatusBrush;
 
         private MachineIdentity model;
 
         private MachineStatistics statistics;
+
+        private int totalDrawersCounter;
+
+        private double totalDrawersWeight;
 
         private int totalMissionCounter;
 
@@ -59,6 +67,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
+        public int AverageHeight
+        {
+            get => this.averageHeight;
+            set => this.SetProperty(ref this.averageHeight, value);
+        }
+
+        public int AverageOccupiedSpace
+        {
+            get => this.averageOccupiedSpace;
+            set => this.SetProperty(ref this.averageOccupiedSpace, value);
+        }
+
         public Brush MachineServiceStatusBrush
         {
             get => this.machineServiceStatusBrush;
@@ -83,9 +103,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.statistics, value);
         }
 
-        public int TotalDrawersCounter { get => this.MachineService.Loadunits.Count(); }
+        public int TotalDrawersCounter
+        {
+            get => this.totalDrawersCounter;
+            set => this.SetProperty(ref this.totalDrawersCounter, value);
+        }
 
-        public double TotalDrawersWeight { get => this.MachineService.Loadunits.Sum(s => s.GrossWeight); }
+        public double TotalDrawersWeight
+        {
+            get => this.totalDrawersWeight;
+            set => this.SetProperty(ref this.totalDrawersWeight, value);
+        }
 
         public int TotalMissionCounter
         {
@@ -132,11 +160,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                await base.OnDataRefreshAsync();
+
                 this.Model = await this.identityService.GetAsync();
 
                 this.Statistics = await this.identityService.GetStatisticsAsync();
 
                 this.TotalMissionCounter = await this.machineAboutWebService.MissionTotalNumberAsync();
+                this.TotalDrawersWeight = this.MachineService.Loadunits.Sum(s => s.GrossWeight);
+                this.TotalDrawersCounter = this.MachineService.Loadunits.Count();
+                var loadUnits = this.MachineService.Loadunits.Count(lu => lu.IsIntoMachineOrBlocked);
+                this.AverageOccupiedSpace = loadUnits > 0 ?
+                    (int)Math.Round(this.MachineService.Cells.Count(c => !c.IsFree) * 25.0 / loadUnits)
+                    : 0;
+                this.AverageHeight = this.AverageOccupiedSpace > 30 ? this.AverageOccupiedSpace - 30 : 0;
 
                 this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.healthProbeService.HealthMasStatus);
 
@@ -159,6 +196,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.UpdateWmsServicesStatus(e.HealthWmsStatus);
 
             return base.OnHealthStatusChangedAsync(e);
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await this.OnDataRefreshAsync();
+
+            await base.OnMachineStatusChangedAsync(e);
         }
 
         protected override void RaiseCanExecuteChanged()

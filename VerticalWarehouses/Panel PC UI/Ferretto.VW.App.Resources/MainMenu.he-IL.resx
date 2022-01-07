@@ -120,4 +120,37 @@
   <data name="AboutAbbreviation" xml:space="preserve">
     <value>INFO</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>אודות</value>
+  </data>
+  <data name="AboutDescription" xml:space="preserve">
+    <value>סטטיסטיקה, התרעות, בדיקות</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>התקנה</value>
+  </data>
+  <data name="InstallationDescription" xml:space="preserve">
+    <value>תהליכי התקנה, תנועות ידניות ועוד</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>תחזוקה</value>
+  </data>
+  <data name="MaintenanceDescription" xml:space="preserve">
+    <value>תחזוקה, וצמצום מרווחי תאים, עדכון</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>תנועות</value>
+  </data>
+  <data name="MovementsDescription" xml:space="preserve">
+    <value>מצב חיישן, הפעלת מכונה מחדש, עוד</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>ליקוט</value>
+  </data>
+  <data name="OperationDescription" xml:space="preserve">
+    <value>ליקוט, אחסנה, מלאי</value>
+  </data>
+  <data name="MovementsAbbreviation" xml:space="preserve">
+    <value>הזז</value>
+  </data>
 </root>

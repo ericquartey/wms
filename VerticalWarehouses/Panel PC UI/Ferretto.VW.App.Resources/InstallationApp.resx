@@ -2623,4 +2623,25 @@
   <data name="Multiselection" xml:space="preserve">
     <value>Multiselection</value>
   </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Server path</value>
+  </data>
+  <data name="ResultOutOfStandard" xml:space="preserve">
+    <value>Out of standard result. Here are some tips:</value>
+  </data>
+  <data name="UseMachineFullStroke" xml:space="preserve">
+    <value>try to use the full stroke of the machine</value>
+  </data>
+  <data name="AttachMeterToElevator" xml:space="preserve">
+    <value>attach the meter measure securely to the elevator</value>
+  </data>
+  <data name="MetricCordPerpendicular" xml:space="preserve">
+    <value>the metric cord must be perfectly perpendicular to the elevator and parallel to the belt </value>
+  </data>
+  <data name="UseLaserLevelToGetValue" xml:space="preserve">
+    <value>help yourself with the use of a laser level to create repeatable reading feedback </value>
+  </data>
+  <data name="WantRepeatProcedure" xml:space="preserve">
+    <value>Si vuole ripetere la procedura?</value>
+  </data>
 </root>

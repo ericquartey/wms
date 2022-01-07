@@ -15,7 +15,9 @@ namespace Ferretto.VW.Devices.WeightingScale
                 throw new ArgumentNullException(nameof(containerRegistry));
             }
 
-            containerRegistry.RegisterSingleton<IWeightingScaleDriver, WeightingScaleDriver>();
+            containerRegistry.RegisterSingleton<IWeightingScaleDriverDini, WeightingScaleDriverDini>();
+
+            containerRegistry.RegisterSingleton<IWeightingScaleDriverMinebea, WeightingScaleDriverMinebea>();
 
             return containerRegistry;
         }

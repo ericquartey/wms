@@ -69,7 +69,7 @@
                                          Margin="0,40,0,0"
                                          HorizontalAlignment="center"
                                          VerticalAlignment="Top"
-                                         ContentText="{Binding ActualAverageWeight, StringFormat={}{0:F2}}"
+                                         ContentText="{Binding ActualAverageWeight, StringFormat={}{0:F3}}"
                                          LabelText="{resources:Loc OperatorApp.ActualAverageWeight}" />
 
 

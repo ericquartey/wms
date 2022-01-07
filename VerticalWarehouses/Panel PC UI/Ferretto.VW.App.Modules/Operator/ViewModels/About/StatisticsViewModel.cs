@@ -197,6 +197,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
+                await base.OnDataRefreshAsync();
                 this.IsVisibleDetails = this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
                 var cells = await this.machineCellsWebService.GetStatisticsAsync();
                 this.FragmentBackPercent = cells.FragmentBackPercent;
@@ -240,8 +241,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.TotalStatistics.AreaFillPercentage = machineStatistics.Select(s => s.AreaFillPercentage).Sum();
 
                 this.RaisePropertyChanged(nameof(this.TotalStatistics));
-
-                await base.OnDataRefreshAsync();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -251,6 +250,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 throw;
             }
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await this.OnDataRefreshAsync();
+
+            await base.OnMachineStatusChangedAsync(e);
         }
 
         #endregion

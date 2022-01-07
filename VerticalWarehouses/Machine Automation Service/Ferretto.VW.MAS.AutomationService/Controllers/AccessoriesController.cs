@@ -143,9 +143,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port)
+        public IActionResult UpdateWeightingScaleSettingsAsync(bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber)
         {
-            this.accessoriesDataProvider.UpdateWeightingScaleSettings(this.BayNumber, isEnabled, ipAddress, port);
+            this.accessoriesDataProvider.UpdateWeightingScaleSettings(this.BayNumber, isEnabled, ipAddress, port, modelNumber);
 
             return this.Ok();
         }

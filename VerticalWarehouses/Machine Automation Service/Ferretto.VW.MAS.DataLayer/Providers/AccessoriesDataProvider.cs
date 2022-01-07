@@ -199,10 +199,21 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(a => a.TokenReader)
                     .Single(b => b.Number == bayNumber);
 
-                bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
-                bay.Accessories.TokenReader.PortName = portName;
+                if (bay.Accessories.TokenReader is null)
+                {
+                    bay.Accessories.TokenReader = new TokenReader();
+                    bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
+                    bay.Accessories.TokenReader.PortName = portName;
 
-                this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
+                    this.dataContext.Accessories.Add(bay.Accessories.TokenReader);
+                }
+                else
+                {
+                    bay.Accessories.TokenReader.IsEnabledNew = isEnabled;
+                    bay.Accessories.TokenReader.PortName = portName;
+
+                    this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
+                }
                 this.dataContext.SaveChanges();
             }
         }
@@ -235,13 +246,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
+        public void UpdateWeightingScaleSettings(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, WeightingScaleModelNumber modelNumber)
         {
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
                     .Include(b => b.Accessories)
                     .ThenInclude(a => a.WeightingScale)
+                    .ThenInclude(r => r.DeviceInformation)
                     .Single(b => b.Number == bayNumber);
 
                 if (bay.Accessories.WeightingScale is null)
@@ -250,6 +262,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.Accessories.WeightingScale.IsEnabledNew = isEnabled;
                     bay.Accessories.WeightingScale.IpAddress = IPAddress.Parse(ipAddress);
                     bay.Accessories.WeightingScale.TcpPort = port;
+                    this.dataContext.Accessories.Add(bay.Accessories.WeightingScale);
                 }
                 else
                 {
@@ -257,6 +270,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.Accessories.WeightingScale.IpAddress = IPAddress.Parse(ipAddress);
                     bay.Accessories.WeightingScale.TcpPort = port;
                 }
+
+                if (bay.Accessories.WeightingScale.DeviceInformation is null)
+                {
+                    bay.Accessories.WeightingScale.DeviceInformation = new DeviceInformation();
+                }
+                bay.Accessories.WeightingScale.DeviceInformation.ModelNumber = modelNumber.ToString();
 
                 this.dataContext.Accessories.Update(bay.Accessories.WeightingScale);
                 this.dataContext.SaveChanges();

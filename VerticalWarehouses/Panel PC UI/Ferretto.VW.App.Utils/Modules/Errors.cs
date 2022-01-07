@@ -8,9 +8,11 @@
 
         public const string ERRORINVERTERFAULT = "ErrorInverterFaultViewModel";
 
+        public const string ERRORLOADUNITERRORS = "ErrorLoadUnitErrorsViewModel";
+
         public const string ERRORLOADUNITMISSING = "ErrorLoadunitMissingViewModel";
 
-        public const string ERRORLOADUNITERRORS = "ErrorLoadUnitErrorsViewModel";
+        public const string ERRORZEROSENSOR = "ErrorZeroSensorViewModel";
 
         #endregion
     }

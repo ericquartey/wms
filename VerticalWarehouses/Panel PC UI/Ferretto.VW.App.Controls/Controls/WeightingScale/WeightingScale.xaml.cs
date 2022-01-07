@@ -154,10 +154,10 @@ namespace Ferretto.VW.App.Controls
             try
             {
                 await this.weightingScaleService.StartAsync();
-                await this.weightingScaleService.ClearMessageAsync();
+                //await this.weightingScaleService.ClearMessageAsync();
                 //await this.weightingScaleService.ResetAverageUnitaryWeightAsync();
 
-                await this.weightingScaleService.StartWeightAcquisitionAsync();
+                //await this.weightingScaleService.StartWeightAcquisitionAsync();
 
                 this.logger.Debug("Weighting scale component initialized.");
             }
@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Controls
 
                 this.weightingScaleService.WeighAcquired -= this.WeightingScaleService_WeighAcquired;
 
-                this.weightingScaleService.StopWeightAcquisition();
+                this.weightingScaleService.StopWeightAcquisitionAsync();
 
                 this.logger.Debug("Weighting scale component unloaded.");
 

@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     serviceProvider
                         .GetRequiredService<IErrorsProvider>()
-                        .RecordNew((DataModels.MachineErrorCode)errorCode);
+                        .RecordNew((DataModels.MachineErrorCode)errorCode, additionalText: message.SystemIndex.ToString());
                 }
 
                 if (message.IsWriteMessage)

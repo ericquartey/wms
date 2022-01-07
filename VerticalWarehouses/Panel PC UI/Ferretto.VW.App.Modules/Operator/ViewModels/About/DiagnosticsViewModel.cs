@@ -101,9 +101,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 // do nothing
             }
+        }
 
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await this.OnDataRefreshAsync();
+
+            await base.OnMachineStatusChangedAsync(e);
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
             try
             {
+                await base.OnDataRefreshAsync();
+
                 var lastServicing = await this.machineServicingWebService.GetLastValidAsync();
 
                 if (lastServicing != null)

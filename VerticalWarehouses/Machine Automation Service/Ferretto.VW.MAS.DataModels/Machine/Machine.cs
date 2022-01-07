@@ -9,6 +9,12 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public string BackupServer { get; set; }
+
+        public string BackupServerPassword { get; set; }
+
+        public string BackupServerUsername { get; set; }
+
         /// <summary>
         /// Gets or sets the bays of the machine.
         /// </summary>

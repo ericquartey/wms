@@ -1014,6 +1014,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.OnAppearItem();
 
             this.IsAddItemFeatureForDraperyManagementAvailable = await this.identityService.IsEnableAddItemAsync();
+            this.IsKeyboardButtonVisible = await this.identityService.GetTouchHelperEnableAsync();
 
             // Update UI according to normal configuration or drapery management configuration
             this.ItemSearchKeyTitleName = Localized.Get(OperatorApp.ItemSearchKeySearch);
@@ -1054,6 +1055,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.ConfirmOperationInfo));
             this.RaisePropertyChanged(nameof(this.IsItemStockVisible));
             this.RaisePropertyChanged(nameof(this.IsBoxOperationVisible));
+            this.RaisePropertyChanged(nameof(this.IsKeyboardButtonVisible));
         }
 
         public async Task RecallLoadingUnitAsync()

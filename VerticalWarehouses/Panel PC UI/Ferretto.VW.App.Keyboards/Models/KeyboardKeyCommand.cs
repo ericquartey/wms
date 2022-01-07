@@ -11,6 +11,8 @@
 
         public string CommandText { get; set; }
 
+        public string SecondaryCommandText { get; set; }
+
         #endregion
     }
 }

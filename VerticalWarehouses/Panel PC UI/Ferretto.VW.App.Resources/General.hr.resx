@@ -294,9 +294,6 @@
   <data name="SocketLinkPort" xml:space="preserve">
     <value>Vrata</value>
   </data>
-  <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>IstVrij</value>
-  </data>
   <data name="Connectivity" xml:space="preserve">
     <value>Povezivost</value>
   </data>
@@ -311,5 +308,8 @@
   </data>
   <data name="BadRequestTitle" xml:space="preserve">
     <value>Zahtjev nije pravilno formuliran.</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>IstVrij (ms)</value>
   </data>
 </root>

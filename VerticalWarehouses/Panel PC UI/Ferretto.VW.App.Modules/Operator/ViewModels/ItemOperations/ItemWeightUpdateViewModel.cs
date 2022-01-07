@@ -120,8 +120,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         private bool CanUpdateWeight()
-        {
-            return this.MeasuredQuality == SampleQuality.Stable;
+       {
+            return this.MeasuredQuality == SampleQuality.Stable
+                && this.ItemQuantity > 0
+                && this.actualAverageWeight.HasValue
+                && Math.Round(this.actualAverageWeight.Value, 3) >= 0.001;
         }
 
         private async Task LoadItemData(int itemId)
@@ -135,7 +138,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var item = await this.itemsWebService.GetByIdAsync(this.itemId);
 
                 this.ItemCode = item.Code;
-                this.OriginalAverageWeight = item.AverageWeight;
+                this.OriginalAverageWeight = item.UnitWeight;
             }
             catch (Exception ex)
             {
@@ -152,12 +155,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.ItemQuantity == 0)
             {
                 this.ActualAverageWeight = 0;
-                return;
             }
-
-            this.ActualAverageWeight = this.ItemQuantity > 0
-                ? this.MeasuredWeight / this.ItemQuantity
-                : 0;
+            else
+            {
+                this.ActualAverageWeight = this.ItemQuantity > 0
+                    ? this.MeasuredWeight / this.ItemQuantity
+                    : 0;
+            }
+            this.updateWeightCommand.RaiseCanExecuteChanged();
         }
 
         private async Task UpdateWeightAsync()
@@ -166,7 +171,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                await this.weightingScaleService.UpdateItemAverageWeightAsync(this.itemId, this.actualAverageWeight);
+                await this.weightingScaleService.UpdateItemAverageWeightAsync(this.itemId, Math.Round(this.actualAverageWeight.Value, 3));
                 this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
