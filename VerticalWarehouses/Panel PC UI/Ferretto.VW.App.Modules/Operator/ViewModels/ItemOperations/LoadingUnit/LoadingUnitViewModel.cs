@@ -1955,8 +1955,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemName = string.Empty;
                 this.ItemLot = string.Empty;
                 this.HandlingItemInputQty = 1;
-                this.HandlingItemQtyTolerance = 1;
+                this.HandlingItemQtyTolerance = 0;
                 this.HandlingItemMeasureUnitTxt = string.Empty;
+                this.SelectedItemCompartment = null;
 
                 // Trigger for changing the appearance
                 await this.ToggleOperation("LoadingUnitView_PickPutItemAppearance");
@@ -2097,6 +2098,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ItemName = this.Product.Item.Code;
                 this.ItemLot = this.Product.Lot;
+                var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : this.SelectedItemCompartment.Id;
+                this.SelectedItemCompartment = this.ItemsCompartments.FirstOrDefault(s => s.Id == compartmentId && s.ItemCode == this.ItemName
+                    && (string.IsNullOrEmpty(this.ItemLot) || this.ItemLot == "*" || s.Lot == this.ItemLot));
             }
             catch (Exception)
             {
