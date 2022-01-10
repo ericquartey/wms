@@ -592,7 +592,7 @@
                     <controls:PpcLabeledText Grid.Column="1"
                                      Margin="50,10,0,0"
                                      HorizontalAlignment="Left"
-                                     ContentText="{Binding SelectedItemCompartment.Stock}"
+                                     ContentText="{Binding ItemStock}"
                                      LabelText="{res:Loc OperatorApp.ItemStock}" />
                 </Grid>
 

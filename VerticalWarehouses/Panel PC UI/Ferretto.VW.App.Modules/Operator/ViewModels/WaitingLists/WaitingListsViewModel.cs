@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
 
+        private readonly ISessionService sessionService;
+
         private int? areaId;
 
         private int currentItemIndex;
@@ -47,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemListExecution selectedList;
 
+        private DelegateCommand selectOperationOnBayCommand;
+
         #endregion
 
         #region Constructors
@@ -56,7 +60,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemListsWebService itemListsWebService,
             IMachineAreasWebService areasWebService,
             IBayManager bayManager,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            ISessionService sessionService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
@@ -64,6 +69,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -101,6 +107,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.selectedList;
             set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand SelectOperationOnBayCommand =>
+                                    this.selectOperationOnBayCommand
+            ??
+            (this.selectOperationOnBayCommand = new DelegateCommand(
+                () => this.ShowOperationOnBay(),
+                this.CanSelectOperationOnBay));
 
         #endregion
 
@@ -230,6 +243,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.listExecuteCommand?.RaiseCanExecuteChanged();
             this.listDetailButtonCommand.RaiseCanExecuteChanged();
+            this.selectOperationOnBayCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteList()
@@ -242,31 +256,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedList.ExecutionMode != ListExecutionMode.None;
         }
 
+        private bool CanSelectOperationOnBay()
+        {
+            return this.sessionService.UserAccessLevel > UserAccessLevel.Operator;
+        }
+
         private bool CanShowDetailCommand()
         {
             return this.SelectedList != null;
         }
-
-        //private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
-        //{
-        //    var listId = e.GetListId();
-        //    if (!listId.HasValue)
-        //    {
-        //        return;
-        //    }
-
-        //    try
-        //    {
-        //        var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
-        //        await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
-        //    }
-        //    catch
-        //    {
-        //        this.ShowNotification(
-        //            string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
-        //            Services.Models.NotificationSeverity.Error);
-        //    }
-        //}
 
         /// <summary>
         /// Check if upcoming list are equal to the current one.
@@ -322,6 +320,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return isEqual;
         }
 
+        //    try
+        //    {
+        //        var list = await this.itemListsWebService.GetByIdAsync(listId.Value);
+        //        await this.ExecuteListAsync(new ItemListExecution(list, this.bayManager.Identity.Id));
+        //    }
+        //    catch
+        //    {
+        //        this.ShowNotification(
+        //            string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listId.Value),
+        //            Services.Models.NotificationSeverity.Error);
+        //    }
+        //}
         private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
         {
             var listCode = e.GetListCode();
@@ -344,6 +354,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        //private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
+        //{
+        //    var listId = e.GetListId();
+        //    if (!listId.HasValue)
+        //    {
+        //        return;
+        //    }
         private async Task FilterListsByBarcodeAsync(UserActionEventArgs e)
         {
             var listCode = e.GetListCode();
@@ -476,6 +493,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void ShowOperationOnBay()
+        {
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.Others.OPERATIONONBAY,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

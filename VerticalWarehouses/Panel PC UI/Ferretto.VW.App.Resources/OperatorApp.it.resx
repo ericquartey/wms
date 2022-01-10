@@ -1984,7 +1984,7 @@
     <value>Operazione eseguita con successo</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Prelievo e Versamento tramite Barcode</value>
+    <value>Prelievo e Versamento tramite Barcode (Idroinox)</value>
   </data>
   <data name="IsUpdatingStockByDifference" xml:space="preserve">
     <value>Modifica giacenza per differenza</value>

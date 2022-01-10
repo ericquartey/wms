@@ -134,6 +134,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string itemSearchKeyTitleName;
 
+        private double? itemStock;
+
         private SubscriptionToken itemWeightToken;
 
         private ItemWeightChangedMessage lastItemQuantityMessage;
@@ -542,6 +544,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.itemSearchKeyTitleName;
             set => this.SetProperty(ref this.itemSearchKeyTitleName, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double? ItemStock
+        {
+            get => this.itemStock;
+            set => this.SetProperty(ref this.itemStock, value, this.RaisePropertyChanged);
         }
 
         public string MeasureUnit
@@ -1830,9 +1838,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     default:
                         {
-                            break;
+                            this.Logger.Error($"Operation undefined (barcode: {this.itemBarcode}), operation {type}");
+                            return;
                         }
                 }
+
+                await this.OnDataRefreshAsync();
+                this.ShowNotification(Localized.Get("OperatorApp.OperationSuccess"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -1846,8 +1858,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.ShowNotification(Localized.Get("OperatorApp.OperationSuccess"), Services.Models.NotificationSeverity.Success);
-
                 this.IsWaitingForResponse = false;
                 this.IsWaitingForReason = false;
                 this.Reasons = null;
@@ -1954,6 +1964,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemBarcode = string.Empty;
                 this.ItemName = string.Empty;
                 this.ItemLot = string.Empty;
+                this.ItemStock = null;
                 this.HandlingItemInputQty = 1;
                 this.HandlingItemQtyTolerance = 0;
                 this.HandlingItemMeasureUnitTxt = string.Empty;
@@ -2099,8 +2110,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemName = this.Product.Item.Code;
                 this.ItemLot = this.Product.Lot;
                 var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : this.SelectedItemCompartment.Id;
-                this.SelectedItemCompartment = this.ItemsCompartments.FirstOrDefault(s => s.Id == compartmentId && s.ItemCode == this.ItemName
-                    && (string.IsNullOrEmpty(this.ItemLot) || this.ItemLot == "*" || s.Lot == this.ItemLot));
+                var selectedItemCompartment = this.ItemsCompartments.FirstOrDefault(s => s.Id == compartmentId && s.ItemCode == this.Product.Item.Code
+                    && (string.IsNullOrEmpty(this.Product.Lot) || this.Product.Lot == "*" || s.Lot == this.Product.Lot));
+                this.ItemStock = selectedItemCompartment?.Stock;
             }
             catch (Exception)
             {
