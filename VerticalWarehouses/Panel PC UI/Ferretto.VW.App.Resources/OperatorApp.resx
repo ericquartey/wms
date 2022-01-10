@@ -2382,7 +2382,7 @@
     <value>Edit Stock by difference</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Pick and Put by barcode
+    <value>Pick and Put by barcode (Idroinox)
 </value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">

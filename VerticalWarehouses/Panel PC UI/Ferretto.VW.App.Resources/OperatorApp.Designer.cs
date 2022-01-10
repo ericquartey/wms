@@ -2563,7 +2563,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick and Put by barcode
+        ///   Looks up a localized string similar to Pick and Put by barcode (Idroinox)
         ///.
         /// </summary>
         public static string IsEnableHandlingItemOperations {
