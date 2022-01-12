@@ -1087,8 +1087,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.fullCompartment)
                 {
-                    await this.compartmentsWebService.SetFillPercentageAsync(this.MissionOperation.CompartmentId, 100);
-                    canComplete = false;
+                    var compartmentId = this.MissionOperation.CompartmentId;
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+
+                    await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
                 }
                 else
                 {
