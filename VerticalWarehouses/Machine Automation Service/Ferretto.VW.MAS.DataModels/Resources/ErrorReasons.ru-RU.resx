@@ -181,7 +181,7 @@
     <value>Временная ошибка. При повторном возникновении проблемы отключить питание и включить его через 15 секунд.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Временная ошибка. При повторном возникновении проблемы отключить питание и включить его через 15 секунд.</value>
+    <value>Временная ошибка.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Убедиться, что аварийные кнопки и предохранительные датчики отключены.</value>

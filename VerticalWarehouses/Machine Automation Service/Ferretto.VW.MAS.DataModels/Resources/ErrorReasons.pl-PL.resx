@@ -181,7 +181,7 @@
     <value>Błąd tymczasowy. Jeśli problem pojawi się ponownie, wyłączyć zasilanie i włączyć je po 15 sekundach.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Błąd tymczasowy. Jeśli problem pojawi się ponownie, wyłączyć zasilanie i włączyć je po 15 sekundach.</value>
+    <value>Błąd tymczasowy. </value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Sprawdzić, czy przyciski awaryjne są wyłączone i czy wszystkie czujniki bezpieczeństwa są wyłączone.</value>

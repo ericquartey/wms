@@ -520,7 +520,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
+        ///   Looks up a localized string similar to Temporary error..
         /// </summary>
         public static string InverterFaultStateDetected {
             get {

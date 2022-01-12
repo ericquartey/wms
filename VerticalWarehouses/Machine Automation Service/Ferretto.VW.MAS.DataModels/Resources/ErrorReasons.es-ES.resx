@@ -181,7 +181,7 @@
     <value>Error momentáneo. Si el problema persiste, apague la máquina y vuelva a encenderla después de 15 segundos.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Error momentáneo. Si el problema persiste, apague la máquina y vuelva a encenderla después de 15 segundos.</value>
+    <value>Error momentáneo.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Compruebe que las setas de emergencia están desactivadas y que todos los sensores de seguridad están desactivados.</value>

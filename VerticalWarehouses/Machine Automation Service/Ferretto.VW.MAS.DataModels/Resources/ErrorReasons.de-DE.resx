@@ -181,7 +181,7 @@
     <value>Masch. aus- u. wieder einschalten. Bleibt Problem bestehen, Kundendienst kontaktieren</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Masch. aus- u. wieder einschalten. Bleibt Problem bestehen, Kundendienst kontaktieren</value>
+    <value>Masch. aus- u. wieder einschalten. </value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Kontrollieren, ob die Notaus-Pilztaster und alle Sicherheitssensoren deaktiviert sind.</value>
