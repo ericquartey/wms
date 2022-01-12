@@ -117,130 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Kontroly vzduch filtr</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Vzduch filtr</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Kontrola ložisek</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>Ložisek</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Mazání ložisek</value>
+  <data name="Belt" xml:space="preserve">
+    <value>řemene</value>
   </data>
-  <data name="BeltAdjust" xml:space="preserve">
-    <value>Napínání řemene</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>řetězu kabelů</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Kontrola upevnění řemene</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Výměna řemene</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
-    <value>Kontr nosn řetězu kabelů</value>
-  </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Kontr kabelů</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
+  <data name="Chain" xml:space="preserve">
     <value>Napínání řetězu</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Mazání řetězu</value>
-  </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Výměna řetězu</value>
-  </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
+  <data name="Contactors" xml:space="preserve">
     <value>Výměna stykačů</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Kontr elektrických komponent</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
+  <data name="FirstCell" xml:space="preserve">
     <value>Kontrola první buňky</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
+  <data name="Guides" xml:space="preserve">
     <value>Kontr vodítek</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Výměna vodítek</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
+  <data name="Lamps" xml:space="preserve">
     <value>Kontr vyhoř žárovek kontrolek</value>
   </data>
-  <data name="LinkCheck" xml:space="preserve">
+  <data name="Link" xml:space="preserve">
     <value>Kontrola spoje</value>
   </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Mazání spoje</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Výměna spoje</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
+  <data name="MicroSwitches" xml:space="preserve">
     <value>Kontrola mikro spínačů</value>
   </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Upevnění mikro spínačů</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Výměna mikro spínačů</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
+  <data name="MotorChain" xml:space="preserve">
     <value>Napínání řetězu motoru</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Mazání řetězu motoru</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Výměna řetězu motoru</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Kontr a dopln hlad oleje v red elektropřevod</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
+  <data name="MotorGear" xml:space="preserve">
     <value>Výměna red elektropřevod</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
+  <data name="OpticalSensors" xml:space="preserve">
     <value>Čištění opt snímačů</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Upevnění opt snímačů</value>
-  </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
+  <data name="PinPawlFasteners" xml:space="preserve">
     <value>Kontrola upevňovacích čepů západky</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Mazání upevňovacích čepů západky</value>
-  </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Výměna upevňovacích čepů západky</value>
-  </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
+  <data name="PlasticCams" xml:space="preserve">
     <value>Kontrola stavu plastových vaček</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Náhodná kontrola buňky</value>
-  </data>
-  <data name="SensorCheck" xml:space="preserve">
+  <data name="Sensors" xml:space="preserve">
     <value>Funkční zkoušky snímačů</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Čištění snímačů</value>
-  </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Upevnění snímačů</value>
-  </data>
-  <data name="ShaftCheck" xml:space="preserve">
+  <data name="Shaft" xml:space="preserve">
     <value>Kontrola hřídele rolety</value>
   </data>
-  <data name="SupportsCheck" xml:space="preserve">
+  <data name="Supports" xml:space="preserve">
     <value>Kontrola vůle podložek</value>
   </data>
-  <data name="WheelsCheck" xml:space="preserve">
+  <data name="Wheels" xml:space="preserve">
     <value>Kontrola kontrastních kol</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Výměna kontrastních kol</value>
   </data>
 </root>

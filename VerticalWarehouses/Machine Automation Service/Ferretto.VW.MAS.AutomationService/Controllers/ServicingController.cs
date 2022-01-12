@@ -38,9 +38,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("confirm-service")]
-        public IActionResult ConfirmService()
+        public IActionResult ConfirmService(string maintainerName, string note)
         {
-            this.servicingProvider.ConfirmService();
+            this.servicingProvider.ConfirmService(maintainerName, note);
             return this.Ok();
         }
 
@@ -103,13 +103,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult RefreshDescription(int servicingInfoId)
         {
             this.servicingProvider.RefreshDescription(servicingInfoId);
-            return this.Ok();
-        }
-
-        [HttpPost("set-IsToDo")]
-        public IActionResult SetIsToDo(int instructionId)
-        {
-            this.servicingProvider.SetIsToDo(instructionId);
             return this.Ok();
         }
 

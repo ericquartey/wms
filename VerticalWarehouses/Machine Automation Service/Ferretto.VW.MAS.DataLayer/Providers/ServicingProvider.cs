@@ -95,13 +95,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void ConfirmService()
+        public void ConfirmService(string maintainerName, string note)
         {
             lock (this.dataContext)
             {
                 // Confirm setup date in actual record
                 var lastService = this.dataContext.ServicingInfo.Last();
                 lastService.ServiceStatus = MachineServiceStatus.Completed;
+                lastService.MaintainerName = maintainerName;
+                lastService.Note = note;
                 lastService.NextServiceDate = DateTime.Now;
                 this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
 
@@ -650,30 +652,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     var instruction = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == servicingInfoId).ToList();
                     foreach (var ins in instruction)
                     {
-                        ins.Definition.GetDescription(ins.Definition.InstructionType);
+                        ins.Definition.GetDescription(ins.Definition.Device);
                         this.dataContext.Instructions.Update(ins);
                         this.dataContext.SaveChanges();
                     }
-                }
-                catch (Exception)
-                {
-                    //do nothing
-                }
-            }
-        }
-
-        public void SetIsToDo(int instructionId)
-        {
-            lock (this.dataContext)
-            {
-                try
-                {
-                    // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
-                    instruction.IsToDo = true;
-                    instruction.InstructionStatus = MachineServiceStatus.Expiring;
-                    this.dataContext.Instructions.Update(instruction);
-                    this.dataContext.SaveChanges();
                 }
                 catch (Exception)
                 {

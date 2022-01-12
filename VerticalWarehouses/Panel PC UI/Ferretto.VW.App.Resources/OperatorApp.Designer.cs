@@ -952,7 +952,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm row.
+        ///   Looks up a localized string similar to Confirm group.
         /// </summary>
         public static string ConfirmInstruction {
             get {
@@ -3085,6 +3085,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine.
+        /// </summary>
+        public static string Machine {
+            get {
+                return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine number.
         /// </summary>
         public static string MachineNumber {
@@ -3468,6 +3477,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MaintenanceMainPageStateMachine {
             get {
                 return ResourceManager.GetString("MaintenanceMainPageStateMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintener Name.
+        /// </summary>
+        public static string MaintenerName {
+            get {
+                return ResourceManager.GetString("MaintenerName", resourceCulture);
             }
         }
         
@@ -4120,6 +4138,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation.
+        /// </summary>
+        public static string Operation {
+            get {
+                return ResourceManager.GetString("Operation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adjust.
+        /// </summary>
+        public static string OperationAdjust {
+            get {
+                return ResourceManager.GetString("OperationAdjust", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation cancelled..
         /// </summary>
         public static string OperationCancelled {
@@ -4138,11 +4174,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check.
+        /// </summary>
+        public static string OperationCheck {
+            get {
+                return ResourceManager.GetString("OperationCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation confirmed..
         /// </summary>
         public static string OperationConfirmed {
             get {
                 return ResourceManager.GetString("OperationConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Substitute.
+        /// </summary>
+        public static string OperationSubstitute {
+            get {
+                return ResourceManager.GetString("OperationSubstitute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation successfully.
+        /// </summary>
+        public static string OperationSuccess {
+            get {
+                return ResourceManager.GetString("OperationSuccess", resourceCulture);
             }
         }
         
@@ -4665,6 +4728,33 @@ namespace Ferretto.VW.App.Resources {
         public static string ShipmentDay {
             get {
                 return ResourceManager.GetString("ShipmentDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutter Bay 1.
+        /// </summary>
+        public static string ShutterBay1 {
+            get {
+                return ResourceManager.GetString("ShutterBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutter Bay 2.
+        /// </summary>
+        public static string ShutterBay2 {
+            get {
+                return ResourceManager.GetString("ShutterBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutter Bay 3.
+        /// </summary>
+        public static string ShutterBay3 {
+            get {
+                return ResourceManager.GetString("ShutterBay3", resourceCulture);
             }
         }
         

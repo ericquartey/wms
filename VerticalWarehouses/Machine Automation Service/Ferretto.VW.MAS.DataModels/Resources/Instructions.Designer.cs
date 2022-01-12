@@ -61,236 +61,155 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Air Filters Check.
+        ///   Looks up a localized string similar to Air Filters.
         /// </summary>
-        public static string AirFiltersCheck {
+        public static string AirFilters {
             get {
-                return ResourceManager.GetString("AirFiltersCheck", resourceCulture);
+                return ResourceManager.GetString("AirFilters", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearings Check.
+        ///   Looks up a localized string similar to Quote bay.
         /// </summary>
-        public static string BearingsCheck {
+        public static string BayQuote {
             get {
-                return ResourceManager.GetString("BearingsCheck", resourceCulture);
+                return ResourceManager.GetString("BayQuote", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bearings Grease.
+        ///   Looks up a localized string similar to Bearings.
         /// </summary>
-        public static string BearingsGrease {
+        public static string Bearings {
             get {
-                return ResourceManager.GetString("BearingsGrease", resourceCulture);
+                return ResourceManager.GetString("Bearings", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Belt Adjust.
+        ///   Looks up a localized string similar to Belt.
         /// </summary>
-        public static string BeltAdjust {
+        public static string Belt {
             get {
-                return ResourceManager.GetString("BeltAdjust", resourceCulture);
+                return ResourceManager.GetString("Belt", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Belt Fasten.
+        ///   Looks up a localized string similar to Cable Chain.
         /// </summary>
-        public static string BeltFasten {
+        public static string CableChain {
             get {
-                return ResourceManager.GetString("BeltFasten", resourceCulture);
+                return ResourceManager.GetString("CableChain", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Belt Substitute.
+        ///   Looks up a localized string similar to Cables.
         /// </summary>
-        public static string BeltSubstitute {
+        public static string Cables {
             get {
-                return ResourceManager.GetString("BeltSubstitute", resourceCulture);
+                return ResourceManager.GetString("Cables", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cable Chain Check.
+        ///   Looks up a localized string similar to Chain.
         /// </summary>
-        public static string CableChainCheck {
+        public static string Chain {
             get {
-                return ResourceManager.GetString("CableChainCheck", resourceCulture);
+                return ResourceManager.GetString("Chain", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cables Check.
+        ///   Looks up a localized string similar to Clean.
         /// </summary>
-        public static string CablesCheck {
+        public static string Clean {
             get {
-                return ResourceManager.GetString("CablesCheck", resourceCulture);
+                return ResourceManager.GetString("Clean", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chain Adjust.
+        ///   Looks up a localized string similar to Contactors.
         /// </summary>
-        public static string ChainAdjust {
+        public static string Contactors {
             get {
-                return ResourceManager.GetString("ChainAdjust", resourceCulture);
+                return ResourceManager.GetString("Contactors", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chain Grease.
+        ///   Looks up a localized string similar to First Cell.
         /// </summary>
-        public static string ChainGrease {
+        public static string FirstCell {
             get {
-                return ResourceManager.GetString("ChainGrease", resourceCulture);
+                return ResourceManager.GetString("FirstCell", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chain Substitute.
+        ///   Looks up a localized string similar to Guides.
         /// </summary>
-        public static string ChainSubstitute {
+        public static string Guides {
             get {
-                return ResourceManager.GetString("ChainSubstitute", resourceCulture);
+                return ResourceManager.GetString("Guides", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contactors Substitute.
+        ///   Looks up a localized string similar to Lamps.
         /// </summary>
-        public static string ContactorsSubstitute {
+        public static string Lamps {
             get {
-                return ResourceManager.GetString("ContactorsSubstitute", resourceCulture);
+                return ResourceManager.GetString("Lamps", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Electrical Components Check.
+        ///   Looks up a localized string similar to Link.
         /// </summary>
-        public static string ElectricalComponentsCheck {
+        public static string Link {
             get {
-                return ResourceManager.GetString("ElectricalComponentsCheck", resourceCulture);
+                return ResourceManager.GetString("Link", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First Cell Check.
+        ///   Looks up a localized string similar to Micro Switches.
         /// </summary>
-        public static string FirstCellCheck {
+        public static string MicroSwitches {
             get {
-                return ResourceManager.GetString("FirstCellCheck", resourceCulture);
+                return ResourceManager.GetString("MicroSwitches", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guides Check.
+        ///   Looks up a localized string similar to Motor belt.
         /// </summary>
-        public static string GuidesCheck {
+        public static string MotorBelt {
             get {
-                return ResourceManager.GetString("GuidesCheck", resourceCulture);
+                return ResourceManager.GetString("MotorBelt", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Guides Substitute.
+        ///   Looks up a localized string similar to Motor Chain.
         /// </summary>
-        public static string GuidesSubstitute {
+        public static string MotorChain {
             get {
-                return ResourceManager.GetString("GuidesSubstitute", resourceCulture);
+                return ResourceManager.GetString("MotorChain", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lamps Check.
+        ///   Looks up a localized string similar to Motor Gear.
         /// </summary>
-        public static string LampsCheck {
+        public static string MotorGear {
             get {
-                return ResourceManager.GetString("LampsCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link Check.
-        /// </summary>
-        public static string LinkCheck {
-            get {
-                return ResourceManager.GetString("LinkCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Links Grease.
-        /// </summary>
-        public static string LinksGrease {
-            get {
-                return ResourceManager.GetString("LinksGrease", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Link Substitute.
-        /// </summary>
-        public static string LinkSubstitute {
-            get {
-                return ResourceManager.GetString("LinkSubstitute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro Switches Check.
-        /// </summary>
-        public static string MicroSwitchesCheck {
-            get {
-                return ResourceManager.GetString("MicroSwitchesCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro Switches Mount.
-        /// </summary>
-        public static string MicroSwitchesMount {
-            get {
-                return ResourceManager.GetString("MicroSwitchesMount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Micro Switches Substitute.
-        /// </summary>
-        public static string MicroSwitchesSubstitute {
-            get {
-                return ResourceManager.GetString("MicroSwitchesSubstitute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motor Chain Adjust.
-        /// </summary>
-        public static string MotorChainAdjust {
-            get {
-                return ResourceManager.GetString("MotorChainAdjust", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motor Chain Grease.
-        /// </summary>
-        public static string MotorChainGrease {
-            get {
-                return ResourceManager.GetString("MotorChainGrease", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Motor Chain Substitute.
-        /// </summary>
-        public static string MotorChainSubstitute {
-            get {
-                return ResourceManager.GetString("MotorChainSubstitute", resourceCulture);
+                return ResourceManager.GetString("MotorGear", resourceCulture);
             }
         }
         
@@ -304,137 +223,74 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Motor Gear Substitute.
+        ///   Looks up a localized string similar to Optical Sensors.
         /// </summary>
-        public static string MotorGearSubstitute {
+        public static string OpticalSensors {
             get {
-                return ResourceManager.GetString("MotorGearSubstitute", resourceCulture);
+                return ResourceManager.GetString("OpticalSensors", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Optical Sensors Clean.
+        ///   Looks up a localized string similar to Pin Pawl Fasteners.
         /// </summary>
-        public static string OpticalSensorsClean {
+        public static string PinPawlFasteners {
             get {
-                return ResourceManager.GetString("OpticalSensorsClean", resourceCulture);
+                return ResourceManager.GetString("PinPawlFasteners", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Optical Sensors Mount.
+        ///   Looks up a localized string similar to Plastic Cams.
         /// </summary>
-        public static string OpticalSensorsMount {
+        public static string PlasticCams {
             get {
-                return ResourceManager.GetString("OpticalSensorsMount", resourceCulture);
+                return ResourceManager.GetString("PlasticCams", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pin Pawl Fasteners Check.
+        ///   Looks up a localized string similar to Sensor.
         /// </summary>
-        public static string PinPawlFastenersCheck {
+        public static string Sensors {
             get {
-                return ResourceManager.GetString("PinPawlFastenersCheck", resourceCulture);
+                return ResourceManager.GetString("Sensors", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pin Pawl Fasteners Grease.
+        ///   Looks up a localized string similar to Shaft.
         /// </summary>
-        public static string PinPawlFastenersGrease {
+        public static string Shaft {
             get {
-                return ResourceManager.GetString("PinPawlFastenersGrease", resourceCulture);
+                return ResourceManager.GetString("Shaft", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pin Pawl Fasteners Substitute.
+        ///   Looks up a localized string similar to Supports.
         /// </summary>
-        public static string PinPawlFastenersSubstitute {
+        public static string Supports {
             get {
-                return ResourceManager.GetString("PinPawlFastenersSubstitute", resourceCulture);
+                return ResourceManager.GetString("Supports", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plastic Cams Check.
+        ///   Looks up a localized string similar to Varistors and relays.
         /// </summary>
-        public static string PlasticCamsCheck {
+        public static string VaristorsAndRelays {
             get {
-                return ResourceManager.GetString("PlasticCamsCheck", resourceCulture);
+                return ResourceManager.GetString("VaristorsAndRelays", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Random Cell Check.
+        ///   Looks up a localized string similar to Wheels.
         /// </summary>
-        public static string RandomCellCheck {
+        public static string Wheels {
             get {
-                return ResourceManager.GetString("RandomCellCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensor Check.
-        /// </summary>
-        public static string SensorCheck {
-            get {
-                return ResourceManager.GetString("SensorCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensors Clean.
-        /// </summary>
-        public static string SensorsClean {
-            get {
-                return ResourceManager.GetString("SensorsClean", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sensors Mount.
-        /// </summary>
-        public static string SensorsMount {
-            get {
-                return ResourceManager.GetString("SensorsMount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Shaft Check.
-        /// </summary>
-        public static string ShaftCheck {
-            get {
-                return ResourceManager.GetString("ShaftCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Supports Check.
-        /// </summary>
-        public static string SupportsCheck {
-            get {
-                return ResourceManager.GetString("SupportsCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wheels Check.
-        /// </summary>
-        public static string WheelsCheck {
-            get {
-                return ResourceManager.GetString("WheelsCheck", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wheels Substitute.
-        /// </summary>
-        public static string WheelsSubstitute {
-            get {
-                return ResourceManager.GetString("WheelsSubstitute", resourceCulture);
+                return ResourceManager.GetString("Wheels", resourceCulture);
             }
         }
     }

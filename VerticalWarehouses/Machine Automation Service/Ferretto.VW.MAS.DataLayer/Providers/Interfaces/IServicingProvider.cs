@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ConfirmInstruction(int instructionId);
 
-        void ConfirmService();
+        void ConfirmService(string maintainerName, string note);
 
         void ConfirmSetup();
 
@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsAnyInstructionExpiring();
 
         void RefreshDescription(int servicingInfoId);
-
-        void SetIsToDo(int instructionId);
 
         void UpdateServiceStatus();
 

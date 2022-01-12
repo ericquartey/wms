@@ -117,130 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Air Filters Check</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Air Filters</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Bearings Check</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>Bearings</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Bearings Grease</value>
+  <data name="Belt" xml:space="preserve">
+    <value>Belt</value>
   </data>
-  <data name="BeltAdjust" xml:space="preserve">
-    <value>Belt Adjust</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>Cable Chain</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Belt Fasten</value>
+  <data name="Cables" xml:space="preserve">
+    <value>Cables</value>
   </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Belt Substitute</value>
+  <data name="Chain" xml:space="preserve">
+    <value>Chain</value>
   </data>
-  <data name="CableChainCheck" xml:space="preserve">
-    <value>Cable Chain Check</value>
+  <data name="Contactors" xml:space="preserve">
+    <value>Contactors</value>
   </data>
-  <data name="CablesCheck" xml:space="preserve">
-    <value>Cables Check</value>
+  <data name="FirstCell" xml:space="preserve">
+    <value>First Cell</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
-    <value>Chain Adjust</value>
+  <data name="Guides" xml:space="preserve">
+    <value>Guides</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Chain Grease</value>
+  <data name="Lamps" xml:space="preserve">
+    <value>Lamps</value>
   </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Chain Substitute</value>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
   </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
-    <value>Contactors Substitute</value>
+  <data name="MicroSwitches" xml:space="preserve">
+    <value>Micro Switches</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Electrical Components Check</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
-    <value>First Cell Check</value>
-  </data>
-  <data name="GuidesCheck" xml:space="preserve">
-    <value>Guides Check</value>
-  </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Guides Substitute</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
-    <value>Lamps Check</value>
-  </data>
-  <data name="LinkCheck" xml:space="preserve">
-    <value>Link Check</value>
-  </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Links Grease</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Link Substitute</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
-    <value>Micro Switches Check</value>
-  </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Micro Switches Mount</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Micro Switches Substitute</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
-    <value>Motor Chain Adjust</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Motor Chain Grease</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Motor Chain Substitute</value>
+  <data name="MotorChain" xml:space="preserve">
+    <value>Motor Chain</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Motor Gear Oil</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
-    <value>Motor Gear Substitute</value>
+  <data name="MotorGear" xml:space="preserve">
+    <value>Motor Gear</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
-    <value>Optical Sensors Clean</value>
+  <data name="OpticalSensors" xml:space="preserve">
+    <value>Optical Sensors</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Optical Sensors Mount</value>
+  <data name="PinPawlFasteners" xml:space="preserve">
+    <value>Pin Pawl Fasteners</value>
   </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
-    <value>Pin Pawl Fasteners Check</value>
+  <data name="PlasticCams" xml:space="preserve">
+    <value>Plastic Cams</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Pin Pawl Fasteners Grease</value>
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensor</value>
   </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Pin Pawl Fasteners Substitute</value>
+  <data name="Shaft" xml:space="preserve">
+    <value>Shaft</value>
   </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
-    <value>Plastic Cams Check</value>
+  <data name="Supports" xml:space="preserve">
+    <value>Supports</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Random Cell Check</value>
+  <data name="Wheels" xml:space="preserve">
+    <value>Wheels</value>
   </data>
-  <data name="SensorCheck" xml:space="preserve">
-    <value>Sensor Check</value>
+  <data name="BayQuote" xml:space="preserve">
+    <value>Quote bay</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Sensors Clean</value>
+  <data name="Clean" xml:space="preserve">
+    <value>Clean</value>
   </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Sensors Mount</value>
+  <data name="VaristorsAndRelays" xml:space="preserve">
+    <value>Varistors and relays</value>
   </data>
-  <data name="ShaftCheck" xml:space="preserve">
-    <value>Shaft Check</value>
-  </data>
-  <data name="SupportsCheck" xml:space="preserve">
-    <value>Supports Check</value>
-  </data>
-  <data name="WheelsCheck" xml:space="preserve">
-    <value>Wheels Check</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Wheels Substitute</value>
+  <data name="MotorBelt" xml:space="preserve">
+    <value>Motor belt</value>
   </data>
 </root>

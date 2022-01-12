@@ -209,7 +209,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                await this.machineServicingWebService.ConfirmServiceAsync();
+                await this.machineServicingWebService.ConfirmServiceAsync("", "");
             }
             catch
             {

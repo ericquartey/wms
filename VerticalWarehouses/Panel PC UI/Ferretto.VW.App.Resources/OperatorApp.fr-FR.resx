@@ -1356,9 +1356,6 @@
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Quantité requise</value>
   </data>
-  <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Confirmer ligne</value>
-  </data>
   <data name="Axis" xml:space="preserve">
     <value>Axe</value>
   </data>
@@ -1892,5 +1889,8 @@
   </data>
   <data name="SignallingDefectError" xml:space="preserve">
     <value>Erreur de l’opération de signalisation de défaut.</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
   </data>
 </root>

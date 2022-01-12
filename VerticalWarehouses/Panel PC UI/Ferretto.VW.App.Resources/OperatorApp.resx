@@ -1708,7 +1708,7 @@
     <comment>Label</comment>
   </data>
   <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Confirm row</value>
+    <value>Confirm group</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Axis</value>
@@ -2361,5 +2361,59 @@
   </data>
   <data name="AverageOccupiedSpace" xml:space="preserve">
     <value>Average occupied space</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operation</value>
+    <comment>Operation</comment>
+  </data>
+  <data name="OperationCheck" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="OperationAdjust" xml:space="preserve">
+    <value>Adjust</value>
+  </data>
+  <data name="OperationSubstitute" xml:space="preserve">
+    <value>Substitute</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Stock variation</value>
+    <comment>Label</comment>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Retrieving item failed</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Item not available</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operation successfully</value>
+    <comment>Label Message</comment>
+  </data>
+  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Edit Stock by difference</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Pick and Put by barcode
+</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Request confirm for last operation on load unit</value>
+  </data>
+  <data name="MaintenerName" xml:space="preserve">
+    <value>Maintener Name</value>
+  </data>
+  <data name="ShutterBay1" xml:space="preserve">
+    <value>Shutter Bay 1</value>
+  </data>
+  <data name="ShutterBay2" xml:space="preserve">
+    <value>Shutter Bay 2</value>
+  </data>
+  <data name="ShutterBay3" xml:space="preserve">
+    <value>Shutter Bay 3</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
   </data>
 </root>

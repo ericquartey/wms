@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Maintenance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -101,15 +102,383 @@ namespace Ferretto.VW.MAS.DataLayer
                 // this instruction is reeeeally slow
                 var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
 
-                foreach (InstructionType instructionType in Enum.GetValues(typeof(InstructionType)))
+                foreach (InstructionDevice instructionDevice in Enum.GetValues(typeof(InstructionDevice)))
                 {
                     InstructionDefinition instruction;
-                    switch (instructionType)
+                    switch (instructionDevice)
                     {
-                        case InstructionType.AirFiltersCheck:
-                        case InstructionType.ElectricalComponentsCheck:
-                        case InstructionType.LampsCheck:
-                            instruction = new InstructionDefinition(instructionType,
+                        case InstructionDevice.MotorGearOil: //motoriduttore
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.MotorGear: //motoriduttore
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Substitute,
+                                nameof(MachineStatistics.TotalMissions),
+                                null,
+                                HighMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Substitute,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    VeryHighMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Substitute,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    VeryHighMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.Belt:
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Substitute,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear * 5,
+                                null,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                   instructionDevice,
+                                   InstructionOperation.Adjust,
+                                   nameof(MachineStatistics.TotalMissions),
+                                   OneYear,
+                                   LowMissionCount,
+                                   Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Substitute,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear * 5,
+                                    null,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.Chain:
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.FirstCell: //quote e mensole
+                        case InstructionDevice.BayQuote:
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.Link: // giunti del sistema di sollevamento
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.Bearings: // supporti cuscinetti
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.OpticalSensors: // fotocellule
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.MicroSwitches: // microinterrutori
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Substitute,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear * 5,
+                                null,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            foreach (var bay in machine.Bays)
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                     instructionDevice,
+                                     InstructionOperation.Adjust,
+                                     nameof(MachineStatistics.TotalMissions),
+                                     OneYear,
+                                     LowMissionCount,
+                                     Axis.None,
+                                     bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                     instructionDevice,
+                                     InstructionOperation.Substitute,
+                                     nameof(MachineStatistics.TotalMissions),
+                                     OneYear * 5,
+                                     null,
+                                     Axis.None,
+                                     bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                if (bay.Shutter != null)
+                                {
+                                    instruction = new InstructionDefinition(
+                                           instructionDevice,
+                                           InstructionOperation.Check,
+                                           nameof(MachineStatistics.TotalMissions),
+                                           OneYear,
+                                           LowMissionCount,
+                                           Axis.None,
+                                           bay.Number);
+                                    instruction.IsShutter = true;
+                                    dataContext.InstructionDefinitions.Add(instruction);
+
+                                    instruction = new InstructionDefinition(
+                                         instructionDevice,
+                                         InstructionOperation.Adjust,
+                                         nameof(MachineStatistics.TotalMissions),
+                                         OneYear,
+                                         LowMissionCount,
+                                         Axis.None,
+                                         bay.Number);
+                                    instruction.IsShutter = true;
+                                    dataContext.InstructionDefinitions.Add(instruction);
+
+                                    instruction = new InstructionDefinition(
+                                         instructionDevice,
+                                         InstructionOperation.Substitute,
+                                         nameof(MachineStatistics.TotalMissions),
+                                         OneYear * 5,
+                                         null,
+                                         Axis.None,
+                                         bay.Number);
+                                    instruction.IsShutter = true;
+                                    dataContext.InstructionDefinitions.Add(instruction);
+                                }
+                            }
+                            break;
+
+                        case InstructionDevice.Sensors: // sensori
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            foreach (var bay in machine.Bays)
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                     instructionDevice,
+                                     InstructionOperation.Adjust,
+                                     nameof(MachineStatistics.TotalMissions),
+                                     OneYear,
+                                     LowMissionCount,
+                                     Axis.None,
+                                     bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.Cables: // scatole di distribuzione
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Vertical,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
                                 nameof(MachineStatistics.TotalMissions),
                                 OneYear,
                                 LowMissionCount,
@@ -119,15 +488,10 @@ namespace Ferretto.VW.MAS.DataLayer
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
-                        case InstructionType.BearingsCheck:
-                        case InstructionType.BearingsGrease:
-                        case InstructionType.BeltAdjust:
-                        case InstructionType.BeltFasten:
-                        case InstructionType.CableChainCheck:
-                        case InstructionType.CablesCheck:
-                        case InstructionType.FirstCellCheck:
-                        case InstructionType.RandomCellCheck:
-                            instruction = new InstructionDefinition(instructionType,
+                        case InstructionDevice.CableChain: // catena portacavi
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
                                 nameof(MachineStatistics.TotalMissions),
                                 OneYear,
                                 LowMissionCount,
@@ -136,53 +500,62 @@ namespace Ferretto.VW.MAS.DataLayer
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
-                        case InstructionType.BeltSubstitute:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear * 5,
-                                    LowMissionCount,
-                                    Axis.None,
-                                    bay.Number);
-                                instruction.IsShutter = true;
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear * 5,
-                                LowMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.ChainAdjust:
-                        case InstructionType.ChainGrease:
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear,
-                                    LowMissionCount,
-                                    Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            instruction = new InstructionDefinition(instructionType,
+                        case InstructionDevice.MotorChain: // catena motore
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
                                 nameof(MachineStatistics.TotalMissions),
                                 OneYear,
                                 LowMissionCount,
                                 Axis.Horizontal,
                                 BayNumber.None);
                             dataContext.InstructionDefinitions.Add(instruction);
-                            break;
 
-                        case InstructionType.ChainSubstitute:
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Substitute,
+                                nameof(MachineStatistics.TotalMissions),
+                                null,
+                                NormalMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
                             foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction = new InstructionDefinition(instructionType,
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Substitute,
                                     nameof(MachineStatistics.TotalMissions),
                                     null,
                                     NormalMissionCount,
@@ -190,7 +563,59 @@ namespace Ferretto.VW.MAS.DataLayer
                                     bay.Number);
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
-                            instruction = new InstructionDefinition(instructionType,
+                            break;
+
+                        case InstructionDevice.MotorBelt:
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                   instructionDevice,
+                                   InstructionOperation.Adjust,
+                                   nameof(MachineStatistics.TotalMissions),
+                                   OneYear,
+                                   LowMissionCount,
+                                   Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Substitute,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear * 5,
+                                    null,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.PinPawlFasteners: // perni aggancio nottolino
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Adjust,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Substitute,
                                 nameof(MachineStatistics.TotalMissions),
                                 null,
                                 NormalMissionCount,
@@ -199,9 +624,109 @@ namespace Ferretto.VW.MAS.DataLayer
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
-                        case InstructionType.ContactorsSubstitute:
-                            instruction = new InstructionDefinition(instructionType,
-                                null,
+                        case InstructionDevice.Guides: // guide elevatore / giude lineari
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Substitute,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    null,
+                                    VeryHighMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.Wheels: // ruote di contrasto
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.Horizontal,
+                                BayNumber.None);
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.Lamps:
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.None,
+                                BayNumber.None);
+                            instruction.IsSystem = true;
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.AirFilters:
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Check,
+                                nameof(MachineStatistics.TotalMissions),
+                                OneYear,
+                                LowMissionCount,
+                                Axis.None,
+                                BayNumber.None);
+                            instruction.IsSystem = true;
+                            dataContext.InstructionDefinitions.Add(instruction);
+                            break;
+
+                        case InstructionDevice.VaristorsAndRelays:
+                            instruction = new InstructionDefinition(
+                                instructionDevice,
+                                InstructionOperation.Substitute,
+                                nameof(MachineStatistics.TotalMissions),
                                 OneYear * 5,
                                 null,
                                 Axis.None,
@@ -210,10 +735,25 @@ namespace Ferretto.VW.MAS.DataLayer
                             dataContext.InstructionDefinitions.Add(instruction);
                             break;
 
-                        case InstructionType.GuidesCheck:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
+                        case InstructionDevice.Supports:
+                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction = new InstructionDefinition(instructionType,
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.BayChain,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
                                     nameof(MachineStatistics.TotalMissions),
                                     OneYear,
                                     LowMissionCount,
@@ -221,66 +761,26 @@ namespace Ferretto.VW.MAS.DataLayer
                                     bay.Number);
                                 instruction.IsShutter = true;
                                 dataContext.InstructionDefinitions.Add(instruction);
-                            }
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
+
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
                                     nameof(MachineStatistics.TotalMissions),
                                     OneYear,
                                     LowMissionCount,
                                     Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                NormalMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.GuidesSubstitute:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    null,
-                                    VeryHighMissionCount,
-                                    Axis.None,
                                     bay.Number);
                                 instruction.IsShutter = true;
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
                             break;
 
-                        case InstructionType.LinkCheck:
-                        case InstructionType.LinksGrease:
-                        case InstructionType.MotorGearOil:
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Horizontal,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.OpticalSensorsClean:
-                        case InstructionType.OpticalSensorsMount:
+                        case InstructionDevice.PlasticCams:
                             foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
                             {
-                                instruction = new InstructionDefinition(instructionType,
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
                                     nameof(MachineStatistics.TotalMissions),
                                     OneYear,
                                     LowMissionCount,
@@ -289,226 +789,11 @@ namespace Ferretto.VW.MAS.DataLayer
                                 dataContext.InstructionDefinitions.Add(instruction);
                             }
 
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            break;
-
-                        case InstructionType.MicroSwitchesCheck:
-                        case InstructionType.MicroSwitchesMount:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
                             {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear,
-                                    LowMissionCount,
-                                    Axis.None,
-                                    bay.Number);
-                                instruction.IsShutter = true;
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear,
-                                    LowMissionCount,
-                                    Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.SensorCheck:
-                        case InstructionType.SensorsClean:
-                        case InstructionType.SensorsMount:
-                            if (instructionType == InstructionType.SensorCheck)
-                            {
-                                foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                                {
-                                    instruction = new InstructionDefinition(instructionType,
-                                        nameof(MachineStatistics.TotalMissions),
-                                        OneYear,
-                                        LowMissionCount,
-                                        Axis.None,
-                                        bay.Number);
-                                    instruction.IsShutter = true;
-                                    dataContext.InstructionDefinitions.Add(instruction);
-                                }
-                            }
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear,
-                                    LowMissionCount,
-                                    Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Horizontal,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.LinkSubstitute:
-                        case InstructionType.MotorChainSubstitute:
-                        case InstructionType.PinPawlFastenersSubstitute:
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                null,
-                                NormalMissionCount,
-                                Axis.Horizontal,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.MicroSwitchesSubstitute:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear * 5,
-                                    null,
-                                    Axis.None,
-                                    bay.Number);
-                                instruction.IsShutter = true;
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear * 5,
-                                    null,
-                                    Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear * 5,
-                                null,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.MotorChainAdjust:
-                        case InstructionType.MotorChainGrease:
-                        case InstructionType.PinPawlFastenersCheck:
-                        case InstructionType.WheelsCheck:
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                OneYear,
-                                LowMissionCount,
-                                Axis.Horizontal,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-                            break;
-
-                        case InstructionType.MotorGearSubstitute:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    null,
-                                    VeryHighMissionCount,
-                                    Axis.None,
-                                    bay.Number);
-                                instruction.IsShutter = true;
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    null,
-                                    VeryHighMissionCount,
-                                    Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                null,
-                                HighMissionCount,
-                                Axis.Vertical,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            instruction = new InstructionDefinition(instructionType,
-                                nameof(MachineStatistics.TotalMissions),
-                                null,
-                                HighMissionCount,
-                                Axis.Horizontal,
-                                BayNumber.None);
-                            dataContext.InstructionDefinitions.Add(instruction);
-
-                            break;
-
-                        case InstructionType.PlasticCamsCheck:
-                        case InstructionType.SupportsCheck:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear,
-                                    LowMissionCount,
-                                    Axis.None,
-                                    bay.Number);
-                                instruction.IsShutter = true;
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-
-                            foreach (var bay in machine.Bays.Where(b => b.Carousel != null || b.IsExternal))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
-                                    nameof(MachineStatistics.TotalMissions),
-                                    OneYear,
-                                    LowMissionCount,
-                                    Axis.BayChain,
-                                    bay.Number);
-                                dataContext.InstructionDefinitions.Add(instruction);
-                            }
-                            break;
-
-                        case InstructionType.ShaftCheck:
-                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null && b.Shutter.Type != ShutterType.NotSpecified))
-                            {
-                                instruction = new InstructionDefinition(instructionType,
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
                                     nameof(MachineStatistics.TotalMissions),
                                     OneYear,
                                     LowMissionCount,
@@ -519,7 +804,46 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                             break;
 
-                        case InstructionType.Undefined:
+                        case InstructionDevice.Shaft:
+                            foreach (var bay in machine.Bays.Where(b => b.Shutter != null))
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Check,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                instruction.IsShutter = true;
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
+                            break;
+
+                        case InstructionDevice.Clean:
+                            instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    BayNumber.None);
+                            instruction.IsSystem = true;
+                            dataContext.InstructionDefinitions.Add(instruction);
+
+                            foreach (var bay in machine.Bays)
+                            {
+                                instruction = new InstructionDefinition(
+                                    instructionDevice,
+                                    InstructionOperation.Adjust,
+                                    nameof(MachineStatistics.TotalMissions),
+                                    OneYear,
+                                    LowMissionCount,
+                                    Axis.None,
+                                    bay.Number);
+                                dataContext.InstructionDefinitions.Add(instruction);
+                            }
                             break;
 
                         default:

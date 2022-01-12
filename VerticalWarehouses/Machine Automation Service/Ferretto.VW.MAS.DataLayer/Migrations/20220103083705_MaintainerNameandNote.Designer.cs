@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20220103083705_MaintainerNameandNote")]
+    partial class MaintainerNameandNote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1093,8 +1095,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("Device");
-
                     b.Property<int>("InstructionType");
 
                     b.Property<bool>("IsCarousel");
@@ -1108,8 +1108,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("MaxRelativeCount");
 
                     b.Property<int?>("MaxTotalCount");
-
-                    b.Property<int>("Operation");
 
                     b.HasKey("Id");
 
