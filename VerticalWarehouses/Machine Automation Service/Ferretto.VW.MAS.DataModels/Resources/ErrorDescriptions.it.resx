@@ -154,7 +154,7 @@
     <value>Dataset inverter non valido.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Paramentro inverter non valido.</value>
+    <value>Parametro inverter non valido.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
     <value>Il nodo specificato non è disponibile.</value>

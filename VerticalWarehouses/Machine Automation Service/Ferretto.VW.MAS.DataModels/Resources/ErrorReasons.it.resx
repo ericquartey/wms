@@ -319,7 +319,7 @@
     <value>Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.</value>
   </data>
   <data name="InverterConnectionError" xml:space="preserve">
-    <value>Problema di connessione con inverter(s). Controllare lo stato delle connessioni ethernet.</value>
+    <value>Problema di connessione con uno o più inverter. Controllare lo stato delle connessioni ethernet.</value>
   </data>
   <data name="IoDeviceConnectionError" xml:space="preserve">
     <value>Errore di connessione al dispositivo I/O. Controllare lo stato delle connessioni ethernet.</value>
