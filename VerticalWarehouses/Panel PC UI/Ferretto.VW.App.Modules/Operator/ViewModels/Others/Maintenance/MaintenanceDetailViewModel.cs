@@ -440,9 +440,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmService()
         {
-#if DEBUG
-            return true;
-#endif
             try
             {
                 var can = !this.allInstructions.Any(s => s.IsDone == false)
