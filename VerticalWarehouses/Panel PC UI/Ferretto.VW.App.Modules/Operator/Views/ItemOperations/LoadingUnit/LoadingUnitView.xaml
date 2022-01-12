@@ -275,7 +275,7 @@
                                         Command="{Binding OperationCommand}"
                                         CommandParameter="{x:Static res:OperatorApp.Add}"
                                         Content="{res:Loc OperatorApp.Add}"
-                                        Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVIC}}"/>
+                                        Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}"/>
                     <!--  Visibility="{Binding IsAddItemFeatureForDraperyManagementAvailable, Converter={StaticResource BTVC}}" />  -->
 
                     <controls:PpcButton Margin="15,0,15,0"

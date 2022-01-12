@@ -46,6 +46,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int? currentLoadingUnitId;
 
+        private bool isAddEnabled;
+
         private bool isBoxEnabled;
 
         private bool isBusyConfirmingOperation;
@@ -156,12 +158,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsAddEnabled
+        {
+            get => this.isAddEnabled;
+            set => this.SetProperty(ref this.isAddEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsBaySideBack => this.MachineService.Bay.Side is WarehouseSide.Back;
 
         public bool IsBoxEnabled
         {
             get => this.isBoxEnabled;
-            set => this.SetProperty(ref this.isBoxEnabled, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.isBoxEnabled, value && !this.isAddEnabled, this.RaiseCanExecuteChanged);
         }
 
         public bool IsBusyConfirmingOperation
@@ -496,11 +504,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ItemSerialNumberVisibility = false;
             this.ItemLotVisibility = false;
 
-            //string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
-
-            //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
-
-            // TODO - at this moment IsBoxEnabled prevents Add feature
+            this.IsAddEnabled = await this.machineIdentityWebService.IsEnableAddItemAsync();
             this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
 
             var accessories = await this.bayManager.GetBayAccessoriesAsync();

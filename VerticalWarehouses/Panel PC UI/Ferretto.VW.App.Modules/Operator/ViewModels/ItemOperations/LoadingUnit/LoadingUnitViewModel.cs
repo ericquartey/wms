@@ -373,7 +373,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isAddItemVisible;
             set
             {
-                if (this.SetProperty(ref this.isAddItemVisible, value) && value)
+                if (this.SetProperty(ref this.isAddItemVisible, value && this.IsAddEnabled) && value)
                 {
                     this.IsPickVisible = false;
                     this.IsPutVisible = false;

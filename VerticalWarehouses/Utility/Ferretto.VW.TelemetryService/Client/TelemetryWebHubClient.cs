@@ -32,6 +32,7 @@ namespace Ferretto.VW.TelemetryService
         {
             this.serviceScopeFactory = serviceScopeFactory;
             this.logUri = uri;
+            this.logger.Info($"Host url {this.logUri}");
             this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
         }
 
