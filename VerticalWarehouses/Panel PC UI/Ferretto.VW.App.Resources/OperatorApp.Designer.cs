@@ -2563,8 +2563,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick and Put by barcode (Idroinox)
-        ///.
+        ///   Looks up a localized string similar to Search item by barcode in exchange table (Idroinox).
         /// </summary>
         public static string IsEnableHandlingItemOperations {
             get {
@@ -2875,6 +2874,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemsFilteredByCode {
             get {
                 return ResourceManager.GetString("ItemsFilteredByCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items found in exchange table.
+        /// </summary>
+        public static string ItemsFilteredByTable {
+            get {
+                return ResourceManager.GetString("ItemsFilteredByTable", resourceCulture);
             }
         }
         

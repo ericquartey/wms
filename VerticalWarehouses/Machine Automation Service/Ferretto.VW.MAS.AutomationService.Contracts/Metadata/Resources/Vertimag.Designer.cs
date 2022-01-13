@@ -961,25 +961,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enabled add item.
+        ///   Looks up a localized string similar to Enabled add drapery item.
         /// </summary>
         public static string Machine_IsEnableAddItem {
             get {
                 return ResourceManager.GetString("Machine_IsEnableAddItem", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Enabled handling item operations.
+        ///   Looks up a localized string similar to Search item by barcode in exchange table (Idroinox).
         /// </summary>
-        public static string Machine_IsEnableHandlingItemOperations
-        {
-            get
-            {
+        public static string Machine_IsEnableHandlingItemOperations {
+            get {
                 return ResourceManager.GetString("Machine_IsEnableHandlingItemOperations", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to HeartBeat in inverter communication .
         /// </summary>
@@ -1015,17 +1013,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
                 return ResourceManager.GetString("Machine_IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Updating stock by difference.
+        ///   Looks up a localized string similar to Update the stock by difference.
         /// </summary>
-        public static string Machine_IsUpdatingStockByDifference { 
-            get
-            {
+        public static string Machine_IsUpdatingStockByDifference {
+            get {
                 return ResourceManager.GetString("Machine_IsUpdatingStockByDifference", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Machine Load Depth.
         /// </summary>
@@ -1036,7 +1033,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Drawer Height.
+        ///   Looks up a localized string similar to Max Tray Height.
         /// </summary>
         public static string Machine_LoadUnitMaxHeight {
             get {
@@ -1045,7 +1042,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Drawer NetWeight.
+        ///   Looks up a localized string similar to Max Tray NetWeight.
         /// </summary>
         public static string Machine_LoadUnitMaxNetWeight {
             get {
@@ -1054,7 +1051,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Min Drawer Height.
+        ///   Looks up a localized string similar to Min Tray Height.
         /// </summary>
         public static string Machine_LoadUnitMinHeight {
             get {
@@ -1072,7 +1069,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Net weight for very heavy drawer, 0 disables.
+        ///   Looks up a localized string similar to Net weight for very heavy Tray, 0 disables.
         /// </summary>
         public static string Machine_LoadUnitVeryHeavyPercent {
             get {

@@ -1984,12 +1984,15 @@
     <value>Operazione eseguita con successo</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Prelievo e Versamento tramite Barcode (Idroinox)</value>
+    <value>Ricerca articolo con barcode in tabella di scambio (Idroinox)</value>
   </data>
   <data name="IsUpdatingStockByDifference" xml:space="preserve">
     <value>Modifica giacenza per differenza</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Conferma l'ultima operazione del cassetto</value>
+  </data>
+  <data name="ItemsFilteredByTable" xml:space="preserve">
+    <value>Articoli trovati in tabella di scambio</value>
   </data>
 </root>

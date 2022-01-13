@@ -520,7 +520,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Temporary error..
+        ///   Looks up a localized string similar to If the problem reappears please call Ferretto customer service.
         /// </summary>
         public static string InverterFaultStateDetected {
             get {

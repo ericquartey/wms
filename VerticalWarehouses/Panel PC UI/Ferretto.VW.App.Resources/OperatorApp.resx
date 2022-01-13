@@ -2382,10 +2382,12 @@
     <value>Edit Stock by difference</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Pick and Put by barcode (Idroinox)
-</value>
+    <value>Search item by barcode in exchange table (Idroinox)</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Request confirm for last operation on load unit</value>
+  </data>
+  <data name="ItemsFilteredByTable" xml:space="preserve">
+    <value>Items found in exchange table</value>
   </data>
 </root>
