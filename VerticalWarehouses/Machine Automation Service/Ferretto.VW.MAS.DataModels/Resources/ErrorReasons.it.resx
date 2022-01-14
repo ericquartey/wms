@@ -193,7 +193,7 @@
     <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
+    <value>Se il problema persiste contattare l'assistenza Ferretto</value>
   </data>
   <data name="LoadUnitWeightExceeded" xml:space="preserve">
     <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.  In seguito rimettere in automatico.</value>

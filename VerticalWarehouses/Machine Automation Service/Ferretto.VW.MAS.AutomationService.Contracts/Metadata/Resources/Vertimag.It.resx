@@ -616,6 +616,6 @@
    <value>Aggiorna la giacenza tramite differenza</value>
   </data>
   <data name="Machine_IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Abilita le operazioni per articolo in vista baia</value>
+    <value>Ricerca articolo con barcode in tabella di scambio (Idroinox)</value>
    </data>
 </root>

@@ -81,7 +81,7 @@ namespace Ferretto.VW.App.Modules.Layout
             : base(PresentationTypes.Service)
         {
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(telemetryHubClient));
+            this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.sessionService = sessionService;
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));

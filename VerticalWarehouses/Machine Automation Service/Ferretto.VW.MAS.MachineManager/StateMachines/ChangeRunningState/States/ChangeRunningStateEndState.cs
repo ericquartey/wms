@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                         commandMessage.TargetBay,
                         StopRequestReasonConverter.GetMessageStatusFromReason(StopRequestReason.Error));
 
-                    if (!result)
+                    if (!result && this.machineModeDataProvider.Mode != MachineMode.Shutdown)
                     {
                         this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
                     }

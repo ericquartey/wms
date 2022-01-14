@@ -1717,14 +1717,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task SetAllOpertionBayAsync(bool pick, bool put, bool view, bool inventory, int bayid)
+        public System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid)
         {
-            return SetAllOpertionBayAsync(pick, put, view, inventory, bayid, System.Threading.CancellationToken.None);
+            return SetAllOperationsBayAsync(pick, put, view, inventory, barcodeAutomaticPut, bayid, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task SetAllOpertionBayAsync(bool pick, bool put, bool view, bool inventory, int bayid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, System.Threading.CancellationToken cancellationToken)
         {
             if (pick == null)
                 throw new System.ArgumentNullException("pick");
@@ -1738,15 +1738,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (inventory == null)
                 throw new System.ArgumentNullException("inventory");
     
+            if (barcodeAutomaticPut == null)
+                throw new System.ArgumentNullException("barcodeAutomaticPut");
+    
             if (bayid == null)
                 throw new System.ArgumentNullException("bayid");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/set-all-OpertionBay?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/set-all-operationsbay?");
             urlBuilder_.Append(System.Uri.EscapeDataString("pick") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pick, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("put") + "=").Append(System.Uri.EscapeDataString(ConvertToString(put, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("view") + "=").Append(System.Uri.EscapeDataString(ConvertToString(view, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("inventory") + "=").Append(System.Uri.EscapeDataString(ConvertToString(inventory, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("barcodeAutomaticPut") + "=").Append(System.Uri.EscapeDataString(ConvertToString(barcodeAutomaticPut, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("bayid") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayid, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
@@ -14243,20 +14247,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit)
+        public System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick)
         {
-            return SetBayOperationParamsAsync(isEnableHandlingItemOperations, isUpdatingStockByDifference, isRequestConfirmForLastOperationOnLoadingUnit, System.Threading.CancellationToken.None);
+            return SetBayOperationParamsAsync(isEnableHandlingItemOperations, isUpdatingStockByDifference, isRequestConfirmForLastOperationOnLoadingUnit, isEnableAddItem, isDisableQtyItemEditingPick, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/set/bay/operation/params?");
             urlBuilder_.Append(System.Uri.EscapeDataString("isEnableHandlingItemOperations") + "=").Append(System.Uri.EscapeDataString(isEnableHandlingItemOperations != null ? ConvertToString(isEnableHandlingItemOperations, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("isUpdatingStockByDifference") + "=").Append(System.Uri.EscapeDataString(isUpdatingStockByDifference != null ? ConvertToString(isUpdatingStockByDifference, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("isRequestConfirmForLastOperationOnLoadingUnit") + "=").Append(System.Uri.EscapeDataString(isRequestConfirmForLastOperationOnLoadingUnit != null ? ConvertToString(isRequestConfirmForLastOperationOnLoadingUnit, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isEnableAddItem") + "=").Append(System.Uri.EscapeDataString(isEnableAddItem != null ? ConvertToString(isEnableAddItem, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isDisableQtyItemEditingPick") + "=").Append(System.Uri.EscapeDataString(isDisableQtyItemEditingPick != null ? ConvertToString(isDisableQtyItemEditingPick, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

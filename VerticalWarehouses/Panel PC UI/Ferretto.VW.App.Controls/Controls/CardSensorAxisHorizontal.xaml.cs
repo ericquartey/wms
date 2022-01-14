@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
 using Prism.Events;
+using Ferretto.VW.App.Controls.Skins;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -34,6 +36,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private SubscriptionToken machineStatusChangesToken;
 
         private ISensorsService sensorsService;
+
+        private IThemeService themeService;
 
         #endregion
 
@@ -108,6 +112,17 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SubscribeToEvents();
 
             this.OnDataRefresh();
+
+            var converter = new BrushConverter();
+
+            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#3C3C3C");
+            }
+            else
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#CCCCCC");
+            }
         }
 
         protected void OnDataRefresh()
@@ -115,11 +130,42 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SensorsService = this.sensorsService;
             this.ElevatorHorizontalPosition = this.machineService.MachineStatus.ElevatorHorizontalPosition;
             this.HorizontalTargetPosition = this.machineService.MachineStatus.HorizontalTargetPosition;
+
+            var zero = this.SensorsService.IsZeroChain;
+            var ant = this.SensorsService.Sensors.LuPresentInOperatorSide;
+            var post = this.SensorsService.Sensors.LuPresentInMachineSide;
+
+            var converter = new BrushConverter();
+
+            Brush FerrettoRed = (Brush)converter.ConvertFromString("#701010");
+
+            Brush PpcBackground;
+
+            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
+            {
+                PpcBackground = (Brush)converter.ConvertFromString("#3C3C3C");
+            }
+            else
+            {
+                PpcBackground = (Brush)converter.ConvertFromString("#CCCCCC");
+            }
+
+            if (this.SensorsService.IsBypass
+                && ((!zero && !ant && !post)
+                || ant != post))
+            {
+                this.CardSensor.Background = FerrettoRed;
+            }
+            else
+            {
+                this.CardSensor.Background = PpcBackground;
+            }
         }
 
         protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
             this.OnDataRefresh();
+
             return Task.CompletedTask;
         }
 
@@ -128,6 +174,7 @@ namespace Ferretto.VW.App.Controls.Controls
             this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
+            this.themeService = ServiceLocator.Current.GetInstance<IThemeService>();
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
                 ?? this.eventAggregator

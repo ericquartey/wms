@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -66,6 +63,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         private DelegateCommand findZeroBayCommand;
 
         private DelegateCommand findZeroElevatorCommand;
+
+        private bool isError15;
+
+        private bool isError22;
 
         private MachineError machineError;
 
@@ -164,6 +165,18 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public bool HasStepStart => this.currentStep is ErrorZeroSensorStepStart;
 
+        public bool IsError15
+        {
+            get => this.isError15;
+            set => this.SetProperty(ref this.isError15, value);
+        }
+
+        public bool IsError22
+        {
+            get => this.isError22;
+            set => this.SetProperty(ref this.isError22, value);
+        }
+
         public bool IsMoving
         {
             get => this.MachineService?.MachineStatus?.IsMoving ?? true;
@@ -249,6 +262,23 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             await base.OnAppearedAsync();
 
             this.machineErrorsService.AutoNavigateOnError = false;
+
+            if (this.CanFindZeroElevator())
+            {
+                this.IsError15 = true;
+            }
+            else
+            {
+                this.IsError15 = false;
+                if (this.CanFindZeroBay())
+                {
+                    this.IsError22 = true;
+                }
+                else
+                {
+                    this.IsError22 = false;
+                }
+            }
         }
 
         protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)

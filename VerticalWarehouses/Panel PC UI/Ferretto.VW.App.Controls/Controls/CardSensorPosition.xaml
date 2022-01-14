@@ -9,13 +9,15 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardBadge1="{Binding MachineStatus.ElevatorPositionLoadingUnit.Id}"
-                      CardBadgeLabel1="{res:Loc SensorCard.Drawer}"
-                      CardDescription="{Binding MachineStatus.LogicalPosition}"
-                      CardText="{res:Loc SensorCard.Position}"
-                      CardValue="{Binding MachineStatus.ElevatorLogicalPosition}"
-                      LuHeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.Height, StringFormat={}{0:F2}}"
-                      LuWeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.NetWeight, StringFormat={}{0:F2}}"
-                      Type="Position" />
+  <local:CardSensor x:Name="CardSensor"
+                    Background="{StaticResource PpcBackground}"
+                    CardBadge1="{Binding MachineStatus.ElevatorPositionLoadingUnit.Id}"
+                    CardBadgeLabel1="{res:Loc SensorCard.Drawer}"
+                    CardDescription="{Binding MachineStatus.LogicalPosition}"
+                    CardText="{res:Loc SensorCard.Position}"
+                    CardValue="{Binding MachineStatus.ElevatorLogicalPosition}"
+                    LuHeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.Height, StringFormat={}{0:F2}}"
+                    LuWeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.NetWeight, StringFormat={}{0:F2}}"
+                    Type="Position" />
 
 </UserControl>

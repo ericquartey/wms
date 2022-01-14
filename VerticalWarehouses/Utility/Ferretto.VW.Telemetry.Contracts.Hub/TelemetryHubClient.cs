@@ -36,6 +36,7 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
         {
             if (!this.IsConnected)
             {
+                this.logger.Debug($"Error sending error log to telemetry service: not connected");
                 return;
             }
 

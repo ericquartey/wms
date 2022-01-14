@@ -181,7 +181,7 @@
     <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Pillanatnyi hiba. Ha a probléma továbbra is fennáll, kapcsolja ki a gépet, majd 15 másodperc múlva kapcsolja vissza.</value>
+    <value>Pillanatnyi hiba.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Ellenőrizze, hogy a vészleállító nyomógombok és valamennyi biztonsági szenzor deaktiválva van-e.</value>

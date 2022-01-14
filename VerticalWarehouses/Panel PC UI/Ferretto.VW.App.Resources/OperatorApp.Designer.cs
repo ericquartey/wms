@@ -223,6 +223,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode automatic put.
+        /// </summary>
+        public static string BarcodeAutomaticPut {
+            get {
+                return ResourceManager.GetString("BarcodeAutomaticPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The barcode &apos;{0}&apos; does not contain the item code..
         /// </summary>
         public static string BarcodeDoesNotContainTheItemCode {
@@ -2554,6 +2563,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not editing available quantity of item in picking.
+        /// </summary>
+        public static string IsDisableQtyItemEditingPick {
+            get {
+                return ResourceManager.GetString("IsDisableQtyItemEditingPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsDone.
         /// </summary>
         public static string IsDone {
@@ -2563,8 +2581,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick and Put by barcode (Idroinox)
-        ///.
+        ///   Looks up a localized string similar to Enable add item.
+        /// </summary>
+        public static string IsEnableAddItem {
+            get {
+                return ResourceManager.GetString("IsEnableAddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search item by barcode in exchange table (WMS custom).
         /// </summary>
         public static string IsEnableHandlingItemOperations {
             get {
@@ -2875,6 +2901,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemsFilteredByCode {
             get {
                 return ResourceManager.GetString("ItemsFilteredByCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items found in exchange table.
+        /// </summary>
+        public static string ItemsFilteredByTable {
+            get {
+                return ResourceManager.GetString("ItemsFilteredByTable", resourceCulture);
             }
         }
         

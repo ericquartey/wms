@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
 
@@ -13,9 +14,11 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
+        public IMachineService machineService;
+
         private ISensorsService sensorsService;
 
-        public IMachineService machineService;
+        private IThemeService themeService;
 
         #endregion
 
@@ -56,6 +59,17 @@ namespace Ferretto.VW.App.Controls.Controls
             this.DataContext = this.sensorsService.ShutterSensors;
 
             this.Visibility = this.machineService.HasShutter ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+
+            var converter = new BrushConverter();
+
+            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#3C3C3C");
+            }
+            else
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#CCCCCC");
+            }
         }
 
         protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
@@ -66,8 +80,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private void SubscribeToEvents()
         {
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
-
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.themeService = ServiceLocator.Current.GetInstance<IThemeService>();
         }
 
         #endregion

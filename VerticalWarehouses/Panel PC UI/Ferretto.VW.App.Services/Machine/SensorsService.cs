@@ -42,6 +42,8 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken healthProbeToken;
 
+        private bool isBypass;
+
         private SubscriptionToken sensorsToken;
 
         #endregion
@@ -223,6 +225,16 @@ namespace Ferretto.VW.App.Services
         public bool BEDInternalBayBottom => this.BayRobotOption;
 
         public bool BEDInternalBayTop => this.BayTrolleyOption;
+
+        public bool IsBypass
+        {
+            get => this.isBypass;
+            set
+            {
+                this.SetProperty(ref this.isBypass, value);
+                System.Windows.Application.Current.Dispatcher.Invoke(() => this.OnUpdateSensors?.Invoke(this, EventArgs.Empty));
+            }
+        }
 
         public bool IsExtraVertical => this.sensors.ElevatorOverrun;
 

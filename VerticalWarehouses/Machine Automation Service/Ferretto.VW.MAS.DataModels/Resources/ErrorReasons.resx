@@ -181,7 +181,7 @@
     <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
+    <value>If the problem reappears please call Ferretto customer service</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Check that the emergency buttons are deactivated and that all the safety sensors are deactivated.</value>

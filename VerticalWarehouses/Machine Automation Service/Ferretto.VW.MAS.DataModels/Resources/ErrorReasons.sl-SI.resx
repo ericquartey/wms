@@ -181,7 +181,7 @@
     <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Ugasnite in ponovno prižgite stroj. Če težava ni odpravljena, se obrnite na podporo.</value>
+    <value>Ugasnite in ponovno prižgite stroj. </value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Preverite, ali so gobasti gumbi za izklop v sili in vsi varnostni senzorji onemogočeni.</value>
