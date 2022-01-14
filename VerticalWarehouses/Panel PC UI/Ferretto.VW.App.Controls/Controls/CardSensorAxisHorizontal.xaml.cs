@@ -137,7 +137,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
             var converter = new BrushConverter();
 
-            Brush FerrettoRed = (Brush)converter.ConvertFromString("#DA0010");
+            Brush FerrettoRed = (Brush)converter.ConvertFromString("#701010");
 
             Brush PpcBackground;
 

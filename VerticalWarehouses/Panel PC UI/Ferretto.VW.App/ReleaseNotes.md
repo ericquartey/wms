@@ -26,7 +26,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.37 rispetto la 1.0.36
-- 
+- Nei movimenti manuali il riquadro con i sensori dell' Orizzontale cambia colore quando si attiva il bypass
 
 ## Bug Risolti
 - Il parametro aggiungi articolo non è legato alla gestione dei contenitori
@@ -34,6 +34,7 @@
 - Corretta ricerca articoli nella tabella di scambio per Idroinox
 - Eliminato errore 3 in fase di spegnimento
 - Corretto invio di login e logout alla telemetria
+- Cambiate foto nella procedura guidata di ricerca di zero
 
 ## Compatibile con adapter 0.4.30
 ***

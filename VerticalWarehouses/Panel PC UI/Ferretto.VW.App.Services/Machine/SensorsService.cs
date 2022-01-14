@@ -229,7 +229,11 @@ namespace Ferretto.VW.App.Services
         public bool IsBypass
         {
             get => this.isBypass;
-            set => this.SetProperty(ref this.isBypass, value);
+            set
+            {
+                this.SetProperty(ref this.isBypass, value);
+                System.Windows.Application.Current.Dispatcher.Invoke(() => this.OnUpdateSensors?.Invoke(this, EventArgs.Empty));
+            }
         }
 
         public bool IsExtraVertical => this.sensors.ElevatorOverrun;
