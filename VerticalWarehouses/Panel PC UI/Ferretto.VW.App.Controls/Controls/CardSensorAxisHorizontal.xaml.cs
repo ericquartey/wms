@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Controls.Controls
             if (this.IsMovements.HasValue && this.IsMovements.Value
                 && (
                 (!zero && !ant && !post)
-                || (!zero && !ant != post)))
+                || (ant != post)))
             {
                 this.CardSensor.Background = FerrettoRed;
             }
