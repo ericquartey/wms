@@ -25,23 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.36 rispetto la 1.0.35
-- Aggiunta bilancia Minebea-Intec
-- Aggiunta altezza media e passo verticale medio
-- Aggiunta procedura guidata al posto del comando di ricerca di zero nella pagina di allarme
-- Aggiunto un parametro per specificare l'aggiornamento della giacenza di un articolo 
-  tramite un valore di differenza (Idroinox)
-- Aggiunto un parametro per eseguire le operazioni di prelievo e versamento per un articolo
-  nella vista di cassetto in baia (Idroinox)
-- Ferretto NuGet package 0.16.38.
+## Nuove Funzionalità 1.0.37 rispetto la 1.0.36
+- 
 
 ## Bug Risolti
-- Corretta abilitazione del lettore di token
-- Nelle BIS senza serranda la compattazione bypassa il controllo intrusione
-- Aggiunto timeout di connessione con WMS
+- Il parametro aggiungi articolo non è legato alla gestione dei contenitori
+- Corretta gestione dello scomparto pieno nella operazione di versamento
+- Corretta ricerca articoli nella tabella di scambio per Idroinox
+- Eliminato errore 3 in fase di spegnimento
+- Corretto invio di login e logout alla telemetria
 
 ## Compatibile con adapter 0.4.30
 ***
+
+[Versione 1.0.36](#id1036)
 
 [Versione 1.0.35](#id1035)
 
@@ -115,6 +112,24 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1036"></a>
+## Nuove Funzionalità 1.0.36 rispetto la 1.0.35
+- Aggiunta bilancia Minebea-Intec
+- Aggiunta altezza media e passo verticale medio
+- Aggiunta procedura guidata al posto del comando di ricerca di zero nella pagina di allarme
+- Aggiunto un parametro per specificare l'aggiornamento della giacenza di un articolo 
+  tramite un valore di differenza (Idroinox)
+- Aggiunto un parametro per eseguire le operazioni di prelievo e versamento per un articolo
+  nella vista di cassetto in baia (Idroinox)
+- Ferretto NuGet package 0.16.38.
+
+## Bug Risolti
+- Corretta abilitazione del lettore di token
+- Nelle BIS senza serranda la compattazione bypassa il controllo intrusione
+- Aggiunto timeout di connessione con WMS
+
+## Compatibile con adapter 0.4.30
 
 <a id="id1035"></a>
 ## Nuove Funzionalità 1.0.35 rispetto la 1.0.34
