@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using CommonServiceLocator;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -21,12 +22,12 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(GrossWeight), typeof(double?), typeof(CardSensorDrawer));
 
         [Browsable(false)]
-        public static readonly DependencyProperty NetWeightProperty =
-           DependencyProperty.Register(nameof(NetWeight), typeof(double?), typeof(CardSensorDrawer));
-
-        [Browsable(false)]
         public static readonly DependencyProperty HeightProperty =
             DependencyProperty.Register(nameof(Height), typeof(double?), typeof(CardSensorDrawer));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty NetWeightProperty =
+           DependencyProperty.Register(nameof(NetWeight), typeof(double?), typeof(CardSensorDrawer));
 
         [Browsable(false)]
         public static readonly DependencyProperty PositionProperty =
@@ -37,6 +38,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private IMachineService machineService;
 
         private SubscriptionToken machineStatusChangesToken;
+
+        private IThemeService themeService;
 
         #endregion
 
@@ -72,16 +75,17 @@ namespace Ferretto.VW.App.Controls.Controls
             get => (double?)this.GetValue(GrossWeightProperty);
             set => this.SetValue(GrossWeightProperty, value);
         }
-        public double? NetWeight
-        {
-            get => (double?)this.GetValue(NetWeightProperty);
-            set => this.SetValue(NetWeightProperty, value);
-        }
 
         public double? Height
         {
             get => (double?)this.GetValue(HeightProperty);
             set => this.SetValue(HeightProperty, value);
+        }
+
+        public double? NetWeight
+        {
+            get => (double?)this.GetValue(NetWeightProperty);
+            set => this.SetValue(NetWeightProperty, value);
         }
 
         public string Position
@@ -115,6 +119,17 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SubscribeToEvents();
 
             this.OnDataRefresh();
+
+            var converter = new BrushConverter();
+
+            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#3C3C3C");
+            }
+            else
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#CCCCCC");
+            }
         }
 
         protected void OnDataRefresh()
@@ -151,6 +166,7 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+            this.themeService = ServiceLocator.Current.GetInstance<IThemeService>();
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
                 ?? this.eventAggregator

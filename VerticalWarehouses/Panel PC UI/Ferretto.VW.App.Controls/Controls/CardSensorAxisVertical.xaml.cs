@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -39,6 +40,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private SubscriptionToken machineStatusChangesToken;
 
         private ISensorsService sensorsService;
+
+        private IThemeService themeService;
 
         #endregion
 
@@ -119,6 +122,17 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SubscribeToEvents();
 
             this.OnDataRefresh();
+
+            var converter = new BrushConverter();
+
+            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#3C3C3C");
+            }
+            else
+            {
+                this.CardSensor.Background = (Brush)converter.ConvertFromString("#CCCCCC");
+            }
         }
 
         protected void OnDataRefresh()
@@ -149,6 +163,7 @@ namespace Ferretto.VW.App.Controls.Controls
             this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
+            this.themeService = ServiceLocator.Current.GetInstance<IThemeService>();
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
                 ?? this.eventAggregator

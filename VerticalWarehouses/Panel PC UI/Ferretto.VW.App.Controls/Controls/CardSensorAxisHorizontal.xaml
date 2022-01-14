@@ -11,15 +11,16 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardDescription="{Binding HorizontalTargetPosition, TargetNullValue={x:Null}, StringFormat={}Target: {0:F2}}"
-                      CardSensorLabel1="{res:Loc SensorCard.Zero}"
-                      CardSensorLabel2="{res:Loc SensorCard.Front}"
-                      CardSensorLabel3="{res:Loc SensorCard.Back}"
-                      CardText="{res:Loc SensorCard.Horizontal}"
-                      CardValue="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F2}}"
-                      Sensor1="{Binding SensorsService.IsZeroChain}"
-                      Sensor2="{Binding SensorsService.Sensors.LuPresentInOperatorSide}"
-                      Sensor3="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
-                      Type="Axis" />
+  <local:CardSensor x:Name="CardSensor"
+                    CardDescription="{Binding HorizontalTargetPosition, TargetNullValue={x:Null}, StringFormat={}Target: {0:F2}}"
+                    CardSensorLabel1="{res:Loc SensorCard.Zero}"
+                    CardSensorLabel2="{res:Loc SensorCard.Front}"
+                    CardSensorLabel3="{res:Loc SensorCard.Back}"
+                    CardText="{res:Loc SensorCard.Horizontal}"
+                    CardValue="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F2}}"
+                    Sensor1="{Binding SensorsService.IsZeroChain}"
+                    Sensor2="{Binding SensorsService.Sensors.LuPresentInOperatorSide}"
+                    Sensor3="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
+                    Type="Axis" />
 
 </UserControl>

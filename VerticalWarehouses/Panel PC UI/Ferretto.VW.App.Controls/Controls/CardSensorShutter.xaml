@@ -11,8 +11,10 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardText="{res:Loc InstallationApp.Shutter}"
-                      CardValue="{Binding Status}"
-                      Type="Shutter" />
-    <!--  CardValue="{Binding Status, diag:PresentationTraceSources.TraceLevel=High, Converter={StaticResource DEBUG}}"  -->
+  <local:CardSensor x:Name="CardSensor"
+                    Background="{StaticResource PpcBackground}"
+                    CardText="{res:Loc InstallationApp.Shutter}"
+                    CardValue="{Binding Status}"
+                    Type="Shutter" />
+  <!--  CardValue="{Binding Status, diag:PresentationTraceSources.TraceLevel=High, Converter={StaticResource DEBUG}}"  -->
 </UserControl>

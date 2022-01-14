@@ -9,19 +9,21 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardBadge1="{Binding EmbarkedLoadingUnit.Id}"
-                      CardBadgeLabel1="{res:Loc SensorCard.Drawer}"
-                      CardDescription="{Binding VerticalDescription}"
-                      CardSensorLabel1="{res:Loc SensorCard.Zero}"
-                      CardSensorLabel2="{res:Loc SensorCard.Extra}"
-                      CardSensorLabel3="{x:Null}"
-                      CardText="{res:Loc SensorCard.Vertical}"
-                      CardValue="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}"
-                      LuHeight="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
-                      LuWeight="{Binding EmbarkedLoadingUnit.NetWeight, StringFormat={}{0:F2}}"
-                      Sensor1="{Binding SensorsService.IsZeroVertical}"
-                      Sensor2="{Binding SensorsService.IsExtraVertical}"
-                      Sensor3="False"
-                      Type="Axis" />
+  <local:CardSensor x:Name="CardSensor"
+                    Background="{StaticResource PpcBackground}"
+                    CardBadge1="{Binding EmbarkedLoadingUnit.Id}"
+                    CardBadgeLabel1="{res:Loc SensorCard.Drawer}"
+                    CardDescription="{Binding VerticalDescription}"
+                    CardSensorLabel1="{res:Loc SensorCard.Zero}"
+                    CardSensorLabel2="{res:Loc SensorCard.Extra}"
+                    CardSensorLabel3="{x:Null}"
+                    CardText="{res:Loc SensorCard.Vertical}"
+                    CardValue="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}"
+                    LuHeight="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
+                    LuWeight="{Binding EmbarkedLoadingUnit.NetWeight, StringFormat={}{0:F2}}"
+                    Sensor1="{Binding SensorsService.IsZeroVertical}"
+                    Sensor2="{Binding SensorsService.IsExtraVertical}"
+                    Sensor3="False"
+                    Type="Axis" />
 
 </UserControl>

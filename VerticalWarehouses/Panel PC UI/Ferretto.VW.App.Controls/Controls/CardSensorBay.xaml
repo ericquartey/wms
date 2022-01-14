@@ -9,7 +9,9 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-  <local:CardSensor CardBayPosition="{Binding CardBayPosition}"
+  <local:CardSensor x:Name="CardSensor"
+                    Background="{StaticResource PpcBackground}"
+                    CardBayPosition="{Binding CardBayPosition}"
                     CardDescription="{Binding MachineStatus.BayChainTargetPosition, StringFormat={}{0:F2}}"
                     CardLuDown="{Binding MachineStatus.LoadingUnitPositionDownInBay}"
                     CardLuUp="{Binding MachineStatus.LoadingUnitPositionUpInBay}"
