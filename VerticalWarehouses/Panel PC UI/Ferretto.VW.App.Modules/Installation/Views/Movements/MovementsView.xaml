@@ -45,8 +45,7 @@
 
       <controls:CardSensorAxisHorizontal Grid.Row="3"
                                          Width="250"
-                                         Margin="0,0,15,5"
-                                         IsMovements="True"/>
+                                         Margin="0,0,15,5"/>
 
       <controls:CardSensorBay Grid.Row="4"
                               Width="250"

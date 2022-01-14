@@ -273,6 +273,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set
             {
                 this.SetProperty(ref this.isPolicyBypassed, value);
+                this.SensorsService.IsBypass = this.isPolicyBypassed;
                 this.OnManualRaiseCanExecuteChanged();
             }
         }

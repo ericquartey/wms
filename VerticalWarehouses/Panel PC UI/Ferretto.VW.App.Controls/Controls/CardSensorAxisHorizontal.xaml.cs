@@ -26,10 +26,6 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(HorizontalTargetPosition), typeof(double?), typeof(CardSensorAxisHorizontal));
 
         [Browsable(false)]
-        public static readonly DependencyProperty IsMovementsProperty =
-            DependencyProperty.Register(nameof(IsMovements), typeof(bool?), typeof(CardSensorAxisHorizontal));
-
-        [Browsable(false)]
         public static readonly DependencyProperty SensorsServiceProperty =
             DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorAxisHorizontal));
 
@@ -82,12 +78,6 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (double?)this.GetValue(HorizontalTargetPositionProperty);
             set => this.SetValue(HorizontalTargetPositionProperty, value);
-        }
-
-        public bool? IsMovements
-        {
-            get => (bool?)this.GetValue(IsMovementsProperty);
-            set => this.SetValue(IsMovementsProperty, value);
         }
 
         public ISensorsService SensorsService
@@ -160,10 +150,9 @@ namespace Ferretto.VW.App.Controls.Controls
                 PpcBackground = (Brush)converter.ConvertFromString("#CCCCCC");
             }
 
-            if (this.IsMovements.HasValue && this.IsMovements.Value
-                && (
-                (!zero && !ant && !post)
-                || (ant != post)))
+            if (this.SensorsService.IsBypass
+                && ((!zero && !ant && !post)
+                || ant != post))
             {
                 this.CardSensor.Background = FerrettoRed;
             }
