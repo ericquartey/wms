@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Services
 
         bool BEDInternalBayTop { get; }
 
+        bool IsBypass { get; set; }
+
         bool IsExtraVertical { get; }
 
         bool IsHorizontalInconsistentBothHigh { get; }

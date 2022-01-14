@@ -150,9 +150,9 @@ namespace Ferretto.VW.App.Controls.Controls
                 PpcBackground = (Brush)converter.ConvertFromString("#CCCCCC");
             }
 
-            if ((zero == false && ant == false && post == false)
-                || (zero == false && ant == false && post == true)
-                || (zero == false && post == false && ant == true))
+            if (this.SensorsService.IsBypass
+                && ((!zero && !ant && !post)
+                || ant != post))
             {
                 this.CardSensor.Background = FerrettoRed;
             }
@@ -175,7 +175,6 @@ namespace Ferretto.VW.App.Controls.Controls
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
             this.themeService = ServiceLocator.Current.GetInstance<IThemeService>();
-             
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
                 ?? this.eventAggregator
