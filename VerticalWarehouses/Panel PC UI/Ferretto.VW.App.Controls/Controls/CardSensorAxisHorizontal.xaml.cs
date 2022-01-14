@@ -26,6 +26,10 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(HorizontalTargetPosition), typeof(double?), typeof(CardSensorAxisHorizontal));
 
         [Browsable(false)]
+        public static readonly DependencyProperty IsMovementsProperty =
+            DependencyProperty.Register(nameof(IsMovements), typeof(bool?), typeof(CardSensorAxisHorizontal));
+
+        [Browsable(false)]
         public static readonly DependencyProperty SensorsServiceProperty =
             DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorAxisHorizontal));
 
@@ -78,6 +82,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (double?)this.GetValue(HorizontalTargetPositionProperty);
             set => this.SetValue(HorizontalTargetPositionProperty, value);
+        }
+
+        public bool? IsMovements
+        {
+            get => (bool?)this.GetValue(IsMovementsProperty);
+            set => this.SetValue(IsMovementsProperty, value);
         }
 
         public ISensorsService SensorsService
@@ -150,9 +160,10 @@ namespace Ferretto.VW.App.Controls.Controls
                 PpcBackground = (Brush)converter.ConvertFromString("#CCCCCC");
             }
 
-            if ((zero == false && ant == false && post == false)
-                || (zero == false && ant == false && post == true)
-                || (zero == false && post == false && ant == true))
+            if (this.IsMovements.HasValue && this.IsMovements.Value
+                && (
+                (!zero && !ant && !post)
+                || (!zero && !ant != post)))
             {
                 this.CardSensor.Background = FerrettoRed;
             }
@@ -175,7 +186,6 @@ namespace Ferretto.VW.App.Controls.Controls
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
             this.themeService = ServiceLocator.Current.GetInstance<IThemeService>();
-             
 
             this.machineStatusChangesToken = this.machineStatusChangesToken
                 ?? this.eventAggregator
