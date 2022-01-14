@@ -18,6 +18,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private bool barcodeAutomaticPut;
+
         private Bay bay;
 
         private bool canSave;
@@ -25,6 +29,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool inventory;
 
         private bool isBusy;
+
+        private bool isDisableQtyItemEditingPick;
+
+        private bool isEnableAddItem;
 
         private bool isEnableHandlingItemOperations;
 
@@ -45,16 +53,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public OperationOnBayViewModel(IMachineBaysWebService machineBaysWebService,
-            IMachineIdentityWebService identityService)
+            IMachineIdentityWebService identityService,
+            IMachineConfigurationWebService machineConfigurationWebService)
             : base(PresentationMode.Operator)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
 
         #region Properties
+
+        public bool BarcodeAutomaticPut
+        {
+            get => this.barcodeAutomaticPut;
+            set => this.SetProperty(ref this.barcodeAutomaticPut, value, this.CanExecute);
+        }
 
         public Bay Bay
         {
@@ -66,6 +82,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.inventory;
             set => this.SetProperty(ref this.inventory, value, this.CanExecute);
+        }
+
+        public bool IsDisableQtyItemEditingPick
+        {
+            get => this.isDisableQtyItemEditingPick;
+            set => this.SetProperty(ref this.isDisableQtyItemEditingPick, value, this.CanExecute);
+        }
+
+        public bool IsEnableAddItem
+        {
+            get => this.isEnableAddItem;
+            set => this.SetProperty(ref this.isEnableAddItem, value, this.CanExecute);
         }
 
         public bool IsEnableHandlingItemOperations
@@ -153,10 +181,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Put = this.Bay.Put;
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
+                this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
 
-                this.IsEnableHandlingItemOperations = await this.identityService.IsEnableHandlingItemOperationsAsync();
-                this.IsUpdatingStockByDifference = await this.identityService.IsUpdatingStockByDifferenceAsync();
-                this.IsRequestConfirmForLastOperationOnLoadingUnit = await this.identityService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
+                var configuration = await this.machineConfigurationWebService.GetAsync();
+                this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
+                this.IsUpdatingStockByDifference = configuration.Machine.IsUpdatingStockByDifference;
+                this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
+                this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
+                this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
             }
             catch (Exception ex)
             {
@@ -175,11 +207,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                //await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
+                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id);
 
-                await this.identityService.SetBayOperationParamsAsync(this.IsEnableHandlingItemOperations, this.IsUpdatingStockByDifference, this.IsRequestConfirmForLastOperationOnLoadingUnit);
+                await this.identityService.SetBayOperationParamsAsync(
+                    this.IsEnableHandlingItemOperations,
+                    this.IsUpdatingStockByDifference,
+                    this.IsRequestConfirmForLastOperationOnLoadingUnit,
+                    this.IsEnableAddItem,
+                    this.IsDisableQtyItemEditingPick);
 
-                this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference}; IsRequestConfirmForLastOperationOnLoadingUnit = {this.IsRequestConfirmForLastOperationOnLoadingUnit} ");
+                this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; " +
+                    $"IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference}; " +
+                    $"IsRequestConfirmForLastOperationOnLoadingUnit = {this.IsRequestConfirmForLastOperationOnLoadingUnit};" +
+                    $"IsEnableAddItem = {this.IsEnableAddItem};" +
+                    $"IsDisableQtyItemEditingPick = {this.IsDisableQtyItemEditingPick} ");
             }
             catch (Exception ex)
             {

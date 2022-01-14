@@ -1984,7 +1984,7 @@
     <value>Operazione eseguita con successo</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Ricerca articolo con barcode in tabella di scambio (Idroinox)</value>
+    <value>Ricerca articolo con barcode in tabella di scambio (WMS custom)</value>
   </data>
   <data name="IsUpdatingStockByDifference" xml:space="preserve">
     <value>Modifica giacenza per differenza</value>
@@ -1994,5 +1994,14 @@
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Articoli trovati in tabella di scambio</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Versamento automatico con barcode</value>
+  </data>
+  <data name="IsEnableAddItem" xml:space="preserve">
+    <value>Abilita aggiungi articolo</value>
+  </data>
+  <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Non modificare quantità disponibile articolo in prelievo</value>
   </data>
 </root>

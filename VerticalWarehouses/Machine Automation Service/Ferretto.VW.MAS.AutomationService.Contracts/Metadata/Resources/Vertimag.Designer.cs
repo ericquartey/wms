@@ -961,7 +961,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enabled add drapery item.
+        ///   Looks up a localized string similar to Enable add item.
         /// </summary>
         public static string Machine_IsEnableAddItem {
             get {

@@ -580,7 +580,7 @@
     <value>Telescopic</value>
   </data>
   <data name="Machine_IsEnableAddItem" xml:space="preserve">
-    <value>Enabled add drapery item</value>
+    <value>Enable add item</value>
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Barcode automatic put</value>

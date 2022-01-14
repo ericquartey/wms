@@ -2382,12 +2382,21 @@
     <value>Edit Stock by difference</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Search item by barcode in exchange table (Idroinox)</value>
+    <value>Search item by barcode in exchange table (WMS custom)</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Request confirm for last operation on load unit</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Items found in exchange table</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Barcode automatic put</value>
+  </data>
+  <data name="IsEnableAddItem" xml:space="preserve">
+    <value>Enable add item</value>
+  </data>
+  <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Not editing available quantity of item in picking</value>
   </data>
 </root>

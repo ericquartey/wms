@@ -122,12 +122,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("set-all-OpertionBay")]
+        [HttpPost("set-all-operationsbay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult SetAllOpertionBay(bool pick, bool put, bool view, bool inventory, int bayid)
+        public IActionResult SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid)
         {
-            this.baysDataProvider.SetAllOpertionBay(pick, put, view, inventory, bayid);
+            this.baysDataProvider.SetAllOperationsBay(pick, put, view, inventory, barcodeAutomaticPut, bayid);
             return this.Accepted();
         }
 
