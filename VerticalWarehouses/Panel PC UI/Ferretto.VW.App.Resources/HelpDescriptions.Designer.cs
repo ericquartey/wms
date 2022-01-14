@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The procedure allows you to view the type of operations possible on the current bay .
+        ///   Looks up a localized string similar to You can set the following parameters that control the operations on the current bay .
         /// </summary>
         public static string BayOperationsDescription {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ATTENTION: If a type of operation is disabled, the lists sent by the WMS will be rejected .
+        ///   Looks up a localized string similar to WARNING: some features need a WMS customization.
         /// </summary>
         public static string BayOperationsDescriptionWarning {
             get {

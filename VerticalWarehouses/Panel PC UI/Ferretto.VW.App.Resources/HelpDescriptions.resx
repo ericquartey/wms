@@ -1651,9 +1651,9 @@
     <value>The external bay calibration function allows you to calibrate the correct value by performing a series of consecutive automatic movements, then updating the default value proposed by the system. The procedure works in successive steps until correct completion.</value>
   </data>
   <data name="BayOperationsDescription" xml:space="preserve">
-    <value>The procedure allows you to view the type of operations possible on the current bay </value>
+    <value>You can set the following parameters that control the operations on the current bay </value>
   </data>
   <data name="BayOperationsDescriptionWarning" xml:space="preserve">
-    <value>ATTENTION: If a type of operation is disabled, the lists sent by the WMS will be rejected </value>
+    <value>WARNING: some features need a WMS customization</value>
   </data>
 </root>

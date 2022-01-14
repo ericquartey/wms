@@ -70,7 +70,13 @@
                             IsChecked="{Binding Inventory, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.ItemListType_Inventory}"
                             Visibility="Collapsed"/>
-        
+
+            <controls:PpcCheckBox Grid.Row="2"
+                        Margin="0,15,0,0"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding BarcodeAutomaticPut, Mode=TwoWay}"
+                        LabelText="{res:Loc OperatorApp.BarcodeAutomaticPut}"/>
+
         <controls:PpcCheckBox Grid.Row="2"
                         Margin="0,15,0,0"
                         VerticalAlignment="Center"
@@ -88,6 +94,18 @@
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsRequestConfirmForLastOperationOnLoadingUnit, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsRequestConfirmForLastOperationOnLoadingUnit}"/>
+
+        <controls:PpcCheckBox Grid.Row="2"
+                            Margin="0,15,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsEnableAddItem, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsEnableAddItem}"/>
+
+            <controls:PpcCheckBox Grid.Row="2"
+                            Margin="0,15,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsDisableQtyItemEditingPick, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsDisableQtyItemEditingPick}"/>
 
         </StackPanel>
     <controls:PpcButton Grid.Row="2"
