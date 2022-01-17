@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private bool isErrorZeroElevator;
 
+        private bool isErrorGeneric;
+
         private MachineError machineError;
 
         private DelegateCommand markAsResolvedCommand;
@@ -219,7 +221,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             get => this.selectedLoadingUnit;
             private set => this.SetProperty(ref this.selectedLoadingUnit, value);
         }
-
+public bool IsErrorGeneric
+        {
+            get => this.isErrorGeneric;
+            set => this.SetProperty(ref this.isErrorGeneric, value);
+        }
         public bool StartStepVisible
         {
             get => this.startStepVisible;
@@ -292,7 +298,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
                 else
                 {
-                    this.IsErrorZeroBay = false;
+                    this.IsErrorGeneric = true;
                 }
             }
         }
@@ -677,6 +683,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.IsErrorZeroBay = false;
             this.IsErrorZeroBayExternal = false;
             this.IsErrorZeroElevator = false;
+            this.IsErrorGeneric = false;
         }
 
         private async Task RetrieveErrorAsync()
