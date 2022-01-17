@@ -1060,6 +1060,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The horizontal zero sensor in not active during homing.
+        /// </summary>
+        public static string ZeroSensorErrorAfterHoming {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterHoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The elevator is empty after a pickup..
         /// </summary>
         public static string ZeroSensorErrorAfterPickup {
