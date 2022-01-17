@@ -107,20 +107,30 @@
         <Image Grid.Row="2"
                Margin="0,15,0,15"
                HorizontalAlignment="Center"
-               VerticalAlignment="Center"
+               VerticalAlignment="Top"
                RenderOptions.BitmapScalingMode="HighQuality"
-               Source="{DynamicResource Error15Step1}"
-               Stretch="Fill"
-               Visibility="{Binding IsError15, Converter={StaticResource BTVC}}" />
+               Source="{DynamicResource ErrorZeroElevator}"
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorZeroElevator, Converter={StaticResource BTVC}}" />
 
         <Image Grid.Row="2"
                Margin="0,15,0,15"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality"
-               Source="{DynamicResource Error22Step1}"
-               Stretch="Fill"
-               Visibility="{Binding IsError22, Converter={StaticResource BTVC}}" />
+               Source="{DynamicResource ErrorZeroBay}"
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorZeroBay, Converter={StaticResource BTVC}}" />
+
+
+        <Image Grid.Row="2"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource ErrorZeroBayExternal}"
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorZeroBayExternal, Converter={StaticResource BTVC}}" />
 
 
         <controls:PpcButton Grid.Row="3"

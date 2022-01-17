@@ -43,9 +43,15 @@
   <BitmapImage x:Key="Drawer2"
                UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio2.jpg" />
 
-  <BitmapImage x:Key="Error15Step1"
-               UriSource="/Ferretto.VW.App.Controls;Component/Assets/Error15_1Step.png" />
+  <BitmapImage x:Key="ErrorZeroElevator"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorZeroElevator.png" />
 
-  <BitmapImage x:Key="Error22Step1"
-               UriSource="/Ferretto.VW.App.Controls;Component/Assets/Error22_1Step.png" />
+  <BitmapImage x:Key="ErrorZeroBay"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorZeroBay.png" />
+
+  <BitmapImage x:Key="ErrorZeroBayExternal"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorZeroBayExternal.png" />
+
+  <BitmapImage x:Key="ErrorTopLevelBayOccupiedEmpty"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorTopLevelBayOccupiedEmpty.png" />
 </ResourceDictionary>
