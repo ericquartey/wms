@@ -459,4 +459,7 @@
   <data name="BackupDatabaseOnServer" xml:space="preserve">
     <value>Backup database on server</value>
   </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Elevator horizontal axis homing error</value>
+  </data>
 </root>

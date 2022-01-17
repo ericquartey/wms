@@ -453,4 +453,7 @@
   <data name="BackupDatabaseOnServer" xml:space="preserve">
     <value>Errore nella copia del database</value>
   </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Il sensore di zero dell'asse orizzontale non è attivo durante l'operazione di calibrazione</value>
+  </data>
 </root>
