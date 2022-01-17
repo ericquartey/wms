@@ -27,6 +27,8 @@
 
 ## Nuove Funzionalità 1.0.37 rispetto la 1.0.36
 - Nei movimenti manuali il riquadro con i sensori dell' Orizzontale cambia colore quando si attiva il bypass
+- Aggiunto allarme 93: sensore di zero non attivo durante la calibrazione orizzontale
+- Aggiunte foto su alcuni allarmi
 
 ## Bug Risolti
 - Il parametro aggiungi articolo non è legato alla gestione dei contenitori

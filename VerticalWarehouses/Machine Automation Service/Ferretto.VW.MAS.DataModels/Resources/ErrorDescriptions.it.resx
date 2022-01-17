@@ -459,4 +459,7 @@
   <data name="BackupDatabaseOnServer" xml:space="preserve">
     <value>Backup database su server</value>
   </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Errore nella calibrazione dell'asse orizzontale</value>
+  </data>
 </root>

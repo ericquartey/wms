@@ -1078,6 +1078,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elevator horizontal axis homing error.
+        /// </summary>
+        public static string ZeroSensorErrorAfterHoming {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterHoming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator sensors mismatch.
         /// </summary>
         public static string ZeroSensorErrorAfterPickup {

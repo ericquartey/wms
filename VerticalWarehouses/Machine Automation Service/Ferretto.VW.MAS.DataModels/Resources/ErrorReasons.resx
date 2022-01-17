@@ -453,4 +453,7 @@
   <data name="BackupDatabaseOnServer" xml:space="preserve">
     <value>Copy database fail</value>
   </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>The horizontal zero sensor in not active during homing</value>
+  </data>
 </root>

@@ -102,25 +102,38 @@
                VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality"
                Source="{DynamicResource Drawer2}"
-               Stretch="UniformToFill" />
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorGeneric, Converter={StaticResource BTVC}}" />
+
+        <Image Grid.Row="2"
+               Width="450"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource ErrorZeroElevator}"
+               Stretch="Fill"
+               Visibility="{Binding IsErrorZeroElevator, Converter={StaticResource BTVC}}" />
+
+        <Image Grid.Row="2"
+               Width="500"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource ErrorZeroBay}"
+               Stretch="Fill"
+               Visibility="{Binding IsErrorZeroBay, Converter={StaticResource BTVC}}" />
+
 
         <Image Grid.Row="2"
                Margin="0,15,0,15"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality"
-               Source="{DynamicResource Error15Step1}"
-               Stretch="Fill"
-               Visibility="{Binding IsError15, Converter={StaticResource BTVC}}" />
-
-        <Image Grid.Row="2"
-               Margin="0,15,0,15"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               RenderOptions.BitmapScalingMode="HighQuality"
-               Source="{DynamicResource Error22Step1}"
-               Stretch="Fill"
-               Visibility="{Binding IsError22, Converter={StaticResource BTVC}}" />
+               Source="{DynamicResource ErrorZeroBayExternal}"
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorZeroBayExternal, Converter={StaticResource BTVC}}" />
 
 
         <controls:PpcButton Grid.Row="3"

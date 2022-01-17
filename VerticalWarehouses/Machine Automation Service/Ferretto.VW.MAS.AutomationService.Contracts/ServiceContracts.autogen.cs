@@ -3840,6 +3840,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         BackupDatabaseOnServer = 92,
     
+        ZeroSensorErrorAfterHoming = 93,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

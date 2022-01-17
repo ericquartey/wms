@@ -64,9 +64,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand findZeroElevatorCommand;
 
-        private bool isError15;
+        private bool isErrorZeroBay;
 
-        private bool isError22;
+        private bool isErrorZeroBayExternal;
+
+        private bool isErrorZeroElevator;
+
+        private bool isErrorGeneric;
 
         private MachineError machineError;
 
@@ -165,16 +169,22 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public bool HasStepStart => this.currentStep is ErrorZeroSensorStepStart;
 
-        public bool IsError15
+        public bool IsErrorZeroBay
         {
-            get => this.isError15;
-            set => this.SetProperty(ref this.isError15, value);
+            get => this.isErrorZeroBay;
+            set => this.SetProperty(ref this.isErrorZeroBay, value);
         }
 
-        public bool IsError22
+        public bool IsErrorZeroBayExternal
         {
-            get => this.isError22;
-            set => this.SetProperty(ref this.isError22, value);
+            get => this.isErrorZeroBayExternal;
+            set => this.SetProperty(ref this.isErrorZeroBayExternal, value);
+        }
+
+        public bool IsErrorZeroElevator
+        {
+            get => this.isErrorZeroElevator;
+            set => this.SetProperty(ref this.isErrorZeroElevator, value);
         }
 
         public bool IsMoving
@@ -211,7 +221,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             get => this.selectedLoadingUnit;
             private set => this.SetProperty(ref this.selectedLoadingUnit, value);
         }
-
+public bool IsErrorGeneric
+        {
+            get => this.isErrorGeneric;
+            set => this.SetProperty(ref this.isErrorGeneric, value);
+        }
         public bool StartStepVisible
         {
             get => this.startStepVisible;
@@ -253,6 +267,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.ResetImageVisibility();
+
             this.SubscribeToEvents();
 
             await this.RetrieveErrorAsync();
@@ -265,18 +281,24 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             if (this.CanFindZeroElevator())
             {
-                this.IsError15 = true;
+                this.IsErrorZeroElevator = true;
             }
             else
             {
-                this.IsError15 = false;
                 if (this.CanFindZeroBay())
                 {
-                    this.IsError22 = true;
+                    if (this.MachineService.Bay.IsExternal)
+                    {
+                        this.IsErrorZeroBayExternal = true;
+                    }
+                    else
+                    {
+                        this.IsErrorZeroBay = true;
+                    }
                 }
                 else
                 {
-                    this.IsError22 = false;
+                    this.IsErrorGeneric = true;
                 }
             }
         }
@@ -654,6 +676,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
 
             this.RaiseCanExecuteChanged();
+        }
+
+        private void ResetImageVisibility()
+        {
+            this.IsErrorZeroBay = false;
+            this.IsErrorZeroBayExternal = false;
+            this.IsErrorZeroElevator = false;
+            this.IsErrorGeneric = false;
         }
 
         private async Task RetrieveErrorAsync()

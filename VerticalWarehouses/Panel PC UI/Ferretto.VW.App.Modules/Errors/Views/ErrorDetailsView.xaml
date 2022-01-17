@@ -15,9 +15,9 @@
             mc:Ignorable="d">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="200" />
       <ColumnDefinition />
-      <ColumnDefinition Width="250" />
+      <ColumnDefinition Width="200" />
     </Grid.ColumnDefinitions>
     <Grid.RowDefinitions>
       <RowDefinition Height="50" />
@@ -194,6 +194,7 @@
 
       <StackPanel Grid.Row="5"
                   Grid.ColumnSpan="3"
+                  VerticalAlignment="Bottom"
                   Orientation="Horizontal">
         <local:PpcButton HorizontalAlignment="Left"
                          VerticalAlignment="Top"
@@ -222,6 +223,18 @@
                          Visibility="{Binding IsVisibleFindZeroBayChain, Converter={StaticResource BTVC}}" />-->
       </StackPanel>
 
+      <Image Grid.Row="3"
+             Grid.RowSpan="3"
+             Grid.Column="1"
+             Grid.ColumnSpan="2"
+             MaxWidth="325"
+             MaxHeight="175"
+             HorizontalAlignment="Right"
+             VerticalAlignment="Bottom"
+             RenderOptions.BitmapScalingMode="HighQuality"
+             Source="{DynamicResource ErrorTopLevelBayOccupiedEmpty}"
+             Stretch="Fill"
+             Visibility="{Binding IsErrorTopLevelBayOccupiedEmpty, Converter={StaticResource BTVC}}" />
 
     </Grid>
   </Grid>

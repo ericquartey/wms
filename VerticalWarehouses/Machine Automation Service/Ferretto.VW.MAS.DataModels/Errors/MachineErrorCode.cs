@@ -292,6 +292,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BackupDatabaseOnServer), (int)MachineErrorSeverity.Normal)]
         BackupDatabaseOnServer,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterHoming), (int)MachineErrorSeverity.Normal)]
+        ZeroSensorErrorAfterHoming,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 
