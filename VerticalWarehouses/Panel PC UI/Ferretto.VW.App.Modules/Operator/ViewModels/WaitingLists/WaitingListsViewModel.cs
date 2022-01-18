@@ -47,6 +47,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int machineId;
 
+
+        private List<ItemListExecution> selectedCells = new List<ItemListExecution>();
+
         private ItemListExecution selectedList;
 
         private DelegateCommand selectOperationOnBayCommand;
@@ -90,17 +93,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.listDetailButtonCommand
             ??
             (this.listDetailButtonCommand = new DelegateCommand(
-                () => this.ShowDetails(this.selectedList),
+                () => this.ShowDetails(this.SelectedCells.LastOrDefault()),
                 this.CanShowDetailCommand));
 
         public ICommand ListExecuteCommand =>
             this.listExecuteCommand
             ??
             (this.listExecuteCommand = new DelegateCommand(
-                async () => await this.ExecuteListAsync(this.selectedList),
+                async () => await this.ExecuteListAsync(this.SelectedCells),
                 this.CanExecuteList));
 
         public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
+
+        public List<ItemListExecution> SelectedCells
+        {
+            get => this.selectedCells;
+            set => this.SetProperty(ref this.selectedCells, value);
+        }
 
         public ItemListExecution SelectedList
         {
@@ -157,61 +166,64 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task ExecuteListAsync(ItemListExecution itemList)
+        public async Task ExecuteListAsync(List<ItemListExecution> SelectedCells)
         {
-            if (!this.areaId.HasValue)
+            foreach (var itemList in SelectedCells)
             {
-                return;
-            }
-
-            if (itemList == null)
-            {
-                return;
-            }
-
-            // Handle the current not dispatchable list
-            if (!itemList.IsDispatchable)
-            {
-                this.Logger.Debug($"Show the evadability options view for item list {itemList.Id}");
-
-                var bay = await this.bayManager.GetBayAsync();
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.WaitingLists.EVADABILITYOPTIONS,
-                    new WaitingListExecuteData
-                    {
-                        ListId = itemList.Id,
-                        ListDescription = itemList.Description,
-                        BayId = bay.Id,
-                        AreaId = this.areaId.Value,
-                        AuthenticationUserName = this.authenticationService.UserName,
-                    },
-                    trackCurrentView: true);
-
-                return;
-            }
-
-            try
-            {
-                var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, ItemListEvadabilityType.Execute, bay.Id, this.authenticationService.UserName);
-                await this.LoadListsAsync();
-                this.ShowNotification(
-                    string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
-                    Services.Models.NotificationSeverity.Success);
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                if (ex is MasWebApiException webEx
-                    && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                if (!this.areaId.HasValue)
                 {
-                    this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    return;
                 }
-                else
+
+                if (itemList == null)
                 {
+                    return;
+                }
+
+                // Handle the current not dispatchable list
+                if (!itemList.IsDispatchable)
+                {
+                    this.Logger.Debug($"Show the evadability options view for item list {itemList.Id}");
+
+                    var bay = await this.bayManager.GetBayAsync();
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.WaitingLists.EVADABILITYOPTIONS,
+                        new WaitingListExecuteData
+                        {
+                            ListId = itemList.Id,
+                            ListDescription = itemList.Description,
+                            BayId = bay.Id,
+                            AreaId = this.areaId.Value,
+                            AuthenticationUserName = this.authenticationService.UserName,
+                        },
+                        trackCurrentView: true);
+
+                    return;
+                }
+
+                try
+                {
+                    var bay = await this.bayManager.GetBayAsync();
+                    await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, ItemListEvadabilityType.Execute, bay.Id, this.authenticationService.UserName);
+                    await this.LoadListsAsync();
                     this.ShowNotification(
-                        Resources.Localized.Get("OperatorApp.CannotExecuteList"),
-                        Services.Models.NotificationSeverity.Warning);
+                        string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
+                        Services.Models.NotificationSeverity.Success);
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    if (ex is MasWebApiException webEx
+                        && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Resources.Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        this.ShowNotification(
+                            Resources.Localized.Get("OperatorApp.CannotExecuteList"),
+                            Services.Models.NotificationSeverity.Warning);
+                    }
                 }
             }
         }
@@ -251,9 +263,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 this.areaId.HasValue
                 &&
-                this.SelectedList != null
+                this.SelectedCells.Any()
                 &&
-                this.SelectedList.ExecutionMode != ListExecutionMode.None;
+                !this.SelectedCells.Exists(x => x.ExecutionMode == ListExecutionMode.None);
         }
 
         private bool CanSelectOperationOnBay()
@@ -263,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanShowDetailCommand()
         {
-            return this.SelectedList != null;
+            return this.SelectedCells.Any();
         }
 
         /// <summary>
@@ -343,7 +355,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var list = await this.itemListsWebService.GetByNumAsync(listCode);
-                await this.ExecuteListAsync(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
+
+                var BarcodeItemList = new List<ItemListExecution>();
+
+                foreach (var item in list)
+                {
+                    BarcodeItemList.Add(new ItemListExecution(item, this.bayManager.Identity.Id));
+                }
+
+                await this.ExecuteListAsync(BarcodeItemList);
             }
             catch (Exception ex)
             {
