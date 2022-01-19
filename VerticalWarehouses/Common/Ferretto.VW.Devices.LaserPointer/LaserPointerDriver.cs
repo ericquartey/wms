@@ -131,6 +131,10 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
         {
+            if (ipAddress != this.ipAddress || port != this.port)
+            {
+                this.Disconnect();
+            }
             this.ipAddress = ipAddress;
             this.port = port;
             this.xOffset = xOffset;
