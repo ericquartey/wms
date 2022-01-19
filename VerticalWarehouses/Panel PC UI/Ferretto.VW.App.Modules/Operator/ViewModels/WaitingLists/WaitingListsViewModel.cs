@@ -47,7 +47,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int machineId;
 
-
         private List<ItemListExecution> selectedCells = new List<ItemListExecution>();
 
         private ItemListExecution selectedList;
@@ -275,7 +274,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanShowDetailCommand()
         {
-            return this.SelectedCells.Any();
+            return this.SelectedCells.Count == 1;
         }
 
         /// <summary>
@@ -358,10 +357,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var BarcodeItemList = new List<ItemListExecution>();
 
-                foreach (var item in list)
-                {
-                    BarcodeItemList.Add(new ItemListExecution(item, this.bayManager.Identity.Id));
-                }
+                    BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
 
                 await this.ExecuteListAsync(BarcodeItemList);
             }
