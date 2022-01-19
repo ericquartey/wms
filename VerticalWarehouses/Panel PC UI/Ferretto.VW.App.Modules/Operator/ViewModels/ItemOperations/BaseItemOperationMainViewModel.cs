@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        public string barcodeOk;
+
         public ItemWeightChangedMessage lastItemQuantityMessage;
 
         private const int DefaultPageSize = 20;
@@ -50,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
@@ -119,6 +123,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCurrentDraperyItem;
 
+        private bool isDoubleConfirmBarcodePick;
+
+        private bool isDoubleConfirmBarcodePut;
+
         private bool isInputQuantityEnabled;
 
         private bool isInputQuantityValid;
@@ -181,8 +189,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public BaseItemOperationMainViewModel(
             ILaserPointerService deviceService,
-        IMachineAreasWebService areasWebService,
+            IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
@@ -209,6 +218,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -299,7 +309,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync("0"),
+                async () => await this.ConfirmOperationAsync(this.barcodeOk),
                 this.CanConfirmOperation));
 
         public ICommand ConfirmPartialOperationCommand =>
@@ -343,7 +353,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(
                 ref this.inputItemCode,
                 value,
-                () => this.IsItemCodeValid = this.inputItemCode is null || this[nameof(this.InputItemCode)] != null);
+                () => this.IsItemCodeValid = this.inputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode);
         }
 
         public string InputLot
@@ -422,6 +432,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCurrentDraperyItem;
             set => this.SetProperty(ref this.isCurrentDraperyItem, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsDoubleConfirmBarcodePick
+        {
+            get => this.isDoubleConfirmBarcodePick;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodePick, value);
+        }
+
+        public bool IsDoubleConfirmBarcodePut
+        {
+            get => this.isDoubleConfirmBarcodePut;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodePut, value);
         }
 
         public bool IsEnableAvailableQtyItemEditingPick { get; set; }
@@ -814,6 +836,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                         if (e.HasMismatch)
                         {
+                            this.barcodeOk = string.Empty;
                             if (e.RestartOnMismatch)
                             {
                                 this.resetFieldsOnNextAction = true;
@@ -828,8 +851,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             //this.ShowNotification(Localized.Get("OperatorApp.BarcodeOperationValidated"), Services.Models.NotificationSeverity.Success);
                             this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
-
-                            await this.ConfirmOperationAsync(e.Code);
+                            if (e.GetDoubleConfirm())
+                            {
+                                this.barcodeOk = e.Code;
+                            }
+                            else
+                            {
+                                await this.ConfirmOperationAsync(e.Code);
+                            }
                         }
                     }
 
@@ -938,7 +967,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
                 }
 
                 if (canComplete)
@@ -1197,9 +1226,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
-            this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsBoxEnabled = configuration.Machine.Box;
 
-            var disableQtyItemEditingPick = await this.machineIdentityWebService.IsDisableQtyItemEditingPickAsync();
+            this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
+            this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
+
+            var disableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
             this.IsEnableAvailableQtyItemEditingPick = !disableQtyItemEditingPick;
 
             //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
@@ -1213,8 +1246,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //    this.BarcodeLenght = 0;
             //}
 
-            this.BarcodeLenght = await this.machineIdentityWebService.GetItemUniqueIdLengthAsync();
-            this.ToteBarcodeLength = await this.machineIdentityWebService.GetToteBarcodeLengthAsync();
+            this.BarcodeLenght = configuration.Machine.ItemUniqueIdLength;
+            this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
 
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;

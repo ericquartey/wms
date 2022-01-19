@@ -1617,7 +1617,7 @@
     <value>Versa contenitore</value>
   </data>
   <data name="Box" xml:space="preserve">
-    <value>Contenitore</value>
+    <value>Contenitore (WMS custom)</value>
   </data>
   <data name="InsertBox" xml:space="preserve">
     <value>Inserisci contenitore</value>
@@ -2003,5 +2003,26 @@
   </data>
   <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
     <value>Non modificare quantità disponibile articolo in prelievo</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePick" xml:space="preserve">
+    <value>Doppia conferma con barcode prelievo</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePut" xml:space="preserve">
+    <value>Doppia conferma con barcode deposito</value>
+  </data>
+  <data name="IsEnabeNoteRules" xml:space="preserve">
+    <value>Note obbligatorie</value>
+  </data>
+  <data name="IsLocalMachineItems" xml:space="preserve">
+    <value>Cerca gli articoli in questa macchina</value>
+  </data>
+  <data name="IsOrderList" xml:space="preserve">
+    <value>Elenco commesse (WMS custom)</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Lunghezza univoca ID articolo (WMS custom)</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Lunghezza codice contenitore esterno (WMS custom)</value>
   </data>
 </root>

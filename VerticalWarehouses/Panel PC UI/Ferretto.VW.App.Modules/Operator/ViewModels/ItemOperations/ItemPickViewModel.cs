@@ -46,6 +46,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
@@ -62,6 +63,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   deviceService,
                   areasWebService,
                   machineIdentityWebService,
+                  machineConfigurationWebService,
                   navigationService,
                   operatorNavigationService,
                   loadingUnitsWebService,
@@ -173,7 +175,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
             {
+                userAction.SetDoubleConfirm(this.IsDoubleConfirmBarcodePick);
                 await base.CommandUserActionAsync(userAction);
+                return;
+            }
+
+            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
+            {
+                await this.ConfirmOperationAsync(this.barcodeOk);
                 return;
             }
 

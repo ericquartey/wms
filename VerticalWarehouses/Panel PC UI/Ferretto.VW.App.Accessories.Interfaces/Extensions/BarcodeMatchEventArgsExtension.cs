@@ -19,6 +19,16 @@
             return null;
         }
 
+        public static bool GetDoubleConfirm(this UserActionEventArgs eventArgs)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            return eventArgs.Parameters.ContainsKey(BarcodeToken.IsDoubleConfirm.ToString());
+        }
+
         public static string GetItemBarCode(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
@@ -127,6 +137,19 @@
             }
 
             return null;
+        }
+
+        public static void SetDoubleConfirm(this UserActionEventArgs eventArgs, bool isSet)
+        {
+            if (eventArgs is null)
+            {
+                throw new System.ArgumentNullException(nameof(eventArgs));
+            }
+
+            if (isSet)
+            {
+                eventArgs.Parameters.Add(BarcodeToken.IsDoubleConfirm.ToString(), isSet.ToString());
+            }
         }
 
         #endregion

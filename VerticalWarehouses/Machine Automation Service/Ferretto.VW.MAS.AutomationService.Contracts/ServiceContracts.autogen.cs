@@ -1346,11 +1346,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsUpdatingStockByDifferenceAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick);
+        System.Threading.Tasks.Task SetBayOperationParamsAsync(Machine machine);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task SetBayOperationParamsAsync(Machine machine, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetMachineIdAsync(int newMachineId);
@@ -4953,6 +4953,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsDisableQtyItemEditingPick", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDisableQtyItemEditingPick { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDoubleConfirmBarcodeInventory", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDoubleConfirmBarcodeInventory { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDoubleConfirmBarcodePick", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDoubleConfirmBarcodePick { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDoubleConfirmBarcodePut", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDoubleConfirmBarcodePut { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsEnableAddItem", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableAddItem { get; set; }
