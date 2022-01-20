@@ -10,9 +10,9 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Methods
 
-        string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses);
+        string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses, bool isLineFeed);
 
-        string ProcessCommands(string buffer);
+        string ProcessCommands(string buffer, bool isLineFeed);
 
         #endregion
     }

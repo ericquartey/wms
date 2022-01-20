@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand saveCommand;
 
+        private bool socketLinkEndOfLine;
+
         private bool socketLinkIsEnabled;
 
         private int socketLinkPolling;
@@ -168,6 +170,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
 
+        public bool SocketLinkEndOfLine
+        {
+            get => this.socketLinkEndOfLine;
+            set
+            {
+                if (this.SetProperty(ref this.socketLinkEndOfLine, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool SocketLinkIsEnabled
         {
             get => this.socketLinkIsEnabled;
@@ -263,6 +278,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SocketLinkPort = await this.wmsStatusWebService.GetSocketLinkPortAsync();
                 this.SocketLinkTimeout = await this.wmsStatusWebService.GetSocketLinkTimeoutAsync();
                 this.SocketLinkPolling = await this.wmsStatusWebService.GetSocketLinkPollingAsync();
+                this.SocketLinkEndOfLine = await this.wmsStatusWebService.GetSocketLinkEndOfLineAsync();
 
                 //if (!this.IsWmsEnabled && !this.SocketLinkIsEnabled)
                 //{
@@ -365,7 +381,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling, this.ConnectionTimeout);
+                await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling, this.ConnectionTimeout, this.SocketLinkEndOfLine);
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
 

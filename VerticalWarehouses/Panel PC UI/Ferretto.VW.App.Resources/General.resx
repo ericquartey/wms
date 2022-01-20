@@ -342,4 +342,7 @@
   <data name="SocketLinkTimeout" xml:space="preserve">
     <value></value>
   </data>
+  <data name="SocketLinkEndOfLine" xml:space="preserve">
+    <value>End of line LF</value>
+  </data>
 </root>

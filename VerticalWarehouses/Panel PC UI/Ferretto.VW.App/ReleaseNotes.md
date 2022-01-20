@@ -39,6 +39,7 @@
 - Eliminato errore 3 in fase di spegnimento
 - Corretto invio di login e logout alla telemetria
 - Cambiate foto nella procedura guidata di ricerca di zero
+- SocketLink: aggiunto parametro per cambiare il terminatore dei messaggi
 
 ## Compatibile con adapter 0.4.30
 ***

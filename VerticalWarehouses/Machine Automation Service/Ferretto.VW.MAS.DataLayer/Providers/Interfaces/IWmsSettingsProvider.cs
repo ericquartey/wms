@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Uri ServiceUrl { get; set; }
 
+        bool SocketLinkEndOfLine { get; set; }
+
         bool SocketLinkIsEnabled { get; set; }
 
         int SocketLinkPolling { get; set; }
