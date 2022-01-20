@@ -357,7 +357,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var BarcodeItemList = new List<ItemListExecution>();
 
-                    BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
+                BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
 
                 await this.ExecuteListAsync(BarcodeItemList);
             }
@@ -464,14 +464,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void SelectLoadingUnit()
         {
-            if (this.lists.Any())
-            {
-                this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
-            }
-            else
-            {
-                this.SelectedList = null;
-            }
+            this.SelectedList = null;
 
             this.RaiseCanExecuteChanged();
         }
