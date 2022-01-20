@@ -462,6 +462,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsEnableAddItemDrapery()
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.dataContext.Machines.FirstOrDefault();
+                return machine != null && machine.IsEnableAddItem && machine.IsDrapery;
+            }
+        }
+
         public bool IsEnableHandlingItemOperations()
         {
             lock (this.dataContext)
@@ -542,6 +551,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.IsOrderList = machine.IsOrderList;
                 machineDB.ItemUniqueIdLength = machine.ItemUniqueIdLength;
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
+                machineDB.IsDrapery = machine.IsDrapery;
                 this.dataContext.SaveChanges();
             }
         }

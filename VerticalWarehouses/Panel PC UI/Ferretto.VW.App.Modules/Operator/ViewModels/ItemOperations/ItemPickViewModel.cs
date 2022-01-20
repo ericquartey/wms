@@ -195,7 +195,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             // Handle the adding drapery item
-            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemAsync();
+            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemDraperyAsync();
             if (bIsAddItemParameterConfigured && userAction.UserAction == UserAction.NotSpecified)
             {
                 await base.CommandUserActionAsync(userAction);
@@ -237,7 +237,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await base.OnAppearedAsync();
 
-            this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemAsync() &&
+            this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemDraperyAsync() &&
                 this.IsCurrentDraperyItem;
 
             // Setup only reserved for Tendaggi Paradiso

@@ -2599,6 +2599,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drapery handling (WMS custom).
+        /// </summary>
+        public static string IsDrapery {
+            get {
+                return ResourceManager.GetString("IsDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes must be filled.
         /// </summary>
         public static string IsEnabeNoteRules {

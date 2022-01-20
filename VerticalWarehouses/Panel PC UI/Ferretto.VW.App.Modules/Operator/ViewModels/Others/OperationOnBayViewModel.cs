@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isDoubleConfirmBarcodePut;
 
+        private bool isDrapery;
+
         private bool isEnableAddItem;
 
         private bool isEnableHandlingItemOperations;
@@ -131,6 +133,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isDoubleConfirmBarcodePut;
             set => this.SetProperty(ref this.isDoubleConfirmBarcodePut, value, this.CanExecute);
+        }
+
+        public bool IsDrapery
+        {
+            get => this.isDrapery;
+            set => this.SetProperty(ref this.isDrapery, value, this.CanExecute);
         }
 
         public bool IsEnabeNoteRules
@@ -261,6 +269,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsUpdatingStockByDifference = configuration.Machine.IsUpdatingStockByDifference;
                 this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
                 this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
+                this.IsDrapery = configuration.Machine.IsDrapery;
                 this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
                 this.IsDoubleConfirmBarcodeInventory = configuration.Machine.IsDoubleConfirmBarcodeInventory;
                 this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
@@ -306,6 +315,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsOrderList = this.IsOrderList;
                 machine.ItemUniqueIdLength = this.ItemUniqueIdLength;
                 machine.ToteBarcodeLength = this.ToteBarcodeLength;
+                machine.IsDrapery = this.IsDrapery;
                 await this.identityService.SetBayOperationParamsAsync(machine);
 
                 this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; " +

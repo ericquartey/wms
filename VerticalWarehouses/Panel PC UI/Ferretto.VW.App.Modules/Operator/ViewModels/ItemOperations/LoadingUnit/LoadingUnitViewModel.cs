@@ -779,7 +779,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.IsAddItemVisible)
             {
-                var bIsAddItemParameterConfigured = await this.identityService.IsEnableAddItemAsync();
+                var bIsAddItemParameterConfigured = await this.identityService.IsEnableAddItemDraperyAsync();
 
                 // Check the existence of drapery item for the adding operation
                 if (bIsAddItemParameterConfigured)
@@ -922,7 +922,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await this.OnAppearItem();
 
-            this.IsAddItemFeatureForDraperyManagementAvailable = await this.identityService.IsEnableAddItemAsync();
+            this.IsAddItemFeatureForDraperyManagementAvailable = await this.identityService.IsEnableAddItemDraperyAsync();
             this.IsKeyboardButtonVisible = await this.identityService.GetTouchHelperEnableAsync();
 
             // Update UI according to normal configuration or drapery management configuration

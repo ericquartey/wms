@@ -77,6 +77,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDoubleConfirmBarcodePut { get; set; }
 
         /// <summary>
+        /// Tendaggi Paradiso
+        /// </summary>
+        public bool IsDrapery { get; set; }
+
+        /// <summary>
         /// Get a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }

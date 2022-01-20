@@ -774,7 +774,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         if (this.isAddItem)
                         {
-                            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemAsync();
+                            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemDraperyAsync();
 
                             // Check the existence of drapery item for the adding operation
                             if (bIsAddItemParameterConfigured)
