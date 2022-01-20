@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Methods
 
-        public async override Task StartAsync(CancellationToken cancellationToken)
+        public override async Task StartAsync(CancellationToken cancellationToken)
         {
             await base.StartAsync(cancellationToken);
 
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.SocketLink
                             using (var scope = this.serviceScopeFactory.CreateScope())
                             {
                                 var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived);
+                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived, this.wmsSettingsProvider.SocketLinkEndOfLine);
                             }
 
                             if (!string.IsNullOrEmpty(msgResponse))
@@ -267,7 +267,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     {
                         var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
                         var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD };
-                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder);
+                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder, this.wmsSettingsProvider.SocketLinkEndOfLine);
 
                         if (!string.IsNullOrEmpty(msgResponse))
                         {

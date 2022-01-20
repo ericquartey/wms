@@ -146,7 +146,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
             try
             {
-                switch ((MachineErrorCode)this.error.Code)
+                switch ((MachineErrorCode)this.error?.Code)
                 {
                     case MachineErrorCode.CradleNotCompletelyLoaded:
                         break;

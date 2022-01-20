@@ -322,4 +322,7 @@
   <data name="TimeoutMs" xml:space="preserve">
     <value>Timeout (ms)</value>
   </data>
+  <data name="SocketLinkEndOfLine" xml:space="preserve">
+    <value>Fine stringa LF</value>
+  </data>
 </root>

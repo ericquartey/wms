@@ -78,11 +78,11 @@ namespace Ferretto.VW.MAS.SocketLink
         #region Methods
 
         /// <summary>
-        /// Method return the straing contains the commands that must periodically send.
+        /// Method return the string with the commands that must periodically send.
         /// </summary>
         /// <param name="typeOfResponses"></param>
         /// <returns></returns>
-        public string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses)
+        public string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses, bool isLineFeed)
         {
             var commandsResponse = new List<SocketLinkCommand>();
             var response = "";
@@ -98,11 +98,11 @@ namespace Ferretto.VW.MAS.SocketLink
                 {
                     case SocketLinkCommand.HeaderType.STATUS:
                     case SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD:
-                        commandsResponse.Add(this.ProcessCommandStatus());
+                        commandsResponse.Add(this.ProcessCommandStatus(isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD:
-                        commandsResponse.Add(this.ProcessCommandStatusExt());
+                        commandsResponse.Add(this.ProcessCommandStatusExt(isLineFeed));
                         break;
                 }
             }
@@ -115,82 +115,82 @@ namespace Ferretto.VW.MAS.SocketLink
             return response;
         }
 
-        public string ProcessCommands(string buffer)
+        public string ProcessCommands(string buffer, bool isLineFeed)
         {
             var response = "";
             var commandsResponse = new List<SocketLinkCommand>();
-            var commandsReceived = ParseReceivedCommands(buffer);
+            var commandsReceived = ParseReceivedCommands(buffer, isLineFeed);
 
             foreach (var cmdReceived in commandsReceived)
             {
                 switch (cmdReceived.Header)
                 {
                     case SocketLinkCommand.HeaderType.EXTRACT_CMD:
-                        commandsResponse.Add(this.ProcessCommandExtract(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandExtract(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.STORE_CMD:
-                        commandsResponse.Add(this.ProcessCommandStore(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandStore(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD:
-                        commandsResponse.Add(this.ProcessCommandStatus(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandStatus(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_RESET_CMD:
-                        commandsResponse.Add(this.ProcessCommandReset(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandReset(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.ALARM_RESET_CMD:
-                        commandsResponse.Add(this.ProcessCommandAlarmReset(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandAlarmReset(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_VERSION:
-                        commandsResponse.Add(new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_VERSION_RES, new List<string> { VERSION }));
+                        commandsResponse.Add(new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_VERSION_RES, isLineFeed, new List<string> { VERSION }));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_ALARMS:
-                        commandsResponse.Add(this.ProcessCommandAlarmsDetails(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandAlarmsDetails(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_INFO:
-                        commandsResponse.Add(this.ProcessCommandInfo(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandInfo(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD:
-                        commandsResponse.Add(this.ProcessCommandStatusExt(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandStatusExt(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_MISSION_TRAY:
-                        commandsResponse.Add(this.ProcessCommandRequestMissionTray(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandRequestMissionTray(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.REQUEST_UDCS_HEIGHT:
-                        commandsResponse.Add(this.ProcessCommandLoadingUnitsHeight(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandLoadingUnitsHeight(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.LASER_CMD:
-                        commandsResponse.Add(this.ProcessCommandLaserPointer(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandLaserPointer(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.ALPHANUMBAR_CMD:
-                        commandsResponse.Add(this.ProcessCommandAlphaNumericBar(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandAlphaNumericBar(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.UTC_CMD:
-                        commandsResponse.Add(this.ProcessCommandUTC(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandUTC(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED:
-                        commandsResponse.Add(SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived));
+                        commandsResponse.Add(SocketLinkProvider.GetCommandNotRecognizedResponse(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.PICKING_CMD:
-                        commandsResponse.Add(this.ProcessCommandPickingCommand(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandPickingCommand(cmdReceived, isLineFeed));
                         break;
 
                     case SocketLinkCommand.HeaderType.PICKING_STATUS:
-                        commandsResponse.Add(this.ProcessCommandPickingStatus(cmdReceived));
+                        commandsResponse.Add(this.ProcessCommandPickingStatus(cmdReceived, isLineFeed));
                         break;
                 }
             }
@@ -207,17 +207,17 @@ namespace Ferretto.VW.MAS.SocketLink
         /// Function call from periodic action
         /// </summary>
         /// <returns></returns>
-        public SocketLinkCommand ProcessCommandStatus()
+        public SocketLinkCommand ProcessCommandStatus(bool isLineFeed)
         {
-            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD, new List<string>() { this.machineProvider.GetIdentity().ToString(CultureInfo.InvariantCulture) });
-            var cmdResponse = this.ProcessCommandStatus(cmdReceived);
+            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_REQUEST_CMD, isLineFeed, new List<string>() { this.machineProvider.GetIdentity().ToString(CultureInfo.InvariantCulture) });
+            var cmdResponse = this.ProcessCommandStatus(cmdReceived, isLineFeed);
 
             return cmdResponse;
         }
 
-        private static SocketLinkCommand GetCommandNotRecognizedResponse(SocketLinkCommand commandNotRecognized)
+        private static SocketLinkCommand GetCommandNotRecognizedResponse(SocketLinkCommand commandNotRecognized, bool isLineFeed)
         {
-            var response = new SocketLinkCommand(SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED);
+            var response = new SocketLinkCommand(SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED, isLineFeed);
 
             response.AddPayload(response.Header.ToString());
             foreach (var payload in commandNotRecognized.Payload)
@@ -228,26 +228,26 @@ namespace Ferretto.VW.MAS.SocketLink
             return response;
         }
 
-        private static SocketLinkCommand GetInvalidFormatResponse(string description)
+        private static SocketLinkCommand GetInvalidFormatResponse(string description, bool isLineFeed)
         {
-            return new SocketLinkCommand(SocketLinkCommand.HeaderType.INVALID_FORMAT, new List<string>() { description });
+            return new SocketLinkCommand(HeaderType.INVALID_FORMAT, isLineFeed, new List<string>() { description });
         }
 
-        private static SocketLinkCommand[] ParseReceivedCommands(string buffer)
+        private static SocketLinkCommand[] ParseReceivedCommands(string buffer, bool isLineFeed)
         {
             var result = new List<SocketLinkCommand>();
 
             if (!string.IsNullOrEmpty(buffer))
             {
                 buffer = buffer.Trim();
-                var arrayOfMessages = buffer.Split(SocketLinkCommand.CARRIAGE_RETURN);
+                var arrayOfMessages = buffer.Split(new char[] { CARRIAGE_RETURN, LINE_FEED });
 
                 foreach (var message in arrayOfMessages)
                 {
                     var msg = message.Trim();
                     if (!string.IsNullOrEmpty(msg))
                     {
-                        var arrayOfBlocks = msg.Split(SocketLinkCommand.SEPARATOR);
+                        var arrayOfBlocks = msg.Split(SEPARATOR);
                         SocketLinkCommand command = null;
 
                         foreach (var block in arrayOfBlocks)
@@ -255,12 +255,12 @@ namespace Ferretto.VW.MAS.SocketLink
                             var blk = block.Trim();
                             if (command == null)
                             {
-                                var header = SocketLinkCommand.HeaderType.CMD_NOT_RECOGNIZED;
-                                command = new SocketLinkCommand(header);
+                                var header = HeaderType.CMD_NOT_RECOGNIZED;
+                                command = new SocketLinkCommand(header, isLineFeed);
 
-                                if (Enum.TryParse(blk, true, out header) && Enum.IsDefined(typeof(SocketLinkCommand.HeaderType), header))
+                                if (Enum.TryParse(blk, true, out header) && Enum.IsDefined(typeof(HeaderType), header))
                                 {
-                                    command = new SocketLinkCommand(header);
+                                    command = new SocketLinkCommand(header, isLineFeed);
                                 }
                             }
                             else
@@ -472,9 +472,9 @@ namespace Ferretto.VW.MAS.SocketLink
         /// </summary>
         /// <param name="cmdReceived">Received command width header ALARM _RESET_CMD</param>
         /// <returns>Response command width header ALARM _RESET_RES</returns>
-        private SocketLinkCommand ProcessCommandAlarmReset(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandAlarmReset(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.ALARM_RESET_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.ALARM_RESET_RES, isLineFeed);
 
             try
             {
@@ -504,9 +504,9 @@ namespace Ferretto.VW.MAS.SocketLink
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandAlarmsDetails(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandAlarmsDetails(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_ALARMS_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_ALARMS_RES, isLineFeed);
 
             try
             {
@@ -524,20 +524,20 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandAlphaNumericBar(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandAlphaNumericBar(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.ALPHANUMBAR_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.ALPHANUMBAR_RES, isLineFeed);
 
             try
             {
@@ -601,7 +601,7 @@ namespace Ferretto.VW.MAS.SocketLink
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
@@ -613,9 +613,9 @@ namespace Ferretto.VW.MAS.SocketLink
         /// </summary>
         /// <param name="cmdReceived">Received command width header EXTRACT_CMD</param>
         /// <returns>Response command width header EXTRACT_CMD_RES</returns>
-        private SocketLinkCommand ProcessCommandExtract(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandExtract(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.EXTRACT_CMD_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.EXTRACT_CMD_RES, isLineFeed);
 
             try
             {
@@ -653,7 +653,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(1)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(1)})", isLineFeed);
                 }
             }
             catch (TrayNumberException)
@@ -690,9 +690,9 @@ namespace Ferretto.VW.MAS.SocketLink
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandInfo(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandInfo(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_INFO_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_INFO_RES, isLineFeed);
 
             try
             {
@@ -737,15 +737,15 @@ namespace Ferretto.VW.MAS.SocketLink
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandLaserPointer(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandLaserPointer(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.LASER_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.LASER_RES, isLineFeed);
 
             try
             {
@@ -813,15 +813,15 @@ namespace Ferretto.VW.MAS.SocketLink
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandLoadingUnitsHeight(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandLoadingUnitsHeight(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_UDCS_HEIGHT_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_UDCS_HEIGHT_RES, isLineFeed);
 
             try
             {
@@ -837,20 +837,20 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandPickingCommand(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandPickingCommand(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.PICKING_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.PICKING_RES, isLineFeed);
 
             try
             {
@@ -895,25 +895,25 @@ namespace Ferretto.VW.MAS.SocketLink
                     }
                     else
                     {
-                        cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid quantity number ({quantityString})");
+                        cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid quantity number ({quantityString})", isLineFeed);
                     }
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandPickingStatus(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandPickingStatus(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.PICKING_STATUS_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.PICKING_STATUS_RES, isLineFeed);
 
             try
             {
@@ -976,20 +976,20 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandRequestMissionTray(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandRequestMissionTray(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_MISSION_TRAY_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_MISSION_TRAY_RES, isLineFeed);
 
             try
             {
@@ -1018,16 +1018,16 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (BayNumberException ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid bay number {ex.BayNumber}");
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid bay number {ex.BayNumber}", isLineFeed);
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
@@ -1048,9 +1048,9 @@ namespace Ferretto.VW.MAS.SocketLink
         /// </summary>
         /// <param name="cmdReceived">Received command width header REQUEST_RESET_CMD</param>
         /// <returns>Response command width header REQUEST_RESET_RES</returns>
-        private SocketLinkCommand ProcessCommandReset(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandReset(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_RESET_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.REQUEST_RESET_RES, isLineFeed);
 
             try
             {
@@ -1107,9 +1107,9 @@ namespace Ferretto.VW.MAS.SocketLink
         /// </summary>
         /// <param name="cmdReceived">Received command width header STATUS_REQUEST_CMD</param>
         /// <returns>Response command width header STATUS</returns>
-        private SocketLinkCommand ProcessCommandStatus(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandStatus(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS, isLineFeed);
 
             try
             {
@@ -1120,12 +1120,12 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
@@ -1135,17 +1135,17 @@ namespace Ferretto.VW.MAS.SocketLink
         /// Function call from periodic action
         /// </summary>
         /// <returns></returns>
-        private SocketLinkCommand ProcessCommandStatusExt()
+        private SocketLinkCommand ProcessCommandStatusExt(bool isLineFeed)
         {
-            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD, new List<string>() { this.machineProvider.GetIdentity().ToString(CultureInfo.InvariantCulture) });
-            var cmdResponse = this.ProcessCommandStatusExt(cmdReceived);
+            var cmdReceived = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD, isLineFeed, new List<string>() { this.machineProvider.GetIdentity().ToString(CultureInfo.InvariantCulture) });
+            var cmdResponse = this.ProcessCommandStatusExt(cmdReceived, isLineFeed);
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandStatusExt(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandStatusExt(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_EXT);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STATUS_EXT, isLineFeed);
 
             try
             {
@@ -1170,20 +1170,20 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
                 }
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandStore(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandStore(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STORE_CMD_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.STORE_CMD_RES, isLineFeed);
             var trayNumber = -1;
             try
             {
@@ -1246,15 +1246,15 @@ namespace Ferretto.VW.MAS.SocketLink
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;
         }
 
-        private SocketLinkCommand ProcessCommandUTC(SocketLinkCommand cmdReceived)
+        private SocketLinkCommand ProcessCommandUTC(SocketLinkCommand cmdReceived, bool isLineFeed)
         {
-            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.UTC_RES);
+            var cmdResponse = new SocketLinkCommand(SocketLinkCommand.HeaderType.UTC_RES, isLineFeed);
 
             try
             {
@@ -1272,7 +1272,7 @@ namespace Ferretto.VW.MAS.SocketLink
             }
             catch (Exception ex)
             {
-                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message);
+                cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
             }
 
             return cmdResponse;

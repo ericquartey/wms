@@ -1,23 +1,27 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Linq;
+using Ferretto.VW.App.Modules.Operator.Models;
 
 namespace Ferretto.VW.App.Modules.Operator.Views
 {
     public partial class WaitingListsDataGridView : UserControl
     {
-
         #region Fields
 
         private string firstSort;
 
         private ListSortDirection lastDirection;
 
+        private readonly List<DataGridRow> dataGridRowList = new List<DataGridRow>();
+
         #endregion
+
         #region Constructors
 
         public WaitingListsDataGridView()
@@ -112,11 +116,44 @@ namespace Ferretto.VW.App.Modules.Operator.Views
 
         private void PreviewMouseDownHandler(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && e.OriginalSource is FrameworkElement element &&
-                GetVisualParentOfType<DataGridRow>(element) is DataGridRow row)
+            try
             {
-                row.IsSelected = !row.IsSelected;
-                e.Handled = true;
+                if (e.LeftButton == MouseButtonState.Pressed && e.OriginalSource is FrameworkElement element
+                && GetVisualParentOfType<DataGridRow>(element) is DataGridRow row
+                && GetVisualParentOfType<DataGrid>(element) is DataGrid gridParent)
+                {
+                    row.IsSelected = !row.IsSelected;
+
+                    if (row.IsSelected)
+                    {
+                        this.dataGridRowList.Add(row);
+                    }
+                    else
+                    {
+                        this.dataGridRowList.Remove(row);
+                    }
+
+                    var selectedList = gridParent.SelectedItems.OfType<ItemListExecution>().ToList();
+
+                    if (selectedList.Exists(x => x.IsDispatchable == false))
+                    {
+                        foreach (var _row in this.dataGridRowList)
+                        {
+                            _row.IsSelected = false;
+                        }
+
+                        this.dataGridRowList.Clear();
+                        this.dataGridRowList.Add(row);
+                        row.IsSelected = true;
+
+                    }
+
+                    e.Handled = true;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                ex.ToString();
             }
         }
 

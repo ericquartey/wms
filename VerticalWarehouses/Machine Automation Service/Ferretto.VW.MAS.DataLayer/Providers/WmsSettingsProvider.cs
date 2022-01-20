@@ -223,6 +223,35 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        public bool SocketLinkEndOfLine
+        {
+            get
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return false;
+                }
+
+                lock (this.dataContext)
+                {
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkEndOfLine;
+                }
+            }
+            set
+            {
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+
+                lock (this.dataContext)
+                {
+                    this.dataContext.WmsSettings.Single().SocketLinkEndOfLine = value;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public bool SocketLinkIsEnabled
         {
             get
