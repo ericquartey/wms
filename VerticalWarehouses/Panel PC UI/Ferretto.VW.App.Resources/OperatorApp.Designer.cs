@@ -502,7 +502,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Box.
+        ///   Looks up a localized string similar to Box (WMS custom).
         /// </summary>
         public static string Box {
             get {
@@ -2581,6 +2581,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double confirm barcode pick.
+        /// </summary>
+        public static string IsDoubleConfirmBarcodePick {
+            get {
+                return ResourceManager.GetString("IsDoubleConfirmBarcodePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double confirm barcode put.
+        /// </summary>
+        public static string IsDoubleConfirmBarcodePut {
+            get {
+                return ResourceManager.GetString("IsDoubleConfirmBarcodePut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes must be filled.
+        /// </summary>
+        public static string IsEnabeNoteRules {
+            get {
+                return ResourceManager.GetString("IsEnabeNoteRules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable add item.
         /// </summary>
         public static string IsEnableAddItem {
@@ -2595,6 +2622,24 @@ namespace Ferretto.VW.App.Resources {
         public static string IsEnableHandlingItemOperations {
             get {
                 return ResourceManager.GetString("IsEnableHandlingItemOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search items in this machine.
+        /// </summary>
+        public static string IsLocalMachineItems {
+            get {
+                return ResourceManager.GetString("IsLocalMachineItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order List (WMS custom).
+        /// </summary>
+        public static string IsOrderList {
+            get {
+                return ResourceManager.GetString("IsOrderList", resourceCulture);
             }
         }
         
@@ -2919,6 +2964,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemStock {
             get {
                 return ResourceManager.GetString("ItemStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Id unique length (WMS custom).
+        /// </summary>
+        public static string ItemUniqueIdLength {
+            get {
+                return ResourceManager.GetString("ItemUniqueIdLength", resourceCulture);
             }
         }
         
@@ -5349,6 +5403,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ToteBarcodeAcquired {
             get {
                 return ResourceManager.GetString("ToteBarcodeAcquired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tote barcode length (WMS custom).
+        /// </summary>
+        public static string ToteBarcodeLength {
+            get {
+                return ResourceManager.GetString("ToteBarcodeLength", resourceCulture);
             }
         }
         

@@ -43,6 +43,8 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly object syncRoot = new object();
 
+        private readonly Timer wmsStatusTimer;
+
         private BarcodeRule activeRule;
 
         private bool isDeviceEnabled;
@@ -54,8 +56,6 @@ namespace Ferretto.VW.App.Accessories
         private HealthStatus oldWmsStatus;
 
         private IEnumerable<BarcodeRule> ruleSet = Array.Empty<BarcodeRule>();
-
-        private Timer wmsStatusTimer;
 
         #endregion
 
@@ -294,16 +294,21 @@ namespace Ferretto.VW.App.Accessories
         /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if not match was found.</returns>
         private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
         {
+            foreach (var rule in this.ruleSet
+                .Where(r => r.ContextName != null && r.ContextName.Equals(activeContextName, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var pattern = new Regex(rule.Pattern);
+                if (pattern.IsMatch(barcode))
+                {
+                    this.logger.Debug($"Barcode '{barcode}': matched rule action '{rule.Action}' (context '{rule.ContextName ?? "<global>"}').");
+                    return rule;
+                }
+            }
+
             var matchedRule = this.ruleSet
-                .FirstOrDefault(r =>
-                    (
-                        r.ContextName == null
-                        ||
-                        r.ContextName.Equals(activeContextName, StringComparison.InvariantCultureIgnoreCase)
-                    )
+                .FirstOrDefault(r => r.ContextName == null
                     &&
                     Regex.IsMatch(barcode, r.Pattern));
-
             if (matchedRule is null)
             {
                 this.logger.Warn($"Barcode '{barcode}': no matching rule found for context {activeContextName}.");
@@ -312,7 +317,6 @@ namespace Ferretto.VW.App.Accessories
             {
                 this.logger.Debug($"Barcode '{barcode}': matched rule action '{matchedRule.Action}' (context '{matchedRule.ContextName ?? "<global>"}').");
             }
-
             return matchedRule;
         }
 

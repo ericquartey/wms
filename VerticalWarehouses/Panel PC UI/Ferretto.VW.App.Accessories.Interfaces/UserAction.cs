@@ -31,5 +31,7 @@
         SelectShelf,
 
         Notes,
+
+        ConfirmKey,
     }
 }

@@ -14247,30 +14247,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick)
+        public System.Threading.Tasks.Task SetBayOperationParamsAsync(Machine machine)
         {
-            return SetBayOperationParamsAsync(isEnableHandlingItemOperations, isUpdatingStockByDifference, isRequestConfirmForLastOperationOnLoadingUnit, isEnableAddItem, isDisableQtyItemEditingPick, System.Threading.CancellationToken.None);
+            return SetBayOperationParamsAsync(machine, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task SetBayOperationParamsAsync(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SetBayOperationParamsAsync(Machine machine, System.Threading.CancellationToken cancellationToken)
         {
+            if (machine == null)
+                throw new System.ArgumentNullException("machine");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/set/bay/operation/params?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isEnableHandlingItemOperations") + "=").Append(System.Uri.EscapeDataString(isEnableHandlingItemOperations != null ? ConvertToString(isEnableHandlingItemOperations, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isUpdatingStockByDifference") + "=").Append(System.Uri.EscapeDataString(isUpdatingStockByDifference != null ? ConvertToString(isUpdatingStockByDifference, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isRequestConfirmForLastOperationOnLoadingUnit") + "=").Append(System.Uri.EscapeDataString(isRequestConfirmForLastOperationOnLoadingUnit != null ? ConvertToString(isRequestConfirmForLastOperationOnLoadingUnit, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isEnableAddItem") + "=").Append(System.Uri.EscapeDataString(isEnableAddItem != null ? ConvertToString(isEnableAddItem, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isDisableQtyItemEditingPick") + "=").Append(System.Uri.EscapeDataString(isDisableQtyItemEditingPick != null ? ConvertToString(isDisableQtyItemEditingPick, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Length--;
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/identity/set/bay/operation/params");
     
             var client_ = _httpClient;
             try
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(machine, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
     
                     PrepareRequest(client_, request_, urlBuilder_);

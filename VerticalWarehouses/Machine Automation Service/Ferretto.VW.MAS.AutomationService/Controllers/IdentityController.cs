@@ -197,9 +197,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("set/bay/operation/params")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult SetBayOperationParams(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick)
+        public IActionResult SetBayOperationParams(DataModels.Machine machine)
         {
-            this.machineProvider.SetBayOperationParams(isEnableHandlingItemOperations, isUpdatingStockByDifference, isRequestConfirmForLastOperationOnLoadingUnit, isEnableAddItem, isDisableQtyItemEditingPick);
+            this.machineProvider.SetBayOperationParams(machine);
             return this.Accepted();
         }
 

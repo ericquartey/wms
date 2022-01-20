@@ -28,23 +28,41 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool inventory;
 
+        private bool isBox;
+
         private bool isBusy;
 
         private bool isDisableQtyItemEditingPick;
+
+        private bool isDoubleConfirmBarcodeInventory;
+
+        private bool isDoubleConfirmBarcodePick;
+
+        private bool isDoubleConfirmBarcodePut;
 
         private bool isEnableAddItem;
 
         private bool isEnableHandlingItemOperations;
 
+        private bool isEnableNoteRules;
+
+        private bool isLocalMachineItems;
+
+        private bool isOrderList;
+
         private bool isRequestConfirmForLastOperationOnLoadingUnit;
 
         private bool isUpdatingStockByDifference;
+
+        private int itemUniqueIdLength;
 
         private bool pick;
 
         private bool put;
 
         private DelegateCommand saveSettingsCommand;
+
+        private int toteBarcodeLength;
 
         private bool view;
 
@@ -84,10 +102,41 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.inventory, value, this.CanExecute);
         }
 
+        public bool IsBox
+        {
+            get => this.isBox;
+            set => this.SetProperty(ref this.isBox, value, this.CanExecute);
+        }
+
         public bool IsDisableQtyItemEditingPick
         {
             get => this.isDisableQtyItemEditingPick;
             set => this.SetProperty(ref this.isDisableQtyItemEditingPick, value, this.CanExecute);
+        }
+
+        // not used
+        public bool IsDoubleConfirmBarcodeInventory
+        {
+            get => this.isDoubleConfirmBarcodeInventory;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodeInventory, value, this.CanExecute);
+        }
+
+        public bool IsDoubleConfirmBarcodePick
+        {
+            get => this.isDoubleConfirmBarcodePick;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodePick, value, this.CanExecute);
+        }
+
+        public bool IsDoubleConfirmBarcodePut
+        {
+            get => this.isDoubleConfirmBarcodePut;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodePut, value, this.CanExecute);
+        }
+
+        public bool IsEnabeNoteRules
+        {
+            get => this.isEnableNoteRules;
+            set => this.SetProperty(ref this.isEnableNoteRules, value, this.CanExecute);
         }
 
         public bool IsEnableAddItem
@@ -102,6 +151,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isEnableHandlingItemOperations, value, this.CanExecute);
         }
 
+        public bool IsLocalMachineItems
+        {
+            get => this.isLocalMachineItems;
+            set => this.SetProperty(ref this.isLocalMachineItems, value, this.CanExecute);
+        }
+
+        public bool IsOrderList
+        {
+            get => this.isOrderList;
+            set => this.SetProperty(ref this.isOrderList, value, this.CanExecute);
+        }
+
         public bool IsRequestConfirmForLastOperationOnLoadingUnit
         {
             get => this.isRequestConfirmForLastOperationOnLoadingUnit;
@@ -112,6 +173,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isUpdatingStockByDifference;
             set => this.SetProperty(ref this.isUpdatingStockByDifference, value, this.CanExecute);
+        }
+
+        public int ItemUniqueIdLength
+        {
+            get => this.itemUniqueIdLength;
+            set => this.SetProperty(ref this.itemUniqueIdLength, value, this.CanExecute);
         }
 
         public bool Pick
@@ -131,6 +198,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.saveSettingsCommand = new DelegateCommand(
                 async () => await this.SaveSettingsAsync(),
                 this.CanSave));
+
+        public int ToteBarcodeLength
+        {
+            get => this.toteBarcodeLength;
+            set => this.SetProperty(ref this.toteBarcodeLength, value, this.CanExecute);
+        }
 
         public bool View
         {
@@ -189,6 +262,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
                 this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
                 this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
+                this.IsDoubleConfirmBarcodeInventory = configuration.Machine.IsDoubleConfirmBarcodeInventory;
+                this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
+                this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
+                this.IsBox = configuration.Machine.Box;
+                this.IsEnabeNoteRules = configuration.Machine.EnabeNoteRules;
+                this.IsLocalMachineItems = configuration.Machine.IsLocalMachineItems;
+                this.IsOrderList = configuration.Machine.IsOrderList;
+                this.ItemUniqueIdLength = configuration.Machine.ItemUniqueIdLength;
+                this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
             }
             catch (Exception ex)
             {
@@ -209,12 +291,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id);
 
-                await this.identityService.SetBayOperationParamsAsync(
-                    this.IsEnableHandlingItemOperations,
-                    this.IsUpdatingStockByDifference,
-                    this.IsRequestConfirmForLastOperationOnLoadingUnit,
-                    this.IsEnableAddItem,
-                    this.IsDisableQtyItemEditingPick);
+                var machine = new Machine();
+                machine.IsEnableHandlingItemOperations = this.IsEnableHandlingItemOperations;
+                machine.IsUpdatingStockByDifference = this.IsUpdatingStockByDifference;
+                machine.IsRequestConfirmForLastOperationOnLoadingUnit = this.IsRequestConfirmForLastOperationOnLoadingUnit;
+                machine.IsEnableAddItem = this.IsEnableAddItem;
+                machine.IsDisableQtyItemEditingPick = this.IsDisableQtyItemEditingPick;
+                machine.IsDoubleConfirmBarcodeInventory = this.IsDoubleConfirmBarcodeInventory;
+                machine.IsDoubleConfirmBarcodePick = this.IsDoubleConfirmBarcodePick;
+                machine.IsDoubleConfirmBarcodePut = this.IsDoubleConfirmBarcodePut;
+                machine.Box = this.IsBox;
+                machine.EnabeNoteRules = this.IsEnabeNoteRules;
+                machine.IsLocalMachineItems = this.IsLocalMachineItems;
+                machine.IsOrderList = this.IsOrderList;
+                machine.ItemUniqueIdLength = this.ItemUniqueIdLength;
+                machine.ToteBarcodeLength = this.ToteBarcodeLength;
+                await this.identityService.SetBayOperationParamsAsync(machine);
 
                 this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; " +
                     $"IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference}; " +

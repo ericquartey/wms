@@ -1970,7 +1970,7 @@
     <value>Put box</value>
   </data>
   <data name="Box" xml:space="preserve">
-    <value>Box</value>
+    <value>Box (WMS custom)</value>
   </data>
   <data name="InsertBox" xml:space="preserve">
     <value>Insert box</value>
@@ -2398,5 +2398,26 @@
   </data>
   <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
     <value>Not editing available quantity of item in picking</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePick" xml:space="preserve">
+    <value>Double confirm barcode pick</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePut" xml:space="preserve">
+    <value>Double confirm barcode put</value>
+  </data>
+  <data name="IsEnabeNoteRules" xml:space="preserve">
+    <value>Notes must be filled</value>
+  </data>
+  <data name="IsLocalMachineItems" xml:space="preserve">
+    <value>Search items in this machine</value>
+  </data>
+  <data name="IsOrderList" xml:space="preserve">
+    <value>Order List (WMS custom)</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Item Id unique length (WMS custom)</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barcode length (WMS custom)</value>
   </data>
 </root>
