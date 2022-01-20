@@ -21,7 +21,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private const string NEW_LINE = "\r\n";
 
-        private readonly int homeTimeout = 16000;
+        private readonly int homeTimeout = 20000;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
