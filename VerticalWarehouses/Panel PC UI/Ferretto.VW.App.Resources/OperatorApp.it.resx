@@ -2025,4 +2025,7 @@
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Lunghezza codice contenitore esterno (WMS custom)</value>
   </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>Gestione tessuti (WMS custom)</value>
+  </data>
 </root>
