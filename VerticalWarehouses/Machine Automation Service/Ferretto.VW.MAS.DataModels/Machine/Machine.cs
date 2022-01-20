@@ -62,6 +62,21 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDisableQtyItemEditingPick { get; set; }
 
         /// <summary>
+        /// in inventory operation the barcode is only checked for matching and do not confirm operation
+        /// </summary>
+        public bool IsDoubleConfirmBarcodeInventory { get; set; }
+
+        /// <summary>
+        /// in pick operation the barcode is only checked for matching and do not confirm operation
+        /// </summary>
+        public bool IsDoubleConfirmBarcodePick { get; set; }
+
+        /// <summary>
+        /// in put operation the barcode is only checked for matching and do not confirm operation
+        /// </summary>
+        public bool IsDoubleConfirmBarcodePut { get; set; }
+
+        /// <summary>
         /// Get a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }

@@ -28,6 +28,7 @@ namespace Ferretto.VW.App.Accessories
             if (disposing)
             {
                 this.StopAsync();
+                this.wmsStatusTimer.Dispose();
             }
 
             this.isDisposed = true;

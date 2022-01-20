@@ -523,31 +523,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetBayOperationParams(bool? isEnableHandlingItemOperations, bool? isUpdatingStockByDifference, bool? isRequestConfirmForLastOperationOnLoadingUnit, bool? isEnableAddItem, bool? isDisableQtyItemEditingPick)
+        public void SetBayOperationParams(Machine machine)
         {
             lock (this.dataContext)
             {
-                var machine = this.dataContext.Machines.LastOrDefault();
-                if (isEnableHandlingItemOperations.HasValue)
-                {
-                    machine.IsEnableHandlingItemOperations = isEnableHandlingItemOperations.Value;
-                }
-                if (isUpdatingStockByDifference.HasValue)
-                {
-                    machine.IsUpdatingStockByDifference = isUpdatingStockByDifference.Value;
-                }
-                if (isRequestConfirmForLastOperationOnLoadingUnit.HasValue)
-                {
-                    machine.IsRequestConfirmForLastOperationOnLoadingUnit = isRequestConfirmForLastOperationOnLoadingUnit.Value;
-                }
-                if (isEnableAddItem.HasValue)
-                {
-                    machine.IsEnableAddItem = isEnableAddItem.Value;
-                }
-                if (isDisableQtyItemEditingPick.HasValue)
-                {
-                    machine.IsDisableQtyItemEditingPick = isDisableQtyItemEditingPick.Value;
-                }
+                var machineDB = this.dataContext.Machines.LastOrDefault();
+                machineDB.IsEnableHandlingItemOperations = machine.IsEnableHandlingItemOperations;
+                machineDB.IsUpdatingStockByDifference = machine.IsUpdatingStockByDifference;
+                machineDB.IsRequestConfirmForLastOperationOnLoadingUnit = machine.IsRequestConfirmForLastOperationOnLoadingUnit;
+                machineDB.IsEnableAddItem = machine.IsEnableAddItem;
+                machineDB.IsDisableQtyItemEditingPick = machine.IsDisableQtyItemEditingPick;
+                machineDB.IsDoubleConfirmBarcodeInventory = machine.IsDoubleConfirmBarcodeInventory;
+                machineDB.IsDoubleConfirmBarcodePick = machine.IsDoubleConfirmBarcodePick;
+                machineDB.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
+                machineDB.Box = machine.Box;
+                machineDB.EnabeNoteRules = machine.EnabeNoteRules;
+                machineDB.IsLocalMachineItems = machine.IsLocalMachineItems;
+                machineDB.IsOrderList = machine.IsOrderList;
+                machineDB.ItemUniqueIdLength = machine.ItemUniqueIdLength;
+                machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 this.dataContext.SaveChanges();
             }
         }
