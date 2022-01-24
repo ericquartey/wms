@@ -2420,4 +2420,7 @@
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length (WMS custom)</value>
   </data>
+  <data name="EnterBarcode" xml:space="preserve">
+    <value>Enter the barcode</value>
+  </data>
 </root>
