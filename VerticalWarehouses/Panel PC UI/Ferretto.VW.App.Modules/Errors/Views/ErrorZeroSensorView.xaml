@@ -1,0 +1,447 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Errors.Views.ErrorZeroSensorView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:convertes="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Errors.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:ErrorZeroSensorViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="608"
+            d:DesignWidth="774"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+  <ctrls:View.Resources>
+    <!--#region Converters-->
+    <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                    FalseBrushResourceName="PpcBackground"
+                                    TrueBrush="{StaticResource FerrettoBlue}" />
+    <!--#endregion-->
+
+    <!--#region DataTemplate Body-->
+    <DataTemplate DataType="{x:Type viewmodels:ErrorZeroSensorStepStart}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.FindZeroSensor}"
+                     TextWrapping="Wrap" />
+
+          <StackPanel Grid.Column="1"
+                      Margin="0,0,0,15"
+                      HorizontalAlignment="Right"
+                      Orientation="Vertical">
+            <TextBlock Margin="0"
+                       Style="{DynamicResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                       Text="{res:Loc ErrorsApp.ErrorCode}" />
+            <TextBlock Height="26"
+                       Background="{DynamicResource FerrettoRed}"
+                       Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                       Text="{Binding MachineError.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+          </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <controls:PpcLabeledText Grid.Column="0"
+                                   Margin="0,0,15,0"
+                                   HorizontalAlignment="Left"
+                                   ContentText="{Binding MachineError.Id}"
+                                   LabelText="{res:Loc ErrorsApp.Id}" />
+
+          <controls:PpcLabeledText Grid.Column="1"
+                                   Margin="0,0,15,0"
+                                   ContentText="{Binding MachineError.Description}"
+                                   LabelText="{res:Loc ErrorsApp.ErrorDescription}" />
+
+          <controls:PpcLabeledText Grid.Column="2"
+                                   HorizontalAlignment="Right"
+                                   ContentText="{Binding ErrorTime}"
+                                   LabelText="{res:Loc ErrorsApp.FirstSeen}" />
+
+          <controls:PpcLabeledText Grid.Row="1"
+                                   Grid.ColumnSpan="3"
+                                   Margin="0,15,0,0"
+                                   HorizontalAlignment="Left"
+                                   ContentText="{Binding MachineError.Reason}"
+                                   LabelText="{res:Loc ErrorsApp.ErrorReason}" />
+        </Grid>
+
+        <Image Grid.Row="2"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource Drawer2}"
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorGeneric, Converter={StaticResource BTVC}}" />
+
+        <Image Grid.Row="2"
+               Width="450"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource ErrorZeroElevator}"
+               Stretch="Fill"
+               Visibility="{Binding IsErrorZeroElevator, Converter={StaticResource BTVC}}" />
+
+        <Image Grid.Row="2"
+               Width="500"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource ErrorZeroBay}"
+               Stretch="Fill"
+               Visibility="{Binding IsErrorZeroBay, Converter={StaticResource BTVC}}" />
+
+
+        <Image Grid.Row="2"
+               Margin="0,15,0,15"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="{DynamicResource ErrorZeroBayExternal}"
+               Stretch="UniformToFill"
+               Visibility="{Binding IsErrorZeroBayExternal, Converter={StaticResource BTVC}}" />
+
+
+        <controls:PpcButton Grid.Row="3"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc General.Next}"
+                            Style="{StaticResource WizardConfirmButton}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorZeroSensorStepLoadunitOnElevator}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     TextWrapping="Wrap">
+            <Run Text="{res:Loc ErrorsApp.FindZeroElevator}" /><Run Text=":" />
+          </TextBlock>
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.FindZeroStartConfirm}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="2"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding FindZeroElevatorCommand}"
+                            Content="{res:Loc General.Start}"
+                            Style="{StaticResource WizardConfirmButton}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.MarkAsResolved}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorZeroSensorStepElevatorCalibration}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     TextWrapping="Wrap">
+            <Run Text="{res:Loc ErrorsApp.FindZeroElevator}" /><Run Text=":" />
+          </TextBlock>
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.ChainCalibration}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.MarkAsResolved}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorZeroSensorStepLoadunitOnBay1}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.FindZeroBay}"
+                     TextWrapping="Wrap" />
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.FindZeroStartConfirm}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="2"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding FindZeroBayCommand}"
+                            Content="{res:Loc General.Start}"
+                            Style="{StaticResource WizardConfirmButton}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.MarkAsResolved}" />
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type viewmodels:ErrorZeroSensorStepBay1Calibration}">
+      <Grid Margin="20"
+            DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="*" />
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2">
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                     Text="{res:Loc ErrorsApp.FindZeroBay}"
+                     TextWrapping="Wrap" />
+
+          <TextBlock Style="{StaticResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                     Text="{res:Loc InstallationApp.BayCalibration}"
+                     TextWrapping="Wrap" />
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="3"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding MoveToNextCommand}"
+                            Content="{res:Loc ErrorsApp.MarkAsResolved}" />
+      </Grid>
+    </DataTemplate>
+
+
+    <!--#endregion-->
+  </ctrls:View.Resources>
+
+  <Grid Margin="15,0,0,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="60" />
+      <ColumnDefinition />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+    <!--#region Title-->
+    <StackPanel Grid.ColumnSpan="4"
+                Orientation="Horizontal">
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{Binding MachineError.Description}" />
+    </StackPanel>
+    <!--#endregion-->
+
+    <!--#region Description-->
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="4"
+               Height="Auto"
+               Margin="0,0,15,0"
+               VerticalAlignment="Top"
+               Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+               Text="{Binding MachineError.Reason}"
+               TextWrapping="Wrap" />
+    <!--#endregion-->
+
+    <!--#region Tails-->
+    <controls:CardSensorPosition Grid.Row="2"
+                                 Grid.Column="3"
+                                 Width="230"
+                                 Height="90"
+                                 MinHeight="90"
+                                 Margin="0,15,15,0" />
+    <controls:CardSensorAxisVertical Grid.Row="3"
+                                     Grid.Column="3"
+                                     Width="230"
+                                     Height="90"
+                                     MinHeight="90"
+                                     Margin="0,10,15,0" />
+    <controls:CardSensorAxisHorizontal Grid.Row="4"
+                                       Grid.Column="3"
+                                       Width="230"
+                                       Height="90"
+                                       MinHeight="90"
+                                       Margin="0,10,15,0" />
+    <controls:CardSensorShutter Grid.Row="5"
+                                Grid.Column="3"
+                                Width="230"
+                                Height="90"
+                                MinHeight="90"
+                                Margin="0,10,15,0" />
+    <controls:CardSensorBay Grid.Row="6"
+                            Grid.Column="3"
+                            Width="230"
+                            Height="90"
+                            MinHeight="90"
+                            Margin="0,10,15,0" />
+    <!--#endregion-->
+
+    <!--#region Wizard-->
+    <Grid Grid.Row="2"
+          Grid.RowSpan="5"
+          Grid.ColumnSpan="3"
+          Margin="5,15,15,0">
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="42" />
+        <ColumnDefinition Width="17" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="1" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="1" />
+      </Grid.RowDefinitions>
+      <!--#region Body-->
+      <Border Grid.Row="0"
+              Grid.RowSpan="7"
+              Grid.Column="2"
+              Grid.ColumnSpan="2"
+              Margin="8,0,0,0"
+              Background="{DynamicResource PpcBackground}"
+              BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}"
+              CornerRadius="2,0,0,2">
+        <ContentControl Content="{Binding CurrentStep, Mode=OneWay}" />
+      </Border>
+      <!--#endregion-->
+      <!--#region TimeLine-->
+      <Border Grid.Row="0"
+              Grid.RowSpan="7"
+              Style="{DynamicResource BorderTimeLine}" />
+
+      <Grid Grid.Row="1">
+        <Border Background="{Binding StartStepVisible, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="1" />
+      </Grid>
+      <Grid Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding StartStepVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <Grid Grid.Row="2">
+        <Border Background="{Binding FindStepVisible, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="2" />
+      </Grid>
+      <Grid Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding FindStepVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+
+      <Grid Grid.Row="3">
+        <Border Background="{Binding CalibrateStepVisible, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                Style="{DynamicResource BorderTimeLineCirle}" />
+        <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                   Text="3" />
+      </Grid>
+      <Grid Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Visibility="{Binding CalibrateStepVisible, Converter={StaticResource BTVC}, Mode=OneWay}">
+        <Path Height="24"
+              VerticalAlignment="Center"
+              StrokeThickness="0"
+              Style="{DynamicResource BorderTimeLinePath}" />
+        <Path Style="{DynamicResource BorderTimeLinePath}" />
+      </Grid>
+
+      <!--#endregion-->
+    </Grid>
+    <!--#endregion-->
+  </Grid>
+</ctrls:View>

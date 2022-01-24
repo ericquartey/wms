@@ -181,7 +181,7 @@
     <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Vypněte stroj a znovu jej zapněte. Pokud problém přetrvává, obraťte se na asistenci.</value>
+    <value>Vypněte stroj a znovu jej zapněte. </value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Zkontrolujte, zda jsou tlačítka nouz zast deaktivovány a zda jsou všechny bezp snímače neAktiv.</value>

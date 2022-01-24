@@ -170,11 +170,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task SetAllOpertionBayAsync(bool pick, bool put, bool view, bool inventory, int bayid);
+        System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task SetAllOpertionBayAsync(bool pick, bool put, bool view, bool inventory, int bayid, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetLightAsync(bool enable);
@@ -1325,11 +1325,39 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsEnableAddItemAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnableAddItemDraperyAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnableAddItemDraperyAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnableHandlingItemOperationsAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsEnableHandlingItemOperationsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsRequestConfirmForLastOperationOnLoadingUnitAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsRequestConfirmForLastOperationOnLoadingUnitAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsUpdatingStockByDifferenceAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsUpdatingStockByDifferenceAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetBayOperationParamsAsync(Machine machine);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetBayOperationParamsAsync(Machine machine, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetMachineIdAsync(int newMachineId);
@@ -2428,6 +2456,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProductInMachine> GetProductByBarcodeAsync(string barcode);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProductInMachine> GetProductByBarcodeAsync(string barcode, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProductInMachine>> GetProductsAsync(int id, int? skip, int? take, string search, bool? groupByLot, bool? distinctBySerialNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2464,6 +2499,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetFillPercentageAsync(int id, int percentage, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateItemStockAfterFillingAsync(int id, int itemId, double quantity, ItemOptions itemOptions);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateItemStockAfterFillingAsync(int id, int itemId, double quantity, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateItemStockAfterPickingAsync(int id, int itemId, double quantity, ItemOptions itemOptions);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> UpdateItemStockAfterPickingAsync(int id, int itemId, double quantity, ItemOptions itemOptions, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> UpdateItemStockAsync(int id, int itemId, double stock, ItemOptions itemOptions);
@@ -2748,6 +2797,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<string> GetIpEndpointAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetSocketLinkEndOfLineAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetSocketLinkEndOfLineAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetSocketLinkPollingAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2797,11 +2853,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> SocketLinkIsEnabledAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout);
+        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout, bool socketLinkEndOfLine);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout, bool socketLinkEndOfLine, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync();
@@ -3790,6 +3846,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         FireAlarm = 91,
     
         BackupDatabaseOnServer = 92,
+    
+        ZeroSensorErrorAfterHoming = 93,
     
         InverterErrorBaseCode = 1000,
     
@@ -4903,8 +4961,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsDisableQtyItemEditingPick", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDisableQtyItemEditingPick { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsDoubleConfirmBarcodeInventory", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDoubleConfirmBarcodeInventory { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDoubleConfirmBarcodePick", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDoubleConfirmBarcodePick { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDoubleConfirmBarcodePut", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDoubleConfirmBarcodePut { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDrapery", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDrapery { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsEnableAddItem", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableAddItem { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsEnableHandlingItemOperations", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsEnableHandlingItemOperations { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }
@@ -4917,6 +4990,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsUpdatingStockByDifference", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsUpdatingStockByDifference { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ItemUniqueIdLength", Required = Newtonsoft.Json.Required.Always)]
         public int ItemUniqueIdLength { get; set; }
@@ -5883,6 +5959,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ServiceUrl", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Uri ServiceUrl { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SocketLinkEndOfLine", Required = Newtonsoft.Json.Required.Always)]
+        public bool SocketLinkEndOfLine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("SocketLinkIsEnabled", Required = Newtonsoft.Json.Required.Always)]
         public bool SocketLinkIsEnabled { get; set; }

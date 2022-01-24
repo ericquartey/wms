@@ -175,7 +175,7 @@
     <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Isključite i pon.uključite stroj. Ako se problem nastavi, obratite se sl. za potporu.</value>
+    <value>Isključite i pon.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Provj. da su sva tipkala za isklop u st. nužde deaktiv. kao i da su svi sigurnosni senzori deaktivirani.</value>

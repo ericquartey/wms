@@ -275,7 +275,7 @@ namespace Ferretto.VW.Installer.ViewModels
             if (tsUrl != null)
             {
                 this.PersistConfigurationKey(TelemetryServiceUrlKey, tsUrl.ToString(), panelPcConfigFileName);
-                this.PersistConfigurationKey(TelemetryServiceHubsKey, tsUrl.ToString() + "/telemetry", panelPcConfigFileName);
+                this.PersistConfigurationKey(TelemetryServiceHubsKey, tsUrl.ToString() + "telemetry", panelPcConfigFileName);
             }
 
             this.logger.Debug($"Application configuration updated.");

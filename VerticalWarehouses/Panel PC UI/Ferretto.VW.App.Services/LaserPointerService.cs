@@ -405,7 +405,10 @@ namespace Ferretto.VW.App.Services
                             break;
                         }
                         await this.LaserPointerConfigureAsync();
-                        this.PollingStep = "Home";
+                        // TODO - bypass laser home command at start
+                        //this.PollingStep = "Home";
+
+                        this.PollingStep = "Active";
                         this.logger.Debug($"PollingStep {this.PollingStep}; isEnabled {this.isEnabled}");
                         break;
                     }

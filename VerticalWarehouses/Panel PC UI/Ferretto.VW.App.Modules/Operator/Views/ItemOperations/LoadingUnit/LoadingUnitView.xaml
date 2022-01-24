@@ -275,7 +275,7 @@
                                         Command="{Binding OperationCommand}"
                                         CommandParameter="{x:Static res:OperatorApp.Add}"
                                         Content="{res:Loc OperatorApp.Add}"
-                                        Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVIC}}"/>
+                                        Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}"/>
                     <!--  Visibility="{Binding IsAddItemFeatureForDraperyManagementAvailable, Converter={StaticResource BTVC}}" />  -->
 
                     <controls:PpcButton Margin="15,0,15,0"
@@ -286,7 +286,8 @@
                                         CommandParameter="{x:Static res:OperatorApp.Adjustment}"
                                         Content="{res:Loc OperatorApp.Adjustment}"
                                         IsActive="{Binding IsAdjustmentVisible}"
-                                        Style="{DynamicResource PpcButtonMarkStyle}" />
+                                        Style="{DynamicResource PpcButtonMarkStyle}"
+                                        Visibility="{Binding IsAdjustmentButtonVisible, Converter={StaticResource BTVC}}"/>
 
                     <controls:PpcButton Margin="15,15,15,0"
                                         HorizontalAlignment="Right"

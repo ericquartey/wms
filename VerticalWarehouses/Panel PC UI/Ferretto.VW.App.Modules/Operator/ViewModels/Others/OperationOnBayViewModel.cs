@@ -14,13 +14,49 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineIdentityWebService identityService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private bool barcodeAutomaticPut;
 
         private Bay bay;
 
+        private bool canSave;
+
         private bool inventory;
 
+        private bool isBox;
+
         private bool isBusy;
+
+        private bool isDisableQtyItemEditingPick;
+
+        private bool isDoubleConfirmBarcodeInventory;
+
+        private bool isDoubleConfirmBarcodePick;
+
+        private bool isDoubleConfirmBarcodePut;
+
+        private bool isDrapery;
+
+        private bool isEnableAddItem;
+
+        private bool isEnableHandlingItemOperations;
+
+        private bool isEnableNoteRules;
+
+        private bool isLocalMachineItems;
+
+        private bool isOrderList;
+
+        private bool isRequestConfirmForLastOperationOnLoadingUnit;
+
+        private bool isUpdatingStockByDifference;
+
+        private int itemUniqueIdLength;
 
         private bool pick;
 
@@ -28,57 +64,159 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand saveSettingsCommand;
 
+        private int toteBarcodeLength;
+
         private bool view;
 
         #endregion
 
         #region Constructors
 
-        public OperationOnBayViewModel(IMachineBaysWebService machineBaysWebService)
+        public OperationOnBayViewModel(IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService identityService,
+            IMachineConfigurationWebService machineConfigurationWebService)
             : base(PresentationMode.Operator)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
 
         #region Properties
 
+        public bool BarcodeAutomaticPut
+        {
+            get => this.barcodeAutomaticPut;
+            set => this.SetProperty(ref this.barcodeAutomaticPut, value, this.CanExecute);
+        }
+
         public Bay Bay
         {
             get => this.bay;
-            set => this.SetProperty(ref this.bay, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.bay, value, this.CanExecute);
         }
 
         public bool Inventory
         {
             get => this.inventory;
-            set => this.SetProperty(ref this.inventory, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.inventory, value, this.CanExecute);
+        }
+
+        public bool IsBox
+        {
+            get => this.isBox;
+            set => this.SetProperty(ref this.isBox, value, this.CanExecute);
+        }
+
+        public bool IsDisableQtyItemEditingPick
+        {
+            get => this.isDisableQtyItemEditingPick;
+            set => this.SetProperty(ref this.isDisableQtyItemEditingPick, value, this.CanExecute);
+        }
+
+        // not used
+        public bool IsDoubleConfirmBarcodeInventory
+        {
+            get => this.isDoubleConfirmBarcodeInventory;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodeInventory, value, this.CanExecute);
+        }
+
+        public bool IsDoubleConfirmBarcodePick
+        {
+            get => this.isDoubleConfirmBarcodePick;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodePick, value, this.CanExecute);
+        }
+
+        public bool IsDoubleConfirmBarcodePut
+        {
+            get => this.isDoubleConfirmBarcodePut;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodePut, value, this.CanExecute);
+        }
+
+        public bool IsDrapery
+        {
+            get => this.isDrapery;
+            set => this.SetProperty(ref this.isDrapery, value, this.CanExecute);
+        }
+
+        public bool IsEnabeNoteRules
+        {
+            get => this.isEnableNoteRules;
+            set => this.SetProperty(ref this.isEnableNoteRules, value, this.CanExecute);
+        }
+
+        public bool IsEnableAddItem
+        {
+            get => this.isEnableAddItem;
+            set => this.SetProperty(ref this.isEnableAddItem, value, this.CanExecute);
+        }
+
+        public bool IsEnableHandlingItemOperations
+        {
+            get => this.isEnableHandlingItemOperations;
+            set => this.SetProperty(ref this.isEnableHandlingItemOperations, value, this.CanExecute);
+        }
+
+        public bool IsLocalMachineItems
+        {
+            get => this.isLocalMachineItems;
+            set => this.SetProperty(ref this.isLocalMachineItems, value, this.CanExecute);
+        }
+
+        public bool IsOrderList
+        {
+            get => this.isOrderList;
+            set => this.SetProperty(ref this.isOrderList, value, this.CanExecute);
+        }
+
+        public bool IsRequestConfirmForLastOperationOnLoadingUnit
+        {
+            get => this.isRequestConfirmForLastOperationOnLoadingUnit;
+            set => this.SetProperty(ref this.isRequestConfirmForLastOperationOnLoadingUnit, value, this.CanExecute);
+        }
+
+        public bool IsUpdatingStockByDifference
+        {
+            get => this.isUpdatingStockByDifference;
+            set => this.SetProperty(ref this.isUpdatingStockByDifference, value, this.CanExecute);
+        }
+
+        public int ItemUniqueIdLength
+        {
+            get => this.itemUniqueIdLength;
+            set => this.SetProperty(ref this.itemUniqueIdLength, value, this.CanExecute);
         }
 
         public bool Pick
         {
             get => this.pick;
-            set => this.SetProperty(ref this.pick, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.pick, value, this.CanExecute);
         }
 
         public bool Put
         {
             get => this.put;
-            set => this.SetProperty(ref this.put, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.put, value, this.CanExecute);
         }
 
-        public ICommand SaveSettingsCommand =>
-                                            this.saveSettingsCommand
+        public ICommand SaveSettingsCommand => this.saveSettingsCommand
             ??
             (this.saveSettingsCommand = new DelegateCommand(
                 async () => await this.SaveSettingsAsync(),
                 this.CanSave));
 
+        public int ToteBarcodeLength
+        {
+            get => this.toteBarcodeLength;
+            set => this.SetProperty(ref this.toteBarcodeLength, value, this.CanExecute);
+        }
+
         public bool View
         {
             get => this.view;
-            set => this.SetProperty(ref this.view, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.view, value, this.CanExecute);
         }
 
         #endregion
@@ -87,7 +225,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.LoadData();
+            await this.LoadData();
+
+            this.canSave = false;
 
             await base.OnAppearedAsync();
         }
@@ -99,29 +239,47 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.saveSettingsCommand?.RaiseCanExecuteChanged();
         }
 
+        private void CanExecute()
+        {
+            this.canSave = true;
+            this.RaiseCanExecuteChanged();
+        }
+
         private bool CanSave()
         {
             return !this.MachineStatus.IsMoving &&
                 !this.isBusy &&
-                this.Bay != null &&
-                (this.Bay.Inventory != this.inventory ||
-                this.Bay.Pick != this.pick ||
-                this.Bay.Put != this.put ||
-                this.Bay.View != this.view);
+                this.canSave;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             try
             {
                 this.isBusy = true;
                 this.Bay = await this.machineBaysWebService.GetByNumberAsync(this.MachineService.BayNumber);
-                //this.Bay = this.MachineService.Bay;
-                var bays = this.MachineService.Bays;
                 this.Pick = this.Bay.Pick;
                 this.Put = this.Bay.Put;
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
+                this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
+
+                var configuration = await this.machineConfigurationWebService.GetAsync();
+                this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
+                this.IsUpdatingStockByDifference = configuration.Machine.IsUpdatingStockByDifference;
+                this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
+                this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
+                this.IsDrapery = configuration.Machine.IsDrapery;
+                this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
+                this.IsDoubleConfirmBarcodeInventory = configuration.Machine.IsDoubleConfirmBarcodeInventory;
+                this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
+                this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
+                this.IsBox = configuration.Machine.Box;
+                this.IsEnabeNoteRules = configuration.Machine.EnabeNoteRules;
+                this.IsLocalMachineItems = configuration.Machine.IsLocalMachineItems;
+                this.IsOrderList = configuration.Machine.IsOrderList;
+                this.ItemUniqueIdLength = configuration.Machine.ItemUniqueIdLength;
+                this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
             }
             catch (Exception ex)
             {
@@ -140,7 +298,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineBaysWebService.SetAllOpertionBayAsync(this.pick, this.put, this.view, this.inventory, this.bay.Id);
+                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id);
+
+                var machine = new Machine();
+                machine.IsEnableHandlingItemOperations = this.IsEnableHandlingItemOperations;
+                machine.IsUpdatingStockByDifference = this.IsUpdatingStockByDifference;
+                machine.IsRequestConfirmForLastOperationOnLoadingUnit = this.IsRequestConfirmForLastOperationOnLoadingUnit;
+                machine.IsEnableAddItem = this.IsEnableAddItem;
+                machine.IsDisableQtyItemEditingPick = this.IsDisableQtyItemEditingPick;
+                machine.IsDoubleConfirmBarcodeInventory = this.IsDoubleConfirmBarcodeInventory;
+                machine.IsDoubleConfirmBarcodePick = this.IsDoubleConfirmBarcodePick;
+                machine.IsDoubleConfirmBarcodePut = this.IsDoubleConfirmBarcodePut;
+                machine.Box = this.IsBox;
+                machine.EnabeNoteRules = this.IsEnabeNoteRules;
+                machine.IsLocalMachineItems = this.IsLocalMachineItems;
+                machine.IsOrderList = this.IsOrderList;
+                machine.ItemUniqueIdLength = this.ItemUniqueIdLength;
+                machine.ToteBarcodeLength = this.ToteBarcodeLength;
+                machine.IsDrapery = this.IsDrapery;
+                await this.identityService.SetBayOperationParamsAsync(machine);
+
+                this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; " +
+                    $"IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference}; " +
+                    $"IsRequestConfirmForLastOperationOnLoadingUnit = {this.IsRequestConfirmForLastOperationOnLoadingUnit};" +
+                    $"IsEnableAddItem = {this.IsEnableAddItem};" +
+                    $"IsDisableQtyItemEditingPick = {this.IsDisableQtyItemEditingPick} ");
             }
             catch (Exception ex)
             {
@@ -148,7 +330,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             finally
             {
-                this.LoadData();
+                await this.LoadData();
+
+                this.canSave = false;
 
                 this.IsWaitingForResponse = false;
 

@@ -462,6 +462,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsEnableAddItemDrapery()
+        {
+            lock (this.dataContext)
+            {
+                var machine = this.dataContext.Machines.FirstOrDefault();
+                return machine != null && machine.IsEnableAddItem && machine.IsDrapery;
+            }
+        }
+
+        public bool IsEnableHandlingItemOperations()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsEnableHandlingItemOperations ?? false;
+            }
+        }
+
         public bool IsFireAlarmActive()
         {
             lock (this.dataContext)
@@ -504,6 +521,38 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.FirstOrDefault().TouchHelper;
+            }
+        }
+
+        public bool IsUpdatingStockByDifference()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsUpdatingStockByDifference ?? false;
+            }
+        }
+
+        public void SetBayOperationParams(Machine machine)
+        {
+            lock (this.dataContext)
+            {
+                var machineDB = this.dataContext.Machines.LastOrDefault();
+                machineDB.IsEnableHandlingItemOperations = machine.IsEnableHandlingItemOperations;
+                machineDB.IsUpdatingStockByDifference = machine.IsUpdatingStockByDifference;
+                machineDB.IsRequestConfirmForLastOperationOnLoadingUnit = machine.IsRequestConfirmForLastOperationOnLoadingUnit;
+                machineDB.IsEnableAddItem = machine.IsEnableAddItem;
+                machineDB.IsDisableQtyItemEditingPick = machine.IsDisableQtyItemEditingPick;
+                machineDB.IsDoubleConfirmBarcodeInventory = machine.IsDoubleConfirmBarcodeInventory;
+                machineDB.IsDoubleConfirmBarcodePick = machine.IsDoubleConfirmBarcodePick;
+                machineDB.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
+                machineDB.Box = machine.Box;
+                machineDB.EnabeNoteRules = machine.EnabeNoteRules;
+                machineDB.IsLocalMachineItems = machine.IsLocalMachineItems;
+                machineDB.IsOrderList = machine.IsOrderList;
+                machineDB.ItemUniqueIdLength = machine.ItemUniqueIdLength;
+                machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
+                machineDB.IsDrapery = machine.IsDrapery;
+                this.dataContext.SaveChanges();
             }
         }
 

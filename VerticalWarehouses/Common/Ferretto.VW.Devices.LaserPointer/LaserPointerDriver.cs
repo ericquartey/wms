@@ -21,6 +21,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private const string NEW_LINE = "\r\n";
 
+        private readonly int homeTimeout = 20000;
+
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly ConcurrentQueue<string> messagesReceivedQueue;
@@ -129,6 +131,10 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public bool Configure(IPAddress ipAddress, int port, double xOffset = 0, double yOffset = 0, double zOffsetLowerPosition = 0, double zOffsetUpperPosition = 0)
         {
+            if (ipAddress != this.ipAddress || port != this.port)
+            {
+                this.Disconnect();
+            }
             this.ipAddress = ipAddress;
             this.port = port;
             this.xOffset = xOffset;
@@ -249,8 +255,9 @@ namespace Ferretto.VW.Devices.LaserPointer
                             this.logger.Trace($"ExecuteCommands();Write");
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             this.stream = this.client.GetStream();
-                            this.stream.ReadTimeout = this.tcpTimeout;
-                            this.stream.WriteTimeout = this.tcpTimeout;
+                            var timeout = sendMessage.Contains("HOME") ? this.homeTimeout : this.tcpTimeout;
+                            this.stream.ReadTimeout = timeout;
+                            this.stream.WriteTimeout = timeout;
                             this.stream.Write(data, 0, data.Length);
                             this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 

@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adjustment quantity [{0}].
+        ///   Looks up a localized string similar to Stock quantity [{0}].
         /// </summary>
         public static string AdjustmentQuantity {
             get {
@@ -219,6 +219,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Backwards {
             get {
                 return ResourceManager.GetString("Backwards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Barcode automatic put.
+        /// </summary>
+        public static string BarcodeAutomaticPut {
+            get {
+                return ResourceManager.GetString("BarcodeAutomaticPut", resourceCulture);
             }
         }
         
@@ -493,7 +502,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Box.
+        ///   Looks up a localized string similar to Box (WMS custom).
         /// </summary>
         public static string Box {
             get {
@@ -669,6 +678,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CellsStatisticsTotalUsedCells {
             get {
                 return ResourceManager.GetString("CellsStatisticsTotalUsedCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock variation.
+        /// </summary>
+        public static string ChangingStock {
+            get {
+                return ResourceManager.GetString("ChangingStock", resourceCulture);
             }
         }
         
@@ -1528,7 +1546,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer moving.
+        ///   Looks up a localized string similar to Tray moving.
         /// </summary>
         public static string DrawerCompactingDetailDrawer {
             get {
@@ -1618,7 +1636,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compaction drawer procedure.
+        ///   Looks up a localized string similar to Compaction Tray procedure.
         /// </summary>
         public static string DrawerCompactingHeader {
             get {
@@ -1690,7 +1708,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer Id.
+        ///   Looks up a localized string similar to Tray Id.
         /// </summary>
         public static string DrawerSaturationDataGridHeaderDrawerId {
             get {
@@ -1735,7 +1753,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer measure (mm).
+        ///   Looks up a localized string similar to Tray measure (mm).
         /// </summary>
         public static string DrawerSpaceSaturazionDrawerMeasure {
             get {
@@ -1753,7 +1771,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Statistics: drawer space saturation..
+        ///   Looks up a localized string similar to Statistics: Tray space saturation..
         /// </summary>
         public static string DrawerSpaceSaturazionHeader {
             get {
@@ -1789,7 +1807,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for new drawer.
+        ///   Looks up a localized string similar to Waiting for new Tray.
         /// </summary>
         public static string DrawerWaitPageHeader {
             get {
@@ -2221,7 +2239,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer quantity.
+        ///   Looks up a localized string similar to Tray quantity.
         /// </summary>
         public static string GeneralInfoTotDrawers {
             get {
@@ -2329,7 +2347,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Call Drawer.
+        ///   Looks up a localized string similar to Call Tray.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
             get {
@@ -2338,7 +2356,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Immediate drawer call.
+        ///   Looks up a localized string similar to Immediate Tray call.
         /// </summary>
         public static string ImmediateDrawerCallHeader {
             get {
@@ -2545,6 +2563,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not editing available quantity of item in picking.
+        /// </summary>
+        public static string IsDisableQtyItemEditingPick {
+            get {
+                return ResourceManager.GetString("IsDisableQtyItemEditingPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsDone.
         /// </summary>
         public static string IsDone {
@@ -2554,11 +2581,101 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double confirm barcode pick.
+        /// </summary>
+        public static string IsDoubleConfirmBarcodePick {
+            get {
+                return ResourceManager.GetString("IsDoubleConfirmBarcodePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double confirm barcode put.
+        /// </summary>
+        public static string IsDoubleConfirmBarcodePut {
+            get {
+                return ResourceManager.GetString("IsDoubleConfirmBarcodePut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drapery handling (WMS custom).
+        /// </summary>
+        public static string IsDrapery {
+            get {
+                return ResourceManager.GetString("IsDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes must be filled.
+        /// </summary>
+        public static string IsEnabeNoteRules {
+            get {
+                return ResourceManager.GetString("IsEnabeNoteRules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable add item.
+        /// </summary>
+        public static string IsEnableAddItem {
+            get {
+                return ResourceManager.GetString("IsEnableAddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search item by barcode in exchange table (WMS custom).
+        /// </summary>
+        public static string IsEnableHandlingItemOperations {
+            get {
+                return ResourceManager.GetString("IsEnableHandlingItemOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search items in this machine.
+        /// </summary>
+        public static string IsLocalMachineItems {
+            get {
+                return ResourceManager.GetString("IsLocalMachineItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order List (WMS custom).
+        /// </summary>
+        public static string IsOrderList {
+            get {
+                return ResourceManager.GetString("IsOrderList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request confirm for last operation on load unit.
+        /// </summary>
+        public static string IsRequestConfirmForLastOperationOnLoadingUnit {
+            get {
+                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsToDo.
         /// </summary>
         public static string IsToDo {
             get {
                 return ResourceManager.GetString("IsToDo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Stock by difference.
+        /// </summary>
+        public static string IsUpdatingStockByDifference {
+            get {
+                return ResourceManager.GetString("IsUpdatingStockByDifference", resourceCulture);
             }
         }
         
@@ -2842,11 +2959,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Items found in exchange table.
+        /// </summary>
+        public static string ItemsFilteredByTable {
+            get {
+                return ResourceManager.GetString("ItemsFilteredByTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stock.
         /// </summary>
         public static string ItemStock {
             get {
                 return ResourceManager.GetString("ItemStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Id unique length (WMS custom).
+        /// </summary>
+        public static string ItemUniqueIdLength {
+            get {
+                return ResourceManager.GetString("ItemUniqueIdLength", resourceCulture);
             }
         }
         
@@ -2878,7 +3013,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is the last operation on this drawer placed the article and press OK.
+        ///   Looks up a localized string similar to This is the last operation on this Tray placed the article and press OK.
         /// </summary>
         public static string LastOperationMessage {
             get {
@@ -3274,7 +3409,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawers moved in bay 1.
+        ///   Looks up a localized string similar to Trays moved in bay 1.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay1 {
             get {
@@ -3283,7 +3418,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawers moved in bay 2.
+        ///   Looks up a localized string similar to Trays moved in bay 2.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay2 {
             get {
@@ -3292,7 +3427,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawers moved in bay 3.
+        ///   Looks up a localized string similar to Trays moved in bay 3.
         /// </summary>
         public static string MachineStatisticsSectionBaysBay3 {
             get {
@@ -3913,7 +4048,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer operations.
+        ///   Looks up a localized string similar to Tray operations.
         /// </summary>
         public static string NavigationMainMenuDrawerOperation {
             get {
@@ -4111,7 +4246,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid notes field operation not confirmed.
+        ///   Looks up a localized string similar to Invalid reason or notes, operation not confirmed.
         /// </summary>
         public static string NoteNotValid {
             get {
@@ -4228,7 +4363,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer.
+        ///   Looks up a localized string similar to Tray.
         /// </summary>
         public static string OtherDrawerDataGridHeaderDrawer {
             get {
@@ -4291,7 +4426,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer Call.
+        ///   Looks up a localized string similar to Tray Call.
         /// </summary>
         public static string OtherNavigationImmediateDrawerCall {
             get {
@@ -4309,7 +4444,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer operations.
+        ///   Looks up a localized string similar to Tray operations.
         /// </summary>
         public static string OtherNavigationImmediateDrawerCallDescription {
             get {
@@ -4480,6 +4615,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item not available.
+        /// </summary>
+        public static string ProductNotAvailable {
+            get {
+                return ResourceManager.GetString("ProductNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put.
         /// </summary>
         public static string Put {
@@ -4543,7 +4687,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recall Drawer.
+        ///   Looks up a localized string similar to Recall Tray.
         /// </summary>
         public static string RecallDrawer {
             get {
@@ -4638,6 +4782,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Resume {
             get {
                 return ResourceManager.GetString("Resume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieving item failed.
+        /// </summary>
+        public static string RetrievingItemFailed {
+            get {
+                return ResourceManager.GetString("RetrievingItemFailed", resourceCulture);
             }
         }
         
@@ -4885,7 +5038,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer.
+        ///   Looks up a localized string similar to Tray.
         /// </summary>
         public static string StatisticsDrawerWeightSaturationDataGridHeaderDrawer {
             get {
@@ -5340,6 +5493,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ToteBarcodeAcquired {
             get {
                 return ResourceManager.GetString("ToteBarcodeAcquired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tote barcode length (WMS custom).
+        /// </summary>
+        public static string ToteBarcodeLength {
+            get {
+                return ResourceManager.GetString("ToteBarcodeLength", resourceCulture);
             }
         }
         

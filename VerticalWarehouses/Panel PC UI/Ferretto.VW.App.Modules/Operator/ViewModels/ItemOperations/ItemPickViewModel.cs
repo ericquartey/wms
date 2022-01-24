@@ -46,6 +46,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
@@ -62,6 +63,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   deviceService,
                   areasWebService,
                   machineIdentityWebService,
+                  machineConfigurationWebService,
                   navigationService,
                   operatorNavigationService,
                   loadingUnitsWebService,
@@ -173,7 +175,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
             {
+                userAction.SetDoubleConfirm(this.IsDoubleConfirmBarcodePick);
                 await base.CommandUserActionAsync(userAction);
+                return;
+            }
+
+            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
+            {
+                await this.ConfirmOperationAsync(this.barcodeOk);
                 return;
             }
 
@@ -186,7 +195,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             // Handle the adding drapery item
-            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemAsync();
+            var bIsAddItemParameterConfigured = await this.MachineIdentityWebService.IsEnableAddItemDraperyAsync();
             if (bIsAddItemParameterConfigured && userAction.UserAction == UserAction.NotSpecified)
             {
                 await base.CommandUserActionAsync(userAction);
@@ -228,7 +237,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await base.OnAppearedAsync();
 
-            this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemAsync() &&
+            this.IsAddItemFeatureAvailable = await this.MachineIdentityWebService.IsEnableAddItemDraperyAsync() &&
                 this.IsCurrentDraperyItem;
 
             // Setup only reserved for Tendaggi Paradiso

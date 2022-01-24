@@ -40,6 +40,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.areasWmsWebService.GetItemListsAsync(id, machineId, bayNumber));
         }
 
+        [HttpGet("{barcode}/get-product")]
+        public async Task<ActionResult<ProductInMachine>> GetProductByBarcodeAsync(string barcode)
+        {
+            return this.Ok(await this.areasWmsWebService.GetProductByBarcodeAsync(barcode));
+        }
+
         [HttpGet("{id}/products")]
         public async Task<ActionResult<IEnumerable<ProductInMachine>>> GetProductsAsync(int id, int skip = 0, int? take = null, string search = null, bool groupByLot = false, bool distinctBySerialNumber = false)
         {

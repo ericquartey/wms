@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool noteEnabled;
 
-        private DelegateCommand selectOperationOnBayCommand;
-
         #endregion
 
         #region Constructors
@@ -44,38 +42,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.noteEnabled;
             set => this.SetProperty(ref this.noteEnabled, value);
-        }
-
-        public ICommand SelectOperationOnBayCommand =>
-                                    this.selectOperationOnBayCommand
-            ??
-            (this.selectOperationOnBayCommand = new DelegateCommand(
-                () => this.ShowOperationOnBay(),
-                this.CanExecute));
-
-        #endregion
-
-        #region Methods
-
-        private bool CanExecute()
-        {
-            return true;
-        }
-
-        private void ShowOperationOnBay()
-        {
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.Others.OPERATIONONBAY,
-                    null,
-                    trackCurrentView: true);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
         }
 
         #endregion

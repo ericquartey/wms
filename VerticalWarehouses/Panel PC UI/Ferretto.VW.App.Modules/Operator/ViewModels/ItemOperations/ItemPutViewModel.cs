@@ -42,6 +42,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             INavigationService navigationService,
             IOperatorNavigationService operatorNavigationService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
@@ -58,6 +59,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   deviceService,
                   areasWebService,
                   machineIdentityWebService,
+                  machineConfigurationWebService,
                   navigationService,
                   operatorNavigationService,
                   loadingUnitsWebService,
@@ -96,7 +98,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmOperationAsync("0"),
+                async () => await this.ConfirmOperationAsync(this.barcodeOk),
                 this.CanConfirmOperationPut));
 
         public bool ConfirmPartialOperation
@@ -141,8 +143,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.confirmOperation = this.MissionOperation != null &&
-                this.InputQuantity.Value == this.MissionRequestedQuantity &&
-                !this.IsOperationCanceled;
+                    this.InputQuantity.Value == this.MissionRequestedQuantity &&
+                    !this.IsOperationCanceled;
 
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value >= 0 &&
@@ -217,14 +219,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     if (messageBoxResult == DialogResult.OK)
                     {
                         await base.CommandUserActionAsync(userAction);
-                        return;
                     }
                 }
                 else
                 {
+                    userAction.SetDoubleConfirm(this.IsDoubleConfirmBarcodePut);
                     await base.CommandUserActionAsync(userAction);
-                    return;
                 }
+            }
+            else if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
+            {
+                await this.ConfirmOperationAsync(this.barcodeOk);
             }
         }
 
@@ -273,7 +278,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
                 }
 
                 if (canComplete)

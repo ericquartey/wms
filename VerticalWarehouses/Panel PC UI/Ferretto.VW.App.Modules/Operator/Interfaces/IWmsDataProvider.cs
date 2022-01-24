@@ -24,6 +24,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         void Start();
 
+        Task UpdateItemStockAfterFillingAsync(int compartmentId, int itemId, double quantity, int? reasonId = null, string reasonNotes = null, string lot = null, string serialNumber = null, string userName = null, int? orderId = null);
+
+        Task UpdateItemStockAfterPickingAsync(int compartmentId, int itemId, double quantity, int? reasonId = null, string reasonNotes = null, string lot = null, string serialNumber = null, string userName = null, int? orderId = null);
+
         Task UpdateItemStockAsync(int compartmentId, int itemId, double stock, int? reasonId = null, string reasonNotes = null, string lot = null, string serialNumber = null, string userName = null, int? orderId = null);
 
         #endregion

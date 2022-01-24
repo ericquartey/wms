@@ -63,6 +63,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.ServiceUrl?.ToString());
         }
 
+        [HttpGet("get-socketlink-endofline")]
+        public ActionResult<bool> GetSocketLinkEndOfLine()
+        {
+            return this.Ok(this.wmsSettingsProvider.SocketLinkEndOfLine);
+        }
+
         [HttpGet("get-socketlink-polling")]
         public ActionResult<int> GetSocketLinkPolling()
         {
@@ -106,7 +112,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPut]
-        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout)
+        public async Task UpdateAsync(bool isEnabled, string httpUrl, bool socketLinkIsEnabled, int socketLinkPort, int socketLinkTimeout, int socketLinkPolling, int connectionTimeout, bool socketLinkEndOfLine)
         {
             if (isEnabled && string.IsNullOrEmpty(httpUrl))
             {
@@ -126,6 +132,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.wmsSettingsProvider.SocketLinkPort = socketLinkPort;
             this.wmsSettingsProvider.SocketLinkTimeout = socketLinkTimeout;
             this.wmsSettingsProvider.SocketLinkPolling = socketLinkPolling;
+            this.wmsSettingsProvider.SocketLinkEndOfLine = socketLinkEndOfLine;
         }
 
         [HttpPut("update-wms-time-settings")]

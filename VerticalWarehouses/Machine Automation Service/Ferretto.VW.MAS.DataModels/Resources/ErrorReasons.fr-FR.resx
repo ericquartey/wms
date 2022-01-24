@@ -181,7 +181,7 @@
     <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Erreur momentanée. Si le problème persiste, éteindre la machine et rallumer après 15 secondes.</value>
+    <value>Erreur momentanée.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Vérifier que les boutons d’arrêt d’urgence soient désactivés et que tous les capteurs de sécurité soient désactivés.</value>

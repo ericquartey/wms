@@ -12,9 +12,13 @@ namespace Ferretto.VW.MAS.SocketLink
 
         public const char CARRIAGE_RETURN = (char)13;
 
+        public const char LINE_FEED = (char)10;
+
         public const char SEPARATOR = '|';
 
         private readonly HeaderType header = HeaderType.CMD_NOT_RECOGNIZED;
+
+        private readonly bool isLineFeed;
 
         private readonly List<string> payload = new List<string>();
 
@@ -22,9 +26,15 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Constructors
 
-        public SocketLinkCommand(HeaderType header, List<string> payload = null)
+        public SocketLinkCommand(bool isLineFeed)
+        {
+            this.isLineFeed = isLineFeed;
+        }
+
+        public SocketLinkCommand(HeaderType header, bool isLineFeed, List<string> payload = null)
         {
             this.header = header;
+            this.isLineFeed = isLineFeed;
 
             if (payload != null)
             {
@@ -258,11 +268,6 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Methods
 
-        public static string InvalidFormat(string description)
-        {
-            return HeaderType.INVALID_FORMAT + SEPARATOR + description + CARRIAGE_RETURN;
-        }
-
         public bool AddPayload(string field)
         {
             if (field == null)
@@ -271,6 +276,7 @@ namespace Ferretto.VW.MAS.SocketLink
             }
 
             field = field?.Replace(CARRIAGE_RETURN, ' ');
+            field = field?.Replace(LINE_FEED, ' ');
             field = field?.Replace(SEPARATOR, ' ');
 
             this.payload.Add(field);
@@ -490,7 +496,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
         public override string ToString()
         {
-            return this.header.ToString() + SEPARATOR + string.Join(SEPARATOR, this.payload) + CARRIAGE_RETURN;
+            return this.header.ToString() + SEPARATOR + string.Join(SEPARATOR, this.payload) + (this.isLineFeed ? LINE_FEED : CARRIAGE_RETURN);
         }
 
         #endregion

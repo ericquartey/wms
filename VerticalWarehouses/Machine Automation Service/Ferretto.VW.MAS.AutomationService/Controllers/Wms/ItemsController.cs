@@ -60,6 +60,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.itemsWmsWebService.GetCompartmentsAsync(id));
         }
 
+        //x [HttpGet("{barcode}/get-item-name")]
+        //x public async Task<ActionResult<string>> GetItemNameByBarcode(string barcode)
+        //x {
+        //x     return this.Ok(await this.itemsWmsWebService.GetItemNameByBarcodeAsync(barcode));
+        //x }
+
+        //x [HttpGet("{barcode}/get-lot")]
+        //x public async Task<ActionResult<string>> GetLotByBarcode(string barcode)
+        //x {
+        //x     return this.Ok(await this.itemsWmsWebService.GetLotByBarcodeAsync(barcode));
+        //x }
+
         [HttpGet("{barcode}/is-drapery-exist")]
         public async Task<ActionResult<bool>> IsDraperyExistByDraperyIdBarcodeAsync(string barcode)
         {

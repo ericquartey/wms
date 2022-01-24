@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:WmsControls="clr-namespace:Ferretto.Common.Controls.WPF;assembly=Ferretto.Common.Controls.WPF"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -80,5 +81,6 @@
               Visibility="{Binding IsListModeEnabled, Converter={StaticResource BTVC}}">
             <views:ItemsCompartmentsDataGridView />
         </Grid>
+
     </Grid>
 </UserControl>

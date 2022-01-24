@@ -1,45 +1,57 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Image x:Key="IAPP_ImageChangeSkin"
-           Source="/Ferretto.VW.App.Controls;Component/Assets/brush_light.png" />
+  <Image x:Key="IAPP_ImageChangeSkin"
+         Source="/Ferretto.VW.App.Controls;Component/Assets/brush_light.png" />
 
-    <BitmapImage x:Key="FerrettoGroup"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogroup_light.png" />
+  <BitmapImage x:Key="FerrettoGroup"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogroup_light.png" />
 
-    <BitmapImage x:Key="Ferretto_Logo"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_light.png" />
+  <BitmapImage x:Key="Ferretto_Logo"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_light.png" />
 
-    <BitmapImage x:Key="Ferretto_Small_Logo"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
+  <BitmapImage x:Key="Ferretto_Small_Logo"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
 
-    <BitmapImage x:Key="SpinnerImageSource"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/spinner_black.gif" />
+  <BitmapImage x:Key="SpinnerImageSource"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/spinner_black.gif" />
 
-    <BitmapImage x:Key="ThemeImageSource"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
+  <BitmapImage x:Key="ThemeImageSource"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
 
-    <BitmapImage x:Key="PHCSagoma1"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/sagoma.png" />
+  <BitmapImage x:Key="PHCSagoma1"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/sagoma.png" />
 
-    <BitmapImage x:Key="PHCCassetto1"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
+  <BitmapImage x:Key="PHCCassetto1"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
 
-    <BitmapImage x:Key="UnknownDrawer"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
+  <BitmapImage x:Key="UnknownDrawer"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
 
-    <BitmapImage x:Key="LoginBackground"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/bkg_login.jpg" />
+  <BitmapImage x:Key="LoginBackground"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/bkg_login.jpg" />
 
-    <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_dark.png" />
+  <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_dark.png" />
 
-    <BitmapImage x:Key="BgMilestone"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/bg-milestone.jpg" />
+  <BitmapImage x:Key="BgMilestone"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/bg-milestone.jpg" />
 
-    <BitmapImage x:Key="Drawer1"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio1.jpg" />
+  <BitmapImage x:Key="Drawer1"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio1.jpg" />
 
-    <BitmapImage x:Key="Drawer2"
-                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio2.jpg" />
+  <BitmapImage x:Key="Drawer2"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/Dettaglio2.jpg" />
+
+  <BitmapImage x:Key="ErrorZeroElevator"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorZeroElevator.png" />
+
+  <BitmapImage x:Key="ErrorZeroBay"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorZeroBay.png" />
+
+  <BitmapImage x:Key="ErrorZeroBayExternal"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorZeroBayExternal.png" />
+
+  <BitmapImage x:Key="ErrorTopLevelBayOccupiedEmpty"
+               UriSource="/Ferretto.VW.App.Controls;Component/Assets/ErrorTopLevelBayOccupiedEmpty.png" />
 </ResourceDictionary>

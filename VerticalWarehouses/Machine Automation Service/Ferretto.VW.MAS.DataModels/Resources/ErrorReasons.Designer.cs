@@ -520,7 +520,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Temporary error. If the problem reappears switch off the power and switch on after 15 seconds..
+        ///   Looks up a localized string similar to If the problem reappears please call Ferretto customer service.
         /// </summary>
         public static string InverterFaultStateDetected {
             get {
@@ -1056,6 +1056,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string ZeroSensorErrorAfterDeposit {
             get {
                 return ResourceManager.GetString("ZeroSensorErrorAfterDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The horizontal zero sensor in not active during homing.
+        /// </summary>
+        public static string ZeroSensorErrorAfterHoming {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterHoming", resourceCulture);
             }
         }
         

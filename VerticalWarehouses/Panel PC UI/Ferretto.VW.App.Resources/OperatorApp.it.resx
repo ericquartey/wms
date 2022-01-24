@@ -1012,7 +1012,7 @@
     <value>Scomparto</value>
   </data>
   <data name="AdjustmentQuantity" xml:space="preserve">
-    <value>Quantità da rettificare  [{0}]</value>
+    <value>Giacenza  [{0}]</value>
   </data>
   <data name="PutQuantity" xml:space="preserve">
     <value>Quantità da versare [{0}]</value>
@@ -1617,7 +1617,7 @@
     <value>Versa contenitore</value>
   </data>
   <data name="Box" xml:space="preserve">
-    <value>Contenitore</value>
+    <value>Contenitore (WMS custom)</value>
   </data>
   <data name="InsertBox" xml:space="preserve">
     <value>Inserisci contenitore</value>
@@ -2018,5 +2018,62 @@
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Variazione giacenza</value>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Recupero articolo non riuscito</value>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Articolo non disponibile</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operazione eseguita con successo</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Ricerca articolo con barcode in tabella di scambio (WMS custom)</value>
+  </data>
+  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Modifica giacenza per differenza</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Conferma l'ultima operazione del cassetto</value>
+  </data>
+  <data name="ItemsFilteredByTable" xml:space="preserve">
+    <value>Articoli trovati in tabella di scambio</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Versamento automatico con barcode</value>
+  </data>
+  <data name="IsEnableAddItem" xml:space="preserve">
+    <value>Abilita aggiungi articolo</value>
+  </data>
+  <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Non modificare quantità disponibile articolo in prelievo</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePick" xml:space="preserve">
+    <value>Doppia conferma con barcode prelievo</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePut" xml:space="preserve">
+    <value>Doppia conferma con barcode deposito</value>
+  </data>
+  <data name="IsEnabeNoteRules" xml:space="preserve">
+    <value>Note obbligatorie</value>
+  </data>
+  <data name="IsLocalMachineItems" xml:space="preserve">
+    <value>Cerca gli articoli in questa macchina</value>
+  </data>
+  <data name="IsOrderList" xml:space="preserve">
+    <value>Elenco commesse (WMS custom)</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Lunghezza univoca ID articolo (WMS custom)</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Lunghezza codice contenitore esterno (WMS custom)</value>
+  </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>Gestione tessuti (WMS custom)</value>
   </data>
 </root>

@@ -538,6 +538,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End of line LF.
+        /// </summary>
+        public static string SocketLinkEndOfLine {
+            get {
+                return ResourceManager.GetString("SocketLinkEndOfLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Polling interval.
         /// </summary>
         public static string SocketLinkPolling {

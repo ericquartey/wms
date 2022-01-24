@@ -1885,8 +1885,7 @@
                                 EnumShutter="{StaticResource DataTemplateShutter}" />
   </UserControl.Resources>
   <Grid x:Name="LayoutRoot">
-    <Border Background="{DynamicResource PpcBackground}"
-            BorderBrush="{DynamicResource PpcBorderBrush}"
+    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="{DynamicResource PpcCornerRadius}">
       <ContentControl Content="{Binding ElementName=Card, Path=Type}"

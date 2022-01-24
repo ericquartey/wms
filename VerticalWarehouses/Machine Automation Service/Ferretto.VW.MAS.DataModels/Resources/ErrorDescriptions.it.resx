@@ -154,7 +154,7 @@
     <value>Dataset inverter non valido.</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Paramentro inverter non valido.</value>
+    <value>Parametro inverter non valido.</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
     <value>Il nodo specificato non è disponibile.</value>
@@ -458,5 +458,8 @@
   </data>
   <data name="BackupDatabaseOnServer" xml:space="preserve">
     <value>Backup database su server</value>
+  </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Errore nella calibrazione dell'asse orizzontale</value>
   </data>
 </root>

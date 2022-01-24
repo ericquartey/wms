@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DataModels
         public IEnumerable<Bay> Bays { get; set; }
 
         /// <summary>
-        /// Enables the management of logic containers inside Load Units (see Deima project)
+        /// Enables the management of logic containers inside Load Units (DEIMA)
         /// </summary>
         public bool Box { get; set; }
 
@@ -62,9 +62,34 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDisableQtyItemEditingPick { get; set; }
 
         /// <summary>
+        /// in inventory operation the barcode is only checked for matching and do not confirm operation
+        /// </summary>
+        public bool IsDoubleConfirmBarcodeInventory { get; set; }
+
+        /// <summary>
+        /// in pick operation the barcode is only checked for matching and do not confirm operation
+        /// </summary>
+        public bool IsDoubleConfirmBarcodePick { get; set; }
+
+        /// <summary>
+        /// in put operation the barcode is only checked for matching and do not confirm operation
+        /// </summary>
+        public bool IsDoubleConfirmBarcodePut { get; set; }
+
+        /// <summary>
+        /// Tendaggi Paradiso
+        /// </summary>
+        public bool IsDrapery { get; set; }
+
+        /// <summary>
         /// Get a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }
+
+        /// <summary>
+        /// Get/set a value indicating if the pick operation and put operation for a given item can be performed in the loading unit view (IDROINOX)
+        /// </summary>
+        public bool IsEnableHandlingItemOperations { get; set; }
 
         public bool IsHeartBeat { get; set; }
 
@@ -84,7 +109,12 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
 
         /// <summary>
-        /// When this value is greater than zero it is used to separate item barcode from serial number barcode (see Deima project)
+        /// Get/set a value indicating if the stock value is updating by difference (IDROINOX)
+        /// </summary>
+        public bool IsUpdatingStockByDifference { get; set; }
+
+        /// <summary>
+        /// When this value is greater than zero it is used to separate item barcode from serial number barcode (DEIMA)
         /// </summary>
         public int ItemUniqueIdLength { get; set; }
 
@@ -143,7 +173,7 @@ namespace Ferretto.VW.MAS.DataModels
         public bool Simulation { get; set; }
 
         /// <summary>
-        /// Gets or sets the tote barcode length.
+        /// Gets or sets the tote barcode length (KOHLER)
         /// </summary>
         public int ToteBarcodeLength { get; set; }
 

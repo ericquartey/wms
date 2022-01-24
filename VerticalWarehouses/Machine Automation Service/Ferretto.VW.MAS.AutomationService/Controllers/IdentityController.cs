@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -175,10 +176,37 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsEnableAddItem());
         }
 
+        [HttpPost("get/IsEnableAddItemDrapery")]
+        public ActionResult<bool> IsEnableAddItemDrapery()
+        {
+            return this.Ok(this.machineProvider.IsEnableAddItemDrapery());
+        }
+
+        [HttpPost("get/IsEnableHandlingItemOperations")]
+        public ActionResult<bool> IsEnableHandlingItemOperations()
+        {
+            return this.Ok(this.machineProvider.IsEnableHandlingItemOperations());
+        }
+
         [HttpPost("get/IsRequestConfirmForLastOperationOnLoadingUnit")]
         public ActionResult<bool> IsRequestConfirmForLastOperationOnLoadingUnit()
         {
             return this.Ok(this.machineProvider.IsRequestConfirmForLastOperationOnLoadingUnit());
+        }
+
+        [HttpPost("get/IsUpdatingStockByDifference")]
+        public ActionResult<bool> IsUpdatingStockByDifference()
+        {
+            return this.Ok(this.machineProvider.IsUpdatingStockByDifference());
+        }
+
+        [HttpPost("set/bay/operation/params")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetBayOperationParams(DataModels.Machine machine)
+        {
+            this.machineProvider.SetBayOperationParams(machine);
+            return this.Accepted();
         }
 
         [HttpPost("set/machine/id")]

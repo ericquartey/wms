@@ -938,7 +938,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             && !this.GenerateHoming(bayProvider, machineResourcesProvider)
                             )
                         {
-                            if (!this.IsLoadUnitMissing(serviceProvider))
+                            if (!this.IsLoadUnitMissing(serviceProvider, machineResourcesProvider))
                             {
                                 if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToCompact
                                     || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
@@ -1262,7 +1262,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private bool IsLoadUnitMissing(IServiceProvider serviceProvider)
+        private bool IsLoadUnitMissing(IServiceProvider serviceProvider, IMachineResourcesProvider machineResourcesProvider)
         {
             var sensorProvider = serviceProvider.GetRequiredService<ISensorsProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
@@ -1326,6 +1326,26 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 var bays = bayProvider.GetAll();
                 var loadUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit is null
+                    && !machineResourcesProvider.IsSensorZeroOnCradle
+                    && machineResourcesProvider.IsDrawerCompletelyOffCradle)
+                {
+                    errorsProvider.RecordNew(MachineErrorCode.MissingZeroSensorWithEmptyElevator);
+
+                    this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(errorsProvider.GetCurrent().BayNumber);
+                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    return true;
+                }
+                if (loadUnit is null
+                    && machineResourcesProvider.IsDrawerPartiallyOnCradle)
+                {
+                    errorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors);
+
+                    this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(errorsProvider.GetCurrent().BayNumber);
+                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                    return true;
+                }
+
                 foreach (var bay in bays)
                 {
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
@@ -1355,6 +1375,17 @@ namespace Ferretto.VW.MAS.MissionManager
                                 moveLoadingUnitProvider.InsertToCell(missionType, position.Location, null, position.LoadingUnit.Id, bay.Number, MessageActor.AutomationService);
                                 return true;
                             }
+                        }
+
+                        if (bay.Carousel != null
+                            && !machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
+                        {
+                            errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart);
+
+                            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
+                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            return true;
                         }
                     }
                 }

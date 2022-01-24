@@ -81,6 +81,7 @@ namespace Ferretto.VW.TelemetryService
         {
             if (errorLog is null)
             {
+                this.logger.LogWarning("Trying to send an error log with null parameter.");
                 return;
             }
 

@@ -84,6 +84,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOrderVisible;
 
+        private bool isPickItemPutItemOperationsEnabled;
+
         private bool isReasonVisible;
 
         private bool isSearching;
@@ -93,6 +95,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //private string itemToPickCode;
 
         //private int? itemToPickId;
+
+        private string itemSearchLabel;
 
         private int maxKnownIndexSelection;
 
@@ -109,6 +113,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string reasonNotes;
 
         private IEnumerable<OperationReason> reasons;
+
+        private bool reloadSearchItems;
 
         private DelegateCommand requestItemPickCommand;
 
@@ -236,7 +242,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem = null;
                         this.currentItemIndex = 0;
                         this.tokenSource = new CancellationTokenSource();
-                        await this.ReloadAllItems(this.tokenSource.Token);
+                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
                         await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
                         this.Appear = true;
                     }).Start();
@@ -264,7 +270,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.SelectedItem = null;
                         this.currentItemIndex = 0;
                         this.tokenSource = new CancellationTokenSource();
-                        await this.ReloadAllItems(this.tokenSource.Token);
+                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
                         await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
                         this.Appear = true;
                     }).Start();
@@ -320,6 +326,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
 
+        public string ItemSearchLabel
+        {
+            get => this.itemSearchLabel;
+            set => this.SetProperty(ref this.itemSearchLabel, value);
+        }
+
         public override bool KeepAlive => true;
 
         public int? OrderId
@@ -373,11 +385,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.searchItem;
             set
             {
-                if (this.SetProperty(ref this.searchItem, value))
+                if (this.SetProperty(ref this.searchItem, value)
+                    && this.reloadSearchItems)
                 {
                     this.IsSearching = true;
+                    this.ItemSearchLabel = Localized.Get(OperatorApp.ItemSearchKeySearch);
                     this.TriggerSearchAsync().GetAwaiter();
                 }
+                this.reloadSearchItems = true;
             }
         }
 
@@ -393,6 +408,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.selectedItemTxt = Resources.Localized.Get("OperatorApp.RequestedQuantityBase");
                     this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
+                    this.AvailableQuantity = null;
                     return;
                 }
 
@@ -621,6 +637,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.selectedItem = null;
                 this.AvailableQuantity = null;
+                if (this.isPickItemPutItemOperationsEnabled)
+                {
+                    this.SearchItem = null;
+                }
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -819,6 +839,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsReasonVisible = false;
             this.IsWaitingForReason = false;
             this.IsBusyConfirmingOperation = false;
+            this.reloadSearchItems = true;
+            this.ItemSearchLabel = Localized.Get(OperatorApp.ItemSearchKeySearch);
 
             this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
@@ -864,6 +886,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.ExecuteItemPickAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
                 this.AvailableQuantity = null;
+                if (this.isPickItemPutItemOperationsEnabled)
+                {
+                    this.SearchItem = null;
+                }
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -890,6 +916,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.ExecuteItemPutAsync(this.selectedItem.Id, this.selectedItem.Code, this.selectedItem.Lot, this.selectedItem.SerialNumber);
                 this.selectedItem = null;
                 this.AvailableQuantity = null;
+                if (this.isPickItemPutItemOperationsEnabled)
+                {
+                    this.SearchItem = null;
+                }
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
         }
@@ -990,6 +1020,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
+                    this.SelectedItem = null;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                 }
@@ -1044,6 +1075,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     var machineIdentity = await this.identityService.GetAsync();
                     this.areaId = machineIdentity.AreaId;
+                }
+                this.isPickItemPutItemOperationsEnabled = await this.identityService.IsEnableHandlingItemOperationsAsync();
+                if (this.isPickItemPutItemOperationsEnabled)
+                {
+                    this.IsGroupbyLot = true;
                 }
 
                 await this.RefreshItemsAsync();
@@ -1177,7 +1213,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource?.Cancel(false);
 
             this.tokenSource = new CancellationTokenSource();
-            await this.ReloadAllItems(this.tokenSource.Token);
+            this.isPickItemPutItemOperationsEnabled = await this.identityService.IsEnableHandlingItemOperationsAsync();
+            if (this.isPickItemPutItemOperationsEnabled)
+            {
+                this.IsGroupbyLot = true;
+                this.SearchItem = null;
+            }
+            await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
             await this.RefreshItemsAsync();
 
             this.RaisePropertyChanged(nameof(this.Items));
@@ -1189,7 +1231,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource?.Cancel(false);
 
             this.tokenSource = new CancellationTokenSource();
-            await this.ReloadAllItems(this.tokenSource.Token);
+            await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
             await this.RefreshItemsAsync();
         }
 
@@ -1247,7 +1289,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.SearchItemAsync(startIndex, this.tokenSource.Token);
         }
 
-        private async Task ReloadAllItems(CancellationToken cancellationToken)
+        private async Task ReloadAllItems(string searchItem, CancellationToken cancellationToken)
         {
             this.productsInCurrentMachine = new List<ProductInMachine>();
 
@@ -1263,7 +1305,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.areaId.Value,
                     0,
                     0,
-                    this.searchItem,
+                    searchItem,
                     this.IsGroupbyLot,
                     this.isDistinctBySerialNumber,
                     cancellationToken);
@@ -1362,6 +1404,43 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ClearNotifications();
 
+                if (this.isPickItemPutItemOperationsEnabled)
+                {
+                    try
+                    {
+                        var product = await this.areasWebService.GetProductByBarcodeAsync(itemCode);
+                        if (product?.Item?.Code != null)
+                        {
+                            this.reloadSearchItems = false;
+                            this.ItemSearchLabel = Localized.Get(OperatorApp.BarcodeLabel);
+                            this.items.Clear();
+                            if (this.SearchItem?.Length > 0)
+                            {
+                                await this.ReloadAllItems(product.Item.Code, this.tokenSource.Token);
+                            }
+                            this.items.AddRange(this.productsInCurrentMachine.Where(p => p.Item.Code == product.Item.Code && (product.Lot is null || p.Lot == product.Lot))
+                                .Select(i => new ItemInfo(i, this.bayManager.Identity.Id)));
+
+                            if (!this.items.Any())
+                            {
+                                throw new NotSupportedException("Item not found in table");
+                            }
+                            this.RaisePropertyChanged(nameof(this.Items));
+
+                            this.SearchItem = itemCode;
+                            this.SelectedItem = this.items.FirstOrDefault();
+                            this.AdjustItemsAppearance();
+                            this.SetCurrentIndex(this.SelectedItem?.Id);
+                            this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByTable")), Services.Models.NotificationSeverity.Info);
+                            return;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        this.logger.Debug($"Item [{itemCode}] not found in table: go on searching");
+                    }
+                }
+
                 var items = await this.areasWebService.GetProductsAsync(
                     this.areaId.Value,
                     0,
@@ -1433,7 +1512,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 const int callDelayMilliseconds = 500;
 
                 await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
-                await this.ReloadAllItems(this.tokenSource.Token);
+                await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
                 await this.SearchItemAsync(0, this.tokenSource.Token);
             }
             catch (TaskCanceledException)

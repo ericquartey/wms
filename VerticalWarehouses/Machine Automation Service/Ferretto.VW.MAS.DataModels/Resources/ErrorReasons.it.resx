@@ -193,7 +193,7 @@
     <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
+    <value>Se il problema persiste contattare l'assistenza Ferretto</value>
   </data>
   <data name="LoadUnitWeightExceeded" xml:space="preserve">
     <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.  In seguito rimettere in automatico.</value>
@@ -319,7 +319,7 @@
     <value>Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.</value>
   </data>
   <data name="InverterConnectionError" xml:space="preserve">
-    <value>Problema di connessione con inverter(s). Controllare lo stato delle connessioni ethernet.</value>
+    <value>Problema di connessione con uno o più inverter. Controllare lo stato delle connessioni ethernet.</value>
   </data>
   <data name="IoDeviceConnectionError" xml:space="preserve">
     <value>Errore di connessione al dispositivo I/O. Controllare lo stato delle connessioni ethernet.</value>
@@ -452,5 +452,8 @@
   </data>
   <data name="BackupDatabaseOnServer" xml:space="preserve">
     <value>Errore nella copia del database</value>
+  </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Il sensore di zero dell'asse orizzontale non è attivo durante l'operazione di calibrazione</value>
   </data>
 </root>

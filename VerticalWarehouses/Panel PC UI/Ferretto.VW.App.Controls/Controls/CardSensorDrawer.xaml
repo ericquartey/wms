@@ -9,13 +9,15 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor Grid.Row="1"
-                      CardBadge1="{Binding NetWeight, StringFormat={}{0:F2}}"
-                      CardBadge2="{Binding Height, StringFormat={}{0:F2}}"
-                      CardBadgeLabel1="{res:Loc SensorCard.NetWeight}"
-                      CardBadgeLabel2="{res:Loc SensorCard.Height}"
-                      CardDescription="{Binding Position}"
-                      CardText="{res:Loc SensorCard.Drawer}"
-                      Type="Drawer" />
+  <local:CardSensor x:Name="CardSensor"
+                    Grid.Row="1"
+                    Background="{StaticResource PpcBackground}"
+                    CardBadge1="{Binding NetWeight, StringFormat={}{0:F2}}"
+                    CardBadge2="{Binding Height, StringFormat={}{0:F2}}"
+                    CardBadgeLabel1="{res:Loc SensorCard.NetWeight}"
+                    CardBadgeLabel2="{res:Loc SensorCard.Height}"
+                    CardDescription="{Binding Position}"
+                    CardText="{res:Loc SensorCard.Drawer}"
+                    Type="Drawer" />
 
 </UserControl>
