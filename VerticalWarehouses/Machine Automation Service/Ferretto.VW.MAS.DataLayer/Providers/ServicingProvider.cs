@@ -652,10 +652,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     var instruction = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == servicingInfoId).ToList();
                     foreach (var ins in instruction)
                     {
-                        ins.Definition.GetDescription(ins.Definition.Device);
+                        if (ins.Definition.Device == DataModels.Maintenance.InstructionDevice.Undefined)
+                        {
+                            ins.Definition.GetDescription(ins.Definition.InstructionType);
+                        }
+                        else
+                        {
+                            ins.Definition.GetDescription(ins.Definition.Device);
+                        }
                         this.dataContext.Instructions.Update(ins);
-                        this.dataContext.SaveChanges();
                     }
+                    this.dataContext.SaveChanges();
                 }
                 catch (Exception)
                 {

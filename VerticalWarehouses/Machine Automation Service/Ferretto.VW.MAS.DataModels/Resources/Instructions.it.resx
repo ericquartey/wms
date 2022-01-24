@@ -139,7 +139,7 @@
     <value>Contactors</value>
   </data>
   <data name="FirstCell" xml:space="preserve">
-    <value>Prima cella anteriore e posteriore</value>
+    <value>Controllo celle</value>
   </data>
   <data name="Guides" xml:space="preserve">
     <value>Guide</value>

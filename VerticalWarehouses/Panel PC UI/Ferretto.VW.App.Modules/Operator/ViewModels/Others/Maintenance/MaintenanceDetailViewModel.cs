@@ -597,16 +597,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             List<Instruction> tempList = new List<Instruction>();
 
-            foreach (var instruction in this.currentGroupList)
+            foreach (var instruction in this.currentGroupList.OrderByDescending(o => o.Definition.Operation))
             {
-                if (this.currentGroupList.Exists(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation == InstructionOperation.Substitute))
-                {
-                    if (!tempList.Exists(x => x.Definition.Description == instruction.Definition.Description))
-                    {
-                        tempList.Add(this.currentGroupList.Find(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation == InstructionOperation.Substitute));
-                    }
-                }
-                else
+                if (!tempList.Any(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation >= instruction.Definition.Operation))
                 {
                     tempList.Add(instruction);
                 }
@@ -614,7 +607,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                this.Instructions = tempList;
+                this.Instructions = tempList.OrderBy(o => o.Id).ToList();
                 if (!this.Instructions.Any() && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring))
                 {
                     this.CheckCompletedGroup();
@@ -631,7 +624,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired);
+                if (this.Service.ServiceStatus == MachineServiceStatus.Completed)
+                {
+                    this.allInstructions = this.Service.Instructions.ToList();
+                }
+                else
+                {
+                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired);
+                }
                 this.FilterTable(Senders.VerticalAxis);
 
                 this.RaisePropertyChanged(nameof(this.Instructions));

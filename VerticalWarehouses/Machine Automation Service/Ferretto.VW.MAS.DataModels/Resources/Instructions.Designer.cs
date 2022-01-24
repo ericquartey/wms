@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to First Cell.
+        ///   Looks up a localized string similar to Cells check.
         /// </summary>
         public static string FirstCell {
             get {

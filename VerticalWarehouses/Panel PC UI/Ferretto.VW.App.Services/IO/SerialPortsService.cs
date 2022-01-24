@@ -63,11 +63,11 @@ namespace Ferretto.VW.App.Services
 
         private void RefreshSystemPorts(object state)
         {
-            var systemPorts = System.IO.Ports.SerialPort.GetPortNames();
-
-            Application.Current.Dispatcher.Invoke(() =>
+            lock (this.portsSyncRoot)
             {
-                lock (this.portsSyncRoot)
+                var systemPorts = System.IO.Ports.SerialPort.GetPortNames();
+
+                Application.Current.Dispatcher.Invoke(() =>
                 {
                     foreach (var systemPort in systemPorts)
                     {
@@ -84,8 +84,8 @@ namespace Ferretto.VW.App.Services
                             this.portNames.Remove(knownPort);
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         #endregion

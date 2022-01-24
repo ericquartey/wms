@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmService() => true;
 
-        private bool CanDetailCommand() => this.selectedServicingInfo != null;
+        private bool CanDetailCommand() => this.selectedServicingInfo != null && !this.IsOperator;
 
         private async Task ConfirmServiceAsync()
         {
