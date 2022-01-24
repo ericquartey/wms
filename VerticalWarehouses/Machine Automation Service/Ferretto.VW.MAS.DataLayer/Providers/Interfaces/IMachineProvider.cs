@@ -70,6 +70,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsEnableAddItem();
 
+        bool IsEnableAddItemDrapery();
+
         bool IsEnableHandlingItemOperations();
 
         bool IsFireAlarmActive();

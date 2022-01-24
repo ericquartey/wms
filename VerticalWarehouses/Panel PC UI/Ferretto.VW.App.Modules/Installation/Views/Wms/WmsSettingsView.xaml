@@ -193,6 +193,7 @@
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
@@ -200,7 +201,7 @@
                            Grid.Column="0"
                            Width="140"
                            Margin="5,5,5,5"
-                           VerticalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
                            InputText="{Binding SocketLinkPort, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
                            LabelText="{res:Loc General.SocketLinkPort}" />
@@ -209,7 +210,7 @@
                            Grid.Column="1"
                            Width="140"
                            Margin="0,5,5,5"
-                           VerticalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
                            InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
                            LabelText="{res:Loc General.TimeoutMs}" />
@@ -218,10 +219,19 @@
                            Grid.Column="2"
                            Width="140"
                            Margin="0,5,5,5"
-                           VerticalAlignment="Stretch"
+                           VerticalAlignment="Bottom"
                            InputText="{Binding SocketLinkPolling, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
                            LabelText="{res:Loc General.SocketLinkPolling}" />
+
+      <controls:PpcCheckBox Grid.Row="0"
+                           Grid.Column="3"
+                           Margin="20,5,5,8"
+                           VerticalAlignment="Bottom"
+                           IsChecked="{Binding SocketLinkEndOfLine, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding SocketLinkIsEnabled}"
+                           LabelText="{res:Loc General.SocketLinkEndOfLine}" />
+
     </Grid>
 
     <controls:PpcButton Grid.Row="7"

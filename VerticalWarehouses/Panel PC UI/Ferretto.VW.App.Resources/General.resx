@@ -345,4 +345,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="SocketLinkEndOfLine" xml:space="preserve">
+    <value>End of line LF</value>
+  </data>
 </root>

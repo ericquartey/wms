@@ -113,6 +113,12 @@
                             IsChecked="{Binding IsDisableQtyItemEditingPick, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsDisableQtyItemEditingPick}"/>
 
+            <controls:PpcCheckBox 
+                            Margin="0,15,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsDrapery, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsDrapery}"/>
+
         </StackPanel>
         <StackPanel Grid.Row="1"
                   Grid.Column="1"

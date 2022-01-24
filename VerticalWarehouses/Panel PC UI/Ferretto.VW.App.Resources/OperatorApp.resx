@@ -2423,4 +2423,7 @@
   <data name="EnterBarcode" xml:space="preserve">
     <value>Enter the barcode</value>
   </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>Drapery handling (WMS custom)</value>
+  </data>
 </root>

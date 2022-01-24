@@ -2028,4 +2028,7 @@
   <data name="EnterBarcode" xml:space="preserve">
     <value>Inserire il codice a barre</value>
   </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>Gestione tessuti (WMS custom)</value>
+  </data>
 </root>

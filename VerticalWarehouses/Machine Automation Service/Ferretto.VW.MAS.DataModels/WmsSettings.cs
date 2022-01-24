@@ -18,6 +18,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Uri ServiceUrl { get; set; }
 
+        /// <summary>
+        /// Enable LF as string terminator in the place of CR
+        /// </summary>
+        public bool SocketLinkEndOfLine { get; set; }
+
         public bool SocketLinkIsEnabled { get; set; }
 
         public int SocketLinkPolling { get; set; }

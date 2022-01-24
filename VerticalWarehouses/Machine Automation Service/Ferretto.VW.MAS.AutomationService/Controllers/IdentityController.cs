@@ -176,6 +176,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsEnableAddItem());
         }
 
+        [HttpPost("get/IsEnableAddItemDrapery")]
+        public ActionResult<bool> IsEnableAddItemDrapery()
+        {
+            return this.Ok(this.machineProvider.IsEnableAddItemDrapery());
+        }
+
         [HttpPost("get/IsEnableHandlingItemOperations")]
         public ActionResult<bool> IsEnableHandlingItemOperations()
         {
