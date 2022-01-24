@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand putBoxCommand;
 
+        private bool isBarcodeActive;
+
         private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
@@ -97,6 +99,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemPut.ToString();
 
+        public bool IsBarcodeActive
+        {
+            get => this.isBarcodeActive;
+            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
         public ICommand BarcodeReaderCancelCommand =>
                                     this.barcodeReaderCancelCommand
                     ??
@@ -421,6 +428,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 

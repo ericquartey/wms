@@ -109,6 +109,7 @@ namespace Ferretto.VW.App.Accessories
         }
 
         public DeviceModel DeviceModel { get; set; }
+        public bool IsActive { get; set; }
 
         #endregion
 
@@ -214,6 +215,7 @@ namespace Ferretto.VW.App.Accessories
                 await this.accessoriesWebService.UpdateBarcodeReaderSettingsAsync(isEnabled, portName);
 
                 this.DeviceModel = model;
+                this.IsActive = isEnabled;
                 this.isDeviceEnabled = isEnabled;
                 if (this.isDeviceEnabled)
                 {

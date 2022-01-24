@@ -97,9 +97,9 @@
                          ShowBackground="False"
                          ShowRuler="False" />
 
-        <localControls:ItemInfoView Grid.Row="1"
-                                    Margin="0,0,0,0"
-                                    VerticalAlignment="Top" />
+        <localControls:ItemInfoInventoryView Grid.Row="1"
+                                             Margin="0,0,0,0"
+                                             VerticalAlignment="Top" />
 
       </Grid>
 
@@ -216,7 +216,7 @@
 
       <controls:PpcButton Grid.Row="4"
                           Margin="15,15,15,0"
-                          HorizontalAlignment="Left"
+                          HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding ConfirmOperationCommand}"
                           Content="{resources:Loc OperatorApp.Confirm}"
@@ -228,10 +228,11 @@
                           Width="50"
                           Height="60"
                           Margin="15,8,15,0"
-                          HorizontalAlignment="Right"
+                          HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"
                           Command="{Binding ShowBarcodeReaderCommand}"
-                          KindMaterial="Barcode" />
+                          KindMaterial="Barcode"
+                          Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
     </Grid>
     <Grid Grid.RowSpan="3"
           Grid.ColumnSpan="2"

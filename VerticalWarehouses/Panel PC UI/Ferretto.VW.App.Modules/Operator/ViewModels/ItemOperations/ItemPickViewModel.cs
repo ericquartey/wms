@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAddItemFeatureAvailable;
 
+        private bool isBarcodeActive;
+
         private bool isCurrentDraperyItemFullyRequested;
 
         private bool isVisibleBarcodeReader;
@@ -153,6 +155,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAddItemFeatureAvailable;
             set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBarcodeActive
+        {
+            get => this.isBarcodeActive;
+            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsCurrentDraperyItemFullyRequested
@@ -291,6 +299,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsAddItem = false;
 
+            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 

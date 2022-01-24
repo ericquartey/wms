@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isVisibleBarcodeReader;
 
+        private bool isBarcodeActive;
+
         private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
@@ -97,6 +99,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCurrentDraperyItemFullyRequested;
             set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBarcodeActive
+        {
+            get => this.isBarcodeActive;
+            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsVisibleBarcodeReader
@@ -174,6 +182,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            //this.IsBarcodeActive = this.barcodeReaderService.
+
+            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 

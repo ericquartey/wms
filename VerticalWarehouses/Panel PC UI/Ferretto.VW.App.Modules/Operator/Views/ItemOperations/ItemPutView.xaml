@@ -357,7 +357,8 @@
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding ShowBarcodeReaderCommand}"
-                          KindMaterial="Barcode" />
+                          KindMaterial="Barcode"
+                          Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
     </Grid>
 
     <Grid Grid.RowSpan="3"
