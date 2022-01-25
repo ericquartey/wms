@@ -626,7 +626,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.Service.ServiceStatus == MachineServiceStatus.Completed)
                 {
-                    this.allInstructions = this.Service.Instructions.ToList();
+                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired || x.InstructionStatus == MachineServiceStatus.Completed);
                 }
                 else
                 {
