@@ -173,14 +173,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
+            if (this.IsDoubleConfirmBarcodePick && userAction.UserAction == UserAction.VerifyItem)
             {
-                userAction.SetDoubleConfirm(this.IsDoubleConfirmBarcodePick);
+                userAction.SetDoubleConfirm(true);
                 await base.CommandUserActionAsync(userAction);
-                return;
             }
 
-            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
+            if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
+            {
+                userAction.SetDoubleConfirm(false);
+                await base.CommandUserActionAsync(userAction);
+            }
+            else if (this.CanConfirmOperation() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
             {
                 await this.ConfirmOperationAsync(this.barcodeOk);
                 return;
@@ -314,21 +318,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.CanConfirm =
-                this.MissionOperation != null
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.CanInputQuantity
-                &&
-                this.InputQuantity.Value == this.MissionRequestedQuantity
-                &&
-                !this.CanPickBox;
+                    this.MissionOperation != null
+                    &&
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsBusyAbortingOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.InputQuantity.HasValue
+                    &&
+                    this.CanInputQuantity
+                    &&
+                    this.InputQuantity.Value == this.MissionRequestedQuantity
+                    &&
+                    !this.CanPickBox
+                    && !(this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk));
 
                 this.RaisePropertyChanged(nameof(this.CanConfirm));
 
@@ -351,7 +356,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     &&
                     this.InputQuantity.Value <= this.AvailableQuantity
                     &&
-                    !this.CanPickBox;
+                    !this.CanPickBox
+                    && !(this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk));
 
                 this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
             }

@@ -146,10 +146,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value == this.MissionRequestedQuantity &&
                     !this.IsOperationCanceled;
 
+                if (this.confirmOperation && this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+                {
+                    this.confirmOperation = false;
+                }
+
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value >= 0 &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
                     !this.IsOperationCanceled;
+
+                if (this.confirmPartialOperation && this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+                {
+                    this.confirmPartialOperation = false;
+                }
 
                 this.RaisePropertyChanged(nameof(this.ConfirmOperation));
 
@@ -177,6 +187,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool CanConfirmPartialOperationPut()
         {
+            if (this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+            {
+                return false;
+            }
+
             return
                !this.IsWaitingForResponse
                &&
@@ -206,8 +221,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            if (userAction.UserAction == UserAction.VerifyItem && this.IsDoubleConfirmBarcodePut)
+            {
+                userAction.SetDoubleConfirm(true);
+                await base.CommandUserActionAsync(userAction);
+                this.CanPartiallyCompleteOnFullCompartment();
+            }
+
             if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
             {
+                userAction.SetDoubleConfirm(false);
                 var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
 
                 if (last &&
@@ -221,13 +244,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         await base.CommandUserActionAsync(userAction);
                     }
                 }
-                else
-                {
-                    userAction.SetDoubleConfirm(this.IsDoubleConfirmBarcodePut);
-                    await base.CommandUserActionAsync(userAction);
-                }
             }
-            else if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
+            else if ((this.confirmOperation || this.confirmPartialOperation) && userAction.UserAction == UserAction.ConfirmKey)
             {
                 await this.ConfirmOperationAsync(this.barcodeOk);
             }
@@ -421,6 +439,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnFullCompartment()
         {
+            if (this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+            {
+                return false;
+            }
             this.CanConfirmPartialOperation =
                 !this.IsWaitingForResponse
                 &&

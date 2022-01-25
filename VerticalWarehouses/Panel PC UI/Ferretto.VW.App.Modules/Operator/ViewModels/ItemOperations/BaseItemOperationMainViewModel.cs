@@ -683,6 +683,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public virtual bool CanConfirmOperation()
         {
+
             return
                 !this.IsWaitingForResponse
                 &&
@@ -1231,6 +1232,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
             this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
+            this.barcodeOk = null;
 
             var disableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
             this.IsEnableAvailableQtyItemEditingPick = !disableQtyItemEditingPick;
