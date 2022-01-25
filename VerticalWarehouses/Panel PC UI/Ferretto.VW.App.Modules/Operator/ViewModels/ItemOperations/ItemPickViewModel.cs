@@ -16,9 +16,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IBarcodeReaderService barcodeReaderService;
+
         private readonly IMachineItemsWebService itemsWebService;
 
         private string barcodeItem;
+
+        private DelegateCommand barcodeReaderCancelCommand;
+
+        private DelegateCommand barcodeReaderConfirmCommand;
+
+        private string barcodeString;
 
         private bool canConfirm;
 
@@ -30,11 +38,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAddItemFeatureAvailable;
 
+        private bool isBarcodeActive;
+
         private bool isCurrentDraperyItemFullyRequested;
+
+        private bool isVisibleBarcodeReader;
 
         private string measureUnitTxt;
 
         private DelegateCommand pickBoxCommand;
+
+        private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
 
@@ -43,6 +57,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public ItemPickViewModel(
+            IBarcodeReaderService barcodeReaderService,
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
@@ -78,6 +93,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   authenticationService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+
+            this.barcodeReaderService = barcodeReaderService;
         }
 
         #endregion
@@ -85,6 +102,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public override string ActiveContextName => OperationalContext.ItemPick.ToString();
+
+        public ICommand BarcodeReaderCancelCommand =>
+                                    this.barcodeReaderCancelCommand
+                    ??
+                    (this.barcodeReaderCancelCommand = new DelegateCommand(
+                        async () => this.BarcodeReaderCancel()));
+
+        public ICommand BarcodeReaderConfirmCommand =>
+                                            this.barcodeReaderConfirmCommand
+                    ??
+                    (this.barcodeReaderConfirmCommand = new DelegateCommand(
+                        async () => this.BarcodeReaderConfirm()));
+
+        public string BarcodeString
+        {
+            get => this.barcodeString;
+            set => this.SetProperty(ref this.barcodeString, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool CanConfirm
         {
@@ -122,10 +157,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isAddItemFeatureAvailable, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsBarcodeActive
+        {
+            get => this.isBarcodeActive;
+            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsCurrentDraperyItemFullyRequested
         {
             get => this.isCurrentDraperyItemFullyRequested;
             set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsVisibleBarcodeReader
+        {
+            get => this.isVisibleBarcodeReader;
+            set => this.SetProperty(ref this.isVisibleBarcodeReader, value, this.RaiseCanExecuteChanged);
         }
 
         public string MeasureUnitTxt
@@ -141,6 +188,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.PickBoxAsync("0"),
                 this.CanPickBoxes));
 
+        public ICommand ShowBarcodeReaderCommand =>
+            this.showBarcodeReaderCommand
+            ??
+            (this.showBarcodeReaderCommand = new DelegateCommand(this.ShowBarcodeReader));
+
         #endregion
 
         //public ICommand SignallingDefectCommand =>promag
@@ -151,6 +203,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //        this.CanOpenSignallingDefect));
 
         #region Methods
+
+        public void BarcodeReaderCancel()
+        {
+            this.IsVisibleBarcodeReader = false;
+            this.BarcodeString = string.Empty;
+        }
+
+        public void BarcodeReaderConfirm()
+        {
+            if (!string.IsNullOrEmpty(this.BarcodeString))
+            {
+                this.barcodeReaderService.SimulateRead(this.BarcodeString.EndsWith("\r") ? this.BarcodeString : this.BarcodeString + "\r");
+
+                this.BarcodeString = string.Empty;
+                this.IsVisibleBarcodeReader = false;
+            }
+        }
+
+        public bool CanBarcodeReader()
+        {
+            return true;
+        }
 
         public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
@@ -219,12 +293,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //    this.lastSelectedCompartmentDetail.Stock = this.AvailableQuantity.Value;
             //}
 
+            this.IsVisibleBarcodeReader = false;
+            this.BarcodeString = string.Empty;
+
             base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
         {
             this.IsAddItem = false;
+
+            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
+            this.IsVisibleBarcodeReader = false;
+            this.BarcodeString = string.Empty;
+
             //this.CanInputAvailableQuantity = true;
             this.CanInputAvailableQuantity = this.IsEnableAvailableQtyItemEditingPick;
             this.CanInputQuantity = true;
@@ -287,6 +369,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.RaisePropertyChanged(nameof(this.BarcodeString));
+
+            this.barcodeReaderConfirmCommand?.RaiseCanExecuteChanged();
+
             this.pickBoxCommand?.RaiseCanExecuteChanged();
 
             this.emptyOperationCommand?.RaiseCanExecuteChanged();
@@ -297,6 +383,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.emptyOperationCommand.RaiseCanExecuteChanged();
 
             //this.signallingDefectCommand.RaiseCanExecuteChanged();
+        }
+
+        protected void ShowBarcodeReader()
+        {
+            this.IsVisibleBarcodeReader = true;
         }
 
         protected override void ShowOperationDetails()

@@ -10,11 +10,13 @@ namespace Ferretto.VW.App.Accessories.Interfaces
 
         DeviceModel DeviceModel { get; set; }
 
-        void SimulateRead(string barcode);
+        bool IsActive { get; set; }
 
         #endregion
 
         #region Methods
+
+        void SimulateRead(string barcode);
 
         Task UpdateSettingsAsync(bool isEnabled, string portName, DeviceModel deviceModel);
 
