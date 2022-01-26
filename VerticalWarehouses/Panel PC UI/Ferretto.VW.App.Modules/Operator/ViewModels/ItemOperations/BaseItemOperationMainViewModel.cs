@@ -1669,7 +1669,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 !this.IsOperationConfirmed
                 &&
-                !this.isOperationCanceled;
+                !this.isOperationCanceled
+                && !(this.IsDoubleConfirmBarcodePick && string.IsNullOrEmpty(this.barcodeOk));
             return this.CanConfirmPresent;
         }
 

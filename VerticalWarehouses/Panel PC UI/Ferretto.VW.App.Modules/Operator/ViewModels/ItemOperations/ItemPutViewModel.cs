@@ -38,13 +38,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand fullOperationCommand;
 
+        private bool isBarcodeActive;
+
         private bool isCurrentDraperyItemFullyRequested;
 
         private bool isVisibleBarcodeReader;
 
         private DelegateCommand putBoxCommand;
-
-        private bool isBarcodeActive;
 
         private DelegateCommand showBarcodeReaderCommand;
 
@@ -99,11 +99,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemPut.ToString();
 
-        public bool IsBarcodeActive
-        {
-            get => this.isBarcodeActive;
-            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
-        }
         public ICommand BarcodeReaderCancelCommand =>
                                     this.barcodeReaderCancelCommand
                     ??
@@ -160,6 +155,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.fullOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmPartialOperationAsync(),
                 this.CanPartiallyCompleteOnFullCompartment));
+
+        public bool IsBarcodeActive
+        {
+            get => this.isBarcodeActive;
+            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsCurrentDraperyItemFullyRequested
         {
@@ -530,24 +531,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             if (this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
             {
-                return false;
+                this.CanConfirmPartialOperation = false;
             }
-            this.CanConfirmPartialOperation =
-                !this.IsWaitingForResponse
-                &&
-                this.MissionOperation != null
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.InputQuantity.Value >= 0
-                &&
-                this.InputQuantity.Value != this.MissionRequestedQuantity
-                &&
-                !this.CanPutBox;
+            else
+            {
+                this.CanConfirmPartialOperation =
+                    !this.IsWaitingForResponse
+                    &&
+                    this.MissionOperation != null
+                    &&
+                    !this.IsBusyAbortingOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.InputQuantity.HasValue
+                    &&
+                    this.InputQuantity.Value >= 0
+                    &&
+                    this.InputQuantity.Value != this.MissionRequestedQuantity
+                    &&
+                    !this.CanPutBox;
+            }
             this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
             return this.CanConfirmPartialOperation;
         }
