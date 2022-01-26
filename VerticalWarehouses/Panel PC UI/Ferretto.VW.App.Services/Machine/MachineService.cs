@@ -1481,10 +1481,10 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                     {
                         this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                        if (bayPositionUp.LoadingUnit != null && !this.BayFirstPositionIsUpper)
-                        {
-                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
-                        }
+                        //if (bayPositionUp.LoadingUnit != null && !this.BayFirstPositionIsUpper)
+                        //{
+                        //    this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        //}
                     }
                 }
 
@@ -1493,10 +1493,10 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                     {
                         this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                        if (bayPositionDown.LoadingUnit != null && this.BayFirstPositionIsUpper)
-                        {
-                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
-                        }
+                        //if (bayPositionDown.LoadingUnit != null && this.BayFirstPositionIsUpper)
+                        //{
+                        //    this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        //}
                     }
                 }
             }
