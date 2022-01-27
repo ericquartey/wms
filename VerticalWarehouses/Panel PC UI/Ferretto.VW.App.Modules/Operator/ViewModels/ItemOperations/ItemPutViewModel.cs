@@ -299,29 +299,40 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 userAction.SetDoubleConfirm(true);
                 await base.CommandUserActionAsync(userAction);
+                this.CanConfirmOperationPut();
                 this.CanPartiallyCompleteOnFullCompartment();
             }
-
-            if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
+            else
             {
-                userAction.SetDoubleConfirm(false);
-                var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
-
-                if (last &&
-                    this.BarcodeLenght > 0 &&
-                    this.MissionOperation.SerialNumber == "1" &&
-                    this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
+                this.CanConfirmOperationPut();
+                if (this.confirmOperation || this.confirmPartialOperation)
                 {
-                    var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OK);
-                    if (messageBoxResult == DialogResult.OK)
+                    if (userAction.UserAction == UserAction.VerifyItem)
                     {
-                        await base.CommandUserActionAsync(userAction);
+                        userAction.SetDoubleConfirm(false);
+                        var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
+
+                        if (last &&
+                            this.BarcodeLenght > 0 &&
+                            this.MissionOperation.SerialNumber == "1" &&
+                            this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
+                        {
+                            var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OK);
+                            if (messageBoxResult == DialogResult.OK)
+                            {
+                                await base.CommandUserActionAsync(userAction);
+                            }
+                        }
+                        else if (!this.IsDoubleConfirmBarcodePut)
+                        {
+                            await base.CommandUserActionAsync(userAction);
+                        }
+                    }
+                    else if (userAction.UserAction == UserAction.ConfirmKey)
+                    {
+                        await this.ConfirmOperationAsync(this.barcodeOk);
                     }
                 }
-            }
-            else if ((this.confirmOperation || this.confirmPartialOperation) && userAction.UserAction == UserAction.ConfirmKey)
-            {
-                await this.ConfirmOperationAsync(this.barcodeOk);
             }
         }
 

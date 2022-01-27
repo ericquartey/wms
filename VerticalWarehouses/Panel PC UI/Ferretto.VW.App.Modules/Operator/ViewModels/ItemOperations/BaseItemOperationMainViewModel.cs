@@ -352,8 +352,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.inputItemCode;
             protected set => this.SetProperty(
                 ref this.inputItemCode,
-                value,
-                () => this.IsItemCodeValid = this.inputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode);
+                value);
         }
 
         public string InputLot
@@ -362,7 +361,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(
                 ref this.inputLot,
                 value,
-                () => this.IsItemLotValid = this.inputLot is null || this[nameof(this.InputLot)] != null);
+                () => this.IsItemLotValid = value is null || this[nameof(this.InputLot)] != null);
         }
 
         public double? InputQuantity
@@ -683,7 +682,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public virtual bool CanConfirmOperation()
         {
-
             return
                 !this.IsWaitingForResponse
                 &&
@@ -797,6 +795,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
 
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
+                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
@@ -868,6 +867,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case UserAction.ConfirmOperation:
                     {
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
+                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
@@ -2024,6 +2024,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputSerialNumber = null;
             this.InputLot = null;
             this.InputItemCode = null;
+            this.IsItemCodeValid = false;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }

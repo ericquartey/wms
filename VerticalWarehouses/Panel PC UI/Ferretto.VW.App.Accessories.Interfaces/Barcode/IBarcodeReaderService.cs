@@ -10,7 +10,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
 
         DeviceModel DeviceModel { get; set; }
 
-        bool IsActive { get; set; }
+        bool IsActive { get; }
 
         #endregion
 

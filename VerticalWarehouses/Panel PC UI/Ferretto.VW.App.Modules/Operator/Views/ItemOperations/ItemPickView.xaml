@@ -598,13 +598,13 @@
       </StackPanel>
 
       <controls:PpcButton Grid.Row="6"
-                          Width="50"
+                          Width="55"
                           Height="50"
                           Margin="15,8,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding ShowBarcodeReaderCommand}"
-                          KindMaterial="Barcode"
+                          KindMaterial="BarcodeScan"
                           Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
 
       <!--<StackPanel Grid.Column="2"

@@ -351,13 +351,13 @@
                           Visibility="{Binding CanPutBox, Converter={StaticResource BTVC}}" />
 
       <controls:PpcButton Grid.Row="5"
-                          Width="50"
+                          Width="55"
                           Height="60"
                           Margin="15,8,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding ShowBarcodeReaderCommand}"
-                          KindMaterial="Barcode"
+                          KindMaterial="BarcodeScan"
                           Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
     </Grid>
 

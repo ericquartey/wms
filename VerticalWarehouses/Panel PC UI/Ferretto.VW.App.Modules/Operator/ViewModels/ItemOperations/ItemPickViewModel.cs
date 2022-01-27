@@ -253,14 +253,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await base.CommandUserActionAsync(userAction);
                 this.CanPartiallyCompleteOnEmptyCompartment();
             }
-            else if (this.CanConfirmOperation() && userAction.UserAction == UserAction.VerifyItem)
+            else
             {
-                await base.CommandUserActionAsync(userAction);
-            }
-            else if (this.CanConfirmOperation() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
-            {
-                await this.ConfirmOperationAsync(this.barcodeOk);
-                return;
+                this.CanPartiallyCompleteOnEmptyCompartment();
+                if (this.CanConfirm || this.CanConfirmPartialOperation)
+                {
+                    if (userAction.UserAction == UserAction.VerifyItem)
+                    {
+                        await base.CommandUserActionAsync(userAction);
+                    }
+                    else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
+                    {
+                        await this.ConfirmOperationAsync(this.barcodeOk);
+                        return;
+                    }
+                }
             }
 
             // Handle the tote devices (use without barcode rules)
