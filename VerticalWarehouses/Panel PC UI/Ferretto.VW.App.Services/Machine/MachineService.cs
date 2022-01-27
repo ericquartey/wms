@@ -1172,6 +1172,7 @@ namespace Ferretto.VW.App.Services
                             if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
                                 || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
                                 || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                                || pos.CellId != null
                                 )
                             {
                                 this.UpdateMachineStatusByElevatorPosition(
@@ -1481,10 +1482,10 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
                     {
                         this.MachineStatus.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
-                        //if (bayPositionUp.LoadingUnit != null && !this.BayFirstPositionIsUpper)
-                        //{
-                        //    this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
-                        //}
+                        if (bayPositionUp.LoadingUnit != null && !this.BayFirstPositionIsUpper)
+                        {
+                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        }
                     }
                 }
 
@@ -1493,10 +1494,10 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
                     {
                         this.MachineStatus.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
-                        //if (bayPositionDown.LoadingUnit != null && this.BayFirstPositionIsUpper)
-                        //{
-                        //    this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
-                        //}
+                        if (bayPositionDown.LoadingUnit != null && this.BayFirstPositionIsUpper)
+                        {
+                            this.MachineStatus.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        }
                     }
                 }
             }
@@ -1505,6 +1506,7 @@ namespace Ferretto.VW.App.Services
             if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
                 || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
                 || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                || pos.CellId != null
                 )
             {
                 this.UpdateMachineStatusByElevatorPosition(
