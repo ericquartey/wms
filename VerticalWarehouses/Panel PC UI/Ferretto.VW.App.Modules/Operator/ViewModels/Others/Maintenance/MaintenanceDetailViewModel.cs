@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmInstructionCommand;
 
-        private DelegateCommand confirmServiceAsync;
+        private DelegateCommand confirmServiceCommand;
 
         private Senders currentGroup;
 
@@ -91,9 +91,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand machineCommand;
 
-        private string maintenerName;
+        private string maintainerName;
 
-        private string maintenerNote;
+        private string maintainerNote;
 
         private Instruction selectedInstruction;
 
@@ -101,7 +101,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int servicingInfoId = 0;
 
-        private DelegateCommand showConfirmServiceCommand;
+        private DelegateCommand setNoteCommand;
+
+        private DelegateCommand showSetNoteCommand;
 
         private DelegateCommand shutterBay1Command;
 
@@ -179,7 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ICommand ConfirmInstructionCommand => this.confirmInstructionCommand ?? (this.confirmInstructionCommand = new DelegateCommand(async () => await this.ConfirmGroupAsync(), this.CanConfirmGroup));
 
-        public ICommand ConfirmServiceCommand => this.confirmServiceAsync ?? (this.confirmServiceAsync = new DelegateCommand(async () => await this.ConfirmServiceAsync()));
+        public ICommand ConfirmServiceCommand => this.confirmServiceCommand ?? (this.confirmServiceCommand = new DelegateCommand(async () => await this.ConfirmServiceAsync(), this.CanConfirmService));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -315,16 +317,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand MachineCommand =>
             this.machineCommand ?? (this.machineCommand = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveMachine = true; this.FilterTable(Senders.Machine); }, this.CanFilterTable));
 
-        public string MaintenerName
+        public string MaintainerName
         {
-            get => this.maintenerName;
-            set => this.SetProperty(ref this.maintenerName, value, this.RaiseCanExecuteChanged);
+            get => this.maintainerName;
+            set => this.SetProperty(ref this.maintainerName, value, this.RaiseCanExecuteChanged);
         }
 
-        public string MaintenerNote
+        public string MaintainerNote
         {
-            get => this.maintenerNote;
-            set => this.SetProperty(ref this.maintenerNote, value, this.RaiseCanExecuteChanged);
+            get => this.maintainerNote;
+            set => this.SetProperty(ref this.maintainerNote, value, this.RaiseCanExecuteChanged);
         }
 
         public Instruction SelectedInstruction
@@ -339,8 +341,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand ShowConfirmServiceCommand =>
-            this.showConfirmServiceCommand ?? (this.showConfirmServiceCommand = new DelegateCommand(async () => this.ShowConfirmService(), this.CanConfirmService));
+        public ICommand SetNoteCommand =>
+            this.setNoteCommand ?? (this.setNoteCommand = new DelegateCommand(async () => this.SetNote()));
+
+        public ICommand ShowSetNoteCommand =>
+                    this.showSetNoteCommand ?? (this.showSetNoteCommand = new DelegateCommand(async () => this.ShowSetNote()));
 
         public ICommand ShutterBay1Command =>
             this.shutterBay1Command ?? (this.shutterBay1Command = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveShutterBay1 = true; this.FilterTable(Senders.ShutterBay1); }, this.CanFilterTable));
@@ -410,8 +415,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            this.showConfirmServiceCommand?.RaiseCanExecuteChanged();
+            this.showSetNoteCommand?.RaiseCanExecuteChanged();
             this.confirmInstructionCommand?.RaiseCanExecuteChanged();
+            this.confirmServiceCommand?.RaiseCanExecuteChanged();
 
             this.bay1Command?.RaiseCanExecuteChanged();
             this.bay2Command?.RaiseCanExecuteChanged();
@@ -442,7 +448,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var can = !this.allInstructions.Any(s => s.IsDone == false)
+                var can = !this.allInstructions.Any(s => s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring)
                     && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring);
                 return can;
             }
@@ -508,8 +514,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void ClosePopup()
         {
             this.IsVisibleConfirmService = false;
-            this.MaintenerName = string.Empty;
-            this.MaintenerNote = string.Empty;
+            this.MaintainerName = string.Empty;
+            this.MaintainerNote = string.Empty;
         }
 
         private async Task ConfirmGroupAsync()
@@ -518,7 +524,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 foreach (var instruction in this.currentGroupList)
                 {
-                    await this.machineServicingWebService.ConfirmInstructionAsync(instruction.Id);
+                    if (instruction.InstructionStatus == MachineServiceStatus.Expired || instruction.InstructionStatus == MachineServiceStatus.Expiring)
+                    {
+                        await this.machineServicingWebService.ConfirmInstructionAsync(instruction.Id);
+                    }
                 }
 
                 this.CheckCompletedGroup();
@@ -539,7 +548,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    await this.machineServicingWebService.ConfirmServiceAsync(this.MaintenerName, this.MaintenerNote);
+                    await this.machineServicingWebService.ConfirmServiceAsync();
 
                     this.ClosePopup();
 
@@ -675,7 +684,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsActiveMachine = false;
         }
 
-        private void ShowConfirmService()
+        private async void SetNote()
+        {
+            await this.machineServicingWebService.SetNoteAsync(this.maintainerName, this.maintainerNote, this.Service.Id);
+            this.IsVisibleConfirmService = false;
+        }
+
+        private void ShowSetNote()
         {
             this.IsVisibleConfirmService = true;
         }
