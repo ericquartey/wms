@@ -378,13 +378,13 @@
             Width="650"
             MaxHeight="120"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center"
+            VerticalAlignment="Bottom"
             Background="{DynamicResource GrayA}"
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}">
       <StackPanel>
         <controls:PpcLabeledText Padding="5,5,5,0"
-                                 ContentText="{Binding Service.MaintenerName, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 ContentText="{Binding Service.MaintainerName, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{Resources:Loc OperatorApp.MaintenerName}" />
 
         <controls:PpcLabeledText Padding="5,0,5,5"
@@ -396,16 +396,31 @@
 
     <Grid Grid.Row="4"
           Grid.Column="1">
-      <controls:PpcButton HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          Command="{Binding ShowConfirmServiceCommand}"
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <controls:PpcButton Grid.Row="1"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ConfirmServiceCommand}"
                           Content="{res:Loc OperatorApp.ConfirmService}"
                           Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
 
-      <controls:PpcButton HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+      <controls:PpcButton Grid.Row="1"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Bottom"
                           Command="{Binding ConfirmInstructionCommand}"
                           Content="{res:Loc OperatorApp.ConfirmInstruction}"
+                          Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
+
+      <controls:PpcButton Width="auto"
+                          Height="50"
+                          Margin="0,0,0,5"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="top"
+                          Command="{Binding ShowSetNoteCommand}"
+                          Content="{res:Loc OperatorApp.Note}"
                           Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
     </Grid>
 
@@ -437,7 +452,7 @@
                              Margin="15"
                              HorizontalAlignment="Stretch"
                              FontSize="32"
-                             InputText="{Binding MaintenerName, Mode=TwoWay}"
+                             InputText="{Binding MaintainerName, Mode=TwoWay}"
                              LabelText="{Resources:Loc OperatorApp.MaintenerName}" />
 
 
@@ -446,7 +461,7 @@
                              Margin="15"
                              HorizontalAlignment="Stretch"
                              FontSize="32"
-                             InputText="{Binding MaintenerNote, Mode=TwoWay}"
+                             InputText="{Binding MaintainerNote, Mode=TwoWay}"
                              LabelText="{Resources:Loc OperatorApp.Note}" />
 
         <controls:PpcButton Grid.Row="3"
@@ -460,7 +475,7 @@
                             Margin="15"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
-                            Command="{Binding ConfirmServiceCommand}"
+                            Command="{Binding SetNoteCommand}"
                             Content="{Resources:Loc General.Confirm}" />
 
       </Grid>
