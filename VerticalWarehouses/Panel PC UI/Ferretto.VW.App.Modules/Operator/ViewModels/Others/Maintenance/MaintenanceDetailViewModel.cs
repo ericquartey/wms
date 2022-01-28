@@ -365,6 +365,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.currentGroup = Senders.VerticalAxis;
+
             this.ClosePopup();
 
             await base.OnAppearedAsync();
@@ -617,7 +619,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.Instructions = tempList.OrderBy(o => o.Id).ToList();
-                if (!this.Instructions.Any() && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring))
+                if (!this.Instructions.Exists(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring))
                 {
                     this.CheckCompletedGroup();
                 }
@@ -635,13 +637,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.Service.ServiceStatus == MachineServiceStatus.Completed)
                 {
-                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired || x.InstructionStatus == MachineServiceStatus.Completed);
+                    this.allInstructions = this.Service.Instructions.ToList();//.FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired || x.InstructionStatus == MachineServiceStatus.Completed);
                 }
                 else
                 {
-                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired);
+                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus != MachineServiceStatus.Valid);//.FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired);
                 }
-                this.FilterTable(Senders.VerticalAxis);
+                this.FilterTable(this.currentGroup);
 
                 this.RaisePropertyChanged(nameof(this.Instructions));
             }
@@ -687,7 +689,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private async void SetNote()
         {
             await this.machineServicingWebService.SetNoteAsync(this.maintainerName, this.maintainerNote, this.Service.Id);
-            this.IsVisibleConfirmService = false;
+            await this.GetServicingInfo();
+            this.ClosePopup();
         }
 
         private void ShowSetNote()

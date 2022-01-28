@@ -605,6 +605,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public MachineStatistics GetSettings(int ID)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    return this.dataContext.MachineStatistics.Find(ID);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
         public bool IsAnyInstructionExpired()
         {
             bool expired = false;

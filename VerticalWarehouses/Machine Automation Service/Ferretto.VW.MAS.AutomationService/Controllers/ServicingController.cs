@@ -113,6 +113,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpGet("get-statistic")]
+        public ActionResult<MachineStatistics> GetStatistic(int ID)
+        {
+            return this.Ok(this.servicingProvider.GetSettings(ID));
+        }
+
         [HttpPost("update-service-status")]
         public IActionResult UpdateServiceStatus()
         {

@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ServicingInfo GetLastValid();
 
+        MachineStatistics GetSettings(int ID);
+
         bool IsAnyInstructionExpired();
 
         bool IsAnyInstructionExpiring();
