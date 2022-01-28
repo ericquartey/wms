@@ -119,6 +119,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 var delayElapsed = DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime;
                 if (this.InverterStatus is AngInverterStatus currentStatus)
                 {
+                    if (currentStatus.CommonStatusWord.IsFault)
+                    {
+                        this.Logger.LogError($"Horizontal homing error, Inverter fault");
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                    }
                     if (delayElapsed && currentStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
@@ -139,6 +144,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
                 if (this.InverterStatus is AcuInverterStatus currentAcuStatus)
                 {
+                    if (currentAcuStatus.CommonStatusWord.IsFault)
+                    {
+                        this.Logger.LogError($"Horizontal homing error, Inverter fault");
+                        this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                    }
                     if (delayElapsed && currentAcuStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));

@@ -180,11 +180,11 @@ namespace Ferretto.VW.MAS.DataLayer
                         )
                     {
                         var installationDate = this.allStat.FirstOrDefault(s => s.InstallationDate.HasValue).InstallationDate.Value;
-                        daysCount = lastStat.NextServiceDate.Value.Subtract(DateTime.UtcNow).Days + lastStat.LastServiceDate.Value.Subtract(installationDate).Days;
+                        daysCount = ins.Definition.MaxDays.Value - DateTime.UtcNow.Subtract(installationDate).Days;
                     }
                     else if (lastStat.NextServiceDate.HasValue)
                     {
-                        daysCount = lastStat.NextServiceDate.Value.Subtract(DateTime.UtcNow).Days;
+                        daysCount = ins.Definition.MaxDays.Value - DateTime.UtcNow.Subtract(lastStat.LastServiceDate.Value).Days;
                     }
                 }
                 return daysCount;
