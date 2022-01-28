@@ -301,7 +301,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             // horizontal axis
             var horizontalAxis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var horizontalTargetPosition = distance;
+            var horizontalTargetPosition = this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay]
+                ? horizontalAxis.ManualMovements.TargetDistanceAfterZero.Value
+                : horizontalAxis.ManualMovements.TargetDistance.Value;
+
+            if (distance > 0)
+            {
+                horizontalTargetPosition = distance;
+            }
 
             horizontalTargetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 

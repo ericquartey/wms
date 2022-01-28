@@ -292,21 +292,32 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
-                    e =>
-                        e.Code == (int)MachineErrorCode.InverterFaultStateDetected
+                //var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
+                //    e =>
+                //        e.Code == (int)MachineErrorCode.InverterFaultStateDetected
+                //        &&
+                //        e.ResolutionDate == null
+                //        &&
+                //        e.InverterIndex == inverterIndex
+                //        &&
+                //        e.DetailCode == detailCode);
+                var existingUnresolvedError = this.dataContext.Errors.Where(
+                    e => e.ResolutionDate == null
                         &&
-                        e.ResolutionDate == null
-                        &&
-                        e.InverterIndex == inverterIndex
-                        &&
-                        e.DetailCode == detailCode);
-
-                if (existingUnresolvedError != null)
+                        e.BayNumber == bayNumber)
+                    .ToList();
+                var code = (int)MachineErrorCode.InverterFaultStateDetected;
+                if (existingUnresolvedError.Any(e => e.Code == code && e.InverterIndex == inverterIndex && e.DetailCode == detailCode))
                 {
                     this.logger.LogWarning($"Machine error {MachineErrorCode.InverterFaultStateDetected} (InverterIndex: {inverterIndex}; detail error code: {detailCode}) was not triggered because already present and still unresolved.");
-                    return existingUnresolvedError;
-                };
+                    return existingUnresolvedError.First(e => e.Code == code);
+                }
+                // resolve low priority errors
+                foreach (var activeError in existingUnresolvedError.Where(e => e.Severity == (int)MachineErrorSeverity.Low || e.Code == (int)MachineErrorCode.InverterErrorBaseCode))
+                {
+                    this.logger.LogDebug($"Machine error {activeError.Code} ({activeError.Code}) for {bayNumber} was resolved by higher priority error {code}.");
+                    this.Resolve(activeError.Id, force: true);
+                }
 
                 this.dataContext.Errors.Add(newError);
 

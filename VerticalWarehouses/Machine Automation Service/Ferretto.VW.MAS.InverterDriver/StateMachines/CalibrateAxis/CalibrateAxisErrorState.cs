@@ -6,7 +6,6 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
     internal sealed class CalibrateAxisErrorState : InverterStateBase
@@ -55,6 +54,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogTrace($"1:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(errorNotification);
+
+            if (this.InverterStatus.CommonStatusWord.IsFault)
+            {
+                errorNotification = new FieldNotificationMessage(
+                    null,
+                    "Inverter Fault",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterError,
+                    MessageStatus.OperationError,
+                    (byte)this.InverterStatus.SystemIndex,
+                    ErrorLevel.Error);
+                this.ParentStateMachine.PublishNotificationEvent(errorNotification);
+            }
         }
 
         /// <inheritdoc />
