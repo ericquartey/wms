@@ -78,7 +78,7 @@
         "Operation": "Idle",
         "Positions": [
           {
-            "Height": 448.0,
+            "Height": 451.0,
             "Id": 1,
             "IsUpper": false,
             "Location": "InternalBay1Down",
@@ -88,7 +88,7 @@
             "ProfileOffset": 0.0
           },
           {
-            "Height": 895.0,
+            "Height": 896.5,
             "Id": 2,
             "IsUpper": true,
             "Location": "InternalBay1Up",
@@ -182,7 +182,7 @@
           "ProfileCalibratePosition": 0,
           "ProfileCalibrateSpeed": 0.0,
           "Profiles": [],
-          "Resolution": 77.4970626897481,
+          "Resolution": 99.2279932007018,
           "UpperBound": 6500.0,
           "WeightMeasurement": {
             "Id": 1,

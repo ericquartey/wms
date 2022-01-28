@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(c => c.Panel)
                     .Single();
 
-                if (currentBayPosition?.Id != bayPositionId)
+                if (currentBayPosition is null || currentBayPosition.Id != bayPositionId)
                 {
                     if (bayPositionId.HasValue)
                     {
@@ -406,7 +406,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .ThenInclude(c => c.Panel)
                     .Single();
 
-                if (currentCell?.Id != cellId)
+                if (currentCell is null || currentCell.Id != cellId)
                 {
                     if (cellId.HasValue)
                     {
