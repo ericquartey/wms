@@ -87,8 +87,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isVisibleConfirmService;
 
-        private int lastInstruction = 0;
-
         private DelegateCommand machineCommand;
 
         private string maintainerName;
@@ -379,8 +377,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.servicingInfoId = (int)this.Data;
 
-            this.lastInstruction = 0;
-
             await this.machineServicingWebService.RefreshDescriptionAsync(this.servicingInfoId);
 
             await this.GetServicingInfo();
@@ -637,11 +633,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.Service.ServiceStatus == MachineServiceStatus.Completed)
                 {
-                    this.allInstructions = this.Service.Instructions.ToList();//.FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired || x.InstructionStatus == MachineServiceStatus.Completed);
+                    this.allInstructions = this.Service.Instructions.ToList();
                 }
                 else
                 {
-                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus != MachineServiceStatus.Valid);//.FindAll(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired);
+                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus != MachineServiceStatus.Valid);
                 }
                 this.FilterTable(this.currentGroup);
 
