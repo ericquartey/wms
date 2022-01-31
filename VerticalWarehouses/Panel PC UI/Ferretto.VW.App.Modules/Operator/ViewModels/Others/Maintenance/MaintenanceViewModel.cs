@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.selectedServicingInfo != null)
                 {
-                    this.Statistics = await this.machineServicingWebService.GetStatisticAsync(this.SelectedServicingInfo.Id);
+                    this.Statistics = await this.machineServicingWebService.GetStatisticAsync(this.SelectedServicingInfo.MachineStatisticsId.Value);
                 }
             }
             catch (Exception ex)

@@ -512,8 +512,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void ClosePopup()
         {
             this.IsVisibleConfirmService = false;
-            this.MaintainerName = string.Empty;
-            this.MaintainerNote = string.Empty;
         }
 
         private async Task ConfirmGroupAsync()
@@ -653,6 +651,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.Service = await this.machineServicingWebService.GetByIdAsync(this.servicingInfoId);
+
+                this.MaintainerName = this.Service.MaintainerName;
+                this.MaintainerNote = this.Service.Note;
 
                 this.GetGridElement();
             }
