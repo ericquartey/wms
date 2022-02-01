@@ -150,7 +150,13 @@ namespace Ferretto.VW.MAS.DeviceManager.CombinedMovements
 
             //this.ParentStateMachine.PublishCommandMessage(message);
 
-            if (verticalMessageData.DelayStart > 0)
+            if (Math.Abs(verticalMessageData.TargetPosition) <= 0.1)
+            {
+                this.Logger.LogDebug($"2:Do not Start Vertical movement: TargetPosition too low");
+                this.isVerticalPositioningDone = true;
+                this.machineData.OnVerticalPositioningStopped = true;
+            }
+            else if (verticalMessageData.DelayStart > 0)
             {
                 this.timerElapsed = verticalMessageData.DelayStart;
                 this.delayTimer = new Timer(this.DelayElapsed, null, this.timerElapsed, Timeout.Infinite);

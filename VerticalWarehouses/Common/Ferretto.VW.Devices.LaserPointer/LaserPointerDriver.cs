@@ -159,8 +159,11 @@ namespace Ferretto.VW.Devices.LaserPointer
                     this.logger.Debug($"Connect");
                     this.client.SendTimeout = this.tcpTimeout;
                     await this.client.ConnectAsync(this.IpAddress, this.Port);
-                    this.stream = this.client.GetStream();
-                    this.logger.Debug($"Connected");
+                    if (this.IsConnected)
+                    {
+                        this.stream = this.client.GetStream();
+                        this.logger.Debug($"Connected");
+                    }
                     //this.SelectedPoint = null;
                 }
             }

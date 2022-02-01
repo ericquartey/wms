@@ -16,7 +16,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IBarcodeReaderService barcodeReaderService;
+
         private readonly IMachineItemsWebService itemsWebService;
+
+        private DelegateCommand barcodeReaderCancelCommand;
+
+        private DelegateCommand barcodeReaderConfirmCommand;
+
+        private string barcodeString;
 
         private bool canPutBox;
 
@@ -30,15 +38,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand fullOperationCommand;
 
+        private bool isBarcodeActive;
+
         private bool isCurrentDraperyItemFullyRequested;
 
+        private bool isVisibleBarcodeReader;
+
         private DelegateCommand putBoxCommand;
+
+        private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
 
         #region Constructors
 
         public ItemPutViewModel(
+            IBarcodeReaderService barcodeReaderService,
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
@@ -74,6 +89,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   authenticationService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+
+            this.barcodeReaderService = barcodeReaderService;
         }
 
         #endregion
@@ -81,6 +98,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public override string ActiveContextName => OperationalContext.ItemPut.ToString();
+
+        public ICommand BarcodeReaderCancelCommand =>
+                                    this.barcodeReaderCancelCommand
+                    ??
+                    (this.barcodeReaderCancelCommand = new DelegateCommand(
+                        async () => this.BarcodeReaderCancel()));
+
+        public ICommand BarcodeReaderConfirmCommand =>
+                                            this.barcodeReaderConfirmCommand
+                    ??
+                    (this.barcodeReaderConfirmCommand = new DelegateCommand(
+                        async () => this.BarcodeReaderConfirm()));
+
+        public string BarcodeString
+        {
+            get => this.barcodeString;
+            set => this.SetProperty(ref this.barcodeString, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool CanPutBox
         {
@@ -121,10 +156,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.ConfirmPartialOperationAsync(),
                 this.CanPartiallyCompleteOnFullCompartment));
 
+        public bool IsBarcodeActive
+        {
+            get => this.isBarcodeActive;
+            set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsCurrentDraperyItemFullyRequested
         {
             get => this.isCurrentDraperyItemFullyRequested;
             set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsVisibleBarcodeReader
+        {
+            get => this.isVisibleBarcodeReader;
+            set => this.SetProperty(ref this.isVisibleBarcodeReader, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand PutBoxCommand =>
@@ -134,9 +181,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.PutBoxAsync("0"),
                 this.CanPutBoxes));
 
+        public ICommand ShowBarcodeReaderCommand =>
+            this.showBarcodeReaderCommand
+            ??
+            (this.showBarcodeReaderCommand = new DelegateCommand(this.ShowBarcodeReader));
+
         #endregion
 
         #region Methods
+
+        public void BarcodeReaderCancel()
+        {
+            this.IsVisibleBarcodeReader = false;
+            this.BarcodeString = string.Empty;
+        }
+
+        public void BarcodeReaderConfirm()
+        {
+            if (!string.IsNullOrEmpty(this.BarcodeString))
+            {
+                this.barcodeReaderService.SimulateRead(this.BarcodeString.EndsWith("\r") ? this.BarcodeString : this.BarcodeString + "\r");
+
+                this.BarcodeString = string.Empty;
+                this.IsVisibleBarcodeReader = false;
+            }
+        }
+
+        public bool CanBarcodeReader()
+        {
+            return true;
+        }
 
         public bool CanConfirmOperationPut()
         {
@@ -146,10 +220,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value == this.MissionRequestedQuantity &&
                     !this.IsOperationCanceled;
 
+                if (this.confirmOperation && this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+                {
+                    this.confirmOperation = false;
+                }
+
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value >= 0 &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
                     !this.IsOperationCanceled;
+
+                if (this.confirmPartialOperation && this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+                {
+                    this.confirmPartialOperation = false;
+                }
 
                 this.RaisePropertyChanged(nameof(this.ConfirmOperation));
 
@@ -177,6 +261,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool CanConfirmPartialOperationPut()
         {
+            if (this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+            {
+                return false;
+            }
+
             return
                !this.IsWaitingForResponse
                &&
@@ -206,30 +295,44 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.VerifyItem)
+            if (userAction.UserAction == UserAction.VerifyItem && this.IsDoubleConfirmBarcodePut)
             {
-                var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
-
-                if (last &&
-                    this.BarcodeLenght > 0 &&
-                    this.MissionOperation.SerialNumber == "1" &&
-                    this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
+                userAction.SetDoubleConfirm(true);
+                await base.CommandUserActionAsync(userAction);
+                this.CanConfirmOperationPut();
+                this.CanPartiallyCompleteOnFullCompartment();
+            }
+            else
+            {
+                this.CanConfirmOperationPut();
+                if (this.confirmOperation || this.confirmPartialOperation)
                 {
-                    var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OK);
-                    if (messageBoxResult == DialogResult.OK)
+                    if (userAction.UserAction == UserAction.VerifyItem)
                     {
-                        await base.CommandUserActionAsync(userAction);
+                        userAction.SetDoubleConfirm(false);
+                        var last = this.Mission.Operations.Last().Id == this.MissionOperation.Id;
+
+                        if (last &&
+                            this.BarcodeLenght > 0 &&
+                            this.MissionOperation.SerialNumber == "1" &&
+                            this.MissionOperation.RequestedQuantity - this.MissionOperation.DispatchedQuantity == 1.0)
+                        {
+                            var messageBoxResult = this.DialogService.ShowMessage(Localized.Get("OperatorApp.LastOperationMessage"), Localized.Get("OperatorApp.Warning"), DialogType.Exclamation, DialogButtons.OK);
+                            if (messageBoxResult == DialogResult.OK)
+                            {
+                                await base.CommandUserActionAsync(userAction);
+                            }
+                        }
+                        else if (!this.IsDoubleConfirmBarcodePut)
+                        {
+                            await base.CommandUserActionAsync(userAction);
+                        }
+                    }
+                    else if (userAction.UserAction == UserAction.ConfirmKey)
+                    {
+                        await this.ConfirmOperationAsync(this.barcodeOk);
                     }
                 }
-                else
-                {
-                    userAction.SetDoubleConfirm(this.IsDoubleConfirmBarcodePut);
-                    await base.CommandUserActionAsync(userAction);
-                }
-            }
-            else if (this.CanConfirmOperationPut() && userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
-            {
-                await this.ConfirmOperationAsync(this.barcodeOk);
             }
         }
 
@@ -347,11 +450,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
+            this.IsVisibleBarcodeReader = false;
+            this.BarcodeString = string.Empty;
+
             base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
         {
+            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
+            this.IsVisibleBarcodeReader = false;
+            this.BarcodeString = string.Empty;
+
             this.IsAddItem = false;
 
             this.CloseLine = true;
@@ -394,10 +504,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.BarcodeString));
+            this.barcodeReaderConfirmCommand?.RaiseCanExecuteChanged();
+
             this.fullOperationCommand.RaiseCanExecuteChanged();
             this.confirmOperationCommand.RaiseCanExecuteChanged();
             this.confirmPartialOperationCommand.RaiseCanExecuteChanged();
             this.putBoxCommand.RaiseCanExecuteChanged();
+        }
+
+        protected void ShowBarcodeReader()
+        {
+            this.IsVisibleBarcodeReader = true;
         }
 
         protected override void ShowOperationDetails()
@@ -421,22 +540,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanPartiallyCompleteOnFullCompartment()
         {
-            this.CanConfirmPartialOperation =
-                !this.IsWaitingForResponse
-                &&
-                this.MissionOperation != null
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.InputQuantity.Value >= 0
-                &&
-                this.InputQuantity.Value != this.MissionRequestedQuantity
-                &&
-                !this.CanPutBox;
+            if (this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
+            {
+                this.CanConfirmPartialOperation = false;
+            }
+            else
+            {
+                this.CanConfirmPartialOperation =
+                    !this.IsWaitingForResponse
+                    &&
+                    this.MissionOperation != null
+                    &&
+                    !this.IsBusyAbortingOperation
+                    &&
+                    !this.IsBusyConfirmingOperation
+                    &&
+                    this.InputQuantity.HasValue
+                    &&
+                    this.InputQuantity.Value >= 0
+                    &&
+                    this.InputQuantity.Value != this.MissionRequestedQuantity
+                    &&
+                    !this.CanPutBox;
+            }
             this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
             return this.CanConfirmPartialOperation;
         }

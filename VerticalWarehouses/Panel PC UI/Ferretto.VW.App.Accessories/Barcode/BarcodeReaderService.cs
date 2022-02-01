@@ -110,6 +110,8 @@ namespace Ferretto.VW.App.Accessories
 
         public DeviceModel DeviceModel { get; set; }
 
+        public bool IsActive => this.isStarted;
+
         #endregion
 
         #region Methods

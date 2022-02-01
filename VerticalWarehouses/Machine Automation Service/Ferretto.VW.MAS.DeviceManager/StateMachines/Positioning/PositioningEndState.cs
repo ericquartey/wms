@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IErrorsProvider errorsProvider;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly ILoadingUnitsDataProvider loadingUnitProvider;
 
         private readonly IPositioningMachineData machineData;
@@ -40,8 +42,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
-
-        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             break;
 
                         case MessageStatus.OperationError:
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.TargetBay);
                             this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                             break;
                     }

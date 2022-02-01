@@ -150,6 +150,10 @@
             {
                 eventArgs.Parameters.Add(BarcodeToken.IsDoubleConfirm.ToString(), isSet.ToString());
             }
+            else if(eventArgs.Parameters.ContainsKey(BarcodeToken.IsDoubleConfirm.ToString()))
+            {
+                eventArgs.Parameters.Remove(BarcodeToken.IsDoubleConfirm.ToString());
+            }
         }
 
         #endregion
