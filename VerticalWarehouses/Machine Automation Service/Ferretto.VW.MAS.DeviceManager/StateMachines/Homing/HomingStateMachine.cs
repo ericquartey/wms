@@ -274,8 +274,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             errorText = string.Empty;
             if (this.machineData.TargetBay == BayNumber.ElevatorBay)
             {
-                if (this.machineData.MaximumSteps > 1
-                    && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                if (!(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     )
                 {
