@@ -21,6 +21,8 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         private const string NEW_LINE = "\r\n";
 
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+
         private readonly int homeTimeout = 20000;
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
@@ -133,7 +135,7 @@ namespace Ferretto.VW.Devices.LaserPointer
         {
             if (ipAddress != this.ipAddress || port != this.port)
             {
-                this.Disconnect();
+                this.DisconnectAsync();
             }
             this.ipAddress = ipAddress;
             this.port = port;
@@ -147,6 +149,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         public async Task ConnectAsync()
         {
+            await this._semaphore.WaitAsync();
             try
             {
                 if (this.client is null)
@@ -166,25 +169,30 @@ namespace Ferretto.VW.Devices.LaserPointer
                     }
                     //this.SelectedPoint = null;
                 }
+                this._semaphore.Release();
             }
             catch (Exception e)
             {
+                this._semaphore.Release();
                 this.logger.Error(e);
-                this.Disconnect();
+                await this.DisconnectAsync();
             }
         }
 
-        public void Disconnect()
+        public async Task DisconnectAsync()
         {
+            await this._semaphore.WaitAsync();
             try
             {
                 this.logger.Debug($"Disconnect");
                 this.stream?.Close();
                 this.client?.Close();
                 this.client = null;
+                this._semaphore.Release();
             }
             catch (Exception e)
             {
+                this._semaphore.Release();
                 this.logger.Error(e);
             }
         }
@@ -288,7 +296,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                                     {
                                         this.ClearCommands();
                                         this.logger.Error($"ExecuteCommands: too many errors!");
-                                        this.Disconnect();
+                                        await this.DisconnectAsync();
                                         Thread.Sleep(400);
                                         break;
                                     }
@@ -335,7 +343,7 @@ namespace Ferretto.VW.Devices.LaserPointer
             {
                 this.ClearCommands();
                 this.logger.Error(e);
-                this.Disconnect();
+                await this.DisconnectAsync();
                 Thread.Sleep(400);
             }
             return result;
