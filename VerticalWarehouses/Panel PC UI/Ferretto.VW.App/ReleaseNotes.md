@@ -35,6 +35,7 @@
 - Corretta visualizzazione del cassetto a bordo nel menu movimenti
 - Corretta perdita di posizione logica del cassetto a fronte di ripristini automatici su macchine da 1000kg
 - Aggiunto allarme in caso di errore inverter senza segnale di fault
+- Corretto comando "Nuove operazioni disponibili" 
 
 ## Compatibile con adapter 0.4.30
 ***
