@@ -1850,7 +1850,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
                         var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
                         itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                        this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment.Id
+                        this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment?.Id
                             && s.ItemId == (this.MissionOperation?.ItemId ?? 0)
                             && (string.IsNullOrEmpty(this.MissionOperation?.Lot) || this.MissionOperation?.Lot == "*" || s.Lot == this.MissionOperation?.Lot)
                             && (string.IsNullOrEmpty(this.MissionOperation?.SerialNumber) || this.MissionOperation?.SerialNumber == "*" || s.ItemSerialNumber == this.MissionOperation?.SerialNumber)
