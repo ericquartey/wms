@@ -998,10 +998,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.MissionOperationsService.RecallLoadingUnitAsync(this.LoadingUnit.Id);
                 }
 
-                this.navigationService.GoBackTo(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT,
-                    "RecallLoadingUnitAsync");
+                if (this.IsVisible)
+                {
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "RecallLoadingUnitAsync");
+                }
 
                 this.Reset();
             }
