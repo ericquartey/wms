@@ -1172,6 +1172,7 @@ namespace Ferretto.VW.App.Services
                             if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
                                 || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
                                 || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                                || pos.CellId != null
                                 )
                             {
                                 this.UpdateMachineStatusByElevatorPosition(
@@ -1505,6 +1506,7 @@ namespace Ferretto.VW.App.Services
             if ((!this.MachineStatus.LogicalPositionId.HasValue && !this.MachineStatus.BayPositionId.HasValue)
                 || (this.MachineStatus.LogicalPositionId != pos.CellId && this.MachineStatus.LogicalPositionId != pos.BayPositionId)
                 || this.MachineStatus.ElevatorPositionLoadingUnit is null
+                || pos.CellId != null
                 )
             {
                 this.UpdateMachineStatusByElevatorPosition(

@@ -352,8 +352,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.inputItemCode;
             protected set => this.SetProperty(
                 ref this.inputItemCode,
-                value,
-                () => this.IsItemCodeValid = this.inputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode);
+                value);
         }
 
         public string InputLot
@@ -362,7 +361,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(
                 ref this.inputLot,
                 value,
-                () => this.IsItemLotValid = this.inputLot is null || this[nameof(this.InputLot)] != null);
+                () => this.IsItemLotValid = value is null || this[nameof(this.InputLot)] != null);
         }
 
         public double? InputQuantity
@@ -796,6 +795,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
 
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
+                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
@@ -867,6 +867,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case UserAction.ConfirmOperation:
                     {
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
+                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
@@ -1231,6 +1232,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
             this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
+            this.barcodeOk = null;
 
             var disableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
             this.IsEnableAvailableQtyItemEditingPick = !disableQtyItemEditingPick;
@@ -1667,7 +1669,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 !this.IsOperationConfirmed
                 &&
-                !this.isOperationCanceled;
+                !this.isOperationCanceled
+                && !(this.IsDoubleConfirmBarcodePick && string.IsNullOrEmpty(this.barcodeOk));
             return this.CanConfirmPresent;
         }
 
@@ -1847,7 +1850,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
                         var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
                         itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
-                        this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment.Id
+                        this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment?.Id
                             && s.ItemId == (this.MissionOperation?.ItemId ?? 0)
                             && (string.IsNullOrEmpty(this.MissionOperation?.Lot) || this.MissionOperation?.Lot == "*" || s.Lot == this.MissionOperation?.Lot)
                             && (string.IsNullOrEmpty(this.MissionOperation?.SerialNumber) || this.MissionOperation?.SerialNumber == "*" || s.ItemSerialNumber == this.MissionOperation?.SerialNumber)
@@ -2021,6 +2024,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputSerialNumber = null;
             this.InputLot = null;
             this.InputItemCode = null;
+            this.IsItemCodeValid = false;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }

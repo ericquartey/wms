@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
                             break;
 
                         case MessageStatus.OperationError:
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.TargetBay);
                             this.ParentStateMachine.ChangeState(new HorizontalResolutionErrorState(this.stateData, this.Logger));
                             break;
                     }

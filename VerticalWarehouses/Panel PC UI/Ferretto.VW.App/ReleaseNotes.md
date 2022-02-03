@@ -25,24 +25,22 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.37 rispetto la 1.0.36
-- Nei movimenti manuali il riquadro con i sensori dell' Orizzontale cambia colore quando si attiva il bypass
-- Aggiunto allarme 93: sensore di zero non attivo durante la calibrazione orizzontale
-- Aggiunte foto su alcuni allarmi
-- Aggiunti parametri per doppia conferma con barcode in prelievo e versamento
-- Aggiunta multiselezione su liste in attesa
+## Nuove Funzionalità 1.0.38 rispetto la 1.0.37
+- Aggiunto comando per inserire il barcode da tastiera
+- 
 
 ## Bug Risolti
-- Il parametro aggiungi articolo non è legato alla gestione dei contenitori
-- Corretta gestione dello scomparto pieno nella operazione di versamento
-- Corretta ricerca articoli nella tabella di scambio per Idroinox
-- Eliminato errore 3 in fase di spegnimento
-- Corretto invio di login e logout alla telemetria
-- Cambiate foto nella procedura guidata di ricerca di zero
-- SocketLink: aggiunto parametro per cambiare il terminatore dei messaggi
+- La doppia conferma con il barcode si disabilita se il barcode è errato
+- Aggiunto controllo dei sensori sulla calibrazione orizzontale dell'elevatore
+- Corretta visualizzazione del cassetto a bordo nel menu movimenti
+- Corretta perdita di posizione logica del cassetto a fronte di ripristini automatici su macchine da 1000kg
+- Aggiunto allarme in caso di errore inverter senza segnale di fault
+- Corretto comando "Nuove operazioni disponibili" 
 
 ## Compatibile con adapter 0.4.30
 ***
+
+[Versione 1.0.37](#id1037)
 
 [Versione 1.0.36](#id1036)
 
@@ -118,6 +116,25 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1036"></a>
+## Nuove Funzionalità 1.0.37 rispetto la 1.0.36
+- Nei movimenti manuali il riquadro con i sensori dell' Orizzontale cambia colore quando si attiva il bypass
+- Aggiunto allarme 93: sensore di zero non attivo durante la calibrazione orizzontale
+- Aggiunte foto su alcuni allarmi
+- Aggiunti parametri per doppia conferma con barcode in prelievo e versamento
+- Aggiunta multiselezione su liste in attesa
+
+## Bug Risolti
+- Il parametro aggiungi articolo non è legato alla gestione dei contenitori
+- Corretta gestione dello scomparto pieno nella operazione di versamento
+- Corretta ricerca articoli nella tabella di scambio per Idroinox
+- Eliminato errore 3 in fase di spegnimento
+- Corretto invio di login e logout alla telemetria
+- Cambiate foto nella procedura guidata di ricerca di zero
+- SocketLink: aggiunto parametro per cambiare il terminatore dei messaggi
+
+## Compatibile con adapter 0.4.30
 
 <a id="id1036"></a>
 ## Nuove Funzionalità 1.0.36 rispetto la 1.0.35

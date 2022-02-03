@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Services
                         this.laserPointerDriver.ClearCommands();
                         await this.laserPointerDriver.EnabledAsync(false, false);
                         await this.PollingLaserPointer(null);
-                        this.laserPointerDriver.Disconnect();
+                        await this.laserPointerDriver.DisconnectAsync();
                     }
                     this.logger.Info("Stop laser pointer service");
                 }

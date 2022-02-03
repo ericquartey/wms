@@ -130,6 +130,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                     elevatorDataProvider.GetAxis(Orientation.Horizontal);
                     elevatorDataProvider.UpdateLastIdealPosition(-999999);
+                    elevatorDataProvider.SetCurrentBayPosition(null);
+                    elevatorDataProvider.SetCurrentCell(null);
 
                     elevatorDataProvider.GetAxis(Orientation.Vertical);
                     elevatorDataProvider.GetLoadingUnitOnBoard();

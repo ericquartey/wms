@@ -19,7 +19,7 @@ namespace Ferretto.VW.Devices.LaserPointer
 
         Task ConnectAsync();
 
-        void Disconnect();
+        Task DisconnectAsync();
 
         Task<bool> EnabledAsync(bool enable, bool onMovement);
 

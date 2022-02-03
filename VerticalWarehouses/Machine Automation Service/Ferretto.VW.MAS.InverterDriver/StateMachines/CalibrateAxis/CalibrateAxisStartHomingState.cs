@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                         this.Logger.LogError($"Horizontal homing error, Inverter fault");
                         this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                     }
-                    if (delayElapsed && currentStatus.HomingStatusWord.HomingAttained)
+                    else if (delayElapsed && currentStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                         this.Logger.LogError($"Horizontal homing error, Inverter fault");
                         this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                     }
-                    if (delayElapsed && currentAcuStatus.HomingStatusWord.HomingAttained)
+                    else if (delayElapsed && currentAcuStatus.HomingStatusWord.HomingAttained)
                     {
                         this.ParentStateMachine.ChangeState(new CalibrateAxisDisableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                         returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam

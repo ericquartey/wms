@@ -258,9 +258,9 @@
                           Content="{resources:Loc OperatorApp.Weight}"
                           Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Grid.Row="3"
+      <controls:PpcButton Grid.Row="3"
+                          Width="110"
                           Margin="15,15,15,0"
-                                Width="110"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Top"
                           Command="{Binding ConfirmOperationCanceledCommand}"
@@ -270,61 +270,79 @@
                           Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}" />
 
 
-            <controls:PpcButton Grid.Row="4"
+      <StackPanel Grid.Row="4"
+                  Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
+
+        <TextBlock Grid.Row="4"
+                   Margin="15,5,15,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   FontSize="{StaticResource FontSize_Small}"
+                   Foreground="{DynamicResource PpcForeground}"
+                   Text="{resources:Loc OperatorApp.CloseLine}" />
+
+        <controls:PpcCheckBox Grid.Row="4"
+                              Margin="15,5,20,0"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Bottom"
+                              IsChecked="{Binding CloseLine, Mode=TwoWay}" />
+      </StackPanel>
+
+      <StackPanel Grid.Row="4"
+                  Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
+        <TextBlock Grid.Row="5"
+                   Margin="15,5,30,0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   FontSize="{StaticResource FontSize_Small}"
+                   Foreground="{DynamicResource PpcForeground}"
+                   Text="{resources:Loc OperatorApp.FullCompartment}" />
+
+        <controls:PpcCheckBox Grid.Row="5"
+                              Margin="15,5,20,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Bottom"
+                              IsChecked="{Binding FullCompartment, Mode=TwoWay}" />
+      </StackPanel>
+
+      <controls:PpcButton Grid.Row="5"
+                          Width="110"
                           Margin="15,8,15,0"
-                                Width="110"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Bottom"
                           Command="{Binding FullOperationCommand}"
                           Content="{resources:Loc OperatorApp.ConfirmPartial}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
 
-            <StackPanel Grid.Row="4"
-                        Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
-                <TextBlock Grid.Row="4"
-                           Margin="15,5,15,0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Top"
-                           FontSize="{StaticResource FontSize_Small}"
-                           Foreground="{DynamicResource PpcForeground}"
-                           Text="{resources:Loc OperatorApp.CloseLine}" />
-
-                <controls:PpcCheckBox Grid.Row="4"
-                                      Margin="15,5,20,0"
-                                      HorizontalAlignment="Right"
-                                      VerticalAlignment="Bottom"
-                                      IsChecked="{Binding CloseLine, Mode=TwoWay}" />
-            </StackPanel>
-
-            <controls:PpcButton Grid.Row="4"
+      <controls:PpcButton Grid.Row="5"
+                          Width="110"
                           Margin="15,8,15,0"
-                                Width="110"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Bottom"
                           Command="{Binding ConfirmOperationCommand}"
                           Content="{resources:Loc OperatorApp.Confirm}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding ConfirmOperation, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="4"
+      <controls:PpcButton Grid.Row="5"
+                          Width="110"
                           Margin="15,8,15,0"
-                                Width="110"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Bottom"
                           Command="{Binding ConfirmPartialOperationCommand}"
                           Content="{resources:Loc OperatorApp.ConfirmPartial}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding ConfirmPartialOperation, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="4"
+      <controls:PpcButton Grid.Row="5"
+                          Width="110"
                           Margin="15,8,15,0"
-                                Width="110"
                           HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
+                          VerticalAlignment="Bottom"
                           Command="{Binding PutBoxCommand}"
                           Content="{resources:Loc OperatorApp.PutBox}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
@@ -332,24 +350,79 @@
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanPutBox, Converter={StaticResource BTVC}}" />
 
-            <StackPanel Grid.Row="5"
-                        Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
-                <TextBlock Grid.Row="5"
-                           Margin="15,5,30,0"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Top"
-                           FontSize="{StaticResource FontSize_Small}"
-                           Foreground="{DynamicResource PpcForeground}"
-                           Text="{resources:Loc OperatorApp.FullCompartment}" />
+      <controls:PpcButton Grid.Row="5"
+                          Width="55"
+                          Height="60"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ShowBarcodeReaderCommand}"
+                          KindMaterial="BarcodeScan"
+                          Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
+    </Grid>
 
-                <controls:PpcCheckBox Grid.Row="5"
-                                      Margin="15,5,20,0"
-                                      HorizontalAlignment="Right"
-                                      VerticalAlignment="Bottom"
-                                      IsChecked="{Binding FullCompartment, Mode=TwoWay}" />
-            </StackPanel>
+    <Grid Grid.RowSpan="3"
+          Grid.ColumnSpan="2"
+          Margin="0,0,15,0"
+          Background="{StaticResource GrayA}"
+          Visibility="{Binding IsVisibleBarcodeReader, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
 
+      <TextBlock Grid.ColumnSpan="3"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{resources:Loc OperatorApp.BarcodeLabel}" />
+
+      <Border Grid.Row="1"
+              Grid.ColumnSpan="4"
+              Width="500"
+              Height="250"
+              Margin="0,0,0,30"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              BorderBrush="{DynamicResource PpcBorderBrush}"
+              BorderThickness="{DynamicResource PpcBorderThickness}"
+              CornerRadius="2">
+        <Grid Margin="50">
+          <Grid.RowDefinitions>
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+          </Grid.ColumnDefinitions>
+
+          <controls:PpcTextBox Grid.Row="0"
+                               Grid.Column="1"
+                               Width="auto"
+                               HorizontalAlignment="Stretch"
+                               InputText="{Binding BarcodeString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                               LabelText="{resources:Loc OperatorApp.EnterBarcode}" />
         </Grid>
+      </Border>
+
+      <StackPanel Grid.Row="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Orientation="Horizontal">
+        <controls:PpcButton Margin="15,0"
+                            Command="{Binding BarcodeReaderCancelCommand}"
+                            Content="{resources:Loc General.Cancel}" />
+
+        <controls:PpcButton Command="{Binding BarcodeReaderConfirmCommand}"
+                            Content="{resources:Loc General.Confirm}" />
+      </StackPanel>
+    </Grid>
   </Grid>
 
 </ctrls:View>

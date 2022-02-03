@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             if (this.InverterStatus.CommonStatusWord.IsFault)
             {
                 errorNotification = new FieldNotificationMessage(
-                    messageData,
+                    null,
                     "Inverter Fault",
                     FieldMessageActor.Any,
                     FieldMessageActor.InverterDriver,

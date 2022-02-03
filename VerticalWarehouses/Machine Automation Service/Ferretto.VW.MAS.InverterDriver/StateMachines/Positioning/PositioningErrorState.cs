@@ -5,7 +5,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
     internal class PositioningErrorState : InverterStateBase
@@ -41,6 +40,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+
+            if (this.InverterStatus.CommonStatusWord.IsFault)
+            {
+                notificationMessage = new FieldNotificationMessage(
+                    null,
+                    "Inverter Fault",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterError,
+                    MessageStatus.OperationError,
+                    (byte)this.InverterStatus.SystemIndex,
+                    ErrorLevel.Error);
+                this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
+            }
         }
 
         /// <inheritdoc />
