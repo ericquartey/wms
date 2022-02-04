@@ -27,7 +27,7 @@
 
 ## Nuove Funzionalità 1.0.38 rispetto la 1.0.37
 - Aggiunto comando per inserire il barcode da tastiera
-- 
+- Introdotta pagina di manutenzione semplificata
 
 ## Bug Risolti
 - La doppia conferma con il barcode si disabilita se il barcode è errato
