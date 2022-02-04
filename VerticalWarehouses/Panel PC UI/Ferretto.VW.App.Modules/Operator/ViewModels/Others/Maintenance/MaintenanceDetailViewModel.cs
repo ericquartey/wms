@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public ICommand Bay1Command =>
-            this.bay1Command ?? (this.bay1Command = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveBay1 = true; this.FilterTable(Senders.Bay1); }, this.CanFilterTable));
+                this.bay1Command ?? (this.bay1Command = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveBay1 = true; this.FilterTable(Senders.Bay1); }, this.CanFilterTable));
 
         public bool Bay1HasShutter => this.MachineService.Bays.SingleOrDefault(x => x.Number == BayNumber.BayOne)?.Shutter != null;
 
@@ -444,10 +444,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                return this.IsAdmin
-                    || (this.currentGroupList.Any(x => !x.IsDone)
-                        && this.currentGroupList.Any()
-                        && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring));
+                return this.currentGroupList.Any(x => !x.IsDone)
+                       && this.currentGroupList.Any()
+                       && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring || this.IsAdmin);
             }
             catch (Exception)
             {
@@ -535,7 +534,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 foreach (var instruction in this.currentGroupList)
                 {
-                    if (instruction.InstructionStatus == MachineServiceStatus.Expired || instruction.InstructionStatus == MachineServiceStatus.Expiring)
+                    if (instruction.InstructionStatus == MachineServiceStatus.Expired || instruction.InstructionStatus == MachineServiceStatus.Expiring || this.IsAdmin)
                     {
                         await this.machineServicingWebService.ConfirmInstructionAsync(instruction.Id);
                     }
@@ -657,7 +656,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus != MachineServiceStatus.Valid);
+                    this.allInstructions = this.Service.Instructions.ToList().FindAll(x => x.InstructionStatus != MachineServiceStatus.Valid || this.IsAdmin);
                 }
                 this.FilterTable(this.currentGroup);
 

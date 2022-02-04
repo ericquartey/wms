@@ -426,15 +426,17 @@
                           Content="{res:Loc OperatorApp.ConfirmInstruction}"
                           Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
 
-      <controls:PpcButton Width="auto"
+                <controls:PpcButton Width="60"
                           Height="50"
-                          Margin="0,0,0,5"
+                          Margin="0,0,10,10"
                           HorizontalAlignment="Right"
                           VerticalAlignment="top"
                           Command="{Binding ShowSetNoteCommand}"
                           Content="{res:Loc OperatorApp.Note}"
                           Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
-    </Grid>
+
+
+        </Grid>
 
 
     <Grid Grid.RowSpan="10"
@@ -490,7 +492,7 @@
                             Command="{Binding SetNoteCommand}"
                             Content="{Resources:Loc General.Confirm}" />
 
-      </Grid>
+            </Grid>
     </Grid>
   </Grid>
 </ctrls:View>
