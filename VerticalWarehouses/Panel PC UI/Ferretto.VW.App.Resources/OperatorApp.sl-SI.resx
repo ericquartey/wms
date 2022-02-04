@@ -1356,9 +1356,6 @@
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Zahtevana količina</value>
   </data>
-  <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Potrdi vrst</value>
-  </data>
   <data name="Axis" xml:space="preserve">
     <value>Os</value>
   </data>
@@ -1751,5 +1748,8 @@
   </data>
   <data name="GenericValidationError" xml:space="preserve">
     <value>Neveljav vrednost</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Stroj</value>
   </data>
 </root>

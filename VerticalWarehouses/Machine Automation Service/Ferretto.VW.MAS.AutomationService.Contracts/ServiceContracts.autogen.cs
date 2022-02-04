@@ -2214,11 +2214,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> RefreshDescriptionAsync(int servicingInfoId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> SetIsToDoAsync(int instructionId);
+        System.Threading.Tasks.Task<FileResponse> SetNoteAsync(string maintainerName, string note, int iD);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> SetIsToDoAsync(int instructionId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> SetNoteAsync(string maintainerName, string note, int iD, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetStatisticAsync(int iD);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineStatistics> GetStatisticAsync(int iD, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> UpdateServiceStatusAsync();
@@ -5468,8 +5475,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MachineStatisticsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MachineStatisticsId { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MaintainerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MaintainerName { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("NextServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? NextServiceDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Note { get; set; }
     
         [Newtonsoft.Json.JsonProperty("ServiceStatus", Required = Newtonsoft.Json.Required.Always)]
         public MachineServiceStatus ServiceStatus { get; set; }
@@ -5537,6 +5550,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Device", Required = Newtonsoft.Json.Required.Always)]
+        public InstructionDevice Device { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("InstructionType", Required = Newtonsoft.Json.Required.Always)]
         public InstructionType InstructionType { get; set; }
     
@@ -5558,6 +5574,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MaxTotalCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? MaxTotalCount { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Operation", Required = Newtonsoft.Json.Required.Always)]
+        public InstructionOperation Operation { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SetPoint", Required = Newtonsoft.Json.Required.Always)]
+        public int SetPoint { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -5567,6 +5589,65 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<InstructionDefinition>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum InstructionDevice
+    {
+        Undefined = 0,
+    
+        AirFilters = 1,
+    
+        Bearings = 2,
+    
+        Belt = 3,
+    
+        CableChain = 4,
+    
+        Cables = 5,
+    
+        Chain = 6,
+    
+        Contactors = 7,
+    
+        FirstCell = 8,
+    
+        Guides = 9,
+    
+        Lamps = 10,
+    
+        Link = 11,
+    
+        MicroSwitches = 12,
+    
+        MotorChain = 13,
+    
+        MotorBelt = 14,
+    
+        MotorGearOil = 15,
+    
+        MotorGear = 16,
+    
+        OpticalSensors = 17,
+    
+        PinPawlFasteners = 18,
+    
+        PlasticCams = 19,
+    
+        BayQuote = 20,
+    
+        Sensors = 21,
+    
+        Shaft = 22,
+    
+        Supports = 23,
+    
+        Wheels = 24,
+    
+        VaristorsAndRelays = 25,
+    
+        Clean = 26,
     
     }
     
@@ -5654,6 +5735,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         SupportsCheck = 39,
     
         WheelsCheck = 40,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum InstructionOperation
+    {
+        Undefined = 0,
+    
+        Check = 1,
+    
+        Adjust = 2,
+    
+        Substitute = 3,
     
     }
     

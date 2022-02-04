@@ -1267,10 +1267,10 @@
     <value>Da fare</value>
   </data>
   <data name="MaxDays" xml:space="preserve">
-    <value>MaxDays</value>
+    <value>Max Giorni</value>
   </data>
   <data name="MaxRelativeCount" xml:space="preserve">
-    <value>MaxRelativeCount</value>
+    <value>Max Cicli</value>
   </data>
   <data name="MaxTotalCount" xml:space="preserve">
     <value>MaxTotalCount</value>
@@ -1345,7 +1345,7 @@
     <value>La frammentazione è eccessiva: si consiglia di eseguire una compattazione.</value>
   </data>
   <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Conferma riga</value>
+    <value>Conferma gruppo</value>
   </data>
   <data name="Axis" xml:space="preserve">
     <value>Asse</value>
@@ -1971,6 +1971,18 @@
   <data name="AverageOccupiedSpace" xml:space="preserve">
     <value>Passo verticale medio</value>
   </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operazione</value>
+  </data>
+  <data name="OperationCheck" xml:space="preserve">
+    <value>Controllo</value>
+  </data>
+  <data name="OperationAdjust" xml:space="preserve">
+    <value>Registrazione</value>
+  </data>
+  <data name="OperationSubstitute" xml:space="preserve">
+    <value>Sostituzione</value>
+  </data>
   <data name="ChangingStock" xml:space="preserve">
     <value>Variazione giacenza</value>
   </data>
@@ -1984,12 +1996,48 @@
     <value>Operazione eseguita con successo</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Ricerca articolo con barcode in tabella di scambio (WMS custom)</value>
+    <value>Prelievo e Versamento tramite Barcode</value>
   </data>
   <data name="IsUpdatingStockByDifference" xml:space="preserve">
     <value>Modifica giacenza per differenza</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Conferma l'ultima operazione del cassetto</value>
+  </data>
+  <data name="MaintenerName" xml:space="preserve">
+    <value>Nome Manutentore</value>
+  </data>
+  <data name="ShutterBay1" xml:space="preserve">
+    <value>Serranda Baia 1</value>
+  </data>
+  <data name="ShutterBay2" xml:space="preserve">
+    <value>Serranda Baia 2</value>
+  </data>
+  <data name="ShutterBay3" xml:space="preserve">
+    <value>Serranda Baia 3</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Macchina</value>
+  </data>
+  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
+    <value>Variazione giacenza</value>
+  </data>
+  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
+    <value>Recupero articolo non riuscito</value>
+  </data>
+  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
+    <value>Articolo non disponibile</value>
+  </data>
+  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
+    <value>Operazione eseguita con successo</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
+    <value>Ricerca articolo con barcode in tabella di scambio (WMS custom)</value>
+  </data>
+  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
+    <value>Modifica giacenza per differenza</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
     <value>Conferma l'ultima operazione del cassetto</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
@@ -2030,5 +2078,11 @@
   </data>
   <data name="IsDrapery" xml:space="preserve">
     <value>Gestione tessuti (WMS custom)</value>
+  </data>
+  <data name="SetPoint" xml:space="preserve">
+    <value>Riferimento</value>
+  </data>
+  <data name="NoMaintenerNameError" xml:space="preserve">
+    <value>Nome Manutentore Richiesto per la conferma del servizio</value>
   </data>
 </root>

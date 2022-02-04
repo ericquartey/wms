@@ -117,130 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Проверка воздушных Фильтров</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Воздушные фильтры</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Проверка подшипников</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>подшипников</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Смазка подшипников</value>
+  <data name="Belt" xml:space="preserve">
+    <value>ремня</value>
   </data>
-  <data name="BeltAdjust" xml:space="preserve">
-    <value>Регулировка ремня</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>кабеля цепного конвейера</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Затягивание ремня</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Замена ремня</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
-    <value>Проверка кабеля цепного конвейера</value>
-  </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Проверка кабелей</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
+  <data name="Chain" xml:space="preserve">
     <value>Регулировка цепного конвейера</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Смазка цепного конвейера</value>
-  </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Замена цепного конвейера</value>
-  </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
+  <data name="Contactors" xml:space="preserve">
     <value>Замена контакторов</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Проверка электрических компонентов</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
+  <data name="FirstCell" xml:space="preserve">
     <value>Первая проверка ячейки</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
+  <data name="Guides" xml:space="preserve">
     <value>Проверка направляющих</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Замена направляющих</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
+  <data name="Lamps" xml:space="preserve">
     <value>Проверка ламп</value>
   </data>
-  <data name="LinkCheck" xml:space="preserve">
+  <data name="Link" xml:space="preserve">
     <value>Проверка звеньев</value>
   </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Смазка звеньев</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Замена звеньев</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
+  <data name="MicroSwitches" xml:space="preserve">
     <value>Проверка микропереключателей</value>
   </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Крепление микропереключателей</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Замена микропереключателей</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
+  <data name="MotorChain" xml:space="preserve">
     <value>Регулировка приводной цепи</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Смазка приводной цепи</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Замена приводной цепи</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Масло для редукторного двигателя</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
+  <data name="MotorGear" xml:space="preserve">
     <value>Замена редукторного двигателя</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
+  <data name="OpticalSensors" xml:space="preserve">
     <value>Очистка оптических датчиков</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Крепление оптических датчиков</value>
-  </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
+  <data name="PinPawlFasteners" xml:space="preserve">
     <value>Проверка крепежа штифтов задвижки</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Смазка крепежа штифтов задвижки</value>
-  </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Замена крепежа штифтов задвижки</value>
-  </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
+  <data name="PlasticCams" xml:space="preserve">
     <value>Проверка пластиковых кулачков</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Проверка случайных ячеек</value>
-  </data>
-  <data name="SensorCheck" xml:space="preserve">
+  <data name="Sensors" xml:space="preserve">
     <value>Проверка датчика</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Очистка датчиков</value>
-  </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Крепление датчиков</value>
-  </data>
-  <data name="ShaftCheck" xml:space="preserve">
+  <data name="Shaft" xml:space="preserve">
     <value>Проверка вала</value>
   </data>
-  <data name="SupportsCheck" xml:space="preserve">
+  <data name="Supports" xml:space="preserve">
     <value>Проверка опор</value>
   </data>
-  <data name="WheelsCheck" xml:space="preserve">
+  <data name="Wheels" xml:space="preserve">
     <value>Проверка колес</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Замена колес</value>
   </data>
 </root>

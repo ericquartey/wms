@@ -117,130 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Controllo filtri aria</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Filtri aria</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Controllo cuscinetti</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>Cuscinetti</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Ingrassaggio cuscinetti</value>
+  <data name="Belt" xml:space="preserve">
+    <value>Cinghia</value>
   </data>
-  <data name="BeltAdjust" xml:space="preserve">
-    <value>Tensionamento cinghia</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>Catena portacavi</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Verifica fissaggio cinghia</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Sostituzione cinghia</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
-    <value>Controllo catena portacavi</value>
-  </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Controllo cavi</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
-    <value>Tensionamento catena</value>
+  <data name="Chain" xml:space="preserve">
+    <value>Catena</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Ingrassaggio catena</value>
+  <data name="Contactors" xml:space="preserve">
+    <value>Contactors</value>
   </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Sostituzione catena</value>
+  <data name="FirstCell" xml:space="preserve">
+    <value>Controllo celle</value>
   </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
-    <value>ContactorsSubstitute</value>
+  <data name="Guides" xml:space="preserve">
+    <value>Guide</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Controllo componenti elettrici</value>
+  <data name="Lamps" xml:space="preserve">
+    <value>Lampade spia</value>
   </data>
-  <data name="FirstCellCheck" xml:space="preserve">
-    <value>Controllo prima cella</value>
+  <data name="Link" xml:space="preserve">
+    <value>Giunto</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
-    <value>Controllo guide</value>
+  <data name="MicroSwitches" xml:space="preserve">
+    <value>Microinterruttori</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Sostituzione guide</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
-    <value>Controllo lampade spia bruciate</value>
-  </data>
-  <data name="LinkCheck" xml:space="preserve">
-    <value>Controllo giunto</value>
-  </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Ingrassaggio giunto</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Sostituzione giunto</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
-    <value>Controllo microinterruttori</value>
-  </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Fissaggio microinterruttori</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Sostituzione microinterruttori</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
-    <value>Tensionamento catena motore</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Ingrassaggio catena motore</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Sostituzione catena motore</value>
+  <data name="MotorChain" xml:space="preserve">
+    <value>Catena motore</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
-    <value>Verifica e rabbocco livello olio motoriduttore</value>
+    <value>Olio motoriduttore</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
-    <value>Sostituzione motoriduttore</value>
+  <data name="MotorGear" xml:space="preserve">
+    <value>Motoriduttore</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
-    <value>Pulizia sensori ottici</value>
+  <data name="OpticalSensors" xml:space="preserve">
+    <value>Sensori ottici</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Fissaggio sensori ottici</value>
+  <data name="PinPawlFasteners" xml:space="preserve">
+    <value>Perni aggancio nottolino</value>
   </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
-    <value>Controllo perni aggancio nottolino</value>
+  <data name="PlasticCams" xml:space="preserve">
+    <value>Camme in plastica</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Ingrassaggio perni aggancio nottolino</value>
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensori</value>
   </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Sostituzione perni aggancio nottolino</value>
+  <data name="Shaft" xml:space="preserve">
+    <value>Albero</value>
   </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
-    <value>Verifica stato camme in plastica</value>
+  <data name="Supports" xml:space="preserve">
+    <value>Supporti</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Controllo random cella</value>
+  <data name="Wheels" xml:space="preserve">
+    <value>Ruote di contrasto</value>
   </data>
-  <data name="SensorCheck" xml:space="preserve">
-    <value>Prove funzionamento sensori</value>
+  <data name="BayQuote" xml:space="preserve">
+    <value>Quote baia</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Pulizia sensori</value>
+  <data name="Clean" xml:space="preserve">
+    <value>Pulizia</value>
   </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Fissaggio sensori</value>
+  <data name="VaristorsAndRelays" xml:space="preserve">
+    <value>Varistori e relè</value>
   </data>
-  <data name="ShaftCheck" xml:space="preserve">
-    <value>Verifica albero serranda</value>
-  </data>
-  <data name="SupportsCheck" xml:space="preserve">
-    <value>Verifica giochi supporti</value>
-  </data>
-  <data name="WheelsCheck" xml:space="preserve">
-    <value>Verifica ruote di contrasto</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Sostituzione ruote di contrasto</value>
+  <data name="MotorBelt" xml:space="preserve">
+    <value>Cinghia motoriduttore</value>
   </data>
 </root>

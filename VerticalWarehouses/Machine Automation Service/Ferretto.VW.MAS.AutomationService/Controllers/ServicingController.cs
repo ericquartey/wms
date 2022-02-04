@@ -106,11 +106,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpPost("set-IsToDo")]
-        public IActionResult SetIsToDo(int instructionId)
+        [HttpPost("set-note")]
+        public IActionResult SetNote(string maintainerName, string note, int ID)
         {
-            this.servicingProvider.SetIsToDo(instructionId);
+            this.servicingProvider.SetNote(maintainerName, note, ID);
             return this.Ok();
+        }
+
+        [HttpGet("get-statistic")]
+        public ActionResult<MachineStatistics> GetStatistic(int ID)
+        {
+            return this.Ok(this.servicingProvider.GetSettings(ID));
         }
 
         [HttpPost("update-service-status")]

@@ -117,130 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Comprobación de los filtros de aire</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Filtros de aire</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
+  <data name="Bearings" xml:space="preserve">
     <value>Comprobación de rodamientos</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Engrase de rodamientos</value>
-  </data>
-  <data name="BeltAdjust" xml:space="preserve">
+  <data name="Belt" xml:space="preserve">
     <value>Tensión de la correa</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Comprobación de la fijación del cinturón</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Sustitución de la correa</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
+  <data name="CableChain" xml:space="preserve">
     <value>Control de la cadena portacables</value>
   </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Comprobación de cables</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
+  <data name="Chain" xml:space="preserve">
     <value>Tensión de la cadena</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Engrase de la cadena</value>
-  </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Sustitución de la cadena</value>
-  </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
+  <data name="Contactors" xml:space="preserve">
     <value>ContactorsSubstitute</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Comprobación de los componentes eléctricos</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
+  <data name="FirstCell" xml:space="preserve">
     <value>Comprobar la primera celda</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
+  <data name="Guides" xml:space="preserve">
     <value>Control de rieles</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Sustitución de guías</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
+  <data name="Lamps" xml:space="preserve">
     <value>Comprobación de las luces de advertencia quemadas</value>
   </data>
-  <data name="LinkCheck" xml:space="preserve">
+  <data name="Link" xml:space="preserve">
     <value>Control conjunto</value>
   </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Engrase de juntas</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Sustitución de la articulación</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
+  <data name="MicroSwitches" xml:space="preserve">
     <value>Control de microinterruptores</value>
   </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Fijación del microinterruptor</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Sustitución del microinterruptor</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
+  <data name="MotorChain" xml:space="preserve">
     <value>Tensión de la cadena del motor</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Engrase de la cadena del motor</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Sustitución de la cadena del motor</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Comprobación y reposición del nivel de aceite del motorreductor</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
+  <data name="MotorGear" xml:space="preserve">
     <value>Sustitución del motorreductor</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
+  <data name="OpticalSensors" xml:space="preserve">
     <value>Limpieza de sensores ópticos</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Fijación de los sensores ópticos</value>
-  </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
+  <data name="PinPawlFasteners" xml:space="preserve">
     <value>Comprobación de los pernos de acoplamiento del trinquete</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Engrase de los pasadores del trinquete</value>
-  </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Sustitución de los pernos de acoplamiento del trinquete</value>
-  </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
+  <data name="PlasticCams" xml:space="preserve">
     <value>Comprobación del estado de las levas de plástico</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Control de células aleatorias</value>
-  </data>
-  <data name="SensorCheck" xml:space="preserve">
+  <data name="Sensors" xml:space="preserve">
     <value>Pruebas de funcionamiento de los sensores</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Limpieza del sensor</value>
-  </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Fijación del sensor</value>
-  </data>
-  <data name="ShaftCheck" xml:space="preserve">
+  <data name="Shaft" xml:space="preserve">
     <value>Comprobar el eje de compuerta</value>
   </data>
-  <data name="SupportsCheck" xml:space="preserve">
+  <data name="Supports" xml:space="preserve">
     <value>Comprobación juegos soportes</value>
   </data>
-  <data name="WheelsCheck" xml:space="preserve">
+  <data name="Wheels" xml:space="preserve">
     <value>Comprobación de la rueda de contraste</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Sustitución de las ruedas de contraste</value>
   </data>
 </root>

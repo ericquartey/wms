@@ -117,130 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Έλεγχος φίλτρων αέρα</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>φίλτρων αέρα</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Έλεγχος ρουλεμάν</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>ρουλεμάν</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Γρασάρισμα ρουλεμάν</value>
+  <data name="Belt" xml:space="preserve">
+    <value>ιμάντα</value>
   </data>
-  <data name="BeltAdjust" xml:space="preserve">
-    <value>Προσαρμογή ιμάντα</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>αλυσίδας καλωδίου</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Πρόσδεση ιμάντα</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση ιμάντα</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
-    <value>Έλεγχος αλυσίδας καλωδίου</value>
-  </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Έλεγχος καλωδίων</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
+  <data name="Chain" xml:space="preserve">
     <value>Προσαρμογή αλυσίδας</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Γρασάρισμα αλυσίδας</value>
-  </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση αλυσίδας</value>
-  </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
+  <data name="Contactors" xml:space="preserve">
     <value>Αντικατάσταση διακοπτών</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Έλεγχος ηλεκτρικών εξαρτημάτων</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
+  <data name="FirstCell" xml:space="preserve">
     <value>Πρώτος έλεγχος κυψέλης</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
+  <data name="Guides" xml:space="preserve">
     <value>Έλεγχος οδηγών</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση οδηγών</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
+  <data name="Lamps" xml:space="preserve">
     <value>Έλεγχος λαμπτήρων</value>
   </data>
-  <data name="LinkCheck" xml:space="preserve">
+  <data name="Link" xml:space="preserve">
     <value>Έλεγχος συνδέσμου</value>
   </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Γρασάρισμα συνδέσμου</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση συνδέσμου</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
+  <data name="MicroSwitches" xml:space="preserve">
     <value>Έλεγχος διακοπτών αισθητήρα</value>
   </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Συναρμολόγηση διακοπτών αισθητήρα</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση διακοπτών αισθητήρα</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
+  <data name="MotorChain" xml:space="preserve">
     <value>Προσαρμογή αλυσίδας κινητήρα</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Γρασάρισμα αλυσίδας κινητήρα</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση αλυσίδας κινητήρα</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Λάδι γραναζιού κινητήρα</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
+  <data name="MotorGear" xml:space="preserve">
     <value>Αντικατάσταση γραναζιού κινητήρα</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
+  <data name="OpticalSensors" xml:space="preserve">
     <value>Καθαρισμός οπτικών αισθητήρων</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Συναρμολόγηση οπτικών αισθητήρων</value>
-  </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
+  <data name="PinPawlFasteners" xml:space="preserve">
     <value>Έλεγχος σύνδεσης μάνδαλου</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Γρασάρισμα σύνδεσης μάνδαλου πείρου</value>
-  </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση σύνδεσης μάνδαλου πείρου</value>
-  </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
+  <data name="PlasticCams" xml:space="preserve">
     <value>Έλεγχος πλαστικών έκκεντρων</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Τυχαίος έλεγχος κυψέλης</value>
-  </data>
-  <data name="SensorCheck" xml:space="preserve">
+  <data name="Sensors" xml:space="preserve">
     <value>Έλεγχος αισθητήρα</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Καθαρισμός αισθητήρων</value>
-  </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Συναρμολόγηση αισθητήρων</value>
-  </data>
-  <data name="ShaftCheck" xml:space="preserve">
+  <data name="Shaft" xml:space="preserve">
     <value>Έλεγχος άξονα</value>
   </data>
-  <data name="SupportsCheck" xml:space="preserve">
+  <data name="Supports" xml:space="preserve">
     <value>Έλεγχος στηριγμάτων</value>
   </data>
-  <data name="WheelsCheck" xml:space="preserve">
+  <data name="Wheels" xml:space="preserve">
     <value>Έλεγχος τροχών</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Αντικατάσταση τροχών</value>
   </data>
 </root>
