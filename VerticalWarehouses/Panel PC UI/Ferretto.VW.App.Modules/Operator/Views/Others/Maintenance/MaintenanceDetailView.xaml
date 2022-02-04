@@ -227,7 +227,8 @@
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="0">
       <Grid Margin="10">
-        <DataGrid Name="DataGrid"
+            <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
+            <DataGrid Name="DataGrid"
                   Height="auto"
                   HorizontalScrollBarVisibility="Auto"
                   ItemsSource="{Binding Instructions}"
@@ -315,7 +316,8 @@
             <DataGridTextColumn x:Name="Column6"
                                 Width="auto"
                                 Binding="{Binding Path=Definition.CounterName, Converter={StaticResource CNC}}"
-                                Header="{res:Loc OperatorApp.CounterName}">
+                                Header="{res:Loc OperatorApp.CounterName}"
+                                Visibility="{Binding DataContext.IsAdmin, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="Margin" Value="10,0" />
@@ -341,7 +343,8 @@
             <DataGridTextColumn x:Name="Column8"
                                 Width="auto"
                                 Binding="{Binding Path=Definition.MaxDays}"
-                                Header="{res:Loc OperatorApp.MaxDays}">
+                                Header="{res:Loc OperatorApp.MaxDays}"
+                                Visibility="{Binding DataContext.IsAdmin, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="Margin" Value="10,0" />
@@ -367,7 +370,8 @@
             <DataGridTextColumn x:Name="Column10"
                                 Width="auto"
                                 Binding="{Binding Path=Definition.MaxRelativeCount}"
-                                Header="{res:Loc OperatorApp.MaxRelativeCount}">
+                                Header="{res:Loc OperatorApp.MaxRelativeCount}"
+                                Visibility="{Binding DataContext.IsAdmin, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="Margin" Value="10,0" />

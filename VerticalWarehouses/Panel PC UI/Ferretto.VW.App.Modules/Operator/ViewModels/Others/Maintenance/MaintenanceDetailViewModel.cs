@@ -65,6 +65,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isActiveVerticalAxis;
 
+        private bool isAdmin;
+
         private bool isCompletedBay1;
 
         private bool isCompletedBay2;
@@ -246,6 +248,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isActiveVerticalAxis, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsAdmin
+        {
+            get => this.isAdmin;
+            set => this.SetProperty(ref this.isAdmin, value);
+        }
+
         public bool IsCompletedBay1
         {
             get => this.isCompletedBay1;
@@ -370,8 +378,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.isOperator = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
-
             this.RaisePropertyChanged(nameof(this.IsOperator));
+
+            this.IsAdmin = this.sessionService.UserAccessLevel > UserAccessLevel.Installer;
+            this.RaisePropertyChanged(nameof(this.IsAdmin));
 
             this.IsBackNavigationAllowed = true;
 
@@ -434,7 +444,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                return this.currentGroupList.Any(x => x.IsDone == false) && this.currentGroupList.Any() && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring);
+                return this.IsAdmin
+                    || (this.currentGroupList.Any(x => !x.IsDone)
+                        && this.currentGroupList.Any()
+                        && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring));
             }
             catch (Exception)
             {
@@ -447,7 +460,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var can = !this.allInstructions.Any(s => s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring)
-                    && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring);
+                    && (this.Service?.ServiceStatus == MachineServiceStatus.Expired
+                        || this.Service?.ServiceStatus == MachineServiceStatus.Expiring
+                        || (this.Service?.ServiceStatus == MachineServiceStatus.Valid && this.IsAdmin));
                 return can;
             }
             catch (Exception)
