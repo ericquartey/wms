@@ -36,6 +36,7 @@
 - Corretta perdita di posizione logica del cassetto a fronte di ripristini automatici su macchine da 1000kg
 - Aggiunto allarme in caso di errore inverter senza segnale di fault
 - Corretto comando "Nuove operazioni disponibili" 
+- Corretta gestione valori decimali nella ricerca articolo
 
 ## Compatibile con adapter 0.4.30
 ***
