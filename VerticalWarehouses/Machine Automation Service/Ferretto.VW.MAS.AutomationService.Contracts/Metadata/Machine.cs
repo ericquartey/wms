@@ -21,21 +21,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [PullToRoot, Unfold]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
 
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Box))]
-            [Id(18)]
-            public bool Box { get; set; }
-
             [Category(Category = nameof(Vertimag.Elevator), ResourceType = typeof(Vertimag))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Elevator_CategoryDescription))]
             [Offset(500)]
             [PullToRoot, Unfold]
             public Elevator Elevator { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.EnabeNoteRules))]
-            [Id(22)]
-            public bool EnabeNoteRules { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ExpireCountPrecent))]
@@ -78,49 +68,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsAxisChanged { get; set; }
 
             [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsDisableQtyItemEditingPick))]
-            [Id(27)]
-            public bool IsDisableQtyItemEditingPick { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsEnableAddItem))]
-            [Id(24)]
-            public bool IsEnableAddItem { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsEnableHandlingItemOperations))]
-            [Id(33)]
-            public bool IsEnableHandlingItemOperations { get; set; }
-
-            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
             [Id(20)]
             public bool IsHeartBeat { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsLocalMachineItems))]
-            [Id(30)]
-            public bool IsLocalMachineItems { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsOrderList))]
-            [Id(29)]
-            public bool IsOrderList { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsRequestConfirmForLastOperationOnLoadingUnit))]
-            [Id(25)]
-            public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsUpdatingStockByDifference))]
-            [Id(32)]
-            public bool IsUpdatingStockByDifference { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ItemUniqueIdLength))]
-            [Id(19)]
-            public int ItemUniqueIdLength { get; set; }
 
             [Editable(true)]
             [Unit("mm")]
@@ -183,11 +133,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Simulation))]
             [Id(13)]
             public bool Simulation { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ToteBarcodeLength))]
-            [Id(26)]
-            public int ToteBarcodeLength { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_TouchHelper))]
             [Id(31)]
