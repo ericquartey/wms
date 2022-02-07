@@ -64,7 +64,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private int? inputQuantity;
+        private double? inputQuantity;
 
         private bool isBusyConfirmingOperation;
 
@@ -198,7 +198,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int? InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);

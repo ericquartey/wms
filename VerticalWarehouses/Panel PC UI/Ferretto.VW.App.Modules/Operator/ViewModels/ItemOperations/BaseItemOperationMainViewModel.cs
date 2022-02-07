@@ -1227,14 +1227,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsBoxEnabled = configuration.Machine.Box;
+            var machine = await this.machineConfigurationWebService.GetMachineAsync();
+            this.IsBoxEnabled = machine.Box;
 
-            this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
-            this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
+            this.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
+            this.IsDoubleConfirmBarcodePick = machine.IsDoubleConfirmBarcodePick;
             this.barcodeOk = null;
 
-            var disableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
+            var disableQtyItemEditingPick = machine.IsDisableQtyItemEditingPick;
             this.IsEnableAvailableQtyItemEditingPick = !disableQtyItemEditingPick;
 
             //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
@@ -1248,8 +1248,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //    this.BarcodeLenght = 0;
             //}
 
-            this.BarcodeLenght = configuration.Machine.ItemUniqueIdLength;
-            this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
+            this.BarcodeLenght = machine.ItemUniqueIdLength;
+            this.ToteBarcodeLength = machine.ToteBarcodeLength;
 
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;

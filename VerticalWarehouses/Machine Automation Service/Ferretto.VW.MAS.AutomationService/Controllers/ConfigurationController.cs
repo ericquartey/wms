@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IConfigurationProvider configurationProvider;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
 
-        public ConfigurationController(IConfigurationProvider configurationProvider)
+        public ConfigurationController(IConfigurationProvider configurationProvider,
+            IMachineProvider machineProvider)
         {
             this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
         }
 
         #endregion
@@ -31,6 +36,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<VertimagConfiguration> Get()
         {
             return this.Ok(this.configurationProvider.ConfigurationGet());
+        }
+
+        [HttpPost("get/machine")]
+        public ActionResult<Machine> GetMachine()
+        {
+            return this.Ok(this.machineProvider.Get());
         }
 
         [HttpPost("import-configuration")]
