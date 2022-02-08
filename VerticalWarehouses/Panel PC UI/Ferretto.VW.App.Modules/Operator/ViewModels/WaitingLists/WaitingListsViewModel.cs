@@ -418,7 +418,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var bay = await this.bayManager.GetBayAsync();
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false);
 
                 // check upcoming lists retrieved from EjLog
                 if (this.CheckUpcomingItemLists(newLists))
@@ -438,6 +438,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.Lists));
                 this.RaisePropertyChanged(nameof(this.IsShipmentDayVisible));
 
+                this.RaisePropertyChanged(nameof(this.selectedCells));
                 this.SetCurrentIndex(lastItemListId);
 
                 this.SelectLoadingUnit();

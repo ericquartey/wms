@@ -2426,4 +2426,16 @@
   <data name="IsDrapery" xml:space="preserve">
     <value>Drapery handling (WMS custom)</value>
   </data>
+  <data name="OperationMultiMachineInfo" xml:space="preserve">
+    <value>The operation continues on another machine</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="ShipmentUnitCode" xml:space="preserve">
+    <value>shipment unit code</value>
+  </data>
+  <data name="ShipmentUnitDescription" xml:space="preserve">
+    <value>shipment unit description</value>
+  </data>
 </root>

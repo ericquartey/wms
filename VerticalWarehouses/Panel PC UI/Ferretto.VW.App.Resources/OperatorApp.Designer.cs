@@ -1942,6 +1942,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the barcode.
+        /// </summary>
+        public static string EnterBarcode {
+            get {
+                return ResourceManager.GetString("EnterBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error movements.
         /// </summary>
         public static string ErrorMovements {
@@ -4282,6 +4291,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation continues on another machine.
+        /// </summary>
+        public static string OperationMultiMachineInfo {
+            get {
+                return ResourceManager.GetString("OperationMultiMachineInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation successfully.
         /// </summary>
         public static string OperationSuccess {
@@ -4548,6 +4566,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PresentQuantityDrapery {
             get {
                 return ResourceManager.GetString("PresentQuantityDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string Priority {
+            get {
+                return ResourceManager.GetString("Priority", resourceCulture);
             }
         }
         
@@ -4827,6 +4854,24 @@ namespace Ferretto.VW.App.Resources {
         public static string ShipmentDay {
             get {
                 return ResourceManager.GetString("ShipmentDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shipment unit code.
+        /// </summary>
+        public static string ShipmentUnitCode {
+            get {
+                return ResourceManager.GetString("ShipmentUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shipment unit description.
+        /// </summary>
+        public static string ShipmentUnitDescription {
+            get {
+                return ResourceManager.GetString("ShipmentUnitDescription", resourceCulture);
             }
         }
         

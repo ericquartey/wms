@@ -37,6 +37,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.Description = itemList.Description;
             this.ShipmentUnitCode = itemList.ShipmentUnitCode;
             this.ShipmentUnitDescription = itemList.ShipmentUnitDescription;
+            this.Priority = itemList.Priority;
             this.IsDispatchable = itemList.IsDispatchable;
             this.DispatchableTag = itemList.IsDispatchable ? ItemListDispatchableTag.Yes : ItemListDispatchableTag.No;
 

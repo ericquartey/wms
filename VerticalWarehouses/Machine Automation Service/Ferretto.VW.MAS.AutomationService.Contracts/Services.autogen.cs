@@ -26629,14 +26629,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting)
         {
-            return GetItemListsAsync(id, machineId, bayNumber, System.Threading.CancellationToken.None);
+            return GetItemListsAsync(id, machineId, bayNumber, includeExecuting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -26652,6 +26652,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("machineId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(machineId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("bayNumber") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (includeExecuting != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("includeExecuting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeExecuting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
