@@ -534,7 +534,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 foreach (var instruction in this.currentGroupList)
                 {
-                    if (instruction.InstructionStatus == MachineServiceStatus.Expired || instruction.InstructionStatus == MachineServiceStatus.Expiring || this.IsAdmin)
+                    if (instruction.InstructionStatus == MachineServiceStatus.Expired
+                        || instruction.InstructionStatus == MachineServiceStatus.Expiring
+                        || (this.IsAdmin
+                            && ((instruction.Definition.MaxDays.HasValue && instruction.Definition.MaxDays.Value <= 365)
+                                || (instruction.Definition.MaxRelativeCount.HasValue && instruction.Definition.MaxRelativeCount.Value <= 20000))))
                     {
                         await this.machineServicingWebService.ConfirmInstructionAsync(instruction.Id);
                     }
