@@ -16,6 +16,8 @@
 
         int? UnitsCount { get; }
 
+        int? UnitsCountRef { get; }
+
         float Weight { get; }
 
         #endregion

@@ -114,7 +114,9 @@
                               VerticalAlignment="Top"
                               Quality="{Binding MeasuredQuality, Mode=OneWayToSource}"
                               UnitsCount="{Binding MeasuredQuantity, Mode=TwoWay}"
-                              Weight="{Binding Weight, Mode=TwoWay}" />
+                              UnitWeight="{Binding UnitWeight, Mode=TwoWay}"
+                              Weight="{Binding Weight, Mode=TwoWay}"
+                              Tare="{Binding Tare, Mode=TwoWay}"/>
       </Grid>
     </Border>
 

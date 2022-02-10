@@ -42,7 +42,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
         /// </summary>
         /// <returns>A <see cref="IWeightSample"/> containing the measurement information.</returns>
         /// <exception cref="System.Exception" />
-        Task<IWeightSample> MeasureWeightAsync();
+        Task<IWeightSample> MeasureWeightAsync(bool poll);
 
         /// <summary>
         /// Resets the average unitary weight.

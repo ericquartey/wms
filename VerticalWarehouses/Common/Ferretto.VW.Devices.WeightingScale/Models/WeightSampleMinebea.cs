@@ -30,34 +30,57 @@
 
         public int? UnitsCount { get; set; }
 
+        public int? UnitsCountRef { get; set; }
+
         public float Weight { get; set; }
 
         #endregion
 
         #region Methods
 
-        public static bool TryParse(string message, out WeightSampleMinebea sample)
+        public static WeightSampleMinebea TryParse(string message, WeightSampleMinebea sample)
         {
             var match = regexLong.Match(message);
             if (match.Success)
             {
-                var type = match.Groups[nameof(Type)].Value;
-                // remove spaces from weight string
+                // remove spaces
+                var type = match.Groups[nameof(Type)].Value.Replace(" ", "");
                 var weight = match.Groups[nameof(Weight)].Value.Replace(" ", "");
-                sample = new WeightSampleMinebea()
-                {
-                    UnitOfMeasure = match.Groups[nameof(UnitOfMeasure)].Value,
-                    Weight = float.Parse(weight, System.Globalization.CultureInfo.InvariantCulture),
-                    Quality = SampleQuality.Stable
-                };
+                var value = float.Parse(weight, System.Globalization.CultureInfo.InvariantCulture);
 
-                if (type.Contains("Qnt"))
+                switch (type)
                 {
-                    sample.UnitsCount = (int)sample.Weight;
-                    sample.Weight = 0;
+                    case "Qnt":
+                        sample.UnitsCount = (int)value;
+                        sample.Quality = SampleQuality.Stable;
+                        sample.UnitOfMeasure = match.Groups[nameof(UnitOfMeasure)].Value;
+                        break;
+
+                    case "wRef":
+                        sample.AverageUnitWeight = value;
+                        break;
+
+                    case "T":
+                        sample.Tare = value;
+                        break;
+
+                    case "G#":
+                        sample.Weight = value;
+                        //sample.Quality = SampleQuality.Stable;
+                        sample.UnitOfMeasure = match.Groups[nameof(UnitOfMeasure)].Value;
+                        break;
+
+                    case "N":
+                        sample.Weight = value;
+                        sample.UnitOfMeasure = match.Groups[nameof(UnitOfMeasure)].Value;
+                        sample.Quality = SampleQuality.Stable;
+                        break;
+
+                    default:
+                        break;
                 }
 
-                return true;
+                return sample;
             }
             else
             {
@@ -72,12 +95,11 @@
                         Weight = float.Parse(weight, System.Globalization.CultureInfo.InvariantCulture),
                         Quality = SampleQuality.Stable
                     };
-                    return true;
+                    return sample;
                 }
             }
 
-            sample = null;
-            return false;
+            return sample;
         }
 
         #endregion

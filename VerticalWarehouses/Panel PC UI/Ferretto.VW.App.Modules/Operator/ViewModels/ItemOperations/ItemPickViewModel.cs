@@ -674,6 +674,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
+                var quantity = this.InputQuantity;
                 if (barcode != null)
                 {
                     var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
@@ -684,6 +685,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             // acquire the tote barcode
                             var toteBarcode = barcode;
+                            var itemId = this.MissionOperation.ItemId;
 
                             this.Logger.Debug($"Confirm operation for: {this.barcodeItem} item, {toteBarcode} tote");
                             this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + toteBarcode);
@@ -703,6 +705,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                             if (canComplete)
                             {
+                                await this.PrintWeightAsync(itemId, (int?)quantity);
                                 this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                             }
                             else
@@ -744,12 +747,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else
                     {
                         this.barcodeItem = barcode;
+                        var itemId = this.MissionOperation.ItemId;
 
                         this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                         canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem);
 
                         if (canComplete)
                         {
+                            await this.PrintWeightAsync(itemId, (int?)quantity);
                             this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                         }
                         else
@@ -764,10 +769,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
+                    var itemId = this.MissionOperation.ItemId;
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
 
                     if (canComplete)
                     {
+                        await this.PrintWeightAsync(itemId, (int?)quantity);
                         this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                     }
                     else

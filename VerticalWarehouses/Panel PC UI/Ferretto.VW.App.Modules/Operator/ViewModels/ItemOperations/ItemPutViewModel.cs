@@ -353,6 +353,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
                 var loadingUnitId = this.Mission.LoadingUnit.Id;
+                var itemId = this.MissionOperation.ItemId;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
@@ -378,6 +379,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
+                    quantity = 1;
                 }
                 else
                 {
@@ -386,14 +388,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
-                    if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
-                    {
-                        await this.UpdateWeight(loadingUnitId, 1, item.AverageWeight, type);
-                    }
-                    else
-                    {
-                        await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
-                    }
+                    await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+                    await this.PrintWeightAsync(itemId, (int?)quantity);
 
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }

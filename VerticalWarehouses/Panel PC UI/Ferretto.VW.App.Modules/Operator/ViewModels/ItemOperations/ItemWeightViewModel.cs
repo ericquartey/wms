@@ -42,7 +42,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double requestedQuantity;
 
+        private double tare;
+
         private int? totalMeasuredQuantity;
+
+        private int? unitsCount;
+
+        private float? unitWeight;
 
         private float weight;
 
@@ -97,7 +103,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public int? MeasuredQuantity
         {
             get => this.measuredQuantity;
-            set => this.SetProperty(ref this.measuredQuantity, value, this.RaiseCanExecuteChanged);
+            set
+            {
+                this.UnitsCount = value;
+                this.SetProperty(ref this.measuredQuantity, value, this.RaiseCanExecuteChanged);
+            }
         }
 
         public double RequestedQuantity
@@ -108,10 +118,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ICommand ResetCommand => this.resetCommand;
 
+        public double Tare
+        {
+            get => this.tare;
+            set => this.SetProperty(ref this.tare, value);
+        }
+
         public int? TotalMeasuredQuantity
         {
             get => this.totalMeasuredQuantity;
             set => this.SetProperty(ref this.totalMeasuredQuantity, value);
+        }
+
+        public int? UnitsCount
+        {
+            get => this.unitsCount;
+            set
+            {
+                this.SetProperty(ref this.unitsCount, value);
+            }
+        }
+
+        public float? UnitWeight
+        {
+            get => this.unitWeight;
+            set
+            {
+                this.AverageWeight = value;
+                this.SetProperty(ref this.unitWeight, value);
+            }
         }
 
         public ICommand UpdateAverageWeightCommand => this.updateAverageWeightCommand;
@@ -123,7 +158,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (value > 0)
                 {
-                    this.MeasuredQuantity = (int?)Math.Round((this.averageWeight.HasValue && this.averageWeight.Value != 0) ? value / this.averageWeight.Value : value);
+                    if (this.UnitsCount.HasValue && this.UnitsCount.Value > 0)
+                    {
+                        this.MeasuredQuantity = this.UnitsCount;
+                    }
+                    else
+                    {
+                        this.MeasuredQuantity = (int?)Math.Round((this.averageWeight.HasValue && this.averageWeight.Value != 0) ? value / this.averageWeight.Value : value);
+                    }
                 }
 
                 if (this.MeasuredQuantity < 0)
@@ -147,6 +189,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.RequestedQuantity = missionOperation.RequestedQuantity;
                 await this.LoadItemDataAsync(missionOperation.ItemId);
+                this.UnitsCount = 0;
+                this.Weight = 0;
             }
 
             await base.OnAppearedAsync();
@@ -215,7 +259,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var newQuantity = (this.TotalMeasuredQuantity ?? 0) + (this.measuredQuantity ?? 0);
 
-            var msg = new ItemWeightChangedMessage(newQuantity, null);
+            var msg = new ItemWeightChangedMessage(newQuantity, null, this.Weight, this.Tare, this.AverageWeight);
             this.EventAggregator.GetEvent<PubSubEvent<ItemWeightChangedMessage>>().Publish(msg);
 
             this.TotalMeasuredQuantity = null;
@@ -224,7 +268,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void ConfirmRequestedQty()
         {
-            var msg = new ItemWeightChangedMessage(null, this.requestedQuantity);
+            var msg = new ItemWeightChangedMessage(null, this.requestedQuantity, this.Weight, this.Tare, this.AverageWeight);
             this.EventAggregator.GetEvent<PubSubEvent<ItemWeightChangedMessage>>().Publish(msg);
 
             this.TotalMeasuredQuantity = null;
@@ -243,11 +287,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemCode = item.Code;
                 if (item.UnitWeight.HasValue)
                 {
-                    this.AverageWeight = item.UnitWeight;
+                    this.UnitWeight = (float?)item.UnitWeight;
                 }
                 else
                 {
-                    this.AverageWeight = item.AverageWeight;
+                    this.UnitWeight = item.AverageWeight;
                 }
 
                 if (this.AverageWeight.HasValue && this.AverageWeight > 0)
@@ -262,7 +306,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex)
             {
                 this.ItemCode = null;
-                this.AverageWeight = null;
+                this.UnitWeight = null;
                 this.ShowNotification(ex);
             }
         }

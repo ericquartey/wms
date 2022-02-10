@@ -128,7 +128,7 @@ namespace Ferretto.VW.App.Accessories
             await this.deviceDriver.DisplayMessageAsync(message, duration);
         }
 
-        public async Task<IWeightSample> MeasureWeightAsync()
+        public async Task<IWeightSample> MeasureWeightAsync(bool poll)
         {
             if (this.isDisposed)
             {
@@ -146,7 +146,7 @@ namespace Ferretto.VW.App.Accessories
                 this.logger.Debug("Called weight measurement while the continuous polling mode is active.");
             }
 
-            return await this.deviceDriver.MeasureWeightAsync();
+            return await this.deviceDriver.MeasureWeightAsync(poll);
         }
 
         public async Task ResetAverageUnitaryWeightAsync()
@@ -235,7 +235,7 @@ namespace Ferretto.VW.App.Accessories
                 this.logger.Debug("The weighting scale service has started.");
                 this.isStarted = false;
 
-                await this.ClearMessageAsync();
+                //await this.ClearMessageAsync();
 
                 await this.StartWeightAcquisitionAsync();
             }
@@ -269,7 +269,7 @@ namespace Ferretto.VW.App.Accessories
             this.weightPollTimer.Change(0, WeightPollInterval);
         }
 
-        public Task StopAsync()
+        public async Task StopAsync()
         {
             if (this.isDisposed)
             {
@@ -283,9 +283,10 @@ namespace Ferretto.VW.App.Accessories
             //}
 
             this.logger.Info("Stopping the weighting scale service ...");
-            if (this.UnitaryWeight > 0)
+            if (this.UnitaryWeight >= 0)
             {
-                this.deviceDriver.SetAverageUnitaryWeightAsync(0.0F);
+                //this.deviceDriver.SetAverageUnitaryWeightAsync(0.0F);
+                await this.ClearMessageAsync();
             }
 
             this.isStarted = false;
@@ -294,8 +295,6 @@ namespace Ferretto.VW.App.Accessories
             this.deviceDriver.DisconnectAsync();
 
             this.logger.Debug("The weighting scale service has stopped.");
-
-            return Task.CompletedTask;
         }
 
         public void StopWeightAcquisitionAsync()
@@ -338,6 +337,7 @@ namespace Ferretto.VW.App.Accessories
             {
                 await this.StopAsync();
                 await this.StartAsync();
+                await this.MeasureWeightAsync(false);
             }
             else
             {
@@ -362,31 +362,37 @@ namespace Ferretto.VW.App.Accessories
             {
                 try
                 {
-                    var weightSample = await this.deviceDriver.MeasureWeightAsync();
+                    this.weightPollTimer.Change(Timeout.Infinite, Timeout.Infinite);
+                    var weightSample = await this.deviceDriver.MeasureWeightAsync(true);
                     if (weightSample is null)
                     {
                         this.ShowNotification(Resources.Localized.Get("OperatorApp.ScaleNotResponding"), NotificationSeverity.Error);
-                        return;
                     }
+                    else
+                    {
+                        this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}); count {weightSample.UnitsCount}.");
 
-                    this.logger.Debug($"Weighting scale #{weightSample.ScaleNumber} detected a weight of {weightSample.Weight}{weightSample.UnitOfMeasure} ({weightSample.Quality}).");
-
-                    System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                        this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
-                    );
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                            this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
+                        );
+                    }
                 }
                 catch (Exception ex)
                 {
                     this.logger.Error(ex, "Error while performing continuous weight sampling.");
                 }
+                this.weightPollTimer.Change(0, WeightPollInterval);
             }
         }
 
         private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
-            this.eventAggregator
-                .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, severity));
+            if (this.deviceDriver.ShowScaleNotResponding)
+            {
+                this.eventAggregator
+                  .GetEvent<PresentationNotificationPubSubEvent>()
+                  .Publish(new PresentationNotificationMessage(message, severity));
+            }
         }
 
         #endregion
