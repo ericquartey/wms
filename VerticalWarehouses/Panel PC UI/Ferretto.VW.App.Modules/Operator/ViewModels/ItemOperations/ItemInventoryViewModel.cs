@@ -20,11 +20,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string barcodeString;
 
+        private bool isBarcodeActive;
+
         private bool isCurrentDraperyItemFullyRequested;
 
         private bool isVisibleBarcodeReader;
-
-        private bool isBarcodeActive;
 
         private DelegateCommand showBarcodeReaderCommand;
 
@@ -49,7 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IMachineAccessoriesWebService accessoriesWebService)
             : base(
                   deviceService,
                   areasWebService,
@@ -66,7 +67,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   missionOperationsService,
                   dialogService,
                   wmsDataProvider,
-                  authenticationService)
+                  authenticationService,
+                  accessoriesWebService)
         {
             this.barcodeReaderService = barcodeReaderService;
         }
@@ -95,16 +97,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.barcodeString, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsCurrentDraperyItemFullyRequested
-        {
-            get => this.isCurrentDraperyItemFullyRequested;
-            set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool IsBarcodeActive
         {
             get => this.isBarcodeActive;
             set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCurrentDraperyItemFullyRequested
+        {
+            get => this.isCurrentDraperyItemFullyRequested;
+            set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsVisibleBarcodeReader

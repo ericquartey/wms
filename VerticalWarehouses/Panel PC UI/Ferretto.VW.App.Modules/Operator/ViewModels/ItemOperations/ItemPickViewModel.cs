@@ -73,7 +73,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IMachineAccessoriesWebService accessoriesWebService)
             : base(
                   deviceService,
                   areasWebService,
@@ -90,7 +91,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   missionOperationsService,
                   dialogService,
                   wmsDataProvider,
-                  authenticationService)
+                  authenticationService,
+                  accessoriesWebService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
 

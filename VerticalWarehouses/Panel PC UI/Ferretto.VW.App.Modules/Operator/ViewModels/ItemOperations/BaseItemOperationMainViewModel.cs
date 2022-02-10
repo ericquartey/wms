@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private const int ItemsVisiblePageSize = 4;
 
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
+
         private readonly IMachineAreasWebService areasWebService;
 
         private readonly IAuthenticationService authenticationService;
@@ -203,7 +205,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
-            IAuthenticationService authenticationService)
+            IAuthenticationService authenticationService,
+            IMachineAccessoriesWebService accessoriesWebService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
@@ -219,6 +222,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.accessoriesWebService = accessoriesWebService ?? throw new ArgumentNullException(nameof(accessoriesWebService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -480,6 +484,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isItemSerialNumberValid;
             protected set => this.SetProperty(ref this.isItemSerialNumberValid, value);
         }
+
+        public bool IsMinebeaScale { get; private set; }
 
         public bool IsOperationCanceled
         {
@@ -1264,6 +1270,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.BarcodeLenght = machine.ItemUniqueIdLength;
             this.ToteBarcodeLength = machine.ToteBarcodeLength;
 
+            var accessories = await this.accessoriesWebService.GetAllAsync();
+            this.IsMinebeaScale = accessories.WeightingScale.DeviceInformation?.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString();
+
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;
             this.IsBusyConfirmingOperation = false;
@@ -1401,8 +1410,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task PrintWeightAsync(int id, int? quantity)
         {
-            this.logger.Debug($"PrintWeight id {id}; NetWeight {this.NetWeight:0.00}; Tare {this.Tare:0.00}, count {quantity}; UnitWeight {this.UnitWeight:0.00}");
-            await this.itemsWebService.PrintWeightAsync(id, this.NetWeight, this.Tare, quantity, this.UnitWeight);
+            if (this.IsMinebeaScale)
+            {
+                this.logger.Debug($"PrintWeight id {id}; NetWeight {this.NetWeight:0.00}; Tare {this.Tare:0.00}, count {quantity}; UnitWeight {this.UnitWeight:0.00}");
+                await this.itemsWebService.PrintWeightAsync(id, this.NetWeight, this.Tare, quantity, this.UnitWeight);
+            }
         }
 
         public void Scroll(object parameter)
