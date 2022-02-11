@@ -68,4 +68,8 @@
   <conv:BoolToIconKindConverter x:Key="BTIKC"
                                 FalseKind="None"
                                 TrueKind="Check" />
+
+
+  <conv:EnumOperationToString x:Key="EOTS" />
+
 </ResourceDictionary>

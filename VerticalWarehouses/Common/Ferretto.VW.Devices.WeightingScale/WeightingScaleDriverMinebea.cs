@@ -13,9 +13,9 @@ namespace Ferretto.VW.Devices.WeightingScale
     {
         #region Fields
 
-        public const string IP_ADDRESS_DEFAULT = "192.168.0.14";
+        public const string IP_ADDRESS_DEFAULT = "192.168.0.15";
 
-        public const int PORT_DEFAULT = 4001;
+        public const int PORT_DEFAULT = 49155;
 
         private const string ESC = "\x1b";
 
@@ -35,7 +35,7 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         private readonly ConcurrentQueue<string> messagesToBeSendQueue = new ConcurrentQueue<string>();
 
-        private readonly int tcpTimeout = 1200;
+        private readonly int tcpTimeout = 2500;
 
         private TcpClient client;
 
@@ -55,13 +55,15 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public int Port => this.port;
 
+        public bool ShowScaleNotResponding => false;
+
         #endregion
 
         #region Methods
 
         public async Task ClearMessageAsync()
         {
-            await this.SendCommandAsync($"t_");
+            //await this.SendCommandAsync($"t_");
         }
 
         public async Task ConnectAsync(IPAddress ipAddress, int port)
@@ -140,14 +142,28 @@ namespace Ferretto.VW.Devices.WeightingScale
             Thread.Sleep((int)totalMilliseconds);
         }
 
-        public async Task<IWeightSample> MeasureWeightAsync()
+        public async Task<IWeightSample> MeasureWeightAsync(bool poll)
         {
-            WeightSampleMinebea acquiredSample = null;
-            var line = await this.SendCommandAsync($"P");
+            var acquiredSample = new WeightSampleMinebea();
+            var cmd = poll ? "poll" : "P";
+            var line = await this.SendCommandAsync(cmd);
 
-            if (!string.IsNullOrEmpty(line) && WeightSampleMinebea.TryParse(line, out var sample))
+            if (!string.IsNullOrEmpty(line))
             {
-                acquiredSample = sample;
+                for (int i = 0; i < 10 && !string.IsNullOrEmpty(line); i++)
+                {
+                    acquiredSample = ParseCommand(acquiredSample, line);
+                    // try to read all the data from the scale
+                    line = await this.SendCommandAsync("poll");
+                }
+                if (acquiredSample.Quality != SampleQuality.Stable)
+                {
+                    acquiredSample = null;
+                }
+            }
+            else
+            {
+                acquiredSample = null;
             }
 
             return acquiredSample;
@@ -176,6 +192,20 @@ namespace Ferretto.VW.Devices.WeightingScale
             {
                 throw new ArgumentNullException(nameof(weight), "Average unitary weight must be positive or zero.");
             }
+        }
+
+        private static WeightSampleMinebea ParseCommand(WeightSampleMinebea acquiredSample, string line)
+        {
+            string[] tokens = line.Split('\r', '\n');
+            foreach (var token in tokens)
+            {
+                if (token.Length > 1)
+                {
+                    acquiredSample = WeightSampleMinebea.TryParse(token, acquiredSample);
+                }
+            }
+
+            return acquiredSample;
         }
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
@@ -210,8 +240,11 @@ namespace Ferretto.VW.Devices.WeightingScale
                         this.stream = this.client.GetStream();
                         this.stream.ReadTimeout = this.tcpTimeout;
                         this.stream.WriteTimeout = this.tcpTimeout;
-                        this.stream.Write(data, 0, data.Length);
-                        this.logger.Debug($"SendCommandAsync();Sent: <ESC>{sendMessage}<CR><LF>");
+                        if (command != "poll")
+                        {
+                            this.stream.Write(data, 0, data.Length);
+                            this.logger.Debug($"SendCommandAsync();Sent: <ESC>{sendMessage}<CR><LF>");
+                        }
 
                         data = new byte[this.client.ReceiveBufferSize];
                         var bytes = this.stream.Read(data, 0, data.Length);
@@ -237,8 +270,11 @@ namespace Ferretto.VW.Devices.WeightingScale
                 catch (Exception e)
                 {
                     this._semaphore.Release();
-                    this.logger.Error(e);
-                    await this.DisconnectAsync();
+                    if (command != "poll")
+                    {
+                        this.logger.Error(e);
+                        await this.DisconnectAsync();
+                    }
                 }
             }
             else

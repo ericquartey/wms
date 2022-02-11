@@ -20,7 +20,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? MachineStatisticsId { get; set; }
 
+        public string MaintainerName { get; set; }
+
         public DateTime? NextServiceDate { get; set; }
+
+        public string Note { get; set; }
 
         public MachineServiceStatus ServiceStatus { get; set; } = MachineServiceStatus.Valid;
 

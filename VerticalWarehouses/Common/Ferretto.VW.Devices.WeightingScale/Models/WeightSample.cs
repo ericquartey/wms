@@ -24,6 +24,8 @@
 
         public int? UnitsCount { get; set; }
 
+        public int? UnitsCountRef { get; set; }
+
         public float Weight { get; set; }
 
         #endregion

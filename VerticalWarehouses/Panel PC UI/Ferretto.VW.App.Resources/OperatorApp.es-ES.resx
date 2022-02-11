@@ -1356,9 +1356,6 @@
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Cantidad necesaria</value>
   </data>
-  <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Confirmación de la línea</value>
-  </data>
   <data name="Axis" xml:space="preserve">
     <value>Eje</value>
   </data>
@@ -1877,5 +1874,8 @@
   </data>
   <data name="GenericValidationError" xml:space="preserve">
     <value>Valor no válido</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Máquina</value>
   </data>
 </root>

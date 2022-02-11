@@ -1356,9 +1356,6 @@
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Lekért mennyiség</value>
   </data>
-  <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Sor megerősítése</value>
-  </data>
   <data name="Axis" xml:space="preserve">
     <value>Tengely</value>
   </data>
@@ -1865,5 +1862,8 @@
   </data>
   <data name="GenericValidationError" xml:space="preserve">
     <value>Az érték nem érvényes</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Gép</value>
   </data>
 </root>

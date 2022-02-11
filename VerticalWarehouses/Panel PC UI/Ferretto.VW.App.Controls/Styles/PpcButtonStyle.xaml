@@ -710,15 +710,44 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="PpcButtonMovementsManualTabStyle"
-           BasedOn="{StaticResource PpcButtonTabStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Style.Triggers>
-            <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+  <Style x:Key="PpcButtonMaintenanceTabStyle"
+         BasedOn="{StaticResource PpcButtonTabStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Style.Triggers>
+      <Trigger Property="IsActive" Value="true">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoOrange}" />
+      </Trigger>
+      <Trigger Property="IsActive" Value="false">
+        <Setter Property="BorderBrush" Value="{DynamicResource GrayD}" />
+      </Trigger>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsActive" Value="false" />
+          <Condition Property="IsCompleted" Value="True" />
+        </MultiTrigger.Conditions>
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+      </MultiTrigger>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsActive" Value="true" />
+          <Condition Property="IsCompleted" Value="True" />
+        </MultiTrigger.Conditions>
+        <Setter Property="Foreground" Value="{DynamicResource FerrettoOrange}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+      </MultiTrigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="PpcButtonMovementsManualTabStyle"
+         BasedOn="{StaticResource PpcButtonTabStyle}"
+         TargetType="{x:Type controls:PpcButton}">
+    <Style.Triggers>
+      <Trigger Property="IsActive" Value="true">
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
 
     <Style x:Key="PpcButtonOperatorTabStyle"
            BasedOn="{StaticResource PpcButtonTabStyle}"

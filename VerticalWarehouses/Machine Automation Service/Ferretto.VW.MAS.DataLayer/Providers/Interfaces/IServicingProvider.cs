@@ -28,13 +28,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ServicingInfo GetLastValid();
 
+        MachineStatistics GetSettings(int ID);
+
         bool IsAnyInstructionExpired();
 
         bool IsAnyInstructionExpiring();
 
         void RefreshDescription(int servicingInfoId);
 
-        void SetIsToDo(int instructionId);
+        void SetNote(string maintainerName, string note, int ID);
 
         void UpdateServiceStatus();
 

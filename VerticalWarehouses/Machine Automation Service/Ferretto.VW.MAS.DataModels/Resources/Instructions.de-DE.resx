@@ -117,130 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Kontrolle Luftfilter</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Luftfilter</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Kontrolle der Lager</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>Lager</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Schmierung der Lager</value>
+  <data name="Belt" xml:space="preserve">
+    <value>Riemen</value>
   </data>
-  <data name="BeltAdjust" xml:space="preserve">
-    <value>Riemenspannung</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>Energieführungskette</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Prüfung Riemenbefestigung</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Riemenaustausch</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
-    <value>Kont. Energieführungskette</value>
-  </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Kabelkontrolle</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
+  <data name="Chain" xml:space="preserve">
     <value>Spannung der Kette</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Schmierung Kette</value>
-  </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Ersetzen von Ketten</value>
-  </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
+  <data name="Contactors" xml:space="preserve">
     <value>ContactorsSubstitute</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Kontr. Elektr. Komponenten</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
+  <data name="FirstCell" xml:space="preserve">
     <value>Kontr. erste Zelle</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
+  <data name="Guides" xml:space="preserve">
     <value>Kontr.Führungen</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Austausch Führun.</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
+  <data name="Lamps" xml:space="preserve">
     <value>Kontr. durchgebr. Anzeigelampe</value>
   </data>
-  <data name="LinkCheck" xml:space="preserve">
+  <data name="Link" xml:space="preserve">
     <value>Kontr. Kupplung</value>
   </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Schmieren Kupplung</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Austausch Kupplung</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
+  <data name="MicroSwitches" xml:space="preserve">
     <value>Kontrolle der Mikroschalter</value>
   </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Befestigung Mikroschalter</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Austausch der Mikroschalter</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
+  <data name="MotorChain" xml:space="preserve">
     <value>Spannen der Antriebskette</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Schmierung Antriebskette</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Austausch Antriebskette</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Kontrolle und Auffüllen Öl Getriebemotor</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
+  <data name="MotorGear" xml:space="preserve">
     <value>Austausch Getriebemotor</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
+  <data name="OpticalSensors" xml:space="preserve">
     <value>Reinigung opt. Sens.</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Befestigung opt. Sens.</value>
-  </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
+  <data name="PinPawlFasteners" xml:space="preserve">
     <value>Kontr. Befest. Mitnehmer</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Schmieren Befestigungsbolzen Mitneh.</value>
-  </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Austausch Befestigungsbolzen Mitn.</value>
-  </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
+  <data name="PlasticCams" xml:space="preserve">
     <value>Prüfung Zust. Kunststoffnocken</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Random-Kontr. Zelle</value>
-  </data>
-  <data name="SensorCheck" xml:space="preserve">
+  <data name="Sensors" xml:space="preserve">
     <value>Funktionstest Sensoren</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Reinigung Sens.</value>
-  </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Befestigung Sens.</value>
-  </data>
-  <data name="ShaftCheck" xml:space="preserve">
+  <data name="Shaft" xml:space="preserve">
     <value>Prüfung der Rolltürwelle</value>
   </data>
-  <data name="SupportsCheck" xml:space="preserve">
+  <data name="Supports" xml:space="preserve">
     <value>Spiele Halt. Prüfen</value>
   </data>
-  <data name="WheelsCheck" xml:space="preserve">
+  <data name="Wheels" xml:space="preserve">
     <value>Prüfung der Gegendruckräder</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Auswechseln der Gegendruckräder</value>
   </data>
 </root>

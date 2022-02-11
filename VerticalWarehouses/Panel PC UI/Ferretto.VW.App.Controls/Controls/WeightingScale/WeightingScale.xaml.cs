@@ -56,8 +56,14 @@ namespace Ferretto.VW.App.Controls
                                 typeof(WeightingScale),
                                 new PropertyMetadata(null));
 
+        public static readonly DependencyProperty UnitWeightProperty = DependencyProperty.Register(
+                                nameof(UnitWeight),
+                                typeof(float),
+                                typeof(WeightingScale),
+                                new PropertyMetadata(0.0f));
+
         public static readonly DependencyProperty WeightInfoProperty = DependencyProperty.Register(
-                                nameof(WeightInfo),
+                                        nameof(WeightInfo),
                                 typeof(string),
                                 typeof(WeightingScale),
                                 new PropertyMetadata(null));
@@ -128,6 +134,12 @@ namespace Ferretto.VW.App.Controls
         {
             get => (int?)this.GetValue(UnitsCountProperty);
             set => this.SetValue(UnitsCountProperty, value);
+        }
+
+        public float? UnitWeight
+        {
+            get => (float)this.GetValue(UnitWeightProperty);
+            set => this.SetValue(UnitWeightProperty, value);
         }
 
         public float Weight
@@ -212,10 +224,11 @@ namespace Ferretto.VW.App.Controls
             this.UnitOfMeasure = currWeightSample.UnitOfMeasure;
             this.UnitsCount = currWeightSample.UnitsCount;
             this.Weight = currWeightSample.Weight;
+            this.UnitWeight = currWeightSample.AverageUnitWeight.HasValue ? currWeightSample.AverageUnitWeight : 0;
             this.WeightInfo = this.Quality == SampleQuality.Stable || this.Quality == SampleQuality.Unstable
-                ? this.Weight.ToString("0.0")
+                ? this.Weight.ToString("0.00")
                 : "-----.-";
-            this.TareInfo = this.Tare.ToString("0.0 g");
+            this.TareInfo = this.Tare.ToString("0.00 g");
         }
 
         private void WeightingScaleService_WeighAcquired(object sender, Accessories.Interfaces.WeightingScale.WeightAcquiredEventArgs e)

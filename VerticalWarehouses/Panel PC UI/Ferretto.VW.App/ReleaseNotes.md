@@ -27,7 +27,7 @@
 
 ## Nuove Funzionalità 1.0.38 rispetto la 1.0.37
 - Aggiunto comando per inserire il barcode da tastiera
-- 
+- Introdotta pagina di manutenzione semplificata
 
 ## Bug Risolti
 - La doppia conferma con il barcode si disabilita se il barcode è errato
@@ -35,6 +35,8 @@
 - Corretta visualizzazione del cassetto a bordo nel menu movimenti
 - Corretta perdita di posizione logica del cassetto a fronte di ripristini automatici su macchine da 1000kg
 - Aggiunto allarme in caso di errore inverter senza segnale di fault
+- Corretto comando "Nuove operazioni disponibili" 
+- Corretta gestione valori decimali nella ricerca articolo
 
 ## Compatibile con adapter 0.4.30
 ***

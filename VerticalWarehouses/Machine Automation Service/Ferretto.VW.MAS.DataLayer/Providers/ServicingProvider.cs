@@ -173,18 +173,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         && lastStat.LastServiceDate.HasValue
                         && lastStat.NextServiceDate.HasValue)
                     {
-                        daysCount = lastStat.NextServiceDate.Value.Subtract(DateTime.UtcNow).Days + lastStat.LastServiceDate.Value.Subtract(countedStat.NextServiceDate.Value).Days;
+                        daysCount = ins.Definition.MaxDays.Value - DateTime.UtcNow.Subtract(countedStat.NextServiceDate.Value).Days;
                     }
                     else if (countedStat == null
                         && this.allStat.Any(s => s.InstallationDate.HasValue)
                         )
                     {
                         var installationDate = this.allStat.FirstOrDefault(s => s.InstallationDate.HasValue).InstallationDate.Value;
-                        daysCount = lastStat.NextServiceDate.Value.Subtract(DateTime.UtcNow).Days + lastStat.LastServiceDate.Value.Subtract(installationDate).Days;
+                        daysCount = ins.Definition.MaxDays.Value - DateTime.UtcNow.Subtract(installationDate).Days;
                     }
                     else if (lastStat.NextServiceDate.HasValue)
                     {
-                        daysCount = lastStat.NextServiceDate.Value.Subtract(DateTime.UtcNow).Days;
+                        daysCount = ins.Definition.MaxDays.Value - DateTime.UtcNow.Subtract(lastStat.LastServiceDate.Value).Days;
                     }
                 }
                 return daysCount;
@@ -605,6 +605,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public MachineStatistics GetSettings(int ID)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    return this.dataContext.MachineStatistics.Find(ID);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
         public bool IsAnyInstructionExpired()
         {
             bool expired = false;
@@ -650,10 +665,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     var instruction = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == servicingInfoId).ToList();
                     foreach (var ins in instruction)
                     {
-                        ins.Definition.GetDescription(ins.Definition.InstructionType);
+                        if (ins.Definition.Device == DataModels.Maintenance.InstructionDevice.Undefined)
+                        {
+                            ins.Definition.GetDescription(ins.Definition.InstructionType);
+                        }
+                        else
+                        {
+                            ins.Definition.GetDescription(ins.Definition.Device);
+                        }
                         this.dataContext.Instructions.Update(ins);
-                        this.dataContext.SaveChanges();
                     }
+                    this.dataContext.SaveChanges();
                 }
                 catch (Exception)
                 {
@@ -662,24 +684,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetIsToDo(int instructionId)
+        public void SetNote(string maintainerName, string note, int ID)
         {
-            lock (this.dataContext)
-            {
-                try
-                {
-                    // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
-                    instruction.IsToDo = true;
-                    instruction.InstructionStatus = MachineServiceStatus.Expiring;
-                    this.dataContext.Instructions.Update(instruction);
-                    this.dataContext.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    //do nothing
-                }
-            }
+            var lastService = this.dataContext.ServicingInfo.Find(ID);
+
+            lastService.MaintainerName = maintainerName;
+            this.dataContext.SaveChanges();
+
+            lastService.Note = note;
+            this.dataContext.SaveChanges();
         }
 
         public void UpdateServiceStatus()
@@ -738,9 +751,8 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             this.logger.LogWarning($"{Resources.General.MaintenanceStateExpired}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
                         }
-                        if (ins.InstructionStatus == MachineServiceStatus.Expiring
-                            && ins.Definition.MaxDays.HasValue
-                            )
+
+                        if (ins.InstructionStatus == MachineServiceStatus.Expiring && ins.Definition.MaxDays.HasValue)
                         {
                             var diff = this.DaysCount(ins);
                             if (diff < 0)
@@ -752,8 +764,8 @@ namespace Ferretto.VW.MAS.DataLayer
                                 this.logger.LogWarning($"{Resources.General.MaintenanceStateExpired}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
                             }
                         }
-                        if (ins.InstructionStatus == MachineServiceStatus.Expiring
-                            && ins.Definition?.CounterName != null)
+
+                        if (ins.InstructionStatus == MachineServiceStatus.Expiring && ins.Definition?.CounterName != null)
                         {
                             var diffCount = this.DiffCount(ins);
                             if (diffCount < 0)
@@ -766,11 +778,10 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                         }
 
-                        if (ins.InstructionStatus == MachineServiceStatus.Valid
-                            && ins.Definition.MaxDays.HasValue)
+                        if (ins.InstructionStatus == MachineServiceStatus.Valid && ins.Definition.MaxDays.HasValue)
                         {
                             var diff = this.DaysCount(ins);
-                            if (diff <= machine.ExpireDays)
+                            if (diff <= machine.ExpireDays && diff > 0)
                             {
                                 ins.InstructionStatus = MachineServiceStatus.Expiring;
                                 ins.IsToDo = true;
@@ -779,10 +790,17 @@ namespace Ferretto.VW.MAS.DataLayer
                                 this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                                 this.logger.LogWarning($"{Resources.General.MaintenanceStateExpiring}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
                             }
+                            else if (diff <= machine.ExpireDays && diff <= 0)
+                            {
+                                ins.InstructionStatus = MachineServiceStatus.Expired;
+                                ins.IntCounter = diff;
+                                this.dataContext.Instructions.Update(ins);
+                                this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
+                                this.logger.LogWarning($"{Resources.General.MaintenanceStateExpired}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
+                            }
                         }
-                        if (ins.InstructionStatus == MachineServiceStatus.Valid
-                            && ins.Definition?.CounterName != null
-                            && ins.Definition.MaxRelativeCount.HasValue)
+
+                        if (ins.InstructionStatus == MachineServiceStatus.Valid && ins.Definition?.CounterName != null && ins.Definition.MaxRelativeCount.HasValue)
                         {
                             var diffCount = this.DiffCount(ins);
                             var diffCountPercent = diffCount / ins.Definition.MaxRelativeCount.Value * 100;

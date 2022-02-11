@@ -49,6 +49,8 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public int Port => this.port;
 
+        public bool ShowScaleNotResponding => true;
+
         #endregion
 
         #region Methods
@@ -57,7 +59,8 @@ namespace Ferretto.VW.Devices.WeightingScale
         {
             var displayIdentifier = 1;
 
-            await this.SendCommandAsync($"DINT{displayIdentifier:00}0001");
+            //await this.SendCommandAsync($"DINT{displayIdentifier:00}0001");
+            this.SendCommandAsync($"C");
         }
 
         public async Task ConnectAsync(IPAddress ipAddress, int port)
@@ -137,7 +140,7 @@ namespace Ferretto.VW.Devices.WeightingScale
             await this.SendCommandAsync($"DISP01{message}");
         }
 
-        public async Task<IWeightSample> MeasureWeightAsync()
+        public async Task<IWeightSample> MeasureWeightAsync(bool poll)
         {
             WeightSample acquiredSample = null;
             var line = await this.SendCommandAsync($"REXT");

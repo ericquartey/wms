@@ -117,130 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AirFiltersCheck" xml:space="preserve">
-    <value>Prev zračnih filtr</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Zračnih filtr</value>
   </data>
-  <data name="BearingsCheck" xml:space="preserve">
-    <value>Preverjanje ležajev</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>Ležajev</value>
   </data>
-  <data name="BearingsGrease" xml:space="preserve">
-    <value>Mazanje ležajev</value>
-  </data>
-  <data name="BeltAdjust" xml:space="preserve">
+  <data name="Belt" xml:space="preserve">
     <value>Napenjanje jermena</value>
   </data>
-  <data name="BeltFasten" xml:space="preserve">
-    <value>Prev pritrjenosti jermena</value>
-  </data>
-  <data name="BeltSubstitute" xml:space="preserve">
-    <value>Zamenjava jermena</value>
-  </data>
-  <data name="CableChainCheck" xml:space="preserve">
+  <data name="CableChain" xml:space="preserve">
     <value>Prev verige za kable</value>
   </data>
-  <data name="CablesCheck" xml:space="preserve">
+  <data name="Cables" xml:space="preserve">
     <value>Prev kablov</value>
   </data>
-  <data name="ChainAdjust" xml:space="preserve">
+  <data name="Chain" xml:space="preserve">
     <value>Napenjanje verige</value>
   </data>
-  <data name="ChainGrease" xml:space="preserve">
-    <value>Mazanje verige</value>
-  </data>
-  <data name="ChainSubstitute" xml:space="preserve">
-    <value>Zamenjava verige</value>
-  </data>
-  <data name="ContactorsSubstitute" xml:space="preserve">
+  <data name="Contactors" xml:space="preserve">
     <value>Zamenj kontaktorjev</value>
   </data>
-  <data name="ElectricalComponentsCheck" xml:space="preserve">
-    <value>Prev električnih komponent</value>
-  </data>
-  <data name="FirstCellCheck" xml:space="preserve">
+  <data name="FirstCell" xml:space="preserve">
     <value>Prev prve celice</value>
   </data>
-  <data name="GuidesCheck" xml:space="preserve">
+  <data name="Guides" xml:space="preserve">
     <value>Prev vodil</value>
   </data>
-  <data name="GuidesSubstitute" xml:space="preserve">
-    <value>Zamenjava vodil</value>
-  </data>
-  <data name="LampsCheck" xml:space="preserve">
+  <data name="Lamps" xml:space="preserve">
     <value>Prev pregorelih signalnih lučk</value>
   </data>
-  <data name="LinkCheck" xml:space="preserve">
+  <data name="Link" xml:space="preserve">
     <value>Prev spoja</value>
   </data>
-  <data name="LinksGrease" xml:space="preserve">
-    <value>Mazanje spoja</value>
-  </data>
-  <data name="LinkSubstitute" xml:space="preserve">
-    <value>Zamenjava spoja</value>
-  </data>
-  <data name="MicroSwitchesCheck" xml:space="preserve">
+  <data name="MicroSwitches" xml:space="preserve">
     <value>Preverjanje mikro stikal</value>
   </data>
-  <data name="MicroSwitchesMount" xml:space="preserve">
-    <value>Pritrjevanje mikro stikal</value>
-  </data>
-  <data name="MicroSwitchesSubstitute" xml:space="preserve">
-    <value>Zamenjava mikro stikal</value>
-  </data>
-  <data name="MotorChainAdjust" xml:space="preserve">
+  <data name="MotorChain" xml:space="preserve">
     <value>Napenjanje verige motorja</value>
-  </data>
-  <data name="MotorChainGrease" xml:space="preserve">
-    <value>Mazanje verige motorja</value>
-  </data>
-  <data name="MotorChainSubstitute" xml:space="preserve">
-    <value>Zamenjava verige motorja</value>
   </data>
   <data name="MotorGearOil" xml:space="preserve">
     <value>Preverjanje in dolivanje olja motoreduktorja</value>
   </data>
-  <data name="MotorGearSubstitute" xml:space="preserve">
+  <data name="MotorGear" xml:space="preserve">
     <value>Zamenjava motoreduktorja</value>
   </data>
-  <data name="OpticalSensorsClean" xml:space="preserve">
+  <data name="OpticalSensors" xml:space="preserve">
     <value>Čiš optičnih senz</value>
   </data>
-  <data name="OpticalSensorsMount" xml:space="preserve">
-    <value>Prit optičnih senz</value>
-  </data>
-  <data name="PinPawlFastenersCheck" xml:space="preserve">
+  <data name="PinPawlFasteners" xml:space="preserve">
     <value>Prev zatičev kljuke zatikalnika</value>
   </data>
-  <data name="PinPawlFastenersGrease" xml:space="preserve">
-    <value>Mazanje zatičev kljuke zatikalnika</value>
-  </data>
-  <data name="PinPawlFastenersSubstitute" xml:space="preserve">
-    <value>Zamenjava zatičev kljuke zatikalnika</value>
-  </data>
-  <data name="PlasticCamsCheck" xml:space="preserve">
+  <data name="PlasticCams" xml:space="preserve">
     <value>Prev stanja plast izsrednikov</value>
   </data>
-  <data name="RandomCellCheck" xml:space="preserve">
-    <value>Naključno prev celice</value>
-  </data>
-  <data name="SensorCheck" xml:space="preserve">
+  <data name="Sensors" xml:space="preserve">
     <value>Preskusi delovanja senz</value>
   </data>
-  <data name="SensorsClean" xml:space="preserve">
-    <value>Čiš senz</value>
-  </data>
-  <data name="SensorsMount" xml:space="preserve">
-    <value>Prit senz</value>
-  </data>
-  <data name="ShaftCheck" xml:space="preserve">
+  <data name="Shaft" xml:space="preserve">
     <value>Preverjanje gredi lopute</value>
   </data>
-  <data name="SupportsCheck" xml:space="preserve">
+  <data name="Supports" xml:space="preserve">
     <value>Prev hodov nosilcev</value>
   </data>
-  <data name="WheelsCheck" xml:space="preserve">
+  <data name="Wheels" xml:space="preserve">
     <value>Preverjanje kontra koles</value>
-  </data>
-  <data name="WheelsSubstitute" xml:space="preserve">
-    <value>Zamenjava kontra koles</value>
   </data>
 </root>

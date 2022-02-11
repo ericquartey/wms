@@ -132,7 +132,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ServicingInfo SelectedServicingInfo
         {
             get => this.selectedServicingInfo;
-            set => this.SetProperty(ref this.selectedServicingInfo, value, this.RaiseCanExecuteChanged);
+            set
+            {
+                this.SetProperty(ref this.selectedServicingInfo, value, this.RaiseCanExecuteChanged);
+                this.GetStatistics();
+            }
         }
 
         public IEnumerable<ServicingInfo> ServicingInfo
@@ -203,7 +207,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmService() => true;
 
-        private bool CanDetailCommand() => this.selectedServicingInfo != null;
+        private bool CanDetailCommand() => this.selectedServicingInfo != null && !this.IsOperator;
 
         private async Task ConfirmServiceAsync()
         {
@@ -239,14 +243,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private void GetStatistics()
+        private async void GetStatistics()
         {
             this.IsWaitingForResponse = true;
             try
             {
                 if (this.selectedServicingInfo != null)
                 {
-                    this.Statistics = this.selectedServicingInfo.MachineStatistics;
+                    this.Statistics = this.SelectedServicingInfo.MachineStatistics;
                 }
             }
             catch (Exception ex)

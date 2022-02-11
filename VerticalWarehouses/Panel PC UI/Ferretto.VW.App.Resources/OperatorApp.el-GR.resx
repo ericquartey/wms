@@ -1356,9 +1356,6 @@
   <data name="RequestedQuantityBase" xml:space="preserve">
     <value>Απαιτούμενη ποσότητα</value>
   </data>
-  <data name="ConfirmInstruction" xml:space="preserve">
-    <value>Επιβεβαίωση σειράς</value>
-  </data>
   <data name="Axis" xml:space="preserve">
     <value>Άξονας</value>
   </data>
@@ -1727,5 +1724,8 @@
   </data>
   <data name="GenericValidationError" xml:space="preserve">
     <value>Άκυρη τιμή</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Μηχάνημα</value>
   </data>
 </root>

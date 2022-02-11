@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20220103083705_MaintainerNameandNote")]
+    partial class MaintainerNameandNote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -930,11 +932,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 93,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1098,8 +1095,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("Device");
-
                     b.Property<int>("InstructionType");
 
                     b.Property<bool>("IsCarousel");
@@ -1113,10 +1108,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("MaxRelativeCount");
 
                     b.Property<int?>("MaxTotalCount");
-
-                    b.Property<int>("Operation");
-
-                    b.Property<int>("SetPoint");
 
                     b.HasKey("Id");
 
@@ -1344,17 +1335,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsDisableQtyItemEditingPick");
 
-                    b.Property<bool>("IsDoubleConfirmBarcodeInventory");
-
-                    b.Property<bool>("IsDoubleConfirmBarcodePick");
-
-                    b.Property<bool>("IsDoubleConfirmBarcodePut");
-
-                    b.Property<bool>("IsDrapery");
-
                     b.Property<bool>("IsEnableAddItem");
-
-                    b.Property<bool>("IsEnableHandlingItemOperations");
 
                     b.Property<bool>("IsHeartBeat");
 
@@ -1363,8 +1344,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsOrderList");
 
                     b.Property<bool>("IsRequestConfirmForLastOperationOnLoadingUnit");
-
-                    b.Property<bool>("IsUpdatingStockByDifference");
 
                     b.Property<int>("ItemUniqueIdLength");
 
@@ -1967,8 +1946,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("ServiceUrl")
                         .HasColumnType("text");
 
-                    b.Property<bool>("SocketLinkEndOfLine");
-
                     b.Property<bool>("SocketLinkIsEnabled");
 
                     b.Property<int>("SocketLinkPolling");
@@ -1993,7 +1970,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             IsTimeSyncEnabled = false,
                             LastWmsTimeSync = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceUrl = "http://127.0.0.1:10000/",
-                            SocketLinkEndOfLine = false,
                             SocketLinkIsEnabled = false,
                             SocketLinkPolling = 120,
                             SocketLinkPort = 7075,
