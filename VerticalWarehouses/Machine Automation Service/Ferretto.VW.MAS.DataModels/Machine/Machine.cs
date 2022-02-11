@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// Gets or sets the bays of the machine.
         /// </summary>
-        public IEnumerable<Bay> Bays { get; set; }
+        public List<Bay> Bays { get; set; }
 
         /// <summary>
         /// Enables the management of logic containers inside Load Units (DEIMA)
