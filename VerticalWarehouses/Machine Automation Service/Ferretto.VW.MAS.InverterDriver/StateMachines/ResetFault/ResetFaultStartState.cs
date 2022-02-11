@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                     this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
                 }
                 else if (!this.InverterStatus.CommonStatusWord.IsFault
-                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
                 {
                     if (this.InverterStatus.CommonStatusWord.IsFault)
                     {
