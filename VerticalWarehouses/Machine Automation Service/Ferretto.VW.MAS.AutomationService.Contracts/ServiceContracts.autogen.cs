@@ -6323,8 +6323,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? InventoryDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inventoryThreshold", Required = Newtonsoft.Json.Required.Always)]
-        public decimal InventoryThreshold { get; set; }
+        [Newtonsoft.Json.JsonProperty("inventoryThreshold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public decimal? InventoryThreshold { get; set; }
     
         [Newtonsoft.Json.JsonProperty("isItemPairingFixed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsItemPairingFixed { get; set; }
@@ -6344,8 +6344,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("itemSerialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ItemSerialNumber { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("itemSSCC", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ItemSSCC { get; set; }
+        [Newtonsoft.Json.JsonProperty("itemSscc", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string ItemSscc { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lastPickDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? LastPickDate { get; set; }
@@ -7640,8 +7640,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("expirationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTimeOffset? ExpirationDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("inventoryThreshold", Required = Newtonsoft.Json.Required.Always)]
-        public decimal InventoryThreshold { get; set; }
+        [Newtonsoft.Json.JsonProperty("inventoryThreshold", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public decimal? InventoryThreshold { get; set; }
     
         [Newtonsoft.Json.JsonProperty("item", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Item Item { get; set; }
