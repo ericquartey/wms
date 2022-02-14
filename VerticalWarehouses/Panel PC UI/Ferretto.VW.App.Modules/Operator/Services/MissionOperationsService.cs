@@ -21,9 +21,13 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IAuthenticationService authenticationService;
 
+        private readonly IBayManager bayManager;
+
         private readonly BayNumber bayNumber;
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
@@ -62,12 +66,16 @@ namespace Ferretto.VW.App.Modules.Operator
             IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient,
             IAuthenticationService authenticationService,
-            IMachineAreasWebService areasWebService)
+            IMachineAreasWebService areasWebService,
+            IMachineIdentityWebService identityService,
+            IBayManager bayManager)
         {
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
@@ -262,6 +270,26 @@ namespace Ferretto.VW.App.Modules.Operator
             }
 
             return retValue;
+        }
+
+        public async Task<bool> IsMultiMachineAsync(int missionId)
+        {
+            try
+            {
+                var machine = await this.identityService.GetAsync();
+                var bay = await this.bayManager.GetBayAsync();
+
+                var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+
+                var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission.Operations.FirstOrDefault().ItemListCode);
+
+                return currentMission.Machines.ToList().Exists(x => x.Id != machine.Id);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public bool IsRecallLoadingUnitId()

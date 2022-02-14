@@ -1153,7 +1153,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.InputQuantity > 0
                 &&
-                this.InputQuantity <= this.AvailableQuantity.Value
+                this.InputQuantity <= this.AvailableQuantity
                 &&
                 !this.IsWaitingForResponse;
         }

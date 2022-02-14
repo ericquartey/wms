@@ -928,6 +928,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
+            if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id))
+            {
+                this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
+            }
+
             System.Diagnostics.Debug.Assert(
                 this.InputQuantity.HasValue,
                 "The input quantity should have a value");

@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                         returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
                     }
                 }
-                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
                 {
                     this.Logger.LogError($"2:CalibrateAxisEnableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
                     this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Calibrate Axis Enable Operation Inverter {this.InverterStatus.SystemIndex}");
