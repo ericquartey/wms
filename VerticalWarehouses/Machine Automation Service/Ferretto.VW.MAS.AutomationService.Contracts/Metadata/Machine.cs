@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Category(Category = nameof(Vertimag.Bay), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(Bay.Number), ValueStringifierType = typeof(EnumValueStringifier))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Bay_CategoryDescription))]
+            [FilterProperties(nameof(Bay.Number), BayNumber.ElevatorBay)]
             [Id(200)]
             [Offset(100)]
             [PullToRoot, Unfold]
