@@ -76,15 +76,15 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
         #region Properties
 
+        public ItemListDispatchableTag DispatchableTag => !this.IsDispatchable ? ItemListDispatchableTag.Yes : ItemListDispatchableTag.No;
+
         public ListExecutionMode ExecutionMode { get; }
 
-        public bool IsColorTag => this.NotDispatchableTag == ItemListDispatchableTag.Yes;
+        public bool IsColorTag => !this.IsDispatchable || this.IsSpecialPriority;
 
         public bool IsSpecialPriority { get; set; }
 
         public string MachinesInfo { get; }
-
-        public ItemListDispatchableTag NotDispatchableTag => (!this.IsDispatchable || this.IsSpecialPriority) ? ItemListDispatchableTag.Yes : ItemListDispatchableTag.No;
 
         #endregion
     }
