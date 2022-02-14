@@ -201,15 +201,14 @@
                        Height="15"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Visibility="{Binding IsDispatchable, Converter={StaticResource BTVIC}}">
+                       Visibility="{Binding IsColorTag, Converter={StaticResource BTVC}}">
               <Rectangle.Style>
                 <Style TargetType="{x:Type Rectangle}">
-                  <Setter Property="Fill" Value="MediumPurple" />
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding Priority}"
-                                 Value="10">
-                      <Setter Property="Fill" Value="HotPink" />
-                    </DataTrigger>
+                <Setter Property="Fill" Value="MediumPurple"/>
+                <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSpecialPriority}" Value="True">
+                            <Setter Property="Fill" Value="HotPink" />
+                        </DataTrigger>
                   </Style.Triggers>
                 </Style>
               </Rectangle.Style>
@@ -268,8 +267,8 @@
       <DataGridTextColumn x:Name="Column4"
                           Width="auto"
                           Binding="{Binding ShipmentUnitCode}"
-                          Header="{Resources:Loc OperatorApp.ShipmentUnitCode}">
-        <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
+                          Header="{Resources:Loc OperatorApp.ShipmentUnitCode}"
+            Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
 
         <DataGridTextColumn.ElementStyle>
           <Style TargetType="{x:Type TextBlock}">
@@ -282,8 +281,8 @@
       <DataGridTextColumn x:Name="Column5"
                           Width="auto"
                           Binding="{Binding ShipmentUnitDescription}"
-                          Header="{Resources:Loc OperatorApp.ShipmentUnitDescription}">
-        <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
+                          Header="{Resources:Loc OperatorApp.ShipmentUnitDescription}"
+            Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
         <DataGridTextColumn.ElementStyle>
           <Style TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />

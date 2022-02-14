@@ -39,6 +39,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
+        private bool isCarrefour;
+
         private bool isShipmentDayVisible;
 
         private DelegateCommand listDetailButtonCommand;
@@ -79,6 +81,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public string ActiveContextName => OperationalContext.ListSearch.ToString();
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value);
+        }
 
         public bool IsShipmentDayVisible
         {
@@ -233,6 +241,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
             this.IsShipmentDayVisible = false;
+            this.IsCarrefour = true;
 
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity is null)
@@ -433,6 +442,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.lists.Count > 0)
                 {
                     this.IsShipmentDayVisible = this.lists.Any(i => i.ShipmentUnitCode != null);
+                    if (!this.IsCarrefour)
+                    {
+                        this.lists.ForEach(l => l.IsSpecialPriority = false);
+                    }
                 }
 
                 this.RaisePropertyChanged(nameof(this.Lists));

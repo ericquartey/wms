@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.ShipmentUnitDescription = itemList.ShipmentUnitDescription;
             this.Priority = itemList.Priority;
             this.IsDispatchable = itemList.IsDispatchable;
-            this.DispatchableTag = itemList.IsDispatchable ? ItemListDispatchableTag.Yes : ItemListDispatchableTag.No;
+            this.IsSpecialPriority = itemList.Priority == 10;
 
             if (itemList.Machines?.Any(m => m.Id == machineId) == true)
             {
@@ -76,11 +76,15 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
         #region Properties
 
-        public ItemListDispatchableTag DispatchableTag { get; }
-
         public ListExecutionMode ExecutionMode { get; }
 
+        public bool IsColorTag => this.NotDispatchableTag == ItemListDispatchableTag.Yes;
+
+        public bool IsSpecialPriority { get; set; }
+
         public string MachinesInfo { get; }
+
+        public ItemListDispatchableTag NotDispatchableTag => (!this.IsDispatchable || this.IsSpecialPriority) ? ItemListDispatchableTag.Yes : ItemListDispatchableTag.No;
 
         #endregion
     }
