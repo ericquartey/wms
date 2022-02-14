@@ -33,6 +33,8 @@
 - Parametri: Eliminata Baia Culla
 - Bilancia Minebea-Sandri: correzioni varie
 - Dettagli manutenzione: l'utente admin può forzare le conferme
+- Aggiunto allarme di sensori non validi durante la calibrazione verticale
+- 
 
 ## Compatibile con adapter 0.4.31
 ***
