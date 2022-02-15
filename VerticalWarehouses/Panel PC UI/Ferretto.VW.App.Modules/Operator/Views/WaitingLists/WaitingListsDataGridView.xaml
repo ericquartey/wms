@@ -134,64 +134,6 @@
 
     <DataGrid.Columns>
 
-      <!--<DataGridTemplateColumn x:Name="Column0"
-                              Width="10"
-                              Header="">
-        <DataGridTemplateColumn.CellTemplate>
-          <DataTemplate>
-            <dxga:StateIndicatorControl x:Name="stateIndicatorControlX"
-                                        Margin="0,0,0,2"
-                                        RenderOptions.EdgeMode="Aliased"
-                                        Template="{DynamicResource StateIndicatorControlControlTemplate1}">
-              <dxga:StateIndicatorControl.AdditionalStates>
-                <dxga:State>
-                  <dxga:State.Presentation>
-                    <dxga:CustomStatePresentation>
-                      <dxga:CustomStatePresentation.StateTemplate>
-                        <ControlTemplate>
-                          <Viewbox Stretch="Uniform">
-                            <Grid Width="6"
-                                  Height="15"
-                                  Margin="0">
-                              <Rectangle Width="6"
-                                         Height="15"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Center"
-                                         Fill="MediumPurple" />
-                            </Grid>
-                          </Viewbox>
-                        </ControlTemplate>
-                      </dxga:CustomStatePresentation.StateTemplate>
-                    </dxga:CustomStatePresentation>
-                  </dxga:State.Presentation>
-                </dxga:State>
-              </dxga:StateIndicatorControl.AdditionalStates>
-              <dxga:StateIndicatorControl.Model>
-                <dxga:LampStateIndicatorModel />
-              </dxga:StateIndicatorControl.Model>
-              <dxga:StateIndicatorControl.Style>
-                <Style TargetType="{x:Type dxga:StateIndicatorControl}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding DispatchableTag}">
-                      <DataTrigger.Value>
-                        <model:ItemListDispatchableTag>No</model:ItemListDispatchableTag>
-                      </DataTrigger.Value>
-                      <Setter Property="StateIndex" Value="4" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding DispatchableTag}">
-                      <DataTrigger.Value>
-                        <model:ItemListDispatchableTag>Yes</model:ItemListDispatchableTag>
-                      </DataTrigger.Value>
-                      <Setter Property="Visibility" Value="Hidden" />
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </dxga:StateIndicatorControl.Style>
-            </dxga:StateIndicatorControl>
-          </DataTemplate>
-        </DataGridTemplateColumn.CellTemplate>
-      </DataGridTemplateColumn>-->
-
       <DataGridTemplateColumn x:Name="Column0"
                               Width="10"
                               Header="">
@@ -304,7 +246,6 @@
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
-
 
       <DataGridTemplateColumn x:Name="Column9"
                               Width="100"

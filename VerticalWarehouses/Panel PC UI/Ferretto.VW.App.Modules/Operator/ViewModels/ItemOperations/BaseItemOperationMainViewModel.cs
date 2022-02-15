@@ -869,7 +869,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                await this.ConfirmOperationAsync(e.Code);
+                                if (this.MissionOperation.MaximumQuantity == decimal.One)
+                                {
+                                    this.InputQuantity++;
+                                }
+                                else
+                                {
+                                    await this.ConfirmOperationAsync(e.Code);
+                                }
                             }
                         }
                     }
@@ -908,7 +915,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             {
                                 this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                                await this.ConfirmOperationAsync(e.Code);
+                                if (this.MissionOperation.MaximumQuantity == decimal.One)
+                                {
+                                    this.InputQuantity++;
+                                }
+                                else
+                                {
+                                    await this.ConfirmOperationAsync(e.Code);
+                                }
                             }
                             else
                             {

@@ -332,7 +332,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey)
                     {
-                        await this.ConfirmOperationAsync(this.barcodeOk);
+                        if (this.MissionOperation.MaximumQuantity == decimal.One)
+                        {
+                            this.InputQuantity++;
+                        }
+                        else
+                        {
+                            await this.ConfirmOperationAsync(this.barcodeOk);
+                        }
+
                     }
                 }
             }
