@@ -121,6 +121,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     var hasCategoryParameters = categoryParameters.Any();
                     var isSimpleType = IsSimpleType(propertyType);
 
+                    var isBay = hasCategory && hasCategoryParameters && prop.Name == "Bays" && categoryParameters.Any(p => p.PropertyReference == "Number");
+
                     var id = 0;
                     if (prop.TryGetCustomAttribute<IdAttribute>(out var idAttribute))
                     {
@@ -172,7 +174,11 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     // there might be missing/null items
                                     continue;
                                 }
-
+                                if (isBay && item is MAS.AutomationService.Contracts.Bay bay
+                                    && bay?.Number == MAS.AutomationService.Contracts.BayNumber.ElevatorBay)
+                                {
+                                    continue;
+                                }
                                 var category = GetCategoryName(elementType, format, item, this._culture, categoryParameters.ToArray());
                                 var categoryDescription = GetCategoryDescription(prop);
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == category.Name);
