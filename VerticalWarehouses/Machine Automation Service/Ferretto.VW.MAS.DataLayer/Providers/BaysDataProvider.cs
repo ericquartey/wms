@@ -227,7 +227,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     return;
                 }
 
-                this.dataContext.Bays.Add(new Bay
+                var machine = this.dataContext.Machines
+                    .Include(m => m.Bays)
+                    .First();
+
+                machine.Bays.Add(new Bay
                 {
                     Number = BayNumber.ElevatorBay,
                 });

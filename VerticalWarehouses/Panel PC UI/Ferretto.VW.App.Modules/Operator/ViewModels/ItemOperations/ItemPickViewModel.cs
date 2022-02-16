@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
-
+         
         //private DelegateCommand signallingDefectCommand;
 
         #region Constructors

@@ -201,7 +201,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public void BarcodeReaderConfirm()
         {
             if (!string.IsNullOrEmpty(this.BarcodeString))
-            {
+            { 
                 this.barcodeReaderService.SimulateRead(this.BarcodeString.EndsWith("\r") ? this.BarcodeString : this.BarcodeString + "\r");
 
                 this.BarcodeString = string.Empty;

@@ -45,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken healthToken;
 
+        private bool isCarrefour;
+
         private bool isDisposed;
 
         private bool isRecallUnit;
@@ -86,6 +88,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            this.isCarrefour = true;
         }
 
         #endregion
@@ -279,6 +282,10 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machine = await this.identityService.GetAsync();
                 var bay = await this.bayManager.GetBayAsync();
 
+                if (!this.isCarrefour)
+                {
+                    return false;
+                }
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
 
                 var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission.Operations.FirstOrDefault().ItemListCode);
