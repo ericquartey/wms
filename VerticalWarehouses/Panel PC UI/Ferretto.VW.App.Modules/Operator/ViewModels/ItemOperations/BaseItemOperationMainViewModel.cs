@@ -869,14 +869,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                if (this.MissionOperation.MaximumQuantity == decimal.One)
-                                {
-                                    this.InputQuantity++;
-                                }
-                                else
-                                {
-                                    await this.ConfirmOperationAsync(e.Code);
-                                }
+                                await this.ConfirmOperationAsync(e.Code);
                             }
                         }
                     }
@@ -915,14 +908,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             {
                                 this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                                if (this.MissionOperation.MaximumQuantity == decimal.One)
-                                {
-                                    this.InputQuantity++;
-                                }
-                                else
-                                {
-                                    await this.ConfirmOperationAsync(e.Code);
-                                }
+                                await this.ConfirmOperationAsync(e.Code);
                             }
                             else
                             {
@@ -993,7 +979,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == 1)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);

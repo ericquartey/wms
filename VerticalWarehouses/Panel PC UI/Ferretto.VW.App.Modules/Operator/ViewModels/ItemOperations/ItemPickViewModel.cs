@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
-
+         
         //private DelegateCommand signallingDefectCommand;
 
         #region Constructors
@@ -266,15 +266,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
                     {
-                        if (this.MissionOperation.MaximumQuantity == decimal.One)
-                        {
-                            this.InputQuantity++;
-                        }
-                        else
-                        {
-                            await this.ConfirmOperationAsync(this.barcodeOk);
-                        }
-
+                        await this.ConfirmOperationAsync(this.barcodeOk);
                         return;
                     }
                 }

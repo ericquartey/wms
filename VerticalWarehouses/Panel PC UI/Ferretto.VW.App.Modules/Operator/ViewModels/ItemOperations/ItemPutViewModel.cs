@@ -201,7 +201,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public void BarcodeReaderConfirm()
         {
             if (!string.IsNullOrEmpty(this.BarcodeString))
-            {
+            { 
                 this.barcodeReaderService.SimulateRead(this.BarcodeString.EndsWith("\r") ? this.BarcodeString : this.BarcodeString + "\r");
 
                 this.BarcodeString = string.Empty;
@@ -332,15 +332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey)
                     {
-                        if (this.MissionOperation.MaximumQuantity == decimal.One)
-                        {
-                            this.InputQuantity++;
-                        }
-                        else
-                        {
-                            await this.ConfirmOperationAsync(this.barcodeOk);
-                        }
-
+                        await this.ConfirmOperationAsync(this.barcodeOk);
                     }
                 }
             }
