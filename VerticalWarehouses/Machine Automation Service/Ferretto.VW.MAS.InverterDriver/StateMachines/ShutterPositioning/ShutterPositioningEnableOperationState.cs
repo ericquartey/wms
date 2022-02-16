@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                             && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds < (this.shutterPositionData.MovementDuration * 100) * 0.8)
                         {
                             this.Logger.LogError($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
-                            this.errorProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid, this.);
+                            this.errorProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid);
                             this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                             return true;
                         }

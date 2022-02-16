@@ -2097,4 +2097,7 @@
   <data name="NoMaintenerNameError" xml:space="preserve">
     <value>Nome Manutentore Richiesto per la conferma del servizio</value>
   </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>Telesc.</value>
+  </data>
 </root>

@@ -4994,6 +4994,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to shipment unit code.
+        /// </summary>
+        public static string ShipmentUnitCode {
+            get {
+                return ResourceManager.GetString("ShipmentUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shipment unit description.
+        /// </summary>
+        public static string ShipmentUnitDescription {
+            get {
+                return ResourceManager.GetString("ShipmentUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Bay 1.
         /// </summary>
         public static string ShutterBay1 {
@@ -5017,24 +5035,6 @@ namespace Ferretto.VW.App.Resources {
         public static string ShutterBay3 {
             get {
                 return ResourceManager.GetString("ShutterBay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to shipment unit code.
-        /// </summary>
-        public static string ShipmentUnitCode {
-            get {
-                return ResourceManager.GetString("ShipmentUnitCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to shipment unit description.
-        /// </summary>
-        public static string ShipmentUnitDescription {
-            get {
-                return ResourceManager.GetString("ShipmentUnitDescription", resourceCulture);
             }
         }
         
@@ -5485,6 +5485,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SuspendOperationSuccess {
             get {
                 return ResourceManager.GetString("SuspendOperationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to telesc..
+        /// </summary>
+        public static string Telescopic {
+            get {
+                return ResourceManager.GetString("Telescopic", resourceCulture);
             }
         }
         
