@@ -140,6 +140,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             if (!this.bayManager.Identity.AreaId.HasValue)
             {
+                throw new InvalidOperationException(Resources.Localized.Get("General.AreaMachineUnknow"));
                 return;
             }
 
