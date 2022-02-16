@@ -35,6 +35,9 @@
 - Dettagli manutenzione: l'utente admin può forzare le conferme
 - Aggiunto allarme di sensori non validi durante la calibrazione verticale
 - Corretta inizializzazione dopo errore di WMS
+- Baia telescopica: nei movimenti si vede il sensore di baia in sede
+- Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
+- Carico cassetto: esteso allarme di elevatore non carico
 
 ## Compatibile con adapter 0.4.31
 ***
