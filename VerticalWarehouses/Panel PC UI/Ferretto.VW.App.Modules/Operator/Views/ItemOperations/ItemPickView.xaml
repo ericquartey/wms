@@ -605,8 +605,7 @@
                           VerticalAlignment="Bottom"
                           Command="{Binding ShowBarcodeReaderCommand}"
                           KindMaterial="BarcodeScan"
-                          Visibility="Visible" />
-      <!--  Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />  -->
+                          Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
 
       <!--<StackPanel Grid.Column="2"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
