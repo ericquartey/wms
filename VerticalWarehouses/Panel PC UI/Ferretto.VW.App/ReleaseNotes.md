@@ -39,6 +39,7 @@
 - Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
 - Carico cassetto: esteso allarme di elevatore non carico
 - Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
+- Aumentato timeout di comunicazione con la scheda di I/O
 
 ## Compatibile con adapter 0.4.31
 ***
