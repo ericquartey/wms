@@ -32,7 +32,6 @@
 ## Bug Risolti
 - Parametri: Eliminata Baia Culla
 - Bilancia Minebea-Sandri: correzioni varie
-- Dettagli manutenzione: l'utente admin può forzare le conferme
 - Aggiunto allarme di sensori non validi durante la calibrazione verticale
 - Corretta inizializzazione dopo errore di WMS
 - Baia telescopica: nei movimenti si vede il sensore di baia in sede
@@ -40,6 +39,8 @@
 - Carico cassetto: esteso allarme di elevatore non carico
 - Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
 - Aumentato timeout di comunicazione con la scheda di I/O
+- Corretta gestione dei cassetti a 3 cifre nella procedura di cassetto sconosciuto
+- Le commesse sono ordinate
 
 ## Compatibile con adapter 0.4.31
 ***
