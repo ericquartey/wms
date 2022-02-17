@@ -38,6 +38,7 @@
 - Baia telescopica: nei movimenti si vede il sensore di baia in sede
 - Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
 - Carico cassetto: esteso allarme di elevatore non carico
+- Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
 
 ## Compatibile con adapter 0.4.31
 ***
