@@ -27,7 +27,6 @@
 
 ## Nuove Funzionalità 1.0.39 rispetto la 1.0.38
 - Ferretto NuGet package 0.16.40.
-- 
 
 ## Bug Risolti
 - Parametri: Eliminata Baia Culla
@@ -36,7 +35,7 @@
 - Corretta inizializzazione dopo errore di WMS
 - Baia telescopica: nei movimenti si vede il sensore di baia in sede
 - Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
-- Carico cassetto: esteso allarme di elevatore non carico
+- Carico/Scarico cassetto: aggiunto allarme di elevatore non carico/scarico durante il movimento
 - Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
 - Aumentato timeout di comunicazione con la scheda di I/O
 - Il numero di cassetto è sempre limitato a 3 cifre
