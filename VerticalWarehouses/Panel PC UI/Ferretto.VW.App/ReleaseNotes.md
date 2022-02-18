@@ -39,7 +39,7 @@
 - Carico cassetto: esteso allarme di elevatore non carico
 - Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
 - Aumentato timeout di comunicazione con la scheda di I/O
-- Corretta gestione dei cassetti a 3 cifre nella procedura di cassetto sconosciuto
+- Il numero di cassetto è sempre limitato a 3 cifre
 - Le commesse sono ordinate
 
 ## Compatibile con adapter 0.4.31

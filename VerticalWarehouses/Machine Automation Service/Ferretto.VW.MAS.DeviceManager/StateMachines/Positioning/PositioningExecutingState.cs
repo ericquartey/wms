@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     // deposit
                     this.firstPosition = this.machineData.MessageData.SwitchPosition[0]
-                                        + (this.machineData.MessageData.SwitchPosition[1] - this.machineData.MessageData.SwitchPosition[0]) / 2;
+                                        + (this.machineData.MessageData.SwitchPosition[1] - this.machineData.MessageData.SwitchPosition[0]) * 0.75;
                     this.secondPosition = this.machineData.MessageData.SwitchPosition[1]
                                         + (this.machineData.MessageData.SwitchPosition[2] - this.machineData.MessageData.SwitchPosition[1]) / 3;
                 }
@@ -1018,10 +1018,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         else if (this.IsUnloadingErrorDuringDeposit())
                         {
                             // TODO - if this warning is reliable we can enable the alarm
-                            this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
-                            //this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
+                            //this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
+                            this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                             //this.stateData.FieldMessage = message;
-                            //this.Stop(StopRequestReason.Stop);
+                            this.Stop(StopRequestReason.Stop);
                         }
 
                         //if (this.IsHorizontalSensorsError())
