@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     }
                 }
                 else if (this.startTime != DateTime.MinValue
-                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000
+                    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500
                     )
                 {
                     this.Logger.LogError($"PositioningTableEnableOperation position timeout, inverter {this.InverterStatus.SystemIndex}");

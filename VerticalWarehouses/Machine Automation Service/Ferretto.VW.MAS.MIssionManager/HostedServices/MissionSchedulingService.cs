@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     errorsProvider.RecordNew(MachineErrorCode.WarehouseNotEmpty, machineProvider.BayTestNumber);
                     return false;
                 }
-                machineProvider.RequiredCycles = cellsProvider.SetCellsToTest(bayNumber);
+                machineProvider.RequiredCycles = cellsProvider.SetCellsToTest(bayNumber, loadingUnit.Height);
                 if (machineProvider.RequiredCycles.Value == 0)
                 {
                     this.Logger.LogError($"First Test error: no cell to test found!");

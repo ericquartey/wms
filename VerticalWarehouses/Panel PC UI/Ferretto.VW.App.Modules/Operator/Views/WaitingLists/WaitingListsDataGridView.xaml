@@ -43,7 +43,6 @@
             ItemsSource="{Binding Lists}"
             RowHeight="50"
             SelectedItem="{Binding SelectedList}"
-            Sorting="dataGridName_Sorting"
             VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
             VerticalScrollBarVisibility="Auto">
 
@@ -135,7 +134,7 @@
 
     <DataGrid.Columns>
 
-      <DataGridTemplateColumn x:Name="Column0"
+      <!--<DataGridTemplateColumn x:Name="Column0"
                               Width="10"
                               Header="">
         <DataGridTemplateColumn.CellTemplate>
@@ -191,11 +190,35 @@
             </dxga:StateIndicatorControl>
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>-->
+
+      <DataGridTemplateColumn x:Name="Column0"
+                              Width="10"
+                              Header="">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate>
+            <Rectangle Width="6"
+                       Height="15"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Visibility="{Binding IsColorTag, Converter={StaticResource BTVC}}">
+              <Rectangle.Style>
+                <Style TargetType="{x:Type Rectangle}">
+                <Setter Property="Fill" Value="MediumPurple"/>
+                <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSpecialPriority}" Value="True">
+                            <Setter Property="Fill" Value="HotPink" />
+                        </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </Rectangle.Style>
+            </Rectangle>
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
 
-
       <DataGridTextColumn x:Name="Column1"
-                          Width="1*"
+                          Width="150"
                           Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
                           Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
 
@@ -215,7 +238,7 @@
       </DataGridTextColumn>
 
       <DataGridTextColumn x:Name="Column2"
-                          Width="1*"
+                          Width="100"
                           Binding="{Binding Code}"
                           Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
 
@@ -228,7 +251,7 @@
       </DataGridTextColumn>
 
       <DataGridTextColumn x:Name="Column3"
-                          Width="2*"
+                          Width="200"
                           Binding="{Binding Description}"
                           Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
 
@@ -242,10 +265,10 @@
       </DataGridTextColumn>
 
       <DataGridTextColumn x:Name="Column4"
-                          Width="1*"
+                          Width="auto"
                           Binding="{Binding ShipmentUnitCode}"
-                          Header="{Resources:Loc OperatorApp.Day}"
-                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">
+                          Header="{Resources:Loc OperatorApp.ShipmentUnitCode}"
+            Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
 
         <DataGridTextColumn.ElementStyle>
           <Style TargetType="{x:Type TextBlock}">
@@ -256,10 +279,10 @@
       </DataGridTextColumn>
 
       <DataGridTextColumn x:Name="Column5"
-                          Width="110"
+                          Width="auto"
                           Binding="{Binding ShipmentUnitDescription}"
-                          Header="{Resources:Loc OperatorApp.Destination}"
-                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">
+                          Header="{Resources:Loc OperatorApp.ShipmentUnitDescription}"
+            Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
         <DataGridTextColumn.ElementStyle>
           <Style TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -268,7 +291,21 @@
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
 
-      <DataGridTemplateColumn x:Name="Column6"
+      <DataGridTextColumn x:Name="Column8"
+                          Width="75"
+                          Binding="{Binding Priority}"
+                          Header="Priority">
+        <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+
+
+      <DataGridTemplateColumn x:Name="Column9"
                               Width="100"
                               Header="{Resources:Loc OperatorApp.ListAvailable}">
         <DataGridTemplateColumn.CellTemplate>

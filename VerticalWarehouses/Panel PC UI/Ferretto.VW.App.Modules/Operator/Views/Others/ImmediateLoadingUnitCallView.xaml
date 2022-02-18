@@ -106,6 +106,9 @@
                          Margin="15,15,15,0"
                          EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
                          LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
+                         KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                         KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                         Mask="##0"
                          MaxValue="{Binding MaxLoadingUnitId}"
                          MinValue="{Binding MinLoadingUnitId}" />
 

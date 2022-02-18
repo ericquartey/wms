@@ -14,10 +14,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
     {
         #region Fields
 
-        private string firstSort;
-
-        private ListSortDirection lastDirection;
-
         private readonly List<DataGridRow> dataGridRowList = new List<DataGridRow>();
 
         #endregion
@@ -27,7 +23,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         public WaitingListsDataGridView()
         {
             this.InitializeComponent();
-            this.firstSort = "";
         }
 
         #endregion
@@ -44,49 +39,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
 
         #region Methods
 
-        private void AddSortColumn(DataGrid sender, string sortColumn, ListSortDirection direction)
-        {
-            var cView = CollectionViewSource.GetDefaultView(sender.ItemsSource);
-            cView.SortDescriptions.Add(new SortDescription(sortColumn, direction));
-            //Add the sort arrow on the DataGridColumn
-            foreach (var col in sender.Columns.Where(x => x.SortMemberPath == sortColumn))
-            {
-                col.SortDirection = direction;
-            }
-        }
-
-        private void dataGridName_Sorting(object sender, DataGridSortingEventArgs e)
-        {
-            var dgSender = (DataGrid)sender;
-            var cView = CollectionViewSource.GetDefaultView(dgSender.ItemsSource);
-
-            //Alternate between ascending/descending if the same column is clicked
-            ListSortDirection direction = ListSortDirection.Ascending;
-            if (cView.SortDescriptions.FirstOrDefault().PropertyName == e.Column.SortMemberPath)
-            {
-                direction = cView.SortDescriptions.FirstOrDefault().Direction == ListSortDirection.Descending ? ListSortDirection.Ascending : ListSortDirection.Descending;
-            }
-
-            //To this point the default sort functionality is implemented
-
-            //Now check the wanted columns and add multiple sort
-            if (cView.SortDescriptions.Count >= 2
-                || cView.SortDescriptions.Count == 0
-                || e.Column.SortMemberPath == this.firstSort
-                )
-            {
-                this.lastDirection = direction;
-                cView.SortDescriptions.Clear();
-                this.AddSortColumn((DataGrid)sender, e.Column.SortMemberPath, direction);
-            }
-            else if (e.Column.SortMemberPath != this.firstSort)
-            {
-                this.firstSort = e.Column.SortMemberPath;
-                this.lastDirection = direction;
-                this.AddSortColumn((DataGrid)sender, this.firstSort, direction);
-            }
-            e.Handled = true;
-        }
         private static DependencyObject GetVisualParentOfType<T>(DependencyObject startObject)
         {
             DependencyObject parent = startObject;
@@ -145,7 +97,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
                         this.dataGridRowList.Clear();
                         this.dataGridRowList.Add(row);
                         row.IsSelected = true;
-
                     }
 
                     e.Handled = true;

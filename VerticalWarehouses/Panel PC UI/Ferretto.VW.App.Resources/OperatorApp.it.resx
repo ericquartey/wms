@@ -2079,10 +2079,25 @@
   <data name="IsDrapery" xml:space="preserve">
     <value>Gestione tessuti (WMS custom)</value>
   </data>
+  <data name="OperationMultiMachineInfo" xml:space="preserve">
+    <value>L'operazione continua su un'altra macchine</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="ShipmentUnitCode" xml:space="preserve">
+    <value>Tipo supporto</value>
+  </data>
+  <data name="ShipmentUnitDescription" xml:space="preserve">
+    <value>Descrizione supporto</value>
+  </data>
   <data name="SetPoint" xml:space="preserve">
     <value>Riferimento</value>
   </data>
   <data name="NoMaintenerNameError" xml:space="preserve">
     <value>Nome Manutentore Richiesto per la conferma del servizio</value>
+  </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>Telesc.</value>
   </data>
 </root>

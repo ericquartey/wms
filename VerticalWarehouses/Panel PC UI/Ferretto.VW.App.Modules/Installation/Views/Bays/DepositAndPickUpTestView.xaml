@@ -61,7 +61,7 @@
                            EditValue="{Binding Path=LoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding CanLoadingUnitId}"
                            LabelText="{res:Loc InstallationApp.DrawerNumber}"
-                           Mask="#0"
+                           Mask="##0"
                            MinValue="1" />
 
         <controls:PpcButton Grid.Row="1"

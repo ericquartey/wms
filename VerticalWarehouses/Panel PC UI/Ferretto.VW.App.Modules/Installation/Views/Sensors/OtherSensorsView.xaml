@@ -49,18 +49,6 @@
                                    Text="{res:Loc InstallationApp.InverterInFault}" />
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
-                                   Text="{res:Loc InstallationApp.BayTelescopic}"
-                                   Visibility="{Binding IsBay1TelescopicPresent, Converter={StaticResource BTVC}}" />
-
-        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay2}"
-                                   Text="{res:Loc InstallationApp.BayTelescopic}"
-                                   Visibility="{Binding IsBay2TelescopicPresent, Converter={StaticResource BTVC}}" />
-
-        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay3}"
-                                   Text="{res:Loc InstallationApp.BayTelescopic}"
-                                   Visibility="{Binding IsBay3TelescopicPresent, Converter={StaticResource BTVC}}" />
-
-        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
                                    Text="{res:Loc InstallationApp.PreFireAlarm}"
                                    Visibility="{Binding IsFireAlarmActive, Converter={StaticResource BTVC}}" />
 

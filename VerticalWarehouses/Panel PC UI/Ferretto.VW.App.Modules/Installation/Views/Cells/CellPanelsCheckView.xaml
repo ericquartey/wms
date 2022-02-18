@@ -259,6 +259,7 @@
                                    EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
                                    LabelText="{res:Loc InstallationApp.CurrentCell}"
+                                   Mask="###0"
                                    MaxValue="{Binding CurrentPanelMaxValue}"
                                    MinValue="{Binding CurrentPanelMinValue}" />
 

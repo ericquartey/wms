@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
                     {
                         this.Logger.LogError($"PositioningDisableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
                         this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Positioning Disable Operation Inverter {this.InverterStatus.SystemIndex}");

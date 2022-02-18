@@ -26767,14 +26767,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting)
         {
-            return GetItemListsAsync(id, machineId, bayNumber, System.Threading.CancellationToken.None);
+            return GetItemListsAsync(id, machineId, bayNumber, includeExecuting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -26790,6 +26790,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Append(System.Uri.EscapeDataString("machineId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(machineId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("bayNumber") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayNumber, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            if (includeExecuting != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("includeExecuting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeExecuting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -29084,6 +29088,83 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                     var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(itemOptions, _settings.Value));
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200" || status_ == "206") 
+                        {
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
+                            client_ = null; response_ = null; // response and client are disposed by FileResponse
+                            return fileResponse_;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new MasWebApiException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FileResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<FileResponse> PrintWeightAsync(int id, double? netWeight, double? tare, int? count, double? unitWeight)
+        {
+            return PrintWeightAsync(id, netWeight, tare, count, unitWeight, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<FileResponse> PrintWeightAsync(int id, double? netWeight, double? tare, int? count, double? unitWeight, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/items/{id}/print-weight?");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(System.Uri.EscapeDataString("netWeight") + "=").Append(System.Uri.EscapeDataString(netWeight != null ? ConvertToString(netWeight, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("tare") + "=").Append(System.Uri.EscapeDataString(tare != null ? ConvertToString(tare, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("count") + "=").Append(System.Uri.EscapeDataString(count != null ? ConvertToString(count, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("unitWeight") + "=").Append(System.Uri.EscapeDataString(unitWeight != null ? ConvertToString(unitWeight, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
     

@@ -5,6 +5,12 @@ namespace Ferretto.VW.Devices.WeightingScale
 {
     public interface IWeightingScaleDriver
     {
+        #region Properties
+
+        bool ShowScaleNotResponding { get; }
+
+        #endregion
+
         #region Methods
 
         Task ClearMessageAsync();
@@ -17,7 +23,7 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         Task DisplayMessageAsync(string message, System.TimeSpan duration);
 
-        Task<IWeightSample> MeasureWeightAsync();
+        Task<IWeightSample> MeasureWeightAsync(bool poll);
 
         Task ResetAverageUnitaryWeightAsync();
 
