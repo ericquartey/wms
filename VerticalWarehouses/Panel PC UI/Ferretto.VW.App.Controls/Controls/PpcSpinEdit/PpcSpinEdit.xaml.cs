@@ -130,7 +130,7 @@ namespace Ferretto.VW.App.Controls
             }
 
             this.Unloaded += (s, e) => { this.Disappear(); };
-            this.IsEnabledChanged += this.PpcSpinEdit_IsEnabledChanged; ;
+            this.IsEnabledChanged += this.PpcSpinEdit_IsEnabledChanged;
         }
 
         #endregion

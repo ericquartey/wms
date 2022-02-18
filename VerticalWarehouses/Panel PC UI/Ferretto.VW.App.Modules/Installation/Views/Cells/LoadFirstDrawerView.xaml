@@ -146,6 +146,7 @@
                            EditValue="{Binding LoadUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{res:Loc InstallationApp.LoadingUnitId}"
+                           Mask="##0"
                            MaxValue="999"
                            MinValue="1" />
 
