@@ -472,6 +472,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsCarrefour = true;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;

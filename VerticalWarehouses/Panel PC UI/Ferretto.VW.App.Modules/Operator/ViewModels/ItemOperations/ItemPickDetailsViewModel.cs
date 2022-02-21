@@ -82,6 +82,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.IsCarrefour = true;
             this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
             this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
 

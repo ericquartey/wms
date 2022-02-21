@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand downCommand;
 
+        private bool isCarrefour;
+
         private ItemList list;
 
         private DelegateCommand listExecuteCommand;
@@ -37,8 +39,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private IEnumerable<ItemListRow> listRows;
 
         private int machineId;
-
-        private bool isCarrefour;
 
         private ItemListRow selectedListRow;
 
@@ -74,6 +74,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
+
         public IMachineItemListsWebService ItemListsWebService { get; }
 
         public ItemList List => this.list;
@@ -93,12 +99,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.selectedListRow;
             set => this.SetProperty(ref this.selectedListRow, value);
-        }
-
-        public bool IsCarrefour
-        {
-            get => this.isCarrefour;
-            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand UpCommand =>
@@ -190,6 +190,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.IsCarrefour = true;
             this.IsBackNavigationAllowed = true;
 
             var machineIdentity = await this.identityService.GetAsync();

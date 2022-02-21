@@ -169,16 +169,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsCarrefourOrDraperyItem
-        {
-            get => this.isCarrefourOrDraperyItem;
-            set => this.SetProperty(ref this.isCarrefourOrDraperyItem, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool IsCarrefour
         {
             get => this.isCarrefour;
             set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefourOrDraperyItem
+        {
+            get => this.isCarrefourOrDraperyItem;
+            set => this.SetProperty(ref this.isCarrefourOrDraperyItem, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsCurrentDraperyItemFullyRequested
@@ -326,6 +326,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsCarrefour = true;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
