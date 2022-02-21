@@ -5561,6 +5561,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to telesc..
+        /// </summary>
+        public static string Telescopic {
+            get {
+                return ResourceManager.GetString("Telescopic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total active mission time.
         /// </summary>
         public static string TotalActiveMissionTime {

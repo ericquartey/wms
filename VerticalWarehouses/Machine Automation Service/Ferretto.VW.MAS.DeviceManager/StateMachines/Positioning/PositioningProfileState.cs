@@ -80,6 +80,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                         {
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeightNew(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
+                            //profileHeight = 174;    // TEST
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if ((profileHeight < this.minHeight - tolerance)
                                 || data.Profile > 10000

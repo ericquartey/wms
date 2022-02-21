@@ -1439,7 +1439,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     if (!this.IsStartedOnBoard)
                     {
                         // simulate the loading process
-                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
+                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition > this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value = true;
                             OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = false, IsLoadingExternal = false });
@@ -1471,7 +1471,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                     else
                     {
                         // simulate the unloading process
-                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition < this.SwitchPositions[this.currentAxis][1])
+                        if (this.AxisPosition < this.SwitchPositions[this.currentAxis][0] && this.AxisPosition > this.SwitchPositions[this.currentAxis][1])
                         {
                             this.ioDeviceMain[(int)IoPorts.DrawerInMachineSide].Value = false;
                             OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = true, IsLoadingExternal = false });

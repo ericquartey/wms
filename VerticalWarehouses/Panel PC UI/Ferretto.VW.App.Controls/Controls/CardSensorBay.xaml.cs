@@ -325,9 +325,16 @@ namespace Ferretto.VW.App.Controls.Controls
                 if (this.machineService.BayFirstPositionIsUpper)
                 {
                     this.CardSensorLabel2 = Localized.Get("OperatorApp.Bay");
-                    this.CardSensorLabel3 = null;
-
                     this.Sensor2 = this.sensorsService.IsLoadingUnitInBay;
+                    if (this.machineService.Bay.IsTelescopic)
+                    {
+                        this.CardSensorLabel3 = Localized.Get("OperatorApp.Telescopic");
+                        this.Sensor3 = this.sensorsService.BayTrolleyOption;
+                    }
+                    else
+                    {
+                        this.CardSensorLabel3 = null;
+                    }
                 }
                 else
                 {

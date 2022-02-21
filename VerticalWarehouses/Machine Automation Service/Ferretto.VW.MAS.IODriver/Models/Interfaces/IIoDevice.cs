@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.IODriver
         bool IsCommandExecuting { get; }
 
         void DestroyStateMachine();
-
+        void Disconnect();
         void ExecuteBayLight(FieldCommandMessage receivedMessage);
 
         void ExecuteIoPowerUp();

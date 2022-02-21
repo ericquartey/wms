@@ -241,7 +241,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
             this.IsShipmentDayVisible = false;
-            this.IsCarrefour = true;
+            this.IsCarrefour = false;
 
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity is null)

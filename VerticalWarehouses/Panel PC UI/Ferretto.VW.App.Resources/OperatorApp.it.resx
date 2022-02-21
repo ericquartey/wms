@@ -2121,4 +2121,7 @@
   <data name="BoxType" xml:space="preserve">
     <value>Tipo Supporto</value>
   </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>Telesc.</value>
+  </data>
 </root>

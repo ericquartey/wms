@@ -150,7 +150,7 @@
                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                            LabelText="{res:Loc ErrorsApp.UnitOnElevator}"
-                           Mask="#0"
+                           Mask="##0"
                            MaxValue="999"
                            MinValue="1" />
 
@@ -202,7 +202,7 @@
                              KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                              KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                              LabelText="{res:Loc ErrorsApp.HighPosition}"
-                             Mask="#0"
+                             Mask="##0"
                              MaxValue="999"
                              MinValue="1"
                              Visibility="{Binding IsBay1PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
@@ -217,7 +217,7 @@
                              KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                              KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                              LabelText="{res:Loc ErrorsApp.LowPosition}"
-                             Mask="#0"
+                             Mask="##0"
                              MaxValue="999"
                              MinValue="1"
                              Visibility="{Binding IsBay1PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
@@ -271,7 +271,7 @@
                              KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                              KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                              LabelText="{res:Loc ErrorsApp.HighPosition}"
-                             Mask="#0"
+                             Mask="##0"
                              MaxValue="999"
                              MinValue="1"
                              Visibility="{Binding IsBay2PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
@@ -286,7 +286,7 @@
                              KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                              KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                              LabelText="{res:Loc ErrorsApp.LowPosition}"
-                             Mask="#0"
+                             Mask="##0"
                              MaxValue="999"
                              MinValue="1"
                              Visibility="{Binding IsBay2PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
@@ -340,7 +340,7 @@
                              KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                              KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                              LabelText="{res:Loc ErrorsApp.HighPosition}"
-                             Mask="#0"
+                             Mask="##0"
                              MaxValue="999"
                              MinValue="1"
                              Visibility="{Binding IsBay3PositionUpVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />
@@ -355,7 +355,7 @@
                              KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                              KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                              LabelText="{res:Loc ErrorsApp.LowPosition}"
-                             Mask="#0"
+                             Mask="##0"
                              MaxValue="999"
                              MinValue="1"
                              Visibility="{Binding IsBay3PositionDownVisible, Converter={StaticResource BTVC}, Mode=OneWay}" />

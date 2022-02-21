@@ -148,6 +148,11 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.ioDevices[currentDevice].DestroyStateMachine();
 
+                if (message.Status == MessageStatus.OperationError && message.ErrorLevel == ErrorLevel.Error && message.Type == FieldMessageType.ResetSecurity)
+                {
+                    this.ioDevices[currentDevice].Disconnect();
+                }
+
                 // forward the message to upper level
                 message.Destination = FieldMessageActor.DeviceManager;
 

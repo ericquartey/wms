@@ -2522,4 +2522,7 @@
   <data name="BoxType" xml:space="preserve">
     <value>Box Type</value>
   </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>telesc.</value>
+  </data>
 </root>

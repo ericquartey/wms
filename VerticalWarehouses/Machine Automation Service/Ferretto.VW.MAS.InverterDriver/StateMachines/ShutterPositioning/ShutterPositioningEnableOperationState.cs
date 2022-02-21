@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -13,6 +15,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
     internal class ShutterPositioningEnableOperationState : InverterStateBase
     {
         #region Fields
+
+        private readonly IErrorsProvider errorProvider;
 
         private readonly ShutterPosition shutterDestination;
 
@@ -35,6 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             this.shutterPositionData = shutterPositionData;
             this.shutterDestination = this.shutterPositionData.ShutterPosition;
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -134,9 +139,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
                             this.ParentStateMachine.PublishNotificationEvent(endNotification);
                         }
-                        else if (currentStatus.CurrentShutterPosition == this.shutterDestination)
+                        else if (currentStatus.CurrentShutterPosition == this.shutterDestination
+                            && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds < (this.shutterPositionData.MovementDuration * 100) * 0.8)
                         {
-                            this.Logger.LogWarning($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
+                            this.Logger.LogError($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
+                            this.errorProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid);
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                            return true;
                         }
                     }
                 }

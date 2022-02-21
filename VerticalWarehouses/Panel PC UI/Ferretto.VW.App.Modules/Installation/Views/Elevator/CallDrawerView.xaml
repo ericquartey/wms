@@ -120,7 +120,7 @@
                        VerticalAlignment="Center"
                        EditValue="{Binding LoadingUnitId, Mode=TwoWay}"
                        LabelText="{res:Loc InstallationApp.DrawerNumber}"
-                       Mask="#0"
+                       Mask="##0"
                        MinValue="1" />
 
     <controls:PpcButton Grid.Row="2"
