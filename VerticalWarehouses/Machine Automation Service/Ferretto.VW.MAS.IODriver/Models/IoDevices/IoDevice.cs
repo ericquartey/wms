@@ -185,6 +185,19 @@ namespace Ferretto.VW.MAS.IODriver
             this.commandExecuting = false;
         }
 
+        public void Disconnect()
+        {
+            try
+            {
+                this.ioTransport.Disconnect();
+                this.logger.LogInformation($"Disconnect I/O device {this.deviceIndex}");
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogCritical($"Fatal error while disconnecting I/O device {this.deviceIndex}: {ex.Message} ");
+            }
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
