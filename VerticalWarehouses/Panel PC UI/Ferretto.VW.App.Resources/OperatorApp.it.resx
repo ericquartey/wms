@@ -2089,7 +2089,7 @@
     <value>Tipo supporto</value>
   </data>
   <data name="ShipmentUnitDescription" xml:space="preserve">
-    <value>Descrizione supporto</value>
+    <value>Desc. supporto</value>
   </data>
   <data name="SetPoint" xml:space="preserve">
     <value>Riferimento</value>
