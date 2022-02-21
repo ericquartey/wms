@@ -520,6 +520,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box Id.
+        /// </summary>
+        public static string BoxId {
+            get {
+                return ResourceManager.GetString("BoxId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Box Type.
+        /// </summary>
+        public static string BoxType {
+            get {
+                return ResourceManager.GetString("BoxType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Busy cells.
         /// </summary>
         public static string BusyCells {
@@ -1087,6 +1105,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer Code.
+        /// </summary>
+        public static string CustomerCode {
+            get {
+                return ResourceManager.GetString("CustomerCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer Description.
+        /// </summary>
+        public static string CustomerDescription {
+            get {
+                return ResourceManager.GetString("CustomerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Day.
         /// </summary>
         public static string Day {
@@ -1200,6 +1236,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DisableUwf {
             get {
                 return ResourceManager.GetString("DisableUwf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dock.
+        /// </summary>
+        public static string Dock {
+            get {
+                return ResourceManager.GetString("Dock", resourceCulture);
             }
         }
         
@@ -2037,6 +2082,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ExecutionOfListAccepted {
             get {
                 return ResourceManager.GetString("ExecutionOfListAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expiration Date.
+        /// </summary>
+        public static string ExpirationDate {
+            get {
+                return ResourceManager.GetString("ExpirationDate", resourceCulture);
             }
         }
         
@@ -3761,6 +3815,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mission.
+        /// </summary>
+        public static string Mission {
+            get {
+                return ResourceManager.GetString("Mission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missions.
         /// </summary>
         public static string Missions {
@@ -4994,6 +5057,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to shipment unit code.
+        /// </summary>
+        public static string ShipmentUnitCode {
+            get {
+                return ResourceManager.GetString("ShipmentUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to shipment unit description.
+        /// </summary>
+        public static string ShipmentUnitDescription {
+            get {
+                return ResourceManager.GetString("ShipmentUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Bay 1.
         /// </summary>
         public static string ShutterBay1 {
@@ -5017,24 +5098,6 @@ namespace Ferretto.VW.App.Resources {
         public static string ShutterBay3 {
             get {
                 return ResourceManager.GetString("ShutterBay3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to shipment unit code.
-        /// </summary>
-        public static string ShipmentUnitCode {
-            get {
-                return ResourceManager.GetString("ShipmentUnitCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to shipment unit description.
-        /// </summary>
-        public static string ShipmentUnitDescription {
-            get {
-                return ResourceManager.GetString("ShipmentUnitDescription", resourceCulture);
             }
         }
         
@@ -5089,6 +5152,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SocketLink {
             get {
                 return ResourceManager.GetString("SocketLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sscc.
+        /// </summary>
+        public static string Sscc {
+            get {
+                return ResourceManager.GetString("Sscc", resourceCulture);
             }
         }
         

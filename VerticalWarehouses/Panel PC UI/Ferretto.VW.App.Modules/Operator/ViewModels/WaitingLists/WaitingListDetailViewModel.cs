@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int machineId;
 
+        private bool isCarrefour;
+
         private ItemListRow selectedListRow;
 
         private DelegateCommand upCommand;
@@ -91,6 +93,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.selectedListRow;
             set => this.SetProperty(ref this.selectedListRow, value);
+        }
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand UpCommand =>

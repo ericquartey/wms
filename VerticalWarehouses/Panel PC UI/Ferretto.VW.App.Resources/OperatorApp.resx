@@ -2498,4 +2498,28 @@
   <data name="NoMaintenerNameError" xml:space="preserve">
     <value>Maintener Name required to confirm the service</value>
   </data>
+  <data name="ExpirationDate" xml:space="preserve">
+    <value>Expiration Date</value>
+  </data>
+  <data name="Sscc" xml:space="preserve">
+    <value>Sscc</value>
+  </data>
+  <data name="BoxId" xml:space="preserve">
+    <value>Box Id</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Customer Code</value>
+  </data>
+  <data name="CustomerDescription" xml:space="preserve">
+    <value>Customer Description</value>
+  </data>
+  <data name="Dock" xml:space="preserve">
+    <value>Dock</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Mission</value>
+  </data>
+  <data name="BoxType" xml:space="preserve">
+    <value>Box Type</value>
+  </data>
 </root>

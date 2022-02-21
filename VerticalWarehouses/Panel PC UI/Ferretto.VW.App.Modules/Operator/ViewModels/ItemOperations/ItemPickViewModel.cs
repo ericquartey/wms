@@ -40,6 +40,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBarcodeActive;
 
+        private bool isCarrefour;
+
+        private bool isCarrefourOrDraperyItem;
+
         private bool isCurrentDraperyItemFullyRequested;
 
         private bool isVisibleBarcodeReader;
@@ -51,7 +55,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand showBarcodeReaderCommand;
 
         #endregion
-         
+
         //private DelegateCommand signallingDefectCommand;
 
         #region Constructors
@@ -163,6 +167,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBarcodeActive;
             set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefourOrDraperyItem
+        {
+            get => this.isCarrefourOrDraperyItem;
+            set => this.SetProperty(ref this.isCarrefourOrDraperyItem, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsCurrentDraperyItemFullyRequested
@@ -310,6 +326,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
+
             this.IsAddItem = false;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;

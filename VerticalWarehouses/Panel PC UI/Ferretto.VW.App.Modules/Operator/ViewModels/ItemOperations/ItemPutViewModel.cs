@@ -40,6 +40,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBarcodeActive;
 
+        private bool isCarrefour;
+
+        private bool isCarrefourOrDraperyItem;
+
         private bool isCurrentDraperyItemFullyRequested;
 
         private bool isVisibleBarcodeReader;
@@ -164,6 +168,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefourOrDraperyItem
+        {
+            get => this.isCarrefourOrDraperyItem;
+            set => this.SetProperty(ref this.isCarrefourOrDraperyItem, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsCurrentDraperyItemFullyRequested
         {
             get => this.isCurrentDraperyItemFullyRequested;
@@ -201,7 +217,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public void BarcodeReaderConfirm()
         {
             if (!string.IsNullOrEmpty(this.BarcodeString))
-            { 
+            {
                 this.barcodeReaderService.SimulateRead(this.BarcodeString.EndsWith("\r") ? this.BarcodeString : this.BarcodeString + "\r");
 
                 this.BarcodeString = string.Empty;
@@ -332,8 +348,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey)
                     {
-                            await this.ConfirmOperationAsync(this.barcodeOk);
-
+                        await this.ConfirmOperationAsync(this.barcodeOk);
                     }
                 }
             }
@@ -457,6 +472,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
+
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;

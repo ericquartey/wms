@@ -13,141 +13,213 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="15,0,0,0">
+  <Grid Margin="15,0,0,0">
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.ColumnSpan="2"
+                Orientation="Horizontal">
+      <iconPacks:PackIconModern Width="32"
+                                Height="32"
+                                Margin="0,0,15,0"
+                                VerticalAlignment="Center"
+                                Foreground="White"
+                                Kind="InboxIn" />
+      <TextBlock Grid.ColumnSpan="2"
+                 Margin="0,10,15,10"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{resources:Loc OperatorApp.DrawerActivityRefillingDetailHeader}" />
+    </StackPanel>
+
+    <TextBlock Grid.Row="1"
+               Grid.ColumnSpan="2"
+               Height="Auto"
+               Margin="0"
+               VerticalAlignment="Top"
+               FontSize="{DynamicResource FontSize_Small}"
+               Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+               Text="{resources:Loc HelpDescriptions.HelpDrawerActivityRefillingDetailDescription}"
+               TextWrapping="Wrap" />
+
+    <Border Grid.Row="2"
+            Margin="0,15,0,0"
+            Background="{DynamicResource PpcBackground}"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="0">
+      <Grid Margin="20">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
+          <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2"
-                    Orientation="Horizontal">
-            <iconPacks:PackIconModern Width="32"
-                                      Height="32"
-                                      Margin="0,0,15,0"
-                                      VerticalAlignment="Center"
-                                      Foreground="White"
-                                      Kind="InboxIn" />
-            <TextBlock Grid.ColumnSpan="2"
-                       Margin="0,10,15,10"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{resources:Loc OperatorApp.DrawerActivityRefillingDetailHeader}" />
-        </StackPanel>
+        <ctrls:PpcImage Grid.Row="0"
+                        Grid.RowSpan="4"
+                        Grid.Column="0"
+                        Width="180"
+                        Height="180"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Path="{Binding ItemId}"
+                        Stretch="Uniform" />
 
-        <TextBlock Grid.Row="1"
-                   Grid.ColumnSpan="2"
-                   Height="Auto"
-                   Margin="0"
-                   VerticalAlignment="Top"
-                   FontSize="{DynamicResource FontSize_Small}"
-                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                   Text="{resources:Loc HelpDescriptions.HelpDrawerActivityRefillingDetailDescription}"
-                   TextWrapping="Wrap" />
+        <controls:PpcLabeledText Grid.Row="0"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="4"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDescription}"
+                                 LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
 
-        <Border Grid.Row="2"
-                Margin="0,15,0,0"
-                Background="{DynamicResource PpcBackground}"
-                BorderBrush="{DynamicResource PpcBorderBrush}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="0">
-            <Grid Margin="20">
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemListCode}"
+                                 LabelText="{resources:Loc OperatorApp.CommonListCode}" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemListRowCode}"
+                                 LabelText="{resources:Loc OperatorApp.DrawerActivityRefillingDetailListRow}" />
 
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.Lot}"
+                                 LabelText="{resources:Loc OperatorApp.CommonLot}" />
 
-                <ctrls:PpcImage Grid.Row="0"
-                                Grid.RowSpan="4"
-                                Grid.Column="0"
-                                Width="180"
-                                Height="180"
-                                Margin="0,0,20,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Path="{Binding ItemId}"
-                                Stretch="Uniform" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemListDescription}"
+                                 LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
 
-                <controls:PpcLabeledText Grid.Row="0"
-                                         Grid.Column="1"
-                                         Grid.ColumnSpan="4"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.ItemDescription}"
-                                         LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding SelectedCompartmentDetail.Stock}"
+                                 LabelText="{resources:Loc OperatorApp.ItemStock}" />
 
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="1"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.ItemListCode}"
-                                         LabelText="{resources:Loc OperatorApp.CommonListCode}" />
+        <controls:PpcLabeledText Grid.Row="5"
+                                 Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.PackingListCode}"
+                                 LabelText="{resources:Loc OperatorApp.CommonPackingListCode}"
+                                 Visibility="{Binding IsPackingListCodeAvailable, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="2"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.ItemListRowCode}"
-                                         LabelText="{resources:Loc OperatorApp.DrawerActivityRefillingDetailListRow}" />
+        <controls:PpcLabeledText Grid.Row="5"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.PackingListDescription}"
+                                 LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
+                                 Visibility="{Binding IsPackingListDescriptionAvailable, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcLabeledText Grid.Row="1"
-                                         Grid.Column="3"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.Lot}"
-                                         LabelText="{resources:Loc OperatorApp.CommonLot}" />
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.Sscc}"
+                                 LabelText="{resources:Loc OperatorApp.Sscc}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
 
-                <controls:PpcLabeledText Grid.Row="2"
-                                         Grid.Column="1"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.ItemListDescription}"
-                                         LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ExpirationDate}"
+                                 LabelText="{resources:Loc OperatorApp.ExpirationDate}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
 
-                <controls:PpcLabeledText Grid.Row="2"
-                                         Grid.Column="2"
-                                         Grid.ColumnSpan="2"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding SelectedCompartmentDetail.Stock}"
-                                         LabelText="{resources:Loc OperatorApp.ItemStock}" />
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.BoxId}"
+                                 LabelText="{resources:Loc OperatorApp.BoxId}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
 
-                <controls:PpcLabeledText Grid.Row="3"
-                                         Grid.Column="0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.PackingListCode}"
-                                         LabelText="{resources:Loc OperatorApp.CommonPackingListCode}"
-                                         Visibility="{Binding IsPackingListCodeAvailable, Converter={StaticResource BTVC}}" />
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.BoxType}"
+                                 LabelText="{resources:Loc OperatorApp.BoxType}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
 
-                <controls:PpcLabeledText Grid.Row="3"
-                                         Grid.Column="1"
-                                         Grid.ColumnSpan="3"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding MissionOperation.PackingListDescription}"
-                                         LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
-                                         Visibility="{Binding IsPackingListDescriptionAvailable, Converter={StaticResource BTVC}}" />
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.CustomerCode}"
+                                 LabelText="{resources:Loc OperatorApp.CustomerCode}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
 
-                <!--<controls:PpcLabeledText Grid.Row="4"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.CustomerDescription}"
+                                 LabelText="{resources:Loc OperatorApp.CustomerDescription}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
+
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.Dock}"
+                                 LabelText="{resources:Loc OperatorApp.Dock}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
+
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.Mission}"
+                                 LabelText="{resources:Loc OperatorApp.Mission}"
+                                 Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <!--  Only reserved for Carrefour  -->
+
+        <!--<controls:PpcLabeledText Grid.Row="4"
                                          Grid.Column="0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
@@ -161,160 +233,160 @@
                                          ContentText="{Binding MissionOperation.MaterialStatusId}"
                                          LabelText="{resources:Loc OperatorApp.MaterialStatus}" />-->
 
-                <controls:PpcLabeledText Grid.Row="4"
-                                         Grid.Column="0"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         ContentText="{Binding Position}"
-                                         LabelText="{resources:Loc OperatorApp.CommonCompartmentPosition}" />
-            </Grid>
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Position}"
+                                 LabelText="{resources:Loc OperatorApp.CommonCompartmentPosition}" />
+      </Grid>
 
-        </Border>
+    </Border>
 
-        <Grid Grid.Row="2"
-              Grid.Column="1"
-              Margin="0,15,0,0">
+    <Grid Grid.Row="2"
+          Grid.Column="1"
+          Margin="0,15,0,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <Border Grid.Row="0"
+              Width="230"
+              Height="90"
+              MinHeight="90"
+              Margin="15,0"
+              Background="{DynamicResource PpcBackground}">
+        <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+          <Grid Grid.Column="8"
+                Grid.ColumnSpan="4">
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="0"
-                    Width="230"
-                    Height="90"
-                    MinHeight="90"
-                    Margin="15,0"
-                    Background="{DynamicResource PpcBackground}">
-                <Border BorderBrush="{DynamicResource FerrettoBlue}"
-                        BorderThickness="{DynamicResource PpcBorderThickness}">
-                    <Grid Grid.Column="8"
-                          Grid.ColumnSpan="4">
+            <TextBlock Margin="8,4"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource Text_Foreground}"
+                       Text="{resources:Loc OperatorApp.CommonItemCode}" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="1"
+                       Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{Binding OnMissionOperationItemCodeFontSize}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                       TextWrapping="Wrap" />
+            <!--  "{StaticResource FontSize_Very_High}"  -->
+          </Grid>
+        </Border>
+      </Border>
 
-                        <TextBlock Margin="8,4"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{resources:Loc OperatorApp.CommonItemCode}" />
+      <Border Grid.Row="1"
+              Height="90"
+              MinHeight="90"
+              Margin="15,15,15,0"
+              Background="{DynamicResource PpcBackground}">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
 
-                        <TextBlock Grid.Row="1"
-                                   Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{Binding OnMissionOperationItemCodeFontSize}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding MissionOperation.ItemCode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
-                                   TextWrapping="Wrap" />
-                        <!--  "{StaticResource FontSize_Very_High}"  -->
-                    </Grid>
-                </Border>
-            </Border>
+          <Grid Grid.Column="8"
+                Grid.ColumnSpan="4">
 
-            <Border Grid.Row="1"
-                    Height="90"
-                    MinHeight="90"
-                    Margin="15,15,15,0"
-                    Background="{DynamicResource PpcBackground}">
-                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                        BorderThickness="{DynamicResource PpcBorderThickness}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="8"
-                          Grid.ColumnSpan="4">
+            <TextBlock Margin="8,4"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource Text_Foreground}"
+                       Text="{resources:Loc OperatorApp.QuantityToPick}" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="1"
+                       Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_High}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding MissionOperation.RequestedQuantity}"
+                       TextWrapping="Wrap" />
 
-                        <TextBlock Margin="8,4"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{resources:Loc OperatorApp.QuantityToPick}" />
+          </Grid>
+        </Border>
+      </Border>
 
-                        <TextBlock Grid.Row="1"
-                                   Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding MissionOperation.RequestedQuantity}"
-                                   TextWrapping="Wrap" />
+      <Border Grid.Row="2"
+              Height="90"
+              MinHeight="90"
+              Margin="15,15,15,0"
+              Background="{DynamicResource PpcBackground}"
+              Visibility="Collapsed">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
 
-                    </Grid>
-                </Border>
-            </Border>
+          <Grid Grid.Column="8"
+                Grid.ColumnSpan="4">
 
-            <Border Grid.Row="2"
-                    Height="90"
-                    MinHeight="90"
-                    Margin="15,15,15,0"
-                    Background="{DynamicResource PpcBackground}"
-                    Visibility="Collapsed">
-                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                        BorderThickness="{DynamicResource PpcBorderThickness}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="8"
-                          Grid.ColumnSpan="4">
+            <TextBlock Margin="8,4"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Normal}"
+                       FontWeight="Normal"
+                       Foreground="{DynamicResource Text_Foreground}"
+                       Text="{resources:Loc OperatorApp.Quantity}" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="1"
+                       Margin="4,0,4,4"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_High}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding MissionOperation.DispatchedQuantity}"
+                       TextWrapping="Wrap" />
 
-                        <TextBlock Margin="8,4"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Normal}"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource Text_Foreground}"
-                                   Text="{resources:Loc OperatorApp.Quantity}" />
+          </Grid>
+        </Border>
+      </Border>
 
-                        <TextBlock Grid.Row="1"
-                                   Margin="4,0,4,4"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{StaticResource FontSize_Very_High}"
-                                   Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding MissionOperation.DispatchedQuantity}"
-                                   TextWrapping="Wrap" />
+      <controls:PpcButton Grid.Row="3"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Command="{Binding SuspendCommand}"
+                          Content="{resources:Loc OperatorApp.Suspend}"
+                          Style="{StaticResource ConfirmButton}"
+                          Visibility="Hidden" />
 
-                    </Grid>
-                </Border>
-            </Border>
-
-            <controls:PpcButton Grid.Row="3"
-                                Margin="15,8,15,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Command="{Binding SuspendCommand}"
-                                Content="{resources:Loc OperatorApp.Suspend}"
-                                Style="{StaticResource ConfirmButton}"
-                                Visibility="Hidden"/>
-
-        </Grid>
     </Grid>
+  </Grid>
 </ctrls:View>

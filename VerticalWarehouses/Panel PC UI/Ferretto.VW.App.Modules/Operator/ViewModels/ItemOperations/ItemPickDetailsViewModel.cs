@@ -10,6 +10,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private bool isCarrefour;
+
         private bool isCurrentDraperyItem;
 
         private bool isPackingListCodeAvailable;
@@ -40,6 +42,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsCurrentDraperyItem
         {

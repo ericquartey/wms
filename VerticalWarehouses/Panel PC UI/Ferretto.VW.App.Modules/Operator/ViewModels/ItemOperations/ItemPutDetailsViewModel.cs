@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string batch;
 
+        private bool isCarrefour;
+
         private bool isPackingListCodeAvailable;
 
         private bool isPackingListDescriptionAvailable;
@@ -60,6 +62,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsPackingListCodeAvailable
         {
