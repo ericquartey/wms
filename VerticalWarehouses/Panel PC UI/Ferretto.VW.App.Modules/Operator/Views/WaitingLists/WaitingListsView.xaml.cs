@@ -30,11 +30,11 @@ namespace Ferretto.VW.App.Modules.Operator.Views
 
                 if (selectedList.Exists(x=>x.IsDispatchable == false))
                 {
-                    viewModel.SelectedCells = selectedList.FindAll(x=>x.IsDispatchable == false);
+                    viewModel.SelectedLists = selectedList.FindAll(x=>x.IsDispatchable == false);
                 }
                 else
                 {
-                    viewModel.SelectedCells = selectedList;
+                    viewModel.SelectedLists = selectedList;
                 }
             }
         }

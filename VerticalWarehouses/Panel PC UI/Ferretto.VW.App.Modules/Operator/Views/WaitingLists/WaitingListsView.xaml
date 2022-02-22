@@ -68,8 +68,8 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0"
-              Margin="0"
-              Visibility="Collapsed">
+              Height="30"
+              Margin="0">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -148,7 +148,7 @@
 
         <views:WaitingListsDataGridView Grid.Row="1"
                                         Grid.Column="0"
-                                        Margin="0"
+                                        Margin="0,15,0,0"
                                         DataGridSelectionChanged="CellsDataGrid_DataGridSelectionChanged" />
 
       </Grid>
