@@ -1324,7 +1324,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     {
                         for (int i = 0; i < item.Machines.Count(); i++)
                         {
-                            if (item.Machines.ElementAt(i).Id == model.Id)
+                            //if (item.Machines.ElementAt(i).Id == model.Id)
                             {
                                 this.productsInCurrentMachine.Add(item);
                             }

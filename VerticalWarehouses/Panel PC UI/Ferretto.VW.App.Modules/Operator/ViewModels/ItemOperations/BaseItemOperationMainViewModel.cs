@@ -869,8 +869,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                    await this.ConfirmOperationAsync(e.Code);
-
+                                await this.ConfirmOperationAsync(e.Code);
                             }
                         }
                     }
@@ -909,8 +908,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             {
                                 this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                                    await this.ConfirmOperationAsync(e.Code);
-
+                                await this.ConfirmOperationAsync(e.Code);
                             }
                             else
                             {
@@ -955,8 +953,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ClearNotifications();
 
                 this.IsOperationConfirmed = true;
+                ItemDetails item = null;
+                if (this.MissionOperation.ItemId > 0)
+                {
+                    item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                }
 
-                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
                 var loadUnitId = this.Mission.LoadingUnit.Id;
                 var itemId = this.MissionOperation.ItemId;
@@ -994,8 +996,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
-                    await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
+                    if (item != null && itemId > 0 && quantity > 0)
+                    {
+                        await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
+                        await this.PrintWeightAsync(itemId, (int?)quantity);
+                    }
 
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }

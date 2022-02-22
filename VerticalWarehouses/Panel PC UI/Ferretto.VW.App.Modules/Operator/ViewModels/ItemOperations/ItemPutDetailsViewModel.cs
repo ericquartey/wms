@@ -138,8 +138,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
 
-            this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
-            this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
+            this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation?.PackingListCode);
+            this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation?.PackingListDescription);
         }
 
         protected override void RaiseCanExecuteChanged()
