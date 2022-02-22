@@ -290,6 +290,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.RefreshListsAsync();
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.SearchItem = string.Empty;
+            this.IsWaitingForResponse = false;
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
