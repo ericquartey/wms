@@ -68,7 +68,12 @@
                                    Text="{res:Loc InstallationApp.ZeroChainCarousel}"
                                    Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
 
-      </StackPanel>
+          <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
+                                   Text="{res:Loc InstallationApp.BayTelescopic}"
+                                   Visibility="{Binding IsBay1TelescopicPresent, Converter={StaticResource BTVC}}" />
+
+
+            </StackPanel>
 
       <StackPanel Grid.Row="1"
                   Orientation="Vertical"
@@ -176,6 +181,11 @@
           <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay2S3IND}"
                                      Text="{res:Loc InstallationApp.ZeroChainCarousel}"
                                      Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+
+          <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay2}"
+                                   Text="{res:Loc InstallationApp.BayTelescopic}"
+                                   Visibility="{Binding IsBay2TelescopicPresent, Converter={StaticResource BTVC}}" />
+
         </StackPanel>
 
         <StackPanel Grid.Row="1"
@@ -285,6 +295,11 @@
           <controls:PpcSensorControl SensorState="{Binding Sensors.ACUBay3S3IND}"
                                      Text="{res:Loc InstallationApp.ZeroChainCarousel}"
                                      Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+            
+          <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay3}"
+                                   Text="{res:Loc InstallationApp.BayTelescopic}"
+                                   Visibility="{Binding IsBay3TelescopicPresent, Converter={StaticResource BTVC}}" />
+
         </StackPanel>
 
         <StackPanel Grid.Row="1"

@@ -2089,7 +2089,7 @@
     <value>Tipo supporto</value>
   </data>
   <data name="ShipmentUnitDescription" xml:space="preserve">
-    <value>Descrizione supporto</value>
+    <value>Desc. supporto</value>
   </data>
   <data name="SetPoint" xml:space="preserve">
     <value>Riferimento</value>
@@ -2120,5 +2120,8 @@
   </data>
   <data name="BoxType" xml:space="preserve">
     <value>Tipo Supporto</value>
+  </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>Telesc.</value>
   </data>
 </root>

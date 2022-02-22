@@ -101,6 +101,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         {
                             notificationData.MovementMode = MovementMode.BayChain;
                         }
+                        else if (this.IsVerticalSensorError(this.machineData.AxisToCalibrate))
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Error);
+                            return;
+                        }
 
                         this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={notificationData.AxisMovement}; value={(int)dataInverters.CurrentPosition.Value}");
 
@@ -181,6 +189,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new HomingEndState(this.stateData, this.Logger));
+        }
+
+        private bool IsVerticalSensorError(Axis axisToCalibrate)
+        {
+            if (axisToCalibrate == Axis.Vertical)
+            {
+                if (this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
+                    || (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    || (this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    )
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

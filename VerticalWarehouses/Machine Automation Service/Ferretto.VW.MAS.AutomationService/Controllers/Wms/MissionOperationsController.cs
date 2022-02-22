@@ -112,9 +112,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("orders")]
         public async Task<ActionResult<IEnumerable<OperationReason>>> GetOrdersAsync()
         {
-            // TODO siderpol
-
-            return this.Ok(await this.missionOperationsProvider.GetOrdersAsync());
+            // custom siderpol
+            var orders = await this.missionOperationsProvider.GetOrdersAsync();
+            return this.Ok(orders.OrderBy(o => o.Name));
         }
 
         [HttpGet("socket-link-operation")]

@@ -655,7 +655,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public int SetCellsToTest(BayNumber bayNumber)
+        public int SetCellsToTest(BayNumber bayNumber, double height)
         {
             lock (this.dataContext)
             {
@@ -704,10 +704,14 @@ namespace Ferretto.VW.MAS.DataLayer
                             }
                             else
                             {
-                                cell.BlockLevel = BlockLevel.NeedsTest;
-                                this.dataContext.Cells.Update(cell);
+                                cell = this.FindLowerCellByHeight(cells, iCell, height);
+                                if (cell != null)
+                                {
+                                    cell.BlockLevel = BlockLevel.NeedsTest;
+                                    this.dataContext.Cells.Update(cell);
 
-                                count++;
+                                    count++;
+                                }
                             }
                         }
                         else
@@ -737,10 +741,14 @@ namespace Ferretto.VW.MAS.DataLayer
                                 }
                                 else
                                 {
-                                    cell.BlockLevel = BlockLevel.NeedsTest;
-                                    this.dataContext.Cells.Update(cell);
+                                    cell = this.FindLowerCellByHeight(cells, iCell, height);
+                                    if (cell != null)
+                                    {
+                                        cell.BlockLevel = BlockLevel.NeedsTest;
+                                        this.dataContext.Cells.Update(cell);
 
-                                    count++;
+                                        count++;
+                                    }
                                 }
                             }
                         }
@@ -1009,6 +1017,29 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(c => c.Panel)
                     .SingleOrDefault(c => c.Id == cellId);
             }
+        }
+
+        private Cell FindLowerCellByHeight(Cell[] cells, int iCell, double height)
+        {
+            if (cells[iCell + 1].BlockLevel == BlockLevel.Blocked || cells[iCell + 1].BlockLevel == BlockLevel.SpaceOnly)
+            {
+                var topSpace = cells[iCell + 1].Position;
+                for (var iTop = 2; iCell + iTop < cells.Length && cells[iCell + iTop].BlockLevel != BlockLevel.Blocked && cells[iCell + iTop].Side == cells[iCell].Side; iTop++)
+                {
+                    topSpace = cells[iCell + iTop].Position + CellHeight;
+                }
+
+                for (var iFind = iCell; iFind > 0 && cells[iFind].IsAvailable; iFind--)
+                {
+                    if (cells[iFind].BlockLevel == BlockLevel.None
+                        && topSpace - cells[iFind].Position > height + CellHeight)
+                    {
+                        return cells[iFind];
+                    }
+                }
+                return null;
+            }
+            return cells[iCell];
         }
 
         private Dictionary<WarehouseSide, double> FindMaxSolidSpace(Cell[] cellsWithSide)

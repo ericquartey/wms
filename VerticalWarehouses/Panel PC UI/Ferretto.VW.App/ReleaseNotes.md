@@ -25,21 +25,26 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.38 rispetto la 1.0.37
-- Aggiunto comando per inserire il barcode da tastiera
-- Introdotta pagina di manutenzione semplificata
+## Nuove Funzionalità 1.0.39 rispetto la 1.0.38
+- Ferretto NuGet package 0.16.40.
 
 ## Bug Risolti
-- La doppia conferma con il barcode si disabilita se il barcode è errato
-- Aggiunto controllo dei sensori sulla calibrazione orizzontale dell'elevatore
-- Corretta visualizzazione del cassetto a bordo nel menu movimenti
-- Corretta perdita di posizione logica del cassetto a fronte di ripristini automatici su macchine da 1000kg
-- Aggiunto allarme in caso di errore inverter senza segnale di fault
-- Corretto comando "Nuove operazioni disponibili" 
-- Corretta gestione valori decimali nella ricerca articolo
+- Parametri: Eliminata Baia Culla
+- Bilancia Minebea-Sandri: correzioni varie
+- Aggiunto allarme di sensori non validi durante la calibrazione verticale
+- Corretta inizializzazione dopo errore di WMS
+- Baia telescopica: nei movimenti si vede il sensore di baia in sede
+- Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
+- Carico/Scarico cassetto: aggiunto allarme di elevatore non carico/scarico durante il movimento
+- Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
+- Aumentato timeout di comunicazione con la scheda di I/O
+- Il numero di cassetto è sempre limitato a 3 cifre
+- Le commesse sono ordinate
 
-## Compatibile con adapter 0.4.30
+## Compatibile con adapter 0.4.31
 ***
+
+[Versione 1.0.38](#id1038)
 
 [Versione 1.0.37](#id1037)
 
@@ -118,7 +123,23 @@
 [Versione 1.0.0](#id100)
 ***
 
-<a id="id1036"></a>
+<a id="id1038"></a>
+## Nuove Funzionalità 1.0.38 rispetto la 1.0.37
+- Aggiunto comando per inserire il barcode da tastiera
+- Introdotta pagina di manutenzione semplificata
+
+## Bug Risolti
+- La doppia conferma con il barcode si disabilita se il barcode è errato
+- Aggiunto controllo dei sensori sulla calibrazione orizzontale dell'elevatore
+- Corretta visualizzazione del cassetto a bordo nel menu movimenti
+- Corretta perdita di posizione logica del cassetto a fronte di ripristini automatici su macchine da 1000kg
+- Aggiunto allarme in caso di errore inverter senza segnale di fault
+- Corretto comando "Nuove operazioni disponibili" 
+- Corretta gestione valori decimali nella ricerca articolo
+
+## Compatibile con adapter 0.4.30
+
+<a id="id1037"></a>
 ## Nuove Funzionalità 1.0.37 rispetto la 1.0.36
 - Nei movimenti manuali il riquadro con i sensori dell' Orizzontale cambia colore quando si attiva il bypass
 - Aggiunto allarme 93: sensore di zero non attivo durante la calibrazione orizzontale

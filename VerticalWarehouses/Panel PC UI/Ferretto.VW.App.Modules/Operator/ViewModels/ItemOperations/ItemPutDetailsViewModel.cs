@@ -125,6 +125,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemDetail = itemDetail;
             }
 
+            this.IsCarrefour = true;
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
             this.ItemDescription = this.ItemDetail.ItemDescription;

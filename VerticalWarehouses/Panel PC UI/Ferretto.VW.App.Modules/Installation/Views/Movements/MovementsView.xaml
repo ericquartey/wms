@@ -168,7 +168,7 @@
                                KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                KeyboardRight="true"
                                LabelText=""
-                               Mask="#0"
+                               Mask="##0"
                                MinValue="1" />
 
             <controls:PpcCheckBox Grid.Column="3"
@@ -334,6 +334,7 @@
                                  KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                  KeyboardRight="true"
                                  LabelText=""
+                                 Mask="###0"
                                  MinValue="1" />
             </StackPanel>
 
