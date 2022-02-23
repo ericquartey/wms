@@ -1108,7 +1108,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsOperationConfirmed = true;
                 bool canComplete;
 
-                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                ItemDetails item = null;
+                if (this.MissionOperation.ItemId > 0)
+                {
+                    item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                }
                 var loadUnitId = this.Mission.LoadingUnit.Id;
                 var itemId = this.MissionOperation.ItemId;
                 var type = this.MissionOperation.Type;
@@ -1150,9 +1154,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
-                    await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
+                    if (item != null && itemId > 0 && quantity > 0)
+                    {
+                        await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
 
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
+                        await this.PrintWeightAsync(itemId, (int?)quantity);
+                    }
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -1919,7 +1926,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    if (this.MissionOperation != null)
+                    if (this.MissionOperation != null && this.MissionOperation.ItemId > 0)
                     {
                         var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                         this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item

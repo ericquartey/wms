@@ -249,9 +249,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
-                this.QuantityTolerance = item.PickTolerance ?? 0;
-                this.MeasureUnit = item.MeasureUnitDescription;
+                if (this.MissionOperation?.ItemId > 0)
+                {
+                    var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                    this.QuantityTolerance = item.PickTolerance ?? 0;
+                    this.MeasureUnit = item.MeasureUnitDescription;
+                }
 
                 if (this.Mission is null)
                 {
@@ -273,7 +276,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     return;
                 }
 
-                this.selectedCompartmentDetail = itemsCompartments.Where(s => s.Id == this.missionOperation.CompartmentId && s.ItemId == this.MissionOperation.ItemId).FirstOrDefault();
+                this.selectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.missionOperation.CompartmentId && s.ItemId == this.MissionOperation.ItemId);
 
                 this.RaisePropertyChanged(nameof(this.SelectedCompartmentDetail));
                 this.RaisePropertyChanged(nameof(this.ItemId));
