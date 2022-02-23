@@ -108,6 +108,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private List<ProductInMachine> productsInCurrentMachine;
 
+        private double quantityIncrement;
+
+        private int? quantityTolerance;
+
         private int? reasonId;
 
         private string reasonNotes;
@@ -346,6 +350,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.orders, value);
         }
 
+        public double QuantityIncrement
+        {
+            get => this.quantityIncrement;
+            set => this.SetProperty(ref this.quantityIncrement, value);
+        }
+
+        public int? QuantityTolerance
+        {
+            get => this.quantityTolerance;
+            set
+            {
+                if (this.SetProperty(ref this.quantityTolerance, value))
+                {
+                    this.QuantityIncrement = this.quantityTolerance.HasValue ? Math.Pow(10, -this.quantityTolerance.Value) : 1;
+                }
+            }
+        }
+
         public int? ReasonId
         {
             get => this.reasonId;
@@ -423,6 +445,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SetCurrentIndex(this.selectedItem?.Id);
                 this.selectedItemTxt = string.Format(Resources.Localized.Get("OperatorApp.RequestedQuantity"), this.selectedItem.MeasureUnit);
                 this.RaisePropertyChanged(nameof(this.SelectedItemTxt));
+                this.QuantityTolerance = this.selectedItem?.PickTolerance;
                 Task.Run(async () => await this.SelectNextItemAsync().ConfigureAwait(false)).GetAwaiter().GetResult();
                 this.RaiseCanExecuteChanged();
             }
