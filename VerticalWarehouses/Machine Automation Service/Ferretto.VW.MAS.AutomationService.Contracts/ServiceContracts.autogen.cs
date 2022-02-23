@@ -8665,7 +8665,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public string BoxId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("boxType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public BoxType? BoxType { get; set; }
+        public string BoxType { get; set; }
     
         [Newtonsoft.Json.JsonProperty("customerCode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string CustomerCode { get; set; }
@@ -8688,19 +8688,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemDetailsCustom>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BoxType
-    {
-        NotDefined = 0,
-    
-        Small = 1,
-    
-        Medium = 2,
-    
-        Large = 3,
     
     }
     

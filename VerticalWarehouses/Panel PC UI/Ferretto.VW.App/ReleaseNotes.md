@@ -26,7 +26,8 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.39 rispetto la 1.0.38
-- Ferretto NuGet package 0.16.40.
+- Ferretto NuGet package 0.16.41.
+- Custom Carrefour
 
 ## Bug Risolti
 - Parametri: Eliminata Baia Culla
