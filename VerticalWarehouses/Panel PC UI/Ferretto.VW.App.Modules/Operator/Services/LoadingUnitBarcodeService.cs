@@ -94,7 +94,9 @@ namespace Ferretto.VW.App.Modules.Operator
                     ||
                     this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PUT_DETAILS)
                     ||
-                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS))
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS)
+                    ||
+                    this.navigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.ITEMADD))
                 {
                     this.navigationService.GoBackTo(nameof(Utils.Modules.Operator), Utils.Modules.Operator.OPERATOR_MENU, "NavigateAwayFromActiveView 2");
                 }

@@ -147,8 +147,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double loadingUnitDepth;
 
-        private int? loadingUnitId;
-
         private double loadingUnitWidth;
 
         private int maxKnownIndexSelection;
@@ -606,7 +604,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? UnitWeight { get; set; }
 
         public ICommand WeightCommand =>
-                    this.weightCommand
+            this.weightCommand
             ??
             (this.weightCommand = new DelegateCommand(
                 () => this.Weight(),
@@ -1900,13 +1898,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    this.loadingUnitId = this.Mission.LoadingUnit.Id;
+                    var loadingUnitId = this.Mission?.LoadingUnit?.Id;
                     if (this.Compartments != null)
                     {
                         this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
                             c.Id == this.MissionOperation.CompartmentId);
                         //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
-                        var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
+                        var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(loadingUnitId ?? 0);
                         itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
                         this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment?.Id
                             && s.ItemId == (this.MissionOperation?.ItemId ?? 0)
