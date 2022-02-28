@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -55,6 +56,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand pickBoxCommand;
 
         private DelegateCommand showBarcodeReaderCommand;
+
+        private string toteBarcode;
 
         #endregion
 
@@ -363,6 +366,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
 
             this.barcodeItem = string.Empty;
+            this.toteBarcode = string.Empty;
 
             //this.SetLastQuantity();
         }
@@ -705,6 +709,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (barcode != null)
                 {
                     var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
+
                     if (isToteBarcodeManaged)
                     {
                         if (barcode.Length == this.ToteBarcodeLength &&
@@ -769,6 +774,59 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
                                 this.barcodeItem = string.Empty;
                             }
+                        }
+                    }
+                    else if (this.IsCarrefour)
+                    {
+                        if (barcode == this.MissionOperation.ItemDetails?.BoxId)
+                        {
+                            this.toteBarcode = barcode;
+                        }
+                        else if (barcode == this.MissionOperation?.ItemCode)
+                        {
+                            this.barcodeItem = barcode;
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(barcode);
+
+                                if (barcode == barcodeItemService?.Code)
+                                {
+                                    this.barcodeItem = barcode;
+                                }
+                                else
+                                {
+                                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), barcode), Services.Models.NotificationSeverity.Error);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), barcode), Services.Models.NotificationSeverity.Error);
+                            }
+                        }
+
+                        var machine = await this.MachineIdentityWebService.GetAsync();
+                        var missions = await this.MissionOperationsService.GetAllMissionsMachineAsync();
+
+                        if (!string.IsNullOrEmpty(this.barcodeItem) && this.MissionOperation.ItemDetails != null && missions.ToList().FindAll(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick).Count <= 0)
+                        {
+                            await this.MissionOperationsService.CompleteAsync(
+                                    this.MissionOperation.Id,
+                                    this.InputQuantity.Value,
+                                    this.barcodeItem,
+                                    0,
+                                    this.MissionOperation.ItemDetails.BoxId);
+                        }
+                        else if (!string.IsNullOrEmpty(this.barcodeItem) && this.toteBarcode == this.MissionOperation.ItemDetails?.BoxId)
+                        {
+                            await this.MissionOperationsService.CompleteAsync(
+                                    this.MissionOperation.Id,
+                                    this.InputQuantity.Value,
+                                    this.barcodeItem,
+                                    0,
+                                    this.MissionOperation.ItemDetails.BoxId);
                         }
                     }
                     else
