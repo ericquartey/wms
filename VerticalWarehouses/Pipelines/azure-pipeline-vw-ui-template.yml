@@ -5,6 +5,13 @@ parameters:
 steps:
 - checkout: self
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 2.2'
+  inputs:
+    packageType: sdk
+    version: 2.2.207
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 - script: dotnet publish "VerticalWarehouses/Panel PC UI/Ferretto.VW.App/Ferretto.VW.App.csproj" --configuration ${{ parameters.BuildConfiguration }} --framework net471
