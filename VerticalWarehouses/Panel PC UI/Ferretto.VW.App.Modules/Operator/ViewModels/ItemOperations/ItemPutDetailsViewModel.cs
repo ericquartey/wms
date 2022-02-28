@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -10,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     public class ItemPutDetailsViewModel : BaseItemOperationViewModel
     {
         #region Fields
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private string batch;
 
@@ -49,10 +52,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -125,7 +130,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemDetail = itemDetail;
             }
 
-            this.IsCarrefour = true;
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
             this.ItemDescription = this.ItemDetail.ItemDescription;

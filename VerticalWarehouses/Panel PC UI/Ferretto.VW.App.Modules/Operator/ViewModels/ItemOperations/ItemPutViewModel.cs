@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private DelegateCommand barcodeReaderCancelCommand;
 
         private DelegateCommand barcodeReaderConfirmCommand;
@@ -95,6 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   accessoriesWebService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.barcodeReaderService = barcodeReaderService;
         }
@@ -472,7 +475,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsCarrefour = true;
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;

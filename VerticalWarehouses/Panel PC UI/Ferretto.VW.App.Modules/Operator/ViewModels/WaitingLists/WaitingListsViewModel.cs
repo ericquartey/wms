@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private readonly ISessionService sessionService;
 
         private int? areaId;
@@ -73,6 +75,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
             IMachineAreasWebService areasWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IBayManager bayManager,
             IAuthenticationService authenticationService,
             ISessionService sessionService)
@@ -84,6 +87,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -204,6 +208,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.SearchItem = string.Empty;
+            this.IsWaitingForResponse = false;
+        }
+
         public async Task ExecuteListAsync(List<ItemListExecution> SelectedCells)
         {
             foreach (var itemList in SelectedCells)
@@ -274,7 +286,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
             this.IsShipmentDayVisible = false;
-            this.IsCarrefour = true;
 
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity is null)
@@ -285,17 +296,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
 
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
+
             await this.LoadListsAsync();
 
             await this.RefreshListsAsync();
-        }
-
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            this.SearchItem = string.Empty;
-            this.IsWaitingForResponse = false;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -420,6 +426,56 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private async Task FilterList(string searchItem, CancellationToken cancellationToken)
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                if (string.IsNullOrEmpty(searchItem))
+                {
+                    this.IsWaitingForResponse = false;
+                    await this.RefreshListsAsync();
+                }
+                else
+                {
+                    var bay = await this.bayManager.GetBayAsync();
+                    var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false);
+
+                    var ItemExecutionList = new List<ItemListExecution>();
+                    fullLists.ForEach(x => ItemExecutionList.Add(new ItemListExecution(x, this.machineId)));
+
+                    this.lists.Clear();
+
+                    foreach (var item in ItemExecutionList)
+                    {
+                        if (item.Code.ToLower().Contains(searchItem.ToLower()))
+                        {
+                            this.lists.Add(item);
+                        }
+                    }
+
+                    this.RaisePropertyChanged(nameof(this.Lists));
+                    this.SelectedList = null;
+                    this.SelectedLists.Clear();
+                    this.SelectLoadingUnit();
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // normal situation
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.SearchItem = string.Empty;
+                this.IsWaitingForResponse = false;
+            }
+            finally
+            {
+            }
+        }
+
         //private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
         //{
         //    var listId = e.GetListId();
@@ -514,56 +570,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.LoadListsAsync();
                 await Task.Delay(PollIntervalMilliseconds);
-            }
-        }
-
-        private async Task FilterList(string searchItem, CancellationToken cancellationToken)
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                if (string.IsNullOrEmpty(searchItem))
-                {
-                    this.IsWaitingForResponse = false;
-                    await this.RefreshListsAsync();
-                }
-                else
-                {
-                    var bay = await this.bayManager.GetBayAsync();
-                    var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false);
-
-                    var ItemExecutionList = new List<ItemListExecution>();
-                    fullLists.ForEach(x => ItemExecutionList.Add(new ItemListExecution(x, this.machineId)));
-
-                    this.lists.Clear();
-
-                    foreach (var item in ItemExecutionList)
-                    {
-                        if (item.Code.ToLower().Contains(searchItem.ToLower()))
-                        {
-                            this.lists.Add(item);
-                        }
-                    }
-
-                    this.RaisePropertyChanged(nameof(this.Lists));
-                    this.SelectedList = null;
-                    this.SelectedLists.Clear();
-                    this.SelectLoadingUnit();
-                }
-            }
-            catch (TaskCanceledException)
-            {
-                // normal situation
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.SearchItem = string.Empty;
-                this.IsWaitingForResponse = false;
-            }
-            finally
-            {
             }
         }
 

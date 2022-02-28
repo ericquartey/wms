@@ -53,8 +53,10 @@
       <TextBlock Grid.ColumnSpan="2"
                  Margin="10,10,15,10"
                  VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{resources:Loc OperatorApp.InventoryOperation}" />
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{resources:Loc OperatorApp.IdDrawerActivityInventoryPageHeader}" />
+                <Run Text="{Binding Mission.LoadingUnit.Id}" />
+      </TextBlock>
     </StackPanel>
 
     <TextBlock Grid.Row="1"

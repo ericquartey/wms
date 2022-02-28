@@ -963,6 +963,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
+                if (this.MissionOperation.Type == MissionOperationType.Inventory
+                    && this.selectedCompartmentDetail?.InventoryThreshold.HasValue == true
+                    && Math.Abs(this.selectedCompartmentDetail.Stock - quantity) > (double)this.selectedCompartmentDetail.InventoryThreshold.Value)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.InventoryGap"),
+                        DialogType.Question,
+                        DialogButtons.YesNo);
+                    if (messageBoxResult is DialogResult.No)
+                    {
+                        this.IsBusyConfirmingOperation = false;
+                        this.IsOperationConfirmed = false;
+                        this.InputQuantity = null;
+                        return;
+                    }
+                }
+
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {

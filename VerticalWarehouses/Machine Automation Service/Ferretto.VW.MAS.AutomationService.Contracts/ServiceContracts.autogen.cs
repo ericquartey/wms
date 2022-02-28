@@ -4980,6 +4980,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsAxisChanged", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAxisChanged { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsCarrefour", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCarrefour { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsDbSaveOnServer", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDbSaveOnServer { get; set; }
     

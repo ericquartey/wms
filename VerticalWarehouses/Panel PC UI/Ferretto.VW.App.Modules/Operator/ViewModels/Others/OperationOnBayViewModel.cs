@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -31,6 +28,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isBox;
 
         private bool isBusy;
+
+        private bool isCarrefour;
 
         private bool isDisableQtyItemEditingPick;
 
@@ -108,6 +107,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBox;
             set => this.SetProperty(ref this.isBox, value, this.CanExecute);
+        }
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.CanExecute);
         }
 
         public bool IsDisableQtyItemEditingPick
@@ -269,6 +274,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsUpdatingStockByDifference = configuration.Machine.IsUpdatingStockByDifference;
                 this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
                 this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
+                this.IsCarrefour = configuration.Machine.IsCarrefour;
                 this.IsDrapery = configuration.Machine.IsDrapery;
                 this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
                 this.IsDoubleConfirmBarcodeInventory = configuration.Machine.IsDoubleConfirmBarcodeInventory;
@@ -305,6 +311,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsUpdatingStockByDifference = this.IsUpdatingStockByDifference;
                 machine.IsRequestConfirmForLastOperationOnLoadingUnit = this.IsRequestConfirmForLastOperationOnLoadingUnit;
                 machine.IsEnableAddItem = this.IsEnableAddItem;
+                machine.IsCarrefour = this.IsCarrefour;
                 machine.IsDisableQtyItemEditingPick = this.IsDisableQtyItemEditingPick;
                 machine.IsDoubleConfirmBarcodeInventory = this.IsDoubleConfirmBarcodeInventory;
                 machine.IsDoubleConfirmBarcodePick = this.IsDoubleConfirmBarcodePick;

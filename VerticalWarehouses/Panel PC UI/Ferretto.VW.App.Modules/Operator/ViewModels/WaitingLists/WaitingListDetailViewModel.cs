@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemListsWebService itemListsWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private int? areaId;
 
         private int currentItemIndex;
@@ -51,12 +53,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -190,7 +194,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsCarrefour = true;
             this.IsBackNavigationAllowed = true;
 
             var machineIdentity = await this.identityService.GetAsync();
@@ -198,6 +201,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 return;
             }
+
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
 
             if (this.Data is ItemList list)
             {

@@ -2392,6 +2392,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory operations on unit n..
+        /// </summary>
+        public static string IdDrawerActivityInventoryPageHeader {
+            get {
+                return ResourceManager.GetString("IdDrawerActivityInventoryPageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Picking operations on unit n..
         /// </summary>
         public static string IdDrawerActivityPickingPageHeader {
@@ -2572,6 +2581,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The confirmed quantity is very different from the stock.
+        /// </summary>
+        public static string InventoryGap {
+            get {
+                return ResourceManager.GetString("InventoryGap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory Operation..
         /// </summary>
         public static string InventoryOperation {
@@ -2631,6 +2649,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IpReached {
             get {
                 return ResourceManager.GetString("IpReached", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carrefour (WMS custom).
+        /// </summary>
+        public static string IsCarrefour {
+            get {
+                return ResourceManager.GetString("IsCarrefour", resourceCulture);
             }
         }
         

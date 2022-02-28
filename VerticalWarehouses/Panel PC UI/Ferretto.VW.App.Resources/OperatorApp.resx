@@ -2525,4 +2525,13 @@
   <data name="Telescopic" xml:space="preserve">
     <value>telesc.</value>
   </data>
+  <data name="IsCarrefour" xml:space="preserve">
+    <value>Carrefour (WMS custom)</value>
+  </data>
+  <data name="InventoryGap" xml:space="preserve">
+    <value>The confirmed quantity is very different from the stock</value>
+  </data>
+  <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
+    <value>Inventory operations on unit n.</value>
+  </data>
 </root>
