@@ -7,6 +7,20 @@ pool:
 steps:
 - checkout: self
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 2.2'
+  inputs:
+    packageType: sdk
+    version: 2.2.207
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.1'
+  inputs:
+    packageType: sdk
+    version: 3.1.301
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 - script: dotnet publish "VerticalWarehouses/Utility/Ferretto.VW.TelemetryService/Ferretto.VW.TelemetryService.csproj" --runtime win10-x64 --configuration release --self-contained --framework netcoreapp3.1

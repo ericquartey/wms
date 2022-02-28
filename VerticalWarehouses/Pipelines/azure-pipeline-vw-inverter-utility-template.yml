@@ -16,6 +16,13 @@ steps:
     nugetConfigPath: nuget.config
 
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 2.2'
+  inputs:
+    packageType: sdk
+    version: 2.2.207
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+
 - template: ../../Pipelines/azure-pipeline-assembly-versioning-template.yml
 
 - script: dotnet publish ${{ parameters.RestoreBuildProjects }} -nologo --configuration ${{ parameters.BuildConfiguration }} --runtime ${{ parameters.RuntimeIdentifier }} --self-contained --framework ${{ parameters.TargetFramework }}
