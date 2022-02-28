@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IMachineMissionsWebService missionsWebService;
@@ -44,8 +46,6 @@ namespace Ferretto.VW.App.Modules.Operator
         private readonly IOperatorHubClient operatorHubClient;
 
         private SubscriptionToken healthToken;
-
-        private bool isCarrefour;
 
         private bool isDisposed;
 
@@ -69,10 +69,12 @@ namespace Ferretto.VW.App.Modules.Operator
             IOperatorHubClient operatorHubClient,
             IAuthenticationService authenticationService,
             IMachineAreasWebService areasWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IMachineIdentityWebService identityService,
             IBayManager bayManager)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
@@ -88,7 +90,6 @@ namespace Ferretto.VW.App.Modules.Operator
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
-            this.isCarrefour = false;
         }
 
         #endregion
@@ -144,6 +145,15 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 this.isDisposed = true;
             }
+        }
+
+        public async Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync()
+        {
+            var machine = await this.identityService.GetAsync();
+            var bay = await this.bayManager.GetBayAsync();
+            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+
+            return list;
         }
 
         public async Task<IEnumerable<ProductInMachine>> GetProductsAsync(int? areaId, string itemCode, CancellationToken? cancellationToken = null)
@@ -279,13 +289,15 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machine = await this.identityService.GetAsync();
-                var bay = await this.bayManager.GetBayAsync();
+                var configuration = await this.machineConfigurationWebService.GetAsync();
 
-                if (!this.isCarrefour)
+                if (!configuration.Machine.IsCarrefour)
                 {
                     return false;
                 }
+
+                var machine = await this.identityService.GetAsync();
+                var bay = await this.bayManager.GetBayAsync();
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
 

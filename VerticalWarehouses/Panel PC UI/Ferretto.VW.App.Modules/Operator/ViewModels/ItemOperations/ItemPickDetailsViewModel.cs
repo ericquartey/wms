@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -9,6 +10,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     public class ItemPickDetailsViewModel : BaseItemOperationViewModel
     {
         #region Fields
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private bool isCarrefour;
 
         private bool isCurrentDraperyItem;
 
@@ -31,15 +36,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
 
         #region Properties
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsCurrentDraperyItem
         {
@@ -74,6 +87,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
             this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
 

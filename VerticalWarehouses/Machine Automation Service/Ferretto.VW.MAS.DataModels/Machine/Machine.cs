@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsAxisChanged { get; set; }
 
+        public bool IsCarrefour { get; set; }
+
         public bool IsDbSaveOnServer { get; set; }
 
         public bool IsDbSaveOnTelemetry { get; set; }

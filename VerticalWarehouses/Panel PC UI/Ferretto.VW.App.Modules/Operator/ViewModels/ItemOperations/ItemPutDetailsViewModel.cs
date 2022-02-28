@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -11,7 +12,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private string batch;
+
+        private bool isCarrefour;
 
         private bool isPackingListCodeAvailable;
 
@@ -47,10 +52,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             IMissionOperationsService missionOperationsService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IBayManager bayManager,
             IDialogService dialogService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -60,6 +67,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsPackingListCodeAvailable
         {
@@ -117,6 +130,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemDetail = itemDetail;
             }
 
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
             this.ItemDescription = this.ItemDetail.ItemDescription;
@@ -129,8 +144,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
 
-            this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
-            this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
+            this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation?.PackingListCode);
+            this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation?.PackingListDescription);
         }
 
         protected override void RaiseCanExecuteChanged()

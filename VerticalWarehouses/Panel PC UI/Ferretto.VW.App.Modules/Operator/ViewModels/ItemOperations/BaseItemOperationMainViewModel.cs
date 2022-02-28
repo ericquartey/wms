@@ -147,8 +147,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double loadingUnitDepth;
 
-        private int? loadingUnitId;
-
         private double loadingUnitWidth;
 
         private int maxKnownIndexSelection;
@@ -606,7 +604,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? UnitWeight { get; set; }
 
         public ICommand WeightCommand =>
-                    this.weightCommand
+            this.weightCommand
             ??
             (this.weightCommand = new DelegateCommand(
                 () => this.Weight(),
@@ -953,13 +951,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ClearNotifications();
 
                 this.IsOperationConfirmed = true;
+                ItemDetails item = null;
+                if (this.MissionOperation.ItemId > 0)
+                {
+                    item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                }
 
-                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
                 var loadUnitId = this.Mission.LoadingUnit.Id;
                 var itemId = this.MissionOperation.ItemId;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
+
+                if (this.MissionOperation.Type == MissionOperationType.Inventory
+                    && this.selectedCompartmentDetail?.InventoryThreshold.HasValue == true
+                    && Math.Abs(this.selectedCompartmentDetail.Stock - quantity) > (double)this.selectedCompartmentDetail.InventoryThreshold.Value)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.InventoryGap"),
+                        DialogType.Question,
+                        DialogButtons.YesNo);
+                    if (messageBoxResult is DialogResult.No)
+                    {
+                        this.IsBusyConfirmingOperation = false;
+                        this.IsOperationConfirmed = false;
+                        this.InputQuantity = null;
+                        return;
+                    }
+                }
 
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
@@ -979,7 +999,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
@@ -992,8 +1012,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
-                    await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
+                    if (item != null && itemId > 0 && quantity > 0)
+                    {
+                        await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
+                        await this.PrintWeightAsync(itemId, (int?)quantity);
+                    }
 
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
@@ -1101,7 +1124,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsOperationConfirmed = true;
                 bool canComplete;
 
-                var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                ItemDetails item = null;
+                if (this.MissionOperation.ItemId > 0)
+                {
+                    item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
+                }
                 var loadUnitId = this.Mission.LoadingUnit.Id;
                 var itemId = this.MissionOperation.ItemId;
                 var type = this.MissionOperation.Type;
@@ -1143,9 +1170,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (canComplete)
                 {
-                    await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
+                    if (item != null && itemId > 0 && quantity > 0)
+                    {
+                        await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
 
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
+                        await this.PrintWeightAsync(itemId, (int?)quantity);
+                    }
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
                 else
@@ -1886,13 +1916,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    this.loadingUnitId = this.Mission.LoadingUnit.Id;
+                    var loadingUnitId = this.Mission?.LoadingUnit?.Id;
                     if (this.Compartments != null)
                     {
                         this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
                             c.Id == this.MissionOperation.CompartmentId);
                         //var unit = await this.missionOperationsWebService.GetUnitIdAsync(this.Mission.Id);
-                        var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(this.loadingUnitId.Value);
+                        var itemsCompartments = await this.loadingUnitsWebService.GetCompartmentsAsync(loadingUnitId ?? 0);
                         itemsCompartments = itemsCompartments?.Where(ic => !(ic.ItemId is null));
                         this.SelectedCompartmentDetail = itemsCompartments.FirstOrDefault(s => s.Id == this.selectedCompartment?.Id
                             && s.ItemId == (this.MissionOperation?.ItemId ?? 0)
@@ -1912,7 +1942,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    if (this.MissionOperation != null)
+                    if (this.MissionOperation != null && this.MissionOperation.ItemId > 0)
                     {
                         var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                         this.IsCurrentDraperyItem = item.IsDraperyItem; // check if current item is a drapery item

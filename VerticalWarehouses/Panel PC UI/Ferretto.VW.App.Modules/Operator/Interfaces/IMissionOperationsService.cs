@@ -23,9 +23,12 @@ namespace Ferretto.VW.App.Modules.Operator
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null);
 
+        Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync();
+
         Task<IEnumerable<ProductInMachine>> GetProductsAsync(int? areaId, string itemCode, CancellationToken? cancellationToken = null);
 
         Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId);
+
         Task<bool> IsMultiMachineAsync(int missionId);
 
         bool IsRecallLoadingUnitId();

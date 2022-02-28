@@ -53,8 +53,10 @@
       <TextBlock Grid.ColumnSpan="2"
                  Margin="10,10,15,10"
                  VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{resources:Loc OperatorApp.InventoryOperation}" />
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{resources:Loc OperatorApp.IdDrawerActivityInventoryPageHeader}" />
+                <Run Text="{Binding Mission.LoadingUnit.Id}" />
+      </TextBlock>
     </StackPanel>
 
     <TextBlock Grid.Row="1"
@@ -214,7 +216,16 @@
                           Content="{resources:Loc OperatorApp.Weight}"
                           Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-      <controls:PpcButton Grid.Row="4"
+            <controls:PpcButton Grid.Row="3"
+                          Width="100"
+                          Margin="15,15,15,0"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding AddItemOperationCommand}"
+                          Content="{resources:Loc OperatorApp.Add}"
+                          Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
+
+            <controls:PpcButton Grid.Row="4"
                           Margin="15,15,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"

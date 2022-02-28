@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private DelegateCommand barcodeReaderCancelCommand;
 
         private DelegateCommand barcodeReaderConfirmCommand;
@@ -39,6 +41,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand fullOperationCommand;
 
         private bool isBarcodeActive;
+
+        private bool isCarrefour;
+
+        private bool isCarrefourOrDraperyItem;
 
         private bool isCurrentDraperyItemFullyRequested;
 
@@ -91,6 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   accessoriesWebService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.barcodeReaderService = barcodeReaderService;
         }
@@ -162,6 +169,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBarcodeActive;
             set => this.SetProperty(ref this.isBarcodeActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefourOrDraperyItem
+        {
+            get => this.isCarrefourOrDraperyItem;
+            set => this.SetProperty(ref this.isCarrefourOrDraperyItem, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsCurrentDraperyItemFullyRequested
@@ -377,7 +396,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)//16 => lunghezza matrice
+                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)//16 => lunghezza matrice
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
@@ -456,6 +475,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
+
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;

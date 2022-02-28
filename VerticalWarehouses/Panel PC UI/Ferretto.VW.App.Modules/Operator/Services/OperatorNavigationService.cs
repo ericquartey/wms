@@ -197,7 +197,9 @@ namespace Ferretto.VW.App.Modules.Operator
                 ||
                 activeViewModelName is Utils.Modules.Operator.ItemOperations.LOADING_UNIT
                 ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO;
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.ITEMADD;
         }
 
         private bool IsOperatorViewModel(string activeViewModelName)
@@ -370,7 +372,14 @@ namespace Ferretto.VW.App.Modules.Operator
             switch (operationType)
             {
                 case MissionOperationType.Inventory:
-                    viewModelName = Utils.Modules.Operator.ItemOperations.INVENTORY;
+                    if (this.GetActiveViewModelName() == Utils.Modules.Operator.ItemOperations.ITEMADD)
+                    {
+                        viewModelName = Utils.Modules.Operator.ItemOperations.ITEMADD;
+                    }
+                    else
+                    {
+                        viewModelName = Utils.Modules.Operator.ItemOperations.INVENTORY;
+                    }
                     break;
 
                 case MissionOperationType.Pick:

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Models;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -33,6 +35,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private readonly ISessionService sessionService;
 
         private int? areaId;
@@ -43,17 +47,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isShipmentDayVisible;
 
+        private string itemSearchLabel;
+
         private DelegateCommand listDetailButtonCommand;
 
         private DelegateCommand listExecuteCommand;
 
         private int machineId;
 
-        private List<ItemListExecution> selectedCells = new List<ItemListExecution>();
+        private bool reloadSearchItems;
+
+        private string searchItem;
 
         private ItemListExecution selectedList;
 
+        private List<ItemListExecution> selectedLists = new List<ItemListExecution>();
+
         private DelegateCommand selectOperationOnBayCommand;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -63,6 +75,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
             IMachineAreasWebService areasWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IBayManager bayManager,
             IAuthenticationService authenticationService,
             ISessionService sessionService)
@@ -74,6 +87,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -94,34 +108,55 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             protected set => this.SetProperty(ref this.isShipmentDayVisible, value, this.RaiseCanExecuteChanged);
         }
 
+        public string ItemSearchLabel
+        {
+            get => this.itemSearchLabel;
+            set => this.SetProperty(ref this.itemSearchLabel, value);
+        }
+
         public override bool KeepAlive => true;
 
         public ICommand ListDetailButtonCommand =>
             this.listDetailButtonCommand
             ??
             (this.listDetailButtonCommand = new DelegateCommand(
-                () => this.ShowDetails(this.SelectedCells.LastOrDefault()),
+                () => this.ShowDetails(this.SelectedLists.LastOrDefault()),
                 this.CanShowDetailCommand));
 
         public ICommand ListExecuteCommand =>
             this.listExecuteCommand
             ??
             (this.listExecuteCommand = new DelegateCommand(
-                async () => await this.ExecuteListAsync(this.SelectedCells),
+                async () => await this.ExecuteListAsync(this.SelectedLists),
                 this.CanExecuteList));
 
         public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
 
-        public List<ItemListExecution> SelectedCells
+        public string SearchItem
         {
-            get => this.selectedCells;
-            set => this.SetProperty(ref this.selectedCells, value);
+            get => this.searchItem;
+            set
+            {
+                if (this.SetProperty(ref this.searchItem, value)
+                    && this.reloadSearchItems)
+                {
+                    this.ItemSearchLabel = Localized.Get(OperatorApp.ItemSearchKeySearch);
+                    this.TriggerSearchAsync().GetAwaiter();
+                }
+                this.reloadSearchItems = true;
+            }
         }
 
         public ItemListExecution SelectedList
         {
             get => this.selectedList;
             set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
+        }
+
+        public List<ItemListExecution> SelectedLists
+        {
+            get => this.selectedLists;
+            set => this.SetProperty(ref this.selectedLists, value);
         }
 
         public ICommand SelectOperationOnBayCommand =>
@@ -171,6 +206,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.ExecuteListByBarcodeAsync(e);
                     break;
             }
+        }
+
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.SearchItem = string.Empty;
+            this.IsWaitingForResponse = false;
         }
 
         public async Task ExecuteListAsync(List<ItemListExecution> SelectedCells)
@@ -239,9 +282,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.SearchItem = string.Empty;
+
             this.IsBackNavigationAllowed = true;
             this.IsShipmentDayVisible = false;
-            this.IsCarrefour = false;
 
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity is null)
@@ -251,6 +295,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
+
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
 
             await this.LoadListsAsync();
 
@@ -271,9 +318,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return
                 this.areaId.HasValue
                 &&
-                this.SelectedCells.Any()
+                this.SelectedLists.Any()
                 &&
-                !this.SelectedCells.Exists(x => x.ExecutionMode == ListExecutionMode.None);
+                !this.SelectedLists.Exists(x => x.ExecutionMode == ListExecutionMode.None);
         }
 
         private bool CanSelectOperationOnBay()
@@ -283,7 +330,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanShowDetailCommand()
         {
-            return this.SelectedCells.Count == 1;
+            return this.SelectedLists.Count == 1;
         }
 
         /// <summary>
@@ -379,6 +426,56 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private async Task FilterList(string searchItem, CancellationToken cancellationToken)
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                if (string.IsNullOrEmpty(searchItem))
+                {
+                    this.IsWaitingForResponse = false;
+                    await this.RefreshListsAsync();
+                }
+                else
+                {
+                    var bay = await this.bayManager.GetBayAsync();
+                    var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false);
+
+                    var ItemExecutionList = new List<ItemListExecution>();
+                    fullLists.ForEach(x => ItemExecutionList.Add(new ItemListExecution(x, this.machineId)));
+
+                    this.lists.Clear();
+
+                    foreach (var item in ItemExecutionList)
+                    {
+                        if (item.Code.ToLower().Contains(searchItem.ToLower()))
+                        {
+                            this.lists.Add(item);
+                        }
+                    }
+
+                    this.RaisePropertyChanged(nameof(this.Lists));
+                    this.SelectedList = null;
+                    this.SelectedLists.Clear();
+                    this.SelectLoadingUnit();
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // normal situation
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.SearchItem = string.Empty;
+                this.IsWaitingForResponse = false;
+            }
+            finally
+            {
+            }
+        }
+
         //private async Task ExecuteListByBarcodeAsync(UserActionEventArgs e)
         //{
         //    var listId = e.GetListId();
@@ -451,7 +548,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.Lists));
                 this.RaisePropertyChanged(nameof(this.IsShipmentDayVisible));
 
-                this.RaisePropertyChanged(nameof(this.selectedCells));
+                this.RaisePropertyChanged(nameof(this.selectedLists));
                 this.SetCurrentIndex(lastItemListId);
 
                 this.SelectLoadingUnit();
@@ -532,6 +629,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+        }
+
+        private async Task TriggerSearchAsync()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 500;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                await this.FilterList(this.searchItem, this.tokenSource.Token);
+            }
+            catch (TaskCanceledException)
+            {
             }
         }
 
