@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -8,11 +10,15 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ItemInventoryViewModel : BaseItemOperationMainViewModel
+    public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
         private readonly IBarcodeReaderService barcodeReaderService;
+
+        private readonly INavigationService navigationService;
+
+        private DelegateCommand addItemOperationCommand;
 
         private DelegateCommand barcodeReaderCancelCommand;
 
@@ -25,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isCurrentDraperyItemFullyRequested;
 
         private bool isVisibleBarcodeReader;
+
+        private int loadingUnitId;
 
         private DelegateCommand showBarcodeReaderCommand;
 
@@ -71,6 +79,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   accessoriesWebService)
         {
             this.barcodeReaderService = barcodeReaderService;
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         #endregion
@@ -79,14 +88,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override string ActiveContextName => OperationalContext.ItemInventory.ToString();
 
+        public ICommand AddItemOperationCommand =>
+            this.addItemOperationCommand
+            ??
+            (this.addItemOperationCommand = new DelegateCommand(
+                () => this.AddItemOperation(), this.CanAddItemOperation));
+
         public ICommand BarcodeReaderCancelCommand =>
-                                    this.barcodeReaderCancelCommand
+                    this.barcodeReaderCancelCommand
                     ??
                     (this.barcodeReaderCancelCommand = new DelegateCommand(
                         async () => this.BarcodeReaderCancel()));
 
         public ICommand BarcodeReaderConfirmCommand =>
-                                            this.barcodeReaderConfirmCommand
+                    this.barcodeReaderConfirmCommand
                     ??
                     (this.barcodeReaderConfirmCommand = new DelegateCommand(
                         async () => this.BarcodeReaderConfirm()));
@@ -186,6 +201,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             //this.IsBarcodeActive = this.barcodeReaderService.
 
+            if (this.Data is int loadingUnitId)
+            {
+                this.loadingUnitId = loadingUnitId;
+            }
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
@@ -226,6 +245,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS,
               null,
               trackCurrentView: true);
+        }
+
+        private void AddItemOperation()
+        {
+            this.navigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemOperations.ITEMADD,
+                this.loadingUnitId,
+                trackCurrentView: true);
+        }
+
+        private bool CanAddItemOperation()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.IsWmsHealthy;
         }
 
         #endregion

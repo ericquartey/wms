@@ -624,7 +624,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     var exitBayNumber = cmdReceived.GetExitBayNumber();
                     var trayNumber = cmdReceived.GetTrayNumber();
 
-                    if (this.missionsDataProvider.GetAllActiveMissionsByBay(exitBayNumber).Where(m => m.LoadUnitId == trayNumber).Any())
+                    if (this.missionsDataProvider.GetAllActiveMissionsByBay(exitBayNumber).Any(m => m.LoadUnitId == trayNumber))
                     {
                         cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayAlreadyRequested);
                         cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
@@ -637,6 +637,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InLocation)
                         {
                             var exitBay = this.baysDataProvider.GetByNumber(exitBayNumber);
+                            this.logger.LogInformation($"Move load unit {trayNumber} to bay {exitBay.Number}");
                             this.missionSchedulingProvider.QueueBayMission(trayNumber, exitBay.Number, MissionType.OUT);
 
                             cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.requestAccepted);
@@ -1199,6 +1200,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
                         if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InBay)
                         {
+                            this.logger.LogInformation($"Move load unit {trayNumber} back from bay {bay.Number}");
                             this.missionSchedulingProvider.QueueRecallMission(trayNumber, bay.Number, MissionType.IN);
 
                             cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.requestAccepted);

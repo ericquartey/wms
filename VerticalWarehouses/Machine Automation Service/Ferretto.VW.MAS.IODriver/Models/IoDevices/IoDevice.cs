@@ -5,8 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -28,7 +26,7 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
-        private const int IoPollingInterval = 50;
+        private const int IoPollingInterval = 100;
 
         private readonly BayNumber bayNumber;
 
