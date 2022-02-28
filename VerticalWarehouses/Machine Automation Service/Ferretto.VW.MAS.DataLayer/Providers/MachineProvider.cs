@@ -552,6 +552,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ItemUniqueIdLength = machine.ItemUniqueIdLength;
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 machineDB.IsDrapery = machine.IsDrapery;
+                machineDB.IsCarrefour = machine.IsCarrefour;
                 this.dataContext.SaveChanges();
             }
         }
