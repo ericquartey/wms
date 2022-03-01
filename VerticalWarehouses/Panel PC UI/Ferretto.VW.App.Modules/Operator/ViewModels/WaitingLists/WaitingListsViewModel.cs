@@ -407,22 +407,37 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
-            try
+            if (this.IsCarrefour)
             {
-                var list = await this.itemListsWebService.GetByNumAsync(listCode);
+                try
+                {
+                    this.SearchItem = listCode;
 
-                var BarcodeItemList = new List<ItemListExecution>();
-
-                BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
-
-                await this.ExecuteListAsync(BarcodeItemList);
+                    await this.FilterList(this.searchItem, this.tokenSource.Token);
+                }
+                catch (Exception ex)
+                {
+                }
             }
-            catch (Exception ex)
+            else
             {
-                this.Logger.Error(ex);
-                this.ShowNotification(
-                    string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listCode),
-                    Services.Models.NotificationSeverity.Error);
+                try
+                {
+                    var list = await this.itemListsWebService.GetByNumAsync(listCode);
+
+                    var BarcodeItemList = new List<ItemListExecution>();
+
+                    BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
+
+                    await this.ExecuteListAsync(BarcodeItemList);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.Error(ex);
+                    this.ShowNotification(
+                        string.Format(Resources.Localized.Get("OperatorApp.NoListWithIdWasFound"), listCode),
+                        Services.Models.NotificationSeverity.Error);
+                }
             }
         }
 
