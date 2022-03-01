@@ -80,8 +80,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private double handlingItemQtyIncrement;
-
         private string inputBoxCode;
 
         private double? inputQuantity;
@@ -1155,7 +1153,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     ItemId = selectedItemId.Value,
                     LoadingUnitId = loadingUnitId,
                     CompartmentId = compartmentId,
-                    ItemDescription = item.Description,
+                    ItemDescription = $"{item.Code}\n{item.Description}",
                     QuantityIncrement = this.QuantityIncrement,
                     QuantityTolerance = this.QuantityTolerance,
                     MeasureUnitTxt = string.Empty,

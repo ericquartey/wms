@@ -24,11 +24,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemListsWebService itemListsWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private int? areaId;
 
         private int currentItemIndex;
 
         private DelegateCommand downCommand;
+
+        private bool isCarrefour;
 
         private ItemList list;
 
@@ -49,12 +53,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -71,6 +77,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.downCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false), this.CanDown));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
 
         public IMachineItemListsWebService ItemListsWebService { get; }
 
@@ -189,6 +201,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 return;
             }
+
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
 
             if (this.Data is ItemList list)
             {

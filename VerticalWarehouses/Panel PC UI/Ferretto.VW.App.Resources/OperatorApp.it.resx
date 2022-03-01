@@ -2089,7 +2089,7 @@
     <value>Tipo supporto</value>
   </data>
   <data name="ShipmentUnitDescription" xml:space="preserve">
-    <value>Descrizione supporto</value>
+    <value>Desc. supporto</value>
   </data>
   <data name="SetPoint" xml:space="preserve">
     <value>Riferimento</value>
@@ -2097,7 +2097,40 @@
   <data name="NoMaintenerNameError" xml:space="preserve">
     <value>Nome Manutentore Richiesto per la conferma del servizio</value>
   </data>
+  <data name="ExpirationDate" xml:space="preserve">
+    <value>Data di scadenza</value>
+  </data>
+  <data name="Sscc" xml:space="preserve">
+    <value>Sscc</value>
+  </data>
+  <data name="BoxId" xml:space="preserve">
+    <value>Identificativo supporto</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Codice cliente</value>
+  </data>
+  <data name="CustomerDescription" xml:space="preserve">
+    <value>Descrizione cliente</value>
+  </data>
+  <data name="Dock" xml:space="preserve">
+    <value>Baia di carico</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Ordine</value>
+  </data>
+  <data name="BoxType" xml:space="preserve">
+    <value>Tipo Supporto</value>
+  </data>
   <data name="Telescopic" xml:space="preserve">
     <value>Telesc.</value>
+  </data>
+  <data name="IsCarrefour" xml:space="preserve">
+    <value>Carrefour (WMS custom)</value>
+  </data>
+  <data name="InventoryGap" xml:space="preserve">
+    <value>La quantità confermata è molto diversa dalla giacenza</value>
+  </data>
+  <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
+    <value>Operazione di inventario su cassetto n.</value>
   </data>
 </root>

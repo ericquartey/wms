@@ -77,50 +77,50 @@
                             LabelText="{res:Loc OperatorApp.ItemListType_Inventory}"
                             Visibility="Collapsed"/>
 
-            <controls:PpcCheckBox 
-                        Margin="0,15,0,0"
+      <controls:PpcCheckBox 
+                        Margin="0,10,0,0"
                         VerticalAlignment="Center"
                         IsChecked="{Binding BarcodeAutomaticPut, Mode=TwoWay}"
                         LabelText="{res:Loc OperatorApp.BarcodeAutomaticPut}"/>
 
-        <controls:PpcCheckBox 
-                        Margin="0,15,0,0"
+      <controls:PpcCheckBox 
+                        Margin="0,10,0,0"
                         VerticalAlignment="Center"
                         IsChecked="{Binding IsUpdatingStockByDifference, Mode=TwoWay}"
                         LabelText="{res:Loc OperatorApp.IsUpdatingStockByDifference}"/>
 
         <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnableHandlingItemOperations, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsEnableHandlingItemOperations}"/>
         
             <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsRequestConfirmForLastOperationOnLoadingUnit, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsRequestConfirmForLastOperationOnLoadingUnit}"/>
 
         <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnableAddItem, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsEnableAddItem}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDisableQtyItemEditingPick, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsDisableQtyItemEditingPick}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDrapery, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsDrapery}"/>
 
             <controls:PpcTextBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             InputText="{Binding ToteBarcodeLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             LabelText="{res:Loc OperatorApp.ToteBarcodeLength}"/>
@@ -131,43 +131,49 @@
                   Orientation="Vertical">
 
             <controls:PpcCheckBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDoubleConfirmBarcodePick, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodePick}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDoubleConfirmBarcodePut, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodePut}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsBox, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.Box}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnabeNoteRules, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsEnabeNoteRules}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsLocalMachineItems, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsLocalMachineItems}"/>
 
             <controls:PpcCheckBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsOrderList, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsOrderList}"/>
 
+            <controls:PpcCheckBox 
+                            Margin="0,10,15,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsCarrefour, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsCarrefour}"/>
+
             <controls:PpcTextBox 
-                            Margin="0,15,15,0"
+                            Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             InputText="{Binding ItemUniqueIdLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             LabelText="{res:Loc OperatorApp.ItemUniqueIdLength}"/>
@@ -177,7 +183,7 @@
       
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="2"
-                        Margin="15,15,15,0"
+                        Margin="15,10,15,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Command="{Binding SaveSettingsCommand}"

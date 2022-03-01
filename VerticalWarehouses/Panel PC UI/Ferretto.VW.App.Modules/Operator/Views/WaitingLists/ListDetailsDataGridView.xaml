@@ -11,12 +11,23 @@
   </UserControl.Resources>
 
   <DataGrid Name="DataGrid"
+            CanUserAddRows="False"
+            HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding ListRows}"
             RowHeight="50"
             SelectedItem="{Binding SelectedListRow}">
+
+
+    <DataGrid.Style>
+      <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+        <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
+      </Style>
+    </DataGrid.Style>
+
     <DataGrid.Columns>
       <DataGridTextColumn x:Name="Column1"
-                          Width="0.5*"
+                          Width="50"
                           Binding="{Binding Path=ItemListId}"
                           Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderRow}">
         <DataGridTextColumn.CellStyle>
@@ -33,7 +44,7 @@
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
       <DataGridTextColumn x:Name="Column2"
-                          Width="1*"
+                          Width="100"
                           Binding="{Binding Path=Code}"
                           Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderItem}">
         <DataGridTextColumn.ElementStyle>
@@ -44,7 +55,7 @@
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
       <DataGridTextColumn x:Name="Column3"
-                          Width="3*"
+                          Width="300"
                           Binding="{Binding Path=ItemDescription}"
                           Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderDescription}">
         <DataGridTextColumn.ElementStyle>
@@ -55,7 +66,7 @@
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
       <DataGridTextColumn x:Name="Column4"
-                          Width="0.8*"
+                          Width="80"
                           Binding="{Binding Path=RequestedQuantity}"
                           Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderQuantity}">
         <DataGridTextColumn.ElementStyle>
@@ -66,11 +77,46 @@
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
       <DataGridTextColumn x:Name="Column5"
-                          Width="1*"
+                          Width="100"
                           Binding="{Binding Machines, Converter={StaticResource MTSC}}"
                           Header="{Resources:Loc OperatorApp.WaitingListDetailDataGridHeaderMachine}">
         <DataGridTextColumn.ElementStyle>
           <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column6"
+                          Width="auto"
+                          Binding="{Binding ShipmentUnitCode}"
+                          Header="{Resources:Loc OperatorApp.ShipmentUnitCode}"
+                          Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column7"
+                          Width="auto"
+                          Binding="{Binding ShipmentUnitDescription}"
+                          Header="{Resources:Loc OperatorApp.ShipmentUnitDescription}"
+                          Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+          </Style>
+        </DataGridTextColumn.ElementStyle>
+      </DataGridTextColumn>
+      <DataGridTextColumn x:Name="Column8"
+                          Width="75"
+                          Binding="{Binding Priority}"
+                          Header="Priority">
+        <DataGridTextColumn.ElementStyle>
+          <Style TargetType="{x:Type TextBlock}">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
           </Style>

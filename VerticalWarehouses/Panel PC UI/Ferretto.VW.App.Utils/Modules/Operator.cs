@@ -47,9 +47,13 @@
 
             public const string ADDITEMINTOLOADINGUNIT = "AddingItemToLoadingUnitViewModel";
 
+            public const string DRAPERYCONFIRM = "ItemDraperyConfirmViewModel";
+
             public const string INVENTORY = "ItemInventoryViewModel";
 
             public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";
+
+            public const string ITEMADD = "ItemAddViewModel";
 
             public const string LOADING_UNIT = "LoadingUnitViewModel";
 
@@ -63,17 +67,15 @@
 
             public const string PUT_DETAILS = "ItemPutDetailsViewModel";
 
+            public const string SIGNALLINGDEFECT = "ItemSignallingDefectViewModel";
+
             public const string SOCKETLINKOPERATION = "SocketLinkOperationViewModel";
 
             public const string WAIT = "ItemOperationWaitViewModel";
 
-            public static string DRAPERYCONFIRM = "ItemDraperyConfirmViewModel";
+            public const string WEIGHT = "ItemWeightViewModel";
 
-            public static string SIGNALLINGDEFECT = "ItemSignallingDefectViewModel";
-
-            public static string WEIGHT = "ItemWeightViewModel";
-
-            public static string WEIGHT_UPDATE = "ItemWeightUpdateViewModel";
+            public const string WEIGHT_UPDATE = "ItemWeightUpdateViewModel";
 
             #endregion
         }

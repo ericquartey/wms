@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly Services.IDialogService dialogService;
+        private readonly IDialogService dialogService;
 
         private readonly IMachineItemsWebService itemsWebService;
 
