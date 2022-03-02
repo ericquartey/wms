@@ -680,7 +680,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                             if (requiredUpdate)
                             {
-                                this.logger.LogDebug($"RunningState {ioRunningStateChange}, InverterFault {ioInverterFaultChange}, security {ioSecurityChange}, ioIndex {ioIndex}, enable {this.enableNotificatons}");
+                                this.logger.LogDebug($"RunningState {ioRunningStateChange}, InverterFault {ioInverterFaultChange}, security {ioSecurityChange}, ioIndex {ioIndex}, enable {this.enableNotificatons}," +
+                                    $" value: {(newSensorStatus[0] ? 1 : 0)}{(newSensorStatus[1] ? 1 : 0)}{(newSensorStatus[2] ? 1 : 0)}{(newSensorStatus[3] ? 1 : 0)}{(newSensorStatus[4] ? 1 : 0)}{(newSensorStatus[5] ? 1 : 0)}{(newSensorStatus[6] ? 1 : 0)}{(newSensorStatus[7] ? 1 : 0)}," +
+                                    $" {(newSensorStatus[8] ? 1 : 0)}{(newSensorStatus[9] ? 1 : 0)}{(newSensorStatus[10] ? 1 : 0)}{(newSensorStatus[11] ? 1 : 0)}{(newSensorStatus[12] ? 1 : 0)}{(newSensorStatus[13] ? 1 : 0)}{(newSensorStatus[14] ? 1 : 0)}{(newSensorStatus[15] ? 1 : 0)}");
 
                                 Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
 
