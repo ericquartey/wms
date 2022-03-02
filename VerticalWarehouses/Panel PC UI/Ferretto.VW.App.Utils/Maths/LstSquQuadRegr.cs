@@ -17,9 +17,9 @@ namespace Ferretto.VW.Utils.Maths
 
         #region Fields
 
-        private int numOfEntries;
+        private readonly ArrayList pointArray = new ArrayList();
 
-        private ArrayList pointArray = new ArrayList();
+        private int numOfEntries;
 
         private double[] pointpair;
 

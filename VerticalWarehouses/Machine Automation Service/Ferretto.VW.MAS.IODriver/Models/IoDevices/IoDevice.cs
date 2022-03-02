@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
-        private const int IoPollingInterval = 100;
+        private const int IoPollingInterval = 50;
 
         private readonly BayNumber bayNumber;
 
