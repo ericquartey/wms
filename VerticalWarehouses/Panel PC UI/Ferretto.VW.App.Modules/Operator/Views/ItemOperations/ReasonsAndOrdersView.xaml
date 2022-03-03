@@ -207,7 +207,7 @@
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock FontSize="{DynamicResource FontSize_Normal}"
+        <TextBlock FontSize="{DynamicResource FontSize_High}"
                    Foreground="{DynamicResource Text_Foreground}"
                    Text="{res:Loc OperatorApp.SelectReasons}" />
 
@@ -223,8 +223,8 @@
         <StackPanel Grid.Row="2"
                     Grid.RowSpan="2">
 
-          <Grid Height="25"
-                Margin="0,15,0,0">
+          <Grid Height="40"
+                Margin="0,25,0,0">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="Auto" />
               <ColumnDefinition />
@@ -234,7 +234,7 @@
 
             <TextBlock Margin="0,0,10,0"
                        VerticalAlignment="Center"
-                       FontSize="{DynamicResource FontSize_Normal}"
+                       FontSize="{DynamicResource FontSize_High}"
                        Foreground="{DynamicResource Text_Foreground}">
               <Run Text="{res:Loc OperatorApp.SelectOrders}" />
               <Run Text=":" />
@@ -243,7 +243,8 @@
             <TextBox x:Name="SearchText"
                      Grid.Column="1"
                      Margin="0"
-                     FontSize="{DynamicResource FontSize_Normal}"
+                     VerticalContentAlignment="Center"
+                     FontSize="{DynamicResource FontSize_High}"
                      Style="{DynamicResource SearchTextBoxStyle}"
                      Text="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=250}">
               <i:Interaction.Behaviors>
