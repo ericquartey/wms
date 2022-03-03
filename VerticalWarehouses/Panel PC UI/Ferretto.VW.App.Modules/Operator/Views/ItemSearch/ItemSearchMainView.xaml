@@ -231,12 +231,22 @@
                     IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
                     IsEnabled="{Binding IsGroupbyLotEnabled}"
                     Style="{StaticResource PpcCheckBoxStyle}" />
-          <CheckBox Margin="15,0,15,15"
-                    Content="{Resources:Loc OperatorApp.SerialNumber}"
-                    Foreground="{DynamicResource CheckBoxDescription}"
-                    IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
-                    IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
-                    Style="{StaticResource PpcCheckBoxStyle}" />
+          <Grid>
+            <CheckBox Margin="15,0,15,15"
+                      Content="{Resources:Loc OperatorApp.SerialNumber}"
+                      Foreground="{DynamicResource CheckBoxDescription}"
+                      IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
+                      IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
+                      Style="{StaticResource PpcCheckBoxStyle}"
+                      Visibility="{Binding IsCarrefour, Converter={StaticResource BTVIC}}" />
+            <CheckBox Margin="15,0,15,15"
+                      Content="{Resources:Loc OperatorApp.Sscc}"
+                      Foreground="{DynamicResource CheckBoxDescription}"
+                      IsChecked="{Binding IsSscc, Mode=TwoWay}"
+                      IsEnabled="{Binding IsSsccEnabled}"
+                      Style="{StaticResource PpcCheckBoxStyle}"
+                      Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+          </Grid>
         </StackPanel>
 
         <Border Grid.Row="1"

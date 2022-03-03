@@ -8,8 +8,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         #region Constructors
 
         public ItemInfo(ProductInMachine product, int machineId)
-             : this(product?.Item, machineId)
+                             : this(product?.Item, machineId)
         {
+            this.Sscc = product.Sscc;
             this.Lot = product.Lot;
             this.SerialNumber = product.SerialNumber;
 
@@ -29,6 +30,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
                 throw new System.ArgumentNullException(nameof(item));
             }
 
+            this.Sscc = string.Empty;
             this.Id = item.Id;
             this.Code = item.Code;
             this.Description = item.Description;
@@ -68,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         public double PickIncrement => this.PickTolerance.HasValue ? System.Math.Pow(10, -this.PickTolerance.Value) : 1;
 
         public string SerialNumber { get; }
+
+        public string Sscc { get; }
 
         #endregion
     }

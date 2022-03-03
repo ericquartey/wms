@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
@@ -74,6 +76,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyRequestingItemPut;
 
+        private bool isCarrefour;
+
         private bool isDistinctBySerialNumber;
 
         private bool isDistinctBySerialNumberEnabled;
@@ -89,6 +93,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isReasonVisible;
 
         private bool isSearching;
+
+        private bool isSscc;
+
+        private bool isSsccEnabled;
 
         private List<ItemInfo> items = new List<ItemInfo>();
 
@@ -150,11 +158,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IBarcodeReaderService barcodeReaderService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IAuthenticationService authenticationService,
             IMachineMissionsWebService machineMissionsWebService,
             IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Operator)
         {
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
@@ -232,6 +242,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             private set => this.SetProperty(ref this.isBusyRequestingItemPut, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsDistinctBySerialNumber
         {
             get => this.isDistinctBySerialNumber;
@@ -304,6 +320,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isSearching;
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsSscc
+        {
+            get => this.isSscc;
+            set
+            {
+                if (this.SetProperty(ref this.isSscc, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.Appear = false;
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                        this.Appear = true;
+                    }).Start();
+                }
+            }
+        }
+
+        public bool IsSsccEnabled
+        {
+            get => this.isSsccEnabled;
+            set => this.SetProperty(ref this.isSsccEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsWaitingForReason { get; private set; }
@@ -854,6 +898,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsCarrefour = configuration.Machine.IsCarrefour;
+
             this.Appear = false;
             this.InputQuantity = 0;
             this.Reasons = null;
@@ -1032,13 +1079,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsGroupbyLot = false;
                     this.IsDistinctBySerialNumber = false;
+                    this.IsSscc = false;
                     this.IsGroupbyLotEnabled = false;
                     this.IsDistinctBySerialNumberEnabled = false;
+                    this.IsSsccEnabled = false;
                 }
                 else if (this.items.Count == 1)
                 {
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
+                    this.IsSsccEnabled = true;
                     this.SelectedItem = this.items.FirstOrDefault();
                 }
                 else
@@ -1046,6 +1096,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.SelectedItem = null;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
+                    this.IsSsccEnabled = true;
                 }
             }
             //catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
