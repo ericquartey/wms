@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             // TEMP Clear message IO
             var clearIoMessage = new IoWriteMessage();
 
-            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogDebug($"1:Clear IO={clearIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
