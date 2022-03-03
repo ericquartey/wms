@@ -1416,6 +1416,33 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private async Task ReloadOrders(string searchItem)
+        {
+            if (string.IsNullOrEmpty(searchItem))
+            {
+                this.Orders = await this.missionOperationsWebService.GetOrdersAsync();
+            }
+            else
+            {
+                var orderList = await this.missionOperationsWebService.GetOrdersAsync();
+                var list = new List<OperationReason>();
+
+                foreach (var item in orderList)
+                {
+                    try
+                    {
+                        if (item.Name.ToLower().Contains(searchItem.ToLower()) || item.Id == int.Parse(searchItem))
+                        {
+                            list.Add(item);
+                        }
+                    }
+                    catch (Exception) { }
+                }
+
+                this.Orders = list;
+            }
+        }
+
         private void Scroll(object parameter)
         {
             var scrollChangedEventArgs = parameter as ScrollChangedEventArgs;
@@ -1578,20 +1605,36 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private async Task TriggerSearchAsync()
         {
             this.tokenSource?.Cancel(false);
-
             this.tokenSource = new CancellationTokenSource();
 
-            try
+            if (this.IsOrderVisible)
             {
-                const int callDelayMilliseconds = 500;
+                try
+                {
+                    const int callDelayMilliseconds = 500;
 
-                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
-                await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
-                await this.SearchItemAsync(0, this.tokenSource.Token);
+                    await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                    await this.ReloadOrders(this.searchItem);
+                }
+                catch (TaskCanceledException)
+                {
+                    // do nothing
+                }
             }
-            catch (TaskCanceledException)
+            else
             {
-                // do nothing
+                try
+                {
+                    const int callDelayMilliseconds = 500;
+
+                    await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                    await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
+                    await this.SearchItemAsync(0, this.tokenSource.Token);
+                }
+                catch (TaskCanceledException)
+                {
+                    // do nothing
+                }
             }
         }
 
