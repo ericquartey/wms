@@ -400,22 +400,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
+                var compartmentId = this.MissionOperation.CompartmentId;
+
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)//16 => lunghezza matrice
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
                     quantity = 1;
                 }
-                else if (this.FullCompartment)
-                {
-                    var compartmentId = this.MissionOperation.CompartmentId;
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
-
-                    await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
-                }
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+
+                if (this.FullCompartment)
+                {
+                    await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
                 }
 
                 if (canComplete)
