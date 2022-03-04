@@ -374,7 +374,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
                 var loadingUnitId = this.Mission.LoadingUnit.Id;
-                var itemId = this.MissionOperation.ItemId;
+                var itemId = this.MissionOperation.Id;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
