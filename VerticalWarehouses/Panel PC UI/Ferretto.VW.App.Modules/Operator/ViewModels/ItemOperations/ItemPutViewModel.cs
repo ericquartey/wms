@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
+
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
@@ -98,6 +100,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+
+            this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
 
             this.barcodeReaderService = barcodeReaderService;
         }
@@ -402,6 +406,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
                     quantity = 1;
                 }
+                else if (this.FullCompartment)
+                {
+                    var compartmentId = this.MissionOperation.CompartmentId;
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+
+                    await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
+                }
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
@@ -579,8 +590,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.HasValue
                     &&
                     this.InputQuantity.Value >= 0
-                    &&
-                    this.InputQuantity.Value != this.MissionRequestedQuantity
                     &&
                     !this.CanPutBox;
             }
