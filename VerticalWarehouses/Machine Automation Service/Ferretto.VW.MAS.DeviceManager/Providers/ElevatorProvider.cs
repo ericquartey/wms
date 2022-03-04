@@ -843,10 +843,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
             {
                 policy = new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", CommonUtils.Culture.Actual) };
-            }
-
-            if (!policy.IsAllowed)
-            {
                 throw new InvalidOperationException(policy.Reason);
             }
 
