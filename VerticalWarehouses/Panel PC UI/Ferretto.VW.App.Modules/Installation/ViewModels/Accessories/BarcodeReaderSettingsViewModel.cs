@@ -12,6 +12,7 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
+//using IronBarCode;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -108,6 +109,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            //var MyBarCode = IronBarCode.BarcodeWriter.CreateBarcode("000prova01", BarcodeEncoding.Code128);
+            //MyBarCode.SaveAsImage("MyBarCode.png");
+
             await base.OnAppearedAsync();
 
             this.ReceivedBarcode = null;

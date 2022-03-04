@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     this.Logger.LogTrace("2b:Axis switched on");
 
                     var feedback = (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn) ? this.status.InputData[(int)IoPorts.CradleMotorFeedback] : this.status.InputData[(int)IoPorts.ElevatorMotorFeedback];
-                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 300
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 500
                         || feedback)
                     {
                         this.Logger.LogDebug($"3:Change State to EndState: feedback {feedback}, delay {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds:0.0000}");
