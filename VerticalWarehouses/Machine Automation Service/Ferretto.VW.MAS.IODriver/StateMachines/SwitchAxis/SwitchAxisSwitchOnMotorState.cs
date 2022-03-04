@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         {
             var switchOnAxisIoMessage = new IoWriteMessage { BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
 
-            this.Logger.LogDebug($"1:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
+            this.Logger.LogTrace($"1:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
 
             switch (this.axisToSwitchOn)
             {
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             this.startTime = DateTime.UtcNow;
 
-            this.Logger.LogTrace($"2:{switchOnAxisIoMessage}");
+            this.Logger.LogDebug($"2:Switch on axis {this.axisToSwitchOn}. IO={switchOnAxisIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(switchOnAxisIoMessage.Outputs);

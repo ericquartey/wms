@@ -717,7 +717,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         {
                             // acquire the tote barcode
                             var toteBarcode = barcode;
-                            var itemId = this.MissionOperation.ItemId;
+                            var itemId = this.MissionOperation.Id;
 
                             this.Logger.Debug($"Confirm operation for: {this.barcodeItem} item, {toteBarcode} tote");
                             this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + toteBarcode);
@@ -832,7 +832,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else
                     {
                         this.barcodeItem = barcode;
-                        var itemId = this.MissionOperation.ItemId;
+                        var itemId = this.MissionOperation.Id;
 
                         this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                         canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem);
@@ -854,7 +854,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    var itemId = this.MissionOperation.ItemId;
+                    var itemId = this.MissionOperation.Id;
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
 
                     if (canComplete)

@@ -63,8 +63,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         {
             var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true, BayLightOn = this.status.OutputData?[(int)IoPorts.BayLight] ?? false };
 
-            this.Logger.LogDebug($"1:Switch axis start {this.axisToSwitchOn}. IO={switchOffAxisIoMessage}");
-
             switch (this.axisToSwitchOn)
             {
                 case Axis.Horizontal:
@@ -75,6 +73,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOffAxisIoMessage.SwitchCradleMotor(false);
                     break;
             }
+
+            this.Logger.LogDebug($"1:Switch axis start {this.axisToSwitchOn}. IO={switchOffAxisIoMessage}");
 
             lock (this.status)
             {

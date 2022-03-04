@@ -63,9 +63,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             var checkMessage =
                 message.FormatDataOperation is ShdFormatDataOperation.Data
                 &&
-                message.ValidOutputs
-                &&
-                !message.ResetSecurity;
+                message.ValidOutputs;
 
             if (checkMessage && this.status.MatchOutputs(message.Outputs) && this.mainIoDevice.NormalState)
             {

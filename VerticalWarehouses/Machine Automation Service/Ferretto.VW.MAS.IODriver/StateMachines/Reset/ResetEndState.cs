@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
     internal sealed class ResetEndState : IoStateBase
@@ -65,7 +64,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
             resetSecurityIoMessage.SwitchElevatorMotor(true);
 
-            this.Logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
+            this.Logger.LogDebug($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
