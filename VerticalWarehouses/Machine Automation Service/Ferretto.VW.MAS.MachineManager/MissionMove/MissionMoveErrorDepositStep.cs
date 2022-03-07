@@ -69,6 +69,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 this.RestoreDepositStart(false);
                                 break;
                             }
+                            if (this.SensorsProvider.IsSensorZeroOnCradle
+                                && (messageData.AxisToCalibrate == Axis.Horizontal || messageData.AxisToCalibrate == Axis.HorizontalAndVertical))
+                            {
+                                this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
+                                this.DepositUnitEnd(restore: true);
+                            }
                         }
                         else if (notification.Type == MessageType.ShutterPositioning)
                         {
@@ -483,13 +489,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
                     this.LoadingUnitMovementProvider.UpdateLastIdealPosition(this.Mission.Direction, true);
                     if (this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
                     {
                         this.Mission.NeedHomingAxis = Axis.Horizontal;
                     }
-                    this.DepositUnitEnd(restore: true);
+                    if (this.Mission.NeedHomingAxis != Axis.None)
+                    {
+                        this.Logger.LogInformation($"Homing elevator free start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(this.Mission.NeedHomingAxis, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                    else
+                    {
+                        this.Logger.LogDebug($"loadUnit {this.Mission.LoadUnitId} already deposited! Mission:Id={this.Mission.Id}");
+                        this.DepositUnitEnd(restore: true);
+                    }
                     return;
                 }
             }

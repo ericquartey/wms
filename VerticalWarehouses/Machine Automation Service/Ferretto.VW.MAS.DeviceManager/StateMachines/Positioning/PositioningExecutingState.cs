@@ -250,6 +250,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual)
                         {
                             this.IsStartBayNotZero = !(this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay));
+                            this.IsStartPartiallyOnBoard = this.machineData.MessageData.LoadingUnitId.HasValue && this.machineData.MessageData.LoadingUnitId.Value > 0;
                         }
 
                         if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
@@ -822,6 +823,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.IsStartBayNotZero && this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
                         {
                             this.IsBayZeroReached = true;
+
+                            if (this.IsStartPartiallyOnBoard
+                                && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay))
+                            {
+                                var data = new PositioningMessageData();
+                                data.MovementType = this.machineData.MessageData.MovementType;
+                                data.MovementMode = this.machineData.MessageData.MovementMode;
+                                data.AxisMovement = this.machineData.MessageData.AxisMovement;
+
+                                this.Logger.LogDebug($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; Zero Sensor {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}");
+                                var notificationMessage = new NotificationMessage(
+                                    data,
+                                    $"Manual movement aborted",
+                                    MessageActor.MachineManager,
+                                    MessageActor.DeviceManager,
+                                    MessageType.Positioning,
+                                    this.machineData.RequestingBay,
+                                    this.machineData.TargetBay,
+                                    MessageStatus.OperationUpdateData);
+
+                                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                                // do not repeat notification
+                                this.IsStartPartiallyOnBoard = false;
+                            }
                         }
                         if (this.IsBayZeroReached && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
                         {

@@ -71,7 +71,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             this.Mission.LoadUnitDestination = destination.Location;
             this.Mission.Status = MissionStatus.Executing;
-            this.Mission.NeedHomingAxis = this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] ? Axis.None : Axis.BayChain;
+            if (!this.Mission.RestoreConditions && this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number])
+            {
+                this.Mission.NeedHomingAxis = Axis.None;
+            }
+            else
+            {
+                this.Mission.NeedHomingAxis = Axis.BayChain;
+            }
 
             if (this.Mission.RestoreConditions
                 && this.LoadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number)
@@ -164,28 +171,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 && notification.TargetBay == notification.RequestingBay
                             )
                             {
-                                var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
-                                if (destination is null)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
-                                    throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
-                                }
-                                var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
-                                if (origin is null)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
-                                    throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
-                                }
-                                using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
-                                {
-                                    this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
-                                    this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
-                                    this.BaysDataProvider.IncrementCycles(bay.Number);
-                                    transaction.Commit();
-                                }
-
-                                var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
-                                this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
+                                this.MoveUpLoadUnit(bay);
 
                                 if (this.Mission.RestoreConditions)
                                 {
@@ -237,15 +223,47 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MessageStatus.OperationError:
-                case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
                 case MessageStatus.OperationFaultStop:
                     if (this.Mission.Status == MissionStatus.Executing
                         && (notification.RequestingBay == this.Mission.TargetBay || notification.RequestingBay == BayNumber.None)
+                        && !this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement)
                         )
                     {
                         this.OnStop(StopRequestReason.Error);
                         return;
+                    }
+                    break;
+
+                case MessageStatus.OperationStop:
+                    if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
+                    {
+                        this.Mission.ErrorMovements &= ~MissionErrorMovements.AbortMovement;
+                        this.MissionsDataProvider.Update(this.Mission);
+
+                        var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                        this.MoveUpLoadUnit(bay);
+
+                        this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, notification.RequestingBay, MessageActor.MachineManager);
+                    }
+                    break;
+
+                case MessageStatus.OperationUpdateData:
+                    {
+                        if (notification.Data is PositioningMessageData data
+                            && data.MovementType == MovementType.Relative
+                            && data.MovementMode == MovementMode.BayChainManual
+                            )
+                        {
+                            this.Logger.LogInformation($"{this.GetType().Name}:Manual BayChain positioning abort Mission:Id={this.Mission.Id}; loadUnit {this.Mission.LoadUnitId}");
+
+                            this.Mission.ErrorMovements |= MissionErrorMovements.AbortMovement;
+                            this.MissionsDataProvider.Update(this.Mission);
+
+                            var newMessageData = new StopMessageData(StopRequestReason.Stop);
+                            this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+                        }
                     }
                     break;
             }
@@ -271,6 +289,32 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.BayChainEnd();
                 }
             }
+        }
+
+        private void MoveUpLoadUnit(Bay bay)
+        {
+            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+            if (destination is null)
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedUpper, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
+            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+            if (origin is null)
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.LoadUnitUndefinedBottom, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
+            using (var transaction = this.ElevatorDataProvider.GetContextTransaction())
+            {
+                this.BaysDataProvider.SetLoadingUnit(origin.Id, null);
+                this.BaysDataProvider.SetLoadingUnit(destination.Id, this.Mission.LoadUnitId);
+                this.BaysDataProvider.IncrementCycles(bay.Number);
+                transaction.Commit();
+            }
+
+            var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
+            this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
         }
 
         private void BayChainEnd()
