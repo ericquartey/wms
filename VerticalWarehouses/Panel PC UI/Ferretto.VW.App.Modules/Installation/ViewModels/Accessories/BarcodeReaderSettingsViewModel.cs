@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
@@ -10,6 +13,7 @@ using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using IronBarCode;
 using Prism.Commands;
 using Prism.Events;
 //using IronBarCode;
@@ -33,11 +37,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DeviceModel deviceModel;
 
+        private bool imageExist;
+
+        private ImageSource imageSource;
+
         private string portName;
 
         private string receivedBarcode;
 
         private bool systemPortsAvailable;
+
+        private DelegateCommand testBarcodeCommand;
+
+        private string tryBarcodeImage;
 
         #endregion
 
@@ -73,6 +85,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.deviceModel, value);
         }
 
+        public bool ImageExist
+        {
+            get => this.imageExist;
+            set => this.SetProperty(ref this.imageExist, value);
+        }
+
+        public ImageSource ImageSource
+        {
+            get => this.imageSource;
+            set => this.SetProperty(ref this.imageSource, value);
+        }
+
         public string PortName
         {
             get => this.portName;
@@ -93,6 +117,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.systemPortsAvailable, value);
         }
 
+        public ICommand TestBarcodeCommand =>
+                                                    this.testBarcodeCommand
+            ??
+            (this.testBarcodeCommand = new DelegateCommand(this.TestBarcode));
+
+        public string TryBarcodeImage
+        {
+            get => this.tryBarcodeImage;
+            set => this.SetProperty(ref this.tryBarcodeImage, value);
+        }
+
         #endregion
 
         #region Methods
@@ -105,6 +140,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.barcodeSubscriptionToken?.Dispose();
             this.barcodeSubscriptionToken = null;
+
+            this.TryBarcodeImage = string.Empty;
+            this.ImageSource = new BitmapImage();
+            this.ImageExist = false;
         }
 
         public override async Task OnAppearedAsync()
@@ -125,6 +164,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.OnBarcodeReceived,
                         ThreadOption.UIThread,
                         false);
+        }
+
+        public void TestBarcode()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(this.TryBarcodeImage))
+                {
+                    var path = Directory.GetCurrentDirectory() + "\\TestBarcode.jpeg";
+
+                    BarcodeWriter.CreateBarcode(this.TryBarcodeImage, BarcodeWriterEncoding.Code128).ResizeTo(400, 100).SaveAsImage(path);
+
+                    var stream = File.OpenRead(path);
+                    if (stream != null)
+                    {
+                        var bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.StreamSource = stream;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        stream.Dispose();
+                        this.ImageSource = bitmap;
+                        this.ImageExist = true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                this.ImageExist = false;
+                this.ImageSource = new BitmapImage();
+            }
         }
 
         protected override async Task OnDataRefreshAsync()
