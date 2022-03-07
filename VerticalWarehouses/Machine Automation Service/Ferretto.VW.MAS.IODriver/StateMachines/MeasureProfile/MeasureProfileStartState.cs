@@ -61,9 +61,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
         {
             var message = new IoWriteMessage(this.status.OutputData);
 
-            this.Logger.LogDebug($"1:Measure Profile ={message}");
-
             message.SwitchMeasureProfile(this.enable);
+
+            this.Logger.LogDebug($"1:Measure Profile ={message}");
 
             lock (this.status)
             {
