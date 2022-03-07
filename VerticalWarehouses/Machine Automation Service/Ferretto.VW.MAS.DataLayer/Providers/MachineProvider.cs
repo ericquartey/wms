@@ -909,7 +909,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         machineStat.TotalWeightBack += l.GrossWeight;
                     }
-                    l.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                    if (l.Status != DataModels.Enumerations.LoadingUnitStatus.Blocked)
+                    {
+                        l.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                    }
                 }
             }
             );
