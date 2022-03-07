@@ -189,6 +189,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.ImageExist = true;
                     }
                 }
+                else
+                {
+                    this.ImageExist = false;
+                    this.ImageSource = new BitmapImage();
+                }
             }
             catch (Exception)
             {
