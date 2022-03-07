@@ -6532,6 +6532,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test Barcode.
+        /// </summary>
+        public static string TestBarcode {
+            get {
+                return ResourceManager.GetString("TestBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test data.
         /// </summary>
         public static string TestData {
