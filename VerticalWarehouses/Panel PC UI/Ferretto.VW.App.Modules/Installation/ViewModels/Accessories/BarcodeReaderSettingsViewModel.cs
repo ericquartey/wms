@@ -16,7 +16,6 @@ using Ferretto.VW.Utils.Enumerators;
 using IronBarCode;
 using Prism.Commands;
 using Prism.Events;
-//using IronBarCode;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -172,20 +171,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (!string.IsNullOrEmpty(this.TryBarcodeImage))
                 {
-                    var path = Directory.GetCurrentDirectory() + "\\TestBarcode.jpeg";
+                    var barcodeImage = BarcodeWriter.CreateBarcode(this.TryBarcodeImage, BarcodeWriterEncoding.Code128).ResizeTo(400, 100);
 
-                    BarcodeWriter.CreateBarcode(this.TryBarcodeImage, BarcodeWriterEncoding.Code128).ResizeTo(400, 100).SaveAsImage(path);
-
-                    var stream = File.OpenRead(path);
-                    if (stream != null)
+                    if (barcodeImage != null)
                     {
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.StreamSource = stream;
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-                        stream.Dispose();
-                        this.ImageSource = bitmap;
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = barcodeImage.ToStream();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+
+                        this.ImageSource = bitmapImage;
                         this.ImageExist = true;
                     }
                 }
@@ -195,8 +191,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ImageSource = new BitmapImage();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.Logger.Error("BarcodeImage Error: " + ex);
                 this.ImageExist = false;
                 this.ImageSource = new BitmapImage();
             }
