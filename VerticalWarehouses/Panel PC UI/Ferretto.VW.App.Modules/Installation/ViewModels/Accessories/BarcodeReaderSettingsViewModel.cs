@@ -13,10 +13,9 @@ using Ferretto.VW.Devices.BarcodeReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using IronBarCode;
 using Prism.Commands;
 using Prism.Events;
-//using IronBarCode;
+using Spire.Barcode;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -36,8 +35,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand configureDeviceCommand;
 
         private DeviceModel deviceModel;
-
-        private bool imageExist;
 
         private ImageSource imageSource;
 
@@ -83,12 +80,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.deviceModel;
             set => this.SetProperty(ref this.deviceModel, value);
-        }
-
-        public bool ImageExist
-        {
-            get => this.imageExist;
-            set => this.SetProperty(ref this.imageExist, value);
         }
 
         public ImageSource ImageSource
@@ -143,14 +134,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.TryBarcodeImage = string.Empty;
             this.ImageSource = new BitmapImage();
-            this.ImageExist = false;
         }
 
         public override async Task OnAppearedAsync()
         {
-            //var MyBarCode = IronBarCode.BarcodeWriter.CreateBarcode("000prova01", BarcodeEncoding.Code128);
-            //MyBarCode.SaveAsImage("MyBarCode.png");
-
             await base.OnAppearedAsync();
 
             this.ReceivedBarcode = null;
@@ -172,33 +159,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (!string.IsNullOrEmpty(this.TryBarcodeImage))
                 {
-                    var path = Directory.GetCurrentDirectory() + "\\TestBarcode.jpeg";
+                    BarcodeSettings bs = new BarcodeSettings();
 
-                    BarcodeWriter.CreateBarcode(this.TryBarcodeImage, BarcodeWriterEncoding.Code128).ResizeTo(400, 100).SaveAsImage(path);
+                    bs.Type = BarCodeType.Code128;
+                    bs.Data = this.TryBarcodeImage;
 
-                    var stream = File.OpenRead(path);
+                    BarCodeGenerator bg = new BarCodeGenerator(bs);
+
+                    var image = bg.GenerateImage();
+
+                    var stream = new MemoryStream();
+                    image.Save(stream, ImageFormat.Jpeg);
+                    stream.Position = 0;
                     if (stream != null)
                     {
-                        var bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.StreamSource = stream;
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-                        stream.Dispose();
-                        this.ImageSource = bitmap;
-                        this.ImageExist = true;
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = stream;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+
+                        this.ImageSource = bitmapImage;
                     }
                 }
                 else
                 {
-                    this.ImageExist = false;
                     this.ImageSource = new BitmapImage();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                this.ImageExist = false;
+                this.Logger.Error("BarcodeImage Error: " + ex);
                 this.ImageSource = new BitmapImage();
+                this.ShowNotification(ex.Message, Services.Models.NotificationSeverity.Error);
             }
         }
 
