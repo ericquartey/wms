@@ -1011,8 +1011,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalResolutionCalibration();
 
             var speed = new[] { axis.FullLoadMovement.Speed };
-            var acceleration = new[] { axis.FullLoadMovement.Acceleration / 6 };
-            var deceleration = new[] { axis.FullLoadMovement.Deceleration / 6 };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration / 2 };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration / 2 };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
