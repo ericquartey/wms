@@ -48,10 +48,12 @@
 
     <views:DeviceInformationView Grid.Row="1" />
 
-    <StackPanel Grid.Row="1"
+    <StackPanel Grid.Row="0"
                 Grid.Column="1"
                 Grid.ColumnSpan="2"
+                VerticalAlignment="Bottom"
                 Width="450"
+                Grid.RowSpan="2"
                 HorizontalAlignment="Left">
 
       <Grid>
@@ -69,8 +71,7 @@
                             IsBusy="{Binding IsWaitingForResponse}" />
       </Grid>
 
-      <Image MinHeight="100"
-             MaxHeight="150"
+      <Image MaxHeight="100"
              Margin="0,5,0,0"
              Source="{Binding ImageSource}"
              Stretch="Uniform" />

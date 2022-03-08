@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,6 +165,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     bs.Type = BarCodeType.Code128;
                     bs.Data = this.TryBarcodeImage;
 
+                    bs.ShowTextOnBottom = true;
+
                     BarCodeGenerator bg = new BarCodeGenerator(bs);
 
                     var image = bg.GenerateImage();
@@ -191,7 +194,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Logger.Error("BarcodeImage Error: " + ex);
                 this.ImageSource = new BitmapImage();
-                this.ShowNotification(ex.Message, Services.Models.NotificationSeverity.Error);
             }
         }
 
