@@ -3877,6 +3877,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ZeroSensorErrorAfterHoming = 93,
     
+        IoResetSecurityTimeout = 94,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

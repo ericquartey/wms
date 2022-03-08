@@ -110,7 +110,10 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BayInvertersBusy), (int)MachineErrorSeverity.Normal)]
         BayInvertersBusy,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceError), (int)MachineErrorSeverity.Normal)]
+        /// <summary>
+        /// not used
+        /// </summary>
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceError), (int)MachineErrorSeverity.Low)]
         IoDeviceError,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineModeNotValid), (int)MachineErrorSeverity.Normal)]
@@ -262,7 +265,7 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterCommandTimeout), (int)MachineErrorSeverity.Normal)]
         InverterCommandTimeout,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceCommandTimeout), (int)MachineErrorSeverity.Low)]
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceCommandTimeout), (int)MachineErrorSeverity.Normal)]
         IoDeviceCommandTimeout,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TelescopicBayError), (int)MachineErrorSeverity.Normal)]
@@ -294,6 +297,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterHoming), (int)MachineErrorSeverity.Normal)]
         ZeroSensorErrorAfterHoming,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoResetSecurityTimeout), (int)MachineErrorSeverity.Normal)]
+        IoResetSecurityTimeout,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,

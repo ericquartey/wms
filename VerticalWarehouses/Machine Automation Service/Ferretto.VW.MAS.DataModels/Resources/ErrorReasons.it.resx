@@ -421,7 +421,7 @@
     <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
   </data>
   <data name="IoDeviceCommandTimeout" xml:space="preserve">
-    <value>Errore nella gestione della scheda di Ingressi / uscite o nell'esecuzione di un comando.</value>
+    <value>Non è stato possibile eseguire il cambio degli assi</value>
   </data>
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
     <value>Errore momentaneo. Se il problema persiste spegnere la macchina e riaccendere dopo 15 secondi.</value>
@@ -455,5 +455,8 @@
   </data>
   <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
     <value>Il sensore di zero dell'asse orizzontale non è attivo durante l'operazione di calibrazione</value>
+  </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Non è stato possibile eseguire il comando di accensione. Controllare i dispositivi di sicurezza</value>
   </data>
 </root>

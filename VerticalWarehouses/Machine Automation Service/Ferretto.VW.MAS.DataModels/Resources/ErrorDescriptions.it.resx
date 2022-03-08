@@ -462,4 +462,7 @@
   <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
     <value>Errore nella calibrazione dell'asse orizzontale</value>
   </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Errore di comando della scheda di ingressi / uscite</value>
+  </data>
 </root>

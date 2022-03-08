@@ -316,7 +316,7 @@
     <value>Errore di connessione</value>
   </data>
   <data name="IoDeviceConnectionError" xml:space="preserve">
-    <value>Errore di connessione</value>
+    <value>I/O device connection error</value>
   </data>
   <data name="LaserConnectionError" xml:space="preserve">
     <value>Errore di connessione</value>
@@ -461,5 +461,8 @@
   </data>
   <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
     <value>Elevator horizontal axis homing error</value>
+  </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>I/O device  command timeout</value>
   </data>
 </root>
