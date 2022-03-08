@@ -69,14 +69,11 @@
                             IsBusy="{Binding IsWaitingForResponse}" />
       </Grid>
 
-
-      <Border Background="White"
-              Visibility="{Binding ImageExist, Converter={StaticResource BTVC}}">
-        <Image Margin="2,5,2,0"
-               Source="{Binding ImageSource}"
-               Stretch="UniformToFill" />
-      </Border>
-
+      <Image MinHeight="100"
+             MaxHeight="150"
+             Margin="0,5,0,0"
+             Source="{Binding ImageSource}"
+             Stretch="Uniform" />
 
     </StackPanel>
 
