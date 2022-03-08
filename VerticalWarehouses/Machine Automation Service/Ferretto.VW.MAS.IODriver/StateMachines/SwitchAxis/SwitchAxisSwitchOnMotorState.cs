@@ -11,9 +11,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
-        private const int ResponseTimeoutMilliseconds = 2500;
+        private const int ResponseTimeoutMilliseconds = 2000;
 
         private readonly Axis axisToSwitchOn;
+
+        private readonly BayNumber bayNumber;
 
         private readonly IErrorsProvider errorProvider;
 
@@ -35,6 +37,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             Axis axisToSwitchOn,
             IoStatus status,
             IoIndex index,
+            BayNumber bayNumber,
             ILogger logger,
             IIoStateMachine parentStateMachine)
             : base(parentStateMachine, logger)
@@ -42,6 +45,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
             this.index = index;
+            this.bayNumber = bayNumber;
             this.responseTimer.Elapsed += this.OnResponseTimedOut;
             this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
 
@@ -76,11 +80,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     this.Logger.LogTrace("2b:Axis switched on");
 
                     var feedback = (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn) ? this.status.InputData[(int)IoPorts.CradleMotorFeedback] : this.status.InputData[(int)IoPorts.ElevatorMotorFeedback];
-                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 500
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > ResponseTimeoutMilliseconds
                         || feedback)
                     {
                         this.Logger.LogDebug($"3:Change State to EndState: feedback {feedback}, delay {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds:0.0000}");
-                        // send an OperationError when timeout expires
+                        if (!feedback)
+                        {
+                            this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, this.bayNumber, additionalText: $"Switch axis motor Index {this.index}");
+                        }
                         this.ParentStateMachine.ChangeState(new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, !feedback, this.Logger, this.ParentStateMachine));
                     }
                 }
@@ -133,8 +140,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         private void OnResponseTimedOut(object sender, ElapsedEventArgs e)
         {
-            this.Logger.LogError("Switch axis motor timeout.");
-            this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, additionalText: $"Switch axis motor Index {this.index}");
+            this.Logger.LogError("Switch axis motor command timeout.");
+            this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, this.bayNumber, additionalText: $"Switch axis motor Index {this.index}");
 
             this.ParentStateMachine.ChangeState(
                 new SwitchAxisEndState(this.axisToSwitchOn, this.status, this.index, hasError: true, this.Logger, this.ParentStateMachine));

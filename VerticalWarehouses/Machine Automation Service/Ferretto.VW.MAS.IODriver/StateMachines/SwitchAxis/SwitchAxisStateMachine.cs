@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         private readonly Axis axisToSwitchOn;
 
+        private readonly BayNumber bayNumber;
+
         private readonly IoIndex index;
 
         private readonly IoStatus status;
@@ -41,6 +43,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IoStatus status,
             IoIndex index,
+            BayNumber bayNumber,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
@@ -51,6 +54,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             this.status = status;
             this.pulseOneTime = false;
             this.index = index;
+            this.bayNumber = bayNumber;
 
             this.Logger.LogTrace("1:Method Start");
         }
@@ -94,7 +98,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                 this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
-                this.ChangeState(new SwitchAxisStartState(this.axisToSwitchOn, this.status, this.index, this.Logger, this));
+                this.ChangeState(new SwitchAxisStartState(this.axisToSwitchOn, this.status, this.index, this.bayNumber, this.Logger, this));
             }
             else
             {
@@ -110,7 +114,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                 this.Logger.LogTrace($"5:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
-                this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this));
+                this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.bayNumber, this.Logger, this));
             }
         }
 
@@ -139,7 +143,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         private void DelayElapsed(object state)
         {
             this.Logger.LogTrace("1:Change State to SwitchOnMotorState");
-            this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this));
+            this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.bayNumber, this.Logger, this));
         }
 
         #endregion

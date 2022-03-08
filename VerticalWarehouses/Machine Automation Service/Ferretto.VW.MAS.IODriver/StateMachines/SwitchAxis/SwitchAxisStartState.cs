@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         private readonly Axis axisToSwitchOn;
 
+        private readonly BayNumber bayNumber;
+
         private readonly IoIndex index;
 
         private readonly IoStatus status;
@@ -23,6 +25,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             Axis axisToSwitchOn,
             IoStatus status,
             IoIndex index,
+            BayNumber bayNumber,
             ILogger logger,
             IIoStateMachine parentStateMachine)
             : base(parentStateMachine, logger)
@@ -30,6 +33,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
             this.index = index;
+            this.bayNumber = bayNumber;
 
             logger.LogTrace("1:Method Start");
         }
@@ -54,7 +58,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
                 {
                     this.Logger.LogTrace("3:Change State to SwitchOnMotorState");
-                    this.ParentStateMachine.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
+                    this.ParentStateMachine.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.bayNumber, this.Logger, this.ParentStateMachine));
                 }
             }
         }

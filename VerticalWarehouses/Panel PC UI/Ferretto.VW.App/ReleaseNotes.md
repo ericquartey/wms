@@ -25,25 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.39 rispetto la 1.0.38
-- Ferretto NuGet package 0.16.41.
-- Custom Carrefour
+## Nuove Funzionalità 1.0.40 rispetto la 1.0.39
+- 
 
 ## Bug Risolti
-- Parametri: Eliminata Baia Culla
-- Bilancia Minebea-Sandri: correzioni varie
-- Aggiunto allarme di sensori non validi durante la calibrazione verticale
-- Corretta inizializzazione dopo errore di WMS
-- Baia telescopica: nei movimenti si vede il sensore di baia in sede
-- Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
-- Carico/Scarico cassetto: aggiunto allarme di elevatore non carico/scarico durante il movimento
-- Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
-- Aumentato timeout di comunicazione con la scheda di I/O
-- Il numero di cassetto è sempre limitato a 3 cifre
-- Le commesse sono ordinate
+- I ripristini della giostra si fermano sul sensore
+- I cassetti bloccati non si perdono al riavvio
+- Aumentata la velocità della procedura di risoluzione orizzontale
+- Modifiche agli errori della scheda I/O (34, 84, 94)
+- 
 
 ## Compatibile con adapter 0.4.31
 ***
+
+[Versione 1.0.39](#id1039)
 
 [Versione 1.0.38](#id1038)
 
@@ -123,6 +118,26 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1039"></a>
+## Nuove Funzionalità 1.0.39 rispetto la 1.0.38
+- Ferretto NuGet package 0.16.41.
+- Custom Carrefour
+
+## Bug Risolti
+- Parametri: Eliminata Baia Culla
+- Bilancia Minebea-Sandri: correzioni varie
+- Aggiunto allarme di sensori non validi durante la calibrazione verticale
+- Corretta inizializzazione dopo errore di WMS
+- Baia telescopica: nei movimenti si vede il sensore di baia in sede
+- Posizionamento serranda: aggiunto allarme in caso di spostamento troppo veloce
+- Carico/Scarico cassetto: aggiunto allarme di elevatore non carico/scarico durante il movimento
+- Test primo cassetto: gestisce le celle bloccate in qualsiasi posizione
+- Aumentato timeout di comunicazione con la scheda di I/O (errore 24)
+- Il numero di cassetto è sempre limitato a 3 cifre
+- Le commesse sono ordinate e filtrate
+
+## Compatibile con adapter 0.4.31
 
 <a id="id1038"></a>
 ## Nuove Funzionalità 1.0.38 rispetto la 1.0.37

@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         break;
 
                     case MessageStatus.OperationError:
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceError, this.machineData.RequestingBay);
+                        //this.errorsProvider.RecordNew(MachineErrorCode.IoDeviceError, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData, this.Logger));
                         break;
