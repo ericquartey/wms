@@ -91,6 +91,24 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.SendErrorLogAsync(errorLog);
         }
 
+        private async Task OnLoadUnitRemovedAsync(NotificationMessage message)
+        {
+            var messageData = (MoveLoadingUnitMessageData)message.Data;
+            var errorLog = new ErrorLog
+            {
+                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+                AdditionalText = "Remove LU " + messageData.LoadUnitId.ToString(),
+                BayNumber = (int)message.RequestingBay,
+                Code = 0,
+                DetailCode = (int)messageData.LoadUnitId,
+                InverterIndex = 0,
+                OccurrenceDate = DateTimeOffset.Now,
+                ResolutionDate = null,
+            };
+
+            await this.SendErrorLogAsync(errorLog);
+        }
+
         private async Task OnMachineModeChangedAsync(MachineModeMessageData messageData)
         {
             var errorLog = new ErrorLog

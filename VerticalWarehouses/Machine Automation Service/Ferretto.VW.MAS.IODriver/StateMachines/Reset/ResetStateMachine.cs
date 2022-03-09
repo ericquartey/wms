@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         {
             var pulseIoMessage = new IoWriteMessage();
 
-            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.Logger.LogDebug($"1:Pulse IO={pulseIoMessage}");
             this.status.UpdateOutputStates(pulseIoMessage.Outputs);
 
             this.EnqueueMessage(pulseIoMessage);

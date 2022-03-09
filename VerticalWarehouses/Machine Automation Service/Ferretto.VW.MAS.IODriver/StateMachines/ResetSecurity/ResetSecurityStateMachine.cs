@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
                 PowerEnable = true,
             };
 
-            this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
+            this.Logger.LogDebug($"1:Pulse IO={pulseIoMessage}");
             this.status.UpdateOutputStates(pulseIoMessage.Outputs);
 
             this.EnqueueMessage(pulseIoMessage);

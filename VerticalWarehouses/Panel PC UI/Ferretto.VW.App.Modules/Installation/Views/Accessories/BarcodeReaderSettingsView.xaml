@@ -48,6 +48,41 @@
 
     <views:DeviceInformationView Grid.Row="1" />
 
+    <StackPanel Grid.Row="0"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                VerticalAlignment="Bottom"
+                Width="500"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Left">
+
+      <Grid>
+        <controls:PpcTextBox Width="200"
+                             InputText="{Binding TryBarcodeImage, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{res:Loc OperatorApp.BarcodeLabel}" />
+
+        <controls:PpcButton Width="auto"
+                            Height="34"
+                            Margin="0,3,0,5"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding TestBarcodeCommand}"
+                            Content="{res:Loc InstallationApp.TestBarcode}"
+                            IsBusy="{Binding IsWaitingForResponse}" />
+      </Grid>
+
+      <Border Background="White"
+              HorizontalAlignment="Stretch"
+                  Visibility="{Binding ImageExist, Converter={StaticResource BTVC}}">
+        <Image MaxHeight="120"
+             Margin="2,5,2,5"
+             Source="{Binding ImageSource}"
+             Stretch="Uniform" />
+      </Border>
+      
+
+    </StackPanel>
+
     <controls:PpcCheckBox Grid.Row="2"
                           Margin="0,15,0,0"
                           VerticalAlignment="Center"

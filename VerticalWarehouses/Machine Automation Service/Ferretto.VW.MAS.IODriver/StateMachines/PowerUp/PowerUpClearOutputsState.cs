@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
             }
 
-            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogDebug($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
         }

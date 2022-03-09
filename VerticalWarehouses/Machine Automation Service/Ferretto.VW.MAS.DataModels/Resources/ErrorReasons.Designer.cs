@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ErrorReasons {
@@ -529,7 +529,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I/O device timeout.
+        ///   Looks up a localized string similar to Switch axis error.
         /// </summary>
         public static string IoDeviceCommandTimeout {
             get {
@@ -552,6 +552,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string IoDeviceError {
             get {
                 return ResourceManager.GetString("IoDeviceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power on error. Check the safety devices.
+        /// </summary>
+        public static string IoResetSecurityTimeout {
+            get {
+                return ResourceManager.GetString("IoResetSecurityTimeout", resourceCulture);
             }
         }
         

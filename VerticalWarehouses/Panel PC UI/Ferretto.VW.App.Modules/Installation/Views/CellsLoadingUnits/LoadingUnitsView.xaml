@@ -213,7 +213,7 @@
                              Grid.Column="4"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
-                             InputText="{Binding SelectedLU.GrossWeight, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                             InputText="{Binding SelectedLU.GrossWeight, StringFormat={}{0:F2}, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsEnabledEditing}"
                              LabelText="{res:Loc InstallationApp.GrossWeight}" />
         <!--  LabelText="GrossWeight" />  -->
@@ -231,7 +231,7 @@
                              Grid.Column="6"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch"
-                             InputText="{Binding SelectedLU.NetWeight}"
+                             InputText="{Binding SelectedLU.NetWeight, StringFormat={}{0:F2}}"
                              IsEnabled="False"
                              LabelText="{res:Loc InstallationApp.NetWeight}" />
         <!--  LabelText="NetWeight" />  -->

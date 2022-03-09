@@ -959,7 +959,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 bool canComplete = false;
                 var loadUnitId = this.Mission.LoadingUnit.Id;
-                var itemId = this.MissionOperation.ItemId;
+                var itemId = this.MissionOperation.Id;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
@@ -1130,7 +1130,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 }
                 var loadUnitId = this.Mission.LoadingUnit.Id;
-                var itemId = this.MissionOperation.ItemId;
+                var itemId = this.MissionOperation.Id;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
@@ -1363,7 +1363,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 bool canComplete;
                 var loadUnitId = this.Mission.LoadingUnit.Id;
-                var itemId = this.MissionOperation.ItemId;
+                var itemId = this.MissionOperation.Id;
                 var quantity = this.InputQuantity;
 
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();

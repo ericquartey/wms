@@ -124,6 +124,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Light(BayNumber bayNumber, bool enable);
 
+        void NotifyRemoveLoadUnit(int loadingUnitId, LoadingUnitLocation location);
+
         void PerformHoming(BayNumber bayNumber);
 
         void RemoveLoadingUnit(int loadingUnitId);

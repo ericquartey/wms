@@ -63,9 +63,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             var checkMessage =
                 message.FormatDataOperation is ShdFormatDataOperation.Data
                 &&
-                message.ValidOutputs
-                &&
-                !message.ResetSecurity;
+                message.ValidOutputs;
 
             if (checkMessage && this.status.MatchOutputs(message.Outputs) && this.mainIoDevice.NormalState)
             {
@@ -121,7 +119,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
                 this.tryReset = false;
 
                 this.Logger.LogError("Reset security timeout.");
-                this.errorProvider.RecordNew(MachineErrorCode.IoDeviceCommandTimeout, additionalText: $"Reset Security Index {this.index}");
+                this.errorProvider.RecordNew(MachineErrorCode.IoResetSecurityTimeout, additionalText: $"Reset Security Index {this.index}");
 
                 this.ParentStateMachine.ChangeState(
                     new ResetSecurityEndState(this.ParentStateMachine, this.status, this.index, hasError: true, this.Logger));

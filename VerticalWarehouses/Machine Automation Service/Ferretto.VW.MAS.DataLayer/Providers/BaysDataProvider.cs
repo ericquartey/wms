@@ -943,6 +943,66 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
+        public void NotifyRemoveLoadUnit(int loadingUnitId, LoadingUnitLocation location)
+        {
+            var messageData = new MoveLoadingUnitMessageData(
+                        MissionType.NoType,
+                        LoadingUnitLocation.NoLocation,
+                        LoadingUnitLocation.NoLocation,
+                        sourceCellId: null,
+                        destinationCellId: null,
+                        loadUnitId: loadingUnitId,
+                        insertLoadUnit: false,
+                        missionId: null,
+                        loadUnitHeight: null,
+                        netWeight: null,
+                        CommonUtils.CommandAction.Start);
+
+            BayNumber bayNumber;
+            switch (location)
+            {
+                case LoadingUnitLocation.InternalBay1Up:
+                case LoadingUnitLocation.InternalBay1Down:
+                case LoadingUnitLocation.ExternalBay1Up:
+                case LoadingUnitLocation.ExternalBay1Down:
+                case LoadingUnitLocation.CarouselBay1Up:
+                case LoadingUnitLocation.CarouselBay1Down:
+                    bayNumber = BayNumber.BayOne;
+                    break;
+
+                case LoadingUnitLocation.InternalBay2Up:
+                case LoadingUnitLocation.InternalBay2Down:
+                case LoadingUnitLocation.ExternalBay2Up:
+                case LoadingUnitLocation.ExternalBay2Down:
+                case LoadingUnitLocation.CarouselBay2Up:
+                case LoadingUnitLocation.CarouselBay2Down:
+                    bayNumber = BayNumber.BayTwo;
+                    break;
+
+                case LoadingUnitLocation.InternalBay3Up:
+                case LoadingUnitLocation.InternalBay3Down:
+                case LoadingUnitLocation.ExternalBay3Up:
+                case LoadingUnitLocation.ExternalBay3Down:
+                case LoadingUnitLocation.CarouselBay3Up:
+                case LoadingUnitLocation.CarouselBay3Down:
+                    bayNumber = BayNumber.BayThree;
+                    break;
+
+                default:
+                    bayNumber = BayNumber.None;
+                    break;
+            }
+            this.notificationEvent.Publish(
+                    new NotificationMessage
+                    {
+                        Data = messageData,
+                        Destination = MessageActor.Any,
+                        Source = MessageActor.WebApi,
+                        Type = MessageType.RemoveLoadUnit,
+                        RequestingBay = bayNumber,
+                    });
+        }
+
         public void PerformHoming(BayNumber bayNumber)
         {
             this.PublishCommand(
@@ -973,6 +1033,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.dataContext.LoadingUnits.Remove(lu);
                 this.dataContext.SaveChanges();
+
+                this.NotifyRemoveLoadUnit(loadingUnitId, sourceBay);
             }
         }
 

@@ -335,7 +335,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(lu.CellId.Value, null);
             }
-            if (lu.Status == DataModels.Enumerations.LoadingUnitStatus.InBay)
+            if (lu.Status == LoadingUnitStatus.InBay)
             {
                 this.baysDataProvider.RemoveLoadingUnit(loadingUnitsId);
             }
@@ -345,6 +345,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.dataContext.LoadingUnits.Remove(lu);
                     this.dataContext.SaveChanges();
+                    this.baysDataProvider.NotifyRemoveLoadUnit(loadingUnitsId, LoadingUnitLocation.NoLocation);
                 }
             }
         }

@@ -347,11 +347,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 && bay != null
                                 && bay.Positions != null
                                 && (bay.Carousel != null || bay.IsExternal)
-                                && bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate)
+                                && bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate
+                                && !bay.Positions.Any(p => p.LoadingUnit != null && p.LoadingUnit?.Id != this.Mission.LoadUnitId))
                             {
                                 this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
                                 this.Mission.NeedHomingAxis = Axis.BayChain;
-                                this.Logger.LogTrace($"NeedHomingAxis{this.Mission.NeedHomingAxis}. CyclesToCalibrate {bay.CyclesToCalibrate}. LastCalibrationCycles {bay.LastCalibrationCycles}. Total cycles {bay.TotalCycles}. Mission:Id={this.Mission.Id}");
+                                this.Logger.LogDebug($"NeedHomingAxis{this.Mission.NeedHomingAxis}. CyclesToCalibrate {bay.CyclesToCalibrate}. LastCalibrationCycles {bay.LastCalibrationCycles}. Total cycles {bay.TotalCycles}. Mission:Id={this.Mission.Id}");
                             }
 
                             if (this.Mission.NeedHomingAxis == Axis.BayChain

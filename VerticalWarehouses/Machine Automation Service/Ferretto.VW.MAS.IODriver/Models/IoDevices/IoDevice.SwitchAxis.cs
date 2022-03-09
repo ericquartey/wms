@@ -55,6 +55,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.ioCommandQueue,
                                 this.ioStatus,
                                 this.deviceIndex,
+                                this.bayNumber,
                                 this.eventAggregator,
                                 this.logger,
                                 this.serviceScopeFactory);
@@ -96,6 +97,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.ioCommandQueue,
                                 this.ioStatus,
                                 this.deviceIndex,
+                                this.bayNumber,
                                 this.eventAggregator,
                                 this.logger,
                                 this.serviceScopeFactory);

@@ -424,7 +424,7 @@
     <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
   </data>
   <data name="IoDeviceCommandTimeout" xml:space="preserve">
-    <value>I/O device timeout</value>
+    <value>Switch axis error</value>
   </data>
   <data name="InverterErrorSyntaxError2" xml:space="preserve">
     <value>Temporary error. If the problem reappears switch off the power and switch on after 15 seconds.</value>
@@ -455,5 +455,8 @@
   </data>
   <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
     <value>The horizontal zero sensor in not active during homing</value>
+  </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Power on error. Check the safety devices</value>
   </data>
 </root>

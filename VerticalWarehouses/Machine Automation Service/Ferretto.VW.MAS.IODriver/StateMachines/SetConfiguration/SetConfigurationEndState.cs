@@ -4,7 +4,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
     internal sealed class SetConfigurationEndState : IoStateBase
@@ -66,7 +65,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
                 this.status.UpdateOutputStates(clearIoMessage.Outputs);
             }
 
-            this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");
+            this.Logger.LogDebug($"1:Clear IO={clearIoMessage}");
 
             this.ParentStateMachine.EnqueueMessage(clearIoMessage);
         }

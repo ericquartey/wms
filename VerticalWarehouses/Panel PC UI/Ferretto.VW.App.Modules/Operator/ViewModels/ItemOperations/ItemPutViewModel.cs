@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
+        private readonly IMachineCompartmentsWebService compartmentsWebService;
+
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
@@ -98,6 +100,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+
+            this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
 
             this.barcodeReaderService = barcodeReaderService;
         }
@@ -374,7 +378,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 bool canComplete = false;
                 var loadingUnitId = this.Mission.LoadingUnit.Id;
-                var itemId = this.MissionOperation.ItemId;
+                var itemId = this.MissionOperation.Id;
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
@@ -396,6 +400,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
+                var compartmentId = this.MissionOperation.CompartmentId;
+
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)//16 => lunghezza matrice
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
@@ -405,6 +411,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                }
+
+                if (this.FullCompartment)
+                {
+                    await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
                 }
 
                 if (canComplete)
@@ -579,8 +590,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.HasValue
                     &&
                     this.InputQuantity.Value >= 0
-                    &&
-                    this.InputQuantity.Value != this.MissionRequestedQuantity
                     &&
                     !this.CanPutBox;
             }
