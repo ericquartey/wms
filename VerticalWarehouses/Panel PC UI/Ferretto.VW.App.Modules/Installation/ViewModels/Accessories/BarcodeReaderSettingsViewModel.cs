@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using NetBarcode;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
@@ -17,6 +16,7 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
+using ZXing;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -169,8 +169,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (!string.IsNullOrEmpty(this.TryBarcodeImage))
                 {
-                    var barcode = new Barcode(this.TryBarcodeImage, NetBarcode.Type.Code128, true);
-                    var image = barcode.GetImage();
+                    int width = 200;
+                    if (this.TryBarcodeImage.Length >= 30)
+                    {
+                        width = 800;
+                    }
+                    else if (this.TryBarcodeImage.Length >= 20)
+                    {
+                        width = 600;
+                    }
+                    else if (this.TryBarcodeImage.Length >= 10)
+                    {
+                        width = 300;
+                    }
+                    if(!this.TryBarcodeImage.All(char.IsDigit))
+                    {
+                        width += 150;
+                    }
+                    var barcode = new BarcodeWriter
+                    {
+                        Format = BarcodeFormat.CODE_128,
+                        Options = new ZXing.Common.EncodingOptions
+                        {
+                            Height = 100,
+                            Width = width,
+                            Margin = 10,
+                        },
+                    };
+                    var image = barcode.Write(this.TryBarcodeImage);
 
                     var stream = new MemoryStream();
                     image.Save(stream, ImageFormat.Jpeg);

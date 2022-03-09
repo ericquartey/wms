@@ -26,6 +26,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.40 rispetto la 1.0.39
+- La configurazione del lettore barcode ha il generatore di codici a barre
 - 
 
 ## Bug Risolti

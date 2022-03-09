@@ -2572,6 +2572,6 @@
     <value>Si vuole ripetere la procedura?</value>
   </data>
   <data name="TestBarcode" xml:space="preserve">
-    <value>Testa Barcode</value>
+    <value>Genera Barcode</value>
   </data>
 </root>
