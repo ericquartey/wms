@@ -52,7 +52,7 @@
                 Grid.Column="1"
                 Grid.ColumnSpan="2"
                 VerticalAlignment="Bottom"
-                Width="450"
+                Width="500"
                 Grid.RowSpan="2"
                 HorizontalAlignment="Left">
 
@@ -71,10 +71,15 @@
                             IsBusy="{Binding IsWaitingForResponse}" />
       </Grid>
 
-      <Image MaxHeight="100"
-             Margin="0,5,0,0"
+      <Border Background="White"
+              HorizontalAlignment="Stretch"
+                  Visibility="{Binding ImageExist, Converter={StaticResource BTVC}}">
+        <Image MaxHeight="120"
+             Margin="2,5,2,5"
              Source="{Binding ImageSource}"
              Stretch="Uniform" />
+      </Border>
+      
 
     </StackPanel>
 

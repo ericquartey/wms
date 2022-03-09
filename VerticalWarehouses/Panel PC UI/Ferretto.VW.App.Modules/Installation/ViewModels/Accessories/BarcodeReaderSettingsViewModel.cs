@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using NetBarcode;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils;
@@ -16,7 +17,6 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
-using Spire.Barcode;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand configureDeviceCommand;
 
         private DeviceModel deviceModel;
+
+        private bool imageExist;
 
         private ImageSource imageSource;
 
@@ -81,6 +83,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.deviceModel;
             set => this.SetProperty(ref this.deviceModel, value);
+        }
+
+        public bool ImageExist
+        {
+            get => this.imageExist;
+            set => this.SetProperty(ref this.imageExist, value);
         }
 
         public ImageSource ImageSource
@@ -135,6 +143,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.TryBarcodeImage = string.Empty;
             this.ImageSource = new BitmapImage();
+            this.ImageExist = false;
         }
 
         public override async Task OnAppearedAsync()
@@ -160,16 +169,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (!string.IsNullOrEmpty(this.TryBarcodeImage))
                 {
-                    BarcodeSettings bs = new BarcodeSettings();
-
-                    bs.Type = BarCodeType.Code128;
-                    bs.Data = this.TryBarcodeImage;
-
-                    bs.ShowTextOnBottom = true;
-
-                    BarCodeGenerator bg = new BarCodeGenerator(bs);
-
-                    var image = bg.GenerateImage();
+                    var barcode = new Barcode(this.TryBarcodeImage, NetBarcode.Type.Code128, true);
+                    var image = barcode.GetImage();
 
                     var stream = new MemoryStream();
                     image.Save(stream, ImageFormat.Jpeg);
@@ -183,17 +184,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         bitmapImage.EndInit();
 
                         this.ImageSource = bitmapImage;
+                        this.ImageExist = true;
                     }
                 }
                 else
                 {
                     this.ImageSource = new BitmapImage();
+                    this.ImageExist = false;
                 }
             }
             catch (Exception ex)
             {
                 this.Logger.Error("BarcodeImage Error: " + ex);
                 this.ImageSource = new BitmapImage();
+                this.ImageExist = false;
             }
         }
 
