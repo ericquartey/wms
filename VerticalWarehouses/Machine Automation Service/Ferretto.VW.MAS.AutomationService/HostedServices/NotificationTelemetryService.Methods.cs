@@ -98,7 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
                 AdditionalText = "Remove LU " + messageData.LoadUnitId.ToString(),
-                BayNumber = 0,
+                BayNumber = (int)message.RequestingBay,
                 Code = 0,
                 DetailCode = (int)messageData.LoadUnitId,
                 InverterIndex = 0,
