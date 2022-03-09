@@ -156,5 +156,7 @@
         SocketLinkOperationChange,
 
         Logout,
+
+        RemoveLoadUnit,
     }
 }

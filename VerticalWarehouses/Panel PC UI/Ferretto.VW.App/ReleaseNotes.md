@@ -33,6 +33,7 @@
 - I cassetti bloccati non si perdono al riavvio
 - Aumentata la velocità della procedura di risoluzione orizzontale
 - Modifiche agli errori della scheda I/O (34, 84, 94)
+- Inviato messaggio di cassetto rimosso alla telemetria
 - 
 
 ## Compatibile con adapter 0.4.31

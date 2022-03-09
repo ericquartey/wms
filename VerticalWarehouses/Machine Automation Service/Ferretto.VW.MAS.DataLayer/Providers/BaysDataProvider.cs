@@ -943,6 +943,31 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
+        public void NotifyRemoveLoadUnit(int loadingUnitId)
+        {
+            var messageData = new MoveLoadingUnitMessageData(
+                        MissionType.NoType,
+                        LoadingUnitLocation.NoLocation,
+                        LoadingUnitLocation.NoLocation,
+                        sourceCellId: null,
+                        destinationCellId: null,
+                        loadUnitId: loadingUnitId,
+                        insertLoadUnit: false,
+                        missionId: null,
+                        loadUnitHeight: null,
+                        netWeight: null,
+                        CommonUtils.CommandAction.Start);
+
+            this.notificationEvent.Publish(
+                    new NotificationMessage
+                    {
+                        Data = messageData,
+                        Destination = MessageActor.Any,
+                        Source = MessageActor.WebApi,
+                        Type = MessageType.RemoveLoadUnit,
+                    });
+        }
+
         public void PerformHoming(BayNumber bayNumber)
         {
             this.PublishCommand(
@@ -973,6 +998,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.dataContext.LoadingUnits.Remove(lu);
                 this.dataContext.SaveChanges();
+
+                this.NotifyRemoveLoadUnit(loadingUnitId);
             }
         }
 

@@ -345,6 +345,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.dataContext.LoadingUnits.Remove(lu);
                     this.dataContext.SaveChanges();
+                    this.baysDataProvider.NotifyRemoveLoadUnit(loadingUnitsId);
                 }
             }
         }

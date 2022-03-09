@@ -61,6 +61,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.ServicingSchedule when message.Data is ServicingScheduleMessageData messageData:
                     await this.OnServicingScheduleChangedAsync(messageData, serviceProvider);
                     break;
+
+                case MessageType.RemoveLoadUnit when message.Data is MoveLoadingUnitMessageData:
+                    await this.OnLoadUnitRemovedAsync(message);
+                    break;
             }
         }
 
