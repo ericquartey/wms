@@ -155,6 +155,21 @@ namespace Ferretto.VW.TelemetryService
             await this.telemetryWebHubClient.SendMissionLogAsync(machine.SerialNumber, missionLog);
         }
 
+        public async Task SendProxy(Proxy proxy)
+        {
+            if (proxy is null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Received proxy identification from client. Proxy is '{proxy.Url}', user '{proxy.User}'.");
+
+            using var scope = this.serviceScopeFactory.CreateScope();
+            scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(proxy);
+
+            // TODO: restart client?
+        }
+
         public async Task SendRawDatabaseContent(byte[] rawDatabaseContent)
         {
             if (rawDatabaseContent is null)

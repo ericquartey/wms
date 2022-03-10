@@ -83,6 +83,7 @@ namespace Ferretto.VW.TelemetryService
             services.AddScoped<IMissionLogProvider, MissionLogProvider>();
             services.AddScoped<IServicingInfoProvider, ServicingInfoProvider>();
             services.AddScoped<IScreenShotProvider, ScreenShotProvider>();
+            services.AddScoped<IProxyProvider, ProxyProvider>();
 
             services.AddHostedService<DatabaseCleanupService>();
         }
