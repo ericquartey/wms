@@ -119,6 +119,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             //[Id(110)]
             //public bool Put { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_ProfileConst0))]
+            [Id(35)]
+            public double ProfileConst0 { get; set; }
+
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_ProfileConst1))]
+            [Id(36)]
+            public double ProfileConst1 { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Bay_Resolution))]
             [Id(7)]
             [Unit("imp/mm")]

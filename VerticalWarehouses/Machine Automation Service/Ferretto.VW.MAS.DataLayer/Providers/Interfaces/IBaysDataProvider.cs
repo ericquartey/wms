@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <returns>true if CheckIntrusion is enabled for this bay number</returns>
         bool CheckIntrusion(BayNumber bayNumber, bool enable);
 
+        void CheckProfileConst();
+
         Bay ClearMission(BayNumber bayNumber);
 
         double ConvertProfileToHeight(ushort profile, int positionId);

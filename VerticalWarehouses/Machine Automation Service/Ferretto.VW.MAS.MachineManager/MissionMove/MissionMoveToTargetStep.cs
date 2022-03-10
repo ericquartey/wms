@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
 
-                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {measure}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                this.Logger.LogInformation($"PositionElevatorToPosition start: target {destinationHeight.Value:0.00}, closeShutterBay {this.Mission.CloseShutterBayNumber}, closeShutterPosition {this.Mission.CloseShutterPosition}, measure {measure}, waitContinue {waitContinue}, Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                 this.LoadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
                     this.Mission.CloseShutterBayNumber,
                     this.Mission.CloseShutterPosition,

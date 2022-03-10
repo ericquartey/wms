@@ -618,4 +618,10 @@
   <data name="Machine_IsEnableHandlingItemOperations" xml:space="preserve">
     <value>Ricerca articolo con barcode in tabella di scambio (Idroinox)</value>
    </data>
+  <data name="Bay_ProfileConst0" xml:space="preserve">
+    <value>Costante K0 sagoma</value>
+  </data>
+  <data name="Bay_ProfileConst1" xml:space="preserve">
+    <value>Costante k1 sagoma</value>
+  </data>
 </root>

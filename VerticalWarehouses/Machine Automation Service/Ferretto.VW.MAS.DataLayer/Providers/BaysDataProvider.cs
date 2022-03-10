@@ -270,7 +270,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        void IBaysDataProvider.CheckBayFindZeroLimit()
+        public void CheckBayFindZeroLimit()
         {
             lock (this.dataContext)
             {
@@ -304,6 +304,22 @@ namespace Ferretto.VW.MAS.DataLayer
                 return true;
             }
             return false;
+        }
+
+        public void CheckProfileConst()
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays)
+                {
+                    if (bay.ProfileConst1 == 0)
+                    {
+                        bay.ProfileConst1 = this.kMulNew;
+                        bay.ProfileConst0 = this.kSumNew;
+                        this.dataContext.SaveChanges();
+                    }
+                }
+            }
         }
 
         public Bay ClearMission(BayNumber bayNumber)
@@ -354,7 +370,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException();
                 }
-                var heightMm = (profile * this.kMulNew) + this.kSumNew;
+                var heightMm = (profile * bay.ProfileConst1) + bay.ProfileConst0;
                 var heightClass = (int)Math.Round(heightMm);
                 heightClass = (heightClass / ProfileStep) * ProfileStep
                     + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)

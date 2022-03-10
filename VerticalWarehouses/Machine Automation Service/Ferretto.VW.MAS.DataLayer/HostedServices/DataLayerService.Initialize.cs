@@ -125,6 +125,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.GenerateSetupProcedures(dataContext);
                     var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                     baysDataProvider.CheckBayFindZeroLimit();
+                    baysDataProvider.CheckProfileConst();
 
                     // performance optimization
                     var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
