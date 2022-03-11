@@ -7,6 +7,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -19,6 +20,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineDatabaseBackupWebService machineDatabaseBackupWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private readonly ITelemetryHubClient telemetryHubClient;
 
         private bool areSettingsChanged;
 
@@ -49,11 +52,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public DatabaseBackupViewModel(IMachineDatabaseBackupWebService machineDatabaseBackupWebService,
-            IMachineIdentityWebService machineIdentityWebService)
+            IMachineIdentityWebService machineIdentityWebService,
+            ITelemetryHubClient telemetryHubClient)
             : base(PresentationMode.Installer)
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineDatabaseBackupWebService = machineDatabaseBackupWebService ?? throw new ArgumentNullException(nameof(machineDatabaseBackupWebService));
+            this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
+            this.telemetryHubClient.ProxyReceivedChanged += async (sender, e) => await this.OnProxyReceivedChangedAsync(sender, e);
         }
 
         #endregion
@@ -194,6 +200,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            await this.telemetryHubClient.GetProxyAsync();
             await base.OnAppearedAsync();
             Task.Run(async () =>
             {
@@ -246,6 +253,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.serverUsername);
         }
 
+        private async Task OnProxyReceivedChangedAsync(object sender, Common.Hubs.ProxyChangedEventArgs e)
+        {
+            var proxy = e.Proxy;
+        }
+
         private async Task SaveAsync()
         {
             try
@@ -258,6 +270,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.machineDatabaseBackupWebService.SetBackupOnServerAsync(this.IsBackupOnServer, this.serverPath, this.serverUsername, this.serverPassword);
                     await this.machineDatabaseBackupWebService.SetBackupOnTelemetryAsync(this.IsBackupOnTelemetry);
+                    await this.telemetryHubClient.SendProxyAsync(null);     // todo
                 }
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));

@@ -88,7 +88,6 @@ namespace Ferretto.VW.App.Modules.Layout
             this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
 
             this.bayNumber = (BayNumber)Enum.Parse(typeof(BayNumber), ConfigurationManager.AppSettings.GetBayNumber());
-            this.telemetryHubClient.ProxyReceivedChanged += async (sender, e) => await this.OnProxyReceivedChangedAsync(sender, e);
         }
 
         #endregion
@@ -362,11 +361,6 @@ namespace Ferretto.VW.App.Modules.Layout
             {
                 this.logger.Error(ex);
             }
-        }
-
-        private async Task OnProxyReceivedChangedAsync(object sender, Common.Hubs.ProxyChangedEventArgs e)
-        {
-            // TODO
         }
 
         #endregion

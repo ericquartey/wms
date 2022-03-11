@@ -37,6 +37,13 @@ namespace Ferretto.VW.TelemetryService
 
         #region Methods
 
+        public async Task GetProxy()
+        {
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
+            await this.Clients.Caller.GetProxy((Proxy)proxy);
+        }
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();

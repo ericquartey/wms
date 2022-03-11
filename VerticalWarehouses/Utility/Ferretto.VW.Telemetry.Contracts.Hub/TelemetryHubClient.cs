@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.ServiceDesk.Telemetry;
@@ -33,6 +34,24 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
         #endregion
 
         #region Methods
+
+        public async Task GetProxyAsync()
+        {
+            if (!this.IsConnected)
+            {
+                this.logger.Debug($"Error sending get proxy to telemetry service: not connected");
+                return;
+            }
+
+            try
+            {
+                await this.SendAsync("GetProxy");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending get proxy to telemetry service {ex.Message}");
+            }
+        }
 
         public async Task SendErrorLogAsync(IErrorLog errorlog)
         {
@@ -192,14 +211,12 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
-
-            connection.On(nameof(ITelemetryHub.GetProxy), this.OnGetProxy);
+            connection.On<WebProxy>(nameof(ITelemetryHub.GetProxy), this.OnGetProxy);
         }
 
-        private void OnGetProxy()
+        private void OnGetProxy(WebProxy proxy)
         {
-            //var proxy = this.GetProxy();
-            //this.ProxyReceivedChanged?.Invoke(this, new ProxyChangedEventArgs());
+            this.ProxyReceivedChanged?.Invoke(this, new ProxyChangedEventArgs(proxy));
         }
 
         private void OnRequestMachine()

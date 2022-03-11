@@ -17,6 +17,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         #region Methods
 
+        Task GetProxyAsync();
+
         Task SendErrorLogAsync(IErrorLog errorLog);
 
         Task SendIOLogAsync(IIOLog ioLog);
