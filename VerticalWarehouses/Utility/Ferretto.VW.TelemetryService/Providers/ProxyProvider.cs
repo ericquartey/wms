@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.TelemetryService.Data;
 
@@ -24,11 +26,40 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         #region Methods
 
+        public static string Decrypt(string cipherText, string salt)
+        {
+            byte[] IV = Convert.FromBase64String(cipherText.Substring(0, 20));
+            cipherText = cipherText.Substring(20).Replace(" ", "+");
+            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+            var plainText = string.Empty;
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, IV);
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                        cs.Close();
+                    }
+                    plainText = System.Text.Encoding.Unicode.GetString(ms.ToArray());
+                }
+            }
+            return plainText;
+        }
+
         public IProxy? Get()
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Proxys.SingleOrDefault();
+                var proxy = this.dataContext.Proxys.SingleOrDefault();
+                if (proxy != null && !string.IsNullOrEmpty(proxy.PasswordHash) && !string.IsNullOrEmpty(proxy.PasswordSalt))
+                {
+                    proxy.PasswordHash = Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                }
+                return proxy;
             }
         }
 

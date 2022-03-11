@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,6 +55,24 @@ namespace Ferretto.VW.TelemetryService.Data
                 dataServiceStatus.IsReady = true;
 
                 this.logger.LogInformation("Database is ready.");
+
+                this.CheckProxy();
+            }
+        }
+
+        private void CheckProxy()
+        {
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
+            if (proxy != null
+                && !string.IsNullOrEmpty(proxy.Url))
+            {
+                var telemetryWebHubClient = scope.ServiceProvider.GetRequiredService<ITelemetryWebHubClient>();
+                var webProxy = new WebProxy(proxy.Url)
+                {
+                    Credentials = new NetworkCredential(proxy.User, proxy.PasswordHash)
+                };
+                telemetryWebHubClient.SetProxy(webProxy);
             }
         }
 

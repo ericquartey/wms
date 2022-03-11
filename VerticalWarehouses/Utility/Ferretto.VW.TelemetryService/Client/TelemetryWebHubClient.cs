@@ -101,6 +101,11 @@ namespace Ferretto.VW.TelemetryService
             await this.TrySendServicingInfoAsync(serialNumber, servicingInfo, persistOnSendFailure: true);
         }
 
+        public async Task SetProxy(WebProxy proxy)
+        {
+            await base.SetProxy(proxy);
+        }
+
         protected override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();

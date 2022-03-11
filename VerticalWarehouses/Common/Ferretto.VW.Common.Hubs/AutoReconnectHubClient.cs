@@ -21,11 +21,11 @@ namespace Ferretto.VW.Common.Hubs
 
         private readonly Uri endpoint;
 
-        private readonly WebProxy webProxy;
-
         private HubConnection connection;
 
         private int failedRetries;
+
+        private WebProxy webProxy;
 
         #endregion
 
@@ -134,6 +134,15 @@ namespace Ferretto.VW.Common.Hubs
         public async Task SendAsync(string methodName, object arg1, object arg2, object arg3, object arg4)
         {
             await this.connection.SendAsync(methodName, arg1, arg2, arg3, arg4);
+        }
+
+        public async Task SetProxy(WebProxy proxy)
+        {
+            this.webProxy = proxy;
+            if (this.IsConnected)
+            {
+                await this.DisconnectAsync();
+            }
         }
 
         protected virtual Task OnConnectedAsync()
