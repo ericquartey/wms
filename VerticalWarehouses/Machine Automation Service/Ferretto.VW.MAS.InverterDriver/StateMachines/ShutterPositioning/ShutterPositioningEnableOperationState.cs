@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
+        private DateTime endTime;
+
         private ShutterPosition oldShutterPosition;
 
         private DateTime startTime;
@@ -51,6 +53,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             this.Logger.LogDebug($"Shutter positioning Enable Operation");
             this.InverterStatus.CommonControlWord.EnableOperation = true;
             this.startTime = DateTime.UtcNow;
+            this.endTime = this.startTime;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, ((AglInverterStatus)this.InverterStatus).ProfileVelocityControlWord.Value);
 
@@ -106,17 +109,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     if (this.InverterStatus is AglInverterStatus currentStatus)
                     {
+                        if(currentStatus.CurrentShutterPosition != this.shutterDestination)
+                        {
+                            this.endTime = DateTime.UtcNow;
+                        }
                         // we cannot use TargetReached with this kind of movement
                         if (//this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
                             (//currentStatus.ProfileVelocityStatusWord.TargetReached &&
                                 currentStatus.CurrentShutterPosition == this.shutterDestination
                                 && (this.shutterPositionData.MovementDuration == 0
-                                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.shutterPositionData.MovementDuration * 100
+                                    || (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.shutterPositionData.MovementDuration * 100
+                                        && DateTime.UtcNow.Subtract(this.endTime).TotalMilliseconds > 300
+                                        )
                                     )
                                 )
                             )
                         {
-                            this.Logger.LogDebug($"Shutter positioning end: destination= {this.shutterDestination}; current = {currentStatus.CurrentShutterPosition}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
+                            this.Logger.LogDebug($"Shutter positioning end: destination= {this.shutterDestination}; current = {currentStatus.CurrentShutterPosition}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}; end = {DateTime.UtcNow.Subtract(this.endTime).TotalMilliseconds}");
                             this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                             returnValue = true;
                         }
@@ -138,15 +147,16 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                             this.ParentStateMachine.PublishNotificationEvent(endNotification);
+
                         }
-                        else if (currentStatus.CurrentShutterPosition == this.shutterDestination
-                            && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds < (this.shutterPositionData.MovementDuration * 100) * 0.8)
-                        {
-                            this.Logger.LogError($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
-                            this.errorProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid);
-                            this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
-                            return true;
-                        }
+                        //else if (currentStatus.CurrentShutterPosition == this.shutterDestination
+                        //    && DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds < (this.shutterPositionData.MovementDuration * 100) * 0.8)
+                        //{
+                        //    this.Logger.LogError($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
+                        //    this.errorProvider.RecordNew(MachineErrorCode.LoadUnitShutterInvalid);
+                        //    this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                        //    return true;
+                        //}
                     }
                 }
             }

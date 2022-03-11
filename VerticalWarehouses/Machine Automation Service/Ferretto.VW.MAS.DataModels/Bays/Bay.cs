@@ -57,6 +57,16 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<BayPosition> Positions { get; set; }
 
+        /// <summary>
+        /// Gets or sets the k0 value in the formula:  heightMm = (profile * k1) + k0;
+        /// </summary>
+        public double ProfileConst0 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the k1 value in the formula:  heightMm = (profile * k1) + k0;
+        /// </summary>
+        public double ProfileConst1 { get; set; }
+
         public bool Put { get; set; }
 
         public double Resolution { get; set; }

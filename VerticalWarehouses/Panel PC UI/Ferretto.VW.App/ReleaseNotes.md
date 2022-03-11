@@ -27,7 +27,7 @@
 
 ## Nuove Funzionalità 1.0.40 rispetto la 1.0.39
 - La configurazione del lettore barcode ha il generatore di codici a barre
-- 
+- Aggiunti parametri di baia per la lettura della sagoma (barriera di misura)
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore

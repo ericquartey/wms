@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
-        private const int MAX_RETRIES = 3;
+        private const int MAX_RETRIES = 4;
 
         private const double tolerance = 2.5;
 
@@ -82,13 +82,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeightNew(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                             //profileHeight = 174;    // TEST
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
-                            if ((profileHeight < this.minHeight - tolerance)
+                            if (this.retry == 0
+                                || (profileHeight < this.minHeight - tolerance)
                                 || data.Profile > 10000
                                 || (profileHeight < this.machineConfiguration.LoadUnitMinHeight - tolerance)
                                 || (profileHeight > this.machineConfiguration.LoadUnitMaxHeight + tolerance)
                                 )
                             {
-                                this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height {this.machineConfiguration.LoadUnitMaxHeight}");
+                                if (this.retry > 0)
+                                {
+                                    this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height {this.machineConfiguration.LoadUnitMaxHeight}");
+                                }
                                 if (++this.retry < MAX_RETRIES)
                                 {
                                     this.RequestMeasureProfile();

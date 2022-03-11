@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Ferretto.ServiceDesk.Telemetry;
+﻿using Ferretto.ServiceDesk.Telemetry;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
