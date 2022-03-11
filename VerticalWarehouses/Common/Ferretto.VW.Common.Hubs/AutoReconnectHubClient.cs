@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.Common.Hubs
 
         private readonly Uri endpoint;
 
+        private readonly WebProxy webProxy;
+
         private HubConnection connection;
 
         private int failedRetries;
@@ -36,6 +39,22 @@ namespace Ferretto.VW.Common.Hubs
             }
 
             this.endpoint = uri;
+        }
+
+        protected AutoReconnectHubClient(Uri uri, WebProxy webProxy)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
+
+            if (webProxy == null)
+            {
+                throw new ArgumentNullException(nameof(webProxy));
+            }
+
+            this.endpoint = uri;
+            this.webProxy = webProxy;
         }
 
         #endregion
@@ -76,7 +95,7 @@ namespace Ferretto.VW.Common.Hubs
 
                     await this.OnConnectedAsync();
                 }
-                catch
+                catch (Exception ex)
                 {
                     this.failedRetries++;
                     System.Diagnostics.Debug.WriteLine($"Hub '{this.endpoint}': connection lost.");
@@ -132,8 +151,16 @@ namespace Ferretto.VW.Common.Hubs
                 return;
             }
 
-            var connectionBuilder = new HubConnectionBuilder()
-                .WithUrl(this.endpoint.AbsoluteUri);
+            var connectionBuilder = new HubConnectionBuilder();
+
+            if (this.webProxy == null || this.webProxy.Address == null)
+            {
+                connectionBuilder.WithUrl(this.endpoint.AbsoluteUri);
+            }
+            else
+            {
+                connectionBuilder.WithUrl(this.endpoint.AbsoluteUri, h => h.Proxy = this.webProxy);
+            }
 
             if (useMessagePackProtocol)
             {
