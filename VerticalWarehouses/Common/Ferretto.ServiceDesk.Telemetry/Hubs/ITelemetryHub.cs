@@ -7,6 +7,8 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
     {
         #region Methods
 
+        Task<Proxy> GetProxy();
+
         Task PersistIOLog(IOLog ioLog);
 
         Task RequestMachine();
@@ -18,6 +20,8 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
         Task SendMachine(Machine machine);
 
         Task SendMissionLog(MissionLog missionLog);
+
+        Task SendProxy(Proxy proxy);
 
         Task SendRawDatabaseContent(byte[] rawDatabaseContent);
 

@@ -226,7 +226,7 @@
                                    DataContext="{Binding}"
                                    Increment="0.5"
                                    IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}"
-                                   Mask="######0.0####">
+                                   Mask="######0.0######">
                     <ctrls:PpcSpinEdit.Resources>
                         <validation:BindingProxy x:Key="valueBridge"
                                                  Data="{Binding Path=EditValue, ElementName=field}" />

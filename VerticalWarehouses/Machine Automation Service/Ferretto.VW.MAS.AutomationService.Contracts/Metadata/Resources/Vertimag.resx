@@ -621,4 +621,10 @@
   <data name="Machine_IsEnableHandlingItemOperations" xml:space="preserve">
     <value>Search item by barcode in exchange table (Idroinox)</value>
    </data>
+  <data name="Bay_ProfileConst0" xml:space="preserve">
+    <value>Profile K0 constant</value>
+  </data>
+  <data name="Bay_ProfileConst1" xml:space="preserve">
+    <value>Profile K1 constant</value>
+  </data>
 </root>

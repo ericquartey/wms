@@ -39,6 +39,8 @@ namespace Ferretto.VW.TelemetryService.Data
 
         public DbSet<MissionLog> MissionLogs { get; set; }
 
+        public DbSet<Proxy> Proxys { get; set; }
+
         public DbSet<ScreenShot> ScreenShots { get; set; }
 
         public DbSet<ServicingInfo> ServicingInfos { get; set; }

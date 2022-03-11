@@ -3398,6 +3398,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("ProfileConst0", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileConst0 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ProfileConst1", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileConst1 { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Put", Required = Newtonsoft.Json.Required.Always)]
         public bool Put { get; set; }
     

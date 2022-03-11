@@ -82,8 +82,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.dataOld = dataOld;
             }
-
-            logger.LogDebug("1:Method Start");
         }
 
         #endregion
@@ -93,6 +91,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
+            this.Logger.LogTrace($"Table positioning set parameters start inverter {this.InverterStatus.SystemIndex}");
             this.tableIndex = InverterTableIndex.TableTravelP7;
             this.stepId = 0;
             this.isBlockDefined = false;
