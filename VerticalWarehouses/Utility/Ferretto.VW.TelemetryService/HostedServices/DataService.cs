@@ -56,11 +56,11 @@ namespace Ferretto.VW.TelemetryService.Data
 
                 this.logger.LogInformation("Database is ready.");
 
-                this.CheckProxy();
+                await this.CheckProxyAsync();
             }
         }
 
-        private void CheckProxy()
+        private async Task CheckProxyAsync()
         {
             using var scope = this.serviceScopeFactory.CreateScope();
             var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
@@ -72,7 +72,7 @@ namespace Ferretto.VW.TelemetryService.Data
                 {
                     Credentials = new NetworkCredential(proxy.User, proxy.PasswordHash)
                 };
-                telemetryWebHubClient.SetProxy(webProxy);
+                await telemetryWebHubClient.SetProxy(webProxy);
             }
         }
 

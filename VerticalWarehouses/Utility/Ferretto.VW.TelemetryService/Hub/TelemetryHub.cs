@@ -166,8 +166,13 @@ namespace Ferretto.VW.TelemetryService
 
             using var scope = this.serviceScopeFactory.CreateScope();
             scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(proxy);
+            var proxyDb = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
+            var webProxy = new System.Net.WebProxy(proxy.Url)
+            {
+                Credentials = new System.Net.NetworkCredential(proxyDb.User, proxyDb.PasswordHash)
+            };
 
-            // TODO: restart client?
+            await this.telemetryWebHubClient.SetProxy(webProxy);
         }
 
         public async Task SendRawDatabaseContent(byte[] rawDatabaseContent)

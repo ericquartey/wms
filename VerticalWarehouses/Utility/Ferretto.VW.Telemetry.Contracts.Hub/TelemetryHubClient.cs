@@ -28,6 +28,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         public event EventHandler MachineReceivedChanged;
 
+        public event EventHandler<ProxyChangedEventArgs> ProxyReceivedChanged;
+
         #endregion
 
         #region Methods
@@ -102,6 +104,23 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
         }
 
+        public async Task SendProxyAsync(IProxy proxy)
+        {
+            if (!this.IsConnected)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.SendAsync("SendProxy", proxy);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending proxy to telemetry service {ex.Message}");
+            }
+        }
+
         public async Task SendRawDatabaseContentAsync(byte[] rawDatabaseContent)
         {
             if (!this.IsConnected)
@@ -166,13 +185,21 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
             catch (Exception ex)
             {
-                this.logger.Error($"Error sending service infoto telemetry service {ex.Message}");
+                this.logger.Error($"Error sending service info to telemetry service {ex.Message}");
             }
         }
 
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
+
+            connection.On(nameof(ITelemetryHub.GetProxy), this.OnGetProxy);
+        }
+
+        private void OnGetProxy()
+        {
+            //var proxy = this.GetProxy();
+            //this.ProxyReceivedChanged?.Invoke(this, new ProxyChangedEventArgs());
         }
 
         private void OnRequestMachine()
