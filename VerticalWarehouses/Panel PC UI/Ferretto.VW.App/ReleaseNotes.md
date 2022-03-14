@@ -28,6 +28,7 @@
 ## Nuove Funzionalità 1.0.40 rispetto la 1.0.39
 - La configurazione del lettore barcode ha il generatore di codici a barre
 - Aggiunti parametri di baia per la lettura della sagoma (barriera di misura)
+- Aggiunti parametri di collegamento proxy per la telemetria
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore
@@ -35,7 +36,7 @@
 - Aumentata la velocità della procedura di risoluzione orizzontale
 - Modifiche agli errori della scheda I/O (34, 84, 94)
 - Inviato messaggio di cassetto rimosso alla telemetria
-- 
+- Modifiche al calcolo della sagoma per inverter AGL
 
 ## Compatibile con adapter 0.4.31
 ***

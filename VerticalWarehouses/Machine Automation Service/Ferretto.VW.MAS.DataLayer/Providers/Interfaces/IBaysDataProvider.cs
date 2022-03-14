@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double ConvertProfileToHeight(ushort profile, int positionId);
 
-        double ConvertProfileToHeightNew(ushort profile, int positionId);
-
         void FindZero(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
