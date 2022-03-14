@@ -37,6 +37,8 @@
 - Modifiche agli errori della scheda I/O (34, 84, 94)
 - Inviato messaggio di cassetto rimosso alla telemetria
 - Modifiche al calcolo della sagoma per inverter AGL
+- Eliminato allarme "movimento serranda troppo breve"
+- BED: corretto segnale di barriera anti-intrusione interna
 
 ## Compatibile con adapter 0.4.31
 ***
