@@ -253,6 +253,10 @@ namespace Ferretto.VW.MAS.IODriver
                     else
                     {
                         this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
+                        if (this.ioTransport.ReadTimeout > 0)
+                        {
+                            this.ioStatus.ComunicationTimeOut = (short)this.ioTransport.ReadTimeout;
+                        }
                     }
 
                     this.writeEnableEvent.Set();
@@ -670,6 +674,10 @@ namespace Ferretto.VW.MAS.IODriver
             else
             {
                 this.logger.LogInformation($"Connection OK to I/O device {this.deviceIndex} on TCP address {this.ipAddress}:{this.port}");
+                if (this.ioTransport.ReadTimeout > 0)
+                {
+                    this.ioStatus.ComunicationTimeOut = (short)this.ioTransport.ReadTimeout;
+                }
             }
 
             try

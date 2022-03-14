@@ -42,6 +42,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
+        public int ReadTimeout => this.readTimeoutMilliseconds;
+
         #endregion
 
         #region Methods
