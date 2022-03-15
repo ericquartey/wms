@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/print-weight")]
         public async Task<IActionResult> PrintWeight(int id, double? netWeight, double? tare, int? count, double? unitWeight)
         {
-            // TODO - make a new PrintWeight endpoint in itemsWmsWebService
+            await this.itemsWmsWebService.PrintWeightAsync(id, netWeight, tare, count, unitWeight);
             return this.Ok();
         }
 
