@@ -382,6 +382,8 @@ namespace Ferretto.VW.MAS.IODriver
 
                     byte fwRelease;
                     byte errorCode;
+                    var diagOutCurrent = new int[8];
+                    var diagOutFault = new bool[8];
 
                     ShdFormatDataOperation formatDataOperation;
                     try
@@ -395,7 +397,9 @@ namespace Ferretto.VW.MAS.IODriver
                             ref inputData,
                             ref outputData,
                             out configurationData,
-                            out errorCode);
+                            out errorCode,
+                            ref diagOutCurrent,
+                            ref diagOutFault);
 
                         this.ioStatus.FwRelease = fwRelease;
                     }
@@ -468,6 +472,25 @@ namespace Ferretto.VW.MAS.IODriver
                                 configurationData,
                                 errorCode);
                             this.logger.LogTrace($"4:{messageData}: index {this.deviceIndex}");
+
+                            if (diagOutFault.Any(b => b))
+                            {
+                                using (var scope = this.serviceScopeFactory.CreateScope())
+                                {
+                                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                                    string message = "Fault detected in out signal (1-8): ";
+                                    for (int i = 0; i < diagOutFault.Length; i++)
+                                    {
+                                        if (diagOutFault[i])
+                                        {
+                                            message += $"out{i + 1}; ";
+                                        }
+                                    }
+
+                                    errorsProvider.RecordNew(MachineErrorCode.IoDeviceError, this.bayNumber, message);
+                                }
+                            }
 
                             this.CurrentStateMachine?.ProcessResponseMessage(messageData);
                             break;
