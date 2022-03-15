@@ -50,6 +50,8 @@
 
         CalibrationBarrierLight = 12,
 
+        AntiIntrusionBarrier2Bay = 13,
+
         HookTrolley = 14,
 
         FinePickingRobot = 15,

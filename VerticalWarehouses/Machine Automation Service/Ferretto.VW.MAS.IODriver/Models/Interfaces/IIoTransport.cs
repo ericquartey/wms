@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.IODriver
         /// </summary>
         bool IsConnected { get; }
 
+        int ReadTimeout { get; }
+
         #endregion
 
         #region Methods
