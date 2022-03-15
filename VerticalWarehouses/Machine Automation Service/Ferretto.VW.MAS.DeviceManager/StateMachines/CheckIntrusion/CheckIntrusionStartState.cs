@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                     case MessageStatus.OperationEnd:
                         if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                         {
-                            var profileHeight = this.baysDataProvider.ConvertProfileToHeightNew(data.Profile, this.bayPositionId);
+                            var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.bayPositionId);
                             this.Logger.LogTrace($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if ((profileHeight >= this.minHeight - tolerance)
                                 && data.Profile <= 10000

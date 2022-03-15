@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -40,6 +41,55 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
+
+        public static string Decrypt(string cipherText, string salt)
+        {
+            byte[] IV = Convert.FromBase64String(cipherText.Substring(0, 20));
+            cipherText = cipherText.Substring(20).Replace(" ", "+");
+            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+            var plainText = string.Empty;
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, IV);
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(cipherBytes, 0, cipherBytes.Length);
+                        cs.Close();
+                    }
+                    plainText = System.Text.Encoding.Unicode.GetString(ms.ToArray());
+                }
+            }
+            return plainText;
+        }
+
+        public static string Encrypt(string clearText, string salt)
+        {
+            byte[] clearBytes = System.Text.Encoding.Unicode.GetBytes(clearText);
+            var crypto = string.Empty;
+            using (Aes encryptor = Aes.Create())
+            {
+                var IV = new byte[15];
+                var rand = new Random();
+                rand.NextBytes(IV);
+                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, IV, 10000);
+                encryptor.Key = pdb.GetBytes(32);
+                encryptor.IV = pdb.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(clearBytes, 0, clearBytes.Length);
+                        cs.Close();
+                    }
+                    crypto = Convert.ToBase64String(IV) + Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            return crypto;
+        }
 
         public bool AreSetUsers()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.Common.Hubs
@@ -24,6 +25,8 @@ namespace Ferretto.VW.Common.Hubs
         Task ConnectAsync(bool useMessagePackProtocol = false);
 
         Task DisconnectAsync();
+
+        Task SetProxy(WebProxy proxy);
 
         #endregion
     }

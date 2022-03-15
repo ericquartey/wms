@@ -162,20 +162,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        /// <summary>
-        /// TODO move to configuration
-        /// </summary>
-        private readonly double kMul = 0.090625;
-
-        private readonly double kMulNew = 0.0938;
-
-        /// <summary>
-        /// TODO move to configuration
-        /// </summary>
-        private readonly double kSum = -181.25;
-
-        private readonly double kSumNew = -212.5;
-
         private readonly ILogger<DataLayerContext> logger;
 
         private readonly IMachineProvider machineProvider;
@@ -183,6 +169,18 @@ namespace Ferretto.VW.MAS.DataLayer
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly NotificationEvent notificationEvent;
+
+        private readonly double profileConst0AGL = -212.5;
+
+        private readonly double profileConst0ANG = -212.5;
+
+        private readonly double profileConst0Factory = -212.5;
+
+        private readonly double profileConst1AGL = 0.095;
+
+        private readonly double profileConst1ANG = 0.0927;
+
+        private readonly double profileConst1Factory = 0.0938;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -312,10 +310,18 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 foreach (var bay in this.dataContext.Bays)
                 {
-                    if (bay.ProfileConst1 == 0)
+                    if (bay.ProfileConst1 == 0 && bay.Number < BayNumber.ElevatorBay)
                     {
-                        bay.ProfileConst1 = this.kMulNew;
-                        bay.ProfileConst0 = this.kSumNew;
+                        if (bay.Number == BayNumber.BayOne)
+                        {
+                            bay.ProfileConst1 = this.profileConst1ANG;
+                            bay.ProfileConst0 = this.profileConst0ANG;
+                        }
+                        else
+                        {
+                            bay.ProfileConst1 = this.profileConst1AGL;
+                            bay.ProfileConst0 = this.profileConst0AGL;
+                        }
                         this.dataContext.SaveChanges();
                     }
                 }
@@ -340,28 +346,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        /// <summary>
-        /// <param name="profile">value read from inverter</param>
-        /// profile = 2000  ==> height = 0
-        /// profile = 10000 ==> height = 725mm
-        /// height = kMul * profile + kSum;
-        /// </summary>
-        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public double ConvertProfileToHeight(ushort profile, int positionId)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.GetByBayPositionId(positionId);
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException();
-                }
-                var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                return (profile * this.kMul) + this.kSum + offset;
-            }
-        }
-
-        public double ConvertProfileToHeightNew(ushort profile, int positionId)
         {
             lock (this.dataContext)
             {
@@ -376,7 +361,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)
                     + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                //this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}");
+                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
                 return heightClass + offset;
             }
         }

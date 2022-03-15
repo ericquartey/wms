@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.VW.Common.Hubs;
+using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
-using Ferretto.VW.TelemetryService.Providers;
 
 namespace Ferretto.VW.TelemetryService
 {
@@ -33,6 +34,15 @@ namespace Ferretto.VW.TelemetryService
             this.serviceScopeFactory = serviceScopeFactory;
             this.logUri = uri;
             this.logger.Info($"Host url {this.logUri}");
+            this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
+        }
+
+        public TelemetryWebHubClient(Uri uri, IServiceScopeFactory serviceScopeFactory, WebProxy webProxy)
+                    : base(uri, webProxy)
+        {
+            this.serviceScopeFactory = serviceScopeFactory;
+            this.logUri = uri;
+            this.logger.Info($"Host url {this.logUri} WebProxy {webProxy.Address}");
             this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
         }
 
@@ -89,6 +99,11 @@ namespace Ferretto.VW.TelemetryService
         public async Task SendServicingInfoAsync(string serialNumber, ServicingInfo servicingInfo)
         {
             await this.TrySendServicingInfoAsync(serialNumber, servicingInfo, persistOnSendFailure: true);
+        }
+
+        public async Task SetProxy(WebProxy proxy)
+        {
+            await base.SetProxy(proxy);
         }
 
         protected override async Task OnConnectedAsync()

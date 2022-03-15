@@ -37,6 +37,13 @@ namespace Ferretto.VW.TelemetryService
 
         #region Methods
 
+        public async Task GetProxy()
+        {
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
+            await this.Clients.Caller.GetProxy((Proxy)proxy);
+        }
+
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
@@ -166,8 +173,13 @@ namespace Ferretto.VW.TelemetryService
 
             using var scope = this.serviceScopeFactory.CreateScope();
             scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(proxy);
+            var proxyDb = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
+            var webProxy = new System.Net.WebProxy(proxy.Url)
+            {
+                Credentials = new System.Net.NetworkCredential(proxyDb.User, proxyDb.PasswordHash)
+            };
 
-            // TODO: restart client?
+            await this.telemetryWebHubClient.SetProxy(webProxy);
         }
 
         public async Task SendRawDatabaseContent(byte[] rawDatabaseContent)

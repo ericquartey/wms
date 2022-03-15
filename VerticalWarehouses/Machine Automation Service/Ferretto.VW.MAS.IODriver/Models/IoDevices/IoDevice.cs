@@ -253,6 +253,10 @@ namespace Ferretto.VW.MAS.IODriver
                     else
                     {
                         this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
+                        if (this.ioTransport.ReadTimeout > 0)
+                        {
+                            this.ioStatus.ComunicationTimeOut = (short)this.ioTransport.ReadTimeout;
+                        }
                     }
 
                     this.writeEnableEvent.Set();
@@ -415,6 +419,7 @@ namespace Ferretto.VW.MAS.IODriver
                         case ShdFormatDataOperation.Data:
 
                             inputData[(int)IoPorts.AntiIntrusionBarrierBay] = !inputData[(int)IoPorts.AntiIntrusionBarrierBay];
+                            inputData[(int)IoPorts.AntiIntrusionBarrier2Bay] = !inputData[(int)IoPorts.AntiIntrusionBarrier2Bay];
 
                             // INFO The emergency button signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
@@ -669,6 +674,10 @@ namespace Ferretto.VW.MAS.IODriver
             else
             {
                 this.logger.LogInformation($"Connection OK to I/O device {this.deviceIndex} on TCP address {this.ipAddress}:{this.port}");
+                if (this.ioTransport.ReadTimeout > 0)
+                {
+                    this.ioStatus.ComunicationTimeOut = (short)this.ioTransport.ReadTimeout;
+                }
             }
 
             try

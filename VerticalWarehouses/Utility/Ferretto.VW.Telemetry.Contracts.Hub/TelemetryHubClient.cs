@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.ServiceDesk.Telemetry;
@@ -28,9 +29,29 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         public event EventHandler MachineReceivedChanged;
 
+        public event EventHandler<ProxyChangedEventArgs> ProxyReceivedChanged;
+
         #endregion
 
         #region Methods
+
+        public async Task GetProxyAsync()
+        {
+            if (!this.IsConnected)
+            {
+                this.logger.Debug($"Error sending get proxy to telemetry service: not connected");
+                return;
+            }
+
+            try
+            {
+                await this.SendAsync("GetProxy");
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending get proxy to telemetry service {ex.Message}");
+            }
+        }
 
         public async Task SendErrorLogAsync(IErrorLog errorlog)
         {
@@ -102,6 +123,23 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
         }
 
+        public async Task SendProxyAsync(IProxy proxy)
+        {
+            if (!this.IsConnected)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.SendAsync("SendProxy", proxy);
+            }
+            catch (Exception ex)
+            {
+                this.logger.Error($"Error sending proxy to telemetry service {ex.Message}");
+            }
+        }
+
         public async Task SendRawDatabaseContentAsync(byte[] rawDatabaseContent)
         {
             if (!this.IsConnected)
@@ -166,13 +204,19 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
             }
             catch (Exception ex)
             {
-                this.logger.Error($"Error sending service infoto telemetry service {ex.Message}");
+                this.logger.Error($"Error sending service info to telemetry service {ex.Message}");
             }
         }
 
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
+            connection.On<WebProxy>(nameof(ITelemetryHub.GetProxy), this.OnGetProxy);
+        }
+
+        private void OnGetProxy(WebProxy proxy)
+        {
+            this.ProxyReceivedChanged?.Invoke(this, new ProxyChangedEventArgs(proxy));
         }
 
         private void OnRequestMachine()

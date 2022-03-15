@@ -11,9 +11,13 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
 
         event EventHandler MachineReceivedChanged;
 
+        event EventHandler<ProxyChangedEventArgs> ProxyReceivedChanged;
+
         #endregion
 
         #region Methods
+
+        Task GetProxyAsync();
 
         Task SendErrorLogAsync(IErrorLog errorLog);
 
@@ -22,6 +26,8 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
         Task SendMachineAsync(IMachine machine);
 
         Task SendMissionLogAsync(IMissionLog missionLog);
+
+        Task SendProxyAsync(IProxy proxy);
 
         Task SendRawDatabaseContentAsync(byte[] rawDatabaseContent);
 
