@@ -422,7 +422,7 @@
       <TextBlock Margin="0,10,15,10"
                  VerticalAlignment="Top"
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="4.2.4" />
+                 Text="4.2.8" />
       <TextBlock Grid.ColumnSpan="3"
                  Margin="0,10,15,10"
                  VerticalAlignment="Top"
