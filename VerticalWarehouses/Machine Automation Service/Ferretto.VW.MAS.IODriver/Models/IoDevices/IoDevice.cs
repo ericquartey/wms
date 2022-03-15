@@ -487,8 +487,8 @@ namespace Ferretto.VW.MAS.IODriver
                                             message += $"out{i + 1}; ";
                                         }
                                     }
-
-                                    errorsProvider.RecordNew(MachineErrorCode.IoDeviceError, this.bayNumber, message);
+                                    this.logger.LogError(message);
+                                    //errorsProvider.RecordNew(MachineErrorCode.IoDeviceError, this.bayNumber, message);
                                 }
                             }
 
