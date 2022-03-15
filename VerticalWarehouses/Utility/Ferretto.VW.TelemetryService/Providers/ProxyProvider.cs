@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.TelemetryService.Data;
+using Proxy = Ferretto.ServiceDesk.Telemetry.Proxy;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -28,46 +30,68 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         public static string Decrypt(string cipherText, string salt)
         {
-            byte[] IV = Convert.FromBase64String(cipherText.Substring(0, 20));
-            cipherText = cipherText.Substring(20).Replace(" ", "+");
-            byte[] cipherBytes = Convert.FromBase64String(cipherText);
-            var plainText = string.Empty;
-            using (Aes encryptor = Aes.Create())
+            var iv = new byte[16];
+            Buffer.BlockCopy(Convert.FromBase64String(cipherText), 0, iv, 0, iv.Length);
+            using (var aesAlg = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, IV);
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
+                aesAlg.Mode = CipherMode.CBC;
+                using (var decryptor = aesAlg.CreateDecryptor(Convert.FromBase64String(salt), iv))
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    byte[] encrypted = Convert.FromBase64String(cipherText);
+                    using (var msDecrypt = new MemoryStream(encrypted, iv.Length, encrypted.Length - iv.Length))
                     {
-                        cs.Write(cipherBytes, 0, cipherBytes.Length);
-                        cs.Close();
+                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (var resultStream = new MemoryStream())
+                            {
+                                csDecrypt.CopyTo(resultStream);
+                                return System.Text.Encoding.UTF8.GetString(resultStream.ToArray());
+                            }
+                        }
                     }
-                    plainText = System.Text.Encoding.Unicode.GetString(ms.ToArray());
                 }
             }
-            return plainText;
         }
 
-        public IProxy? Get()
+        public Proxy Get()
         {
             lock (this.dataContext)
             {
                 var proxy = this.dataContext.Proxys.SingleOrDefault();
-                if (proxy != null && !string.IsNullOrEmpty(proxy.PasswordHash) && !string.IsNullOrEmpty(proxy.PasswordSalt))
+
+                if (proxy != null && !string.IsNullOrEmpty(proxy.Url))
                 {
-                    proxy.PasswordHash = Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                    var webProxy = new Proxy() { User = proxy.User, Url = proxy.Url, PasswordHash = proxy.PasswordHash, PasswordSalt = proxy.PasswordSalt };
+
+                    return webProxy;
                 }
-                return proxy;
+
+                return null;
             }
         }
 
-        public void SaveAsync(IProxy proxy)
+        public WebProxy GetWebProxy()
+        {
+            lock (this.dataContext)
+            {
+                var proxy = this.dataContext.Proxys.SingleOrDefault();
+
+                if (proxy != null && !string.IsNullOrEmpty(proxy.Url))
+                {
+                    var webProxy = new WebProxy(proxy.Url) { Credentials = new NetworkCredential(proxy.User, Decrypt(proxy.PasswordHash, proxy.PasswordSalt)) };
+
+                    return webProxy;
+                }
+
+                return null;
+            }
+        }
+
+        public void SaveAsync(Proxy proxy)
         {
             if (proxy is null)
             {
-                throw new ArgumentNullException(nameof(proxy));
+                proxy = new Proxy() { PasswordHash = null, PasswordSalt = null, Url = null, User = null };
             }
 
             lock (this.dataContext)

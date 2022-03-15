@@ -19,10 +19,10 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="50" />
       <RowDefinition Height="Auto" />
+      <RowDefinition MinHeight="50" Height="auto" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="50" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="50" />
+      <RowDefinition MinHeight="50" Height="auto"/>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
@@ -121,6 +121,39 @@
                           IsChecked="{Binding IsBackupOnTelemetry, Mode=TwoWay}"
                           IsEnabled="{Binding IsBackupOnTelemetryEnabled}"
                           LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnTelemetry}" />
+
+    <Grid  Grid.Row="6"
+           Margin="0,5,0,25"
+          Grid.ColumnSpan="3"
+          Visibility="{Binding IsBackupOnTelemetry, Converter={StaticResource BTVC}}"
+          Grid.Column="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition></ColumnDefinition>
+        <ColumnDefinition></ColumnDefinition>
+        <ColumnDefinition></ColumnDefinition>
+      </Grid.ColumnDefinitions>
+
+      <Grid.RowDefinitions>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+      </Grid.RowDefinitions>
+      <controls:PpcTextBox Grid.Column="0" Grid.Row="0" InputText="{Binding ProxyUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" LabelText="Proxy User" Width="250"/>
+
+      <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+        <controls:PpcLabeledText LabelText="Proxy Pass" FontSize="{StaticResource FontSize_High}" Height="24"></controls:PpcLabeledText>
+      <dxe:PasswordBoxEdit x:Name="ProxyPassword"
+                             Width="250"
+                             Height="33"
+                           HorizontalAlignment="Left"
+                             MouseDoubleClick="OnKeyboardOpenHandler"
+                             Password="{Binding ProxyPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource PpcPasswordBox}"
+                             TouchUp="OnKeyboardOpenHandler" />
+      </StackPanel>
+
+      <controls:PpcTextBox Grid.Column="0" Grid.Row="1" InputText="{Binding ProxyUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="250" LabelText="Proxy Url" />
+
+    </Grid>
 
     <controls:PpcCheckBox Grid.Row="7"
                           Grid.Column="1"

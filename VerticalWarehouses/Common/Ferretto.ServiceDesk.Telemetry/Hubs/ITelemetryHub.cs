@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Ferretto.ServiceDesk.Telemetry.Hubs
@@ -7,7 +8,7 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
     {
         #region Methods
 
-        Task GetProxy(Proxy proxy);
+        Task GetProxy(Proxy webProxy);
 
         Task PersistIOLog(IOLog ioLog);
 

@@ -2574,4 +2574,13 @@
   <data name="TestBarcode" xml:space="preserve">
     <value>Genera Barcode</value>
   </data>
+  <data name="ProxyNotSaved" xml:space="preserve">
+    <value>Proxy non salvato</value>
+  </data>
+  <data name="ProxySaved" xml:space="preserve">
+    <value>Proxy salvato</value>
+  </data>
+  <data name="ProxyIncomplete" xml:space="preserve">
+    <value>Dati non completi</value>
+  </data>
 </root>

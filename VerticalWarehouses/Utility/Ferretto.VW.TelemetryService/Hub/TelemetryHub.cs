@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.VW.TelemetryService.Providers;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,7 +41,7 @@ namespace Ferretto.VW.TelemetryService
         {
             using var scope = this.serviceScopeFactory.CreateScope();
             var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
-            await this.Clients.Caller.GetProxy((Proxy)proxy);
+            await this.Clients.Caller.GetProxy(proxy);
         }
 
         public override async Task OnConnectedAsync()
@@ -164,20 +164,18 @@ namespace Ferretto.VW.TelemetryService
 
         public async Task SendProxy(Proxy proxy)
         {
-            if (proxy is null)
+            using var scope = this.serviceScopeFactory.CreateScope();
+            if (proxy is null || proxy.Url is null || proxy.User is null || proxy.PasswordHash is null || proxy.PasswordSalt is null)
             {
+                scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(null);
+                await this.telemetryWebHubClient.SetProxy(null);
                 return;
             }
 
-            this.logger.LogDebug($"Received proxy identification from client. Proxy is '{proxy.Url}', user '{proxy.User}'.");
+            this.logger.LogInformation($"Received proxy identification from client. Url is '{proxy.Url}', user '{proxy.User}'.");
 
-            using var scope = this.serviceScopeFactory.CreateScope();
             scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(proxy);
-            var proxyDb = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
-            var webProxy = new System.Net.WebProxy(proxy.Url)
-            {
-                Credentials = new System.Net.NetworkCredential(proxyDb.User, proxyDb.PasswordHash)
-            };
+            var webProxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().GetWebProxy();
 
             await this.telemetryWebHubClient.SetProxy(webProxy);
         }

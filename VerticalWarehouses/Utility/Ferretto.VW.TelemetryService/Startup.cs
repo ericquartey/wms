@@ -69,19 +69,10 @@ namespace Ferretto.VW.TelemetryService
 
             services.AddDatabase();
 
-            // SENZA PROXY
             services.AddSingleton<ITelemetryWebHubClient>(
                 s => new TelemetryWebHubClient(
                     this.Configuration.GetValue<Uri>("Telemetry:Url"),
                     s.GetRequiredService<IServiceScopeFactory>()));
-
-            // CON PROXY
-            //var proxy = new System.Net.WebProxy(this.Configuration.GetValue<Uri>("Telemetry:Proxy:Url"));
-            //proxy.Credentials = new System.Net.NetworkCredential(this.Configuration.GetValue<string>("Telemetry:Proxy:User"), this.Configuration.GetValue<string>("Telemetry:Proxy:Password"));
-            //services.AddSingleton<ITelemetryWebHubClient>(
-            //    s => new TelemetryWebHubClient(
-            //        this.Configuration.GetValue<Uri>("Telemetry:Url"),
-            //        s.GetRequiredService<IServiceScopeFactory>(), proxy));
 
             services.AddMemoryCache();
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.TelemetryService.Providers;
@@ -63,16 +62,21 @@ namespace Ferretto.VW.TelemetryService.Data
         private async Task CheckProxyAsync()
         {
             using var scope = this.serviceScopeFactory.CreateScope();
-            var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
-            if (proxy != null
-                && !string.IsNullOrEmpty(proxy.Url))
+            var telemetryWebHubClient = scope.ServiceProvider.GetRequiredService<ITelemetryWebHubClient>();
+            try
             {
-                var telemetryWebHubClient = scope.ServiceProvider.GetRequiredService<ITelemetryWebHubClient>();
-                var webProxy = new WebProxy(proxy.Url)
+                var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().GetWebProxy();
+
+                if (proxy is null || string.IsNullOrEmpty(proxy.Address.OriginalString))
                 {
-                    Credentials = new NetworkCredential(proxy.User, proxy.PasswordHash)
-                };
-                await telemetryWebHubClient.SetProxy(webProxy);
+                    throw new ArgumentNullException(nameof(proxy));
+                }
+
+                await telemetryWebHubClient.SetProxy(proxy);
+            }
+            catch (Exception)
+            {
+                await telemetryWebHubClient.SetProxy(null);
             }
         }
 

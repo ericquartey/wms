@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.Telemetry.Contracts.Hub;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -15,6 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     [Warning(WarningsArea.Installation)]
     internal sealed class DatabaseBackupViewModel : BaseMainViewModel
     {
+
         #region Fields
 
         private readonly IMachineDatabaseBackupWebService machineDatabaseBackupWebService;
@@ -37,6 +40,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isStandbyDbOk;
 
+        private string proxyPassword;
+
+        private string proxyUrl;
+
+        private string proxyUser;
+
         private DelegateCommand saveCommand;
 
         private string serverPassword;
@@ -47,7 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand testCommand;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -62,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.telemetryHubClient.ProxyReceivedChanged += async (sender, e) => await this.OnProxyReceivedChangedAsync(sender, e);
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Properties
 
@@ -143,6 +152,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public string ProxyPassword
+        {
+            get => this.proxyPassword;
+            set => this.SetProperty(ref this.proxyPassword, value);
+        }
+
+        public string ProxyUrl
+        {
+            get => this.proxyUrl;
+            set => this.SetProperty(ref this.proxyUrl, value);
+        }
+
+        public string ProxyUser
+        {
+            get => this.proxyUser;
+            set => this.SetProperty(ref this.proxyUser, value);
+        }
+
         public ICommand SaveCommand =>
                     this.saveCommand
             ??
@@ -194,9 +221,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.testCommand = new DelegateCommand(
                 async () => await this.TestAsync(), this.CanTest));
 
-        #endregion
+        #endregion Properties
 
         #region Methods
+
+        public override async void Disappear()
+        {
+            base.Disappear();
+
+            if (this.IsBackupOnTelemetry)
+            {
+                await this.telemetryHubClient.GetProxyAsync();
+            }
+            else
+            {
+                this.ProxyPassword = string.Empty;
+                this.ProxyUrl = string.Empty;
+                this.ProxyUser = string.Empty;
+            }
+        }
 
         public override async Task OnAppearedAsync()
         {
@@ -211,6 +254,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 while (this.IsVisible);
             });
+
+            if (this.IsBackupOnTelemetry)
+            {
+                await this.telemetryHubClient.GetProxyAsync();
+            }
+            else
+            {
+                this.ProxyPassword = string.Empty;
+                this.ProxyUrl = string.Empty;
+                this.ProxyUser = string.Empty;
+            }
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -256,6 +310,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task OnProxyReceivedChangedAsync(object sender, Common.Hubs.ProxyChangedEventArgs e)
         {
             var proxy = e.Proxy;
+            if (proxy is null)
+            {
+                this.ProxyPassword = string.Empty;
+                this.ProxyUrl = string.Empty;
+                this.ProxyUser = string.Empty;
+            }
+            else
+            {
+                this.ProxyPassword = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                this.ProxyUrl = proxy.Url;
+                this.ProxyUser = proxy.User;
+            }
         }
 
         private async Task SaveAsync()
@@ -270,14 +336,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.machineDatabaseBackupWebService.SetBackupOnServerAsync(this.IsBackupOnServer, this.serverPath, this.serverUsername, this.serverPassword);
                     await this.machineDatabaseBackupWebService.SetBackupOnTelemetryAsync(this.IsBackupOnTelemetry);
-                    await this.telemetryHubClient.SendProxyAsync(null);     // todo
-                }
 
-                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
+                    if (this.IsBackupOnTelemetry && !string.IsNullOrEmpty(this.ProxyUrl))
+                    {
+                        if (!string.IsNullOrEmpty(this.ProxyUser) && !string.IsNullOrEmpty(this.ProxyPassword))
+                        {
+                            var salt = Convert.ToBase64String(DecryptEncrypt.GeneratePasswordSalt());
+
+                            var hash = DecryptEncrypt.Encrypt(this.ProxyPassword, salt);
+
+                            var proxy = new Proxy() { Url = this.ProxyUrl, User = this.ProxyUser, PasswordHash = hash, PasswordSalt = salt };
+
+                            await this.telemetryHubClient.SendProxyAsync(proxy);
+
+                            this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful") + ", " + Localized.Get("InstallationApp.ProxySaved"), Services.Models.NotificationSeverity.Success);
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Info);
+                        }
+                    }
+                    else
+                    {
+                        await this.telemetryHubClient.SendProxyAsync(null);
+                        this.ProxyPassword = "";
+                        this.ProxyUrl = "";
+                        this.ProxyUser = "";
+                        this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Info);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+                await this.telemetryHubClient.SendProxyAsync(null);
+                this.ProxyPassword = "";
+                this.ProxyUrl = "";
+                this.ProxyUser = "";
             }
             finally
             {
@@ -306,7 +401,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBusy = false;
             }
         }
+        #endregion Methods
 
-        #endregion
     }
 }
