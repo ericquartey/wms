@@ -39,6 +39,7 @@
 - Modifiche al calcolo della sagoma per inverter AGL
 - Eliminato allarme "movimento serranda troppo breve"
 - BED: corretto segnale di barriera anti-intrusione interna
+- Correzioni alle Barcode Actions
 
 ## Compatibile con adapter 0.4.31
 ***
