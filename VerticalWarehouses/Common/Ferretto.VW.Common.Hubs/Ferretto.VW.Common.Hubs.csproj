@@ -16,10 +16,4 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Ferretto.ServiceDesk.Telemetry">
-      <HintPath>..\Ferretto.ServiceDesk.Telemetry\bin\Debug\net471\Ferretto.ServiceDesk.Telemetry.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

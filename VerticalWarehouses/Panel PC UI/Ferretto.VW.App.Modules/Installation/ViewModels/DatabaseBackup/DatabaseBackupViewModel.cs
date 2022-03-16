@@ -17,7 +17,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     [Warning(WarningsArea.Installation)]
     internal sealed class DatabaseBackupViewModel : BaseMainViewModel
     {
-
         #region Fields
 
         private readonly IMachineDatabaseBackupWebService machineDatabaseBackupWebService;
@@ -56,7 +55,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand testCommand;
 
-        #endregion Fields
+        #endregion
 
         #region Constructors
 
@@ -71,7 +70,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.telemetryHubClient.ProxyReceivedChanged += async (sender, e) => await this.OnProxyReceivedChangedAsync(sender, e);
         }
 
-        #endregion Constructors
+        #endregion
 
         #region Properties
 
@@ -221,7 +220,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.testCommand = new DelegateCommand(
                 async () => await this.TestAsync(), this.CanTest));
 
-        #endregion Properties
+        #endregion
 
         #region Methods
 
@@ -318,9 +317,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             else
             {
-                this.ProxyPassword = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
-                this.ProxyUrl = proxy.Url;
-                this.ProxyUser = proxy.User;
+                //this.ProxyPassword = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                this.ProxyPassword = ((NetworkCredential)proxy.Credentials).Password;
+                this.ProxyUrl = proxy.Address.ToString();
+                this.ProxyUser = ((NetworkCredential)proxy.Credentials).UserName;
             }
         }
 
@@ -341,6 +341,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         if (!string.IsNullOrEmpty(this.ProxyUser) && !string.IsNullOrEmpty(this.ProxyPassword))
                         {
+                            try
+                            {
+                                // check data entry
+                                var WebProxy = new WebProxy(this.ProxyUrl) { Credentials = new NetworkCredential(this.ProxyUser, this.ProxyPassword) };
+                            }
+                            catch (Exception ex)
+                            {
+                                this.ShowNotification(ex);
+                                this.IsBusy = false;
+                                return;
+                            }
                             var salt = Convert.ToBase64String(DecryptEncrypt.GeneratePasswordSalt());
 
                             var hash = DecryptEncrypt.Encrypt(this.ProxyPassword, salt);
@@ -401,7 +412,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsBusy = false;
             }
         }
-        #endregion Methods
 
+        #endregion
     }
 }

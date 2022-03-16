@@ -1,11 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.TelemetryService.Data;
-using Proxy = Ferretto.ServiceDesk.Telemetry.Proxy;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -28,32 +25,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         #region Methods
 
-        public static string Decrypt(string cipherText, string salt)
-        {
-            var iv = new byte[16];
-            Buffer.BlockCopy(Convert.FromBase64String(cipherText), 0, iv, 0, iv.Length);
-            using (var aesAlg = Aes.Create())
-            {
-                aesAlg.Mode = CipherMode.CBC;
-                using (var decryptor = aesAlg.CreateDecryptor(Convert.FromBase64String(salt), iv))
-                {
-                    byte[] encrypted = Convert.FromBase64String(cipherText);
-                    using (var msDecrypt = new MemoryStream(encrypted, iv.Length, encrypted.Length - iv.Length))
-                    {
-                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                        {
-                            using (var resultStream = new MemoryStream())
-                            {
-                                csDecrypt.CopyTo(resultStream);
-                                return System.Text.Encoding.UTF8.GetString(resultStream.ToArray());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public Proxy Get()
+        public IProxy Get()
         {
             lock (this.dataContext)
             {
@@ -61,7 +33,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
                 if (proxy != null && !string.IsNullOrEmpty(proxy.Url))
                 {
-                    var webProxy = new Proxy() { User = proxy.User, Url = proxy.Url, PasswordHash = proxy.PasswordHash, PasswordSalt = proxy.PasswordSalt };
+                    var webProxy = new Data.Proxy() { User = proxy.User, Url = proxy.Url, PasswordHash = proxy.PasswordHash, PasswordSalt = proxy.PasswordSalt };
 
                     return webProxy;
                 }
@@ -76,9 +48,10 @@ namespace Ferretto.VW.TelemetryService.Providers
             {
                 var proxy = this.dataContext.Proxys.SingleOrDefault();
 
-                if (proxy != null && !string.IsNullOrEmpty(proxy.Url))
+                if (proxy != null && !string.IsNullOrEmpty(proxy.Url) && !string.IsNullOrEmpty(proxy.PasswordHash))
                 {
-                    var webProxy = new WebProxy(proxy.Url) { Credentials = new NetworkCredential(proxy.User, Decrypt(proxy.PasswordHash, proxy.PasswordSalt)) };
+                    var psw = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                    var webProxy = new WebProxy(proxy.Url) { Credentials = new NetworkCredential(proxy.User, psw) };
 
                     return webProxy;
                 }
@@ -87,11 +60,11 @@ namespace Ferretto.VW.TelemetryService.Providers
             }
         }
 
-        public void SaveAsync(Proxy proxy)
+        public void SaveAsync(IProxy proxy)
         {
             if (proxy is null)
             {
-                proxy = new Proxy() { PasswordHash = null, PasswordSalt = null, Url = null, User = null };
+                proxy = new Data.Proxy() { PasswordHash = null, PasswordSalt = null, Url = null, User = null };
             }
 
             lock (this.dataContext)

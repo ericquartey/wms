@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace Ferretto.VW.Telemetry.Contracts.Hub
+namespace Ferretto.ServiceDesk.Telemetry
 {
     public static class DecryptEncrypt
     {

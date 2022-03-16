@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Ferretto.ServiceDesk.Telemetry;
 
 namespace Ferretto.VW.Common.Hubs
 {
@@ -7,17 +6,17 @@ namespace Ferretto.VW.Common.Hubs
     {
         #region Constructors
 
-        public ProxyChangedEventArgs(Proxy proxy)
+        public ProxyChangedEventArgs(WebProxy proxy)
         {
             this.Proxy = proxy;
         }
 
-        #endregion 
+        #endregion
 
         #region Properties
 
-        public Proxy Proxy { get; }
+        public WebProxy Proxy { get; }
 
-        #endregion 
+        #endregion
     }
 }

@@ -40,8 +40,15 @@ namespace Ferretto.VW.TelemetryService
         public async Task GetProxy()
         {
             using var scope = this.serviceScopeFactory.CreateScope();
-            var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
-            await this.Clients.Caller.GetProxy(proxy);
+            try
+            {
+                var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().GetWebProxy();
+                await this.Clients.Caller.GetProxy(proxy);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message, ex);
+            }
         }
 
         public override async Task OnConnectedAsync()
@@ -174,10 +181,17 @@ namespace Ferretto.VW.TelemetryService
 
             this.logger.LogInformation($"Received proxy identification from client. Url is '{proxy.Url}', user '{proxy.User}'.");
 
-            scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(proxy);
-            var webProxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().GetWebProxy();
+            try
+            {
+                scope.ServiceProvider.GetRequiredService<IProxyProvider>().SaveAsync(proxy);
+                var webProxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().GetWebProxy();
 
-            await this.telemetryWebHubClient.SetProxy(webProxy);
+                await this.telemetryWebHubClient.SetProxy(webProxy);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message, ex);
+            }
         }
 
         public async Task SendRawDatabaseContent(byte[] rawDatabaseContent)
