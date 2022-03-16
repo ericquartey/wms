@@ -35,7 +35,6 @@
     <ProjectReference Include="..\..\Common\Ferretto.VW.Devices.WeightingScale\Ferretto.VW.Devices.WeightingScale.csproj" />
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Accessories.Interfaces\Ferretto.VW.App.Accessories.Interfaces.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.App.Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
 

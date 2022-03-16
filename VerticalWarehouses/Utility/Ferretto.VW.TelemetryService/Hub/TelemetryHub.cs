@@ -42,8 +42,11 @@ namespace Ferretto.VW.TelemetryService
             using var scope = this.serviceScopeFactory.CreateScope();
             try
             {
-                var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().GetWebProxy();
-                await this.Clients.Caller.GetProxy(proxy);
+                var proxy = scope.ServiceProvider.GetRequiredService<IProxyProvider>().Get();
+                if (proxy != null)
+                {
+                    await this.Clients.Caller.RequestProxy(proxy);
+                }
             }
             catch (Exception ex)
             {

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29230.47
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service", "Machine Automation Service", "{A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}"
 EndProject
@@ -72,11 +72,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{A938B514-3F27-4483-AF63-2F13A3ACBBA0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Layout", "Panel PC UI\Ferretto.VW.App.Modules\Layout\Ferretto.VW.App.Modules.Layout.csproj", "{68CFD192-D446-42A8-B8C8-44EDD7F357CF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D} = {2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Login", "Panel PC UI\Ferretto.VW.App.Modules\Login\Ferretto.VW.App.Modules.Login.csproj", "{ED8D9E03-C5C4-4319-8207-122DA6C2D043}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Themes", "Panel PC UI\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj", "{E9153A64-A20D-4AA8-B2CC-49CADE123412}"
 EndProject

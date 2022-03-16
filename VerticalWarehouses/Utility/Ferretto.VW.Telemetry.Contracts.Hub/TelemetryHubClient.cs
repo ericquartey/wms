@@ -211,17 +211,17 @@ namespace Ferretto.VW.Telemetry.Contracts.Hub
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On(nameof(ITelemetryHub.RequestMachine), this.OnRequestMachine);
-            connection.On<WebProxy>(nameof(ITelemetryHub.GetProxy), this.OnGetProxy);
-        }
-
-        private void OnGetProxy(WebProxy proxy)
-        {
-            this.ProxyReceivedChanged?.Invoke(this, new ProxyChangedEventArgs(proxy));
+            connection.On<Proxy>(nameof(ITelemetryHub.RequestProxy), this.OnRequestProxy);
         }
 
         private void OnRequestMachine()
         {
             this.MachineReceivedChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void OnRequestProxy(Proxy proxy)
+        {
+            this.ProxyReceivedChanged?.Invoke(this, new ProxyChangedEventArgs(proxy));
         }
 
         #endregion

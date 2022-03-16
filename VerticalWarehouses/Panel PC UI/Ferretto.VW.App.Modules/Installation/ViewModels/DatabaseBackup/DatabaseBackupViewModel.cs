@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -306,7 +307,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.serverUsername);
         }
 
-        private async Task OnProxyReceivedChangedAsync(object sender, Common.Hubs.ProxyChangedEventArgs e)
+        private async Task OnProxyReceivedChangedAsync(object sender, ProxyChangedEventArgs e)
         {
             var proxy = e.Proxy;
             if (proxy is null)
@@ -317,10 +318,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             else
             {
-                //this.ProxyPassword = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
-                this.ProxyPassword = ((NetworkCredential)proxy.Credentials).Password;
-                this.ProxyUrl = proxy.Address.ToString();
-                this.ProxyUser = ((NetworkCredential)proxy.Credentials).UserName;
+                this.ProxyPassword = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                //this.ProxyPassword = ((NetworkCredential)proxy.Credentials).Password;
+                this.ProxyUrl = proxy.Url;
+                this.ProxyUser = proxy.User;
             }
         }
 

@@ -19,12 +19,14 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Ferretto.ServiceDesk.Telemetry\Ferretto.ServiceDesk.Telemetry.csproj" />
     <ProjectReference Include="..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\..\..\Utility\Ferretto.VW.Telemetry.Contracts.Hub\Ferretto.VW.Telemetry.Contracts.Hub.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
     <ProjectReference Include="..\Login\Ferretto.VW.App.Modules.Login.csproj" />
+    <ProjectReference Include="..\Operator\Ferretto.VW.App.Modules.Operator.csproj" />
   </ItemGroup>
 
 </Project>

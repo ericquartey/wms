@@ -25,20 +25,19 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         #region Methods
 
-        public IProxy Get()
+        public ServiceDesk.Telemetry.Proxy Get()
         {
             lock (this.dataContext)
             {
                 var proxy = this.dataContext.Proxys.SingleOrDefault();
-
-                if (proxy != null && !string.IsNullOrEmpty(proxy.Url))
+                var telemetryProxy = new ServiceDesk.Telemetry.Proxy()
                 {
-                    var webProxy = new Data.Proxy() { User = proxy.User, Url = proxy.Url, PasswordHash = proxy.PasswordHash, PasswordSalt = proxy.PasswordSalt };
-
-                    return webProxy;
-                }
-
-                return null;
+                    Url = proxy.Url,
+                    User = proxy.User,
+                    PasswordHash = proxy.PasswordHash,
+                    PasswordSalt = proxy.PasswordSalt,
+                };
+                return telemetryProxy;
             }
         }
 

@@ -7,7 +7,7 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Methods
 
-        IProxy Get();
+        Proxy Get();
 
         WebProxy GetWebProxy();
 
