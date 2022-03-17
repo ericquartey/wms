@@ -2653,7 +2653,25 @@
   <data name="ProxyNotSaved" xml:space="preserve">
     <value>Proxy not saved</value>
   </data>
-  <data name="ProxyIncomplete" xml:space="preserve">
-    <value>incomplete data</value>
+  <data name="ProxyMissing" xml:space="preserve">
+    <value>Missing data</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Save Failed</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="ProxyPasswordConfirm" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="ProxyUser" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="ProxyUrl" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="PasswordFailConfirm" xml:space="preserve">
+    <value>Incorrect passwords</value>
   </data>
 </root>
