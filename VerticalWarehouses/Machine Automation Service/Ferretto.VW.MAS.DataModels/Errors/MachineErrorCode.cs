@@ -110,9 +110,6 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BayInvertersBusy), (int)MachineErrorSeverity.Normal)]
         BayInvertersBusy,
 
-        /// <summary>
-        /// not used
-        /// </summary>
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceError), (int)MachineErrorSeverity.Low)]
         IoDeviceError,
 

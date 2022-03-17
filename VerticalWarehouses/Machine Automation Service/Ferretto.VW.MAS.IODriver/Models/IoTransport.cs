@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         public int ReadTimeout => this.readTimeoutMilliseconds;
 
+        private int localTimeout => this.readTimeoutMilliseconds - 500;
+
         #endregion
 
         #region Methods
@@ -170,7 +172,7 @@ namespace Ferretto.VW.MAS.IODriver
             byte[] receivedData;
             try
             {
-                if (this.transportClient.Client.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead))
+                if (this.transportClient.Client.Poll(this.localTimeout * 1000, SelectMode.SelectRead))
                 {
                     var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
                     if (readBytes > 0)

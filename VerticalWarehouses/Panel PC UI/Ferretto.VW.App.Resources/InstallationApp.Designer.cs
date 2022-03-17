@@ -5083,6 +5083,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Incorrect passwords.
+        /// </summary>
+        public static string PasswordFailConfirm {
+            get {
+                return ResourceManager.GetString("PasswordFailConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Performed cycles (session).
         /// </summary>
         public static string PerformedCyclesThisSession {
@@ -5241,6 +5250,69 @@ namespace Ferretto.VW.App.Resources {
         public static string ProfileHeightCheckProcedureLeftUnitDescription {
             get {
                 return ResourceManager.GetString("ProfileHeightCheckProcedureLeftUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing data.
+        /// </summary>
+        public static string ProxyMissing {
+            get {
+                return ResourceManager.GetString("ProxyMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy not saved.
+        /// </summary>
+        public static string ProxyNotSaved {
+            get {
+                return ResourceManager.GetString("ProxyNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string ProxyPassword {
+            get {
+                return ResourceManager.GetString("ProxyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string ProxyPasswordConfirm {
+            get {
+                return ResourceManager.GetString("ProxyPasswordConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy saved.
+        /// </summary>
+        public static string ProxySaved {
+            get {
+                return ResourceManager.GetString("ProxySaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Url.
+        /// </summary>
+        public static string ProxyUrl {
+            get {
+                return ResourceManager.GetString("ProxyUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Username.
+        /// </summary>
+        public static string ProxyUser {
+            get {
+                return ResourceManager.GetString("ProxyUser", resourceCulture);
             }
         }
         
@@ -5691,6 +5763,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SaveCheckPosition {
             get {
                 return ResourceManager.GetString("SaveCheckPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Failed.
+        /// </summary>
+        public static string SaveFailed {
+            get {
+                return ResourceManager.GetString("SaveFailed", resourceCulture);
             }
         }
         

@@ -19,10 +19,12 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="50" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="auto"
+                     MinHeight="50" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="50" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="50" />
+      <RowDefinition Height="auto"
+                     MinHeight="50" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
@@ -48,6 +50,7 @@
                           IsEnabled="{Binding IsBackupOnServerEnabled}"
                           LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnServer}" />
 
+    <!--  SERVER CONFIG GRID  -->
     <Grid Grid.Row="3"
           Grid.Column="2"
           Grid.ColumnSpan="2"
@@ -61,21 +64,26 @@
         <RowDefinition />
       </Grid.RowDefinitions>
 
-      <controls:PpcTextBox HorizontalAlignment="Stretch"
+      <controls:PpcTextBox Width="250"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Stretch"
                            InputText="{Binding ServerPath, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsBackupOnServerEnabled}"
                            LabelText="{res:Loc InstallationApp.ServerPath}" />
 
       <controls:PpcButton Grid.Column="1"
-                          HorizontalAlignment="Center"
+                          Width="250"
+                          Height="34"
+                          Margin="0,0,0,4"
+                          HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"
                           Command="{Binding TestCommand}"
                           Content="Test"
                           IsBusy="{Binding IsBusy}" />
 
       <controls:PpcTextBox Grid.Row="1"
-                           HorizontalAlignment="Stretch"
+                           Width="250"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Stretch"
                            InputText="{Binding ServerUsername, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsBackupOnServerEnabled}"
@@ -83,34 +91,40 @@
 
       <StackPanel Grid.Row="1"
                   Grid.Column="1"
-                  VerticalAlignment="Bottom"
-                  Orientation="Horizontal">
-        <dxe:PasswordBoxEdit x:Name="ServerPassword"
-                             Width="250"
-                             Height="40"
-                             Margin="0,5"
-                             IsEnabled="{Binding IsBackupOnServerEnabled}"
-                             MouseDoubleClick="OnKeyboardOpenHandler"
-                             NullText="Server password"
-                             Password="{Binding ServerPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                             Style="{StaticResource PpcPasswordBox}"
-                             TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButton"
-                Height="40"
-                Margin="0,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
-                                     Height="20"
-                                     Margin="3"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Kind="KeyboardSolid" />
-        </Button>
+                  VerticalAlignment="Top"
+                  Orientation="Vertical">
+        <controls:PpcLabeledText Height="24"
+                                 FontSize="{StaticResource FontSize_High}"
+                                 LabelText="{res:Loc InstallationApp.ProxyPassword}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+          <dxe:PasswordBoxEdit Width="250"
+                               Height="33"
+                               HorizontalAlignment="Left"
+                               IsEnabled="{Binding IsBackupOnServerEnabled}"
+                               MouseDoubleClick="OnKeyboardOpenHandler"
+                               NullText="Server password"
+                               Password="{Binding ServerPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                               Style="{StaticResource PpcPasswordBox}"
+                               TouchUp="OnKeyboardOpenHandler" />
+          <Button Height="33"
+                  Margin="0"
+                  HorizontalContentAlignment="Center"
+                  VerticalContentAlignment="Center"
+                  Click="KeyboardButton_Click"
+                  Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                  TouchUp="KeyboardButton_TouchUp"
+                  Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+            <icons:PackIconFontAwesome Width="20"
+                                       Height="20"
+                                       Margin="3"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Kind="KeyboardSolid" />
+          </Button>
+        </StackPanel>
       </StackPanel>
     </Grid>
 
@@ -121,6 +135,106 @@
                           IsChecked="{Binding IsBackupOnTelemetry, Mode=TwoWay}"
                           IsEnabled="{Binding IsBackupOnTelemetryEnabled}"
                           LabelText="{res:Loc InstallationApp.DatabaseBackupModeOnTelemetry}" />
+
+    <!--  PROXY CONFIG GRID  -->
+    <Grid Grid.Row="6"
+          Grid.Column="1"
+          Grid.ColumnSpan="3"
+          Margin="0,5,0,25"
+          Visibility="{Binding IsBackupOnTelemetry, Converter={StaticResource BTVC}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+
+      <controls:PpcTextBox Grid.Row="0"
+                           Grid.Column="1"
+                           Width="250"
+                           InputText="{Binding ProxyUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{res:Loc InstallationApp.ProxyUser}" />
+
+      <StackPanel Grid.Row="0"
+                  Grid.Column="2"
+                  Orientation="Vertical">
+        <controls:PpcLabeledText Height="24"
+                                 FontSize="{StaticResource FontSize_High}"
+                                 LabelText="{res:Loc InstallationApp.ProxyPassword}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+          <dxe:PasswordBoxEdit Width="250"
+                               Height="33"
+                               HorizontalAlignment="Left"
+                               MouseDoubleClick="OnKeyboardOpenHandler"
+                               Password="{Binding ProxyPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Style="{StaticResource PpcPasswordBox}"
+                               TouchUp="OnKeyboardOpenHandler" />
+          <Button Height="33"
+                  Margin="0"
+                  HorizontalContentAlignment="Center"
+                  VerticalContentAlignment="Center"
+                  Click="KeyboardButton_Click"
+                  Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                  TouchUp="KeyboardButton_TouchUp"
+                  Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+            <icons:PackIconFontAwesome Width="20"
+                                       Height="20"
+                                       Margin="3"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Kind="KeyboardSolid" />
+          </Button>
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel Grid.Row="1"
+                  Grid.Column="2"
+                  Orientation="Vertical">
+        <controls:PpcLabeledText Height="24"
+                                 FontSize="{StaticResource FontSize_High}"
+                                 LabelText="{res:Loc InstallationApp.ProxyPasswordConfirm}" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+          <dxe:PasswordBoxEdit Width="250"
+                               Height="33"
+                               HorizontalAlignment="Left"
+                               MouseDoubleClick="OnKeyboardOpenHandler"
+                               Password="{Binding ProxyPasswordCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Style="{StaticResource PpcPasswordBox}"
+                               TouchUp="OnKeyboardOpenHandler" />
+          <Button Height="33"
+                  Margin="0"
+                  HorizontalContentAlignment="Center"
+                  VerticalContentAlignment="Center"
+                  Click="KeyboardButton_Click"
+                  Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                  TouchUp="KeyboardButton_TouchUp"
+                  Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+            <icons:PackIconFontAwesome Width="20"
+                                       Height="20"
+                                       Margin="3"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Kind="KeyboardSolid" />
+          </Button>
+        </StackPanel>
+      </StackPanel>
+
+      <controls:PpcTextBox Grid.Row="1"
+                           Grid.Column="1"
+                           Width="250"
+                           InputText="{Binding ProxyUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{res:Loc InstallationApp.ProxyUrl}" />
+
+    </Grid>
 
     <controls:PpcCheckBox Grid.Row="7"
                           Grid.Column="1"

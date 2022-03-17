@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using Ferretto.VW.MAS.DataModels;
 
-
 namespace Ferretto.VW.MAS.IODriver
 {
     public class IoStatus
@@ -72,6 +71,9 @@ namespace Ferretto.VW.MAS.IODriver
         [Column(Order = (int)IoPorts.ElevatorMotorFeedback)]
         public bool ElevatorMotorSelected => this.inputs[(int)IoPorts.ElevatorMotorFeedback];
 
+        [Column(Order = (int)IoPorts.FinePickingRobot)]
+        public bool FireAlarm => this.inputs[(int)IoPorts.FinePickingRobot];
+
         public ShdFormatDataOperation FormatDataOperation { get; set; }
 
         public byte FwRelease { get; set; }
@@ -99,17 +101,14 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool[] OutputData => this.outputs;
 
+        [Column(Order = (int)IoPorts.HookTrolley)]
+        public bool PreFireAlarm => this.inputs[(int)IoPorts.HookTrolley];
+
         public bool ResetSecurity => this.outputs[(int)IoPorts.ResetSecurity];
 
         public byte SetupOutputLines { get; set; }
 
         public bool UseSetupOutputLines { get; set; }
-
-        [Column(Order = (int)IoPorts.HookTrolley)]
-        public bool PreFireAlarm => this.inputs[(int)IoPorts.HookTrolley];
-
-        [Column(Order = (int)IoPorts.FinePickingRobot)]
-        public bool FireAlarm => this.inputs[(int)IoPorts.FinePickingRobot];
 
         #endregion
 

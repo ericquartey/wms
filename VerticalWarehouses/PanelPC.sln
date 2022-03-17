@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29209.62
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service", "Machine Automation Service", "{A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}"
 EndProject
@@ -91,6 +91,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.WeightingScale", "Common\Ferretto.VW.Devices.WeightingScale\Ferretto.VW.Devices.WeightingScale.csproj", "{39B86872-C6D0-42C0-95CF-C4DCBE5788DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Devices.TokenReader", "Common\Ferretto.VW.Devices.TokenReader\Ferretto.VW.Devices.TokenReader.csproj", "{B372913B-2E4C-4085-B384-AC54F96082CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.ServiceDesk.Telemetry", "Common\Ferretto.ServiceDesk.Telemetry\Ferretto.ServiceDesk.Telemetry.csproj", "{B1289AAA-BD09-404E-9113-3506D59F2988}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -486,6 +488,18 @@ Global
 		{B372913B-2E4C-4085-B384-AC54F96082CA}.Release|x64.Build.0 = Release|Any CPU
 		{B372913B-2E4C-4085-B384-AC54F96082CA}.Release|x86.ActiveCfg = Release|Any CPU
 		{B372913B-2E4C-4085-B384-AC54F96082CA}.Release|x86.Build.0 = Release|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Release|x64.Build.0 = Release|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1289AAA-BD09-404E-9113-3506D59F2988}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -524,6 +538,7 @@ Global
 		{3860A4A1-14BD-48AE-BC24-97EEBB5A4C9B} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{39B86872-C6D0-42C0-95CF-C4DCBE5788DB} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 		{B372913B-2E4C-4085-B384-AC54F96082CA} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
+		{B1289AAA-BD09-404E-9113-3506D59F2988} = {DCBB7A7C-3A9A-4992-9F82-09F0C7C88EDB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

@@ -83,6 +83,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<FullTestView>();
 
             containerRegistry.RegisterForNavigation<ProfileHeightCheckView>();
+            containerRegistry.RegisterForNavigation<ProfileResolutionCalibrationView>();
 
             containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
 

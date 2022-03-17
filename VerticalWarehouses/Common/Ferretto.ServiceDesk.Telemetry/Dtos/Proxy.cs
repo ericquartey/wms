@@ -2,6 +2,14 @@
 {
     public class Proxy : IProxy
     {
+        #region Constructors
+
+        public Proxy()
+        {
+        }
+
+        #endregion
+
         #region Properties
 
         public string PasswordHash { get; set; }

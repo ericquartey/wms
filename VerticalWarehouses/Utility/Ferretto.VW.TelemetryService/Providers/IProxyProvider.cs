@@ -1,4 +1,5 @@
-﻿using Ferretto.ServiceDesk.Telemetry;
+﻿using System.Net;
+using Ferretto.ServiceDesk.Telemetry;
 
 namespace Ferretto.VW.TelemetryService.Providers
 {
@@ -6,7 +7,9 @@ namespace Ferretto.VW.TelemetryService.Providers
     {
         #region Methods
 
-        IProxy? Get();
+        Proxy Get();
+
+        WebProxy GetWebProxy();
 
         void SaveAsync(IProxy proxy);
 

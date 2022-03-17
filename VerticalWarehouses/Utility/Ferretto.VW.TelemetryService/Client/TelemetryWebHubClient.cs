@@ -24,6 +24,8 @@ namespace Ferretto.VW.TelemetryService
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
+        private Uri? logProxy;
+
         #endregion
 
         #region Constructors
@@ -103,6 +105,7 @@ namespace Ferretto.VW.TelemetryService
 
         public async Task SetProxy(WebProxy proxy)
         {
+            this.logProxy = proxy?.Address;
             await base.SetProxy(proxy);
         }
 
@@ -149,7 +152,7 @@ namespace Ferretto.VW.TelemetryService
 
         private Task OnConnectionStatusChanged(ConnectionStatusChangedEventArgs e)
         {
-            this.logger.Info($"Connection {e.IsConnected} to {this.logUri}");
+            this.logger.Info($"Connection {e.IsConnected} to [{this.logUri}]; proxy [{this.logProxy}]");
             return Task.CompletedTask;
         }
 

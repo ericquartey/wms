@@ -129,7 +129,21 @@
                               Style="{DynamicResource PpcButtonMenuCardStyle}"
                               Visibility="{Binding IsBEDTestVisible, Converter={StaticResource BTVC}}" />
 
-        </WrapPanel>
+                    <controls:PpcButton Title="{res:Loc InstallationApp.BarrierCalibrationMenuTitle}"
+                              Margin="0,0,30,30"
+                              Padding="-2,1,0,0"
+                              Abbrevation="4.3.6"
+                              BorderBrush="{DynamicResource FerrettoOrange}"
+                              Command="{Binding BayHeightCommand}"
+                              Content="{res:Loc InstallationApp.BarrierCalibrationMenuDescription}"
+                              IsBypassed="{Binding IsBayProfileBypassed}"
+                              IsCompleted="{Binding IsBayProfileCompleted}"
+                              Kind="Account"
+                              Style="{DynamicResource PpcButtonMenuCardStyle}"
+                              Visibility="Visible"/>
+
+
+                </WrapPanel>
       </Grid>
 
       <views:InstallationNavigationFooterView Grid.Row="2"

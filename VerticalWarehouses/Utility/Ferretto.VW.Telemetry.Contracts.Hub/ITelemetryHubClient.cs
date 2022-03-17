@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.VW.Common.Hubs;
 
 namespace Ferretto.VW.Telemetry.Contracts.Hub

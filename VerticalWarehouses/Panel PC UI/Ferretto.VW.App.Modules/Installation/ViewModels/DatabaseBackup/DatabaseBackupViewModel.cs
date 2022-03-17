@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.ServiceDesk.Telemetry;
+using Ferretto.ServiceDesk.Telemetry.Hubs;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Ferretto.VW.Telemetry.Contracts.Hub;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -36,6 +39,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isBusy;
 
         private bool isStandbyDbOk;
+
+        private string proxyPassword;
+
+        private string proxyPasswordCheck;
+
+        private string proxyUrl;
+
+        private string proxyUser;
 
         private DelegateCommand saveCommand;
 
@@ -143,6 +154,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public string ProxyPassword
+        {
+            get => this.proxyPassword;
+            set
+            {
+                this.SetProperty(ref this.proxyPassword, value);
+                this.areSettingsChanged = true;
+            }
+        }
+
+        public string ProxyPasswordCheck
+        {
+            get => this.proxyPasswordCheck;
+            set
+            {
+                this.SetProperty(ref this.proxyPasswordCheck, value);
+                this.areSettingsChanged = true;
+            }
+        }
+
+        public string ProxyUrl
+        {
+            get => this.proxyUrl;
+            set
+            {
+                this.SetProperty(ref this.proxyUrl, value);
+                this.areSettingsChanged = true;
+            }
+        }
+
+        public string ProxyUser
+        {
+            get => this.proxyUser;
+            set
+            {
+                this.SetProperty(ref this.proxyUser, value);
+                this.areSettingsChanged = true;
+            }
+        }
+
         public ICommand SaveCommand =>
                     this.saveCommand
             ??
@@ -198,6 +249,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override async void Disappear()
+        {
+            base.Disappear();
+
+            this.ProxyPassword = string.Empty;
+            this.ProxyPasswordCheck = string.Empty;
+            this.ProxyUrl = string.Empty;
+            this.ProxyUser = string.Empty;
+
+            await this.telemetryHubClient.GetProxyAsync();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await this.telemetryHubClient.GetProxyAsync();
@@ -211,6 +274,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 while (this.IsVisible);
             });
+
+            this.ProxyPassword = string.Empty;
+            this.ProxyPasswordCheck = string.Empty;
+            this.ProxyUrl = string.Empty;
+            this.ProxyUser = string.Empty;
+
+            await this.telemetryHubClient.GetProxyAsync();
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -253,9 +323,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.serverUsername);
         }
 
-        private async Task OnProxyReceivedChangedAsync(object sender, Common.Hubs.ProxyChangedEventArgs e)
+        private async Task OnProxyReceivedChangedAsync(object sender, ProxyChangedEventArgs e)
         {
             var proxy = e.Proxy;
+            if (proxy is null || proxy.Url is null || proxy.User is null)
+            {
+                this.ProxyPassword = string.Empty;
+                this.ProxyPasswordCheck = string.Empty;
+                this.ProxyUrl = string.Empty;
+                this.ProxyUser = string.Empty;
+            }
+            else
+            {
+                this.ProxyPassword = DecryptEncrypt.Decrypt(proxy.PasswordHash, proxy.PasswordSalt);
+                //this.ProxyPassword = ((NetworkCredential)proxy.Credentials).Password;
+                this.ProxyPasswordCheck = string.Empty;
+                this.ProxyUrl = proxy.Url;
+                this.ProxyUser = proxy.User;
+            }
         }
 
         private async Task SaveAsync()
@@ -270,14 +355,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.machineDatabaseBackupWebService.SetBackupOnServerAsync(this.IsBackupOnServer, this.serverPath, this.serverUsername, this.serverPassword);
                     await this.machineDatabaseBackupWebService.SetBackupOnTelemetryAsync(this.IsBackupOnTelemetry);
-                    await this.telemetryHubClient.SendProxyAsync(null);     // todo
-                }
 
-                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
+                    if (this.IsBackupOnTelemetry)
+                    {
+                        if (!string.IsNullOrEmpty(this.ProxyUrl) && !string.IsNullOrEmpty(this.ProxyUser) && !string.IsNullOrEmpty(this.ProxyPassword) && !string.IsNullOrEmpty(this.ProxyPasswordCheck))
+                        {
+                            if (this.ProxyPassword != this.ProxyPasswordCheck)
+                            {
+                                throw new Exception(Localized.Get("InstallationApp.PasswordFailConfirm"));
+                            }
+                            //check data entry
+                            var WebProxy = new WebProxy(this.ProxyUrl) { Credentials = new NetworkCredential(this.ProxyUser, this.ProxyPassword) };
+
+                            var salt = Convert.ToBase64String(DecryptEncrypt.GeneratePasswordSalt());
+
+                            var hash = DecryptEncrypt.Encrypt(this.ProxyPassword, salt);
+
+                            var proxy = new Proxy() { Url = this.ProxyUrl, User = this.ProxyUser, PasswordHash = hash, PasswordSalt = salt };
+
+                            await this.telemetryHubClient.SendProxyAsync(proxy);
+                            this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful") + " " + Localized.Get("InstallationApp.ProxySaved"), Services.Models.NotificationSeverity.Success);
+                        }
+                        else if (string.IsNullOrEmpty(this.ProxyUrl) && string.IsNullOrEmpty(this.ProxyUser) && string.IsNullOrEmpty(this.ProxyPassword) && string.IsNullOrEmpty(this.ProxyPasswordCheck))
+                        {
+                            await this.telemetryHubClient.SendProxyAsync(null);
+                            this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Info);
+                        }
+                        else
+                        {
+                            this.ShowNotification(Localized.Get("InstallationApp.SaveFailed") + " " + Localized.Get("InstallationApp.ProxyMissing"), Services.Models.NotificationSeverity.Warning);
+                        }
+                    }
+                    else
+                    {
+                        await this.telemetryHubClient.SendProxyAsync(null);
+                        this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Info);
+                    }
+                }
             }
             catch (Exception ex)
             {
-                this.ShowNotification(ex);
+                this.ShowNotification(ex.Message, Services.Models.NotificationSeverity.Error);
             }
             finally
             {

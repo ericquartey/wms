@@ -6,14 +6,23 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 
-
 namespace Ferretto.VW.MAS.IODriver
 {
     internal partial class IoDevice
     {
         #region Methods
 
-        public void ParsingDataBytes(byte[] telegram, out int nBytesReceived, out ShdFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
+        public void ParsingDataBytes(
+            byte[] telegram,
+            out int nBytesReceived,
+            out ShdFormatDataOperation formatDataOperation,
+            out byte fwRelease,
+            ref bool[] inputs,
+            ref bool[] outputs,
+            out byte[] configurationData,
+            out byte errorCode,
+            ref int[] diagOutCurrent,
+            ref bool[] diagOutFault)
         {
             const int N_BYTES8 = 8;
             const int N_BITS8 = 8;
@@ -24,6 +33,8 @@ namespace Ferretto.VW.MAS.IODriver
 
             Array.Clear(inputs, 0, inputs.Length);
             Array.Clear(outputs, 0, outputs.Length);
+            Array.Clear(diagOutCurrent, 0, diagOutCurrent.Length);
+            Array.Clear(diagOutFault, 0, diagOutFault.Length);
 
             configurationData = null;
             formatDataOperation = ShdFormatDataOperation.Data;
@@ -123,6 +134,10 @@ namespace Ferretto.VW.MAS.IODriver
                                 Array.Copy(ByteArrayToBoolArray(payloadInputLow), inputs, N_BITS8);
                                 Array.Copy(ByteArrayToBoolArray(payloadInputHigh), 0, inputs, N_BITS8, N_BITS8);
 
+                                diagOutCurrent = ByteArrayToIntArray(telegram, 8, N_BITS8);
+
+                                Array.Copy(ByteArrayToBoolArray(telegram[16]), diagOutFault, N_BITS8);
+
                                 // Configuration data
                                 configurationData = new byte[17];
                                 Array.Copy(telegram, 8, configurationData, 0, 17);
@@ -171,6 +186,16 @@ namespace Ferretto.VW.MAS.IODriver
             var bits = new bool[N_BITS8];
             t.CopyTo(bits, 0);
             return bits;
+        }
+
+        private static int[] ByteArrayToIntArray(byte[] telegram, int sourceOffset, int bytes)
+        {
+            var ushortArray = new int[bytes];
+            for (var i = 0; i < bytes; i++)
+            {
+                ushortArray[i] = telegram[(i * 2) + sourceOffset] + telegram[(i * 2) + sourceOffset + 1] * 256;
+            }
+            return ushortArray;
         }
 
         private bool IsHeaderValid(byte header)

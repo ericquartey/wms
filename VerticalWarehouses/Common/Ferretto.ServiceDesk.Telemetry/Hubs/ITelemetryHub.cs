@@ -7,11 +7,11 @@ namespace Ferretto.ServiceDesk.Telemetry.Hubs
     {
         #region Methods
 
-        Task GetProxy(Proxy proxy);
-
         Task PersistIOLog(IOLog ioLog);
 
         Task RequestMachine();
+
+        Task RequestProxy(Proxy webProxy);
 
         Task SendErrorLog(ErrorLog errorLog);
 

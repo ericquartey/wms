@@ -36,6 +36,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+            //var salt = Convert.ToBase64String(GeneratePasswordSalt());
+            //var hash = Encrypt("password", salt);
+            //var psw = Decrypt(hash, salt);
         }
 
         #endregion
@@ -44,51 +47,49 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public static string Decrypt(string cipherText, string salt)
         {
-            byte[] IV = Convert.FromBase64String(cipherText.Substring(0, 20));
-            cipherText = cipherText.Substring(20).Replace(" ", "+");
-            byte[] cipherBytes = Convert.FromBase64String(cipherText);
-            var plainText = string.Empty;
-            using (Aes encryptor = Aes.Create())
+            var iv = new byte[16];
+            Buffer.BlockCopy(Convert.FromBase64String(cipherText), 0, iv, 0, iv.Length);
+            using (var aesAlg = Aes.Create())
             {
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, IV);
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
+                aesAlg.Mode = CipherMode.CBC;
+                using (var decryptor = aesAlg.CreateDecryptor(Convert.FromBase64String(salt), iv))
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+                    byte[] encrypted = Convert.FromBase64String(cipherText);
+                    using (var msDecrypt = new MemoryStream(encrypted, iv.Length, encrypted.Length - iv.Length))
                     {
-                        cs.Write(cipherBytes, 0, cipherBytes.Length);
-                        cs.Close();
+                        using (var csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                        {
+                            using (var resultStream = new MemoryStream())
+                            {
+                                csDecrypt.CopyTo(resultStream);
+                                return System.Text.Encoding.UTF8.GetString(resultStream.ToArray());
+                            }
+                        }
                     }
-                    plainText = System.Text.Encoding.Unicode.GetString(ms.ToArray());
                 }
             }
-            return plainText;
         }
 
         public static string Encrypt(string clearText, string salt)
         {
-            byte[] clearBytes = System.Text.Encoding.Unicode.GetBytes(clearText);
-            var crypto = string.Empty;
-            using (Aes encryptor = Aes.Create())
+            using (var aesAlg = Aes.Create())
             {
-                var IV = new byte[15];
-                var rand = new Random();
-                rand.NextBytes(IV);
-                Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(salt, IV, 10000);
-                encryptor.Key = pdb.GetBytes(32);
-                encryptor.IV = pdb.GetBytes(16);
-                using (MemoryStream ms = new MemoryStream())
+                aesAlg.Mode = CipherMode.CBC;
+                using (var encryptor = aesAlg.CreateEncryptor(Convert.FromBase64String(salt), aesAlg.IV))
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    using (var msEncrypt = new MemoryStream())
                     {
-                        cs.Write(clearBytes, 0, clearBytes.Length);
-                        cs.Close();
+                        msEncrypt.Write(aesAlg.IV, 0, aesAlg.IV.Length);
+                        using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                        {
+                            byte[] data = System.Text.Encoding.UTF8.GetBytes(clearText);
+                            csEncrypt.Write(data, 0, data.Length);
+                        }
+                        var ret = msEncrypt.ToArray();
+                        return Convert.ToBase64String(ret);
                     }
-                    crypto = Convert.ToBase64String(IV) + Convert.ToBase64String(ms.ToArray());
                 }
             }
-            return crypto;
         }
 
         public bool AreSetUsers()

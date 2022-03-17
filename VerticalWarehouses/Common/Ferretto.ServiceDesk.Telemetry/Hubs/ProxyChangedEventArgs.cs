@@ -1,12 +1,12 @@
 ﻿using System.Net;
 
-namespace Ferretto.VW.Common.Hubs
+namespace Ferretto.ServiceDesk.Telemetry.Hubs
 {
     public sealed class ProxyChangedEventArgs : System.EventArgs
     {
         #region Constructors
 
-        public ProxyChangedEventArgs(WebProxy proxy)
+        public ProxyChangedEventArgs(IProxy proxy)
         {
             this.Proxy = proxy;
         }
@@ -15,7 +15,7 @@ namespace Ferretto.VW.Common.Hubs
 
         #region Properties
 
-        public WebProxy Proxy { get; }
+        public IProxy Proxy { get; }
 
         #endregion
     }
