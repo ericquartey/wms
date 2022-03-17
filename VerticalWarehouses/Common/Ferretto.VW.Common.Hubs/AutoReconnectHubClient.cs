@@ -99,6 +99,7 @@ namespace Ferretto.VW.Common.Hubs
                 {
                     this.failedRetries++;
                     System.Diagnostics.Debug.WriteLine($"Hub '{this.endpoint}': connection lost.");
+                    this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(true));
                     await this.WaitForReconnectionAsync();
                 }
             }
@@ -106,6 +107,7 @@ namespace Ferretto.VW.Common.Hubs
 
         public async Task DisconnectAsync()
         {
+            System.Diagnostics.Debug.WriteLine($"Hub '{this.endpoint}': stop connection.");
             await this.connection?.StopAsync();
 
             this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(false));

@@ -174,6 +174,8 @@ namespace Ferretto.VW.TelemetryService
 
         public async Task SendProxy(Proxy proxy)
         {
+            this.logger.LogInformation($"Received proxy identification from client. Url is '{proxy?.Url}', user '{proxy?.User}'.");
+
             using var scope = this.serviceScopeFactory.CreateScope();
             if (proxy is null || proxy.Url is null || proxy.User is null || proxy.PasswordHash is null || proxy.PasswordSalt is null)
             {
@@ -181,8 +183,6 @@ namespace Ferretto.VW.TelemetryService
                 await this.telemetryWebHubClient.SetProxy(null);
                 return;
             }
-
-            this.logger.LogInformation($"Received proxy identification from client. Url is '{proxy.Url}', user '{proxy.User}'.");
 
             try
             {
