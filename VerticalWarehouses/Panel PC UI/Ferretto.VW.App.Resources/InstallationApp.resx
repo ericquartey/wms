@@ -2666,10 +2666,10 @@
     <value>Confirm Password</value>
   </data>
   <data name="ProxyUser" xml:space="preserve">
-    <value>Username</value>
+    <value>Proxy Username</value>
   </data>
   <data name="ProxyUrl" xml:space="preserve">
-    <value>Url</value>
+    <value>Proxy Url</value>
   </data>
   <data name="PasswordFailConfirm" xml:space="preserve">
     <value>Incorrect passwords</value>

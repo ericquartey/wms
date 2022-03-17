@@ -2593,10 +2593,10 @@
     <value>Conferma password</value>
   </data>
   <data name="ProxyUrl" xml:space="preserve">
-    <value>Url</value>
+    <value>Url Proxy</value>
   </data>
   <data name="ProxyUser" xml:space="preserve">
-    <value>Nome utente</value>
+    <value>Nome utente Proxy</value>
   </data>
   <data name="PasswordFailConfirm" xml:space="preserve">
     <value>Password errate</value>
