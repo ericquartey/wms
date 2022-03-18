@@ -22,9 +22,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IMachineSensorsWebService machineSensorsWebService;
-
         private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
@@ -38,12 +38,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bay2HasShutter;
 
-        private bool isBay1TelescopicPresent;
-
-        private bool isBay2TelescopicPresent;
-
-        private bool isBay3TelescopicPresent;
-
         private bool bay2ZeroChainIsVisible;
 
         private bool bay2ZeroChainUpIsVisible;
@@ -54,6 +48,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bay3ZeroChainUpIsVisible;
 
+        private List<int> diagOutCurrent;
+
+        private List<bool> diagOutFault;
+
+        private SubscriptionToken diagOutToken;
+
         private bool isBay1ExternalDoublePresent;
 
         private bool isBay1ExternalPresent;
@@ -63,6 +63,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isBay1PositionDownPresent;
 
         private bool isBay1PositionUpPresent;
+
+        private bool isBay1TelescopicPresent;
 
         private bool isBay2ExternalDoublePresent;
 
@@ -76,6 +78,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBay2Present;
 
+        private bool isBay2TelescopicPresent;
+
         private bool isBay3ExternalDoublePresent;
 
         private bool isBay3ExternalPresent;
@@ -87,6 +91,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isBay3PositionUpPresent;
 
         private bool isBay3Present;
+
+        private bool isBay3TelescopicPresent;
 
         private bool isFireAlarmActive;
 
@@ -133,15 +139,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool Bay3ZeroChainUpIsVisible { get => this.bay3ZeroChainUpIsVisible; private set => this.SetProperty(ref this.bay3ZeroChainUpIsVisible, value); }
 
+        public List<int> DiagOutCurrent { get => this.diagOutCurrent; private set => this.SetProperty(ref this.diagOutCurrent, value); }
+
+        public List<bool> DiagOutFault { get => this.diagOutFault; private set => this.SetProperty(ref this.diagOutFault, value); }
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsBay1ExternalDoublePresent { get => this.isBay1ExternalDoublePresent; private set => this.SetProperty(ref this.isBay1ExternalDoublePresent, value); }
-
-        public bool IsBay1TelescopicPresent { get => this.isBay1TelescopicPresent; private set => this.SetProperty(ref this.isBay1TelescopicPresent, value); }
-
-        public bool IsBay2TelescopicPresent { get => this.isBay2TelescopicPresent; private set => this.SetProperty(ref this.isBay2TelescopicPresent, value); }
-
-        public bool IsBay3TelescopicPresent { get => this.isBay3TelescopicPresent; private set => this.SetProperty(ref this.isBay3TelescopicPresent, value); }
 
         public bool IsBay1ExternalPresent { get => this.isBay1ExternalPresent; private set => this.SetProperty(ref this.isBay1ExternalPresent, value); }
 
@@ -150,6 +154,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBay1PositionDownPresent { get => this.isBay1PositionDownPresent; private set => this.SetProperty(ref this.isBay1PositionDownPresent, value); }
 
         public bool IsBay1PositionUpPresent { get => this.isBay1PositionUpPresent; private set => this.SetProperty(ref this.isBay1PositionUpPresent, value); }
+
+        public bool IsBay1TelescopicPresent { get => this.isBay1TelescopicPresent; private set => this.SetProperty(ref this.isBay1TelescopicPresent, value); }
 
         public bool IsBay2ExternalDoublePresent { get => this.isBay2ExternalDoublePresent; private set => this.SetProperty(ref this.isBay2ExternalDoublePresent, value); }
 
@@ -163,6 +169,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsBay2Present { get => this.isBay2Present; private set => this.SetProperty(ref this.isBay2Present, value); }
 
+        public bool IsBay2TelescopicPresent { get => this.isBay2TelescopicPresent; private set => this.SetProperty(ref this.isBay2TelescopicPresent, value); }
+
         public bool IsBay3ExternalDoublePresent { get => this.isBay3ExternalDoublePresent; private set => this.SetProperty(ref this.isBay3ExternalDoublePresent, value); }
 
         public bool IsBay3ExternalPresent { get => this.isBay3ExternalPresent; private set => this.SetProperty(ref this.isBay3ExternalPresent, value); }
@@ -174,6 +182,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsBay3PositionUpPresent { get => this.isBay3PositionUpPresent; private set => this.SetProperty(ref this.isBay3PositionUpPresent, value); }
 
         public bool IsBay3Present { get => this.isBay3Present; private set => this.SetProperty(ref this.isBay3Present, value); }
+
+        public bool IsBay3TelescopicPresent { get => this.isBay3TelescopicPresent; private set => this.SetProperty(ref this.isBay3TelescopicPresent, value); }
 
         public bool IsFireAlarmActive { get => this.isFireAlarmActive; private set => this.SetProperty(ref this.isFireAlarmActive, value); }
 
@@ -203,6 +213,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
+            this.DiagOutCurrent = new List<int>();
+            this.DiagOutFault = new List<bool>();
 
             this.SubscribeToEvents();
 
@@ -332,6 +344,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     trackCurrentView: false));
         }
 
+        private void OnDiagOutChanged(NotificationMessageUI<DiagOutChangedMessageData> message)
+        {
+            this.diagOutFault = message.Data.FaultStates.ToList();
+            this.diagOutCurrent = message.Data.CurrentStates.ToList();
+        }
+
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
@@ -348,6 +366,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => m.Data?.SensorsStates != null);
+
+            this.diagOutToken = this.diagOutToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<DiagOutChangedMessageData>>()
+                    .Subscribe(
+                        this.OnDiagOutChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.FaultStates != null);
         }
 
         #endregion

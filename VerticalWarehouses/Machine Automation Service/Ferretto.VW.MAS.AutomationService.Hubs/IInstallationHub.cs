@@ -11,13 +11,13 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task BayLightChanged(bool isLightOn, BayNumber bayNumber);
 
-        Task LogoutChanged(IBaseNotificationMessageUI message);
-
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
         Task CombinedMovementsNotify(IBaseNotificationMessageUI message);
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
+
+        Task DiagOutChanged(IBaseNotificationMessageUI message);
 
         Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper);
 
@@ -34,6 +34,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
         Task InverterReadingChanged(IBaseNotificationMessageUI message);
 
         Task InverterStatusWordChanged(IBaseNotificationMessageUI message);
+
+        Task LogoutChanged(IBaseNotificationMessageUI message);
 
         Task MachineModeChanged(CommonUtils.Messages.MachineMode machineMode);
 

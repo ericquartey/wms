@@ -352,7 +352,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             res.Add(new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/IL.png",
                             "he-IL",
-                            "יהודי"));
+                            "עברית"));
 
             res.Add(new Culture(
                              $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/HR.png",

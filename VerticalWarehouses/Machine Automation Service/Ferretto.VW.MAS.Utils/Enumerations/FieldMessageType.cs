@@ -74,6 +74,8 @@
 
         BayLight,
 
-        InverterReading
+        InverterReading,
+
+        DiagOutChanged,
     }
 }

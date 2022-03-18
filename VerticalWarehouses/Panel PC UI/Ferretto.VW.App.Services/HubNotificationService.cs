@@ -246,6 +246,12 @@ namespace Ferretto.VW.App.Services
                         .Publish(l);
                     break;
 
+                case NotificationMessageUI<DiagOutChangedMessageData> doc:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<DiagOutChangedMessageData>>()
+                        .Publish(doc);
+                    break;
+
                 default:
                     this.logger.Debug($"Signal-R hub message {e.NotificationMessage.GetType().Name} was ignored.");
                     break;

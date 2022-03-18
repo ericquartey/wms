@@ -26,6 +26,10 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const int TotalOutputs = 8;
 
+        private readonly int[] diagOutCurrent = new int[TotalOutputs];
+
+        private readonly bool[] diagOutFault = new bool[TotalOutputs];
+
         private readonly bool[] inputs = new bool[TotalInputs];
 
         private readonly bool[] outputs = new bool[TotalOutputs];
@@ -137,22 +141,22 @@ namespace Ferretto.VW.MAS.IODriver
             return true;
         }
 
-        public bool UpdateInputStates(bool[] newInputStates)
+        public bool UpdateInputStates(bool[] newStates)
         {
-            if (newInputStates is null)
+            if (newStates is null)
             {
-                throw new ArgumentNullException(nameof(newInputStates));
+                throw new ArgumentNullException(nameof(newStates));
             }
 
-            if (this.inputs.Length != newInputStates.Length)
+            if (this.inputs.Length != newStates.Length)
             {
                 throw new IOException($"Input states length mismatch while updating I/O driver status");
             }
 
             var changeValues = false;
-            for (var i = 0; i < this.inputs.Length; i++)
+            for (var i = 0; i < newStates.Length; i++)
             {
-                if (this.inputs[i] != newInputStates[i])
+                if (this.inputs[i] != newStates[i])
                 {
                     changeValues = true;
                 }
@@ -160,11 +164,77 @@ namespace Ferretto.VW.MAS.IODriver
 
             try
             {
-                Array.Copy(newInputStates, this.inputs, TotalInputs);
+                Array.Copy(newStates, this.inputs, TotalInputs);
             }
             catch (Exception ex)
             {
                 throw new IOException($"Exception {ex.Message} while updating Inputs status");
+            }
+
+            return changeValues;
+        }
+
+        public bool UpdateOutCurrentStates(int[] newStates)
+        {
+            if (newStates is null)
+            {
+                throw new ArgumentNullException(nameof(newStates));
+            }
+
+            if (this.diagOutCurrent.Length != newStates.Length)
+            {
+                throw new IOException($"Output current states length mismatch while updating I/O driver status");
+            }
+
+            var changeValues = false;
+            for (var i = 0; i < newStates.Length; i++)
+            {
+                if (this.diagOutCurrent[i] != newStates[i])
+                {
+                    changeValues = true;
+                }
+            }
+
+            try
+            {
+                Array.Copy(newStates, this.diagOutCurrent, newStates.Length);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception {ex.Message} while updating output current status");
+            }
+
+            return changeValues;
+        }
+
+        public bool UpdateOutFaultStates(bool[] newStates)
+        {
+            if (newStates is null)
+            {
+                throw new ArgumentNullException(nameof(newStates));
+            }
+
+            if (this.diagOutFault.Length != newStates.Length)
+            {
+                throw new IOException($"Output fault states length mismatch while updating I/O driver status");
+            }
+
+            var changeValues = false;
+            for (var i = 0; i < newStates.Length; i++)
+            {
+                if (this.diagOutFault[i] != newStates[i])
+                {
+                    changeValues = true;
+                }
+            }
+
+            try
+            {
+                Array.Copy(newStates, this.diagOutFault, newStates.Length);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Exception {ex.Message} while updating output fault status");
             }
 
             return changeValues;

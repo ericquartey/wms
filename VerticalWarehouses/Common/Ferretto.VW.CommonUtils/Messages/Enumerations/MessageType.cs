@@ -158,5 +158,7 @@
         Logout,
 
         RemoveLoadUnit,
+
+        DiagOutChanged
     }
 }

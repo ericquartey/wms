@@ -662,36 +662,66 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
 
                     case FieldMessageType.SensorsChanged when receivedMessage.Data is ISensorsChangedFieldMessageData:
-
-                        this.Logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
-                        var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
-
-                        var ioIndex = receivedMessage.DeviceIndex;
-                        if (this.machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                         {
-                            var msgData = new SensorsChangedMessageData
+                            this.Logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+                            var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
+
+                            var ioIndex = receivedMessage.DeviceIndex;
+                            if (this.machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                             {
-                                SensorsStates = this.machineResourcesProvider.DisplayedInputs
+                                var msgData = new SensorsChangedMessageData
+                                {
+                                    SensorsStates = this.machineResourcesProvider.DisplayedInputs
+                                };
+
+                                this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+
+                                this.EventAggregator
+                                    .GetEvent<NotificationEvent>()
+                                    .Publish(
+                                        new NotificationMessage(
+                                            msgData,
+                                            "IO sensors status",
+                                            MessageActor.Any,
+                                            MessageActor.DeviceManager,
+                                            MessageType.SensorsChanged,
+                                            bayNumber,
+                                            bayNumber,
+                                            MessageStatus.OperationExecuting));
+
+                                this.forceRemoteIoStatusPublish[ioIndex] = false;
+                            }
+                        }
+
+                        break;
+
+                    case FieldMessageType.DiagOutChanged when receivedMessage.Data is IDiagOutChangedFieldMessageData:
+                        {
+                            this.Logger.LogTrace($"3:DiagOutChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+                            var diagOutData = receivedMessage.Data as IDiagOutChangedFieldMessageData;
+
+                            var ioIndex = receivedMessage.DeviceIndex;
+                            var msgData = new DiagOutChangedMessageData
+                            {
+                                FaultStates = diagOutData.FaultStates,
+                                CurrentStates = diagOutData.CurrentStates,
                             };
 
-                            this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                            this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {diagOutData}");
 
                             this.EventAggregator
                                 .GetEvent<NotificationEvent>()
                                 .Publish(
                                     new NotificationMessage(
                                         msgData,
-                                        "IO sensors status",
+                                        "IO diag out status",
                                         MessageActor.Any,
                                         MessageActor.DeviceManager,
-                                        MessageType.SensorsChanged,
+                                        MessageType.DiagOutChanged,
                                         bayNumber,
                                         bayNumber,
                                         MessageStatus.OperationExecuting));
-
-                            this.forceRemoteIoStatusPublish[ioIndex] = false;
                         }
-
                         break;
 
                     case FieldMessageType.InverterStatusUpdate when receivedMessage.Data is IInverterStatusUpdateFieldMessageData:
