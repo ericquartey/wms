@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
+        private readonly int OUT_PER_DEVICE = 8;
+
         private readonly Sensors sensors = new Sensors();
 
         private bool bay1HasShutter;
@@ -191,6 +193,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
+        public int OutPerDevice => this.OUT_PER_DEVICE;
+
         public Sensors Sensors => this.sensors;
 
         #endregion
@@ -215,6 +219,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
             this.DiagOutCurrent = new List<int>();
             this.DiagOutFault = new List<bool>();
+            for (int i = 0; i < this.OUT_PER_DEVICE * 3; i++)
+            {
+                this.DiagOutFault.Add(false);
+                this.DiagOutCurrent.Add(0);
+            }
 
             this.SubscribeToEvents();
 
@@ -346,8 +355,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnDiagOutChanged(NotificationMessageUI<DiagOutChangedMessageData> message)
         {
-            this.diagOutFault = message.Data.FaultStates.ToList();
-            this.diagOutCurrent = message.Data.CurrentStates.ToList();
+            for (int i = 0; i < this.OUT_PER_DEVICE; i++)
+            {
+                this.DiagOutFault[message.Data.IoIndex * this.OUT_PER_DEVICE + i] = message.Data.FaultStates[i];
+                this.DiagOutCurrent[message.Data.IoIndex * this.OUT_PER_DEVICE + i] = message.Data.CurrentStates[i];
+            }
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)

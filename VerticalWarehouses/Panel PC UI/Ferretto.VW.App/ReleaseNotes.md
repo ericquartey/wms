@@ -29,6 +29,7 @@
 - La configurazione del lettore barcode ha il generatore di codici a barre
 - Aggiunti parametri di baia per la lettura della sagoma (barriera di misura)
 - Aggiunti parametri di collegamento proxy per la telemetria
+- Aggiunte segnalazioni di diagnostica per la scheda I/O
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore
@@ -40,6 +41,7 @@
 - Eliminato allarme "movimento serranda troppo breve"
 - BED: corretto segnale di barriera anti-intrusione interna
 - Correzioni alle Barcode Actions
+- SocketLink: il rientro cassetto è accettato solo se il cassetto è in attesa di conferma
 
 ## Compatibile con adapter 0.4.31
 ***

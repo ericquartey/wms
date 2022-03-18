@@ -20,6 +20,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool[] FaultStates { get; set; }
 
+        public int IoIndex { get; set; }
+
         public MessageVerbosity Verbosity => MessageVerbosity.Info;
 
         #endregion
@@ -52,7 +54,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
                 currentStates = sb.ToString();
             }
 
-            return $"OutFaultStates:{faultStates}; OutCurrentStates:{currentStates}";
+            return $"OutFaultStates:{faultStates}; OutCurrentStates:{currentStates}; ioIndex:{this.IoIndex}";
         }
 
         #endregion

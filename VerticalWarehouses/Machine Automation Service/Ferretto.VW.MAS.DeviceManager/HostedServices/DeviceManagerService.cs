@@ -705,6 +705,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             {
                                 FaultStates = diagOutData.FaultStates,
                                 CurrentStates = diagOutData.CurrentStates,
+                                IoIndex = ioIndex,
                             };
 
                             this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {diagOutData}");

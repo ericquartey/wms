@@ -8,6 +8,8 @@
 
         bool[] FaultStates { get; set; }
 
+        int IoIndex { get; set; }
+
         #endregion
     }
 }
