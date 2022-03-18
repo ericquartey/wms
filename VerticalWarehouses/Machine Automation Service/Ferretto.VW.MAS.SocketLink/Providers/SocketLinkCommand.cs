@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.SocketLink
             machineIsLogicallyEnabled = 1
         }
 
-        public enum StroreCommandResponseResult
+        public enum StoreCommandResponseResult
         {
             requestAccepted = 0,
 
