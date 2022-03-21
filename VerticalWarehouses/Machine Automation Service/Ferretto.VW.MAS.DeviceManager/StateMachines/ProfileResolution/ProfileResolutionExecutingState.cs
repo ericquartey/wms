@@ -36,15 +36,11 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
         private readonly int[] profile;
 
-        //private readonly double[] findZeroPosition = new double[(int)HorizontalCalibrationStep.FindCenter];
         private readonly IServiceScope scope;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        //private readonly double secondPosition;
         private readonly IProfileResolutionStateData stateData;
-
-        //private HorizontalCalibrationStep findZeroStep;
 
         private double eightBeamPosition;
 
@@ -420,6 +416,22 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
         private void StartNewStep()
         {
+            if (this.performedCycles == (int)ProfileResolutionStep.ZeroBeam
+                && this.profile[this.performedCycles] > 2200)
+            {
+                this.Logger.LogError($"Profile Resolution error! Step {this.performedCycles} - profile too high!");
+            }
+            else if (this.performedCycles == (int)ProfileResolutionStep.EightBeam
+                && !this.machineData.MachineSensorStatus.IsProfileCalibratedBay(this.machineData.RequestingBay))
+            {
+                this.Logger.LogError($"Profile Resolution error! Step {this.performedCycles} - Calibrated signal missing!");
+            }
+            else if (this.performedCycles == (int)ProfileResolutionStep.ThirtyBeam
+                && this.profile[this.performedCycles] < 9800)
+            {
+                this.Logger.LogError($"Profile Resolution error! Step {this.performedCycles} - profile too low!");
+            }
+
             if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles ||
                 this.isTestStopped)
             {
