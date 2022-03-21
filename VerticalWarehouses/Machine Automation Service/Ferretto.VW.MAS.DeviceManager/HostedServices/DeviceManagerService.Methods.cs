@@ -15,6 +15,7 @@ using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.InverterReading;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
+using Ferretto.VW.MAS.DeviceManager.ProfileResolution;
 using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
@@ -409,7 +410,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                     !(x is PositioningStateMachine) &&
                     !(x is ShutterPositioningStateMachine) &&
                     !(x is RepetitiveHorizontalMovementsStateMachine) &&
-                    !(x is CombinedMovementsStateMachine)))
+                    !(x is CombinedMovementsStateMachine) &&
+                    !(x is ProfileResolutionStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Operation already in progress on {targetBay}", 1, MessageVerbosity.Error));
             }
@@ -442,6 +444,24 @@ namespace Ferretto.VW.MAS.DeviceManager
                 else if (data.MovementMode == MovementMode.HorizontalResolution)
                 {
                     var currentStateMachine = new HorizontalResolutionStateMachine(
+                        message.Source,
+                        message.RequestingBay,
+                        targetBay,
+                        data,
+                        this.machineResourcesProvider,
+                        this.EventAggregator,
+                        this.Logger,
+                        baysDataProvider,
+                        this.ServiceScopeFactory);
+
+                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                    this.currentStateMachines.Add(currentStateMachine);
+
+                    this.StartStateMachine(currentStateMachine);
+                }
+                else if (data.MovementMode == MovementMode.ProfileResolution)
+                {
+                    var currentStateMachine = new ProfileResolutionStateMachine(
                         message.Source,
                         message.RequestingBay,
                         targetBay,

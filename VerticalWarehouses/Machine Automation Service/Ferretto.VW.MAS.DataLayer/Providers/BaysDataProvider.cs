@@ -574,6 +574,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case MovementMode.HorizontalCalibration:
                 case MovementMode.TorqueCurrentSampling:
                 case MovementMode.ProfileCalibration:
+                case MovementMode.ProfileResolution:
                 case MovementMode.FindZero:
                 case MovementMode.HorizontalResolution:
                     targetBay = BayNumber.ElevatorBay;
@@ -684,6 +685,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.PositionAndMeasureProfile:
                         case MovementMode.PositionAndMeasureWeight:
                         case MovementMode.ProfileCalibration:
+                        case MovementMode.ProfileResolution:
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:

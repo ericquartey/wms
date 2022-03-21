@@ -25,18 +25,26 @@
         BeltBurnishing,
 
         /// <summary>
-        /// Horizontal movements for calibration
+        /// Horizontal movements for calibration (measure zero plate)
         /// </summary>
         HorizontalCalibration,
 
         /// <summary>
-        /// Elevator Horizontal axis movement (for calibration)
+        /// Elevator Horizontal axis movement (automatic resolution change)
         /// </summary>
         HorizontalResolution,
 
         TorqueCurrentSampling,
 
+        /// <summary>
+        /// Horizontal movements for profile barrier positioning
+        /// </summary>
         ProfileCalibration,
+
+        /// <summary>
+        /// Elevator Vertical axis movement and measure profile (automatic resolution change)
+        /// </summary>
+        ProfileResolution,
 
         /// <summary>
         /// Movements for shutter
@@ -59,7 +67,7 @@
         BayChainManual,
 
         /// <summary>
-        /// Test in carousel bay (for calibration)
+        /// Test in carousel bay (automatic resolution change)
         /// </summary>
         BayTest,
 

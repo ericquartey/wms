@@ -68,6 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
         public void Dispose()
         {
+            this.profileTimer.Dispose();
             this.Dispose(true);
         }
 
@@ -90,7 +91,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.bayPositionId);
                             this.Logger.LogTrace($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if ((profileHeight >= this.minHeight - tolerance)
-                                && data.Profile <= 10000
+                                && data.Profile <= 11000
                                 )
                             {
                                 this.Logger.LogError($"Intrusion detected in Bay {this.machineData.RequestingBay} by height {profileHeight}!");

@@ -7,29 +7,30 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels.Resources;
-using Ferretto.VW.MAS.DeviceManager.HorizontalResolution.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.HorizontalResolution.Models;
+using Ferretto.VW.MAS.DeviceManager.ProfileResolution.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.ProfileResolution.Models;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
+namespace Ferretto.VW.MAS.DeviceManager.ProfileResolution
 {
-    internal class HorizontalResolutionStateMachine : StateMachineBase
+    internal class ProfileResolutionStateMachine : StateMachineBase
     {
         #region Fields
 
         private readonly IBaysDataProvider baysDataProvider;
 
-        private readonly IHorizontalResolutionMachineData machineData;
+        private readonly IProfileResolutionMachineData machineData;
 
         #endregion
 
         #region Constructors
 
-        public HorizontalResolutionStateMachine(
+        public ProfileResolutionStateMachine(
             MessageActor requester,
             BayNumber requestingBay,
             BayNumber targetBay,
@@ -44,7 +45,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
             this.Logger.LogTrace("1:Method Start");
             this.baysDataProvider = baysDataProvider;
 
-            this.machineData = new HorizontalResolutionMachineData(
+            this.machineData = new ProfileResolutionMachineData(
                 requester,
                 requestingBay,
                 targetBay,
@@ -96,14 +97,14 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
             //INFO Begin check the pre conditions to start the positioning
             lock (this.CurrentState)
             {
-                var stateData = new HorizontalResolutionStateData(this, this.machineData);
+                var stateData = new ProfileResolutionStateData(this, this.machineData);
                 //INFO Check the Horizontal and Vertical conditions for Positioning
                 if (this.machineData.MessageData.BypassConditions ||
                     this.CheckConditions(out var errorText, out var errorCode))
                 {
-                    var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                    this.machineData.MessageData.RequiredCycles = (int)ProfileResolutionStep.ThirtyBeam + 1;
 
-                    this.ChangeState(new HorizontalResolutionStartState(stateData, this.Logger));
+                    this.ChangeState(new ProfileResolutionStartState(stateData, this.Logger));
                 }
                 else
                 {
@@ -125,7 +126,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
                         MessageStatus.OperationStart);
 
                     this.PublishNotificationMessage(notificationMessage);
-                    this.ChangeState(new HorizontalResolutionErrorState(stateData, this.Logger));
+                    this.ChangeState(new ProfileResolutionErrorState(stateData, this.Logger));
                 }
             }
         }
@@ -153,7 +154,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.HorizontalResolution)
+            if (this.machineData.MessageData.MovementMode == MovementMode.ProfileResolution)
             {
                 ok = !(bay.Carousel != null || bay.IsExternal)
                     || this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
@@ -167,6 +168,14 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
                     ok = false;
                     errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;
                     errorCode = DataModels.MachineErrorCode.MissingZeroSensorWithEmptyElevator;
+                }
+                else if (bay.Shutter != null
+                    && bay.Shutter.Type != ShutterType.NotSpecified
+                    && this.machineData.MachineSensorStatus.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Opened)
+                {
+                    ok = false;
+                    errorText = ErrorDescriptions.LoadUnitShutterInvalid;
+                    errorCode = DataModels.MachineErrorCode.LoadUnitShutterInvalid;
                 }
             }
             return ok;

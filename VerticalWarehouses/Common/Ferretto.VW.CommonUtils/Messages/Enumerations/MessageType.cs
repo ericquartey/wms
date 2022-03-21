@@ -159,6 +159,8 @@
 
         RemoveLoadUnit,
 
-        DiagOutChanged
+        DiagOutChanged,
+
+        ProfileResolution
     }
 }

@@ -61,6 +61,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.setupProceduresDataProvider.GetBayProfileCheck(this.BayNumber));
         }
 
+        [HttpPost("resolution")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult Resolution(int bayPositionId)
+        {
+            this.elevatorProvider.MoveProfileResolution(bayPositionId, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
