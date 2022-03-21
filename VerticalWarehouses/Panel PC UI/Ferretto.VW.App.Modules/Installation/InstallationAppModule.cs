@@ -56,6 +56,9 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<BEDTestView>();
 
             containerRegistry.RegisterForNavigation<BaysSensorsView>();
+            containerRegistry.RegisterForNavigation<Bay1DeviceIOView>();
+            containerRegistry.RegisterForNavigation<Bay2DeviceIOView>();
+            containerRegistry.RegisterForNavigation<Bay3DeviceIOView>();
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
 

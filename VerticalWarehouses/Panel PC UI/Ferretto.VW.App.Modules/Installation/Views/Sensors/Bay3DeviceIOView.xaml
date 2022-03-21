@@ -1,0 +1,195 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.Bay3DeviceIOView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+  <Grid Margin="0">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <views:SensorsNavigationView />
+
+    <Grid Grid.Column="1"
+          Margin="5,0,15,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="auto" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!--  Bay 3  -->
+      <TextBlock Grid.Row="0"
+                 Grid.ColumnSpan="2"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Top"
+                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                 Text="{res:Loc InstallationApp.Bay3}" />
+      <StackPanel Grid.Row="1"
+                  Grid.Column="0"
+                  Orientation="Vertical">
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault16, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError1}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault17, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError2}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault18, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError3}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault19, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError4}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault20, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError5}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault21, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError6}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault22, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError7}" />
+
+        <controls:PpcSensorControl SensorState="{Binding DiagOutFault23, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{res:Loc InstallationApp.ExitError8}" />
+
+
+      </StackPanel>
+      <StackPanel Grid.Row="1"
+                  Grid.Column="1"
+                  Orientation="Vertical">
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit1}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent16, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit2}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent17, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit3}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent18, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit4}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent19, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit5}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent20, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit6}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent21, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit7}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent22, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <StackPanel Height="37"
+                    Orientation="Horizontal">
+          <controls:PpcSensorControl IndicatorBorderBrush="Transparent"
+                                     IndicatorFillBrush="Transparent"
+                                     Text="{res:Loc InstallationApp.CurrentExit8}" />
+          <TextBlock Margin="5,0,0,0"
+                     FontSize="{StaticResource FontSize_Normal}"
+                     Foreground="{StaticResource GrayH1}"
+                     Text="{Binding DiagOutCurrent23, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+
+      </StackPanel>
+    </Grid>
+
+    <StackPanel Grid.Column="2">
+      <Border Margin="0,0,15,0"
+              VerticalAlignment="Top"
+              Background="{DynamicResource PpcBackground}">
+        <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+          <Grid Margin="10,10,10,0">
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.Legend}" />
+            <controls:PpcSensorControl Grid.Row="1"
+                                       SensorState="True"
+                                       Text="{res:Loc InstallationApp.ActiveSensor}" />
+            <controls:PpcSensorControl Grid.Row="2"
+                                       SensorState="False"
+                                       Text="{res:Loc InstallationApp.DeactivatedSensor}" />
+          </Grid>
+        </Border>
+      </Border>
+    </StackPanel>
+  </Grid>
+</ctrls:View>

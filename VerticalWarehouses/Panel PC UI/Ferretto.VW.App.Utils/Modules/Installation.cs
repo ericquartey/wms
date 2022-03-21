@@ -41,8 +41,6 @@
 
         public const string DATABASEBACKUP = "DatabaseBackupViewModel";
 
-        public const string LOGOUTSETTINGS = "LogoutSettingsViewModel";
-
         public const string DATETIME = "DateTimeViewModel";
 
         public const string EXTERNALBAYCALIBRATION = "ExternalBayCalibrationViewModel";
@@ -54,6 +52,8 @@
         public const string HORIZONTALRESOLUTIONCALIBRATION = "HorizontalResolutionCalibrationViewModel";
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
+
+        public const string LOGOUTSETTINGS = "LogoutSettingsViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
 
@@ -236,6 +236,12 @@
             #region Fields
 
             public const string BAYS = "BaysSensorsViewModel";
+
+            public const string IO1 = "Bay1DeviceIOViewModel";
+
+            public const string IO2 = "Bay2DeviceIOViewModel";
+
+            public const string IO3 = "Bay3DeviceIOViewModel";
 
             public const string NAVIGATION = "SensorsNavigationViewModel";
 

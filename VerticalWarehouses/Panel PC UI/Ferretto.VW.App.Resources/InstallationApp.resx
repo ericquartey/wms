@@ -2674,4 +2674,67 @@
   <data name="PasswordFailConfirm" xml:space="preserve">
     <value>Incorrect passwords</value>
   </data>
+  <data name="CurrentExit" xml:space="preserve">
+    <value>Current Exit</value>
+  </data>
+  <data name="ExitError" xml:space="preserve">
+    <value>Exit Error</value>
+  </data>
+  <data name="CurrentExit1" xml:space="preserve">
+    <value>Current Exit 1:</value>
+  </data>
+  <data name="CurrentExit2" xml:space="preserve">
+    <value>Current Exit 2:</value>
+  </data>
+  <data name="CurrentExit3" xml:space="preserve">
+    <value>Current Exit 3:</value>
+  </data>
+  <data name="CurrentExit4" xml:space="preserve">
+    <value>Current Exit 4:</value>
+  </data>
+  <data name="CurrentExit5" xml:space="preserve">
+    <value>Current Exit 5:</value>
+  </data>
+  <data name="CurrentExit6" xml:space="preserve">
+    <value>Current Exit 6:</value>
+  </data>
+  <data name="CurrentExit7" xml:space="preserve">
+    <value>Current Exit 7:</value>
+  </data>
+  <data name="CurrentExit8" xml:space="preserve">
+    <value>Current Exit 8:</value>
+  </data>
+  <data name="ExitError1" xml:space="preserve">
+    <value>Exit Error1</value>
+  </data>
+  <data name="ExitError2" xml:space="preserve">
+    <value>Exit Error 2</value>
+  </data>
+  <data name="ExitError3" xml:space="preserve">
+    <value>Exit Error 3</value>
+  </data>
+  <data name="ExitError4" xml:space="preserve">
+    <value>Exit Error 4</value>
+  </data>
+  <data name="ExitError5" xml:space="preserve">
+    <value>Exit Error 5</value>
+  </data>
+  <data name="ExitError6" xml:space="preserve">
+    <value>Exit Error 6</value>
+  </data>
+  <data name="ExitError7" xml:space="preserve">
+    <value>Exit Error 7</value>
+  </data>
+  <data name="ExitError8" xml:space="preserve">
+    <value>Exit Error 8</value>
+  </data>
+  <data name="DeviceIO1" xml:space="preserve">
+    <value>IO Device (Bay 1)</value>
+  </data>
+  <data name="DeviceIO2" xml:space="preserve">
+    <value>IO Device (Bay 2)</value>
+  </data>
+  <data name="DeviceIO3" xml:space="preserve">
+    <value>IO Device (Bay 3)</value>
+  </data>
 </root>

@@ -52,7 +52,103 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private List<int> diagOutCurrent;
 
+        private string diagOutCurrent0;
+
+        private string diagOutCurrent1;
+
+        private string diagOutCurrent10;
+
+        private string diagOutCurrent11;
+
+        private string diagOutCurrent12;
+
+        private string diagOutCurrent13;
+
+        private string diagOutCurrent14;
+
+        private string diagOutCurrent15;
+
+        private string diagOutCurrent16;
+
+        private string diagOutCurrent17;
+
+        private string diagOutCurrent18;
+
+        private string diagOutCurrent19;
+
+        private string diagOutCurrent2;
+
+        private string diagOutCurrent20;
+
+        private string diagOutCurrent21;
+
+        private string diagOutCurrent22;
+
+        private string diagOutCurrent23;
+
+        private string diagOutCurrent3;
+
+        private string diagOutCurrent4;
+
+        private string diagOutCurrent5;
+
+        private string diagOutCurrent6;
+
+        private string diagOutCurrent7;
+
+        private string diagOutCurrent8;
+
+        private string diagOutCurrent9;
+
         private List<bool> diagOutFault;
+
+        private bool diagOutFault0;
+
+        private bool diagOutFault1;
+
+        private bool diagOutFault10;
+
+        private bool diagOutFault11;
+
+        private bool diagOutFault12;
+
+        private bool diagOutFault13;
+
+        private bool diagOutFault14;
+
+        private bool diagOutFault15;
+
+        private bool diagOutFault16;
+
+        private bool diagOutFault17;
+
+        private bool diagOutFault18;
+
+        private bool diagOutFault19;
+
+        private bool diagOutFault2;
+
+        private bool diagOutFault20;
+
+        private bool diagOutFault21;
+
+        private bool diagOutFault22;
+
+        private bool diagOutFault23;
+
+        private bool diagOutFault3;
+
+        private bool diagOutFault4;
+
+        private bool diagOutFault5;
+
+        private bool diagOutFault6;
+
+        private bool diagOutFault7;
+
+        private bool diagOutFault8;
+
+        private bool diagOutFault9;
 
         private SubscriptionToken diagOutToken;
 
@@ -143,7 +239,104 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public List<int> DiagOutCurrent { get => this.diagOutCurrent; private set => this.SetProperty(ref this.diagOutCurrent, value); }
 
+        //  0 a 65536
+        public string DiagOutCurrent0 { get => this.diagOutCurrent0; set => this.SetProperty(ref this.diagOutCurrent0, value); }
+
+        public string DiagOutCurrent1 { get => this.diagOutCurrent1; set => this.SetProperty(ref this.diagOutCurrent1, value); }
+
+        public string DiagOutCurrent10 { get => this.diagOutCurrent10; set => this.SetProperty(ref this.diagOutCurrent10, value); }
+
+        public string DiagOutCurrent11 { get => this.diagOutCurrent11; set => this.SetProperty(ref this.diagOutCurrent11, value); }
+
+        public string DiagOutCurrent12 { get => this.diagOutCurrent12; set => this.SetProperty(ref this.diagOutCurrent12, value); }
+
+        public string DiagOutCurrent13 { get => this.diagOutCurrent13; set => this.SetProperty(ref this.diagOutCurrent13, value); }
+
+        public string DiagOutCurrent14 { get => this.diagOutCurrent14; set => this.SetProperty(ref this.diagOutCurrent14, value); }
+
+        public string DiagOutCurrent15 { get => this.diagOutCurrent15; set => this.SetProperty(ref this.diagOutCurrent15, value); }
+
+        public string DiagOutCurrent16 { get => this.diagOutCurrent16; set => this.SetProperty(ref this.diagOutCurrent16, value); }
+
+        public string DiagOutCurrent17 { get => this.diagOutCurrent17; set => this.SetProperty(ref this.diagOutCurrent17, value); }
+
+        public string DiagOutCurrent18 { get => this.diagOutCurrent18; set => this.SetProperty(ref this.diagOutCurrent18, value); }
+
+        public string DiagOutCurrent19 { get => this.diagOutCurrent19; set => this.SetProperty(ref this.diagOutCurrent19, value); }
+
+        public string DiagOutCurrent2 { get => this.diagOutCurrent2; set => this.SetProperty(ref this.diagOutCurrent2, value); }
+
+        public string DiagOutCurrent20 { get => this.diagOutCurrent20; set => this.SetProperty(ref this.diagOutCurrent20, value); }
+
+        public string DiagOutCurrent21 { get => this.diagOutCurrent21; set => this.SetProperty(ref this.diagOutCurrent21, value); }
+
+        public string DiagOutCurrent22 { get => this.diagOutCurrent22; set => this.SetProperty(ref this.diagOutCurrent22, value); }
+
+        public string DiagOutCurrent23 { get => this.diagOutCurrent23; set => this.SetProperty(ref this.diagOutCurrent23, value); }
+
+        public string DiagOutCurrent3 { get => this.diagOutCurrent3; set => this.SetProperty(ref this.diagOutCurrent3, value); }
+
+        public string DiagOutCurrent4 { get => this.diagOutCurrent4; set => this.SetProperty(ref this.diagOutCurrent4, value); }
+
+        public string DiagOutCurrent5 { get => this.diagOutCurrent5; set => this.SetProperty(ref this.diagOutCurrent5, value); }
+
+        public string DiagOutCurrent6 { get => this.diagOutCurrent6; set => this.SetProperty(ref this.diagOutCurrent6, value); }
+
+        public string DiagOutCurrent7 { get => this.diagOutCurrent7; set => this.SetProperty(ref this.diagOutCurrent7, value); }
+
+        public string DiagOutCurrent8 { get => this.diagOutCurrent8; set => this.SetProperty(ref this.diagOutCurrent8, value); }
+
+        public string DiagOutCurrent9 { get => this.diagOutCurrent9; set => this.SetProperty(ref this.diagOutCurrent9, value); }
+
         public List<bool> DiagOutFault { get => this.diagOutFault; private set => this.SetProperty(ref this.diagOutFault, value); }
+
+        public bool DiagOutFault0 { get => this.diagOutFault0; set => this.SetProperty(ref this.diagOutFault0, value); }
+
+        public bool DiagOutFault1 { get => this.diagOutFault1; set => this.SetProperty(ref this.diagOutFault1, value); }
+
+        public bool DiagOutFault10 { get => this.diagOutFault10; set => this.SetProperty(ref this.diagOutFault10, value); }
+
+        public bool DiagOutFault11 { get => this.diagOutFault11; set => this.SetProperty(ref this.diagOutFault11, value); }
+
+        public bool DiagOutFault12 { get => this.diagOutFault12; set => this.SetProperty(ref this.diagOutFault12, value); }
+
+        public bool DiagOutFault13 { get => this.diagOutFault13; set => this.SetProperty(ref this.diagOutFault13, value); }
+
+        public bool DiagOutFault14 { get => this.diagOutFault14; set => this.SetProperty(ref this.diagOutFault14, value); }
+
+        public bool DiagOutFault15 { get => this.diagOutFault15; set => this.SetProperty(ref this.diagOutFault15, value); }
+
+        public bool DiagOutFault16 { get => this.diagOutFault16; set => this.SetProperty(ref this.diagOutFault16, value); }
+
+        public bool DiagOutFault17 { get => this.diagOutFault17; set => this.SetProperty(ref this.diagOutFault17, value); }
+
+        public bool DiagOutFault18 { get => this.diagOutFault18; set => this.SetProperty(ref this.diagOutFault18, value); }
+
+        public bool DiagOutFault19 { get => this.diagOutFault19; set => this.SetProperty(ref this.diagOutFault19, value); }
+
+        public bool DiagOutFault2 { get => this.diagOutFault2; set => this.SetProperty(ref this.diagOutFault2, value); }
+
+        public bool DiagOutFault20 { get => this.diagOutFault20; set => this.SetProperty(ref this.diagOutFault20, value); }
+
+        public bool DiagOutFault21 { get => this.diagOutFault21; set => this.SetProperty(ref this.diagOutFault21, value); }
+
+        public bool DiagOutFault22 { get => this.diagOutFault22; set => this.SetProperty(ref this.diagOutFault22, value); }
+
+        public bool DiagOutFault23 { get => this.diagOutFault23; set => this.SetProperty(ref this.diagOutFault23, value); }
+
+        public bool DiagOutFault3 { get => this.diagOutFault3; set => this.SetProperty(ref this.diagOutFault3, value); }
+
+        public bool DiagOutFault4 { get => this.diagOutFault4; set => this.SetProperty(ref this.diagOutFault4, value); }
+
+        public bool DiagOutFault5 { get => this.diagOutFault5; set => this.SetProperty(ref this.diagOutFault5, value); }
+
+        public bool DiagOutFault6 { get => this.diagOutFault6; set => this.SetProperty(ref this.diagOutFault6, value); }
+
+        public bool DiagOutFault7 { get => this.diagOutFault7; set => this.SetProperty(ref this.diagOutFault7, value); }
+
+        public bool DiagOutFault8 { get => this.diagOutFault8; set => this.SetProperty(ref this.diagOutFault8, value); }
+
+        public bool DiagOutFault9 { get => this.diagOutFault9; set => this.SetProperty(ref this.diagOutFault9, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -224,6 +417,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.DiagOutFault.Add(false);
                 this.DiagOutCurrent.Add(0);
             }
+
+            this.DiagOutUpdate();
 
             this.SubscribeToEvents();
 
@@ -329,6 +524,65 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .SingleOrDefault();
         }
 
+        private void DiagOutUpdate()
+        {
+            if (this.DiagOutFault.Count >= 23)
+            {
+                this.DiagOutFault0 = this.DiagOutFault[0];
+                this.DiagOutFault1 = this.DiagOutFault[1];
+                this.DiagOutFault2 = this.DiagOutFault[2];
+                this.DiagOutFault3 = this.DiagOutFault[3];
+                this.DiagOutFault4 = this.DiagOutFault[4];
+                this.DiagOutFault5 = this.DiagOutFault[5];
+                this.DiagOutFault6 = this.DiagOutFault[6];
+                this.DiagOutFault7 = this.DiagOutFault[7];
+                this.DiagOutFault8 = this.DiagOutFault[8];
+                this.DiagOutFault9 = this.DiagOutFault[9];
+                this.DiagOutFault10 = this.DiagOutFault[10];
+                this.DiagOutFault11 = this.DiagOutFault[11];
+                this.DiagOutFault12 = this.DiagOutFault[12];
+                this.DiagOutFault13 = this.DiagOutFault[13];
+                this.DiagOutFault14 = this.DiagOutFault[14];
+                this.DiagOutFault15 = this.DiagOutFault[15];
+                this.DiagOutFault16 = this.DiagOutFault[16];
+                this.DiagOutFault17 = this.DiagOutFault[17];
+                this.DiagOutFault18 = this.DiagOutFault[18];
+                this.DiagOutFault19 = this.DiagOutFault[19];
+                this.DiagOutFault20 = this.DiagOutFault[20];
+                this.DiagOutFault21 = this.DiagOutFault[21];
+                this.DiagOutFault22 = this.DiagOutFault[22];
+                this.DiagOutFault23 = this.DiagOutFault[23];
+            }
+
+            if (this.DiagOutCurrent.Count >= 23)
+            {
+                this.DiagOutCurrent0 = this.DiagOutCurrent[0].ToString();
+                this.DiagOutCurrent1 = this.DiagOutCurrent[1].ToString();
+                this.DiagOutCurrent2 = this.DiagOutCurrent[2].ToString();
+                this.DiagOutCurrent3 = this.DiagOutCurrent[3].ToString();
+                this.DiagOutCurrent4 = this.DiagOutCurrent[4].ToString();
+                this.DiagOutCurrent5 = this.DiagOutCurrent[5].ToString();
+                this.DiagOutCurrent6 = this.DiagOutCurrent[6].ToString();
+                this.DiagOutCurrent7 = this.DiagOutCurrent[7].ToString();
+                this.DiagOutCurrent8 = this.DiagOutCurrent[8].ToString();
+                this.DiagOutCurrent9 = this.DiagOutCurrent[9].ToString();
+                this.DiagOutCurrent10 = this.DiagOutCurrent[10].ToString();
+                this.DiagOutCurrent11 = this.DiagOutCurrent[11].ToString();
+                this.DiagOutCurrent12 = this.DiagOutCurrent[12].ToString();
+                this.DiagOutCurrent13 = this.DiagOutCurrent[13].ToString();
+                this.DiagOutCurrent14 = this.DiagOutCurrent[14].ToString();
+                this.DiagOutCurrent15 = this.DiagOutCurrent[15].ToString();
+                this.DiagOutCurrent16 = this.DiagOutCurrent[16].ToString();
+                this.DiagOutCurrent17 = this.DiagOutCurrent[17].ToString();
+                this.DiagOutCurrent18 = this.DiagOutCurrent[18].ToString();
+                this.DiagOutCurrent19 = this.DiagOutCurrent[19].ToString();
+                this.DiagOutCurrent20 = this.DiagOutCurrent[20].ToString();
+                this.DiagOutCurrent21 = this.DiagOutCurrent[21].ToString();
+                this.DiagOutCurrent22 = this.DiagOutCurrent[22].ToString();
+                this.DiagOutCurrent23 = this.DiagOutCurrent[23].ToString();
+            }
+        }
+
         private void InitializeNavigationMenu()
         {
             this.menuItems.Add(
@@ -351,6 +605,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.Localized.Get("InstallationApp.Bays"),
                     trackCurrentView: false));
+
+            if (this.MachineService.Bays.ToList().Exists(x => x.Number == BayNumber.BayOne))
+            {
+                this.menuItems.Add(
+                                new NavigationMenuItem(
+                                    Utils.Modules.Installation.Sensors.IO1,
+                                    nameof(Utils.Modules.Installation),
+                                    VW.App.Resources.Localized.Get("InstallationApp.DeviceIO1"),
+                                    trackCurrentView: false));
+            }
+
+            if (this.MachineService.Bays.ToList().Exists(x => x.Number == BayNumber.BayTwo))
+            {
+                this.menuItems.Add(
+                                new NavigationMenuItem(
+                                    Utils.Modules.Installation.Sensors.IO2,
+                                    nameof(Utils.Modules.Installation),
+                                    VW.App.Resources.Localized.Get("InstallationApp.DeviceIO2"),
+                                    trackCurrentView: false));
+            }
+
+            if (this.MachineService.Bays.ToList().Exists(x => x.Number == BayNumber.BayThree))
+            {
+                this.menuItems.Add(
+                                new NavigationMenuItem(
+                                    Utils.Modules.Installation.Sensors.IO3,
+                                    nameof(Utils.Modules.Installation),
+                                    VW.App.Resources.Localized.Get("InstallationApp.DeviceIO3"),
+                                    trackCurrentView: false));
+            }
         }
 
         private void OnDiagOutChanged(NotificationMessageUI<DiagOutChangedMessageData> message)
@@ -360,6 +644,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.DiagOutFault[message.Data.IoIndex * this.OUT_PER_DEVICE + i] = message.Data.FaultStates[i];
                 this.DiagOutCurrent[message.Data.IoIndex * this.OUT_PER_DEVICE + i] = message.Data.CurrentStates[i];
             }
+
+            this.DiagOutUpdate();
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
