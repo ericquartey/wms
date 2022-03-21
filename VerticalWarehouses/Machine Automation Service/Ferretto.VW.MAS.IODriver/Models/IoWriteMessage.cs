@@ -147,6 +147,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                 case 0x11:
                 case 0x12: // new release
+                case 0x13:
                     nBytesToSend = NBYTES + 1;
                     break;
 
@@ -196,6 +197,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                 case 0x11:
                 case 0x12: // new release
+                case 0x13:
 
                     // Alignment
                     telegram[3] = 0x00;
