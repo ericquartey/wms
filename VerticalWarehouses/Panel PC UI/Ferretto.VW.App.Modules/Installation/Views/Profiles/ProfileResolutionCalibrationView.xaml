@@ -300,14 +300,14 @@
                        Grid.Column="1"
                        Margin="0"
                        Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}">
-              <Run Text="{res:Loc InstallationApp.ProfileConst0}" /><Run Text=" : " /><Run Text="{Binding ProfileConst0}" />
+              <Run Text="{res:Loc InstallationApp.ProfileConst0}" /><Run Text=" : " /><Run Text="{Binding ProfileConst0, StringFormat={}{0:0.00}}" />
             </TextBlock>
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Margin="0"
                        Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}">
-              <Run Text="{res:Loc InstallationApp.ProfileConst1}" /><Run Text=" : " /><Run Text="{Binding ProfileConst1}" />
+              <Run Text="{res:Loc InstallationApp.ProfileConst1}" /><Run Text=" : " /><Run Text="{Binding ProfileConst1, StringFormat={}{0:0.0000}}" />
             </TextBlock>
 
           </Grid>
@@ -412,14 +412,14 @@
                        Grid.Column="1"
                        Margin="0"
                        Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}">
-              <Run Text="{res:Loc InstallationApp.ProfileConst0}" /><Run Text=" : " /><Run Text="{Binding ProfileConst0}" />
+              <Run Text="{res:Loc InstallationApp.ProfileConst0}" /><Run Text=" : " /><Run Text="{Binding ProfileConst0, StringFormat={}{0:0.00}}" />
             </TextBlock>
 
             <TextBlock Grid.Row="2"
                        Grid.Column="1"
                        Margin="0"
                        Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}">
-              <Run Text="{res:Loc InstallationApp.ProfileConst1}" /><Run Text=" : " /><Run Text="{Binding ProfileConst1}" />
+              <Run Text="{res:Loc InstallationApp.ProfileConst1}" /><Run Text=" : " /><Run Text="{Binding ProfileConst1, StringFormat={}{0:0.0000}}" />
             </TextBlock>
 
           </Grid>

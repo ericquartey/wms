@@ -1215,6 +1215,18 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
+        public void SetProfileConstBay(BayNumber bayNumber, double k0, double k1)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                bay.ProfileConst0 = k0;
+                bay.ProfileConst1 = k1;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
         {
             if (portName is null)
