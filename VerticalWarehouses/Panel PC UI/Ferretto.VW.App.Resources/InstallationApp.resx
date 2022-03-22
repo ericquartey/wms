@@ -2674,6 +2674,15 @@
   <data name="PasswordFailConfirm" xml:space="preserve">
     <value>Incorrect passwords</value>
   </data>
+  <data name="ProfileResolutionCalibration" xml:space="preserve">
+    <value>Profile Resolution Calibration</value>
+  </data>
+  <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
+    <value>TO DO ...</value>
+  </data>
+  <data name="VerticalCalibrationProcedureRequired" xml:space="preserve">
+    <value>Perform the Elevator calibration.</value>
+  </data>
   <data name="CurrentExit" xml:space="preserve">
     <value>Current Exit</value>
   </data>
@@ -2736,5 +2745,20 @@
   </data>
   <data name="DeviceIO3" xml:space="preserve">
     <value>IO Device (Bay 3)</value>
+  </data>
+  <data name="ProfileConst" xml:space="preserve">
+    <value>Profile constants</value>
+  </data>
+  <data name="ProfileConst0" xml:space="preserve">
+    <value>Profile K0 constant</value>
+  </data>
+  <data name="ProfileConst1" xml:space="preserve">
+    <value>Profile K1 constant</value>
+  </data>
+  <data name="ProfileSamples" xml:space="preserve">
+    <value>Profile read %</value>
+  </data>
+  <data name="ProfileSample" xml:space="preserve">
+    <value>Read</value>
   </data>
 </root>

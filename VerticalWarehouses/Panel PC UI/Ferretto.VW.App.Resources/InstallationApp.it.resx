@@ -2664,4 +2664,25 @@
   <data name="DeviceIO3" xml:space="preserve">
     <value>Scheda IO  (Baia 3)</value>
   </data>
+  <data name="ProfileResolutionCalibration" xml:space="preserve">
+    <value>Calibrazione barriera di controllo sagoma</value>
+  </data>
+  <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
+    <value>DA FARE ...</value>
+  </data>
+  <data name="ProfileConst0" xml:space="preserve">
+    <value>Costante K0 sagoma</value>
+  </data>
+  <data name="ProfileConst" xml:space="preserve">
+    <value>Costanti di sagoma</value>
+  </data>
+  <data name="ProfileConst1" xml:space="preserve">
+    <value>Costante K1 sagoma</value>
+  </data>
+  <data name="ProfileSamples" xml:space="preserve">
+    <value>Percentuale lettura sagoma</value>
+  </data>
+  <data name="ProfileSample" xml:space="preserve">
+    <value>Lettura</value>
+  </data>
 </root>
