@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         this.targetPosition = this.machineData.MessageData.TargetPosition;
                         positioningFieldMessageData.TargetPosition = this.targetPosition;
-                        var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+                        var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
                         var bayPosition = new BayPosition();
                         if (!bay.IsDouble)
                         {
@@ -293,7 +293,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
         /// </summary>
         private void ParametersCalculation()
         {
-            var k1 = (774 - 49) / (this.profile[(int)ProfileResolutionStep.ThirtyBeam] - this.profile[(int)ProfileResolutionStep.ZeroBeam]);
+            var k1 = (double)(774 - 49) / (this.profile[(int)ProfileResolutionStep.ThirtyBeam] - this.profile[(int)ProfileResolutionStep.ZeroBeam]);
             var k0 = 49 - this.profile[(int)ProfileResolutionStep.ZeroBeam] * k1;
             this.machineData.MessageData.ProfileConst = new double[2];
             this.machineData.MessageData.ProfileConst[0] = k0;
@@ -456,6 +456,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 {
                     positioningFieldMessageData.TargetPosition = this.thirtyBeamPosition;
                 }
+                positioningFieldMessageData.TargetPositionOriginal = positioningFieldMessageData.TargetPosition;
                 this.Logger.LogInformation($"Start Profile Resolution step [{this.performedCycles}] to {positioningFieldMessageData.TargetPosition:0.00}");
                 var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 
