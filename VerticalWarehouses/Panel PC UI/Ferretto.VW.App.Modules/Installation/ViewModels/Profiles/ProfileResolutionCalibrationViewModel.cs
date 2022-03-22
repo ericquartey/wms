@@ -398,7 +398,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ProfileConst0 = value[0];
             }
         }
+
         public double ProfileConst0 { get => this.profileConst0; set => this.SetProperty(ref this.profileConst0, value); }
+
         public double ProfileConst1 { get => this.profileConst1; set => this.SetProperty(ref this.profileConst1, value); }
 
         public int[] ProfileSamples
@@ -415,9 +417,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public int ProfileSamples0 { get => this.profileSamples0; set => this.SetProperty(ref this.profileSamples0, value); }
-        public int ProfileSamples1 { get => this.profileSamples1; set => this.SetProperty(ref this.profileSamples1, value); }
-        public int ProfileSamples2 { get => this.profileSamples2; set => this.SetProperty(ref this.profileSamples2, value); }
 
+        public int ProfileSamples1 { get => this.profileSamples1; set => this.SetProperty(ref this.profileSamples1, value); }
+
+        public int ProfileSamples2 { get => this.profileSamples2; set => this.SetProperty(ref this.profileSamples2, value); }
 
         //public int? NewErrorValue
         //{
@@ -869,8 +872,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsExecutingProcedure = false;
 
                     await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
-                    await this.machineElevatorWebService.SearchHorizontalZeroAsync();
-                    this.IsVerticalCalibration = true;
 
                     this.ShowNotification(
                             VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
