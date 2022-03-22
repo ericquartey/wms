@@ -30,6 +30,7 @@
 - Aggiunti parametri di baia per la lettura della sagoma (barriera di misura)
 - Aggiunti parametri di collegamento proxy per la telemetria
 - Aggiunte segnalazioni di diagnostica per la scheda I/O
+- Aggiunta procedura di risoluzione barriera
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore

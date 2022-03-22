@@ -3892,6 +3892,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         IoResetSecurityTimeout = 94,
     
+        ProfileResolutionFail = 95,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,

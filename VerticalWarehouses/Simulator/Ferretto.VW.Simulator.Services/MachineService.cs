@@ -703,6 +703,9 @@ namespace Ferretto.VW.Simulator.Services
                     for (var i = 0; i < outputs.Length; i++)
                     {
                         device.Outputs[i].Value = outputs[i].Value;
+                        // TEST
+                        device.OutDiagFail[i].Value = outputs[i].Value;
+                        device.OutDiagCurrent[i] = outputs[i].Value ? 300 : 0;
                     }
 
                     byte[] responseMessage = null;
@@ -718,6 +721,16 @@ namespace Ferretto.VW.Simulator.Services
                             var inputs = BitConverter.GetBytes(device.InputsValue);
                             responseMessage[device.FirmwareVersion == 0x11 ? 6 : 5] = inputs[0];
                             responseMessage[device.FirmwareVersion == 0x11 ? 7 : 6] = inputs[1];
+                            if (device.FirmwareVersion == 0x11)
+                            {
+                                for (var i = 0; i < device.OutDiagCurrent.Count; i++)
+                                {
+                                    var bytes = BitConverter.GetBytes(device.OutDiagCurrent[i]);
+                                    responseMessage[8 + (i * 2)] = bytes[0];
+                                    responseMessage[8 + (i * 2) + 1] = bytes[1];
+                                }
+                                responseMessage[24] = device.OutDiagFailValue;
+                            }
                             break;
 
                         case 0x01: // Config
