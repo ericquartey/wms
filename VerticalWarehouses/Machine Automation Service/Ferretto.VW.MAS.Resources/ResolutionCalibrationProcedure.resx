@@ -126,4 +126,16 @@
   <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
     <value>Procedure cannot be started because of the current setup status.</value>
   </data>
+  <data name="ProfileResolutionMissingSignal" xml:space="preserve">
+    <value>Step 1 - Calibrated signal missing</value>
+  </data>
+  <data name="ProfileResolutionTooHigh" xml:space="preserve">
+    <value>Step 0 - Profile too high at start</value>
+  </data>
+  <data name="ProfileResolutionTooLow" xml:space="preserve">
+    <value>Step 2 - Profile too low at end</value>
+  </data>
+  <data name="ProfileResolutionConstantsOutOfRange" xml:space="preserve">
+    <value>The profile constants are out of range</value>
+  </data>
 </root>

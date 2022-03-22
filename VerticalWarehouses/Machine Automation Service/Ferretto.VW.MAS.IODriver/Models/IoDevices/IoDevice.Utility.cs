@@ -110,6 +110,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                     case 0x11:
                     case 0x12: // new release
+                    case 0x13:
                         switch (nBytesReceived)
                         {
                             case NBYTES_TELEGRAM_DATA + 11: // 26
@@ -136,7 +137,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                                 diagOutCurrent = ByteArrayToIntArray(telegram, 8, N_BITS8);
 
-                                Array.Copy(ByteArrayToBoolArray(telegram[16]), diagOutFault, N_BITS8);
+                                Array.Copy(ByteArrayToBoolArray(telegram[24]), diagOutFault, N_BITS8);
 
                                 // Configuration data
                                 configurationData = new byte[17];
@@ -193,7 +194,7 @@ namespace Ferretto.VW.MAS.IODriver
             var ushortArray = new int[bytes];
             for (var i = 0; i < bytes; i++)
             {
-                ushortArray[i] = telegram[(i * 2) + sourceOffset] + telegram[(i * 2) + sourceOffset + 1] * 256;
+                ushortArray[i] = BitConverter.ToUInt16(telegram, (i * 2) + sourceOffset);
             }
             return ushortArray;
         }

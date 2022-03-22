@@ -147,6 +147,12 @@ namespace Ferretto.VW.MAS.AutomationService
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
+        private async Task OnDiagOutChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            await this.installationHub.Clients.All.DiagOutChanged(message);
+        }
+
         private async Task OnElevatorPositionChanged(ElevatorPositionMessageData data)
         {
             Contract.Requires(data != null);
@@ -193,13 +199,6 @@ namespace Ferretto.VW.MAS.AutomationService
             await this.installationHub.Clients.All.InverterProgrammingChanged(message);
         }
 
-        private async Task OnLogoutChanged(NotificationMessage receivedMessage)
-        {
-            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-
-            await this.installationHub.Clients.All.LogoutChanged(message);
-        }
-
         private async Task OnInverterReadingChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
@@ -211,6 +210,13 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             await this.installationHub.Clients.All.InverterStatusWordChanged(message);
+        }
+
+        private async Task OnLogoutChanged(NotificationMessage receivedMessage)
+        {
+            var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+
+            await this.installationHub.Clients.All.LogoutChanged(message);
         }
 
         private async Task OnMachineModeChanged(NotificationMessage receivedMessage)

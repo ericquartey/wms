@@ -149,6 +149,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="height">"only when it is not null"</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
 
+        void SetProfileConstBay(BayNumber bayNumber, double k0, double k1);
+
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
         void UpdateExtraRace(BayNumber bayNumber, double extraRace);

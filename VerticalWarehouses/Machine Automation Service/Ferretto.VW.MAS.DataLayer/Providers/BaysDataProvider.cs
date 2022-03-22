@@ -574,6 +574,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case MovementMode.HorizontalCalibration:
                 case MovementMode.TorqueCurrentSampling:
                 case MovementMode.ProfileCalibration:
+                case MovementMode.ProfileResolution:
                 case MovementMode.FindZero:
                 case MovementMode.HorizontalResolution:
                     targetBay = BayNumber.ElevatorBay;
@@ -684,6 +685,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.PositionAndMeasureProfile:
                         case MovementMode.PositionAndMeasureWeight:
                         case MovementMode.ProfileCalibration:
+                        case MovementMode.ProfileResolution:
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
@@ -1211,6 +1213,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
+        }
+
+        public void SetProfileConstBay(BayNumber bayNumber, double k0, double k1)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                bay.ProfileConst0 = k0;
+                bay.ProfileConst1 = k1;
+
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)

@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
 
         private readonly IHorizontalResolutionMachineData machineData;
 
-        private readonly IMachineResourcesProvider machineResourcesProvider;
-
         #endregion
 
         #region Constructors
@@ -45,7 +43,6 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
         {
             this.Logger.LogTrace("1:Method Start");
             this.baysDataProvider = baysDataProvider;
-            this.machineResourcesProvider = machineResourcesProvider;
 
             this.machineData = new HorizontalResolutionMachineData(
                 requester,

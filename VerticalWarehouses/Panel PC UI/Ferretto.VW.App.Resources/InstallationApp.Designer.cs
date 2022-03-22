@@ -1690,6 +1690,87 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Exit.
+        /// </summary>
+        public static string CurrentExit {
+            get {
+                return ResourceManager.GetString("CurrentExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 1:.
+        /// </summary>
+        public static string CurrentExit1 {
+            get {
+                return ResourceManager.GetString("CurrentExit1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 2:.
+        /// </summary>
+        public static string CurrentExit2 {
+            get {
+                return ResourceManager.GetString("CurrentExit2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 3:.
+        /// </summary>
+        public static string CurrentExit3 {
+            get {
+                return ResourceManager.GetString("CurrentExit3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 4:.
+        /// </summary>
+        public static string CurrentExit4 {
+            get {
+                return ResourceManager.GetString("CurrentExit4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 5:.
+        /// </summary>
+        public static string CurrentExit5 {
+            get {
+                return ResourceManager.GetString("CurrentExit5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 6:.
+        /// </summary>
+        public static string CurrentExit6 {
+            get {
+                return ResourceManager.GetString("CurrentExit6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 7:.
+        /// </summary>
+        public static string CurrentExit7 {
+            get {
+                return ResourceManager.GetString("CurrentExit7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Exit 8:.
+        /// </summary>
+        public static string CurrentExit8 {
+            get {
+                return ResourceManager.GetString("CurrentExit8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current height [mm].
         /// </summary>
         public static string CurrentHeight {
@@ -1965,6 +2046,33 @@ namespace Ferretto.VW.App.Resources {
         public static string DeviceFileFound {
             get {
                 return ResourceManager.GetString("DeviceFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IO Device (Bay 1).
+        /// </summary>
+        public static string DeviceIO1 {
+            get {
+                return ResourceManager.GetString("DeviceIO1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IO Device (Bay 2).
+        /// </summary>
+        public static string DeviceIO2 {
+            get {
+                return ResourceManager.GetString("DeviceIO2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IO Device (Bay 3).
+        /// </summary>
+        public static string DeviceIO3 {
+            get {
+                return ResourceManager.GetString("DeviceIO3", resourceCulture);
             }
         }
         
@@ -2415,6 +2523,87 @@ namespace Ferretto.VW.App.Resources {
         public static string ExeMeasurement {
             get {
                 return ResourceManager.GetString("ExeMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error.
+        /// </summary>
+        public static string ExitError {
+            get {
+                return ResourceManager.GetString("ExitError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error1.
+        /// </summary>
+        public static string ExitError1 {
+            get {
+                return ResourceManager.GetString("ExitError1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 2.
+        /// </summary>
+        public static string ExitError2 {
+            get {
+                return ResourceManager.GetString("ExitError2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 3.
+        /// </summary>
+        public static string ExitError3 {
+            get {
+                return ResourceManager.GetString("ExitError3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 4.
+        /// </summary>
+        public static string ExitError4 {
+            get {
+                return ResourceManager.GetString("ExitError4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 5.
+        /// </summary>
+        public static string ExitError5 {
+            get {
+                return ResourceManager.GetString("ExitError5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 6.
+        /// </summary>
+        public static string ExitError6 {
+            get {
+                return ResourceManager.GetString("ExitError6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 7.
+        /// </summary>
+        public static string ExitError7 {
+            get {
+                return ResourceManager.GetString("ExitError7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit Error 8.
+        /// </summary>
+        public static string ExitError8 {
+            get {
+                return ResourceManager.GetString("ExitError8", resourceCulture);
             }
         }
         
@@ -5209,6 +5398,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile constants.
+        /// </summary>
+        public static string ProfileConst {
+            get {
+                return ResourceManager.GetString("ProfileConst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile K0 constant.
+        /// </summary>
+        public static string ProfileConst0 {
+            get {
+                return ResourceManager.GetString("ProfileConst0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile K1 constant.
+        /// </summary>
+        public static string ProfileConst1 {
+            get {
+                return ResourceManager.GetString("ProfileConst1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on the calibration result, you can decide whether to complete the operation, having a result of less than 1 mm..
         /// </summary>
         public static string ProfileHeighCheckCalibrationLess {
@@ -5250,6 +5466,42 @@ namespace Ferretto.VW.App.Resources {
         public static string ProfileHeightCheckProcedureLeftUnitDescription {
             get {
                 return ResourceManager.GetString("ProfileHeightCheckProcedureLeftUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Resolution Calibration.
+        /// </summary>
+        public static string ProfileResolutionCalibration {
+            get {
+                return ResourceManager.GetString("ProfileResolutionCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TO DO ....
+        /// </summary>
+        public static string ProfileResolutionCalibrationHelp {
+            get {
+                return ResourceManager.GetString("ProfileResolutionCalibrationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read.
+        /// </summary>
+        public static string ProfileSample {
+            get {
+                return ResourceManager.GetString("ProfileSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile read %.
+        /// </summary>
+        public static string ProfileSamples {
+            get {
+                return ResourceManager.GetString("ProfileSamples", resourceCulture);
             }
         }
         
@@ -7167,6 +7419,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalCalibration {
             get {
                 return ResourceManager.GetString("VerticalCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the Elevator calibration..
+        /// </summary>
+        public static string VerticalCalibrationProcedureRequired {
+            get {
+                return ResourceManager.GetString("VerticalCalibrationProcedureRequired", resourceCulture);
             }
         }
         

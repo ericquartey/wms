@@ -1194,7 +1194,9 @@ namespace Ferretto.VW.MAS.SocketLink
                     var bay = this.baysDataProvider.GetByNumber(bayNumber);
                     trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
 
-                    if (trayNumber > 0)
+                    if (trayNumber > 0
+                        && this.missionsDataProvider.IsMissionInWaitState(bayNumber, trayNumber)
+                        )
                     {
                         var trayStatus = this.loadingUnitsDataProvider.GetById(trayNumber).Status;
 
@@ -1203,20 +1205,20 @@ namespace Ferretto.VW.MAS.SocketLink
                             this.logger.LogInformation($"Move load unit {trayNumber} back from bay {bay.Number}");
                             this.missionSchedulingProvider.QueueRecallMission(trayNumber, bay.Number, MissionType.IN);
 
-                            cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.requestAccepted);
+                            cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.requestAccepted);
                             cmdResponse.AddPayload(trayNumber);
                             cmdResponse.AddPayload("");
                         }
                         else
                         {
-                            cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
+                            cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
                             cmdResponse.AddPayload(trayNumber);
                             cmdResponse.AddPayload($"incorrect tray status ({trayStatus})");
                         }
                     }
                     else
                     {
-                        cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
+                        cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
                         cmdResponse.AddPayload(trayNumber);
                         cmdResponse.AddPayload($"no tray currently present in the specific bay ({trayNumber})");
                     }
@@ -1230,19 +1232,19 @@ namespace Ferretto.VW.MAS.SocketLink
             }
             catch (InvalidOperationException)
             {
-                cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.trayAlreadyRequested);
+                cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.trayAlreadyRequested);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload("tray already requested");
             }
             catch (EntityNotFoundException)
             {
-                cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.bayNotCorrect);
+                cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.bayNotCorrect);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload("incorrect bay number");
             }
             catch (BayNumberException ex)
             {
-                cmdResponse.AddPayload((int)SocketLinkCommand.StroreCommandResponseResult.bayNotCorrect);
+                cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.bayNotCorrect);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload(ex.Message);
             }

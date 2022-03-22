@@ -150,6 +150,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("set-profile-const-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetProfileConstBay(double k0, double k1)
+        {
+            this.baysDataProvider.SetProfileConstBay(this.BayNumber, k0, k1);
+            return this.Accepted();
+        }
+
         [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

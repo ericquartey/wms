@@ -382,8 +382,8 @@ namespace Ferretto.VW.MAS.IODriver
 
                     byte fwRelease;
                     byte errorCode;
-                    var diagOutCurrent = new int[8];
-                    var diagOutFault = new bool[8];
+                    var diagOutCurrent = new int[N_BYTES_8];
+                    var diagOutFault = new bool[N_BYTES_8];
 
                     ShdFormatDataOperation formatDataOperation;
                     try
@@ -440,7 +440,8 @@ namespace Ferretto.VW.MAS.IODriver
                             // INFO The sensor presence in lower bay must be inverted (NOT for carousel or External bay)
                             inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || (this.isExternalBay && !this.isDoubleBay)) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
-                            if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
+                            if (this.ioStatus.UpdateInputStates(inputData)
+                                || this.forceIoStatusPublish)
                             {
                                 var data = new SensorsChangedFieldMessageData();
                                 data.SensorsStates = inputData.ToArray();
@@ -464,6 +465,48 @@ namespace Ferretto.VW.MAS.IODriver
                                 }
                             }
 
+                            if (this.ioStatus.UpdateOutFaultStates(diagOutFault)
+                                || this.ioStatus.UpdateOutCurrentStates(diagOutCurrent)
+                                || this.forceIoStatusPublish)
+                            {
+                                //if (diagOutFault.Any(b => b))
+                                //{
+                                //    using (var scope = this.serviceScopeFactory.CreateScope())
+                                //    {
+                                //        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                                //        string message = "Fault detected in out signal (1-8): ";
+                                //        for (int i = 0; i < diagOutFault.Length; i++)
+                                //        {
+                                //            if (diagOutFault[i])
+                                //            {
+                                //                message += $"out{i + 1}; ";
+                                //            }
+                                //        }
+                                //        this.logger.LogError(message);
+                                //        //errorsProvider.RecordNew(MachineErrorCode.IoDeviceError, this.bayNumber, message);
+                                //    }
+                                //}
+                                //else
+                                //{
+                                //    this.logger.LogInformation("No fault detected in out signals");
+                                //}
+
+                                var data = new DiagOutChangedFieldMessageData();
+                                data.FaultStates = diagOutFault.ToArray();
+                                data.CurrentStates = diagOutCurrent.ToArray();
+                                var notificationMessage = new FieldNotificationMessage(
+                                    data,
+                                    "Update IO diag out",
+                                    FieldMessageActor.DeviceManager,
+                                    FieldMessageActor.IoDriver,
+                                    FieldMessageType.DiagOutChanged,
+                                    MessageStatus.OperationExecuting,
+                                    (byte)this.deviceIndex);
+                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                                this.logger.LogTrace($"IoDevice {this.deviceIndex}, data {notificationMessage.Data}");
+                            }
+
                             var messageData = new IoReadMessage(
                                 formatDataOperation,
                                 fwRelease,
@@ -472,25 +515,6 @@ namespace Ferretto.VW.MAS.IODriver
                                 configurationData,
                                 errorCode);
                             this.logger.LogTrace($"4:{messageData}: index {this.deviceIndex}");
-
-                            if (diagOutFault.Any(b => b))
-                            {
-                                using (var scope = this.serviceScopeFactory.CreateScope())
-                                {
-                                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-
-                                    string message = "Fault detected in out signal (1-8): ";
-                                    for (int i = 0; i < diagOutFault.Length; i++)
-                                    {
-                                        if (diagOutFault[i])
-                                        {
-                                            message += $"out{i + 1}; ";
-                                        }
-                                    }
-                                    this.logger.LogError(message);
-                                    //errorsProvider.RecordNew(MachineErrorCode.IoDeviceError, this.bayNumber, message);
-                                }
-                            }
 
                             this.CurrentStateMachine?.ProcessResponseMessage(messageData);
                             break;

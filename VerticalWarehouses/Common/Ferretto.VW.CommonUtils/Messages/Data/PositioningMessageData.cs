@@ -98,6 +98,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.DelayStart = other.DelayStart;
             this.Direction = other.Direction;
             this.WaitContinue = other.WaitContinue;
+            this.ProfileSamples = other.ProfileSamples;
+            this.ProfileConst = other.ProfileConst;
         }
 
         #endregion
@@ -139,6 +141,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MovementMode MovementMode { get; set; }
 
         public MovementType MovementType { get; set; }
+
+        public double[] ProfileConst { get; set; }
+
+        public int[] ProfileSamples { get; set; }
 
         public int RequiredCycles { get; set; }
 

@@ -49,6 +49,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         MovementType MovementType { get; }
 
+        double[] ProfileConst { get; set; }
+
+        int[] ProfileSamples { get; set; }
+
         int RequiredCycles { get; set; }
 
         int? SourceBayPositionId { get; set; }

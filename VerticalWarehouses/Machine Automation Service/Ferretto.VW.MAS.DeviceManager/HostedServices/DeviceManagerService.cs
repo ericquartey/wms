@@ -35,6 +35,7 @@ using Prism.Events;
 using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
 using Ferretto.VW.MAS.DeviceManager.InverterReading;
 using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
+using Ferretto.VW.MAS.DeviceManager.ProfileResolution;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -328,7 +329,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.Positioning:
                                 if (messageCurrentStateMachine is PositioningStateMachine ||
                                     messageCurrentStateMachine is ExtBayPositioningStateMachine ||
-                                    messageCurrentStateMachine is HorizontalResolutionStateMachine)
+                                    messageCurrentStateMachine is HorizontalResolutionStateMachine ||
+                                    messageCurrentStateMachine is ProfileResolutionStateMachine)
                                 {
                                     if (messageCurrentStateMachine is PositioningStateMachine machine)
                                     {
@@ -356,6 +358,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     }
 
                                     if (messageCurrentStateMachine is HorizontalResolutionStateMachine)
+                                    {
+                                        // deallocate only Positioning state machine
+                                        this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                        this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                        this.SendCleanDebug();
+                                    }
+
+                                    if (messageCurrentStateMachine is ProfileResolutionStateMachine)
                                     {
                                         // deallocate only Positioning state machine
                                         this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
@@ -662,36 +672,67 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
 
                     case FieldMessageType.SensorsChanged when receivedMessage.Data is ISensorsChangedFieldMessageData:
-
-                        this.Logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
-                        var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
-
-                        var ioIndex = receivedMessage.DeviceIndex;
-                        if (this.machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                         {
-                            var msgData = new SensorsChangedMessageData
+                            this.Logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+                            var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
+
+                            var ioIndex = receivedMessage.DeviceIndex;
+                            if (this.machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                             {
-                                SensorsStates = this.machineResourcesProvider.DisplayedInputs
+                                var msgData = new SensorsChangedMessageData
+                                {
+                                    SensorsStates = this.machineResourcesProvider.DisplayedInputs
+                                };
+
+                                this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+
+                                this.EventAggregator
+                                    .GetEvent<NotificationEvent>()
+                                    .Publish(
+                                        new NotificationMessage(
+                                            msgData,
+                                            "IO sensors status",
+                                            MessageActor.Any,
+                                            MessageActor.DeviceManager,
+                                            MessageType.SensorsChanged,
+                                            bayNumber,
+                                            bayNumber,
+                                            MessageStatus.OperationExecuting));
+
+                                this.forceRemoteIoStatusPublish[ioIndex] = false;
+                            }
+                        }
+
+                        break;
+
+                    case FieldMessageType.DiagOutChanged when receivedMessage.Data is IDiagOutChangedFieldMessageData:
+                        {
+                            this.Logger.LogTrace($"3:DiagOutChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+                            var diagOutData = receivedMessage.Data as IDiagOutChangedFieldMessageData;
+
+                            var ioIndex = receivedMessage.DeviceIndex;
+                            var msgData = new DiagOutChangedMessageData
+                            {
+                                FaultStates = diagOutData.FaultStates,
+                                CurrentStates = diagOutData.CurrentStates,
+                                IoIndex = ioIndex,
                             };
 
-                            this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                            this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {diagOutData}");
 
                             this.EventAggregator
                                 .GetEvent<NotificationEvent>()
                                 .Publish(
                                     new NotificationMessage(
                                         msgData,
-                                        "IO sensors status",
+                                        "IO diag out status",
                                         MessageActor.Any,
                                         MessageActor.DeviceManager,
-                                        MessageType.SensorsChanged,
+                                        MessageType.DiagOutChanged,
                                         bayNumber,
                                         bayNumber,
                                         MessageStatus.OperationExecuting));
-
-                            this.forceRemoteIoStatusPublish[ioIndex] = false;
                         }
-
                         break;
 
                     case FieldMessageType.InverterStatusUpdate when receivedMessage.Data is IInverterStatusUpdateFieldMessageData:

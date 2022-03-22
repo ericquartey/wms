@@ -158,5 +158,9 @@
         Logout,
 
         RemoveLoadUnit,
+
+        DiagOutChanged,
+
+        ProfileResolution
     }
 }

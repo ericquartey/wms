@@ -51,6 +51,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<double, double, int?, int?, bool?>(
                 nameof(IInstallationHub.ElevatorPositionChanged), this.OnElevatorPositionChanged);
 
+            connection.On<NotificationMessageUI<DiagOutChangedMessageData>>(
+                nameof(IInstallationHub.DiagOutChanged), this.OnDiagOutChanged);
+
             connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
                 nameof(IInstallationHub.SensorsChanged), this.OnSensorsChanged);
 
@@ -143,17 +146,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.BayLightChanged?.Invoke(this, new BayLightChangedEventArgs(isLightOn, bayNumber));
         }
 
-        private void OnLogoutChanged(NotificationMessageUI<LogoutMessageData> message)
-        {
-            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnCombinedMovementsNotify(NotificationMessageUI<CombinedMovementsMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnDiagOutChanged(NotificationMessageUI<DiagOutChangedMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -196,6 +199,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnInverterStatusWordChanged(NotificationMessageUI<InverterStatusWordMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnLogoutChanged(NotificationMessageUI<LogoutMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

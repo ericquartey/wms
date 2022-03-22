@@ -298,6 +298,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoResetSecurityTimeout), (int)MachineErrorSeverity.Normal)]
         IoResetSecurityTimeout,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ProfileResolutionFail), (int)MachineErrorSeverity.Normal)]
+        ProfileResolutionFail,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 

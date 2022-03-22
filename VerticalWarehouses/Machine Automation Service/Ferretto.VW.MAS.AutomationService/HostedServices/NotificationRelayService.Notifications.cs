@@ -42,6 +42,10 @@ namespace Ferretto.VW.MAS.AutomationService
                     await this.OnSensorsChanged(message);
                     break;
 
+                case MessageType.DiagOutChanged:
+                    await this.OnDiagOutChanged(message);
+                    break;
+
                 case MessageType.MachineMode:
                     await this.OnMachineModeChanged(message);
                     break;

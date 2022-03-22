@@ -1040,6 +1040,49 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void MoveProfileResolution(int bayPositionId, BayNumber requestingBay, MessageActor sender)
+        {
+            var policy = this.CanLoadFromBay(bayPositionId, requestingBay, isGuided: false, enforceLoadUnitPresent: false);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var bayPosition = bay.Positions.FirstOrDefault(p => p.Id == bayPositionId);
+
+            var targetPosition = bayPosition.Height - 100;
+
+            var speed = new[] { axis.FullLoadMovement.Speed * axis.ManualMovements.FeedRate };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                MovementMode.ProfileResolution,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                HorizontalMovementDirection.Forwards)
+            {
+                SourceBayPositionId = bayPositionId,
+            };
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Vertical} Profile Resolution Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         public void MoveToAbsoluteVerticalPosition(
             bool manualMovment,
             double targetPosition,

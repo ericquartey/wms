@@ -459,4 +459,7 @@
   <data name="IoResetSecurityTimeout" xml:space="preserve">
     <value>Non è stato possibile eseguire il comando di accensione. Controllare i dispositivi di sicurezza</value>
   </data>
+  <data name="ProfileResolutionFail" xml:space="preserve">
+    <value>La barriera di misura non è calibrata</value>
+  </data>
 </root>
