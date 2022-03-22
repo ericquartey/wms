@@ -181,8 +181,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                         {
                             bayPosition = bay.Positions.First(p => !p.IsUpper);
                         }
-                        this.eightBeamPosition = bayPosition.Height + 200;
-                        this.thirtyBeamPosition = bayPosition.Height + 750;
+                        this.eightBeamPosition = bayPosition.Height + 175;
+                        this.thirtyBeamPosition = bayPosition.Height + 725;
                         statusWordPollingInterval = 500;
 
                         commandMessage = new FieldCommandMessage(
@@ -311,7 +311,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             this.machineData.MessageData.ProfileConst[0] = k0;
             this.machineData.MessageData.ProfileConst[1] = k1;
 
-            this.Logger.LogDebug($"Profile constants: k0 {k0:0.00}; k1 {k1:0.00}");
+            this.Logger.LogDebug($"Profile constants: k0 {k0:0.00}; k1 {k1:0.0000}");
         }
 
         private void ProcessEndMeasure(FieldNotificationMessage message)

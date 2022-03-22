@@ -189,7 +189,7 @@ namespace Ferretto.VW.MAS.IODriver
             var changeValues = false;
             for (var i = 0; i < newStates.Length; i++)
             {
-                if (this.diagOutCurrent[i] != newStates[i])
+                if (Math.Abs(this.diagOutCurrent[i] - newStates[i]) > 2)
                 {
                     changeValues = true;
                 }
