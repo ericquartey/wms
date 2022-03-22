@@ -526,7 +526,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void DiagOutUpdate()
         {
-            if (this.DiagOutFault.Count >= 23)
+            try
             {
                 this.DiagOutFault0 = this.DiagOutFault[0];
                 this.DiagOutFault1 = this.DiagOutFault[1];
@@ -553,8 +553,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.DiagOutFault22 = this.DiagOutFault[22];
                 this.DiagOutFault23 = this.DiagOutFault[23];
             }
+            catch (System.Exception)
+            {
 
-            if (this.DiagOutCurrent.Count >= 23)
+            }
+
+            try
             {
                 this.DiagOutCurrent0 = this.DiagOutCurrent[0].ToString();
                 this.DiagOutCurrent1 = this.DiagOutCurrent[1].ToString();
@@ -580,6 +584,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.DiagOutCurrent21 = this.DiagOutCurrent[21].ToString();
                 this.DiagOutCurrent22 = this.DiagOutCurrent[22].ToString();
                 this.DiagOutCurrent23 = this.DiagOutCurrent[23].ToString();
+            }
+            catch (System.Exception)
+            {
+
             }
         }
 
