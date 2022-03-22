@@ -145,6 +145,7 @@
 - Aumentato timeout di comunicazione con la scheda di I/O (errore 24)
 - Il numero di cassetto è sempre limitato a 3 cifre
 - Le commesse sono ordinate e filtrate
+- Ricerca articoli: corretto funzionamento del tasto "-" per decrementare la quantità
 
 ## Compatibile con adapter 0.4.31
 
