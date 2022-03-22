@@ -5398,6 +5398,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile constants.
+        /// </summary>
+        public static string ProfileConst {
+            get {
+                return ResourceManager.GetString("ProfileConst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile K0 constant.
+        /// </summary>
+        public static string ProfileConst0 {
+            get {
+                return ResourceManager.GetString("ProfileConst0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile K1 constant.
+        /// </summary>
+        public static string ProfileConst1 {
+            get {
+                return ResourceManager.GetString("ProfileConst1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Based on the calibration result, you can decide whether to complete the operation, having a result of less than 1 mm..
         /// </summary>
         public static string ProfileHeighCheckCalibrationLess {
@@ -5439,6 +5466,42 @@ namespace Ferretto.VW.App.Resources {
         public static string ProfileHeightCheckProcedureLeftUnitDescription {
             get {
                 return ResourceManager.GetString("ProfileHeightCheckProcedureLeftUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Resolution Calibration.
+        /// </summary>
+        public static string ProfileResolutionCalibration {
+            get {
+                return ResourceManager.GetString("ProfileResolutionCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TO DO ....
+        /// </summary>
+        public static string ProfileResolutionCalibrationHelp {
+            get {
+                return ResourceManager.GetString("ProfileResolutionCalibrationHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read.
+        /// </summary>
+        public static string ProfileSample {
+            get {
+                return ResourceManager.GetString("ProfileSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile read %.
+        /// </summary>
+        public static string ProfileSamples {
+            get {
+                return ResourceManager.GetString("ProfileSamples", resourceCulture);
             }
         }
         
@@ -7356,6 +7419,15 @@ namespace Ferretto.VW.App.Resources {
         public static string VerticalCalibration {
             get {
                 return ResourceManager.GetString("VerticalCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Perform the Elevator calibration..
+        /// </summary>
+        public static string VerticalCalibrationProcedureRequired {
+            get {
+                return ResourceManager.GetString("VerticalCalibrationProcedureRequired", resourceCulture);
             }
         }
         
