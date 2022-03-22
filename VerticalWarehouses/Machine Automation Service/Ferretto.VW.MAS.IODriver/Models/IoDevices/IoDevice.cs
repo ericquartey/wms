@@ -466,7 +466,8 @@ namespace Ferretto.VW.MAS.IODriver
                             }
 
                             if (this.ioStatus.UpdateOutFaultStates(diagOutFault)
-                                || this.ioStatus.UpdateOutCurrentStates(diagOutCurrent))
+                                || this.ioStatus.UpdateOutCurrentStates(diagOutCurrent)
+                                || this.forceIoStatusPublish)
                             {
                                 //if (diagOutFault.Any(b => b))
                                 //{

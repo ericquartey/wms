@@ -126,4 +126,16 @@
   <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
     <value>La procedura non può essere avviata a causa dello stato di installazione corrente.</value>
   </data>
+  <data name="ProfileResolutionTooHigh" xml:space="preserve">
+    <value>Passo 0 - Lettura troppo elevata all'avvio</value>
+  </data>
+  <data name="ProfileResolutionMissingSignal" xml:space="preserve">
+    <value>Passo 1 - Manca il segnale di calibrazione barriera</value>
+  </data>
+  <data name="ProfileResolutionTooLow" xml:space="preserve">
+    <value>Passo 2 - Lettura troppo piccola alla fine</value>
+  </data>
+  <data name="ProfileResolutionConstantsOutOfRange" xml:space="preserve">
+    <value>Le costanti calcolate sono fuori misura</value>
+  </data>
 </root>

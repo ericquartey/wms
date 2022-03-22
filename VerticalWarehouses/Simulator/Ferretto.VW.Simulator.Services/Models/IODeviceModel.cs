@@ -77,6 +77,10 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private Machine machine;
 
+        private List<int> outDiagCurrent;
+
+        private List<BitModel> outDiagFail;
+
         private List<BitModel> outputs;
 
         #endregion
@@ -105,6 +109,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             // Initialize ouputs
             this.outputs = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, GetRemoteIOSignalDescription(x))).ToList();
+            this.outDiagFail = Enumerable.Range(0, 8).Select(x => new BitModel($"{x}", false, GetRemoteIOSignalDescription(x))).ToList();
+            this.outDiagCurrent = Enumerable.Range(0, 8).Select(x => new int()).ToList();
 
             // Remove emergency button
             this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
@@ -189,6 +195,34 @@ namespace Ferretto.VW.Simulator.Services.Models
                         this.Enabled = false;
                     }
                 }
+            }
+        }
+
+        public List<int> OutDiagCurrent
+        {
+            get => this.outDiagCurrent;
+            set => this.SetProperty(ref this.outDiagCurrent, value);
+        }
+
+        public List<BitModel> OutDiagFail
+        {
+            get => this.outDiagFail;
+            set => this.SetProperty(ref this.outDiagFail, value);
+        }
+
+        public byte OutDiagFailValue
+        {
+            get
+            {
+                byte result = 0;
+                for (var i = 0; i < this.OutDiagFail.Count; i++)
+                {
+                    if (this.OutDiagFail[i].Value)
+                    {
+                        result += (byte)Math.Pow(2, i);
+                    }
+                }
+                return result;
             }
         }
 

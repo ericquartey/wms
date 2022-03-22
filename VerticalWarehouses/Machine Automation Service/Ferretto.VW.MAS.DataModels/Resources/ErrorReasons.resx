@@ -459,4 +459,7 @@
   <data name="IoResetSecurityTimeout" xml:space="preserve">
     <value>Power on error. Check the safety devices</value>
   </data>
+  <data name="ProfileResolutionFail" xml:space="preserve">
+    <value>The profile measure barrier is not calibrated</value>
+  </data>
 </root>

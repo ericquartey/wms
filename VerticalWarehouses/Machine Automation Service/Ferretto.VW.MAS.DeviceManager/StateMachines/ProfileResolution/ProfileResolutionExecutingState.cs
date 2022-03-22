@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                             bayPosition = bay.Positions.First(p => !p.IsUpper);
                         }
                         this.eightBeamPosition = bayPosition.Height + 175;
-                        this.thirtyBeamPosition = bayPosition.Height + 725;
+                        this.thirtyBeamPosition = bayPosition.Height + 750;
                         statusWordPollingInterval = 500;
 
                         commandMessage = new FieldCommandMessage(
@@ -305,8 +305,12 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
         /// </summary>
         private void ParametersCalculation()
         {
-            var k1 = (double)(774 - 49) / (this.profile[(int)ProfileResolutionStep.ThirtyBeam] - this.profile[(int)ProfileResolutionStep.ZeroBeam]);
-            var k0 = 49 - this.profile[(int)ProfileResolutionStep.ZeroBeam] * k1;
+            //// test
+            //this.profile[0] = 2020;
+            //this.profile[2] = 10083;
+            ////end test
+            var k1 = (double)(774 - 24) / (this.profile[(int)ProfileResolutionStep.ThirtyBeam] - this.profile[(int)ProfileResolutionStep.ZeroBeam]);
+            var k0 = 24 - this.profile[(int)ProfileResolutionStep.ZeroBeam] * k1 - 49;
             this.machineData.MessageData.ProfileConst = new double[2];
             this.machineData.MessageData.ProfileConst[0] = k0;
             this.machineData.MessageData.ProfileConst[1] = k1;
@@ -428,20 +432,27 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
         private void StartNewStep()
         {
+            var errorText = string.Empty;
             if (this.performedCycles == (int)ProfileResolutionStep.ZeroBeam
                 && this.profile[this.performedCycles] > 2200)
             {
-                this.Logger.LogError($"Profile Resolution error! Step {this.performedCycles} - profile too high!");
+                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionTooHigh", CommonUtils.Culture.Actual);
             }
             else if (this.performedCycles == (int)ProfileResolutionStep.EightBeam
                 && !this.machineData.MachineSensorStatus.IsProfileCalibratedBay(this.machineData.RequestingBay))
             {
-                this.Logger.LogError($"Profile Resolution error! Step {this.performedCycles} - Calibrated signal missing!");
+                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
             }
             else if (this.performedCycles == (int)ProfileResolutionStep.ThirtyBeam
                 && this.profile[this.performedCycles] < 9800)
             {
-                this.Logger.LogError($"Profile Resolution error! Step {this.performedCycles} - profile too low!");
+                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionTooLow", CommonUtils.Culture.Actual);
+            }
+            if (errorText.Length > 0)
+            {
+                // TODO - remove log and activate RecordNew
+                this.Logger.LogError(errorText);
+                //this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
             }
 
             if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles ||
@@ -454,6 +465,16 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.machineData.MessageData.ProfileSamples = this.profile;
                 this.ParametersCalculation();
 
+                var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                if(Math.Abs(bay.ProfileConst0 - this.machineData.MessageData.ProfileConst[0]) > 50
+                    || Math.Abs(bay.ProfileConst1 - this.machineData.MessageData.ProfileConst[1]) > 0.01)
+                {
+                    errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionConstantsOutOfRange", CommonUtils.Culture.Actual);
+                    // TODO - remove log and activate RecordNew
+                    this.Logger.LogError(errorText);
+                    //this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+
+                }
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new ProfileResolutionEndState(this.stateData, this.Logger));

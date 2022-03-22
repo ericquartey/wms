@@ -136,6 +136,12 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     return false;
                 }
+                // TODO - enable the diagOutCurrent check
+                //if(this.FwRelease > RELEASE_FW_10
+                //    && this.outputs[index] != (this.diagOutCurrent[index] > 2))
+                //{
+                //    return false;
+                //}
             }
 
             return true;

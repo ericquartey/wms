@@ -889,6 +889,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The profile measure barrier is not calibrated.
+        /// </summary>
+        public static string ProfileResolutionFail {
+            get {
+                return ResourceManager.GetString("ProfileResolutionFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The picking confirmation command is not valid.
         /// </summary>
         public static string ResumeCommandNotValid {

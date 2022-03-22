@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ResolutionCalibrationProcedure {
@@ -84,6 +84,42 @@ namespace Ferretto.VW.MAS.Resources {
         public static string ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus {
             get {
                 return ResourceManager.GetString("ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The profile constants are out of range.
+        /// </summary>
+        public static string ProfileResolutionConstantsOutOfRange {
+            get {
+                return ResourceManager.GetString("ProfileResolutionConstantsOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 1 - Calibrated signal missing.
+        /// </summary>
+        public static string ProfileResolutionMissingSignal {
+            get {
+                return ResourceManager.GetString("ProfileResolutionMissingSignal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 0 - Profile too high at start.
+        /// </summary>
+        public static string ProfileResolutionTooHigh {
+            get {
+                return ResourceManager.GetString("ProfileResolutionTooHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 2 - Profile too low at end.
+        /// </summary>
+        public static string ProfileResolutionTooLow {
+            get {
+                return ResourceManager.GetString("ProfileResolutionTooLow", resourceCulture);
             }
         }
     }
