@@ -194,8 +194,7 @@ namespace Ferretto.VW.MAS.IODriver
             var ushortArray = new int[bytes];
             for (var i = 0; i < bytes; i++)
             {
-                ushortArray[i] = telegram[(i * 2) + sourceOffset]
-                               + telegram[(i * 2) + sourceOffset + 1] * 256;
+                ushortArray[i] = BitConverter.ToUInt16(telegram, (i * 2) + sourceOffset);
             }
             return ushortArray;
         }
