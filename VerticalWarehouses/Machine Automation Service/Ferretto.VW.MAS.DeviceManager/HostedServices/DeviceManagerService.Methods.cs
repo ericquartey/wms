@@ -713,6 +713,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     && !(x is PositioningStateMachine)
                     && !(x is ExtBayPositioningStateMachine)
                     && !(x is HorizontalResolutionStateMachine)
+                    && !(x is ProfileResolutionStateMachine)
                     && !(x is HomingStateMachine)))
             {
                 this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
@@ -817,6 +818,18 @@ namespace Ferretto.VW.MAS.DeviceManager
                 foreach (var fsm in stateMachines)
                 {
                     var stateMachine = fsm as HorizontalResolutionStateMachine;
+                    stateMachine.ProcessCommandMessage(receivedMessage);
+                }
+                return;
+            }
+
+            // Check the stopTest message for the ProfileResolution state machine
+            stateMachines = this.currentStateMachines.Where(x => x.BayNumber == receivedMessage.TargetBay && x is ProfileResolutionStateMachine);
+            if (stateMachines.Any())
+            {
+                foreach (var fsm in stateMachines)
+                {
+                    var stateMachine = fsm as ProfileResolutionStateMachine;
                     stateMachine.ProcessCommandMessage(receivedMessage);
                 }
                 return;

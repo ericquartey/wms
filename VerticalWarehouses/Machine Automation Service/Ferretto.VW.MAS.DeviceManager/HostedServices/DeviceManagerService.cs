@@ -35,6 +35,7 @@ using Prism.Events;
 using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
 using Ferretto.VW.MAS.DeviceManager.InverterReading;
 using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
+using Ferretto.VW.MAS.DeviceManager.ProfileResolution;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -328,7 +329,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             case MessageType.Positioning:
                                 if (messageCurrentStateMachine is PositioningStateMachine ||
                                     messageCurrentStateMachine is ExtBayPositioningStateMachine ||
-                                    messageCurrentStateMachine is HorizontalResolutionStateMachine)
+                                    messageCurrentStateMachine is HorizontalResolutionStateMachine ||
+                                    messageCurrentStateMachine is ProfileResolutionStateMachine)
                                 {
                                     if (messageCurrentStateMachine is PositioningStateMachine machine)
                                     {
@@ -356,6 +358,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     }
 
                                     if (messageCurrentStateMachine is HorizontalResolutionStateMachine)
+                                    {
+                                        // deallocate only Positioning state machine
+                                        this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
+                                        this.currentStateMachines.Remove(messageCurrentStateMachine);
+                                        this.SendCleanDebug();
+                                    }
+
+                                    if (messageCurrentStateMachine is ProfileResolutionStateMachine)
                                     {
                                         // deallocate only Positioning state machine
                                         this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");

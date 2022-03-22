@@ -921,7 +921,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message.Data?.MovementMode != MovementMode.HorizontalResolution)
+            if (message.Data?.MovementMode != MovementMode.ProfileResolution)
             {
                 return;
             }

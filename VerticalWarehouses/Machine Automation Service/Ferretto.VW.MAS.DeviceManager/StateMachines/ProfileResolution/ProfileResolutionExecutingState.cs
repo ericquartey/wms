@@ -216,6 +216,18 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 inverterIndex));
+
+            var notificationMessage = new NotificationMessage(
+                this.machineData.MessageData,
+                $"ProfileResolution",
+                MessageActor.AutomationService,
+                MessageActor.DeviceManager,
+                MessageType.Positioning,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationExecuting);
+
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop(StopRequestReason reason)
@@ -299,7 +311,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             this.machineData.MessageData.ProfileConst[0] = k0;
             this.machineData.MessageData.ProfileConst[1] = k1;
 
-            this.Logger.LogDebug($"Profile constants: k0 {k0}; k1 {k1}");
+            this.Logger.LogDebug($"Profile constants: k0 {k0:0.00}; k1 {k1:0.00}");
         }
 
         private void ProcessEndMeasure(FieldNotificationMessage message)
@@ -437,6 +449,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             {
                 this.Logger.LogDebug("FSM Finished Executing State");
                 this.machineData.ExecutedSteps = this.performedCycles;
+                this.machineData.MessageData.ExecutedCycles = this.performedCycles;
                 this.machineData.MessageData.IsTestStopped = this.isTestStopped;
                 this.machineData.MessageData.ProfileSamples = this.profile;
                 this.ParametersCalculation();
