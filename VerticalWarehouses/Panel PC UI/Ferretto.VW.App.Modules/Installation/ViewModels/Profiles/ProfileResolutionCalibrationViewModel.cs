@@ -86,8 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToStartCalibrationCommand;
 
-        //private int? newErrorValue;
-
         private int performedCycles;
 
         private SubscriptionToken positioningMessageReceivedToken;
@@ -100,11 +98,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int[] profileSamples;
 
-        private int profileSamples0;
+        private double profileSamples0;
 
-        private int profileSamples1;
+        private double profileSamples1;
 
-        private int profileSamples2;
+        private double profileSamples2;
 
         private TimeSpan remainingTime = default(TimeSpan);
 
@@ -359,8 +357,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SetProperty(ref this.profileConst, value);
 
-                this.ProfileConst0 = value[0];
-                this.ProfileConst1 = value[1];
+                this.ProfileConst0 = Math.Round(value[0], 2);
+                this.ProfileConst1 = Math.Round(value[1], 4);
             }
         }
 
@@ -375,17 +373,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SetProperty(ref this.profileSamples, value);
 
-                this.ProfileSamples0 = value[0] / 100;
-                this.ProfileSamples1 = value[1] / 100;
-                this.ProfileSamples2 = value[2] / 100;
+                this.ProfileSamples0 = value[0] / 100.0;
+                this.ProfileSamples1 = value[1] / 100.0;
+                this.ProfileSamples2 = value[2] / 100.0;
             }
         }
 
-        public int ProfileSamples0 { get => this.profileSamples0; set => this.SetProperty(ref this.profileSamples0, value); }
+        public double ProfileSamples0 { get => this.profileSamples0; set => this.SetProperty(ref this.profileSamples0, value); }
 
-        public int ProfileSamples1 { get => this.profileSamples1; set => this.SetProperty(ref this.profileSamples1, value); }
+        public double ProfileSamples1 { get => this.profileSamples1; set => this.SetProperty(ref this.profileSamples1, value); }
 
-        public int ProfileSamples2 { get => this.profileSamples2; set => this.SetProperty(ref this.profileSamples2, value); }
+        public double ProfileSamples2 { get => this.profileSamples2; set => this.SetProperty(ref this.profileSamples2, value); }
 
         public ICommand RepeatCalibrationCommand =>
             this.repeatCalibrationCommand
@@ -842,6 +840,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
                 this.IsWaitingForResponse = false;
+                this.IsVerticalCalibration = false;
             }
         }
 
