@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private const int REMOTEIO_INPUTS = 16;
 
+        private const int REMOTEIO_OUTPUTS = 8;
+
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
         private readonly ILogger<MachineResourcesProvider> logger;
@@ -39,6 +41,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// followed by the Inverter sensor between index 48 and 111.
         /// </summary>
         private readonly bool[] sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
+
+        private readonly bool[] outFault = new bool[3 * REMOTEIO_OUTPUTS * 8];
+        private readonly int[] outCurrent = new int[3 * REMOTEIO_OUTPUTS * 8];
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -209,6 +214,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool[] GetAll()
         {
             return (bool[])this.sensorStatus.Clone();
+        }
+
+        public bool[] GetOutFault()
+        {
+            return (bool[])this.outFault.Clone();
+        }
+
+        public int[] GetOutCurrent()
+        {
+            return (int[])this.outCurrent.Clone();
         }
 
         public ShutterPosition GetShutterPosition(InverterIndex inverterIndex)
@@ -624,6 +639,56 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var handler = this.FaultStateChanged;
                 handler?.Invoke(this, e);
             }
+        }
+
+        public bool UpdateDiagOutFault(byte ioIndex, bool[] newOutFault)
+        {
+            if (newOutFault == null)
+            {
+                return false;
+            }
+            if (ioIndex > 2)
+            {
+                return false;
+            }
+            var requiredUpdate = false;
+            for (var index = 0; index < REMOTEIO_OUTPUTS && !requiredUpdate; index++)
+            {
+                if (this.outFault[(ioIndex * REMOTEIO_OUTPUTS) + index] != newOutFault[index])
+                {
+                    requiredUpdate = true;
+                }
+            }
+            if(requiredUpdate)
+            {
+                Array.Copy(newOutFault, 0, this.outFault, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
+            }
+            return true;
+        }
+
+        public bool UpdateDiagOutCurrent(byte ioIndex, int[] newOutCurrent)
+        {
+            if (newOutCurrent == null)
+            {
+                return false;
+            }
+            if (ioIndex > 2)
+            {
+                return false;
+            }
+            var requiredUpdate = false;
+            for (var index = 0; index < REMOTEIO_OUTPUTS && !requiredUpdate; index++)
+            {
+                if (this.outCurrent[(ioIndex * REMOTEIO_OUTPUTS) + index] != newOutCurrent[index])
+                {
+                    requiredUpdate = true;
+                }
+            }
+            if (requiredUpdate)
+            {
+                Array.Copy(newOutCurrent, 0, this.outCurrent, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
+            }
+            return true;
         }
 
         //INFO Inputs from the inverter

@@ -19,7 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         #region Methods
 
         bool[] GetAll();
-
+        int[] GetOutCurrent();
+        bool[] GetOutFault();
         ShutterPosition GetShutterPosition(InverterIndex inverterIndex);
 
         bool IsLoadingUnitInLocation(LoadingUnitLocation location);

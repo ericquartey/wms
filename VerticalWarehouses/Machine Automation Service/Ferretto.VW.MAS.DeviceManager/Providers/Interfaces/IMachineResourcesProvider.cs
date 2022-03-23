@@ -154,6 +154,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
 
+        bool UpdateDiagOutFault(byte ioIndex, bool[] newOutFault);
+        bool UpdateDiagOutCurrent(byte ioIndex, int[] newOutCurrent);
+
         #endregion
     }
 }
