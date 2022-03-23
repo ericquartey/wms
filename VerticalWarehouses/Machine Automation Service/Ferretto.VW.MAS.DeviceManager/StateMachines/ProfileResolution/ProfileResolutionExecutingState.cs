@@ -450,9 +450,11 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             }
             if (errorText.Length > 0)
             {
-                // TODO - remove log and activate RecordNew
+#if DEBUG
                 this.Logger.LogError(errorText);
-                //this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+#else
+                this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+#endif
             }
 
             if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles ||
@@ -470,9 +472,11 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                     || Math.Abs(bay.ProfileConst1 - this.machineData.MessageData.ProfileConst[1]) > 0.01)
                 {
                     errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionConstantsOutOfRange", CommonUtils.Culture.Actual);
-                    // TODO - remove log and activate RecordNew
+#if DEBUG
                     this.Logger.LogError(errorText);
-                    //this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+#else
+                    this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+#endif
                 }
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
