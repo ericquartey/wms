@@ -466,14 +466,13 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.ParametersCalculation();
 
                 var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                if(Math.Abs(bay.ProfileConst0 - this.machineData.MessageData.ProfileConst[0]) > 50
+                if (Math.Abs(bay.ProfileConst0 - this.machineData.MessageData.ProfileConst[0]) > 50
                     || Math.Abs(bay.ProfileConst1 - this.machineData.MessageData.ProfileConst[1]) > 0.01)
                 {
                     errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionConstantsOutOfRange", CommonUtils.Culture.Actual);
                     // TODO - remove log and activate RecordNew
                     this.Logger.LogError(errorText);
                     //this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
-
                 }
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
@@ -512,6 +511,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                     FieldMessageType.InverterSetTimer,
                     inverterIndex));
 
+                this.machineData.ExecutedSteps = this.performedCycles;
+                this.machineData.MessageData.ExecutedCycles = this.performedCycles;
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     $"ProfileResolution",
