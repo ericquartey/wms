@@ -713,8 +713,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                             var ioIndex = receivedMessage.DeviceIndex;
                             this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {diagOutData}");
 
-                            if (this.machineResourcesProvider.UpdateDiagOutCurrent(ioIndex, diagOutData.CurrentStates)
-                                || this.machineResourcesProvider.UpdateDiagOutFault(ioIndex, diagOutData.FaultStates))
+                            var isUpdate1 = this.machineResourcesProvider.UpdateDiagOutCurrent(ioIndex, diagOutData.CurrentStates);
+                            var isUpdate2 = this.machineResourcesProvider.UpdateDiagOutFault(ioIndex, diagOutData.FaultStates);
+                            if (isUpdate1 || isUpdate2)
                             {
                                 var msgData = new DiagOutChangedMessageData
                                 {
