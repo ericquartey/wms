@@ -128,7 +128,7 @@
         </StackPanel>
 
         <controls:PpcButton Grid.Row="2"
-                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
                             Margin="0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
@@ -137,20 +137,8 @@
                             Style="{StaticResource WizardConfirmButton}"
                             Visibility="Visible" />
 
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="0"
-                           Width="250"
-                           Height="90"
-                           Margin="0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Bottom"
-                           EditValue="{Binding RemainingTime, StringFormat={}{0}, FallbackValue=00:00}"
-                           IsEnabled="False"
-                           LabelText="{res:Loc InstallationApp.RemainingTime}"
-                           Visibility="Visible" />
-
         <Border Grid.Row="3"
-                Grid.Column="2"
+                Grid.ColumnSpan="2"
                 Width="250"
                 Height="90"
                 Margin="0,15,15,0"
