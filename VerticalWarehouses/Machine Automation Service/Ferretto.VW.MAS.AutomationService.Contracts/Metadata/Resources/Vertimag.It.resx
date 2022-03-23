@@ -619,9 +619,9 @@
     <value>Ricerca articolo con barcode in tabella di scambio (Idroinox)</value>
    </data>
   <data name="Bay_ProfileConst0" xml:space="preserve">
-    <value>Costante K0 sagoma</value>
+    <value>Costante K0 misura</value>
   </data>
   <data name="Bay_ProfileConst1" xml:space="preserve">
-    <value>Costante k1 sagoma</value>
+    <value>Costante k1 misura</value>
   </data>
 </root>

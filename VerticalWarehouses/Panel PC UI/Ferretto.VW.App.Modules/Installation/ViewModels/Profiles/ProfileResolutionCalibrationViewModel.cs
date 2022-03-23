@@ -1123,6 +1123,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (Exception ex)
             {
+                this.IsVerticalCalibration = false;
                 this.ShowNotification(ex);
             }
             finally
