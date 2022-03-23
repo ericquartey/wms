@@ -30,6 +30,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.sensorsProvider.GetAll());
         }
 
+        [HttpGet("out-fault")]
+        public ActionResult<bool[]> GetOutFault()
+        {
+            return this.Ok(this.sensorsProvider.GetOutFault());
+        }
+
+        [HttpGet("out-current")]
+        public ActionResult<int[]> GetOutCurrent()
+        {
+            return this.Ok(this.sensorsProvider.GetOutCurrent());
+        }
+
         #endregion
     }
 }

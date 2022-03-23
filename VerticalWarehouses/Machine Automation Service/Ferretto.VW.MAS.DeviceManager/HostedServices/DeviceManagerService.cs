@@ -711,27 +711,31 @@ namespace Ferretto.VW.MAS.DeviceManager
                             var diagOutData = receivedMessage.Data as IDiagOutChangedFieldMessageData;
 
                             var ioIndex = receivedMessage.DeviceIndex;
-                            var msgData = new DiagOutChangedMessageData
-                            {
-                                FaultStates = diagOutData.FaultStates,
-                                CurrentStates = diagOutData.CurrentStates,
-                                IoIndex = ioIndex,
-                            };
-
                             this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {diagOutData}");
 
-                            this.EventAggregator
-                                .GetEvent<NotificationEvent>()
-                                .Publish(
-                                    new NotificationMessage(
-                                        msgData,
-                                        "IO diag out status",
-                                        MessageActor.Any,
-                                        MessageActor.DeviceManager,
-                                        MessageType.DiagOutChanged,
-                                        bayNumber,
-                                        bayNumber,
-                                        MessageStatus.OperationExecuting));
+                            if (this.machineResourcesProvider.UpdateDiagOutCurrent(ioIndex, diagOutData.CurrentStates)
+                                && this.machineResourcesProvider.UpdateDiagOutFault(ioIndex, diagOutData.FaultStates))
+                            {
+                                var msgData = new DiagOutChangedMessageData
+                                {
+                                    FaultStates = diagOutData.FaultStates,
+                                    CurrentStates = diagOutData.CurrentStates,
+                                    IoIndex = ioIndex,
+                                };
+
+                                this.EventAggregator
+                                    .GetEvent<NotificationEvent>()
+                                    .Publish(
+                                        new NotificationMessage(
+                                            msgData,
+                                            "IO diag out status",
+                                            MessageActor.Any,
+                                            MessageActor.DeviceManager,
+                                            MessageType.DiagOutChanged,
+                                            bayNumber,
+                                            bayNumber,
+                                            MessageStatus.OperationExecuting));
+                            }
                         }
                         break;
 

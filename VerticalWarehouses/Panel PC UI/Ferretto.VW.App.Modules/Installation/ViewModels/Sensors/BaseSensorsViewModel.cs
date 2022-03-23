@@ -418,8 +418,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.DiagOutCurrent.Add(0);
             }
 
-            this.DiagOutUpdate();
-
             this.SubscribeToEvents();
 
             await base.OnAppearedAsync();
@@ -489,6 +487,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsFireAlarmActive = await this.machineIdentityWebService.GetFireAlarmEnableAsync();
 
             this.sensors.Update(sensorsStates.ToArray());
+
+            var current = await this.machineSensorsWebService.GetOutCurrentAsync();
+            this.DiagOutCurrent = current.ToList();
+
+            var fault = await this.machineSensorsWebService.GetOutFaultAsync();
+            this.DiagOutFault= fault.ToList();
+
+            this.DiagOutUpdate();
         }
 
         private void CheckZeroChainOnBays(IEnumerable<Bay> bays)
