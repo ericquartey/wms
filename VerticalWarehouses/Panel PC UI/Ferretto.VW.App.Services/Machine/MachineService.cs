@@ -1700,6 +1700,7 @@ namespace Ferretto.VW.App.Services
                                  !this.sensorsService.ShutterSensors.Closed && !this.sensorsService.ShutterSensors.MidWay &&
                                  !view.Equals("ProfileHeightCheckView", StringComparison.InvariantCultureIgnoreCase) &&
                                  !view.Equals("HorizontalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 !view.Equals("ProfileResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
                                  (this.machineModeService.MachineMode != MachineMode.Test && this.machineModeService.MachineMode != MachineMode.Test2 && this.machineModeService.MachineMode != MachineMode.Test3))
                         {
                             this.ShowNotification(Resources.Localized.Get("ServiceMachine.ShutterOpenOrUnknowPosition"), NotificationSeverity.Warning);
