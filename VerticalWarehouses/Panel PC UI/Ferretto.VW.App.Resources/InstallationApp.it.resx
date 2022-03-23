@@ -2665,24 +2665,27 @@
     <value>Scheda IO  (Baia 3)</value>
   </data>
   <data name="ProfileResolutionCalibration" xml:space="preserve">
-    <value>Calibrazione barriera di controllo sagoma</value>
+    <value>Calibrazione barriera di misura</value>
   </data>
   <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
-    <value>DA FARE ...</value>
+    <value>La funzione di calibrazione della barriera di misura permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
   <data name="ProfileConst0" xml:space="preserve">
-    <value>Costante K0 sagoma</value>
+    <value>Costante K0 misura</value>
   </data>
   <data name="ProfileConst" xml:space="preserve">
-    <value>Costanti di sagoma</value>
+    <value>Costanti di misura</value>
   </data>
   <data name="ProfileConst1" xml:space="preserve">
-    <value>Costante K1 sagoma</value>
+    <value>Costante K1 misura</value>
   </data>
   <data name="ProfileSamples" xml:space="preserve">
-    <value>Percentuale lettura sagoma</value>
+    <value>Valori di lettura</value>
   </data>
   <data name="ProfileSample" xml:space="preserve">
     <value>Lettura</value>
+  </data>
+  <data name="ProfileCalibrationDescription" xml:space="preserve">
+    <value>Elevatore e baia devono essere vuoti. Prima di potere eseguire questa procedura è necessaria la calibrazione manuale della barriera di misura</value>
   </data>
 </root>

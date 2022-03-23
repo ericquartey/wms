@@ -2678,7 +2678,7 @@
     <value>Profile Resolution Calibration</value>
   </data>
   <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
-    <value>TO DO ...</value>
+    <value>The calibration of the profile measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
   </data>
   <data name="VerticalCalibrationProcedureRequired" xml:space="preserve">
     <value>Perform the Elevator calibration.</value>
@@ -2760,5 +2760,8 @@
   </data>
   <data name="ProfileSample" xml:space="preserve">
     <value>Read</value>
+  </data>
+  <data name="ProfileCalibrationDescription" xml:space="preserve">
+    <value>Elevator and bay must be empty. Please perform the manual calibration of the profile measure device before this procedure</value>
   </data>
 </root>
