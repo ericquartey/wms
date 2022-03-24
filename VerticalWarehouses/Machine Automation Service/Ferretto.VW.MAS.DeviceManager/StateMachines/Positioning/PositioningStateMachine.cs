@@ -242,20 +242,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
                 }
             }
-            else if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero)
-            {
-                var chainPosition = this.machineData.BaysDataProvider.GetChainPosition(this.machineData.TargetBay);
-                var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
-                var bayFindZeroLimit = bay.Carousel.BayFindZeroLimit;
-                bayFindZeroLimit = bayFindZeroLimit == 0 ? 6 : bayFindZeroLimit;
+            //else if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero)
+            //{
+            //    var chainPosition = this.machineData.BaysDataProvider.GetChainPosition(this.machineData.TargetBay);
+            //    var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
+            //    var bayFindZeroLimit = bay.Carousel.BayFindZeroLimit;
+            //    bayFindZeroLimit = bayFindZeroLimit == 0 ? 6 : bayFindZeroLimit;
 
-                ok = chainPosition <= bay.Carousel.LastIdealPosition + bayFindZeroLimit && chainPosition >= bay.Carousel.LastIdealPosition - bayFindZeroLimit;
-                if (!ok)
-                {
-                    errorText = $"{ErrorDescriptions.ConditionsNotMetForHoming} in Bay {(int)this.machineData.TargetBay}";
-                    errorCode = DataModels.MachineErrorCode.ConditionsNotMetForHoming;
-                }
-            }
+            //    ok = chainPosition <= bay.Carousel.LastIdealPosition + bayFindZeroLimit && chainPosition >= bay.Carousel.LastIdealPosition - bayFindZeroLimit;
+            //    if (!ok)
+            //    {
+            //        errorText = $"{ErrorDescriptions.ConditionsNotMetForPositioning} in Bay {(int)this.machineData.TargetBay} - distance too high";
+            //        errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
+            //    }
+            //}
             return ok;
         }
 

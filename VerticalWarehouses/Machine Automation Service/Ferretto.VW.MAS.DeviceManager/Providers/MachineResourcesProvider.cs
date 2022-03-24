@@ -663,7 +663,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 Array.Copy(newOutFault, 0, this.outFault, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
             }
-            return true;
+            return requiredUpdate;
         }
 
         public bool UpdateDiagOutCurrent(byte ioIndex, int[] newOutCurrent)
@@ -688,7 +688,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 Array.Copy(newOutCurrent, 0, this.outCurrent, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
             }
-            return true;
+            return requiredUpdate;
         }
 
         //INFO Inputs from the inverter

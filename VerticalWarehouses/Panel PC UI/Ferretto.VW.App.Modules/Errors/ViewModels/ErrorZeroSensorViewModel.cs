@@ -309,7 +309,7 @@ public bool IsErrorGeneric
             if (!this.IsMoving)
             {
                 var newError = await this.machineErrorsWebService.GetCurrentAsync();
-                if (newError != null && newError.Code != this.MachineError.Code)
+                if (newError != null && newError.Code != this.MachineError?.Code)
                 {
                     this.machineErrorsService.AutoNavigateOnError = true;
                 }
