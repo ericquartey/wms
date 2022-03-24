@@ -307,8 +307,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
-            private set 
-                { if (this.SetProperty(ref this.isShutterMoving, value))
+            private set
+            {
+                if (this.SetProperty(ref this.isShutterMoving, value))
                 {
                     this.RaisePropertyChanged();
                 }
@@ -828,7 +829,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanVerticalCalibration()
         {
             return this.CanBaseExecute() &&
-                   !this.MachineService.IsHoming && 
+                   !this.MachineService.IsHoming &&
                    !this.IsVerticalCalibration &&
                    !this.MachineService.MachineStatus.IsMoving &&
                    !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
@@ -855,6 +856,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
 
                         this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                        this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
                         this.NavigationService.GoBack();
                     }
                 }
@@ -871,8 +873,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
 
                         this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                        this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
+                        this.NavigationService.GoBack();
                     }
-                    this.NavigationService.GoBack();
+
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -882,7 +886,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
-                this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
                 this.IsWaitingForResponse = false;
             }
         }
