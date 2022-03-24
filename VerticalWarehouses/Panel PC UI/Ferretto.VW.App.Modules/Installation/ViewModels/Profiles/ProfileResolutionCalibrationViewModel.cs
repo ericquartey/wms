@@ -855,6 +855,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
 
                         this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                        this.NavigationService.GoBack();
                     }
                 }
                 else
@@ -871,8 +872,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                         this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
                     }
+                    this.NavigationService.GoBack();
                 }
-                this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
