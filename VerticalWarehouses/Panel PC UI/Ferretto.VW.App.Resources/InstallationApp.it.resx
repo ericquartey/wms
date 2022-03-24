@@ -2688,4 +2688,7 @@
   <data name="ProfileCalibrationDescription" xml:space="preserve">
     <value>Elevatore e baia devono essere vuoti. Prima di potere eseguire questa procedura è necessaria la calibrazione manuale della barriera di misura</value>
   </data>
+  <data name="ConfirmDifferentValue" xml:space="preserve">
+    <value>I valori sono fuori dal limite, confermare ugualmente</value>
+  </data>
 </root>

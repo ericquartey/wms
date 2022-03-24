@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                             bayPosition = bay.Positions.First(p => !p.IsUpper);
                         }
                         this.eightBeamPosition = bayPosition.Height + 175;
-                        this.thirtyBeamPosition = bayPosition.Height + 750;
+                        this.thirtyBeamPosition = bayPosition.Height + 775;
                         statusWordPollingInterval = 500;
 
                         commandMessage = new FieldCommandMessage(
@@ -441,7 +441,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             else if (this.performedCycles == (int)ProfileResolutionStep.EightBeam
                 && !this.machineData.MachineSensorStatus.IsProfileCalibratedBay(this.machineData.RequestingBay))
             {
-                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
+                //errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
+                this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
             }
             else if (this.performedCycles == (int)ProfileResolutionStep.ThirtyBeam
                 && this.profile[this.performedCycles] < 9800)
@@ -457,8 +458,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 #endif
             }
 
-            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles ||
-                this.isTestStopped)
+            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles 
+                || this.isTestStopped)
             {
                 this.Logger.LogDebug("FSM Finished Executing State");
                 this.machineData.ExecutedSteps = this.performedCycles;
@@ -467,17 +468,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.machineData.MessageData.ProfileSamples = this.profile;
                 this.ParametersCalculation();
 
-                var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                if (Math.Abs(bay.ProfileConst0 - this.machineData.MessageData.ProfileConst[0]) > 50
-                    || Math.Abs(bay.ProfileConst1 - this.machineData.MessageData.ProfileConst[1]) > 0.01)
-                {
-                    errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionConstantsOutOfRange", CommonUtils.Culture.Actual);
-#if DEBUG
-                    this.Logger.LogError(errorText);
-#else
-                    this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
-#endif
-                }
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new ProfileResolutionEndState(this.stateData, this.Logger));
@@ -517,6 +507,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
                 this.machineData.ExecutedSteps = this.performedCycles;
                 this.machineData.MessageData.ExecutedCycles = this.performedCycles;
+                this.machineData.MessageData.ProfileSamples = this.profile;
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     $"ProfileResolution",

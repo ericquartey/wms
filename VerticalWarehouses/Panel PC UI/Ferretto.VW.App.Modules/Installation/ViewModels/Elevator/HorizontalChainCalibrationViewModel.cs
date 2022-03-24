@@ -91,11 +91,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToBayPositionCommand;
 
+        private DelegateCommand moveToConfirmAdjustmentCommand;
+
         private DelegateCommand moveToGoToBayCommand;
 
         private DelegateCommand moveToStartCalibrationCommand;
-
-        private DelegateCommand moveToConfirmAdjustmentCommand;
 
         private int? newErrorValue;
 
@@ -329,8 +329,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.MoveToBayPositionAsync(),
                 () => this.CanMoveToBayPosition()));
 
+        public ICommand MoveToConfirmAdjustmentCommand =>
+            this.moveToConfirmAdjustmentCommand
+            ??
+            (this.moveToConfirmAdjustmentCommand = new DelegateCommand(
+                () => this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment,
+                () => this.CanBaseExecute()));
+
         public ICommand MoveToGoToBayCommand =>
-            this.moveToGoToBayCommand
+                    this.moveToGoToBayCommand
             ??
             (this.moveToGoToBayCommand = new DelegateCommand(
                 () => this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration,
@@ -342,15 +349,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToStartCalibrationCommand = new DelegateCommand(
                 () => this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration,
                 () => this.CanMoveToStartCalibration()));
-
-        public ICommand MoveToConfirmAdjustmentCommand =>
-            this.moveToConfirmAdjustmentCommand
-            ??
-            (this.moveToConfirmAdjustmentCommand = new DelegateCommand(
-                () => this.CurrentStep = HorizontalChainCalibrationStep.ConfirmAdjustment,
-                () => this.CanBaseExecute()));
-
-        
 
         public int? NewErrorValue
         {
@@ -824,20 +822,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                if (this.MeasuredDistance.HasValue)
+                if (this.MeasuredDistance.Value <= -10 || this.MeasuredDistance.Value >= -7)
                 {
-                    await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmDifferentValue"), Localized.Get("InstallationApp.HorizontalCalibration"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        if (this.MeasuredDistance.HasValue)
+                        {
+                            await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
+                        }
+
+                        await this.MachineService.OnUpdateServiceAsync();
+                        await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
+
+                        this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), Services.Models.NotificationSeverity.Success);
+
+                        this.NavigationService.GoBack();
+
+                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                    }
                 }
-                await this.MachineService.OnUpdateServiceAsync();
-                await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
+                else
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.HorizontalCalibration"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes && this.MeasuredDistance.HasValue)
+                    {
+                        if (this.MeasuredDistance.HasValue)
+                        {
+                            await this.machineElevatorWebService.SetHorizontalChainCalibrationDistanceAsync(this.MeasuredDistance.Value);
+                        }
+                        await this.MachineService.OnUpdateServiceAsync();
+                        await this.machineElevatorWebService.SetHorizontalChainCalibrationCompletedAsync();
 
-                this.ShowNotification(
-                        VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
-                        Services.Models.NotificationSeverity.Success);
+                        this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), Services.Models.NotificationSeverity.Success);
 
-                this.NavigationService.GoBack();
+                        this.NavigationService.GoBack();
 
-                this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                        this.CurrentStep = HorizontalChainCalibrationStep.StartCalibration;
+                    }
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
