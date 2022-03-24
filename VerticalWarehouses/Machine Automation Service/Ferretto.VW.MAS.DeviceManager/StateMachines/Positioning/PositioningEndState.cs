@@ -98,6 +98,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.UpdateLoadingUnitLocation();
                             }
 
+                            if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero &&
+                                this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                            {
+                                this.eventAggregator
+                                        .GetEvent<NotificationEvent>()
+                                        .Publish(
+                                            new NotificationMessage
+                                            {
+                                                Data = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null, true, false, true),
+                                                Destination = MessageActor.AutomationService,
+                                                Source = MessageActor.DataLayer,
+                                                Type = MessageType.Homing,
+                                            });
+                            }
+
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
                                 this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Test Stopped",
@@ -264,7 +279,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero &&
+            if (this.stateData.StopRequestReason == StopRequestReason.NoReason &&
+                this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero &&
                 this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
             {
                 this.eventAggregator
