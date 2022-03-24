@@ -821,19 +821,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.ProfileResolutionCalibration"), DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                if (Math.Abs(this.Bay.ProfileConst0 - this.ProfileConst[0]) > 50 || Math.Abs(this.Bay.ProfileConst1 - this.ProfileConst[1]) > 0.01)
                 {
-                    this.IsExecutingStopInPhase = false;
-                    this.IsExecutingProcedure = false;
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmDifferentValue"), Localized.Get("InstallationApp.ProfileResolutionCalibration"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        this.IsExecutingStopInPhase = false;
+                        this.IsExecutingProcedure = false;
 
-                    await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
-                    this.Logger.Debug($"SetProfileConst: k0 = {this.ProfileConst[0]}; k1 = {this.ProfileConst[1]}; old k0 {this.Bay.ProfileConst0}; old k1 {this.Bay.ProfileConst1}");
-                    await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
+                        await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
+                        this.Logger.Debug($"SetProfileConst: k0 = {this.ProfileConst[0]}; k1 = {this.ProfileConst[1]}; old k0 {this.Bay.ProfileConst0}; old k1 {this.Bay.ProfileConst1}");
+                        await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
 
-                    this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                        this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                    }
                 }
+                else
+                {
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmCalibrationProcedure"), Localized.Get("InstallationApp.ProfileResolutionCalibration"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        this.IsExecutingStopInPhase = false;
+                        this.IsExecutingProcedure = false;
 
+                        await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
+                        this.Logger.Debug($"SetProfileConst: k0 = {this.ProfileConst[0]}; k1 = {this.ProfileConst[1]}; old k0 {this.Bay.ProfileConst0}; old k1 {this.Bay.ProfileConst1}");
+                        await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
+
+                        this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                    }
+                }
                 this.NavigationService.GoBack();
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)

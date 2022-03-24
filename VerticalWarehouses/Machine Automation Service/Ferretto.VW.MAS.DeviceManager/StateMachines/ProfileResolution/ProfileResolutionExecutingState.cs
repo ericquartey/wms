@@ -467,17 +467,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.machineData.MessageData.ProfileSamples = this.profile;
                 this.ParametersCalculation();
 
-                var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                if (Math.Abs(bay.ProfileConst0 - this.machineData.MessageData.ProfileConst[0]) > 50
-                    || Math.Abs(bay.ProfileConst1 - this.machineData.MessageData.ProfileConst[1]) > 0.01)
-                {
-                    errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionConstantsOutOfRange", CommonUtils.Culture.Actual);
-#if DEBUG
-                    this.Logger.LogError(errorText);
-#else
-                    this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
-#endif
-                }
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new ProfileResolutionEndState(this.stateData, this.Logger));
