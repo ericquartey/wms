@@ -458,8 +458,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 #endif
             }
 
-            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles ||
-                this.isTestStopped)
+            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles 
+                || this.isTestStopped)
             {
                 this.Logger.LogDebug("FSM Finished Executing State");
                 this.machineData.ExecutedSteps = this.performedCycles;
@@ -507,6 +507,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
                 this.machineData.ExecutedSteps = this.performedCycles;
                 this.machineData.MessageData.ExecutedCycles = this.performedCycles;
+                this.machineData.MessageData.ProfileSamples = this.profile;
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     $"ProfileResolution",
