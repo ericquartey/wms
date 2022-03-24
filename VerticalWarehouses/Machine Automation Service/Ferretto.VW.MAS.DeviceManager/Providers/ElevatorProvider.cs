@@ -1047,6 +1047,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
+
+            if (!this.machineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
+            {
+                throw new InvalidOperationException(string.Format(Resources.Elevator.ResourceManager.GetString("VerticalOriginCalibrationMustBePerformed", CommonUtils.Culture.Actual), 0, 0, 0));
+            }
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
