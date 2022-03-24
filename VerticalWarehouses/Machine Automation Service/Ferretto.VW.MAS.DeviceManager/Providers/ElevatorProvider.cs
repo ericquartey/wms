@@ -1057,7 +1057,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bay = this.baysDataProvider.GetByNumber(requestingBay);
             var bayPosition = bay.Positions.FirstOrDefault(p => p.Id == bayPositionId);
 
-            var targetPosition = bayPosition.Height - 175;
+            var targetPosition = bayPosition.Height - 150;
 
             var speed = new[] { axis.FullLoadMovement.Speed * axis.ManualMovements.FeedRate };
             var acceleration = new[] { axis.FullLoadMovement.Acceleration };

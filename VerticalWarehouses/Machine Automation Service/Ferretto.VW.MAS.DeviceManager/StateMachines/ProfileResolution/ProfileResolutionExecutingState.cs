@@ -320,7 +320,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
         private void ProcessEndMeasure(FieldNotificationMessage message)
         {
-            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
             if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
             {
                 this.Logger.LogDebug($"Step {this.performedCycles} Profile {data.Profile / 100.0}%");
@@ -329,6 +328,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             }
             else if (message.Source == FieldMessageActor.IoDriver && this.measureRequest)
             {
+                var inverterIndex = (byte)this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
                 var inverterCommandMessageData = new MeasureProfileFieldMessageData();
                 var inverterCommandMessage = new FieldCommandMessage(
                     inverterCommandMessageData,
@@ -441,8 +441,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             else if (this.performedCycles == (int)ProfileResolutionStep.EightBeam
                 && !this.machineData.MachineSensorStatus.IsProfileCalibratedBay(this.machineData.RequestingBay))
             {
-                //errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
-                this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
+                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
+                //this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
             }
             else if (this.performedCycles == (int)ProfileResolutionStep.ThirtyBeam
                 && this.profile[this.performedCycles] < 9800)
