@@ -355,7 +355,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                             machineModeProvider.Mode != MachineMode.Test2 &&
                             machineModeProvider.Mode != MachineMode.Test3)
                         {
-                            switch (this.machineData.TargetBay)
+                            switch (this.machineData.RequestingBay)
                             {
                                 case BayNumber.BayOne:
                                     machineModeProvider.Mode = MachineMode.Test;
@@ -455,6 +455,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.Logger.LogError(errorText);
 #else
                 this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+                this.isTestStopped = true;
 #endif
             }
 
@@ -466,7 +467,27 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.machineData.MessageData.ExecutedCycles = this.performedCycles;
                 this.machineData.MessageData.IsTestStopped = this.isTestStopped;
                 this.machineData.MessageData.ProfileSamples = this.profile;
-                this.ParametersCalculation();
+                if (this.isTestStopped)
+                {
+                    this.machineData.ExecutedSteps = this.performedCycles;
+                    this.machineData.MessageData.ExecutedCycles = this.performedCycles;
+                    this.machineData.MessageData.ProfileSamples = this.profile;
+                    var notificationMessage = new NotificationMessage(
+                        this.machineData.MessageData,
+                        $"ProfileResolution",
+                        MessageActor.AutomationService,
+                        MessageActor.DeviceManager,
+                        MessageType.Positioning,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
+                        MessageStatus.OperationExecuting);
+
+                    this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                }
+                else
+                {
+                    this.ParametersCalculation();
+                }
 
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
