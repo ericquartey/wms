@@ -81,6 +81,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("moveToBayNumber")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToBayNumber(ShutterPosition targetPosition, BayNumber bayNumber)
+        {
+            this.shutterProvider.MoveTo(targetPosition, bayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("reset-test")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

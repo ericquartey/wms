@@ -10,8 +10,6 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
-            d:DataContext="{d:DesignInstance Type=viewmodels:HorizontalResolutionCalibrationViewModel,
-                                             IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -73,7 +71,49 @@
                             Command="{Binding MoveToShutterCommand}"
                             Content="{Binding ShutterLabel}"
                             Style="{DynamicResource WizardIntoButton}"
-                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+                            Visibility="{Binding HasShutterBoth, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcButton Grid.Row="1"
+                            Grid.Column="1"
+                            Width="140"
+                            HorizontalAlignment="Left"
+                            Command="{Binding MoveToShutterCommand}"
+                            Content="{Binding ShutterLabel}"
+                            Style="{DynamicResource WizardIntoButton}"
+                            Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="0,0,0,80"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontSize="{Binding FontSizeLabel}"
+                   Style="{StaticResource PpcSensorControlLabelStyle}"
+                   Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}">
+          <Run Text="{res:Loc InstallationApp.Shutter}" />
+          <Run Text="{res:Loc InstallationApp.Bay1}" />
+        </TextBlock>
+
+        <controls:PpcButton Grid.Row="1"
+                            Grid.Column="1"
+                            Width="140"
+                            HorizontalAlignment="Right"
+                            Command="{Binding MoveToShutter2Command}"
+                            Content="{Binding ShutterLabel2}"
+                            Style="{DynamicResource WizardIntoButton}"
+                            Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="105,0,0,80"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="{Binding FontSizeLabel}"
+                   Style="{StaticResource PpcSensorControlLabelStyle}"
+                   Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}">
+          <Run Text="{res:Loc InstallationApp.Shutter}" />
+          <Run Text="{res:Loc InstallationApp.Bay2}" />
+        </TextBlock>
 
         <controls:PpcButton Grid.Row="2"
                             Grid.Column="0"
@@ -501,8 +541,43 @@
                                 Width="250"
                                 Height="90"
                                 MinHeight="90"
-                                Margin="0,15,15,0"
-                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+                                Margin="0,15,15,0" />
+    <!--<Grid Grid.Row="4"
+          Grid.Column="3"
+          Visibility="{Binding HasShutterBoth, Converter={StaticResource BTVC}}">
+      <controls:CardSensorShutter Grid.Row="4"
+                                  Grid.Column="3"
+                                  Width="250"
+                                  Height="90"
+                                  MinHeight="90"
+                                  Margin="0,15,15,0"
+                                  Visibility="{Binding HasShutterBoth, Converter={StaticResource BTVC}}" />
+    </Grid>
+
+    <Grid Grid.Row="4"
+          Grid.Column="3"
+          Visibility="{Binding HasShutter2, Converter={StaticResource BTVC}}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      <controls:CardSensorShutter Width="120"
+                                  Height="90"
+                                  MinHeight="90"
+                                  Margin="0,15,15,0"
+                                  Visibility="{Binding HasShutter2, Converter={StaticResource BTVC}}" />
+
+      <controls:CardSensorShutter Grid.Row="4"
+                                  Grid.Column="3"
+                                  Width="120"
+                                  Height="90"
+                                  MinHeight="90"
+                                  Margin="0,15,15,0"
+                                  Visibility="{Binding HasShutter2, Converter={StaticResource BTVC}}" />
+    </Grid>-->
+
+
+
     <controls:CardSensorPosition Grid.Row="5"
                                  Grid.Column="3"
                                  Width="250"

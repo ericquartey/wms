@@ -53,6 +53,12 @@ namespace Ferretto.VW.App.Services
 
         ShutterSensors ShutterSensors { get; }
 
+        ShutterSensors ShutterSensorsBay1 { get; }
+
+        ShutterSensors ShutterSensorsBay2 { get; }
+
+        ShutterSensors ShutterSensorsBay3 { get; }
+
         #endregion
 
         #region Methods
