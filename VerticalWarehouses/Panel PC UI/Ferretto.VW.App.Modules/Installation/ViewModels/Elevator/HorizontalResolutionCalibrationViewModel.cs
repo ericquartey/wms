@@ -122,6 +122,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string shutterLabel2;
 
+        private string shutterLabelBtn1;
+
+        private string shutterLabelBtn2;
+
         private long singleRaisingTicks = 0;
 
         private DelegateCommand startCalibrationCommand;
@@ -163,9 +167,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
 
             this.CurrentStep = HorizontalResolutionCalibrationStep.StartCalibration;
-
             var bays = this.MachineService.Bays;
-            var otherBay = bays.FirstOrDefault(b => b.Number != this.Bay.Number && b.Side != this.Bay.Side);
+
+            var bayPosition = this.Bay.Positions.FirstOrDefault();
+
+            var otherBay = bays.FirstOrDefault(b => b.Number != this.Bay.Number && b.Side != this.Bay.Side && b.Positions.Any(p => Math.Abs(p.Height - bayPosition.Height) < 1000));
 
             if (otherBay is null)
             {
@@ -487,6 +493,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.shutterLabel2, value);
         }
 
+        public string ShutterLabelBtn1
+        {
+            get => this.shutterLabelBtn1;
+            private set => this.SetProperty(ref this.shutterLabelBtn1, value);
+        }
+
+        public string ShutterLabelBtn2
+        {
+            get => this.shutterLabelBtn2;
+            private set => this.SetProperty(ref this.shutterLabelBtn2, value);
+        }
+
         public ICommand StartCalibrationCommand =>
             this.startCalibrationCommand
             ??
@@ -590,22 +608,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsExecutingStopInPhase = false;
 
             this.ShutterLabel = this.SensorsService.ShutterSensors.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
+
+            //  = "{res:Loc InstallationApp.Shutter}" />
+            //< Run Text = "{res:Loc InstallationApp.Bay2}
+
+            switch (this.Bay.Number)
+            {
+                case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                    this.ShutterLabelBtn1 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay1");
+                    break;
+                case MAS.AutomationService.Contracts.BayNumber.BayTwo:
+                    this.ShutterLabelBtn1 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay2");
+                    break;
+                case MAS.AutomationService.Contracts.BayNumber.BayThree:
+                    this.ShutterLabelBtn1 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay3");
+                    break;
+                case MAS.AutomationService.Contracts.BayNumber.None:
+                default:
+                    this.ShutterLabelBtn1 = "";
+                    break;
+            }
+
             switch (this.otherBayNumber)
             {
                 case MAS.AutomationService.Contracts.BayNumber.BayOne:
                     this.ShutterLabel2 = this.SensorsService.ShutterSensorsBay1.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
+                    this.ShutterLabelBtn2 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay1");
                     break;
 
                 case MAS.AutomationService.Contracts.BayNumber.BayTwo:
                     this.ShutterLabel2 = this.SensorsService.ShutterSensorsBay2.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
+                    this.ShutterLabelBtn2 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay2");
                     break;
 
                 case MAS.AutomationService.Contracts.BayNumber.BayThree:
                     this.ShutterLabel2 = this.SensorsService.ShutterSensorsBay3.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
+                    this.ShutterLabelBtn2 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay3");
                     break;
 
                 case MAS.AutomationService.Contracts.BayNumber.None:
                 default:
+                    this.ShutterLabelBtn2 = "";
                     break;
             }
 
@@ -716,6 +759,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.repeatCalibrationCommand?.RaiseCanExecuteChanged();
 
             this.ShutterLabel = this.SensorsService.ShutterSensors.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
+
             switch (this.otherBayNumber)
             {
                 case MAS.AutomationService.Contracts.BayNumber.BayOne:
