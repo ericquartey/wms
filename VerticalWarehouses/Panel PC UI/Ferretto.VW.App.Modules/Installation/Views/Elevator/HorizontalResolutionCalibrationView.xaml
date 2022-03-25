@@ -89,10 +89,8 @@
                    VerticalAlignment="Center"
                    FontSize="{Binding FontSizeLabel}"
                    Style="{StaticResource PpcSensorControlLabelStyle}"
-                   Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}">
-          <Run Text="{res:Loc InstallationApp.Shutter}" />
-          <Run Text="{res:Loc InstallationApp.Bay1}" />
-        </TextBlock>
+                   Text="{Binding ShutterLabelBtn1}"
+                   Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}" />
 
         <controls:PpcButton Grid.Row="1"
                             Grid.Column="1"
@@ -110,10 +108,8 @@
                    VerticalAlignment="Center"
                    FontSize="{Binding FontSizeLabel}"
                    Style="{StaticResource PpcSensorControlLabelStyle}"
-                   Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}">
-          <Run Text="{res:Loc InstallationApp.Shutter}" />
-          <Run Text="{res:Loc InstallationApp.Bay2}" />
-        </TextBlock>
+                   Text="{Binding ShutterLabelBtn2}"
+                   Visibility="{Binding HasShutter2, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}" />
 
         <controls:PpcButton Grid.Row="2"
                             Grid.Column="0"
