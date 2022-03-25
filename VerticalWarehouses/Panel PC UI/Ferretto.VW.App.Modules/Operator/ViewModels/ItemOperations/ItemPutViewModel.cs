@@ -56,6 +56,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand showBarcodeReaderCommand;
 
+        private DelegateCommand suspendCommand;
+
         #endregion
 
         #region Constructors
@@ -210,6 +212,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.showBarcodeReaderCommand
             ??
             (this.showBarcodeReaderCommand = new DelegateCommand(this.ShowBarcodeReader));
+
+        public ICommand SuspendCommand =>
+            this.suspendCommand
+            ??
+            (this.suspendCommand = new DelegateCommand(
+                async () => await this.SuspendOperationAsync(),
+                this.CanSuspendButton));
 
         #endregion
 
@@ -621,6 +630,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 return false;
             }
+        }
+
+        private bool CanSuspendButton()
+        {
+            return true;
         }
 
         private async Task PutBoxAsync(string barcode)

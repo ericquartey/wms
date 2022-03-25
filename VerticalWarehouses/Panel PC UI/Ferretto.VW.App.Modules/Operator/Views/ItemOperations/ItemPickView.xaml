@@ -597,7 +597,18 @@
                               IsChecked="{Binding CloseLine, Mode=TwoWay}" />
       </StackPanel>
 
-      <controls:PpcButton Grid.Row="6"
+      <StackPanel Grid.Row="6">
+                
+            <controls:PpcButton
+                          Width="55"
+                          Height="50"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding SuspendCommand}"
+                          KindMaterial="Pause"/>
+
+            <controls:PpcButton
                           Width="55"
                           Height="50"
                           Margin="15,8,15,0"
@@ -606,8 +617,9 @@
                           Command="{Binding ShowBarcodeReaderCommand}"
                           KindMaterial="BarcodeScan"
                           Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
+            </StackPanel>
 
-      <!--<StackPanel Grid.Column="2"
+            <!--<StackPanel Grid.Column="2"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
 
                     <TextBlock Grid.Row="5"
