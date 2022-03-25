@@ -45,6 +45,7 @@
 - BED: corretto segnale di barriera anti-intrusione interna
 - Correzioni alle Barcode Actions
 - SocketLink: il rientro cassetto è accettato solo se il cassetto è in attesa di conferma
+- Eliminato spegnimento dai panel pc secondari
 
 ## Compatibile con adapter 0.4.31
 ***
