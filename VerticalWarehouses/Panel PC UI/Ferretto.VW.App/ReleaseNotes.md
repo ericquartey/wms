@@ -31,6 +31,7 @@
 - Aggiunti parametri di collegamento proxy per la telemetria
 - Aggiunte segnalazioni di diagnostica per la scheda I/O
 - Aggiunta procedura di risoluzione barriera
+- Aggiunto comando per sospendere l'operazione di prelievo/versamento
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore

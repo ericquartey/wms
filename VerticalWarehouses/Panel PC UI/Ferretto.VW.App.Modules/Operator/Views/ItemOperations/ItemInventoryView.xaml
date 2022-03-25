@@ -235,16 +235,28 @@
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}" />
 
-      <controls:PpcButton Grid.Row="5"
+            <StackPanel Grid.Row="5">
+
+                <controls:PpcButton
                           Width="55"
-                          Height="60"
+                          Height="50"
                           Margin="15,8,15,0"
-                          HorizontalAlignment="Left"
+                          HorizontalAlignment="right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding SuspendCommand}"
+                          KindMaterial="Pause"/>
+
+                <controls:PpcButton
+                          Width="55"
+                          Height="50"
+                          Margin="15,8,15,0"
+                          HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding ShowBarcodeReaderCommand}"
                           KindMaterial="BarcodeScan"
                           Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
-    </Grid>
+            </StackPanel>
+        </Grid>
     <Grid Grid.RowSpan="3"
           Grid.ColumnSpan="2"
           Margin="0,0,15,0"

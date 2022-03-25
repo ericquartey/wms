@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ClearNotifications();
 
             var messageBoxResult = this.DialogService.ShowMessage(
-               Localized.Get("InstallationApp.SuspendOperation"),
+               $"{this.missionOperation.ItemListCode} - {this.missionOperation.ItemListRowCode} - {this.MissionOperation.ItemCode}",
                Localized.Get("InstallationApp.SuspendOperation"),
                DialogType.Question,
                DialogButtons.YesNo);
