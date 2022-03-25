@@ -388,7 +388,7 @@
                           Command="{Binding SuspendCommand}"
                           Content="{resources:Loc OperatorApp.Suspend}"
                           Style="{StaticResource ConfirmButton}"
-                          Visibility="Collapsed" />
+                          Visibility="Visible" />
 
     </Grid>
   </Grid>

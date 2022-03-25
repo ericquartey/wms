@@ -1,4 +1,4 @@
-﻿<style>
+﻿mark<style>
     a:link {
         color: red;
         background-color: transparent;
@@ -34,6 +34,7 @@
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore
+- Correzione alla ricerca di zero giostra
 - I cassetti bloccati non si perdono al riavvio
 - Aumentata la velocità della procedura di risoluzione orizzontale
 - Modifiche agli errori della scheda I/O (34, 84, 94)

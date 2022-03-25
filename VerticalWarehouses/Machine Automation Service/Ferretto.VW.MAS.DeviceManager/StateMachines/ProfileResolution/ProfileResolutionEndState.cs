@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ProfileResolution
             {
                 //this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
                 //this.Logger.LogInformation($"Machine status switched to {MachineMode.Manual}");
-                switch (this.machineData.TargetBay)
+                switch (this.machineData.RequestingBay)
                 {
                     case BayNumber.BayOne:
                         this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>().Mode = MachineMode.Manual;
