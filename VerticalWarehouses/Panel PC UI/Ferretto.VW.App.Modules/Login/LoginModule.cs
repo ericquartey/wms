@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Modules.Login.Views;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -21,6 +22,7 @@ namespace Ferretto.VW.App.Modules.Login
         public void OnInitialized(IContainerProvider containerProvider)
         {
             containerProvider.UseUiServices();
+            containerProvider.UseMachineAutomationHubs();
 
             containerProvider
                 .Resolve<IRegionManager>()?

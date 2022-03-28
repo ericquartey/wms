@@ -36,7 +36,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            containerProvider.UseMachineAutomationHubs();
 
             containerProvider.Resolve<IOperatorNavigationService>();
             containerProvider.Resolve<IWmsDataProvider>().Start();
