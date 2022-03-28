@@ -1069,7 +1069,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid)
+        public void SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage)
         {
             lock (this.dataContext)
             {
@@ -1079,6 +1079,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.View = view;
                 bay.Inventory = inventory;
                 bay.BarcodeAutomaticPut = barcodeAutomaticPut;
+                bay.ShowBarcodeImage = showBarcodeImage;
 
                 this.dataContext.SaveChanges();
             }

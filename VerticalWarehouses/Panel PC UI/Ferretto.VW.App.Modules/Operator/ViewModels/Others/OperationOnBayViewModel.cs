@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isRequestConfirmForLastOperationOnLoadingUnit;
 
+        private bool isShowBarcodeImage;
+
         private bool isUpdatingStockByDifference;
 
         private int itemUniqueIdLength;
@@ -182,6 +184,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isRequestConfirmForLastOperationOnLoadingUnit, value, this.CanExecute);
         }
 
+        public bool IsShowBarcodeImage
+        {
+            get => this.isShowBarcodeImage;
+            set => this.SetProperty(ref this.isShowBarcodeImage, value, this.CanExecute);
+        }
+
         public bool IsUpdatingStockByDifference
         {
             get => this.isUpdatingStockByDifference;
@@ -268,6 +276,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
                 this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
+                this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage;
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
                 this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
@@ -304,7 +313,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id);
+                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage);
 
                 var machine = new Machine();
                 machine.IsEnableHandlingItemOperations = this.IsEnableHandlingItemOperations;
@@ -323,6 +332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.ItemUniqueIdLength = this.ItemUniqueIdLength;
                 machine.ToteBarcodeLength = this.ToteBarcodeLength;
                 machine.IsDrapery = this.IsDrapery;
+
                 await this.identityService.SetBayOperationParamsAsync(machine);
 
                 this.Logger.Debug($"SetBayOperationParams: IsEnableHandlingItemOperations = {this.IsEnableHandlingItemOperations}; " +

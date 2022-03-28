@@ -45,7 +45,8 @@
                     Stretch="Uniform" />
 
     <Grid Grid.Row="0"
-          Grid.Column="1">
+          Grid.Column="1"
+          VerticalAlignment="Top">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
@@ -104,8 +105,6 @@
                                       Visibility="{Binding InputLot, Converter={StaticResource RTVC}}" />
         </Border>
       </StackPanel>
-
-
 
       <StackPanel Grid.Row="2"
                   Grid.Column="2"
@@ -217,7 +216,6 @@
                                ContentText="{Binding MissionOperation.PackingListDescription}"
                                LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
                                Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
-
     </Grid>
 
     <controls:PpcLabeledText Grid.Row="1"
@@ -229,6 +227,18 @@
                              VerticalAlignment="Top"
                              ContentText="{Binding MissionOperation.ItemNotes}"
                              LabelText="{resources:Loc OperatorApp.CommonNote}" />
+
+    <Border Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="1"
+            HorizontalAlignment="Stretch"
+            Background="White"
+            Visibility="{Binding BarcodeImageExist, Converter={StaticResource BTVC}}">
+      <Image MaxHeight="120"
+             Margin="2,5,2,5"
+             Source="{Binding BarcodeImageSource}"
+             Stretch="Uniform" />
+    </Border>
 
     <Border Grid.Row="1"
             Grid.Column="2"

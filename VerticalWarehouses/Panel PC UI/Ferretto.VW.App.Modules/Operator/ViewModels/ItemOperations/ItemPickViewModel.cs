@@ -335,6 +335,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 
+            this.BarcodeImageExist = false;
+
             base.Disappear();
         }
 
@@ -365,6 +367,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             await base.OnAppearedAsync();
+
+            this.BarcodeImageExist = false;
+            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
+
 
             this.IsAddItemFeatureAvailable = configuration.Machine.IsEnableAddItem &&
                 configuration.Machine.IsDrapery &&

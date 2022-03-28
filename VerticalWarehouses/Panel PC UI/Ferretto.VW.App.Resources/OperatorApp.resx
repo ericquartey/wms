@@ -2534,4 +2534,7 @@
   <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
     <value>Inventory operations on unit n.</value>
   </data>
+  <data name="ShowBarcodeImage" xml:space="preserve">
+    <value>Show barcode image</value>
+  </data>
 </root>

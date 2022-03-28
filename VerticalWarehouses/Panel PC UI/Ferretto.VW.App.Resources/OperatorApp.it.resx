@@ -2133,4 +2133,7 @@
   <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
     <value>Operazione di inventario su cassetto n.</value>
   </data>
+  <data name="ShowBarcodeImage" xml:space="preserve">
+    <value>Mostra l'immagine del barcode</value>
+  </data>
 </root>

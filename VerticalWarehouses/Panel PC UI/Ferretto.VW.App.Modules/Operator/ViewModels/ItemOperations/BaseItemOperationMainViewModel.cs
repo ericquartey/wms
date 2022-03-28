@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
@@ -19,6 +23,7 @@ using Ferretto.VW.Utils.Enumerators;
 using Microsoft.AspNetCore.Http;
 using Prism.Commands;
 using Prism.Events;
+using ZXing;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
@@ -74,6 +79,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int? areaId;
 
         private double? availableQuantity;
+
+        private bool barcodeImageExist;
+
+        private ImageSource barcodeImageSource;
 
         private Bay bay;
 
@@ -258,6 +267,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                      this.CanConfirmPresent = value.HasValue && this.selectedCompartmentDetail != null && value.Value != this.selectedCompartmentDetail.Stock;
                      this.CanInputQuantity = false;
                  });
+        }
+
+        public bool BarcodeImageExist
+        {
+            get => this.barcodeImageExist;
+            set => this.SetProperty(ref this.barcodeImageExist, value);
+        }
+
+        public ImageSource BarcodeImageSource
+        {
+            get => this.barcodeImageSource;
+            set => this.SetProperty(ref this.barcodeImageSource, value);
         }
 
         public int BarcodeLenght { get; set; }
@@ -1244,6 +1265,80 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.Disappear();
 
             this.deviceService.ResetPoint();
+        }
+
+        public ImageSource GenerateBarcodeSource(string barcodeString)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(barcodeString))
+                {
+                    int width = 400;
+
+                    if (barcodeString.Length >= 30)
+                    {
+                        width = 900;
+                    }
+                    else if (barcodeString.Length >= 20)
+                    {
+                        width = 800;
+                    }
+                    else if (barcodeString.Length >= 10)
+                    {
+                        width = 600;
+                    }
+
+                    if (!barcodeString.All(char.IsDigit))
+                    {
+                        width += 150;
+                    }
+
+                    var barcode = new BarcodeWriter
+                    {
+                        Format = BarcodeFormat.CODE_128,
+                        Options = new ZXing.Common.EncodingOptions
+                        {
+                            Height = 100,
+                            Width = width,
+                            Margin = 10,
+                        },
+                    };
+
+                    var image = barcode.Write(barcodeString);
+
+                    var stream = new MemoryStream();
+                    image.Save(stream, ImageFormat.Jpeg);
+                    stream.Position = 0;
+                    if (stream != null)
+                    {
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.StreamSource = stream;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.EndInit();
+
+                        this.BarcodeImageExist = this.bay.ShowBarcodeImage && (this.MissionOperation.Type == MissionOperationType.Inventory || this.MissionOperation.Type == MissionOperationType.Put || this.MissionOperation.Type == MissionOperationType.Pick);
+
+                        return bitmapImage;
+                    }
+                    else
+                    {
+                        this.BarcodeImageExist = false;
+                        return new BitmapImage();
+                    }
+                }
+                else
+                {
+                    this.BarcodeImageExist = false;
+                    return new BitmapImage();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error("BarcodeImage Error: " + ex);
+                this.BarcodeImageExist = false;
+                return new BitmapImage();
+            }
         }
 
         public void InitializeInputQuantity()
