@@ -376,29 +376,29 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     if (!this.machineData.BypassSensor)
                     {
                         // Handle carousel
-                        if (bay.Carousel != null && !bay.IsExternal)
-                        {
-                            // Check presence in top position
-                            //if (ok
-                            //    && this.machineData.CalibrationType == Calibration.FindSensor
-                            //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                            //    )
-                            //{
-                            //    ok = false;
-                            //    errorText = "Find Zero not possible: Top position occupied";
-                            //}
+                        //if (bay.Carousel != null && !bay.IsExternal)
+                        //{
+                        //    // Check presence in top position
+                        //    //if (ok
+                        //    //    && this.machineData.CalibrationType == Calibration.FindSensor
+                        //    //    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                        //    //    )
+                        //    //{
+                        //    //    ok = false;
+                        //    //    errorText = "Find Zero not possible: Top position occupied";
+                        //    //}
 
-                            // Check presence in bottom position
-                            if (ok
-                                && this.machineData.CalibrationType == Calibration.FindSensor
-                                && bay.Positions.Any(p => !p.IsBlocked && !p.IsUpper)
-                                && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
-                                )
-                            {
-                                ok = false;
-                                errorText = "Find Zero not possible: Bottom position occupied";
-                            }
-                        }
+                        //    // Check presence in bottom position
+                        //    if (ok
+                        //        && this.machineData.CalibrationType == Calibration.FindSensor
+                        //        && bay.Positions.Any(p => !p.IsBlocked && !p.IsUpper)
+                        //        && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                        //        )
+                        //    {
+                        //        ok = false;
+                        //        errorText = "Find Zero not possible: Bottom position occupied";
+                        //    }
+                        //}
 
                         // Handle external bay
                         if (bay.IsExternal)

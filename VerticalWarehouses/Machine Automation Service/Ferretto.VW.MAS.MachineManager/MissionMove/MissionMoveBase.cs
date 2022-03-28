@@ -447,8 +447,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StepTime = DateTime.UtcNow;
             this.MissionsDataProvider.Update(this.Mission);
 
-            var newMessageData = new StopMessageData(StopRequestReason.Error);
-            this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+            if (this.SensorsProvider.IsMachineSecurityRunning)
+            {
+                var newMessageData = new StopMessageData(StopRequestReason.Error);
+                this.LoadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.Mission.TargetBay);
+            }
             this.Mission.RestoreConditions = false;
             this.Mission.ErrorMovements = MissionErrorMovements.None;
             this.MissionsDataProvider.Update(this.Mission);

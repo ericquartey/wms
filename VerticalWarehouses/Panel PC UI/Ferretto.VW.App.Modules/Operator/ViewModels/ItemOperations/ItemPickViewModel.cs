@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand showBarcodeReaderCommand;
 
+        private DelegateCommand suspendCommand;
+
         private string toteBarcode;
 
         #endregion
@@ -217,14 +219,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.showBarcodeReaderCommand = new DelegateCommand(this.ShowBarcodeReader));
 
-        #endregion
+        public ICommand SuspendCommand =>
+            this.suspendCommand
+            ??
+            (this.suspendCommand = new DelegateCommand(
+                async () => await this.SuspendOperationAsync(),
+                this.CanSuspendButton));
 
-        //public ICommand SignallingDefectCommand =>promag
-        //    this.signallingDefectCommand
-        //    ??
-        //    (this.signallingDefectCommand = new DelegateCommand(
-        //        /*async*/ () => /*await*/ this.SignallingDefect(),
-        //        this.CanOpenSignallingDefect));
+        #endregion
 
         #region Methods
 
@@ -234,6 +236,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.BarcodeString = string.Empty;
         }
 
+        //public ICommand SignallingDefectCommand =>promag
+        //    this.signallingDefectCommand
+        //    ??
+        //    (this.signallingDefectCommand = new DelegateCommand(
+        //        /*async*/ () => /*await*/ this.SignallingDefect(),
+        //        this.CanOpenSignallingDefect));
         public void BarcodeReaderConfirm()
         {
             if (!string.IsNullOrEmpty(this.BarcodeString))
@@ -436,11 +444,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                trackCurrentView: true);
         }
 
-        //private bool CanOpenSignallingDefect()
-        //{
-        //    return this.IsCurrentDraperyItem;
-        //}
-
         private bool CanPartiallyCompleteOnEmptyCompartment()
         {
             try
@@ -496,6 +499,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return false;
         }
 
+        //private bool CanOpenSignallingDefect()
+        //{
+        //    return this.IsCurrentDraperyItem;
+        //}
         private bool CanPickBoxes()
         {
             try
@@ -520,6 +527,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 return false;
             }
+        }
+
+        private bool CanSuspendButton()
+        {
+            return true;
         }
 
         private async Task PartiallyCompleteOnEmptyCompartmentAsync()

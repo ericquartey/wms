@@ -532,21 +532,7 @@ namespace Ferretto.VW.App.Services
 
         public async Task ShutdownAsync()
         {
-            if (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
-            {
-                await this.machineModeWebService.SetShutdownAsync();
-            }
-            else
-            {
-                this.logger.Warn("Shutdown pc");
-                var psi = new ProcessStartInfo("shutdown", "/s /t 5");
-                psi.CreateNoWindow = true;
-                psi.UseShellExecute = false;
-                Process.Start(psi);
-
-                this.logger.Warn("Close application");
-                System.Windows.Application.Current.Shutdown();
-            }
+            await this.machineModeWebService.SetShutdownAsync();
         }
 
         public async Task StartAsync()

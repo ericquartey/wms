@@ -1,4 +1,4 @@
-﻿<style>
+﻿mark<style>
     a:link {
         color: red;
         background-color: transparent;
@@ -31,9 +31,11 @@
 - Aggiunti parametri di collegamento proxy per la telemetria
 - Aggiunte segnalazioni di diagnostica per la scheda I/O
 - Aggiunta procedura di risoluzione barriera
+- Aggiunto comando per sospendere l'operazione di prelievo/versamento
 
 ## Bug Risolti
 - I ripristini della giostra si fermano sul sensore
+- Correzione alla ricerca di zero giostra
 - I cassetti bloccati non si perdono al riavvio
 - Aumentata la velocità della procedura di risoluzione orizzontale
 - Modifiche agli errori della scheda I/O (34, 84, 94)
@@ -43,6 +45,7 @@
 - BED: corretto segnale di barriera anti-intrusione interna
 - Correzioni alle Barcode Actions
 - SocketLink: il rientro cassetto è accettato solo se il cassetto è in attesa di conferma
+- Eliminato spegnimento dai panel pc secondari
 
 ## Compatibile con adapter 0.4.31
 ***

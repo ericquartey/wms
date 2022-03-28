@@ -320,7 +320,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
         private void ProcessEndMeasure(FieldNotificationMessage message)
         {
-            var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
             if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
             {
                 this.Logger.LogDebug($"Step {this.performedCycles} Profile {data.Profile / 100.0}%");
@@ -329,6 +328,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             }
             else if (message.Source == FieldMessageActor.IoDriver && this.measureRequest)
             {
+                var inverterIndex = (byte)this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
                 var inverterCommandMessageData = new MeasureProfileFieldMessageData();
                 var inverterCommandMessage = new FieldCommandMessage(
                     inverterCommandMessageData,
@@ -355,7 +355,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                             machineModeProvider.Mode != MachineMode.Test2 &&
                             machineModeProvider.Mode != MachineMode.Test3)
                         {
-                            switch (this.machineData.TargetBay)
+                            switch (this.machineData.RequestingBay)
                             {
                                 case BayNumber.BayOne:
                                     machineModeProvider.Mode = MachineMode.Test;
@@ -441,8 +441,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             else if (this.performedCycles == (int)ProfileResolutionStep.EightBeam
                 && !this.machineData.MachineSensorStatus.IsProfileCalibratedBay(this.machineData.RequestingBay))
             {
-                //errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
-                this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
+                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
+                //this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
             }
             else if (this.performedCycles == (int)ProfileResolutionStep.ThirtyBeam
                 && this.profile[this.performedCycles] < 9800)
@@ -455,6 +455,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.Logger.LogError(errorText);
 #else
                 this.errorsProvider.RecordNew(MachineErrorCode.ProfileResolutionFail, this.machineData.RequestingBay, errorText);
+                this.isTestStopped = true;
 #endif
             }
 
@@ -466,7 +467,27 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 this.machineData.MessageData.ExecutedCycles = this.performedCycles;
                 this.machineData.MessageData.IsTestStopped = this.isTestStopped;
                 this.machineData.MessageData.ProfileSamples = this.profile;
-                this.ParametersCalculation();
+                if (this.isTestStopped)
+                {
+                    this.machineData.ExecutedSteps = this.performedCycles;
+                    this.machineData.MessageData.ExecutedCycles = this.performedCycles;
+                    this.machineData.MessageData.ProfileSamples = this.profile;
+                    var notificationMessage = new NotificationMessage(
+                        this.machineData.MessageData,
+                        $"ProfileResolution",
+                        MessageActor.AutomationService,
+                        MessageActor.DeviceManager,
+                        MessageType.Positioning,
+                        this.machineData.RequestingBay,
+                        this.machineData.TargetBay,
+                        MessageStatus.OperationExecuting);
+
+                    this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+                }
+                else
+                {
+                    this.ParametersCalculation();
+                }
 
                 // stop timers
                 this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);

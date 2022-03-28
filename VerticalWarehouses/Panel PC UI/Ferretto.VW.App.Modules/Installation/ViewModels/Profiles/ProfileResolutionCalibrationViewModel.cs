@@ -44,8 +44,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
 
-        private DelegateCommand applyCommand;
-
         private DelegateCommand completeCommand;
 
         private double? currentResolution;
@@ -162,12 +160,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public ICommand ApplyCommand =>
-            this.applyCommand
-            ??
-            (this.applyCommand = new DelegateCommand(
-                async () => await this.ApplyCorrectionAsync(), this.CanApply));
-
         public Bay Bay => this.MachineService.Bay;
 
         public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors;
@@ -177,10 +169,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BayPosition BayPositionActive { get; set; }
 
         public IEnumerable<Bay> Bays { get; set; }
-
-        public IEnumerable<Cell> Cells { get; set; }
-
-        public double? ChainOffset => Math.Abs(this.machineElevatorWebService.GetHorizontalOffsetAsync().Result);
 
         public ICommand CompleteCommand =>
                             this.completeCommand
@@ -307,8 +295,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
-            private set 
-                { if (this.SetProperty(ref this.isShutterMoving, value))
+            private set
+            {
+                if (this.SetProperty(ref this.isShutterMoving, value))
                 {
                     this.RaisePropertyChanged();
                 }
@@ -491,8 +480,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopInPhaseAsync(),
                 this.CanStopInPhase));
 
-        public double? TotalDistance => Math.Abs(this.machineElevatorWebService.GetHorizontalTotalDistanceAsync().Result);
-
         public ICommand VerticalCalibrationCommand =>
             this.verticalCalibrationCommand
             ??
@@ -576,44 +563,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        public async Task RetrieveProcedureInformationAsync()
-        {
-            try
-            {
-                var procedureParameters = await this.machineElevatorWebService.GetHorizontalResolutionProcedureAsync();
-
-                this.RequiredCycles = procedureParameters.RequiredCycles;
-                this.PerformedCycles = procedureParameters.PerformedCycles;
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-                this.isErrorVisible = true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        protected override async Task OnDataRefreshAsync()
-        {
-            try
-            {
-                this.CurrentResolution = await this.machineElevatorWebService.GetHorizontalResolutionAsync();
-                await this.RetrieveProcedureInformationAsync();
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-                this.isErrorVisible = true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
             await base.OnMachineStatusChangedAsync(e);
@@ -682,52 +631,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsExecutingProcedure));
             this.RaisePropertyChanged(nameof(this.IsExecutingStopInPhase));
             this.RaisePropertyChanged(nameof(this.IsCalibrationNotCompletedAndStopped));
-
-            this.RaisePropertyChanged(nameof(this.ChainOffset));
         }
 
-        private async Task ApplyCorrectionAsync()
-        {
-            this.IsWaitingForResponse = true;
-            try
-            {
-                var measuredCorrection = this.IsErrorNegative ? this.ChainOffset : -this.ChainOffset;
-                var distance = this.TotalDistance;
-                var correctionForEachMovement = measuredCorrection / (this.SessionPerformedCycles > 2 ? this.SessionPerformedCycles : 2);
-                var newDistance = correctionForEachMovement + distance;
-                var newResolution = (double)(this.CurrentResolution * newDistance / distance);
-                var applyCorrection = $"{Localized.Get("InstallationApp.Resolution")}: {this.CurrentResolution:0.000000}, {Localized.Get("InstallationApp.NewResolution")}: {newResolution:0.000000}";
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ApplyCorrectionMessage"), applyCorrection, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
-                {
-                    await this.machineElevatorWebService.UpdateHorizontalResolutionAsync(newResolution);
-
-                    this.Logger.Debug(applyCorrection);
-
-                    this.CurrentResolution = newResolution;
-
-                    this.ShowNotification(
-                            Localized.Get("InstallationApp.InformationSuccessfullyUpdated"),
-                            Services.Models.NotificationSeverity.Success);
-
-                    this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
-                }
-            }
-            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
-            {
-                this.ShowNotification(ex);
-                this.isErrorVisible = true;
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private bool CanApply()
-        {
-            return true;
-        }
 
         private bool CanBaseExecute()
         {
@@ -828,7 +733,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanVerticalCalibration()
         {
             return this.CanBaseExecute() &&
-                   !this.MachineService.IsHoming && 
+                   !this.MachineService.IsHoming &&
                    !this.IsVerticalCalibration &&
                    !this.MachineService.MachineStatus.IsMoving &&
                    !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
@@ -850,11 +755,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsExecutingStopInPhase = false;
                         this.IsExecutingProcedure = false;
 
-                        await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
+                        await this.machineProfileProcedureWeb.SaveAsync();
                         this.Logger.Debug($"SetProfileConst: k0 = {this.ProfileConst[0]}; k1 = {this.ProfileConst[1]}; old k0 {this.Bay.ProfileConst0}; old k1 {this.Bay.ProfileConst1}");
                         await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
 
                         this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                        this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
                         this.NavigationService.GoBack();
                     }
                 }
@@ -866,13 +772,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsExecutingStopInPhase = false;
                         this.IsExecutingProcedure = false;
 
-                        await this.machineElevatorWebService.SetHorizontalResolutionCalibrationCompletedAsync();
+                        await this.machineProfileProcedureWeb.SaveAsync();
                         this.Logger.Debug($"SetProfileConst: k0 = {this.ProfileConst[0]}; k1 = {this.ProfileConst[1]}; old k0 {this.Bay.ProfileConst0}; old k1 {this.Bay.ProfileConst1}");
                         await this.machineBaysWebService.SetProfileConstBayAsync(this.ProfileConst[0], this.ProfileConst[1]);
 
                         this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), NotificationSeverity.Success);
+                        this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
+                        this.NavigationService.GoBack();
                     }
-                    this.NavigationService.GoBack();
+
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -882,7 +790,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
-                this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
                 this.IsWaitingForResponse = false;
             }
         }
@@ -953,6 +860,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 this.PerformedCycles = message.Data.ExecutedCycles;
                 this.SessionPerformedCycles = this.PerformedCycles - this.StartPerformedCycles;
+                if (message.Data.ProfileSamples != null)
+                {
+                    this.ProfileSamples = message.Data.ProfileSamples;
+                }
             }
 
             if (message.Status == MessageStatus.OperationEnd)
@@ -1006,7 +917,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
             }
-            this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
+            if (this.requiredCycles > 0)
+            {
+                this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
+            }
         }
 
         private async Task StartCalibrationAsync()
@@ -1014,10 +928,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsWaitingForResponse = true;
             try
             {
-                await this.machineElevatorWebService.ResetHorizontalResolutionAsync();
-
-                await this.RetrieveProcedureInformationAsync();
-
                 // Update procedure info
                 this.StartPerformedCycles = 0;
                 this.SessionPerformedCycles = 0;

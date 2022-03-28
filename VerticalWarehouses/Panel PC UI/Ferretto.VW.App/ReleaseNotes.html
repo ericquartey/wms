@@ -5,29 +5,29 @@
 </head>
 <body>
 
-    <style>
-    a:link {
-        color: red;
-        background-color: transparent;
-        text-decoration: none;
-    }
+    <p>mark<style>
+a:link {
+color: red;
+background-color: transparent;
+text-decoration: none;
+}</p>
+<pre><code>a:visited {
+    color: coral;
+    background-color: transparent;
+    text-decoration: none;
+}
 
-    a:visited {
-        color: coral;
-        background-color: transparent;
-        text-decoration: none;
-    }
+a:hover, a:active {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
 
-    a:hover, a:active {
-        color: red;
-        background-color: transparent;
-        text-decoration: underline;
-    }
-
-    body {
-        background-color: #282828;
-        color: #C5C7C4;
-    }
+body {
+    background-color: #282828;
+    color: #C5C7C4;
+}
+</code></pre>
 </style>
 <h1 id="note-di-versione">Note di versione</h1>
 <h2 id="nuove-funzionalita-1.0.40-rispetto-la-1.0.39">Nuove Funzionalità 1.0.40 rispetto la 1.0.39</h2>
@@ -37,10 +37,12 @@
 <li>Aggiunti parametri di collegamento proxy per la telemetria</li>
 <li>Aggiunte segnalazioni di diagnostica per la scheda I/O</li>
 <li>Aggiunta procedura di risoluzione barriera</li>
+<li>Aggiunto comando per sospendere l'operazione di prelievo/versamento</li>
 </ul>
 <h2 id="bug-risolti">Bug Risolti</h2>
 <ul>
 <li>I ripristini della giostra si fermano sul sensore</li>
+<li>Correzione alla ricerca di zero giostra</li>
 <li>I cassetti bloccati non si perdono al riavvio</li>
 <li>Aumentata la velocità della procedura di risoluzione orizzontale</li>
 <li>Modifiche agli errori della scheda I/O (34, 84, 94)</li>
@@ -50,6 +52,7 @@
 <li>BED: corretto segnale di barriera anti-intrusione interna</li>
 <li>Correzioni alle Barcode Actions</li>
 <li>SocketLink: il rientro cassetto è accettato solo se il cassetto è in attesa di conferma</li>
+<li>Eliminato spegnimento dai panel pc secondari</li>
 </ul>
 <h2 id="compatibile-con-adapter-0.4.31">Compatibile con adapter 0.4.31</h2>
 <hr />

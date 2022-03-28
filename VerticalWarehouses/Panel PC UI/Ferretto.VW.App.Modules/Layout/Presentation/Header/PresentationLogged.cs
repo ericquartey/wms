@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Modules.Layout
 
         private bool isPopupOpen;
 
+        private bool isShutdownVisible;
+
         private DelegateCommand logOutCommand;
 
         private DelegateCommand shutdownCommand;
@@ -106,6 +108,12 @@ namespace Ferretto.VW.App.Modules.Layout
             }
         }
 
+        public bool IsShutdownVisible
+        {
+            get => this.isShutdownVisible;
+            set => this.SetProperty(ref this.isShutdownVisible, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand LogOutCommand =>
             this.logOutCommand
             ??
@@ -157,6 +165,7 @@ namespace Ferretto.VW.App.Modules.Layout
             {
                 this.autologoutServiceTimer.Stop();
             }
+            this.IsShutdownVisible = this.machineService.BayNumber == BayNumber.BayOne;
         }
 
         private async void autoLogoutServiceUserAsync(object sender, EventArgs e)
@@ -181,7 +190,6 @@ namespace Ferretto.VW.App.Modules.Layout
             if (this.machineService.MachinePower >= MachinePowerState.PoweringUp
                 && !this.machineService.MachineStatus.IsError
                 && !this.machineService.IsMissionInError
-                && this.machineService.BayNumber == BayNumber.BayOne
                 )
             {
                 description = Localized.Get("InstallationApp.ShutdownDescription");

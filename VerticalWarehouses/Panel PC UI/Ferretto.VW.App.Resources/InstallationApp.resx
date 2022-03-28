@@ -2765,6 +2765,6 @@
     <value>Elevator and bay must be empty. Please perform the manual calibration of the profile measure device before this procedure</value>
   </data>
   <data name="ConfirmDifferentValue" xml:space="preserve">
-    <value></value>
+    <value>Values ​​are out of range, confirm anyway</value>
   </data>
 </root>

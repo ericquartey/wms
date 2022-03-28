@@ -1510,7 +1510,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Values ​​are out of range, confirm anyway.
         /// </summary>
         public static string ConfirmDifferentValue {
             get {

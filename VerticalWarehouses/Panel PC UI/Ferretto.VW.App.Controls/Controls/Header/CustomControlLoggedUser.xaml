@@ -40,6 +40,7 @@
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding ShutdownCommand}"
                                     Content="{res:Loc InstallationApp.Shutdown}"
+                                    IsEnabled="{Binding IsShutdownVisible}"
                                     Style="{DynamicResource PpcIconTextButtonStyle}"                                     
                                     KindMaterial="KeyboardOffOutline"/>
             </StackPanel>

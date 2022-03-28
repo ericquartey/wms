@@ -26,7 +26,11 @@ namespace Ferretto.VW.App.Services
 
         private readonly Sensors sensors = new Sensors();
 
-        private readonly ShutterSensors shutterSensors = new ShutterSensors();
+        private readonly ShutterSensors shutterSensorsBay1 = new ShutterSensors();
+
+        private readonly ShutterSensors shutterSensorsBay2 = new ShutterSensors();
+
+        private readonly ShutterSensors shutterSensorsBay3 = new ShutterSensors();
 
         private bool bayIsMultiPosition;
 
@@ -330,7 +334,37 @@ namespace Ferretto.VW.App.Services
 
         public Sensors Sensors => this.sensors;
 
-        public ShutterSensors ShutterSensors => this.shutterSensors;
+        public ShutterSensors ShutterSensors
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return null;
+                }
+
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.shutterSensorsBay1;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.shutterSensorsBay2;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.shutterSensorsBay3;
+                }
+
+                return null;
+            }
+        }
+
+        public ShutterSensors ShutterSensorsBay1 => this.shutterSensorsBay1;
+
+        public ShutterSensors ShutterSensorsBay2 => this.shutterSensorsBay2;
+
+        public ShutterSensors ShutterSensorsBay3 => this.shutterSensorsBay3;
 
         private bool IsHealthy => this.healthProbeService?.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService?.HealthMasStatus == HealthStatus.Degraded;
 
@@ -417,7 +451,7 @@ namespace Ferretto.VW.App.Services
 
                     this.BayZeroChainUpIsVisible = this.Bay.IsExternal && this.Bay.IsDouble;
 
-                    this.shutterSensors.HasShutter = this.Bay.Shutter != null && this.Bay.Shutter.Type != ShutterType.NotSpecified;
+                    this.ShutterSensors.HasShutter = this.Bay.Shutter != null && this.Bay.Shutter.Type != ShutterType.NotSpecified;
                 }
             }
             catch (Exception ex)
@@ -433,7 +467,9 @@ namespace Ferretto.VW.App.Services
             this.sensors.Update(sensorsStates.ToArray());
             if (this.Bay != null)
             {
-                this.shutterSensors.Update(sensorsStates.ToArray(), (int)this.Bay.Number);
+                this.shutterSensorsBay1.Update(sensorsStates.ToArray(), (int)BayNumber.BayOne);
+                this.shutterSensorsBay2.Update(sensorsStates.ToArray(), (int)BayNumber.BayTwo);
+                this.shutterSensorsBay3.Update(sensorsStates.ToArray(), (int)BayNumber.BayThree);
             }
 
             this.RaisePropertyChanged();
@@ -458,13 +494,17 @@ namespace Ferretto.VW.App.Services
                     {
                         if (this.IsHealthy)
                         {
-                            this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                            this.shutterSensorsBay1.Update(message.Data.SensorsStates, (int)BayNumber.BayOne);
+                            this.shutterSensorsBay2.Update(message.Data.SensorsStates, (int)BayNumber.BayTwo);
+                            this.shutterSensorsBay3.Update(message.Data.SensorsStates, (int)BayNumber.BayThree);
                         }
                     });
                 }
                 else
                 {
-                    this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                    this.shutterSensorsBay1.Update(message.Data.SensorsStates, (int)BayNumber.BayOne);
+                    this.shutterSensorsBay2.Update(message.Data.SensorsStates, (int)BayNumber.BayTwo);
+                    this.shutterSensorsBay3.Update(message.Data.SensorsStates, (int)BayNumber.BayThree);
                 }
 
                 this.OnUpdateSensors?.Invoke(this, EventArgs.Empty);
