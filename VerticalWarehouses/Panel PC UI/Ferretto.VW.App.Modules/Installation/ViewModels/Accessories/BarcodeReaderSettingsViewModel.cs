@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         width = 600;
                     }
-                    else if (this.TryBarcodeImage.Length >= 10)
+                    else if (this.TryBarcodeImage.Length >= 9)
                     {
                         width = 300;
                     }
