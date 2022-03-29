@@ -498,7 +498,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.Source));
         }
 
-        public async override Task OnAppearedAsync()
+        public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
         }
@@ -640,7 +640,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 });
                 this.source.Add(new ItemListSetupProcedure()
                 {
-                    Text = Localized.Get("InstallationApp.BarrierCalibration"),
+                    Text = Localized.Get("InstallationApp.ProfileResolutionCalibration"),
                     Status = bayStatus.Profile.IsCompleted ? InstallationStatus.Complete : InstallationStatus.Incomplete,
                     Bypassable = !bayStatus.Profile.IsCompleted,
                     Bypassed = bayStatus.Profile.IsBypassed,

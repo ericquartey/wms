@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                         {
                             bayPosition = bay.Positions.First(p => !p.IsUpper);
                         }
-                        this.eightBeamPosition = bayPosition.Height + 175;
+                        this.eightBeamPosition = bayPosition.Height + 160;
                         this.thirtyBeamPosition = bayPosition.Height + 775;
                         statusWordPollingInterval = 500;
 
@@ -459,7 +459,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 #endif
             }
 
-            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles 
+            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles
                 || this.isTestStopped)
             {
                 this.Logger.LogDebug("FSM Finished Executing State");

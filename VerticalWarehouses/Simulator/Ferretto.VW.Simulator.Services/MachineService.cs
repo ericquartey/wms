@@ -790,6 +790,11 @@ namespace Ferretto.VW.Simulator.Services
         private void ReplyToInverterMessage(TcpClient client, InverterMessage message)
         {
             var inverter = this.Inverters.First(x => x.InverterRole == (InverterRole)message.SystemIndex);
+            if (!inverter.Enabled)
+            {
+                System.Diagnostics.Debug.WriteLine($"NOT ENABLED: {message}");
+                return;
+            }
             if (!this.isInverterConnected)
             {
                 this.heartBeatTime = DateTime.UtcNow;

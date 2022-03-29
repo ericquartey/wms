@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly Ferretto.VW.MAS.AutomationService.Contracts.BayNumber otherBayNumber;
+
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private DelegateCommand applyCommand;
@@ -102,8 +104,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int oldPerformedCycle = 0;
 
-        private Ferretto.VW.MAS.AutomationService.Contracts.BayNumber otherBayNumber;
-
         private int performedCycles;
 
         private SubscriptionToken positioningMessageReceivedToken;
@@ -125,6 +125,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private string shutterLabelBtn1;
 
         private string shutterLabelBtn2;
+
+        private SubscriptionToken shutterPositioningMessageReceivedToken;
 
         private long singleRaisingTicks = 0;
 
@@ -188,7 +190,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public ICommand ApplyCommand =>
-            this.applyCommand
+                    this.applyCommand
             ??
             (this.applyCommand = new DelegateCommand(
                 async () => await this.ApplyCorrectionAsync(), this.CanApply));
@@ -347,12 +349,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+        public bool IsMoving => (this.MachineService?.MachineStatus?.IsMoving ?? true) || (this.MachineService?.MachineStatus?.IsMovingLoadingUnit ?? true) || this.IsShutterMoving;
 
         public bool IsShutterMoving
         {
             get => this.isShutterMoving;
-            private set => this.SetProperty(ref this.isShutterMoving, value);
+            private set
+            {
+                if (this.SetProperty(ref this.isShutterMoving, value))
+                {
+                    this.RaisePropertyChanged();
+                }
+            }
         }
 
         //public bool IsNewErrorValueVisible
@@ -571,6 +579,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.positioningMessageReceivedToken = null;
             }
 
+            if (this.shutterPositioningMessageReceivedToken != null)
+            {
+                this.EventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Unsubscribe(this.shutterPositioningMessageReceivedToken);
+                this.shutterPositioningMessageReceivedToken?.Dispose();
+                this.shutterPositioningMessageReceivedToken = null;
+            }
+
             if (this.themeChangedToken != null)
             {
                 this.EventAggregator.GetEvent<ThemeChangedPubSubEvent>().Unsubscribe(this.themeChangedToken);
@@ -606,6 +621,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.BayPositionActive = null;
             this.IsChainTuned = false;
             this.IsExecutingStopInPhase = false;
+            this.IsShutterMoving = false;
 
             this.ShutterLabel = this.SensorsService.ShutterSensors.Open ? Localized.Get("InstallationApp.GateClose") : Localized.Get("InstallationApp.GateOpen");
 
@@ -617,12 +633,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MAS.AutomationService.Contracts.BayNumber.BayOne:
                     this.ShutterLabelBtn1 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay1");
                     break;
+
                 case MAS.AutomationService.Contracts.BayNumber.BayTwo:
                     this.ShutterLabelBtn1 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay2");
                     break;
+
                 case MAS.AutomationService.Contracts.BayNumber.BayThree:
                     this.ShutterLabelBtn1 = Localized.Get("InstallationApp.Shutter") + " " + Localized.Get("InstallationApp.Bay3");
                     break;
+
                 case MAS.AutomationService.Contracts.BayNumber.None:
                 default:
                     this.ShutterLabelBtn1 = "";
@@ -1022,6 +1041,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.isErrorVisible = false;
 
                 var bay = await this.bayManager.GetBayAsync();
                 this.BayPositionActive = bay.Positions.Single(b => b.IsUpper == (level == "UP"));
@@ -1055,6 +1075,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.IsShutterMoving = true;
+                this.isErrorVisible = false;
 
                 switch (this.otherBayNumber)
                 {
@@ -1095,6 +1117,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.IsShutterMoving = true;
+                this.isErrorVisible = false;
 
                 await this.shuttersWebService.MoveToAsync(
                     this.SensorsService.ShutterSensors.Open ?
@@ -1225,6 +1249,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CyclesPercent = (this.performedCycles * 100) / this.requiredCycles;
         }
 
+        private void OnShutterPositioningMessageReceived(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            if (message.Data?.MovementMode == MovementMode.ShutterPosition
+                && (message.Status == MessageStatus.OperationEnd
+                    || message.Status == MessageStatus.OperationError
+                    || message.Status == MessageStatus.OperationStop))
+            {
+                this.IsShutterMoving = false;
+            }
+        }
+
         private async Task StartCalibrationAsync()
         {
             this.IsWaitingForResponse = true;
@@ -1321,6 +1356,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
                         this.OnPositioningMessageReceived,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.shutterPositioningMessageReceivedToken = this.shutterPositioningMessageReceivedToken
+                ?? this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositioningMessageReceived,
                         ThreadOption.UIThread,
                         false);
 
