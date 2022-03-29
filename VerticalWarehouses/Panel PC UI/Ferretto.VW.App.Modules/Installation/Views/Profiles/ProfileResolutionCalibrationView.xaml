@@ -341,7 +341,7 @@
                               VerticalAlignment="Center"
                               Command="{Binding CompleteCommand}"
                               Content="{res:Loc InstallationApp.ConfirmProcedure}"
-                              Style="{DynamicResource WizardIntoButton}"
+                              Style="{DynamicResource WizardConfirmButton}"
                               Visibility="{Binding IsCalibrationNotCompletedAndStopped, Converter={StaticResource ResourceKey=BTVIC}}" />
 
 
@@ -427,7 +427,7 @@
                               VerticalAlignment="Bottom"
                               Command="{Binding RepeatCalibrationCommand}"
                               Content="{res:Loc InstallationApp.Repeat}"
-                              Style="{StaticResource WizardConfirmButton}"
+                              Style="{StaticResource WizardIntoButton}"
                               Visibility="{Binding IsCalibrationNotCompletedAndStopped, Converter={StaticResource ResourceKey=BTVIC}}" />
         </Grid>
 

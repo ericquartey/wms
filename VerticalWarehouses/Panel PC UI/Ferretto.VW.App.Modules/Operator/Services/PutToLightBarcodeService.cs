@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
@@ -88,14 +89,14 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machineIdentity = await this.identityService.GetAsync();
                 if (machineIdentity is null)
                 {
-                    this.NotifyError(new Exception($"Identificativo macchina non definito"));
+                    this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
                     return;
                 }
 
                 var machineId = machineIdentity.Id;
 
                 await this.putToLightWebService.AssociateBasketToShelfAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
-                this.NotifySuccess($"Il collo '{this.selectedBasketCode}' è stato associato allo scaffale '{this.selectedShelfCode}'.");
+                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxAssociateShelf"), this.selectedBasketCode, this.selectedShelfCode));
 
                 this.ResetUserSelection();
             }
@@ -112,14 +113,14 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machineIdentity = await this.identityService.GetAsync();
                 if (machineIdentity is null)
                 {
-                    this.NotifyError(new Exception($"Identificativo macchina non definito"));
+                    this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
                     return;
                 }
 
                 var machineId = machineIdentity.Id;
 
                 await this.putToLightWebService.CompleteBasketAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
-                this.NotifySuccess($"Il collo {this.selectedBasketCode} è stato chiuso.");
+                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxClosed"), this.selectedBasketCode));
 
                 this.ResetUserSelection();
             }
@@ -138,15 +139,15 @@ namespace Ferretto.VW.App.Modules.Operator
             switch (e.UserAction)
             {
                 case UserAction.AssociateBasketToShelf:
-                    this.NotifyInfo($"Inizio associazione di un collo ad uno scaffale. Scansionare lo scaffale.");
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartAssociateBoxToShelf"));
                     break;
 
                 case UserAction.RemoveFullBasket:
-                    this.NotifyInfo($"Inizio marcatura di collo pieno. Scansionare lo scaffale.");
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartMarkingFullBox"));
                     break;
 
                 case UserAction.CompleteBasket:
-                    this.NotifyInfo($"Inizio chiusura collo. Scansionare lo scaffale.");
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingBox"));
                     break;
             }
         }
@@ -186,14 +187,14 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machineIdentity = await this.identityService.GetAsync();
                 if (machineIdentity is null)
                 {
-                    this.NotifyError(new Exception($"Identificativo macchina non definito"));
+                    this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
                     return;
                 }
 
                 var machineId = machineIdentity.Id;
 
                 await this.putToLightWebService.RemoveFullBasketAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
-                this.NotifySuccess($"Il collo {this.selectedBasketCode} è stato marcato come pieno.");
+                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxIsFull"), this.selectedBasketCode));
 
                 this.ResetUserSelection();
             }
@@ -242,24 +243,24 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             if (this.selectedUserAction is UserAction.NotSpecified)
             {
-                this.NotifyWarning("Scansionare prima il codice a barre dell'azione da eseguire.");//TODO localize
+                this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
                 return;
             }
 
             if (this.selectedShelfCode == null)
             {
-                this.NotifyWarning("Scansionare prima il codice a barre dello scaffale.");//TODO localize
+                this.NotifyWarning(Localized.Get("OperatorApp.ScanShelfFirst"));
 
                 return;
             }
 
             this.selectedBasketCode = e.GetBasketCode();
-            this.NotifyInfo($"Collo '{this.selectedBasketCode}' selezionato.");
+            this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedBox"), this.selectedBasketCode));
 
             if (this.selectedBasketCode is null)
             {
-                this.NotifyWarning("No basket code found in the barcode");//TODO localize
+                this.NotifyWarning(Localized.Get("OperatorApp.NoBoxCode"));
             }
             else
             {
@@ -271,18 +272,18 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             if (this.selectedUserAction is UserAction.NotSpecified)
             {
-                this.NotifyWarning("Scansionare prima il codice a barre dell'azione da eseguire.");//TODO localize
+                this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
                 return;
             }
 
             this.selectedBasketCode = null;
             this.selectedShelfCode = e.GetShelfCode();
-            this.NotifyInfo($"Scaffale '{this.selectedShelfCode}' selezionato. Scansionare il collo.");
+            this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedShelf"), this.selectedShelfCode));
 
             if (this.selectedShelfCode is null)
             {
-                this.NotifyWarning("No shelf code found in the barcode");//TODO localize
+                this.NotifyWarning(Localized.Get("OperatorApp.NoShelfCode"));
             }
             else
             {
