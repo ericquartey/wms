@@ -627,12 +627,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && this.Mission.NeedHomingAxis == Axis.BayChain
                 )
             {
+                var position = this.Mission.LoadUnitDestination;
                 var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
-                if (bay != null)
+                if(bay is null)
+                {
+                    bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
+                    position = this.Mission.LoadUnitSource;
+                }
+                if (bay != null && bay.Number == this.Mission.TargetBay)
                 {
                     this.Mission.NeedHomingAxis = Axis.None;
                     this.MissionsDataProvider.Update(this.Mission);
-                    this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+                    if (!this.SensorsProvider.IsLoadingUnitInLocation(position))
+                    {
+                        this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = true;
+                    }
                 }
             }
         }
@@ -687,6 +696,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
+                        if (this.Mission.Step == MissionStep.BayChain && this.Mission.NeedHomingAxis != Axis.HorizontalAndVertical)
+                        {
+                            this.Mission.NeedHomingAxis = Axis.BayChain;
+                        }
                         newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
                     }
                     newStep.OnEnter(null);

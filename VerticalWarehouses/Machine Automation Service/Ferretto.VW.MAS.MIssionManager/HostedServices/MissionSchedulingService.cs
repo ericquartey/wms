@@ -1381,6 +1381,11 @@ namespace Ferretto.VW.MAS.MissionManager
                             && !machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
                         {
                             errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart);
+                            this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                            if (bay.CurrentMission != null)
+                            {
+                                moveLoadingUnitProvider.StopMove(bay.CurrentMission.Id, bay.Number, bay.Number, MessageActor.MissionManager);
+                            }
 
                             //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
@@ -1467,7 +1472,12 @@ namespace Ferretto.VW.MAS.MissionManager
                     this.machineVolatileDataProvider.IsHomingActive = false;
                     if (data.AxisToCalibrate == Axis.BayChain)
                     {
-                        this.machineVolatileDataProvider.IsBayHomingExecuted[message.RequestingBay] = true;
+                        var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bay = bayProvider.GetByNumber(message.TargetBay);
+                        if (bay.CurrentMission is null)
+                        {
+                            this.machineVolatileDataProvider.IsBayHomingExecuted[message.RequestingBay] = true;
+                        }
                     }
                     else if (data.AxisToCalibrate == Axis.Vertical || data.AxisToCalibrate == Axis.HorizontalAndVertical)
                     {
