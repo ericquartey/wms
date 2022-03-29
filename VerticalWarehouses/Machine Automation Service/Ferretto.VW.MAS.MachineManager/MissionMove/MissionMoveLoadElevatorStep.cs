@@ -127,6 +127,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitSource, deposit: false);
                         if (result != MachineErrorCode.NoError)
                         {
+                            this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
                             var error = this.ErrorsProvider.RecordNew(result, bay.Number);
                             throw new StateMachineException(error.Reason, bay.Number, MessageActor.MachineManager);
                         }

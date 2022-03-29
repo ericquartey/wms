@@ -64,13 +64,13 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand findZeroElevatorCommand;
 
+        private bool isErrorGeneric;
+
         private bool isErrorZeroBay;
 
         private bool isErrorZeroBayExternal;
 
         private bool isErrorZeroElevator;
-
-        private bool isErrorGeneric;
 
         private MachineError machineError;
 
@@ -169,6 +169,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public bool HasStepStart => this.currentStep is ErrorZeroSensorStepStart;
 
+        public bool IsErrorGeneric
+        {
+            get => this.isErrorGeneric;
+            set => this.SetProperty(ref this.isErrorGeneric, value);
+        }
+
         public bool IsErrorZeroBay
         {
             get => this.isErrorZeroBay;
@@ -221,11 +227,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             get => this.selectedLoadingUnit;
             private set => this.SetProperty(ref this.selectedLoadingUnit, value);
         }
-public bool IsErrorGeneric
-        {
-            get => this.isErrorGeneric;
-            set => this.SetProperty(ref this.isErrorGeneric, value);
-        }
+
         public bool StartStepVisible
         {
             get => this.startStepVisible;
@@ -386,12 +388,14 @@ public bool IsErrorGeneric
         private bool CanCalibrateBay()
         {
             return this.SensorsService.BayZeroChain &&
+                !this.IsMoving &&
                 this.MachineService.Bays?.FirstOrDefault(a => a.Number == this.MachineService.BayNumber)?.Carousel != null;
         }
 
         private bool CanCalibrateElevator()
         {
             return this.SensorsService.IsZeroChain &&
+                !this.IsMoving &&
                 !this.SensorsService.Sensors.LuPresentInMachineSide &&
                 !this.SensorsService.Sensors.LuPresentInOperatorSide;
         }
