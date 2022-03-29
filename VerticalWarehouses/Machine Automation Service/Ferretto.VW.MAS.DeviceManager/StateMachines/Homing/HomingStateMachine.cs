@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -279,14 +278,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     )
                 {
                     ok = false;
-                    errorText = $"Invalid presence sensors: Zero sensor: {this.machineData.MachineSensorStatus.IsSensorZeroOnCradle}, completely on board: {this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle}";
+                    errorText = string.Format(Resources.Elevator.ResourceManager.GetString("InvalidPresenceSensors", CommonUtils.Culture.Actual), this.machineData.MachineSensorStatus.IsSensorZeroOnCradle, this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle);
                 }
                 else if (this.machineData.CalibrationType == Calibration.FindSensor
                     && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                     )
                 {
                     ok = false;
-                    errorText = "Find Zero not possible with full elevator";
+                    errorText = string.Format(Resources.Elevator.ResourceManager.GetString("FindZeroFullElevator", CommonUtils.Culture.Actual));
                 }
                 else if (this.machineData.RequestedAxisToCalibrate == Axis.Vertical
                     || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical
@@ -307,7 +306,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                                 if (shutterPosition == ShutterPosition.Intermediate || shutterPosition == ShutterPosition.Opened)
                                 {
                                     ok = false;
-                                    errorText = "Homing not possible with open shutter";
+                                    errorText = string.Format(Resources.Elevator.ResourceManager.GetString("HomingShutterOpen", CommonUtils.Culture.Actual));
                                     break;
                                 }
                             }
@@ -368,7 +367,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && !bay.IsExternal)
                     {
                         ok = false;
-                        errorText = "Find Zero not possible: Invalid Bay Zero sensor";
+                        errorText = string.Format(Resources.Elevator.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual));
                     }
 
 #if CHECK_BAY_SENSOR

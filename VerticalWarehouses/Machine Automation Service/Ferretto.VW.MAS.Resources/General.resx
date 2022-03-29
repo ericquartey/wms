@@ -153,4 +153,16 @@
   <data name="IntrusionDetected" xml:space="preserve">
     <value>Intrusion detected by height reading barrier</value>
   </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Invalid presence sensors: Zero sensor: {0}, completely on board: {1}</value>
+  </data>
+  <data name="FindZeroFullElevator" xml:space="preserve">
+    <value>Find Zero not possible with full elevator</value>
+  </data>
+  <data name="HomingShutterOpen" xml:space="preserve">
+    <value>Homing not possible with open shutter</value>
+  </data>
+  <data name="FindZeroInvalidBayZero" xml:space="preserve">
+    <value>Find Zero not possible: Invalid Bay Zero sensor</value>
+  </data>
 </root>
