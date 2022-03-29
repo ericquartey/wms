@@ -210,4 +210,7 @@
   <data name="FindZeroSensor" xml:space="preserve">
     <value>Ricerca del sensore di zero</value>
   </data>
+  <data name="PowerOnInstruction" xml:space="preserve">
+    <value>Premi Spenta per iniziare la procedura</value>
+  </data>
 </root>

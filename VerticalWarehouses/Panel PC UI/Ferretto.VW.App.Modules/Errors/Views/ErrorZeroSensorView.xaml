@@ -313,7 +313,7 @@
                Margin="0,0,15,0"
                VerticalAlignment="Top"
                Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
-               Text="{Binding MachineError.Reason}"
+               Text="{Binding Instruction}"
                TextWrapping="Wrap" />
     <!--#endregion-->
 

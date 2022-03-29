@@ -64,6 +64,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private DelegateCommand findZeroElevatorCommand;
 
+        private string instruction;
+
         private bool isErrorGeneric;
 
         private bool isErrorZeroBay;
@@ -168,6 +170,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public bool HasStepLoadunitOnElevator => this.currentStep is ErrorZeroSensorStepLoadunitOnElevator;
 
         public bool HasStepStart => this.currentStep is ErrorZeroSensorStepStart;
+
+        public string Instruction
+        {
+            get => this.instruction;
+            set => this.SetProperty(ref this.instruction, value);
+        }
 
         public bool IsErrorGeneric
         {
@@ -700,6 +708,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.CalibrateStepVisible = false;
 
                 this.MachineError = await this.machineErrorsWebService.GetCurrentAsync();
+                this.Instruction = $"{this.MachineError.Reason} {Localized.Get("ErrorsApp.PowerOnInstruction")}";
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {
