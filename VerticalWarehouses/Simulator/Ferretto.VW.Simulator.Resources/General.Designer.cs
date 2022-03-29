@@ -133,7 +133,7 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generate errors Inverter.
+        ///   Looks up a localized string similar to errors ON inverter.
         /// </summary>
         public static string StartErrorGeneratorInverter {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Generate errors IO device.
+        ///   Looks up a localized string similar to errors ON IO device.
         /// </summary>
         public static string StartErrorGeneratorIODevice {
             get {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No errors inverter.
+        ///   Looks up a localized string similar to errors OFF inverter.
         /// </summary>
         public static string StopErrorGeneratorInverter {
             get {
@@ -178,7 +178,7 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No errors IO device.
+        ///   Looks up a localized string similar to errors OFF IO device.
         /// </summary>
         public static string StopErrorGeneratorIODevice {
             get {

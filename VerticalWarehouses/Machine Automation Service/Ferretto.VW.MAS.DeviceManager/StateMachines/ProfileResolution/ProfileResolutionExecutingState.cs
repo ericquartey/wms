@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                             bayPosition = bay.Positions.First(p => !p.IsUpper);
                         }
                         this.eightBeamPosition = bayPosition.Height + 160;
-                        this.thirtyBeamPosition = bayPosition.Height + 775;
+                        this.thirtyBeamPosition = bayPosition.Height + 780;
                         statusWordPollingInterval = 500;
 
                         commandMessage = new FieldCommandMessage(

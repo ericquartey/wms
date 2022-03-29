@@ -673,7 +673,7 @@ namespace Ferretto.VW.Simulator.Services
                     var message = InverterMessage.FromBytes(extractedMessage);
 
                     if (this.IsErrorGeneratorInverter
-                        && (ushort)random.Next(1000) == 50)
+                        && (ushort)random.Next(10000) == 50)
                     {
                         this.Logger.Debug($"Generate Inverter error");
                     }
@@ -764,7 +764,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.UpdateRemoteIO(device);
 
                     if (this.IsErrorGeneratorIODevice
-                        && (ushort)random.Next(1000) == 50)
+                        && (ushort)random.Next(10000) == 50)
                     {
                         this.Logger.Debug($"Generate I/O error, index: {index}");
                     }

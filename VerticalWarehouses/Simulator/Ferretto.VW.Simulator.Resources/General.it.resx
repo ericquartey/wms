@@ -154,15 +154,15 @@
     <value>VW Simulator</value>
   </data>
   <data name="StartErrorGeneratorInverter" xml:space="preserve">
-    <value>Genera errori inverter</value>
+    <value>errori SI inverter</value>
   </data>
   <data name="StopErrorGeneratorInverter" xml:space="preserve">
-    <value>No errori inverter</value>
+    <value>errori NO inverter</value>
   </data>
   <data name="StartErrorGeneratorIODevice" xml:space="preserve">
-    <value>Genera errori scheda IO</value>
+    <value>errori SI scheda IO</value>
   </data>
   <data name="StopErrorGeneratorIODevice" xml:space="preserve">
-    <value>No errori scheda IO</value>
+    <value>errori NO scheda IO</value>
   </data>
 </root>

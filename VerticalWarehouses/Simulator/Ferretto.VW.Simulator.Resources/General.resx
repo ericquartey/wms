@@ -154,15 +154,15 @@
     <value>VW Simulator</value>
   </data>
   <data name="StartErrorGeneratorInverter" xml:space="preserve">
-    <value>Generate errors Inverter</value>
+    <value>errors ON inverter</value>
   </data>
   <data name="StopErrorGeneratorInverter" xml:space="preserve">
-    <value>No errors inverter</value>
+    <value>errors OFF inverter</value>
   </data>
   <data name="StartErrorGeneratorIODevice" xml:space="preserve">
-    <value>Generate errors IO device</value>
+    <value>errors ON IO device</value>
   </data>
   <data name="StopErrorGeneratorIODevice" xml:space="preserve">
-    <value>No errors IO device</value>
+    <value>errors OFF IO device</value>
   </data>
 </root>
