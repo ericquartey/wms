@@ -476,6 +476,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -523,25 +524,49 @@
                     Margin="5,10,5,10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorCommand}"
-                    Content="{x:Static res:General.StartErrorGenerator}"
+                    Command="{Binding ErrorGeneratorInverterCommand}"
+                    Content="{x:Static res:General.StartErrorGeneratorInverter}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
                     FontSize="9"
-                    IsEnabled="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BNC}}"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BTVIC}}" />
+                    Visibility="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BTVIC}}" />
 
             <Button Grid.Column="3"
                     Margin="10,10,5,10"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorCommand}"
-                    Content="{x:Static res:General.StopErrorGenerator}"
+                    Command="{Binding ErrorGeneratorInverterCommand}"
+                    Content="{x:Static res:General.StopErrorGeneratorInverter}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
                     FontSize="9"
-                    IsEnabled="{Binding MachineService.IsErrorGenerator}"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorInverter}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BTVC}}" />
+                    Visibility="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BTVC}}" />
+
+            <Button Grid.Column="4"
+                    Margin="5,10,5,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ErrorGeneratorIODeviceCommand}"
+                    Content="{x:Static res:General.StartErrorGeneratorIODevice}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BNC}}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BTVIC}}" />
+
+            <Button Grid.Column="4"
+                    Margin="10,10,5,10"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ErrorGeneratorIODeviceCommand}"
+                    Content="{x:Static res:General.StopErrorGeneratorIODevice}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    FontSize="9"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorIODevice}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BTVC}}" />
 
         </Grid>
 

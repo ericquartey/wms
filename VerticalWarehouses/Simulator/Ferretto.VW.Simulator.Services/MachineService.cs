@@ -127,7 +127,9 @@ namespace Ferretto.VW.Simulator.Services
         public InverterModel Inverters07
         { get => this.Inverters[7]; set { var inv = this.Inverters[7]; this.SetProperty(ref inv, value); } }
 
-        public bool IsErrorGenerator { get; set; }
+        public bool IsErrorGeneratorInverter { get; set; }
+
+        public bool IsErrorGeneratorIODevice { get; set; }
 
         public bool IsStartedSimulator { get; private set; }
 
@@ -232,12 +234,20 @@ namespace Ferretto.VW.Simulator.Services
 
         #region Methods
 
-        public async Task ProcessErrorGeneratorAsync()
+        public async Task ProcessErrorGeneratorInverterAsync()
         {
-            this.IsErrorGenerator = !this.IsErrorGenerator;
-            this.Logger.Trace($"ErrorGenerator: {this.IsErrorGenerator}");
+            this.IsErrorGeneratorInverter = !this.IsErrorGeneratorInverter;
+            this.Logger.Trace($"ErrorGeneratorInverter: {this.IsErrorGeneratorInverter}");
 
-            this.RaisePropertyChanged(nameof(this.IsErrorGenerator));
+            this.RaisePropertyChanged(nameof(this.IsErrorGeneratorInverter));
+        }
+
+        public async Task ProcessErrorGeneratorIODeviceAsync()
+        {
+            this.IsErrorGeneratorIODevice = !this.IsErrorGeneratorIODevice;
+            this.Logger.Trace($"ErrorGeneratorIODevice: {this.IsErrorGeneratorIODevice}");
+
+            this.RaisePropertyChanged(nameof(this.IsErrorGeneratorIODevice));
         }
 
         /// <summary>
@@ -662,7 +672,7 @@ namespace Ferretto.VW.Simulator.Services
                 {
                     var message = InverterMessage.FromBytes(extractedMessage);
 
-                    if (this.IsErrorGenerator
+                    if (this.IsErrorGeneratorInverter
                         && (ushort)random.Next(1000) == 50)
                     {
                         this.Logger.Debug($"Generate Inverter error");
@@ -753,7 +763,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     this.UpdateRemoteIO(device);
 
-                    if (this.IsErrorGenerator
+                    if (this.IsErrorGeneratorIODevice
                         && (ushort)random.Next(1000) == 50)
                     {
                         this.Logger.Debug($"Generate I/O error, index: {index}");
