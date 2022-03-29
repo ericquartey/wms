@@ -278,14 +278,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     )
                 {
                     ok = false;
-                    errorText = string.Format(Resources.Elevator.ResourceManager.GetString("InvalidPresenceSensors", CommonUtils.Culture.Actual), this.machineData.MachineSensorStatus.IsSensorZeroOnCradle, this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle);
+                    errorText = string.Format(Resources.General.ResourceManager.GetString("InvalidPresenceSensors", CommonUtils.Culture.Actual), this.machineData.MachineSensorStatus.IsSensorZeroOnCradle, this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle);
                 }
                 else if (this.machineData.CalibrationType == Calibration.FindSensor
                     && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                     )
                 {
                     ok = false;
-                    errorText = string.Format(Resources.Elevator.ResourceManager.GetString("FindZeroFullElevator", CommonUtils.Culture.Actual));
+                    errorText = string.Format(Resources.General.ResourceManager.GetString("FindZeroFullElevator", CommonUtils.Culture.Actual));
                 }
                 else if (this.machineData.RequestedAxisToCalibrate == Axis.Vertical
                     || this.machineData.RequestedAxisToCalibrate == Axis.HorizontalAndVertical
@@ -306,7 +306,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                                 if (shutterPosition == ShutterPosition.Intermediate || shutterPosition == ShutterPosition.Opened)
                                 {
                                     ok = false;
-                                    errorText = string.Format(Resources.Elevator.ResourceManager.GetString("HomingShutterOpen", CommonUtils.Culture.Actual));
+                                    errorText = string.Format(Resources.General.ResourceManager.GetString("HomingShutterOpen", CommonUtils.Culture.Actual));
                                     break;
                                 }
                             }
@@ -328,7 +328,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                             )
                         {
                             ok = false;
-                            errorText = string.Format(Resources.Elevator.ResourceManager.GetString("HorizontalHomingParametersError", CommonUtils.Culture.Actual));
+                            errorText = string.Format(Resources.General.ResourceManager.GetString("HorizontalHomingParametersError", CommonUtils.Culture.Actual));
                         }
                     }
                 }
@@ -348,7 +348,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                             )
                         {
                             ok = false;
-                            errorText = string.Format(Resources.Elevator.ResourceManager.GetString("VerticalHomingParametersError", CommonUtils.Culture.Actual));
+                            errorText = string.Format(Resources.General.ResourceManager.GetString("VerticalHomingParametersError", CommonUtils.Culture.Actual));
                         }
                     }
                 }
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && !bay.IsExternal)
                     {
                         ok = false;
-                        errorText = string.Format(Resources.Elevator.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual));
+                        errorText = string.Format(Resources.General.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual));
                     }
 
 #if CHECK_BAY_SENSOR
