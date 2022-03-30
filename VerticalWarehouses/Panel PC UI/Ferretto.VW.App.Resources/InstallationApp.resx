@@ -2675,10 +2675,10 @@
     <value>Incorrect passwords</value>
   </data>
   <data name="ProfileResolutionCalibration" xml:space="preserve">
-    <value>Profile Resolution Calibration</value>
+    <value>Height measure Resolution Calibration</value>
   </data>
   <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
-    <value>The calibration of the profile measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
+    <value>The calibration of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
   </data>
   <data name="VerticalCalibrationProcedureRequired" xml:space="preserve">
     <value>Perform the Elevator calibration.</value>

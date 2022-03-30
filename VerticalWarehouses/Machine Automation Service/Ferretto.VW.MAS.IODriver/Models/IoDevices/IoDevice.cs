@@ -423,7 +423,14 @@ namespace Ferretto.VW.MAS.IODriver
                         case ShdFormatDataOperation.Data:
 
                             inputData[(int)IoPorts.AntiIntrusionBarrierBay] = !inputData[(int)IoPorts.AntiIntrusionBarrierBay];
-                            inputData[(int)IoPorts.AntiIntrusionBarrier2Bay] = !inputData[(int)IoPorts.AntiIntrusionBarrier2Bay];
+                            if (this.isExternalBay && this.isDoubleBay)
+                            {
+                                inputData[(int)IoPorts.AntiIntrusionBarrier2Bay] = !inputData[(int)IoPorts.AntiIntrusionBarrier2Bay];
+                            }
+                            else
+                            {
+                                inputData[(int)IoPorts.AntiIntrusionBarrier2Bay] = false;
+                            }
 
                             // INFO The emergency button signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
