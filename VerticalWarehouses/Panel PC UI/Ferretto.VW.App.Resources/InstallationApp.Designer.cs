@@ -5488,7 +5488,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile Resolution Calibration.
+        ///   Looks up a localized string similar to Height measure Resolution Calibration.
         /// </summary>
         public static string ProfileResolutionCalibration {
             get {
@@ -5497,7 +5497,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The calibration of the profile measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
+        ///   Looks up a localized string similar to The calibration of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
         /// </summary>
         public static string ProfileResolutionCalibrationHelp {
             get {
