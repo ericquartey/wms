@@ -208,8 +208,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.selectedLoadingUnit = null;
-                this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
+                this.SelectedLoadingUnit = null;
             }
         }
 
