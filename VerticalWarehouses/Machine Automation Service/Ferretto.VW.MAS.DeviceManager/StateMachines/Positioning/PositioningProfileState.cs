@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System.Threading;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -12,11 +14,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
-    internal class PositioningProfileState : StateBase
+    internal class PositioningProfileState : StateBase, IDisposable
     {
         #region Fields
 
-        private const int MAX_RETRIES = 4;
+        private const int MAX_RETRIES = 3;
 
         private const double tolerance = 2.5;
 
@@ -41,6 +43,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private InverterIndex inverterIndex;
 
+        private bool isDisposed;
+
+        private Timer profileTimer;
+
         private int retry;
 
         #endregion
@@ -57,11 +63,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
             this.machineConfiguration = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            this.profileTimer = new Timer(this.RequestMeasureProfile, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -81,20 +93,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile, this.machineData.MessageData.SourceBayPositionId.Value);
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
-                            if (this.retry == 0
-                                || (profileHeight < this.minHeight - tolerance)
+                            if ((profileHeight < this.minHeight - tolerance)
                                 || data.Profile > 11000
                                 || (profileHeight < this.machineConfiguration.LoadUnitMinHeight - tolerance)
                                 || (profileHeight > this.machineConfiguration.LoadUnitMaxHeight + tolerance)
                                 )
                             {
-                                if (this.retry > 0)
-                                {
-                                    this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height {this.machineConfiguration.LoadUnitMaxHeight}");
-                                }
+                                this.Logger.LogError($"Measure Profile error {profileHeight}! min height {this.machineConfiguration.LoadUnitMinHeight}, max height {this.machineConfiguration.LoadUnitMaxHeight}");
+
                                 if (++this.retry < MAX_RETRIES)
                                 {
-                                    this.RequestMeasureProfile();
+                                    this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
                                     break;
                                 }
                             }
@@ -116,18 +125,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 this.loadingUnitProvider.SetHeight(loadUnitId.Value, profileHeight);
                             }
+                            // stop timers
+                            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                         }
                         else if (message.Source == FieldMessageActor.IoDriver)
                         {
                             // we send the first request to read the height only after IoDriver has reset the reading enable signal
-                            this.RequestMeasureProfile();
+                            this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
                         }
                         break;
 
                     case MessageStatus.OperationError:
                         this.stateData.FieldMessage = message;
                         this.Logger.LogError($"Measure Profile OperationError!");
+                        // stop timers
+                        this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                         break;
                 }
@@ -150,10 +163,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogDebug("1:Stop Method Start");
 
             this.stateData.StopRequestReason = reason;
+            // stop timers
+            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
         }
 
-        private void RequestMeasureProfile()
+        protected void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.profileTimer?.Dispose();
+                this.scope.Dispose();
+            }
+
+            this.isDisposed = true;
+        }
+
+        private void RequestMeasureProfile(object state)
         {
             this.Logger.LogDebug($"Request MeasureProfile {this.retry + 1}");
 
@@ -169,6 +200,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            // suspend timer at every call
+            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion

@@ -79,6 +79,33 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find Zero not possible with full elevator.
+        /// </summary>
+        public static string FindZeroFullElevator {
+            get {
+                return ResourceManager.GetString("FindZeroFullElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find Zero not possible: Invalid Bay Zero sensor.
+        /// </summary>
+        public static string FindZeroInvalidBayZero {
+            get {
+                return ResourceManager.GetString("FindZeroInvalidBayZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homing not possible with open shutter.
+        /// </summary>
+        public static string HomingShutterOpen {
+            get {
+                return ResourceManager.GetString("HomingShutterOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Internal Server Error..
         /// </summary>
         public static string InternalServerErrorTitle {
@@ -93,6 +120,15 @@ namespace Ferretto.VW.MAS.Resources {
         public static string IntrusionDetected {
             get {
                 return ResourceManager.GetString("IntrusionDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid presence sensors: Zero sensor: {0}, completely on board: {1}.
+        /// </summary>
+        public static string InvalidPresenceSensors {
+            get {
+                return ResourceManager.GetString("InvalidPresenceSensors", resourceCulture);
             }
         }
         

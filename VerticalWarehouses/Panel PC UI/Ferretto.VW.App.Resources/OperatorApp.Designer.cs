@@ -511,6 +511,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The box {0} was associated with the shelf {1}.
+        /// </summary>
+        public static string BoxAssociateShelf {
+            get {
+                return ResourceManager.GetString("BoxAssociateShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The box {0} has been closed.
+        /// </summary>
+        public static string BoxClosed {
+            get {
+                return ResourceManager.GetString("BoxClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Box code.
         /// </summary>
         public static string BoxCode {
@@ -525,6 +543,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BoxId {
             get {
                 return ResourceManager.GetString("BoxId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The box {0} has been marked as full.
+        /// </summary>
+        public static string BoxIsFull {
+            get {
+                return ResourceManager.GetString("BoxIsFull", resourceCulture);
             }
         }
         
@@ -2415,6 +2442,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IdDrawerActivityRefillingHeader {
             get {
                 return ResourceManager.GetString("IdDrawerActivityRefillingHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id machine not defined.
+        /// </summary>
+        public static string IdMachineNotDefined {
+            get {
+                return ResourceManager.GetString("IdMachineNotDefined", resourceCulture);
             }
         }
         
@@ -4319,6 +4355,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No box code found in the barcode.
+        /// </summary>
+        public static string NoBoxCode {
+            get {
+                return ResourceManager.GetString("NoBoxCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No item on selected compartment..
         /// </summary>
         public static string NoItemOnSelectedCompartment {
@@ -4378,6 +4423,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NoReason {
             get {
                 return ResourceManager.GetString("NoReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No shelf code found in the barcode..
+        /// </summary>
+        public static string NoShelfCode {
+            get {
+                return ResourceManager.GetString("NoShelfCode", resourceCulture);
             }
         }
         
@@ -5003,11 +5057,47 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan the barcode of the action to be performed first..
+        /// </summary>
+        public static string ScanActionCodeFirst {
+            get {
+                return ResourceManager.GetString("ScanActionCodeFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan the shelf barcode first..
+        /// </summary>
+        public static string ScanShelfFirst {
+            get {
+                return ResourceManager.GetString("ScanShelfFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select compartment.
         /// </summary>
         public static string SelectCompartment {
             get {
                 return ResourceManager.GetString("SelectCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Box {0}..
+        /// </summary>
+        public static string SelectedBox {
+            get {
+                return ResourceManager.GetString("SelectedBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected shelf {0}. Scan the box..
+        /// </summary>
+        public static string SelectedShelf {
+            get {
+                return ResourceManager.GetString("SelectedShelf", resourceCulture);
             }
         }
         
@@ -5197,6 +5287,33 @@ namespace Ferretto.VW.App.Resources {
         public static string Sscc {
             get {
                 return ResourceManager.GetString("Sscc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Beginning of associating box to a shelf. Scan the shelf..
+        /// </summary>
+        public static string StartAssociateBoxToShelf {
+            get {
+                return ResourceManager.GetString("StartAssociateBoxToShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start closing the box. Scan the shelf..
+        /// </summary>
+        public static string StartClosingBox {
+            get {
+                return ResourceManager.GetString("StartClosingBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start marking of full box. Scan the shelf..
+        /// </summary>
+        public static string StartMarkingFullBox {
+            get {
+                return ResourceManager.GetString("StartMarkingFullBox", resourceCulture);
             }
         }
         

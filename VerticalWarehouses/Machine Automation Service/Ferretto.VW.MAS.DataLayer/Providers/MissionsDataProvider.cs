@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     );
                 if (!returnValue)
                 {
-                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay, $"LU {loadingUnitId}");
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, targetBay, $"{ErrorDescriptions.LoadUnitNumber} {loadingUnitId}");
                 }
                 else
                 {
@@ -160,7 +161,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         )
                     )
                 {
-                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, bayNumber, $"LU {loadingUnitId}");
+                    this.errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit, bayNumber, $"{ErrorDescriptions.LoadUnitNumber} {loadingUnitId}");
                     throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("ActiveMissionForLoadingUnit", CommonUtils.Culture.Actual), loadingUnitId, (int)bayNumber));
                 }
                 var entry = this.dataContext.Missions

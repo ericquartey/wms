@@ -470,45 +470,45 @@
 
         <Grid Grid.Row="0"
               Grid.Column="1"
-              Margin="5"
               HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <Button Margin="5,10,5,10"
+                    Width="100"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding StartSimulatorCommand}"
                     Content="{x:Static res:General.StartSimulatorCommand}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    FontSize="9"
                     IsEnabled="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
                     Visibility="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BTVIC}}" />
 
             <Button Margin="10,10,5,10"
+                    Width="100"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding StopSimulatorCommand}"
                     Content="{x:Static res:General.StopSimulatorCommand}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    FontSize="9"
                     IsEnabled="{Binding MachineService.IsStartedSimulator}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
                     Visibility="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BTVC}}" />
 
             <Button Grid.Column="1"
                     Margin="10"
+                    Width="120"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     Command="{Binding ImportConfigurationCommand}"
                     Content="{x:Static res:General.ImportConfigurationCommand}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    FontSize="9"
                     IsEnabled="{Binding MachineService.IsStartedSimulator, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}" />
 
@@ -521,27 +521,51 @@
 
             <Button Grid.Column="3"
                     Margin="5,10,5,10"
+                    Width="100"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorCommand}"
-                    Content="{x:Static res:General.StartErrorGenerator}"
+                    Command="{Binding ErrorGeneratorInverterCommand}"
+                    Content="{x:Static res:General.StartErrorGeneratorInverter}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    FontSize="9"
-                    IsEnabled="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BNC}}"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BTVIC}}" />
+                    Visibility="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BTVIC}}" />
 
             <Button Grid.Column="3"
                     Margin="10,10,5,10"
+                    Width="100"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorCommand}"
-                    Content="{x:Static res:General.StopErrorGenerator}"
+                    Command="{Binding ErrorGeneratorInverterCommand}"
+                    Content="{x:Static res:General.StopErrorGeneratorInverter}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    FontSize="9"
-                    IsEnabled="{Binding MachineService.IsErrorGenerator}"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorInverter}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGenerator, Converter={StaticResource BTVC}}" />
+                    Visibility="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BTVC}}" />
+
+            <Button Grid.Column="4"
+                    Margin="5,10,5,10"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ErrorGeneratorIODeviceCommand}"
+                    Content="{x:Static res:General.StartErrorGeneratorIODevice}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BNC}}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BTVIC}}" />
+
+            <Button Grid.Column="4"
+                    Margin="10,10,5,10"
+                    Width="100"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ErrorGeneratorIODeviceCommand}"
+                    Content="{x:Static res:General.StopErrorGeneratorIODevice}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    IsEnabled="{Binding MachineService.IsErrorGeneratorIODevice}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BTVC}}" />
 
         </Grid>
 
@@ -673,7 +697,7 @@
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto">
 
-            <Grid Margin="15,0">
+            <Grid Margin="15,-8,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />

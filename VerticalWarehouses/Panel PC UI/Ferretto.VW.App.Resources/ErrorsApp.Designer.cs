@@ -286,6 +286,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Touch Off to begin the procedure.
+        /// </summary>
+        public static string PowerOnInstruction {
+            get {
+                return ResourceManager.GetString("PowerOnInstruction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the unit id on the elevator..
         /// </summary>
         public static string SelectUnitOnElevator {

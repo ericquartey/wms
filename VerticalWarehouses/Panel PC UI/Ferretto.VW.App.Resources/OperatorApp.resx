@@ -2534,6 +2534,45 @@
   <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
     <value>Inventory operations on unit n.</value>
   </data>
+  <data name="IdMachineNotDefined" xml:space="preserve">
+    <value>Id machine not defined</value>
+  </data>
+  <data name="BoxAssociateShelf" xml:space="preserve">
+    <value>The box {0} was associated with the shelf {1}</value>
+  </data>
+  <data name="BoxClosed" xml:space="preserve">
+    <value>The box {0} has been closed</value>
+  </data>
+  <data name="StartAssociateBoxToShelf" xml:space="preserve">
+    <value>Beginning of associating box to a shelf. Scan the shelf.</value>
+  </data>
+  <data name="StartMarkingFullBox" xml:space="preserve">
+    <value>Start marking of full box. Scan the shelf.</value>
+  </data>
+  <data name="StartClosingBox" xml:space="preserve">
+    <value>Start closing the box. Scan the shelf.</value>
+  </data>
+  <data name="BoxIsFull" xml:space="preserve">
+    <value>The box {0} has been marked as full</value>
+  </data>
+  <data name="ScanActionCodeFirst" xml:space="preserve">
+    <value>Scan the barcode of the action to be performed first.</value>
+  </data>
+  <data name="ScanShelfFirst" xml:space="preserve">
+    <value>Scan the shelf barcode first.</value>
+  </data>
+  <data name="SelectedBox" xml:space="preserve">
+    <value>Selected Box {0}.</value>
+  </data>
+  <data name="NoBoxCode" xml:space="preserve">
+    <value>No box code found in the barcode</value>
+  </data>
+  <data name="SelectedShelf" xml:space="preserve">
+    <value>Selected shelf {0}. Scan the box.</value>
+  </data>
+  <data name="NoShelfCode" xml:space="preserve">
+    <value>No shelf code found in the barcode.</value>
+  </data>
   <data name="ShowBarcodeImage" xml:space="preserve">
     <value>Show barcode image</value>
   </data>

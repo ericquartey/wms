@@ -2133,6 +2133,45 @@
   <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
     <value>Operazione di inventario su cassetto n.</value>
   </data>
+  <data name="IdMachineNotDefined" xml:space="preserve">
+    <value>Identificativo macchina non definito</value>
+  </data>
+  <data name="BoxAssociateShelf" xml:space="preserve">
+    <value>Il collo {0} è stato associato allo scaffale {1}</value>
+  </data>
+  <data name="BoxClosed" xml:space="preserve">
+    <value>Il collo{0} è stato chiuso</value>
+  </data>
+  <data name="StartAssociateBoxToShelf" xml:space="preserve">
+    <value>Inizio associazione di un collo ad uno scaffale. Scansionare lo scaffale.</value>
+  </data>
+  <data name="StartMarkingFullBox" xml:space="preserve">
+    <value>Inizio marcatura di collo pieno. Scansionare lo scaffale.</value>
+  </data>
+  <data name="StartClosingBox" xml:space="preserve">
+    <value>Inizio chiusura collo. Scansionare lo scaffale.</value>
+  </data>
+  <data name="BoxIsFull" xml:space="preserve">
+    <value>Il collo {0} è stato marcato come pieno.</value>
+  </data>
+  <data name="ScanActionCodeFirst" xml:space="preserve">
+    <value>Scansionare prima il codice a barre dell'azione da eseguire.</value>
+  </data>
+  <data name="ScanShelfFirst" xml:space="preserve">
+    <value>Scansionare prima il codice a barre dello scaffale.</value>
+  </data>
+  <data name="SelectedBox" xml:space="preserve">
+    <value>Collo {0} selezionato</value>
+  </data>
+  <data name="NoBoxCode" xml:space="preserve">
+    <value>Nessun codice collo trovato nel codice a barre</value>
+  </data>
+  <data name="SelectedShelf" xml:space="preserve">
+    <value>Scaffale {0} selezionato. Scansionare il collo.</value>
+  </data>
+  <data name="NoShelfCode" xml:space="preserve">
+    <value>Nessun codice scaffale  trovato nel codice a barre</value>
+  </data>
   <data name="ShowBarcodeImage" xml:space="preserve">
     <value>Mostra l'immagine del barcode</value>
   </data>

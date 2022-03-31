@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -19,7 +20,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
-    internal class PositioningEndState : StateBase
+    internal class PositioningEndState : StateBase, IDisposable
     {
         #region Fields
 
@@ -43,6 +44,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IPositioningStateData stateData;
 
+        private bool isDisposed;
+
+        private Timer profileTimer;
+
         #endregion
 
         #region Constructors
@@ -60,11 +65,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
             this.eventAggregator = this.scope.ServiceProvider.GetRequiredService<IEventAggregator>();
+            this.profileTimer = new Timer(this.RequestMeasureProfile, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
@@ -98,21 +109,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.UpdateLoadingUnitLocation();
                             }
 
-                            if (this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero &&
-                                this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
-                            {
-                                this.eventAggregator
-                                        .GetEvent<NotificationEvent>()
-                                        .Publish(
-                                            new NotificationMessage
-                                            {
-                                                Data = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null, true, false, true),
-                                                Destination = MessageActor.AutomationService,
-                                                Source = MessageActor.DataLayer,
-                                                Type = MessageType.Homing,
-                                            });
-                            }
-
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
                                 this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Test Stopped",
@@ -128,6 +124,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         case MessageStatus.OperationError:
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.TargetBay);
+                            // stop timers
+                            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                             this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData, this.Logger));
                             break;
                     }
@@ -166,12 +164,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 {
                                     this.loadingUnitProvider.SetHeight(loadUnitId.Value, profileHeight);
                                 }
+                                // stop timers
+                                this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
                             }
                             else if (message.Source == FieldMessageActor.IoDriver)
                             {
                                 // we send the first request to read the height only after IoDriver has reset the reading enable signal
-                                this.RequestMeasureProfile();
+                                this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
                             }
                             break;
 
@@ -279,22 +279,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            if (this.stateData.StopRequestReason == StopRequestReason.NoReason &&
-                this.machineData.MessageData.MovementMode == MovementMode.BayChainFindZero &&
-                this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
-            {
-                this.eventAggregator
-                        .GetEvent<NotificationEvent>()
-                        .Publish(
-                            new NotificationMessage
-                            {
-                                Data = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder, null, true, false, true),
-                                Destination = MessageActor.AutomationService,
-                                Source = MessageActor.DataLayer,
-                                Type = MessageType.Homing,
-                            });
-            }
-
             if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing
                 || this.machineData.MessageData.MovementMode == MovementMode.BayTest
                 || this.machineData.MessageData.MovementMode == MovementMode.DoubleExtBayTest
@@ -330,6 +314,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogDebug($"Retry Stop Command. Reason:{reason} Axis:{this.machineData.MessageData.AxisMovement}");
             this.Start();
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.profileTimer?.Dispose();
+                this.scope.Dispose();
+            }
+
+            this.isDisposed = true;
         }
 
         private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
@@ -398,7 +398,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
-        private void RequestMeasureProfile()
+        private void RequestMeasureProfile(object state)
         {
             this.Logger.LogDebug($"Request MeasureProfile. Axis:{this.machineData.MessageData.AxisMovement}");
             var inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
@@ -415,6 +415,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            // suspend timer at every call
+            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void UpdateLastIdealPosition(Axis axis)

@@ -1401,7 +1401,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ToteBarcodeLength = machine.ToteBarcodeLength;
 
             var accessories = await this.accessoriesWebService.GetAllAsync();
-            this.IsMinebeaScale = accessories.WeightingScale?.DeviceInformation?.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString();
+            this.IsMinebeaScale = accessories.WeightingScale?.IsEnabledNew == true
+                && accessories.WeightingScale?.DeviceInformation?.ModelNumber == WeightingScaleModelNumber.MinebeaIntec.ToString();
 
             this.IsWaitingForResponse = false;
             this.IsBusyAbortingOperation = false;

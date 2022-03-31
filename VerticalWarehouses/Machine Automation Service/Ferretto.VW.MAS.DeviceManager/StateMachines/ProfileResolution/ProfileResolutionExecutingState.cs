@@ -52,7 +52,9 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
         private int performedCycles;
 
-        private Timer profileTimer;
+        private Timer profileTimerIO;
+
+        private Timer profileTimerInverter;
 
         private double targetPosition;
 
@@ -78,7 +80,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             this.profile = new int[(int)ProfileResolutionStep.ThirtyBeam + 1];
             this.measureRequest = false;
 
-            this.profileTimer = new Timer(this.RequestMeasureProfile, null, Timeout.Infinite, Timeout.Infinite);
+            this.profileTimerIO = new Timer(this.RequestMeasureProfileIO, null, Timeout.Infinite, Timeout.Infinite);
+            this.profileTimerInverter = new Timer(this.RequestMeasureProfileInverter, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -141,7 +144,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 case MessageStatus.OperationError:
                     this.stateData.FieldMessage = message;
                     // stop timers
-                    this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+                    this.profileTimerIO?.Change(Timeout.Infinite, Timeout.Infinite);
+                    this.profileTimerInverter?.Change(Timeout.Infinite, Timeout.Infinite);
                     this.ParentStateMachine.ChangeState(new ProfileResolutionErrorState(this.stateData, this.Logger));
                     break;
             }
@@ -181,8 +185,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                         {
                             bayPosition = bay.Positions.First(p => !p.IsUpper);
                         }
-                        this.eightBeamPosition = bayPosition.Height + 175;
-                        this.thirtyBeamPosition = bayPosition.Height + 775;
+                        this.eightBeamPosition = bayPosition.Height + 160;
+                        this.thirtyBeamPosition = bayPosition.Height + 780;
                         statusWordPollingInterval = 500;
 
                         commandMessage = new FieldCommandMessage(
@@ -235,7 +239,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             this.Logger.LogDebug($"1:Stop Method Start. Reason {reason}");
 
             // stop timers
-            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+            this.profileTimerIO?.Change(Timeout.Infinite, Timeout.Infinite);
+            this.profileTimerInverter?.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
 
@@ -258,7 +263,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
             if (disposing)
             {
-                this.profileTimer?.Dispose();
+                this.profileTimerIO?.Dispose();
+                this.profileTimerInverter?.Dispose();
                 this.scope.Dispose();
             }
 
@@ -328,19 +334,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             }
             else if (message.Source == FieldMessageActor.IoDriver && this.measureRequest)
             {
-                var inverterIndex = (byte)this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
-                var inverterCommandMessageData = new MeasureProfileFieldMessageData();
-                var inverterCommandMessage = new FieldCommandMessage(
-                    inverterCommandMessageData,
-                    $"Measure Profile",
-                    FieldMessageActor.InverterDriver,
-                    FieldMessageActor.DeviceManager,
-                    FieldMessageType.MeasureProfile,
-                    inverterIndex);
-
-                //this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-
-                this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+                this.profileTimerInverter = new Timer(this.RequestMeasureProfileInverter, null, 600, 600);
             }
         }
 
@@ -392,7 +386,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 
                         this.measureRequest = false;
 
-                        this.profileTimer = new Timer(this.RequestMeasureProfile, null, 600, 600);
+                        this.profileTimerIO = new Timer(this.RequestMeasureProfileIO, null, 600, 600);
                     }
                     break;
             }
@@ -403,14 +397,15 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             if (this.machineData.MessageData.MovementMode == MovementMode.ProfileResolution)
             {
                 // stop timers
-                this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+                this.profileTimerIO?.Change(Timeout.Infinite, Timeout.Infinite);
+                this.profileTimerInverter?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new ProfileResolutionEndState(this.stateData, this.Logger));
             }
         }
 
-        private void RequestMeasureProfile(object state)
+        private void RequestMeasureProfileIO(object state)
         {
-            this.Logger.LogTrace($"Request MeasureProfile");
+            this.Logger.LogTrace($"Request MeasureProfile IO");
             var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
             var ioCommandMessage = new FieldCommandMessage(
                 ioCommandMessageData,
@@ -427,7 +422,28 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             this.measureRequest = true;
 
             // suspend timer at every call
-            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+            this.profileTimerIO?.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        private void RequestMeasureProfileInverter(object state)
+        {
+            this.Logger.LogTrace($"Request MeasureProfile Inverter");
+            var inverterIndex = (byte)this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
+            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Measure Profile",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.MeasureProfile,
+                inverterIndex);
+
+            //this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            // suspend timer at every call
+            this.profileTimerInverter?.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void StartNewStep()
@@ -441,8 +457,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
             else if (this.performedCycles == (int)ProfileResolutionStep.EightBeam
                 && !this.machineData.MachineSensorStatus.IsProfileCalibratedBay(this.machineData.RequestingBay))
             {
-                errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
-                //this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
+                //errorText = Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual);
+                this.Logger.LogError(Resources.ResolutionCalibrationProcedure.ResourceManager.GetString("ProfileResolutionMissingSignal", CommonUtils.Culture.Actual));
             }
             else if (this.performedCycles == (int)ProfileResolutionStep.ThirtyBeam
                 && this.profile[this.performedCycles] < 9800)
@@ -459,7 +475,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
 #endif
             }
 
-            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles 
+            if (++this.performedCycles >= this.machineData.MessageData.RequiredCycles
                 || this.isTestStopped)
             {
                 this.Logger.LogDebug("FSM Finished Executing State");
@@ -490,7 +506,8 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                 }
 
                 // stop timers
-                this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+                this.profileTimerIO?.Change(Timeout.Infinite, Timeout.Infinite);
+                this.profileTimerInverter?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new ProfileResolutionEndState(this.stateData, this.Logger));
             }
             else

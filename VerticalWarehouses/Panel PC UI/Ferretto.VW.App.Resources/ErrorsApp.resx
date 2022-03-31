@@ -216,4 +216,7 @@
   <data name="FindZeroSensor" xml:space="preserve">
     <value>Find zero sensor</value>
   </data>
+  <data name="PowerOnInstruction" xml:space="preserve">
+    <value>Touch Off to begin the procedure</value>
+  </data>
 </root>

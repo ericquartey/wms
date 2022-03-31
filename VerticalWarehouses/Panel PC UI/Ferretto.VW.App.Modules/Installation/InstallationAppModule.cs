@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Installation
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            containerProvider.UseMachineAutomationHubs();
+            //containerProvider.UseMachineAutomationHubs();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

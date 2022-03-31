@@ -37,7 +37,6 @@ namespace Ferretto.VW.App.Modules.Menu
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            containerProvider.UseMachineAutomationHubs();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)

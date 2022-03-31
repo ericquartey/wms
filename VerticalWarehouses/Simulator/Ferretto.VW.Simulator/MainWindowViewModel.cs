@@ -23,7 +23,9 @@ namespace Ferretto.VW.Simulator
 
         private string configurationName;
 
-        private ICommand errorGeneratorCommand;
+        private ICommand errorGeneratorInverterCommand;
+
+        private ICommand errorGeneratorIODeviceCommand;
 
         private string errorMessage;
 
@@ -72,10 +74,15 @@ namespace Ferretto.VW.Simulator
             }
         }
 
-        public ICommand ErrorGeneratorCommand =>
-                    this.errorGeneratorCommand
+        public ICommand ErrorGeneratorInverterCommand =>
+            this.errorGeneratorInverterCommand
             ??
-            (this.errorGeneratorCommand = new DelegateCommand(async () => await this.machineService.ProcessErrorGeneratorAsync()));
+            (this.errorGeneratorInverterCommand = new DelegateCommand(async () => await this.machineService.ProcessErrorGeneratorInverterAsync()));
+
+        public ICommand ErrorGeneratorIODeviceCommand =>
+            this.errorGeneratorIODeviceCommand
+            ??
+            (this.errorGeneratorIODeviceCommand = new DelegateCommand(async () => await this.machineService.ProcessErrorGeneratorIODeviceAsync()));
 
         public string ErrorMessage { get => this.errorMessage; set => this.SetProperty(ref this.errorMessage, value); }
 
