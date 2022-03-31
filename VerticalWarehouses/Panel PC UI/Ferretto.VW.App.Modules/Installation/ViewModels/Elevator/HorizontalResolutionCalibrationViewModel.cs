@@ -52,13 +52,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand completeCommand;
 
-        //private double? currentDistance;
-
         private double? currentResolution;
 
+        //private double? currentDistance;
         private HorizontalResolutionCalibrationStep currentStep;
 
         private double? cyclesPercent;
+
+        private DelegateCommand findZeroElevatorCommand;
 
         private TimeSpan firstCycleTime = default(TimeSpan);
 
@@ -230,6 +231,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.cyclesPercent;
             private set => this.SetProperty(ref this.cyclesPercent, value);
         }
+
+        public ICommand FindZeroElevatorCommand =>
+                                                                                            this.findZeroElevatorCommand
+            ??
+            (this.findZeroElevatorCommand = new DelegateCommand(
+                async () => await this.FindZeroElevatorAsync(),
+                this.CanFindZeroElevatorCommand));
 
         public bool HasBayDown => this.Bay?.Positions.Any(p => !p.IsUpper) == true;
 
@@ -864,6 +872,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.CanBaseExecute();
         }
 
+        private bool CanFindZeroElevator()
+        {
+            return !this.SensorsService.IsZeroChain &&
+                !this.SensorsService.Sensors.LuPresentInMachineSide &&
+                !this.SensorsService.Sensors.LuPresentInOperatorSide;
+        }
+
+        private bool CanFindZeroElevatorCommand()
+        {
+            return this.CanFindZeroElevator() &&
+                this.MachineService.MachinePower == MachinePowerState.Powered;
+        }
+
         private bool CanMoveToBayPosition(string level)
         {
             return this.CanBaseExecute();
@@ -1032,6 +1053,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.CurrentStep = HorizontalResolutionCalibrationStep.StartCalibration;
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task FindZeroElevatorAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.machineElevatorWebService.FindLostZeroAsync();
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
                 this.IsWaitingForResponse = false;
             }
         }

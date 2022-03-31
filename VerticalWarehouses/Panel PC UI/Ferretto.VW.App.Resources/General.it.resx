@@ -328,4 +328,7 @@
   <data name="Confirm" xml:space="preserve">
     <value>Conferma</value>
   </data>
+  <data name="FindZeroElevator" xml:space="preserve">
+    <value>Trova lo zero dell'elevatore</value>
+  </data>
 </root>

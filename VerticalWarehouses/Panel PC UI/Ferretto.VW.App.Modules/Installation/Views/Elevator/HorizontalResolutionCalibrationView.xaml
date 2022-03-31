@@ -377,6 +377,15 @@
                               Content="{res:Loc InstallationApp.Repeat}"
                               Style="{StaticResource WizardConfirmButton}" />
 
+          <controls:PpcButton Grid.Row="6"
+                                Margin="0,10,0,0"
+                              Grid.ColumnSpan="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding FindZeroElevatorCommand}"
+                            Content="{res:Loc General.FindZeroElevator}"
+                            Style="{StaticResource WizardConfirmButton}" />
+
           <ctrls:PpcSpinEdit Grid.Row="6"
                              Grid.Column="1"
                              Margin="0,10,0,0"
