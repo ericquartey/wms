@@ -4,6 +4,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     public partial class ShowBarcodeImage : Migration
     {
+        #region Methods
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropColumn(
+                name: "ShowBarcodeImage",
+                table: "Bays");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
@@ -11,23 +20,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "Bays",
                 nullable: false,
                 defaultValue: false);
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 95, 0 });
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DeleteData(
-                table: "ErrorStatistics",
-                keyColumn: "Code",
-                keyValue: 95);
-
-            migrationBuilder.DropColumn(
-                name: "ShowBarcodeImage",
-                table: "Bays");
-        }
+        #endregion
     }
 }
