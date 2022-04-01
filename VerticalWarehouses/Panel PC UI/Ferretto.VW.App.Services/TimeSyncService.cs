@@ -88,6 +88,7 @@ namespace Ferretto.VW.App.Services
 
             this.tokenSource?.Cancel();
             this.tokenSource = new CancellationTokenSource();
+            this.logger.Debug("Starting Time sync service.");
 
             Task.Run(async () =>
             {
@@ -112,6 +113,7 @@ namespace Ferretto.VW.App.Services
 
         public void Stop()
         {
+            this.logger.Debug("Stopping Time sync service.");
             this.tokenSource?.Cancel();
             this.tokenSource = null;
 
@@ -121,7 +123,14 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnSystemTimeChangedAsync(SystemTimeChangedEventArgs e)
         {
-            await this.SyncTimeWithAutomationServiceAsync();
+            var remoteUtcTime = e.DateTime;
+            var machineUtcTime = DateTimeOffset.UtcNow;
+
+            if (Math.Abs((machineUtcTime - remoteUtcTime).TotalMilliseconds) > SyncToleranceMilliseconds)
+            {
+                remoteUtcTime.SetAsUtcSystemTime();
+                this.logger.Info($"PPC time was synced with remote time. Machine {machineUtcTime} Remote {remoteUtcTime}");
+            }
         }
 
         private async Task SyncTimeWithAutomationServiceAsync()
@@ -136,7 +145,7 @@ namespace Ferretto.VW.App.Services
                 if (Math.Abs((machineUtcTime - remoteUtcTime).TotalMilliseconds) > SyncToleranceMilliseconds)
                 {
                     remoteUtcTime.SetAsUtcSystemTime();
-                    this.logger.Trace($"PPC time was synced with MAS time. Machine {machineUtcTime} Remote {remoteUtcTime}");
+                    this.logger.Info($"PPC time was synced with MAS time. Machine {machineUtcTime} Remote {remoteUtcTime}");
                 }
                 else
                 {

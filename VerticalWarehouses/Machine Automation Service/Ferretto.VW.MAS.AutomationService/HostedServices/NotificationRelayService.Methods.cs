@@ -313,9 +313,9 @@ namespace Ferretto.VW.MAS.AutomationService
         //    //}
         //}
 
-        private async Task OnSystemTimeChangedAsync()
+        private async Task OnSystemTimeChangedAsync(TimeManagement.Models.SystemTimeChangedEventArgs e)
         {
-            await this.installationHub.Clients.All.SystemTimeChanged();
+            await this.installationHub.Clients.All.SystemTimeChanged(e.DateTime);
         }
 
         private async Task ResolutionCalibrationMethod(NotificationMessage receivedMessage)

@@ -1,12 +1,21 @@
-﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+﻿using System;
+
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
-    public class SystemTimeChangedEventArgs : System.EventArgs
+    public class SystemTimeChangedEventArgs : EventArgs
     {
         #region Constructors
 
-        public SystemTimeChangedEventArgs()
+        public SystemTimeChangedEventArgs(DateTimeOffset dateTime)
         {
+            this.DateTime = dateTime;
         }
+
+        #endregion
+
+        #region Properties
+
+        public DateTimeOffset DateTime { get; }
 
         #endregion
     }

@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<bool, BayNumber>(
                 nameof(IInstallationHub.BayLightChanged), this.OnBayLightChanged);
 
-            connection.On(
+            connection.On<DateTimeOffset>(
                 nameof(IInstallationHub.SystemTimeChanged), this.OnSystemTimeChanged);
 
             connection.On<NotificationMessageUI<RepetitiveHorizontalMovementsMessageData>>(
@@ -293,9 +293,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnSystemTimeChanged()
+        private void OnSystemTimeChanged(DateTimeOffset dateTime)
         {
-            this.SystemTimeChanged?.Invoke(this, new SystemTimeChangedEventArgs());
+            this.SystemTimeChanged?.Invoke(this, new SystemTimeChangedEventArgs(dateTime));
         }
 
         #endregion

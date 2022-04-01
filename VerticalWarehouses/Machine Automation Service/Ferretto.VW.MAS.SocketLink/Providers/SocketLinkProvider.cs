@@ -1267,8 +1267,17 @@ namespace Ferretto.VW.MAS.SocketLink
                 switch (commandCode)
                 {
                     case (int)SocketLinkCommand.UtcCommand.timeWrite:
-                        var utc = DateTimeOffset.Parse(cmdReceived.GetPayloadByPosition(1), CultureInfo.InvariantCulture).UtcDateTime;
-                        this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(utc));
+                        if (DateTimeOffset.TryParseExact(cmdReceived.GetPayloadByPosition(1), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var utc))
+                        {
+                            var machineTime = DateTime.Now;
+                            this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(utc.UtcDateTime));
+                            this.logger.LogInformation("Time synced successfully. from time '{machine}' to time '{remote}'", machineTime, utc.UtcDateTime);
+                        }
+                        else
+                        {
+                            cmdResponse = SocketLinkProvider.GetInvalidFormatResponse("incorrect date time format", isLineFeed);
+                            return cmdResponse;
+                        }
                         break;
                 }
 
