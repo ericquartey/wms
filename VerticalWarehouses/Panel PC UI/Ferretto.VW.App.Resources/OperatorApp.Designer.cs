@@ -5192,6 +5192,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show barcode image.
+        /// </summary>
+        public static string ShowBarcodeImage {
+            get {
+                return ResourceManager.GetString("ShowBarcodeImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Bay 1.
         /// </summary>
         public static string ShutterBay1 {

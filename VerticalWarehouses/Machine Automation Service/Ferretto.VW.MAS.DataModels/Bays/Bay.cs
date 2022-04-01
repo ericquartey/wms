@@ -71,6 +71,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double Resolution { get; set; }
 
+        public bool ShowBarcodeImage { get; set; }
+
         public Shutter Shutter { get; set; }
 
         public WarehouseSide Side { get; set; }

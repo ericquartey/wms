@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             this.EventAggregator
                 .GetEvent<PubSubEvent<SystemTimeChangedEventArgs>>()
-                .Subscribe(async e => await this.OnSystemTimeChangedAsync(), ThreadOption.BackgroundThread, false);
+                .Subscribe(async (e) => await this.OnSystemTimeChangedAsync(e), ThreadOption.BackgroundThread, false);
         }
 
         #endregion

@@ -12,16 +12,16 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
   <Grid Margin="15,0,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
 
-      <Grid.RowDefinitions>
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
 
     <StackPanel Orientation="Vertical">
       <!--  titolo  -->
@@ -51,138 +51,124 @@
                  Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
         <Run Text="{res:Loc OperatorApp.Bay}" /> <Run Text="{Binding Bay.Id}" />
       </TextBlock>-->
-      <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+      <controls:PpcCheckBox Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Pick, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.Pick}"
-                            Visibility="Collapsed"/>
-      <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Visibility="Collapsed" />
+      <controls:PpcCheckBox Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Put, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.Put}"
-                            Visibility="Collapsed"/>
-      <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+                            Visibility="Collapsed" />
+      <controls:PpcCheckBox Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding View, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.View}"
-                            Visibility="Collapsed"/>
+                            Visibility="Collapsed" />
 
-      <controls:PpcCheckBox 
-                            Margin="0,15,0,0"
+      <controls:PpcCheckBox Margin="0,15,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding Inventory, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.ItemListType_Inventory}"
-                            Visibility="Collapsed"/>
+                            Visibility="Collapsed" />
 
-      <controls:PpcCheckBox 
-                        Margin="0,10,0,0"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding BarcodeAutomaticPut, Mode=TwoWay}"
-                        LabelText="{res:Loc OperatorApp.BarcodeAutomaticPut}"/>
+      <controls:PpcCheckBox Margin="0,10,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding BarcodeAutomaticPut, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.BarcodeAutomaticPut}" />
 
-      <controls:PpcCheckBox 
-                        Margin="0,10,0,0"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding IsUpdatingStockByDifference, Mode=TwoWay}"
-                        LabelText="{res:Loc OperatorApp.IsUpdatingStockByDifference}"/>
+      <controls:PpcCheckBox Margin="0,10,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsUpdatingStockByDifference, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsUpdatingStockByDifference}" />
 
-        <controls:PpcCheckBox 
-                            Margin="0,10,0,0"
+      <controls:PpcCheckBox Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnableHandlingItemOperations, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsEnableHandlingItemOperations}"/>
-        
-            <controls:PpcCheckBox 
-                            Margin="0,10,0,0"
+                            LabelText="{res:Loc OperatorApp.IsEnableHandlingItemOperations}" />
+
+      <controls:PpcCheckBox Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsRequestConfirmForLastOperationOnLoadingUnit, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsRequestConfirmForLastOperationOnLoadingUnit}"/>
+                            LabelText="{res:Loc OperatorApp.IsRequestConfirmForLastOperationOnLoadingUnit}" />
 
-        <controls:PpcCheckBox 
-                            Margin="0,10,0,0"
+      <controls:PpcCheckBox Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnableAddItem, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsEnableAddItem}"/>
+                            LabelText="{res:Loc OperatorApp.IsEnableAddItem}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,0,0"
+      <controls:PpcCheckBox Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDisableQtyItemEditingPick, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsDisableQtyItemEditingPick}"/>
+                            LabelText="{res:Loc OperatorApp.IsDisableQtyItemEditingPick}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,0,0"
+      <controls:PpcCheckBox Margin="0,10,0,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDrapery, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsDrapery}"/>
+                            LabelText="{res:Loc OperatorApp.IsDrapery}" />
 
-            <controls:PpcTextBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,0,0"
                             VerticalAlignment="Center"
-                            InputText="{Binding ToteBarcodeLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            LabelText="{res:Loc OperatorApp.ToteBarcodeLength}"/>
+                            IsChecked="{Binding IsShowBarcodeImage, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.ShowBarcodeImage}" />
 
-        </StackPanel>
-        <StackPanel Grid.Row="1"
-                  Grid.Column="1"
-                  Orientation="Vertical">
+      <controls:PpcTextBox Margin="0,10,15,0"
+                           VerticalAlignment="Center"
+                           InputText="{Binding ToteBarcodeLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{res:Loc OperatorApp.ToteBarcodeLength}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+    </StackPanel>
+    <StackPanel Grid.Row="1"
+                Grid.Column="1"
+                Orientation="Vertical">
+
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDoubleConfirmBarcodePick, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodePick}"/>
+                            LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodePick}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsDoubleConfirmBarcodePut, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodePut}"/>
+                            LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodePut}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsBox, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.Box}"/>
+                            LabelText="{res:Loc OperatorApp.Box}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsEnabeNoteRules, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsEnabeNoteRules}"/>
+                            LabelText="{res:Loc OperatorApp.IsEnabeNoteRules}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsLocalMachineItems, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsLocalMachineItems}"/>
+                            LabelText="{res:Loc OperatorApp.IsLocalMachineItems}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsOrderList, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsOrderList}"/>
+                            LabelText="{res:Loc OperatorApp.IsOrderList}" />
 
-            <controls:PpcCheckBox 
-                            Margin="0,10,15,0"
+      <controls:PpcCheckBox Margin="0,10,15,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding IsCarrefour, Mode=TwoWay}"
-                            LabelText="{res:Loc OperatorApp.IsCarrefour}"/>
+                            LabelText="{res:Loc OperatorApp.IsCarrefour}" />
 
-            <controls:PpcTextBox 
-                            Margin="0,10,15,0"
-                            VerticalAlignment="Center"
-                            InputText="{Binding ItemUniqueIdLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            LabelText="{res:Loc OperatorApp.ItemUniqueIdLength}"/>
+      <controls:PpcTextBox Margin="0,10,15,0"
+                           VerticalAlignment="Center"
+                           InputText="{Binding ItemUniqueIdLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           LabelText="{res:Loc OperatorApp.ItemUniqueIdLength}" />
 
 
-        </StackPanel>
-      
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="2"
+    </StackPanel>
+
+    <controls:PpcButton Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="2"
                         Margin="15,10,15,0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"

@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task SwitchAxisNotify(IBaseNotificationMessageUI message);
 
-        Task SystemTimeChanged();
+        Task SystemTimeChanged(System.DateTimeOffset dateTime);
 
         #endregion
     }

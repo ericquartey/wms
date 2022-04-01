@@ -59,8 +59,7 @@ namespace Ferretto.VW.Devices.WeightingScale
         {
             var displayIdentifier = 1;
 
-            //await this.SendCommandAsync($"DINT{displayIdentifier:00}0001");
-            this.SendCommandAsync($"C");
+            await this.SendCommandAsync($"DINT{displayIdentifier:00}0001");
         }
 
         public async Task ConnectAsync(IPAddress ipAddress, int port)
@@ -254,8 +253,8 @@ namespace Ferretto.VW.Devices.WeightingScale
                         //{
                         //    System.Threading.Thread.Sleep(100);
                         //}
-                        this._semaphore.Release();
                     }
+                    this._semaphore.Release();
                 }
                 catch (Exception e)
                 {

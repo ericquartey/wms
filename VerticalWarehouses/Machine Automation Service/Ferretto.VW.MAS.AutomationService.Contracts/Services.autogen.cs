@@ -1717,14 +1717,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid)
+        public System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage)
         {
-            return SetAllOperationsBayAsync(pick, put, view, inventory, barcodeAutomaticPut, bayid, System.Threading.CancellationToken.None);
+            return SetAllOperationsBayAsync(pick, put, view, inventory, barcodeAutomaticPut, bayid, showBarcodeImage, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task SetAllOperationsBayAsync(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage, System.Threading.CancellationToken cancellationToken)
         {
             if (pick == null)
                 throw new System.ArgumentNullException("pick");
@@ -1744,6 +1744,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (bayid == null)
                 throw new System.ArgumentNullException("bayid");
     
+            if (showBarcodeImage == null)
+                throw new System.ArgumentNullException("showBarcodeImage");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/set-all-operationsbay?");
             urlBuilder_.Append(System.Uri.EscapeDataString("pick") + "=").Append(System.Uri.EscapeDataString(ConvertToString(pick, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1752,6 +1755,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(System.Uri.EscapeDataString("inventory") + "=").Append(System.Uri.EscapeDataString(ConvertToString(inventory, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("barcodeAutomaticPut") + "=").Append(System.Uri.EscapeDataString(ConvertToString(barcodeAutomaticPut, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("bayid") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayid, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("showBarcodeImage") + "=").Append(System.Uri.EscapeDataString(ConvertToString(showBarcodeImage, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

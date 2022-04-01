@@ -2573,4 +2573,7 @@
   <data name="NoShelfCode" xml:space="preserve">
     <value>No shelf code found in the barcode.</value>
   </data>
+  <data name="ShowBarcodeImage" xml:space="preserve">
+    <value>Show barcode image</value>
+  </data>
 </root>

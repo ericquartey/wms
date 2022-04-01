@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Fields
 
-        private const int WeightPollInterval = 800;
+        private const int WeightPollInterval = 600;
 
         private readonly IMachineAccessoriesWebService accessoriesWebService;
 
@@ -381,7 +381,7 @@ namespace Ferretto.VW.App.Accessories
                 {
                     this.logger.Error(ex, "Error while performing continuous weight sampling.");
                 }
-                this.weightPollTimer.Change(0, WeightPollInterval);
+                this.weightPollTimer.Change(WeightPollInterval, WeightPollInterval);
             }
         }
 
