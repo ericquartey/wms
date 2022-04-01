@@ -25,30 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.40 rispetto la 1.0.39
-- La configurazione del lettore barcode ha il generatore di codici a barre
-- Aggiunti parametri di baia per la lettura della sagoma (barriera di misura)
-- Aggiunti parametri di collegamento proxy per la telemetria
-- Aggiunte segnalazioni di diagnostica per la scheda I/O
-- Aggiunta procedura di risoluzione barriera
-- Aggiunto comando per sospendere l'operazione di prelievo/versamento
+## Nuove Funzionalità 1.0.41 rispetto la 1.0.40
+- Procedura di risoluzione orizzontale catena: aggiunto pulsante di ricerca di zero
 
 ## Bug Risolti
-- I ripristini della giostra si fermano sul sensore
-- Correzione alla ricerca di zero giostra
-- I cassetti bloccati non si perdono al riavvio
-- Aumentata la velocità della procedura di risoluzione orizzontale
-- Modifiche agli errori della scheda I/O (34, 84, 94)
-- Inviato messaggio di cassetto rimosso alla telemetria
-- Modifiche al calcolo della sagoma per inverter AGL
-- Eliminato allarme "movimento serranda troppo breve"
-- BED: corretto segnale di barriera anti-intrusione interna
-- Correzioni alle Barcode Actions
-- SocketLink: il rientro cassetto è accettato solo se il cassetto è in attesa di conferma
-- Eliminato spegnimento dai panel pc secondari
+- Corretta gestione della bilancia Dini Argeo
+- Corretta gestione della sincronizzazione oraria con il socket link
 
 ## Compatibile con adapter 0.4.31
 ***
+
+[Versione 1.0.40](#id1040)
 
 [Versione 1.0.39](#id1039)
 
@@ -130,6 +117,31 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1040"></a>
+## Nuove Funzionalità 1.0.40 rispetto la 1.0.39
+- La configurazione del lettore barcode ha il generatore di codici a barre
+- Aggiunti parametri di baia per la lettura della sagoma (barriera di misura)
+- Aggiunti parametri di collegamento proxy per la telemetria
+- Aggiunte segnalazioni di diagnostica per la scheda I/O
+- Aggiunta procedura di risoluzione barriera
+- Aggiunto comando per sospendere l'operazione di prelievo/versamento
+
+## Bug Risolti
+- I ripristini della giostra si fermano sul sensore
+- Correzione alla ricerca di zero giostra
+- I cassetti bloccati non si perdono al riavvio
+- Aumentata la velocità della procedura di risoluzione orizzontale
+- Modifiche agli errori della scheda I/O (34, 84, 94)
+- Inviato messaggio di cassetto rimosso alla telemetria
+- Modifiche al calcolo della sagoma per inverter AGL
+- Eliminato allarme "movimento serranda troppo breve"
+- BED: corretto segnale di barriera anti-intrusione interna
+- Correzioni alle Barcode Actions
+- SocketLink: il rientro cassetto è accettato solo se il cassetto è in attesa di conferma
+- Eliminato spegnimento dai panel pc secondari
+
+## Compatibile con adapter 0.4.31
 
 <a id="id1039"></a>
 ## Nuove Funzionalità 1.0.39 rispetto la 1.0.38
