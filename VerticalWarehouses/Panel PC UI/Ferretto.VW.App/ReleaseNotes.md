@@ -26,6 +26,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.41 rispetto la 1.0.40
+- Aggiunto parametro per stampare il barcode articolo nelle pagine di prelievo e deposito
 - Procedura di risoluzione orizzontale catena: aggiunto pulsante di ricerca di zero
 
 ## Bug Risolti
