@@ -5,7 +5,7 @@
         #region Fields
 
         private static readonly System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(
-            @"(?<ScaleNumber>\d+),(?<Quality>UL|OL|ST|US),\s*(?<Weight>-?\d+.\d+),\s*(?<Tare>-?\d+.\d+),\s*(?<UnitsCount>\d+),\s*(?<AverageUnitWeight>-?\d+.\d+),\s*(?<UnitOfMeasure>\w)",
+            @"(?<ScaleNumber>\d+),(?<Quality>UL|OL|ST|US),\s*(?<Weight>-?\d+.\d+),\s*(?<Tare>-?\d+.\d+),\s*(?<UnitsCount>-?\d+),\s*(?<AverageUnitWeight>-?\d+.\d+),\s*(?<UnitOfMeasure>\w)",
             System.Text.RegularExpressions.RegexOptions.Compiled);
 
         #endregion
