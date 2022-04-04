@@ -39,6 +39,8 @@ namespace Ferretto.VW.App.Accessories
 
         private bool isDeviceEnabled;
 
+        private bool isErrorScale;
+
         private bool isStarted;
 
         #endregion
@@ -198,6 +200,7 @@ namespace Ferretto.VW.App.Accessories
             }
 
             this.isStarted = true;
+            this.isErrorScale = false;
 
             this.logger.Info("Starting the weighting scale service ...");
 
@@ -285,7 +288,7 @@ namespace Ferretto.VW.App.Accessories
             this.logger.Info("Stopping the weighting scale service ...");
             if (this.UnitaryWeight >= 0)
             {
-                //this.deviceDriver.SetAverageUnitaryWeightAsync(0.0F);
+                await this.ResetAverageUnitaryWeightAsync();
                 await this.ClearMessageAsync();
             }
 
@@ -367,6 +370,7 @@ namespace Ferretto.VW.App.Accessories
                     if (weightSample is null)
                     {
                         this.ShowNotification(Resources.Localized.Get("OperatorApp.ScaleNotResponding"), NotificationSeverity.Error);
+                        this.isErrorScale = true;
                     }
                     else
                     {
@@ -375,6 +379,15 @@ namespace Ferretto.VW.App.Accessories
                         System.Windows.Application.Current.Dispatcher.Invoke(() =>
                             this.WeighAcquired?.Invoke(this, new WeightAcquiredEventArgs(weightSample))
                         );
+
+                        if (this.isErrorScale)
+                        {
+                            this.isErrorScale = false;
+                            // clear notification
+                            this.eventAggregator
+                                .GetEvent<PresentationNotificationPubSubEvent>()
+                                .Publish(new PresentationNotificationMessage(true));
+                        }
                     }
                 }
                 catch (Exception ex)

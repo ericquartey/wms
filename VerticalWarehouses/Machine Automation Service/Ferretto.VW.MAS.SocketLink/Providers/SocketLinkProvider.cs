@@ -1271,7 +1271,9 @@ namespace Ferretto.VW.MAS.SocketLink
                         {
                             var machineTime = DateTime.Now;
                             this.timeChangedEvent.Publish(new SystemTimeChangedEventArgs(utc.UtcDateTime));
-                            this.logger.LogInformation("Time synced successfully. from time '{machine}' to time '{remote}'", machineTime, utc.UtcDateTime);
+                            this.logger.LogInformation("Time synced successfully. from time '{machine}' to time '{remote}'",
+                                machineTime.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                                utc.UtcDateTime.ToString("dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture));
                         }
                         else
                         {

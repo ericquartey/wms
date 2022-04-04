@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -57,9 +58,10 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public async Task ClearMessageAsync()
         {
-            var displayIdentifier = 1;
+            //var displayIdentifier = 1;
 
-            await this.SendCommandAsync($"DINT{displayIdentifier:00}0001");
+            //await this.SendCommandAsync($"DINT{displayIdentifier:00}0001");
+            await this.SendCommandAsync($"CLEAR");
         }
 
         public async Task ConnectAsync(IPAddress ipAddress, int port)
@@ -154,13 +156,13 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         public async Task ResetAverageUnitaryWeightAsync()
         {
-            await this.SendCommandAsync($"SPMU0000.0");
+            await this.SendCommandAsync($"SPMU0.0");
         }
 
         public async Task<string> RetrieveVersionAsync()
         {
             string versionString = null;
-            var line = await this.SendCommandAsync("VER");
+            var line = await this.SendCommandAsync("VER", 250);
             if (!string.IsNullOrEmpty(line))
             {
                 versionString = line.Replace("VER,", string.Empty);
@@ -177,12 +179,15 @@ namespace Ferretto.VW.Devices.WeightingScale
             }
             else if (weight > 0)
             {
-                var line = await this.SendCommandAsync($"SPMU{weight:0.0}");
+                var nfi = new NumberFormatInfo();
+                nfi.NumberDecimalSeparator = ".";
+                nfi.NumberDecimalDigits = 1;
+                var line = await this.SendCommandAsync($"SPMU{weight.ToString(nfi)}");
             }
-            else
-            {
-                await this.ResetAverageUnitaryWeightAsync();
-            }
+            //else
+            //{
+            //    await this.ResetAverageUnitaryWeightAsync();
+            //}
         }
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
@@ -191,7 +196,7 @@ namespace Ferretto.VW.Devices.WeightingScale
             return true;
         }
 
-        private async Task<string> SendCommandAsync(string command)
+        private async Task<string> SendCommandAsync(string command, int readTimeout = 0)
         {
             this.logger.Debug($"sending command '{command}'.");
             this.ClearConcurrentQueue(this.messagesToBeSendQueue);
@@ -207,6 +212,7 @@ namespace Ferretto.VW.Devices.WeightingScale
             await this._semaphore.WaitAsync();
             if (this.IsConnected)
             {
+                var response = string.Empty;
                 try
                 {
                     //while (!this.messagesToBeSendQueue.IsEmpty)
@@ -220,11 +226,18 @@ namespace Ferretto.VW.Devices.WeightingScale
                         this.stream.Write(data, 0, data.Length);
                         this.logger.Debug($"SendCommandAsync();Sent: {sendMessage}<CR><LF>");
 
-                        data = new byte[this.client.ReceiveBufferSize];
-                        var bytes = this.stream.Read(data, 0, data.Length);
-                        var response = Encoding.ASCII.GetString(data, 0, bytes);
-
-                        this.logger.Debug($"SendCommandAsync();Received: {response.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                        var startTime = DateTime.Now;
+                        do
+                        {
+                            data = new byte[this.client.ReceiveBufferSize];
+                            if (readTimeout > 0)
+                            {
+                                this.stream.ReadTimeout = readTimeout;
+                            }
+                            var bytes = this.stream.Read(data, 0, data.Length);
+                            response += Encoding.ASCII.GetString(data, 0, bytes);
+                            this.logger.Debug($"SendCommandAsync();Received: {response.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                        } while (readTimeout > 0 && (DateTime.Now - startTime).TotalMilliseconds < readTimeout);
 
                         //switch (response)
                         //{
@@ -259,8 +272,15 @@ namespace Ferretto.VW.Devices.WeightingScale
                 catch (Exception e)
                 {
                     this._semaphore.Release();
-                    this.logger.Error(e);
-                    await this.DisconnectAsync();
+                    if (readTimeout > 0 && response.Length > 0)
+                    {
+                        this.messagesReceivedQueue.Enqueue(response);
+                    }
+                    else
+                    {
+                        this.logger.Error(e);
+                        await this.DisconnectAsync();
+                    }
                 }
             }
             else
