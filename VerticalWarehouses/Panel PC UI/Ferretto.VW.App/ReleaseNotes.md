@@ -32,6 +32,7 @@
 ## Bug Risolti
 - Corretta gestione della bilancia Dini Argeo
 - Corretta gestione della sincronizzazione oraria con il socket link
+- BED: eliminata calibrazione verticale con serranda aperta
 
 ## Compatibile con adapter 0.4.31
 ***
