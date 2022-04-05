@@ -228,12 +228,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
                 this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
 
-                this.SelectedLoadingUnit = this.LoadingUnits.FirstOrDefault();
-
                 var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
             }
+
+            this.LoadingUnitId = null;
+            this.SelectedLoadingUnit = null;
         }
 
         protected override void RaiseCanExecuteChanged()
