@@ -1,4 +1,5 @@
-﻿CREATE TABLE "InstructionDefinitions" (
+﻿
+CREATE TABLE "InstructionDefinitions" (
     "Id" INTEGER NOT NULL CONSTRAINT "PK_InstructionDefinitions" PRIMARY KEY AUTOINCREMENT,
     "Axis" INTEGER NOT NULL DEFAULT 0,
     "InstructionType" INTEGER NOT NULL,
