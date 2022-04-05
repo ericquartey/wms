@@ -97,8 +97,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 )
             {
                 this.Logger.LogWarning($"No standby database. Copy database from [{primaryDb}] to [{secondaryDb}].");
+                var secondaryDir = System.IO.Path.GetDirectoryName(secondaryDb);
                 try
                 {
+                    if (!System.IO.Directory.Exists(secondaryDir))
+                    {
+                        System.IO.Directory.CreateDirectory(secondaryDir);
+                    }
                     System.IO.File.Copy(primaryDb, secondaryDb);
                 }
                 catch (Exception ex)
