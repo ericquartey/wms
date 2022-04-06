@@ -28,6 +28,14 @@ namespace Ferretto.VW.App.Modules.Operator.Views
                 var selectedList = grid.SelectedItems.OfType<LoadingUnit>().ToList();
 
                 viewModel.SelectedUnits = selectedList;
+
+                var template = grid.Template;
+                var scrol = (ScrollViewer)template.FindName("DG_ScrollViewer", grid);
+
+                if (scrol.VerticalOffset + 10 <= grid.SelectedIndex || scrol.VerticalOffset > grid.SelectedIndex)
+                {
+                    scrol.ScrollToVerticalOffset(grid.SelectedIndex);
+                }
             }
         }
 
