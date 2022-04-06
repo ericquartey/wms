@@ -15,8 +15,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
     {
         #region Fields
 
-        private readonly List<DataGridRow> dataGridRowList = new List<DataGridRow>();
-
         private string firstSort;
 
         private ListSortDirection lastDirection;
@@ -57,23 +55,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             }
         }
 
-        private static DependencyObject GetVisualParentOfType<T>(DependencyObject startObject)
-        {
-            DependencyObject parent = startObject;
-
-            while (IsNotNullAndNotOfType<T>(parent))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-
-            return parent is T ? parent : null;
-        }
-
-        private static bool IsNotNullAndNotOfType<T>(DependencyObject obj)
-        {
-            return obj != null && !(obj is T);
-        }
-
         private void DataGridName_Sorting(object sender, DataGridSortingEventArgs e)
         {
             var dgSender = (DataGrid)sender;
@@ -108,45 +89,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             }
 
             e.Handled = true;
-        }
-
-        private void MouseEnterHandler(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                e.OriginalSource is DataGridRow row)
-            {
-                row.IsSelected = !row.IsSelected;
-                e.Handled = true;
-            }
-        }
-
-        private void PreviewMouseDownHandler(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                if (e.LeftButton == MouseButtonState.Pressed && e.OriginalSource is FrameworkElement element
-                && GetVisualParentOfType<DataGridRow>(element) is DataGridRow row
-                && GetVisualParentOfType<DataGrid>(element) is DataGrid gridParent)
-                {
-                    row.IsSelected = !row.IsSelected;
-
-                    if (row.IsSelected)
-                    {
-                        this.dataGridRowList.Clear();
-                        this.dataGridRowList.Add(row);
-                    }
-                    else
-                    {
-                        this.dataGridRowList.Remove(row);
-                    }
-
-                    e.Handled = true;
-                }
-            }
-            catch (System.Exception ex)
-            {
-                ex.ToString();
-            }
         }
 
         #endregion
