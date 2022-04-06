@@ -23,10 +23,9 @@
               HorizontalScrollBarVisibility="Disabled"
               IsReadOnly="True"
               IsSynchronizedWithCurrentItem="True"
-              ItemsSource="{Binding ItemsSource}"
+              ItemsSource="{Binding LoadingUnits}"
               RowHeight="45"
-              SelectedItem="{Binding SelectedItem}"
-              SelectionMode="Single"
+              SelectedItem="{Binding SelectedLoadingUnit}"
               Sorting="DataGridName_Sorting"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
               VerticalScrollBarVisibility="Auto">

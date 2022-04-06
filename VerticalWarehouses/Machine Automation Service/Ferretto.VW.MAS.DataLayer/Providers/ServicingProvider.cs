@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.ServicingInfo.Add(s);
                 this.dataContext.SaveChanges();
 
-                this.GenerateInstructions(s);
+                this.GenerateInstructions(s, lastService);
                 this.dataContext.SaveChanges();
             }
         }
@@ -824,13 +824,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void GenerateInstructions(ServicingInfo s)
+        private void GenerateInstructions(ServicingInfo s, ServicingInfo lastService = null)
         {
             var instructionDefinitions = this.dataContext.InstructionDefinitions.ToList();
             if (instructionDefinitions.Any())
             {
                 foreach (var definition in instructionDefinitions)
                 {
+                    if (lastService != null)
+                    {
+                        if (lastService.Instructions is null || !lastService.Instructions.Any(x => x.Id == definition.Id))
+                        {
+                            var instructionLS = new Instruction();
+                            instructionLS.ServicingInfo = lastService;
+                            instructionLS.Definition = definition;
+                            instructionLS.InstructionStatus = MachineServiceStatus.Completed;
+                            this.dataContext.Instructions.Add(instructionLS);
+                        }
+                    }
+
                     var instruction = new Instruction();
                     instruction.ServicingInfo = s;
                     instruction.Definition = definition;

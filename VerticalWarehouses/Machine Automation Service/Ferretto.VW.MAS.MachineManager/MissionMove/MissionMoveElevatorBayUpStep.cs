@@ -65,6 +65,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     if (this.LoadingUnitMovementProvider.GetCyclesFromCalibration(Orientation.Vertical) >= machine.VerticalCyclesToCalibrate
                         && !machineResourcesProvider.IsDrawerCompletelyOnCradle
+                        && (bay.Shutter == null || bay.Shutter.Type == ShutterType.NotSpecified)
                        )
                     {
                         this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
