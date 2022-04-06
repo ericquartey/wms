@@ -34,6 +34,7 @@
 - Corretta gestione della sincronizzazione oraria con il socket link
 - BED: eliminata calibrazione verticale con serranda aperta
 - Dettagli manutenzione: corretta chiusura del service
+- Correzioni alla Chiamata Cassetto
 
 ## Compatibile con adapter 0.4.31
 ***
