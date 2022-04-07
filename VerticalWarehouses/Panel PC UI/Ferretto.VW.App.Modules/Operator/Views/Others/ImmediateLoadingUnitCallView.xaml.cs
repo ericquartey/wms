@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Modules.Operator.Views
                 var template = grid.Template;
                 var scrol = (ScrollViewer)template.FindName("DG_ScrollViewer", grid);
 
-                if (scrol.VerticalOffset + 10 <= grid.SelectedIndex || scrol.VerticalOffset > grid.SelectedIndex)
+                if ((scrol.VerticalOffset + 10 <= grid.SelectedIndex || scrol.VerticalOffset > grid.SelectedIndex) && !viewModel.IsWaitingForResponse)
                 {
                     scrol.ScrollToVerticalOffset(grid.SelectedIndex);
                 }
