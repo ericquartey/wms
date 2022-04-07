@@ -640,7 +640,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         }
                         catch (EntityNotFoundException)
                         {
-                            throw new TrayNumberException;
+                            throw new TrayNumberException();
                         }
 
                         if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InLocation)
