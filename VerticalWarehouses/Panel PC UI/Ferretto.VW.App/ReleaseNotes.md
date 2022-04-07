@@ -35,6 +35,7 @@
 - BED: eliminata calibrazione verticale con serranda aperta
 - Dettagli manutenzione: corretta chiusura del service
 - Correzioni alla Chiamata Cassetto
+- Socket Link: corretto errore di cassetto sconosciuto
 
 ## Compatibile con adapter 0.4.31
 ***

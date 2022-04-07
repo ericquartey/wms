@@ -632,7 +632,16 @@ namespace Ferretto.VW.MAS.SocketLink
                     }
                     else
                     {
-                        var trayStatus = this.loadingUnitsDataProvider.GetById(trayNumber).Status;
+                        DataModels.Enumerations.LoadingUnitStatus trayStatus;
+
+                        try
+                        {
+                            trayStatus = this.loadingUnitsDataProvider.GetById(trayNumber).Status;
+                        }
+                        catch (EntityNotFoundException)
+                        {
+                            throw new TrayNumberException();
+                        }
 
                         if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InLocation)
                         {
