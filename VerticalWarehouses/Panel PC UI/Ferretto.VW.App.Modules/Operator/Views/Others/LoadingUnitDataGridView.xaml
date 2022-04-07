@@ -26,6 +26,7 @@
               ItemsSource="{Binding LoadingUnits}"
               RowHeight="45"
               SelectedItem="{Binding SelectedLoadingUnit}"
+              SelectionMode="Single"
               Sorting="DataGridName_Sorting"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
               VerticalScrollBarVisibility="Auto">
