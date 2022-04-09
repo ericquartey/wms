@@ -1249,6 +1249,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Attention, item managed in lot, do you still confirm?.
+        /// </summary>
+        public static string DialogGroupByLot {
+            get {
+                return ResourceManager.GetString("DialogGroupByLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direction.
         /// </summary>
         public static string Direction {

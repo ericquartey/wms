@@ -2175,4 +2175,7 @@
   <data name="ShowBarcodeImage" xml:space="preserve">
     <value>Mostra l'immagine del barcode</value>
   </data>
+  <data name="DialogGroupByLot" xml:space="preserve">
+    <value>Attenzione, articolo gestito a lotto, confermi ugualmente?</value>
+  </data>
 </root>
