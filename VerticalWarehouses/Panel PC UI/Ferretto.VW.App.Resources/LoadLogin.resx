@@ -177,4 +177,7 @@
   <data name="AutoLogoutServiceUser" xml:space="preserve">
     <value>User session 'service' expired</value>
   </data>
+  <data name="NoAccessLevel" xml:space="preserve">
+    <value>Access level invalid or undefined</value>
+  </data>
 </root>

@@ -66,7 +66,14 @@ namespace Ferretto.VW.App.Services
             {
                 userClaims.AccessLevel = accessLevel;
             }
+
             this.AccessLevel = userClaims.AccessLevel;
+
+            if (this.AccessLevel == UserAccessLevel.NoAccess)
+            {
+                throw new Exception(Resources.Localized.Get("LoadLogin.NoAccessLevel"));
+            }
+
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 
             await this.TelemetryLoginLogoutAsync("Login", supportToken);
@@ -105,7 +112,14 @@ namespace Ferretto.VW.App.Services
                     this.AccessLevel = UserAccessLevel.NoAccess;
                     break;
             }
+
             userClaims.AccessLevel = this.AccessLevel;
+
+            if (this.AccessLevel == UserAccessLevel.NoAccess)
+            {
+                throw new Exception(Resources.Localized.Get("LoadLogin.NoAccessLevel"));
+            }
+
             this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userClaims.Name, this.AccessLevel));
 
             await this.TelemetryLoginLogoutAsync("Login", bearerToken);
