@@ -133,6 +133,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Access level invalid or undefined.
+        /// </summary>
+        public static string NoAccessLevel {
+            get {
+                return ResourceManager.GetString("NoAccessLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter your password.
         /// </summary>
         public static string PasswordEnter {
