@@ -2576,4 +2576,7 @@
   <data name="ShowBarcodeImage" xml:space="preserve">
     <value>Show barcode image</value>
   </data>
+  <data name="DialogGroupByLot" xml:space="preserve">
+    <value>Attention, item managed in lot, do you still confirm?</value>
+  </data>
 </root>

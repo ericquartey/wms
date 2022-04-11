@@ -15,8 +15,6 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
-            d:DataContext="{d:DesignInstance Type=viewmodels:AlarmViewModel,
-                                             IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -144,15 +142,9 @@
                   RowHeight="40">
           <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
-                                Width="60"
-                                Binding="{Binding Path=Id}"
-                                Header="{res:Loc OperatorApp.Id}">
-              <DataGridTextColumn.CellStyle>
-                <Style TargetType="DataGridCell">
-                  <Setter Property="BorderThickness" Value="1,0,0,0" />
-                  <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                </Style>
-              </DataGridTextColumn.CellStyle>
+                                Width="200"
+                                Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormatComplete}}"
+                                Header="{res:Loc OperatorApp.OccurrenceDate}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="HorizontalAlignment" Value="Center" />
@@ -218,9 +210,15 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column7"
-                                Width="200"
-                                Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormatComplete}}"
-                                Header="{res:Loc OperatorApp.OccurrenceDate}">
+                                Width="60"
+                                Binding="{Binding Path=Id}"
+                                Header="{res:Loc OperatorApp.Id}">
+              <DataGridTextColumn.CellStyle>
+                <Style TargetType="DataGridCell">
+                  <Setter Property="BorderThickness" Value="1,0,0,0" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                </Style>
+              </DataGridTextColumn.CellStyle>
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="HorizontalAlignment" Value="Center" />

@@ -5,6 +5,8 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.Views
@@ -12,16 +14,6 @@ namespace Ferretto.VW.App.Modules.Operator.Views
     public partial class LoadingUnitDataGridView : UserControl
     {
         #region Fields
-
-        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
-            nameof(ItemsSource),
-            typeof(IEnumerable<LoadingUnit>),
-            typeof(LoadingUnitDataGridView));
-
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem),
-            typeof(LoadingUnit),
-            typeof(LoadingUnitDataGridView));
 
         private string firstSort;
 
@@ -34,24 +26,17 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         public LoadingUnitDataGridView()
         {
             this.InitializeComponent();
-            this.DataGrid.DataContext = this;
             this.firstSort = string.Empty;
         }
 
         #endregion
 
-        #region Properties
+        #region Events
 
-        public IEnumerable<LoadingUnit> ItemsSource
+        public event SelectionChangedEventHandler DataGridSelectionChanged
         {
-            get => (IEnumerable<LoadingUnit>)this.GetValue(ItemsSourceProperty);
-            set => this.SetValue(ItemsSourceProperty, value);
-        }
-
-        public LoadingUnit SelectedItem
-        {
-            get => (LoadingUnit)this.GetValue(SelectedItemProperty);
-            set => this.SetValue(SelectedItemProperty, value);
+            add { this.DataGrid.SelectionChanged += value; }
+            remove { this.DataGrid.SelectionChanged -= value; }
         }
 
         #endregion

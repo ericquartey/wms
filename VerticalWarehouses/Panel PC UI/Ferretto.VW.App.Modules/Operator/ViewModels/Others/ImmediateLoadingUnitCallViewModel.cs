@@ -54,6 +54,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private LoadingUnit selectedLoadingUnit;
 
+        private List<LoadingUnit> selectedUnits;
+
         #endregion
 
         #region Constructors
@@ -171,6 +173,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public List<LoadingUnit> SelectedUnits
+        {
+            get => this.selectedUnits;
+            set => this.SetProperty(ref this.selectedUnits, value);
+        }
+
         #endregion
 
         #region Methods
@@ -228,12 +236,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
                 this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
 
-                this.SelectedLoadingUnit = this.LoadingUnits.FirstOrDefault();
-
                 var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
             }
+
+            this.SelectedLoadingUnit = null;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -254,6 +262,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
                 this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
+                this.loadingUnitId = null;
                 this.selectedLoadingUnit = null;
             }
 

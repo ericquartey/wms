@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly IDialogService dialogService;
+
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineItemsWebService itemsWebService;
@@ -155,6 +157,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IBayManager bayManager,
             IMachineAreasWebService areasWebService,
+            IDialogService dialogService,
             IMachineItemsWebService itemsWebService,
             IMachineMissionOperationsWebService missionOperationsWebService,
             IBarcodeReaderService barcodeReaderService,
@@ -175,6 +178,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
@@ -757,29 +761,47 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyRequestingItemPick = true;
                 this.IsBusyConfirmingOperation = true;
 
-                await this.wmsDataProvider.PickAsync(
-                    itemId,
-                    this.InputQuantity.Value,
-                    this.reasonId,
-                    this.reasonNotes,
-                    null,
-                    lot: lot,
-                    serialNumber: serialNumber,
-                    userName: this.authenticationService.UserName,
-                    this.orderId);
+                var messageBoxResult = DialogResult.Yes;
 
-                this.Reasons = null;
-                this.Orders = null;
-                this.IsOrderVisible = false;
-                this.IsReasonVisible = false;
-                this.IsWaitingForReason = false;
+                if (!this.isGroupbyLot && this.areaId.HasValue)
+                {
+                    var lotProducts = await this.areasWebService.GetProductsAsync(
+                        this.areaId.Value,
+                        0,
+                        0,
+                        itemCode,
+                        true,
+                        false);
 
-                this.ShowNotification(
+                    if (lotProducts.Any(l => !string.IsNullOrEmpty(l.Lot)))
+                    {
+                        messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.DialogGroupByLot"), Localized.Get("OperatorApp.DrawerActivityPickingPageHeader"), DialogType.Question, DialogButtons.YesNo);
+                    }
+                }
+
+                if (messageBoxResult is DialogResult.Yes)
+                {
+                    await this.wmsDataProvider.PickAsync(
+                                itemId,
+                                this.InputQuantity.Value,
+                                this.reasonId,
+                                this.reasonNotes,
+                                null,
+                                lot: lot,
+                                serialNumber: serialNumber,
+                                userName: this.authenticationService.UserName,
+                                this.orderId);
+
+                    this.Reasons = null;
+                    this.Orders = null;
+
+                    this.ShowNotification(
                     string.Format(
                         Resources.Localized.Get("OperatorApp.PickRequestWasAccepted"),
                         itemCode,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
+                }
             }
             catch (InvalidOperationException exc)
             {
@@ -794,6 +816,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = 0;
                 this.IsBusyRequestingItemPick = false;
                 this.IsWaitingForResponse = false;
+
+                this.Reasons = null;
+                this.Orders = null;
+                this.IsOrderVisible = false;
+                this.IsReasonVisible = false;
             }
         }
 

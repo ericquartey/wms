@@ -49,8 +49,7 @@
 
     <views:LoadingUnitDataGridView Grid.Row="2"
                                    Margin="0,15,0,0"
-                                   ItemsSource="{Binding LoadingUnits}"
-                                   SelectedItem="{Binding SelectedLoadingUnit, Mode=TwoWay}" />
+                                   DataGridSelectionChanged="CellsDataGrid_DataGridSelectionChanged" />
 
     <Grid Grid.Row="2"
           Grid.Column="1"
@@ -105,9 +104,9 @@
                          Height="90"
                          Margin="15,15,15,0"
                          EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
-                         LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
                          KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                          KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                         LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
                          Mask="##0"
                          MaxValue="{Binding MaxLoadingUnitId}"
                          MinValue="{Binding MinLoadingUnitId}" />
