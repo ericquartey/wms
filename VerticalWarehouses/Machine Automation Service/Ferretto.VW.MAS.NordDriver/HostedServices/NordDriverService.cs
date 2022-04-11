@@ -1,14 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.EnIPStack;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -21,6 +29,16 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly Task explicitMessagesTask;
+
+        private readonly Task implicitMessagesTask;
+
+        private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
+
+        private readonly ISocketTransport socketTransport;
+
+        private IPAddress inverterAddress;
+
         private bool isDisposed;
 
         #endregion
@@ -30,10 +48,15 @@ namespace Ferretto.VW.MAS.NordDriver
         public NordDriverService(
             ILogger<NordDriverService> logger,
             IEventAggregator eventAggregator,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            ISocketTransport socketTransport)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
+
+            this.explicitMessagesTask = new Task(async () => await this.ExplicitMessages());
+            this.implicitMessagesTask = new Task(async () => await this.ImplicitMessages());
         }
 
         #endregion
@@ -44,6 +67,7 @@ namespace Ferretto.VW.MAS.NordDriver
         {
             if (this.isDisposed)
             {
+                this.inverterCommandQueue?.Dispose();
                 return;
             }
 
@@ -94,7 +118,14 @@ namespace Ferretto.VW.MAS.NordDriver
         protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             var inverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-            // TODO close state machine
+            switch (receivedMessage.Type)
+            {
+                case FieldMessageType.DataLayerReady:
+                    // start communication
+                    await this.StartHardwareCommunicationsAsync(serviceProvider);
+                    //this.InitializeTimers(serviceProvider);
+                    break;
+            }
 
             if (receivedMessage.Source == FieldMessageActor.InverterDriver
                 && (receivedMessage.Status == MessageStatus.OperationEnd
@@ -111,6 +142,302 @@ namespace Ferretto.VW.MAS.NordDriver
                     .GetEvent<FieldNotificationEvent>()
                     .Publish(notificationMessageToFsm);
             }
+        }
+
+        private async Task ExplicitMessages()
+        {
+            do
+            {
+                try
+                {
+                    if (this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
+                        && inverterMessage != null)
+                    {
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                        this.Logger.LogTrace($"2:Command queue length: {this.inverterCommandQueue.Count}");
+
+                        var result = await this.ProcessInverterCommand(inverterMessage);
+
+                        if (result)
+                        {
+                            this.inverterCommandQueue.Dequeue(out _);
+                        }
+                    }
+                }
+                catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+                {
+                    this.Logger.LogDebug("Terminating ExplicitMessages task.");
+                    break;
+                }
+            }
+            while (!this.CancellationToken.IsCancellationRequested);
+        }
+
+        private async Task ImplicitMessages()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnInverterMessageReceived(byte[] messageBytes, IServiceProvider serviceProvider)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task<bool> ProcessInverterCommand(InverterMessage inverterMessage)
+        {
+            var serviceId = inverterMessage.IsWriteMessage ? CIPServiceCodes.SetAttributeSingle : CIPServiceCodes.GetAttributeSingle;
+            var result = this.socketTransport.ExplicitMessage(101, 0, (ushort)inverterMessage.ParameterId, serviceId, null, out var received);
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                this.OnInverterMessageReceived(received, scope.ServiceProvider);
+            }
+            return result;
+        }
+
+        private void SendOperationErrorMessage(InverterIndex inverterIndex, IFieldMessageData messageData, FieldMessageType type)
+        {
+            switch (type)
+            {
+                case FieldMessageType.InverterError:
+                    var errorMsg = new FieldNotificationMessage(
+                        messageData,
+                        "Inverter Driver Error",
+                       FieldMessageActor.Any,
+                       FieldMessageActor.InverterDriver,
+                       FieldMessageType.InverterError,
+                       MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                       ErrorLevel.Error);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
+                    break;
+
+                case FieldMessageType.InverterException:
+                    var exceptionMsg = new FieldNotificationMessage(
+                     messageData,
+                     "Inverter Driver Exception",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterException,
+                    MessageStatus.OperationError,
+                     (byte)inverterIndex,
+                    ErrorLevel.Error);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(exceptionMsg);
+                    break;
+
+                case FieldMessageType.CalibrateAxis:
+                    if (messageData is InverterExceptionFieldMessageData calibrateData)
+                    {
+                        var calibrateErrorNotification = new FieldNotificationMessage(
+                        calibrateData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.CalibrateAxis,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(calibrateErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterSwitchOff:
+                    if (messageData is InverterExceptionFieldMessageData switchOffData)
+                    {
+                        var inverterSwitchOffErrorNotification = new FieldNotificationMessage(
+                        switchOffData,
+                        $"Inverter status not configured for requested inverter {inverterIndex}",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterSwitchOff,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOffErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterSwitchOn:
+                    if (messageData is InverterExceptionFieldMessageData switchOnData)
+                    {
+                        var inverterSwitchOnErrorNotification = new FieldNotificationMessage(
+                        switchOnData,
+                        $"Inverter status not configured for requested inverter {inverterIndex}",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterSwitchOn,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOnErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.Positioning:
+
+                    if (messageData is InverterExceptionFieldMessageData positioningData)
+                    {
+                        var positioningErrorNotification = new FieldNotificationMessage(
+                        null,
+                        positioningData.ExceptionDescription,
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.Positioning,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(positioningErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterPowerOff:
+                    if (messageData is InverterExceptionFieldMessageData powerOffData)
+                    {
+                        var inverterPowerOfferrorNotification = new FieldNotificationMessage(
+                        powerOffData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterPowerOff,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOfferrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterPowerOn:
+                    if (messageData is InverterExceptionFieldMessageData powerOnData)
+                    {
+                        var inverterPowerOnerrorNotification = new FieldNotificationMessage(
+                        powerOnData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterPowerOn,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOnerrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.ShutterPositioning:
+                    if (messageData is InverterExceptionFieldMessageData shutterPositioningData)
+                    {
+                        var shutterPositioningErrorNotification = new FieldNotificationMessage(
+                        shutterPositioningData,
+                        "Requested Inverter is not configured",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.ShutterPositioning,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(shutterPositioningErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterStop:
+                    var inverterStopErrorNotification = new FieldNotificationMessage(
+                   null,
+                   $"Inverter status not configured for requested inverter {inverterIndex}",
+                   FieldMessageActor.Any,
+                   FieldMessageActor.InverterDriver,
+                   FieldMessageType.InverterStop,
+                   MessageStatus.OperationError,
+                   (byte)inverterIndex,
+                   ErrorLevel.Error);
+                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
+                    break;
+
+                case FieldMessageType.InverterStatusUpdate:
+                    if (messageData is InverterExceptionFieldMessageData updateData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        updateData,
+                        "Wrong message Data data type",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterStatusUpdate,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterSetTimer:
+                    if (messageData is InverterExceptionFieldMessageData setTimerData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        setTimerData,
+                        "Wrong message Data data type",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterSetTimer,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterReading:
+                    if (messageData is InverterExceptionFieldMessageData inverterReadingData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        inverterReadingData,
+                        "Error during reading inverter parameter",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterReading,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+
+                case FieldMessageType.InverterProgramming:
+                    if (messageData is InverterExceptionFieldMessageData inverterProgrammingData)
+                    {
+                        var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
+                        inverterProgrammingData,
+                        "Error during writing inverter parameter",
+                        FieldMessageActor.Any,
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageType.InverterProgramming,
+                        MessageStatus.OperationError,
+                        (byte)inverterIndex,
+                        ErrorLevel.Error);
+                        this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+                    }
+                    break;
+            }
+        }
+
+        private Task StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
+        {
+            var masterInverter = serviceProvider
+                .GetRequiredService<IDigitalDevicesDataProvider>()
+                .GetInverterByIndex(InverterIndex.MainInverter);
+
+            this.inverterAddress = masterInverter.IpAddress;
+
+            try
+            {
+                this.explicitMessagesTask.Start();
+                this.implicitMessagesTask.Start();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogCritical($"Error while starting inverter socket threads: {ex.Message}");
+
+                this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
+                throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);
+            }
+
+            return Task.CompletedTask;
         }
 
         #endregion

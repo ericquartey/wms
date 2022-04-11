@@ -703,9 +703,10 @@ namespace System.Net.EnIPStack
                         {
                             if (DecoderClass == null)
                             {
-                                // try to create the associated class object
-                                var o = Activator.CreateInstance(Assembly.GetExecutingAssembly().FullName, "System.Net.EnIPStack.ObjectsLibrary.CIP_" + classid.ToString() + "_class");
-                                DecodedMembers = (CIPObject)o.Unwrap();
+                                // TODO - .NET 3.1 requested for this feature
+                                //// try to create the associated class object
+                                //var o = Activator.CreateInstance(Assembly.GetExecutingAssembly().FullName, "System.Net.EnIPStack.ObjectsLibrary.CIP_" + classid.ToString() + "_class");
+                                //DecodedMembers = (CIPObject)o.Unwrap();
                             }
                             else
                             {
@@ -786,8 +787,10 @@ namespace System.Net.EnIPStack
             {
                     if (DecoderClass == null)
                     {
-                        var o = Activator.CreateInstance(Assembly.GetExecutingAssembly().FullName, "System.Net.EnIPStack.ObjectsLibrary.CIP_" + classid.ToString() + "_instance");
-                        DecodedMembers = (CIPObject)o.Unwrap();
+                        // TODO - .NET 3.1 requested for this feature
+                        //var o = Activator.CreateInstance(Assembly.GetExecutingAssembly().FullName, "System.Net.EnIPStack.ObjectsLibrary.CIP_" + classid.ToString() + "_instance");
+                        //DecodedMembers = (CIPObject)o.Unwrap();
+                        return false;
                     }
                     else
                     {

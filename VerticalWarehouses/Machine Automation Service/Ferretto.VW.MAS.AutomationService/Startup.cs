@@ -26,6 +26,7 @@ using Newtonsoft.Json.Serialization;
 using Prism.Events;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Ferretto.VW.MAS.NordDriver;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -153,7 +154,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services
                 .AddIODriver()
-                .AddInverterDriver()
+                //.AddInverterDriver()
+                .AddNordDriver()
                 .AddFiniteStateMachines()
                 .AddMachineManager()
                 .AddMissionManager();
