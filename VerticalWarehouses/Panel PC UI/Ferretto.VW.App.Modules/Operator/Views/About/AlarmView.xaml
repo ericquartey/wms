@@ -142,7 +142,7 @@
                   RowHeight="40">
           <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
-                                Width="200"
+                                Width="130"
                                 Binding="{Binding Path=OccurrenceDate, StringFormat={x:Static res:General.DateFormatComplete}}"
                                 Header="{res:Loc OperatorApp.OccurrenceDate}">
               <DataGridTextColumn.ElementStyle>
@@ -153,9 +153,9 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
-                                Width="120"
+                                Width="70"
                                 Binding="{Binding Path=BayNumber, Converter={StaticResource BNTSC}}"
-                                Header="{res:Loc OperatorApp.BayNumber}">
+                                Header="{res:Loc OperatorApp.Bay}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="HorizontalAlignment" Value="Center" />
