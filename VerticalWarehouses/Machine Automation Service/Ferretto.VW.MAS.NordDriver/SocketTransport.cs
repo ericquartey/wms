@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.NordDriver
     {
         #region Fields
 
+        private readonly Timer implicitTimer;
+
         /// <summary>
         /// The timeout for read operations on the socket.
         /// </summary>
@@ -24,17 +26,19 @@ namespace Ferretto.VW.MAS.NordDriver
         /// </remarks>
         private readonly int readTimeoutMilliseconds;
 
-        private readonly byte[] receiveBuffer = new byte[1024];
+        private EnIPAttribut Input;
 
         private IPAddress inverterAddress;
 
         private bool isDisposed;
 
+        private EnIPAttribut Output;
+
+        private byte[] receiveBuffer = new byte[1024];
+
         private EnIPRemoteDevice remoteDevice;
 
         private int sendPort;
-
-        private NetworkStream transportStream;
 
         #endregion
 
@@ -43,7 +47,14 @@ namespace Ferretto.VW.MAS.NordDriver
         public SocketTransport(IConfiguration configuration)
         {
             this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:Drivers:Inverter:ReadTimeoutMilliseconds", -1);
+            this.implicitTimer = new Timer(this.ImplicitTimer, null, -1, -1);
         }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<ImplicitReceivedEventArgs> ImplicitReceivedChanged;
 
         #endregion
 
@@ -102,7 +113,7 @@ namespace Ferretto.VW.MAS.NordDriver
 
         #region Properties
 
-        public bool IsConnected => this.remoteDevice?.Connected ?? false;
+        public bool IsConnected => this.remoteDevice?.IsConnected() ?? false;
 
         #endregion
 
@@ -112,8 +123,8 @@ namespace Ferretto.VW.MAS.NordDriver
         public void Configure(IPAddress inverterAddress, int sendPort)
         {
             this.inverterAddress = inverterAddress;
-            this.sendPort = sendPort;
-            this.remoteDevice = new EnIPRemoteDevice(new IPEndPoint(this.inverterAddress, 0xAF12), 100);
+            this.sendPort = 0xAF12;
+            this.remoteDevice = new EnIPRemoteDevice(new IPEndPoint(this.inverterAddress, this.sendPort), 100);
         }
 
         /// <inheritdoc />
@@ -134,7 +145,6 @@ namespace Ferretto.VW.MAS.NordDriver
             GC.SuppressFinalize(this);
         }
 
-        /// <inheritdoc />
         public bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive)
         {
             var isOk = false;
@@ -144,103 +154,31 @@ namespace Ferretto.VW.MAS.NordDriver
             int Offset = 0;
             byte[] msg = path.ToArray();
 
-            this.remoteDevice.SendUCMM_RR_Packet(msg, serviceId, data, ref Offset, ref Lenght, out receive);
+            var status = this.remoteDevice.SendUCMM_RR_Packet(msg, serviceId, data, ref Offset, ref Lenght, out receive);
 
-            isOk = Lenght > 44;
+            isOk = (status == EnIPNetworkStatus.OnLine) && (Lenght > 44);
 
             return isOk;
         }
 
-        public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
+        public bool StartImplicitMessages()
         {
-            if (stoppingToken.IsCancellationRequested)
+            // TODO - implement correctly following variables
+            ushort id = 0;
+            var ipClass = new EnIPClass(this.remoteDevice, id);
+            var instance = new EnIPInstance(ipClass, id);
+            this.Output = new EnIPAttribut(instance, id);
+            this.Input = new EnIPAttribut(instance, id);
+            var status = this.remoteDevice.ForwardOpen(null, this.Output, this.Input, out var closePacket, 200 * 1000);
+            if (status == EnIPNetworkStatus.OnLine)
             {
-                return Array.Empty<byte>();
-            }
-
-            if (this.isDisposed)
-            {
-                throw new ObjectDisposedException($"Cannot access the disposed instance of {this.GetType().Name}.");
-            }
-
-            var currentTransportStream = this.transportStream;
-            if (currentTransportStream is null)
-            {
-                throw new InverterDriverException(
-                    "Transport Stream is null",
-                    InverterDriverExceptionCode.UninitializedNetworkStream);
-            }
-
-            if (!currentTransportStream.CanRead)
-            {
-                throw new InverterDriverException(
-                    "Transport Stream not configured for reading data",
-                    InverterDriverExceptionCode.MisconfiguredNetworkStream);
-            }
-
-            if (!this.IsConnected)
-            {
-                throw new InverterDriverException(
-                    "Connection is not open.",
-                    InverterDriverExceptionCode.NetworkStreamWriteFailure);
-            }
-
-            var currentReceiveBuffer = this.receiveBuffer;
-            if (currentReceiveBuffer is null)
-            {
-                throw new InverterDriverException(
-                    "Receive buffer is null",
-                    InverterDriverExceptionCode.UninitializedNetworkStream);
-            }
-
-            byte[] receivedData;
-            try
-            {
-                if (this.transportClient.Client?.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead) ?? false)
+                this.implicitTimer.Change(200, 200);
+                if (this.Input != null)
                 {
-                    var readBytes = await currentTransportStream.ReadAsync(currentReceiveBuffer, 0, currentReceiveBuffer.Length, stoppingToken);
-
-                    if (readBytes > 0)
-                    {
-                        receivedData = new byte[readBytes];
-
-                        Array.Copy(currentReceiveBuffer, receivedData, readBytes);
-                    }
-                    else
-                    {
-                        this.Disconnect();
-                        throw new InvalidOperationException("Error reading data from Transport Stream");
-                    }
-                }
-                else
-                {
-                    this.Disconnect();
-                    throw new InvalidOperationException("Timeout reading data from Transport Stream");
+                    this.Input.T2OEvent += new T2OEventHandler(this.ImplicitMessageReceived);
                 }
             }
-            catch (IOException ex)
-            {
-                this.Disconnect();
-                throw new InvalidOperationException(ex.Message);
-            }
-            catch
-            {
-                this.Disconnect();
-                throw;
-            }
-
-            return receivedData;
-        }
-
-        /// <inheritdoc />
-        public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
-        {
-            throw new NotImplementedException();
+            return status == EnIPNetworkStatus.OnLine;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -254,13 +192,7 @@ namespace Ferretto.VW.MAS.NordDriver
 
             if (disposing)
             {
-                this.transportStream?.Close();
-                this.transportStream?.Dispose();
-                this.transportStream = null;
-
-                this.transportClient?.Close();
-                this.transportClient?.Dispose();
-                this.transportClient = null;
+                this.implicitTimer?.Dispose();
             }
         }
 
@@ -306,6 +238,29 @@ namespace Ferretto.VW.MAS.NordDriver
                 lb.Add(xy[i]);
             }
             return lb;
+        }
+
+        private void ImplicitMessageReceived(EnIPAttribut sender)
+        {
+            if (this.receiveBuffer is null
+                || this.receiveBuffer != sender.RawData)
+            {
+                this.receiveBuffer = sender.RawData;
+                var args = new ImplicitReceivedEventArgs();
+                args.receivedMessage = sender.RawData;
+                this.ImplicitReceivedChanged?.Invoke(this, args);
+            }
+        }
+
+        private void ImplicitTimer(object state)
+        {
+            this.implicitTimer.Change(-1, -1);
+            if (this.Output != null)
+            {
+                this.Output.Class1UpdateO2T();
+            }
+
+            this.implicitTimer.Change(200, 200);
         }
 
         #endregion

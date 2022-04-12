@@ -8,6 +8,12 @@ namespace Ferretto.VW.MAS.NordDriver
 {
     public interface ISocketTransport
     {
+        #region Events
+
+        event EventHandler<ImplicitReceivedEventArgs> ImplicitReceivedChanged;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -51,6 +57,8 @@ namespace Ferretto.VW.MAS.NordDriver
         void Disconnect();
 
         bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive);
+
+        bool StartImplicitMessages();
 
         #endregion
     }

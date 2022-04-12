@@ -346,6 +346,33 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return message;
         }
 
+        public static InverterMessage FromBytesExplicit(byte[] messageBytes)
+        {
+            if (messageBytes is null)
+            {
+                throw new ArgumentNullException(nameof(messageBytes));
+            }
+
+            var message = new InverterMessage();
+            message.responseMessage = true;
+
+            message.heartbeatMessage = false;
+
+            message.sendDelay = 0;
+            message.IsError = messageBytes[18] != 0;
+
+            message.payloadLength = BitConverter.ToInt16(messageBytes, 24);
+            message.IsWriteMessage = message.payloadLength == 0;
+            Array.Copy(messageBytes, 26, message.payload, 0, message.payloadLength);
+
+            return message;
+        }
+
+        public static InverterMessage FromBytesImplicit(byte[] receivedMessage)
+        {
+            throw new NotImplementedException();
+        }
+
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
             if (blockDefinitions is null)

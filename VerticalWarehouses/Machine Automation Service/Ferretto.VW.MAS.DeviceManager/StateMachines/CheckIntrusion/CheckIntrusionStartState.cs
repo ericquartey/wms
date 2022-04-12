@@ -68,7 +68,6 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
 
         public void Dispose()
         {
-            this.profileTimer.Dispose();
             this.Dispose(true);
         }
 

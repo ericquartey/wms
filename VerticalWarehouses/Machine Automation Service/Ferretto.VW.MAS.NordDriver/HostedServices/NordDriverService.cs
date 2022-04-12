@@ -31,15 +31,17 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private readonly Task explicitMessagesTask;
 
-        private readonly Task implicitMessagesTask;
-
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly ISocketTransport socketTransport;
 
+        //private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
+
         private IPAddress inverterAddress;
 
         private bool isDisposed;
+
+        private int sendPort;
 
         #endregion
 
@@ -56,7 +58,6 @@ namespace Ferretto.VW.MAS.NordDriver
             this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
 
             this.explicitMessagesTask = new Task(async () => await this.ExplicitMessages());
-            this.implicitMessagesTask = new Task(async () => await this.ImplicitMessages());
         }
 
         #endregion
@@ -125,6 +126,8 @@ namespace Ferretto.VW.MAS.NordDriver
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
                     //this.InitializeTimers(serviceProvider);
                     break;
+
+                    // TODO implement close of state machines
             }
 
             if (receivedMessage.Source == FieldMessageActor.InverterDriver
@@ -173,23 +176,103 @@ namespace Ferretto.VW.MAS.NordDriver
             while (!this.CancellationToken.IsCancellationRequested);
         }
 
-        private async Task ImplicitMessages()
+        private void OnInverterMessageReceivedExplicit(byte[] messageBytes)
         {
-            throw new NotImplementedException();
+            this.Logger.LogTrace($"1:inverterMessage={messageBytes}");
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                try
+                {
+                    var message = InverterMessage.FromBytesExplicit(messageBytes);
+
+                    //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
+
+                    if (message.IsError)
+                    {
+                        this.Logger.LogError($"Received error Message: {message}");
+                        var errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
+                        if (!Enum.IsDefined(typeof(DataModels.MachineErrorCode), errorCode))
+                        {
+                            errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode;
+                        }
+
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew((DataModels.MachineErrorCode)errorCode, additionalText: message.SystemIndex.ToString());
+                    }
+
+                    //if (message.IsWriteMessage)
+                    //{
+                    //    this.EvaluateWriteMessage(message, messageCurrentStateMachine, serviceProvider);
+                    //}
+                    //else
+                    //{
+                    //    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, $"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}");
+                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
+
+                    this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
+                }
+            }
         }
 
-        private void OnInverterMessageReceived(byte[] messageBytes, IServiceProvider serviceProvider)
+        private void OnInverterMessageReceivedImplicit(object sender, ImplicitReceivedEventArgs e)
         {
-            throw new NotImplementedException();
+            this.Logger.LogTrace($"1:inverterMessage={e.receivedMessage}");
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                try
+                {
+                    var message = InverterMessage.FromBytesImplicit(e.receivedMessage);
+
+                    //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
+
+                    if (message.IsError)
+                    {
+                        this.Logger.LogError($"Received error Message: {message}");
+                        var errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
+                        if (!Enum.IsDefined(typeof(DataModels.MachineErrorCode), errorCode))
+                        {
+                            errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode;
+                        }
+
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew((DataModels.MachineErrorCode)errorCode, additionalText: message.SystemIndex.ToString());
+                    }
+
+                    //    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, $"Exception while parsing Inverter raw message bytes {BitConverter.ToString(e.receivedMessage)}");
+                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
+
+                    this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
+                }
+            }
         }
 
         private async Task<bool> ProcessInverterCommand(InverterMessage inverterMessage)
         {
             var serviceId = inverterMessage.IsWriteMessage ? CIPServiceCodes.SetAttributeSingle : CIPServiceCodes.GetAttributeSingle;
-            var result = this.socketTransport.ExplicitMessage(101, 0, (ushort)inverterMessage.ParameterId, serviceId, null, out var received);
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+            var msg = inverterMessage.ToBytes();
+            var datalen = msg.Length - 6;
+            var data = new List<byte>();
+            if (datalen > 0)
             {
-                this.OnInverterMessageReceived(received, scope.ServiceProvider);
+                data.AddRange(msg.ToArray().Skip(6));
+            }
+
+            //TODO - instanceId is the parameter subindex
+            var result = this.socketTransport.ExplicitMessage(101, 0, (ushort)inverterMessage.ParameterId, serviceId, data?.ToArray(), out var received);
+            if (result)
+            {
+                this.OnInverterMessageReceivedExplicit(received);
             }
             return result;
         }
@@ -423,11 +506,14 @@ namespace Ferretto.VW.MAS.NordDriver
                 .GetInverterByIndex(InverterIndex.MainInverter);
 
             this.inverterAddress = masterInverter.IpAddress;
+            this.sendPort = masterInverter.TcpPort;
 
             try
             {
+                this.socketTransport.Configure(this.inverterAddress, this.sendPort);
                 this.explicitMessagesTask.Start();
-                this.implicitMessagesTask.Start();
+                this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
+                this.socketTransport.StartImplicitMessages();
             }
             catch (Exception ex)
             {
