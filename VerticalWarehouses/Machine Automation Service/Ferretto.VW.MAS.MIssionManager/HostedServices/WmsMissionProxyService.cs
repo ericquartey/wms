@@ -294,7 +294,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     // 4. Select the known missions that were aborted/completed/suspended on WMS and abort them
                     var localMissionsToAbort = localMissions
-                        .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New)
+                        .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New
+                                || lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting)
                         .Where(lm => wmsMissions.Any(m => m.Id == lm.WmsId
                             && (m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.Completed
                                 || (m.Operations?.All(op => (int)op.Status == (int)CommonUtils.Messages.Enumerations.MissionOperationStatus.OnHold) ?? false))
