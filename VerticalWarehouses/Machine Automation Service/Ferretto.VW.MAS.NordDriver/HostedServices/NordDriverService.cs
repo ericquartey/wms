@@ -153,7 +153,8 @@ namespace Ferretto.VW.MAS.NordDriver
             {
                 try
                 {
-                    if (this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
+                    if (this.socketTransport.IsConnected
+                        && this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
                         && inverterMessage != null)
                     {
                         this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
@@ -510,7 +511,9 @@ namespace Ferretto.VW.MAS.NordDriver
 
             try
             {
-                this.socketTransport.Configure(this.inverterAddress, this.sendPort);
+                var localAddress = new System.Net.IPAddress(new byte[] { 192, 168, 250, 199 });
+                this.socketTransport.Configure(this.inverterAddress, this.sendPort, localAddress);
+
                 this.explicitMessagesTask.Start();
                 this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
                 this.socketTransport.StartImplicitMessages();

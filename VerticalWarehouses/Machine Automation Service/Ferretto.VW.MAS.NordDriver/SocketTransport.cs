@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.NordDriver
         /// </remarks>
         private readonly int readTimeoutMilliseconds;
 
+        private EnIPClient client;
+
         private EnIPAttribut Input;
 
         private IPAddress inverterAddress;
@@ -120,23 +122,30 @@ namespace Ferretto.VW.MAS.NordDriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress inverterAddress, int sendPort)
+        public void Configure(IPAddress inverterAddress, int sendPort, IPAddress localAddress)
         {
             this.inverterAddress = inverterAddress;
             this.sendPort = 0xAF12;
-            this.remoteDevice = new EnIPRemoteDevice(new IPEndPoint(this.inverterAddress, this.sendPort), 100);
+            this.client = new EnIPClient(localAddress.ToString(), 100);
+            this.client.DeviceArrival += new DeviceArrivalHandler(this.OnDeviceArrival);
+            this.client.DiscoverServers();
         }
 
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            throw new NotImplementedException();
+            if (!this.remoteDevice.Connect())
+            {
+                throw new InverterDriverException(
+                    "Failed to connect to Inverter Hardware",
+                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
+            }
         }
 
         /// <inheritdoc />
         public void Disconnect()
         {
-            throw new NotImplementedException();
+            this.remoteDevice.Disconnect();
         }
 
         public void Dispose()
@@ -164,7 +173,7 @@ namespace Ferretto.VW.MAS.NordDriver
         public bool StartImplicitMessages()
         {
             // TODO - implement correctly following variables
-            ushort id = 0;
+            ushort id = 3;
             var ipClass = new EnIPClass(this.remoteDevice, id);
             var instance = new EnIPInstance(ipClass, id);
             this.Output = new EnIPAttribut(instance, id);
@@ -261,6 +270,18 @@ namespace Ferretto.VW.MAS.NordDriver
             }
 
             this.implicitTimer.Change(200, 200);
+        }
+
+        private void OnDeviceArrival(EnIPRemoteDevice device)
+        {
+            this.remoteDevice = device;
+            if (!this.remoteDevice.Connect())
+            {
+                throw new InverterDriverException(
+                    "Failed to connect to Inverter Hardware",
+                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
+            }
+            this.remoteDevice.GetObjectList();
         }
 
         #endregion

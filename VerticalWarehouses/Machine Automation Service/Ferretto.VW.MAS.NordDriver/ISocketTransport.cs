@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.NordDriver
         /// </summary>
         /// <param name="inverterAddress">Address of the Inverter device</param>
         /// <param name="sendPort">TCP/IP Port for the Inverter device</param>
-        void Configure(IPAddress inverterAddress, int sendPort);
+        void Configure(IPAddress inverterAddress, int sendPort, IPAddress localAddress);
 
         /// <summary>
         ///     Creates the TCP client object and connects it to the remote inverter host
