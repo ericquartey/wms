@@ -203,6 +203,29 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        public async Task<MissionOperation> SuspendAsync(int id, string userName = null)
+        {
+            var operation = await this.missionOperationsWmsWebService.SuspendItemAsync(id, userName);
+            var messageData = new MissionOperationCompletedMessageData
+            {
+                MissionOperationId = id,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                messageData,
+                "Mission Operation Suspended",
+                MessageActor.MissionManager,
+                MessageActor.WebApi,
+                MessageType.MissionOperationCompleted,
+                BayNumber.None);
+
+            this.eventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
+
+            return operation;
+        }
+
         private void NegativeResult(WmsWebApiException exception)
         {
             ProblemDetails problemDetails;

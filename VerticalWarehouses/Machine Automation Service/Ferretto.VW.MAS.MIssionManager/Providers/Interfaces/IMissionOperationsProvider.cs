@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task PartiallyCompleteAsync(int wmsId, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null);
 
+        Task<MissionOperation> SuspendAsync(int id, string userName = null);
+
         #endregion
     }
 }

@@ -89,7 +89,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int performedCycles;
 
         private SubscriptionToken positioningMessageReceivedToken;
-        private SubscriptionToken shutterPositioningMessageReceivedToken;
 
         private double[] profileConst;
 
@@ -116,6 +115,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int sessionPerformedCycles;
 
         private string shutterLabel;
+
+        private SubscriptionToken shutterPositioningMessageReceivedToken;
 
         private DelegateCommand startCalibrationCommand;
 
@@ -164,7 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors;
 
-        public BayPosition BayPosition => this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First();
+        public BayPosition BayPosition => this.Bay.Carousel != null ? this.MachineService.Bay.Positions.OrderByDescending(o => o.Height).First() : this.MachineService.Bay.Positions.OrderBy(o => o.Height).First();
 
         public BayPosition BayPositionActive { get; set; }
 
@@ -329,12 +330,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveToShutterCommand = new DelegateCommand(
                 async () => await this.MoveToShutterAsync(),
                 () => this.CanMoveShutter()));
-
-        private bool CanMoveShutter()
-        {
-            return this.CanBaseExecute()
-                && (!this.SensorsService.ShutterSensors.Closed || this.MachineService.IsHoming);
-        }
 
         public ICommand MoveToStartCalibrationCommand =>
                     this.moveToStartCalibrationCommand
@@ -526,26 +521,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPosition()
-        {
-            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
-            {
-                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
-            }
-
-            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
-            {
-                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
-            }
-
-            if (this.MachineService.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
-            {
-                return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
-            }
-
-            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
-        }
-
         public override async Task OnAppearedAsync()
         {
             this.Bays = this.MachineService.Bays;
@@ -633,7 +608,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsCalibrationNotCompletedAndStopped));
         }
 
-
         private bool CanBaseExecute()
         {
             return !this.IsKeyboardOpened &&
@@ -643,6 +617,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanComplete()
         {
             return this.CanBaseExecute() && !this.IsCalibrationNotCompletedAndStopped;
+        }
+
+        private bool CanMoveShutter()
+        {
+            return this.CanBaseExecute()
+                && (!this.SensorsService.ShutterSensors.Closed || this.MachineService.IsHoming);
         }
 
         private bool CanMoveToStartCalibration()
@@ -780,7 +760,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.CurrentStep = ProfileResolutionCalibrationStep.StartCalibration;
                         this.NavigationService.GoBack();
                     }
-
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -923,6 +902,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnShutterPositioningMessageReceived(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            if (message.Data?.MovementMode == MovementMode.ShutterPosition
+                && (message.Status == MessageStatus.OperationEnd
+                    || message.Status == MessageStatus.OperationError
+                    || message.Status == MessageStatus.OperationStop))
+            {
+                this.IsShutterMoving = false;
+            }
+        }
+
         private async Task StartCalibrationAsync()
         {
             this.IsWaitingForResponse = true;
@@ -1031,17 +1021,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                        },
                        ThreadOption.UIThread,
                        false);
-        }
-
-        private void OnShutterPositioningMessageReceived(NotificationMessageUI<ShutterPositioningMessageData> message)
-        {
-            if (message.Data?.MovementMode == MovementMode.ShutterPosition
-                && (message.Status == MessageStatus.OperationEnd
-                    || message.Status == MessageStatus.OperationError
-                    || message.Status == MessageStatus.OperationStop))
-            {
-                this.IsShutterMoving = false;
-            }
         }
 
         private void UpdateStatusButtonFooter(bool force = false)

@@ -38,6 +38,7 @@
 - Socket Link: corretto errore di cassetto sconosciuto
 - Test celle limite: corretto problema con tiranti
 - Ricerca articolo: aggiunta conferma sul prelievo di articoli con lotto
+- Gli utenti locali sono in coda a quelli di EjLog
 
 ## Compatibile con adapter 0.4.31
 ***

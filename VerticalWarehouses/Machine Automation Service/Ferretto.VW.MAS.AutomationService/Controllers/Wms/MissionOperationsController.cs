@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/suspend")]
         public async Task<ActionResult<MissionOperation>> SuspendAsync(int id, string userName = null)
         {
-            var operation = await this.missionOperationsWmsWebService.SuspendItemAsync(id, userName);
+            var operation = await this.missionOperationsProvider.SuspendAsync(id, userName);
 
             return this.Ok(operation);
         }
