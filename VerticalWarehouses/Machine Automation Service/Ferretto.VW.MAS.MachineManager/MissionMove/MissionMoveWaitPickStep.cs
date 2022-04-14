@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
-using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -47,7 +43,18 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
+            var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
+
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+
+            if (bay.Carousel != null
+                && !this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location))
+            {
+                var error = bayPosition.IsUpper ? MachineErrorCode.TopLevelBayEmpty : MachineErrorCode.BottomLevelBayEmpty;
+                var description = bayPosition.IsUpper ? ErrorDescriptions.TopLevelBayEmpty : ErrorDescriptions.BottomLevelBayEmpty;
+                this.ErrorsProvider.RecordNew(error, this.Mission.TargetBay);
+                throw new StateMachineException(description, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
 
             if (this.Mission.WmsId.HasValue)
             {
