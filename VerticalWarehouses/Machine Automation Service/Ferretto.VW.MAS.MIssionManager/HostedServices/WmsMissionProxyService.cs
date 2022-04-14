@@ -275,11 +275,26 @@ namespace Ferretto.VW.MAS.MissionManager
                             //    throw new InvalidOperationException($"Mission not allowed in this bay");
                             //}
 
-                            missionSchedulingProvider.QueueBayMission(
-                                wmsMission.LoadingUnitId,
-                                bay.Number,
-                                wmsMission.Id,
-                                wmsMission.Priority);
+                            var waitMission = localMissions.FirstOrDefault(m => m.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting
+                                                 && m.TargetBay == bayNumber
+                                                 && m.LoadUnitId == wmsMission.LoadingUnitId
+                                                 && wmsMissions.Any(w => w.Id == m.WmsId
+                                                     && (w.Operations?.All(op => op.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed
+                                                         || op.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Suspended) ?? false)));
+                            if (waitMission is null)
+                            {
+                                missionSchedulingProvider.QueueBayMission(
+                                    wmsMission.LoadingUnitId,
+                                    bay.Number,
+                                    wmsMission.Id,
+                                    wmsMission.Priority);
+                            }
+                            else
+                            {
+                                waitMission.WmsId = wmsMission.Id;
+                                missionsDataProvider.Update(waitMission);
+                                this.Logger.LogInformation($"Update MAS bay mission from WMS mission id={wmsMission.Id} for load unit {wmsMission.LoadingUnitId}");
+                            }
                         }
                         catch (EntityNotFoundException)
                         {
@@ -294,8 +309,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     // 4. Select the known missions that were aborted/completed/suspended on WMS and abort them
                     var localMissionsToAbort = localMissions
-                        .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New
-                                || lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting)
+                        .Where(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.New)
                         .Where(lm => wmsMissions.Any(m => m.Id == lm.WmsId
                             && (m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.Completed
                                 || (m.Operations?.All(op => (int)op.Status == (int)CommonUtils.Messages.Enumerations.MissionOperationStatus.OnHold) ?? false))
@@ -305,6 +319,28 @@ namespace Ferretto.VW.MAS.MissionManager
                     foreach (var localMissionToAbort in localMissionsToAbort)
                     {
                         missionSchedulingProvider.AbortMission(localMissionToAbort);
+                    }
+
+                    // 5. check the bay missions that were aborted/completed/suspended on WMS - they are managed by the ScheduleWmsMissionAsync
+                    var bayMissionsToAbort = localMissions
+                        .Any(lm => lm.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting
+                            && wmsMissions.Any(m => m.Id == lm.WmsId
+                            && (m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.Completed
+                                || (m.Operations?.All(op => (int)op.Status == (int)CommonUtils.Messages.Enumerations.MissionOperationStatus.OnHold) ?? false))
+                                )
+                            );
+
+                    if (bayMissionsToAbort)
+                    {
+                        var notificationMessage = new NotificationMessage(
+                            null,
+                            $"New machine mission available for bay {BayNumber.BayOne}.",
+                            MessageActor.MissionManager,
+                            MessageActor.MissionManager,
+                            MessageType.NewMachineMissionAvailable,
+                            BayNumber.BayOne);
+
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                     }
                 }
                 catch (Exception ex)
