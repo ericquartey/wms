@@ -130,7 +130,7 @@
                 "IoDevice": {
                     "Id": 1,
                     "Index": "IoDevice1",
-                    "IpAddress": "127.0.0.1",
+                    "IpAddress": "192.168.0.1",
                     "TcpPort": 19550
                 },
                 "IsActive": true,
@@ -196,8 +196,8 @@
                 "IoDevice": {
                     "Id": 2,
                     "Index": "IoDevice2",
-                    "IpAddress": "127.0.0.1",
-                    "TcpPort": 19551
+                    "IpAddress": "192.168.0.2",
+                    "TcpPort": 19550
                 },
                 "IsActive": false,
                 "IsExternal": false,
@@ -285,7 +285,7 @@
                     "Inverter": {
                         "Id": 1,
                         "Index": "MainInverter",
-                        "IpAddress": "127.0.0.1",
+                        "IpAddress": "192.168.0.100",
                         "TcpPort": 17221,
                         "Type": "Ang"
                     },
@@ -6053,7 +6053,7 @@
             }
         ],
         "SerialNumber": "MV20-P012",
-        "Simulation": false
+        "Simulation": true
     },
     "SetupProcedures": {
         "Bay1CarouselCalibration": {
