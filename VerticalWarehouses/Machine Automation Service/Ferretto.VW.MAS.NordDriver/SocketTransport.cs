@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.EnIPStack;
 using System.Net.Sockets;
@@ -33,6 +34,8 @@ namespace Ferretto.VW.MAS.NordDriver
         private IPAddress inverterAddress;
 
         private bool isDisposed;
+
+        private IPAddress localAddress;
 
         private EnIPAttribut Output;
 
@@ -125,6 +128,7 @@ namespace Ferretto.VW.MAS.NordDriver
         public void Configure(IPAddress inverterAddress, int sendPort, IPAddress localAddress)
         {
             this.inverterAddress = inverterAddress;
+            this.localAddress = localAddress;
             this.sendPort = 0xAF12;
             this.client = new EnIPClient(localAddress.ToString(), 100);
             this.client.DeviceArrival += new DeviceArrivalHandler(this.OnDeviceArrival);
@@ -172,13 +176,29 @@ namespace Ferretto.VW.MAS.NordDriver
 
         public bool StartImplicitMessages()
         {
-            // TODO - implement correctly following variables
-            ushort id = 3;
-            var ipClass = new EnIPClass(this.remoteDevice, id);
-            var instance = new EnIPInstance(ipClass, id);
-            this.Output = new EnIPAttribut(instance, id);
-            this.Input = new EnIPAttribut(instance, id);
-            var status = this.remoteDevice.ForwardOpen(null, this.Output, this.Input, out var closePacket, 200 * 1000);
+            var ipClass = this.remoteDevice.SupportedClassLists.FirstOrDefault(c => c.Id == (ushort)CIPObjectLibrary.Assembly);
+            if (ipClass is null)
+            {
+                throw new InverterDriverException(
+                    "Inverter connection - Missing class list",
+                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
+            }
+            ipClass.ReadDataFromNetwork();
+
+            var instOut = new EnIPInstance(ipClass, 100);
+            instOut.ReadDataFromNetwork();
+            this.Output = new EnIPAttribut(instOut, 3);
+            this.Output.ReadDataFromNetwork();
+
+            var instIn = new EnIPInstance(ipClass, 101);
+            instIn.ReadDataFromNetwork();
+            this.Input = new EnIPAttribut(instIn, 3);
+            this.Input.ReadDataFromNetwork();
+
+            var localEp = new IPEndPoint(this.localAddress, 0x8AE);
+            this.remoteDevice.Class1Activate(localEp);
+
+            var status = this.remoteDevice.ForwardOpen(null, this.Output, this.Input, out var closePacket, 200 * 1000, true, false);
             if (status == EnIPNetworkStatus.OnLine)
             {
                 this.implicitTimer.Change(200, 200);
@@ -282,6 +302,7 @@ namespace Ferretto.VW.MAS.NordDriver
                     InverterDriverExceptionCode.TcpInverterConnectionFailed);
             }
             this.remoteDevice.GetObjectList();
+            this.StartImplicitMessages();
         }
 
         #endregion

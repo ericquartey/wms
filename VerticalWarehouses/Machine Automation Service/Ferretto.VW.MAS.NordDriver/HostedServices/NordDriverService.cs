@@ -511,12 +511,14 @@ namespace Ferretto.VW.MAS.NordDriver
 
             try
             {
-                var localAddress = new System.Net.IPAddress(new byte[] { 192, 168, 250, 199 });
+                // TEST
+                var localAddress = new IPAddress(new byte[] { 192, 168, 250, 199 });
+                this.inverterAddress = new IPAddress(new byte[] { 192, 168, 250, 53 });
+                //
                 this.socketTransport.Configure(this.inverterAddress, this.sendPort, localAddress);
+                this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
 
                 this.explicitMessagesTask.Start();
-                this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
-                this.socketTransport.StartImplicitMessages();
             }
             catch (Exception ex)
             {

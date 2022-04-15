@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public System.Net.IPAddress IpAddress { get; set; }
 
-        public System.Net.IPAddress LocalIpAddress { get; set; }
+        //public System.Net.IPAddress LocalIpAddress { get; set; }
 
         public IEnumerable<InverterParameter> Parameters { get; set; }
 

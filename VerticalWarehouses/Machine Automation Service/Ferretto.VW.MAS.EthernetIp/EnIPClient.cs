@@ -609,8 +609,8 @@ namespace System.Net.EnIPStack
 
             if (Status == EnIPNetworkStatus.OnLine)
             {
-                RawData = new byte[Lenght - Offset];
-                Array.Copy(packet, Offset, RawData, 0, Lenght - Offset);
+                this.RawData = new byte[Lenght - Offset];
+                Array.Copy(packet, Offset, this.RawData, 0, Lenght - Offset);
             }
             return Status;
         }
@@ -621,7 +621,7 @@ namespace System.Net.EnIPStack
             int Lenght = 0;
             byte[] packet;
 
-            Status = RemoteDevice.SetClassInstanceAttribut_Data(Path, Service, RawData, ref Offset, ref Lenght, out packet);
+            Status = RemoteDevice.SetClassInstanceAttribut_Data(Path, Service, this.RawData, ref Offset, ref Lenght, out packet);
 
             return Status;
         }
@@ -678,7 +678,7 @@ namespace System.Net.EnIPStack
 
                     // push the buffer into the data stream
                     if (ret == EnIPNetworkStatus.OnLine)
-                        rawbuffer.Write(RawData, 0, RawData.Length);
+                        rawbuffer.Write(this.RawData, 0, this.RawData.Length);
                     AttId++;
                 }
                 while (ret == EnIPNetworkStatus.OnLine);
@@ -687,7 +687,7 @@ namespace System.Net.EnIPStack
                 if (rawbuffer.Length != 0)
                 {
                     Status= ret = EnIPNetworkStatus.OnLine; // all is OK even if the last request is (always) rejected
-                    RawData = rawbuffer.ToArray();
+                    this.RawData = rawbuffer.ToArray();
                 }
 
             }
@@ -707,6 +707,8 @@ namespace System.Net.EnIPStack
                                 //// try to create the associated class object
                                 //var o = Activator.CreateInstance(Assembly.GetExecutingAssembly().FullName, "System.Net.EnIPStack.ObjectsLibrary.CIP_" + classid.ToString() + "_class");
                                 //DecodedMembers = (CIPObject)o.Unwrap();
+
+                                DecodedMembers = new CIPObjectBaseClass(classid.ToString());
                             }
                             else
                             {
@@ -721,7 +723,7 @@ namespace System.Net.EnIPStack
                             DecodedMembers = new CIPObjectBaseClass(classid.ToString());
                         }
                     }
-                    DecodedMembers.SetRawBytes(RawData);
+                    DecodedMembers.SetRawBytes(this.RawData);
                 }
                 catch { }
             }
@@ -763,7 +765,7 @@ namespace System.Net.EnIPStack
         {
             byte[] DataPath = EnIPPath.GetPath(myClass.Id, Id, null);
             EnIPNetworkStatus ret = ReadDataFromNetwork(DataPath, CIPServiceCodes.GetAttributesAll);
-            if (ret == EnIPNetworkStatus.OnLine && RawData != null)
+            if (ret == EnIPNetworkStatus.OnLine && this.RawData != null)
             {
                 if (DecodedMembers == null)
                     AttachDecoderClass();
@@ -772,7 +774,7 @@ namespace System.Net.EnIPStack
                 {
                     if (DecodedMembers != null)
                     {
-                        DecodedMembers.SetRawBytes(RawData);
+                        DecodedMembers.SetRawBytes(this.RawData);
                     }
                 }
                 catch { }
@@ -828,7 +830,7 @@ namespace System.Net.EnIPStack
             int Lenght = 0;
             byte[] packet;
 
-            Status = RemoteDevice.SendUCMM_RR_Packet(ClassDataPath, CIPServiceCodes.Create, RawData, ref Offset, ref Lenght, out packet);
+            Status = RemoteDevice.SendUCMM_RR_Packet(ClassDataPath, CIPServiceCodes.Create, this.RawData, ref Offset, ref Lenght, out packet);
 
             if (Status == EnIPNetworkStatus.OnLine)
                 return true;
@@ -861,14 +863,14 @@ namespace System.Net.EnIPStack
         
         public override bool EncodeFromDecodedMembers() 
         {
-            byte[] NewRaw = new byte[RawData.Length];
+            byte[] NewRaw = new byte[this.RawData.Length];
 
             try
             {
                 int Idx=0;
                 if (DecodedMembers.EncodeAttr(Id, ref Idx, NewRaw) == true)
                 {
-                    RawData = NewRaw;
+                    this.RawData = NewRaw;
                     return true;
                 }
                 else
@@ -910,7 +912,7 @@ namespace System.Net.EnIPStack
                     int Idx = 0;
                     if (DecodedMembers != null)
                     {
-                        DecodedMembers.DecodeAttr(Id, ref Idx, RawData);
+                        DecodedMembers.DecodeAttr(Id, ref Idx, this.RawData);
                     }
                 }
                 catch { }
