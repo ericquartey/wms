@@ -517,7 +517,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.BarcodeImageExist = false;
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
+            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
