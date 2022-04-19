@@ -168,7 +168,17 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         #region Properties
 
+        public Dictionary<InverterIndex, uint> ActualPosition { get; set; }
+
+        public Dictionary<InverterIndex, ushort> AnalogIn { get; set; }
+
+        public Dictionary<InverterIndex, ushort> ControlWord { get; set; }
+
+        public Dictionary<InverterIndex, ushort> Current { get; set; }
+
         public byte DataSetIndex { get; private set; }
+
+        public Dictionary<InverterIndex, ushort> DigitalIn { get; set; }
 
         public bool HeartbeatValue => (this.ConvertPayloadToUShort() & 0x0400) > 0;
 
@@ -192,16 +202,23 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             set => this.SetPayload(value);
         }
 
+        public Dictionary<InverterIndex, ushort> RampTime { get; set; }
+
         public int SendDelay => this.sendDelay;
+
+        public Dictionary<InverterIndex, ushort> SetpointFrequency { get; set; }
+
+        public Dictionary<InverterIndex, uint> SetpointPosition { get; set; }
 
         public short ShortParameterId => this.parameterId;
 
         public short ShortPayload => this.ConvertPayloadToShort();
 
+        public Dictionary<InverterIndex, ushort> StatusWord { get; set; }
+
         public string StringPayload => this.ConvertPayloadToString();
 
-        public InverterIndex SystemIndex
-        { get; private set; }
+        public InverterIndex SystemIndex { get; private set; }
 
         public string TelegramErrorText => this.telegramErrorText.ContainsKey(this.UShortPayload)
             ? this.UShortPayload.ToString() + this.telegramErrorText[this.UShortPayload]
@@ -363,14 +380,80 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             message.payloadLength = BitConverter.ToInt16(messageBytes, 24);
             message.IsWriteMessage = message.payloadLength == 0;
-            Array.Copy(messageBytes, 26, message.payload, 0, message.payloadLength);
+            message.payload = new byte[message.payloadLength];
 
+            try
+            {
+                Array.Copy(messageBytes, 26, message.payload, 0, message.payloadLength);
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException(
+                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{message.payloadLength}",
+                    InverterDriverExceptionCode.InverterPacketMalformed,
+                    ex);
+            }
             return message;
         }
 
-        public static InverterMessage FromBytesImplicit(byte[] receivedMessage)
+        public static InverterMessage FromBytesImplicit(byte[] messageBytes)
         {
-            throw new NotImplementedException();
+            if (messageBytes is null)
+            {
+                throw new ArgumentNullException(nameof(messageBytes));
+            }
+
+            var message = new InverterMessage();
+            message.responseMessage = true;
+
+            message.heartbeatMessage = false;
+
+            message.sendDelay = 0;
+            message.IsError = messageBytes[18] != 0;
+
+            message.payloadLength = BitConverter.ToInt16(messageBytes, 24);
+            message.IsWriteMessage = message.payloadLength == 0;
+            message.payload = new byte[message.payloadLength];
+
+            try
+            {
+                Array.Copy(messageBytes, 26, message.payload, 0, message.payloadLength);
+
+                message.StatusWord = new Dictionary<InverterIndex, ushort>();
+                message.DigitalIn = new Dictionary<InverterIndex, ushort>();
+                message.ActualPosition = new Dictionary<InverterIndex, uint>();
+                message.Current = new Dictionary<InverterIndex, ushort>();
+                message.AnalogIn = new Dictionary<InverterIndex, ushort>();
+
+                var index = 0;
+                foreach (InverterIndex id in Enum.GetValues(typeof(InverterIndex)))
+                {
+                    var offset = 0;
+                    if (id < InverterIndex.All)
+                    {
+                        message.StatusWord.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
+                        offset += 2;
+                        message.DigitalIn.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
+                        offset += 2;
+                        message.ActualPosition.Add(id, BitConverter.ToUInt32(message.payload, index * 12 + offset));
+                        offset += 4;
+                        message.Current.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
+                        offset += 2;
+                        message.AnalogIn.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
+                    }
+
+                    index++;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException(
+                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{message.payloadLength}",
+                    InverterDriverExceptionCode.InverterPacketMalformed,
+                    ex);
+            }
+
+            return message;
         }
 
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
