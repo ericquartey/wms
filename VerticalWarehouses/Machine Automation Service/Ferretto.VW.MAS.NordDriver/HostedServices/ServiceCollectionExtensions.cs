@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.MAS.InverterDriver;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS.NordDriver
 
             services.AddHostedService<NordDriverService>();
 
-            //services.AddScoped<INordProvider, NordProvider>();
+            services.AddScoped<INordProvider, NordProvider>();
 
             services.AddSingleton(s =>
             {

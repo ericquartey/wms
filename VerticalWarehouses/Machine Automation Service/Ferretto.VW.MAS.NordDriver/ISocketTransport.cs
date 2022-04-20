@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.NordDriver
 
         bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive);
 
-        bool StartImplicitMessages();
+        bool ImplicitMessageStart(byte[] data);
 
         #endregion
     }

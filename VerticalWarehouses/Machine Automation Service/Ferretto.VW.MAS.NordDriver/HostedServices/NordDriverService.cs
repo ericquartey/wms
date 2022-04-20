@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -35,11 +36,12 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private readonly ISocketTransport socketTransport;
 
-        //private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
-
         private IPAddress inverterAddress;
 
+        //private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
         private bool isDisposed;
+
+        private InverterMessage processData;
 
         private int sendPort;
 
@@ -229,7 +231,16 @@ namespace Ferretto.VW.MAS.NordDriver
                 try
                 {
                     var message = InverterMessage.FromBytesImplicit(e.receivedMessage);
-
+                    if (this.processData is null)
+                    {
+                        var invertersProvider = scope.ServiceProvider.GetRequiredService<INordProvider>();
+                        this.processData = new InverterMessage(0, InverterParameterId.ControlWord, 0);
+                        foreach (var inverter in invertersProvider.GetAll())
+                        {
+                            this.processData.SetPoint(inverter.SystemIndex, inverter.CommonControlWord.Value, inverter.SetPointFrequency, inverter.SetPointPosition, inverter.SetPointRampTime);
+                        }
+                        this.socketTransport.ImplicitMessageStart(this.processData.RawData);
+                    }
                     //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
 
                     if (message.IsError)
@@ -514,7 +525,7 @@ namespace Ferretto.VW.MAS.NordDriver
                 // TEST
                 var localAddress = new IPAddress(new byte[] { 192, 168, 250, 199 });
                 this.inverterAddress = new IPAddress(new byte[] { 192, 168, 250, 53 });
-                //
+                // END TEST
                 this.socketTransport.Configure(this.inverterAddress, this.sendPort, localAddress);
                 this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
 

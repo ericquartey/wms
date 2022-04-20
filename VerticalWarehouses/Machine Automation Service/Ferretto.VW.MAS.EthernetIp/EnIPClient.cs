@@ -600,6 +600,7 @@ namespace System.Net.EnIPStack
 
         public EnIPRemoteDevice RemoteDevice;
 
+        // configuration process
         protected EnIPNetworkStatus ReadDataFromNetwork(byte[] Path, CIPServiceCodes Service)
         {
             int Offset = 0;
@@ -656,6 +657,7 @@ namespace System.Net.EnIPStack
             return Id.ToString()+".0";
         }
 
+        // configuration process
         public override EnIPNetworkStatus ReadDataFromNetwork()
         {
             
@@ -930,6 +932,7 @@ namespace System.Net.EnIPStack
             RemoteDevice.Class1AttributUnEnrolment(this);
         }
 
+        // output client
         public void Class1UpdateO2T()
         {
             if (this.RawData != null)
@@ -940,14 +943,15 @@ namespace System.Net.EnIPStack
         }
 
         // Coming from an udp class1 device, with a previous ForwardOpen action
+        // input client
         public void On_ItemMessageReceived(object sender, byte[] packet, SequencedAddressItem ItemPacket, int offset, int msg_length, IPEndPoint remote_address)
         {           
             if (ItemPacket.ConnectionId != T2O_ConnectionId) return;
 
             if ((msg_length - offset) == 0) return;
 
-            RawData = new byte[msg_length - offset];
-            Array.Copy(packet, offset, RawData, 0, RawData.Length);
+            this.RawData = new byte[msg_length - offset];
+            Array.Copy(packet, offset, this.RawData, 0, RawData.Length);
 
             if (DecodedMembers != null)
             {

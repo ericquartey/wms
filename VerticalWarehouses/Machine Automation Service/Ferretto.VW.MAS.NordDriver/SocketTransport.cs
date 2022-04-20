@@ -174,40 +174,16 @@ namespace Ferretto.VW.MAS.NordDriver
             return isOk;
         }
 
-        public bool StartImplicitMessages()
+        public bool ImplicitMessageStart(byte[] data)
         {
-            var ipClass = this.remoteDevice.SupportedClassLists.FirstOrDefault(c => c.Id == (ushort)CIPObjectLibrary.Assembly);
-            if (ipClass is null)
+            var started = false;
+            if (this.Output != null
+                && this.Output.RawData is null)
             {
-                throw new InverterDriverException(
-                    "Inverter connection - Missing class list",
-                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
+                this.Output.RawData = data;
+                started = true;
             }
-            ipClass.ReadDataFromNetwork();
-
-            var instOut = new EnIPInstance(ipClass, 100);
-            instOut.ReadDataFromNetwork();
-            this.Output = new EnIPAttribut(instOut, 3);
-            this.Output.ReadDataFromNetwork();
-
-            var instIn = new EnIPInstance(ipClass, 101);
-            instIn.ReadDataFromNetwork();
-            this.Input = new EnIPAttribut(instIn, 3);
-            this.Input.ReadDataFromNetwork();
-
-            var localEp = new IPEndPoint(this.localAddress, 0x8AE);
-            this.remoteDevice.Class1Activate(localEp);
-
-            var status = this.remoteDevice.ForwardOpen(null, this.Output, this.Input, out var closePacket, 200 * 1000, true, false);
-            if (status == EnIPNetworkStatus.OnLine)
-            {
-                this.implicitTimer.Change(200, 200);
-                if (this.Input != null)
-                {
-                    this.Input.T2OEvent += new T2OEventHandler(this.ImplicitMessageReceived);
-                }
-            }
-            return status == EnIPNetworkStatus.OnLine;
+            return started;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -303,6 +279,42 @@ namespace Ferretto.VW.MAS.NordDriver
             }
             this.remoteDevice.GetObjectList();
             this.StartImplicitMessages();
+        }
+
+        private bool StartImplicitMessages()
+        {
+            var ipClass = this.remoteDevice.SupportedClassLists.FirstOrDefault(c => c.Id == (ushort)CIPObjectLibrary.Assembly);
+            if (ipClass is null)
+            {
+                throw new InverterDriverException(
+                    "Inverter connection - Missing class list",
+                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
+            }
+            ipClass.ReadDataFromNetwork();
+
+            var instOut = new EnIPInstance(ipClass, 100);
+            instOut.ReadDataFromNetwork();
+            this.Output = new EnIPAttribut(instOut, 3);
+            this.Output.ReadDataFromNetwork();
+
+            var instIn = new EnIPInstance(ipClass, 101);
+            instIn.ReadDataFromNetwork();
+            this.Input = new EnIPAttribut(instIn, 3);
+            this.Input.ReadDataFromNetwork();
+
+            var localEp = new IPEndPoint(this.localAddress, 0x8AE);
+            this.remoteDevice.Class1Activate(localEp);
+
+            var status = this.remoteDevice.ForwardOpen(null, this.Output, this.Input, out var closePacket, 200 * 1000, true, false);
+            if (status == EnIPNetworkStatus.OnLine)
+            {
+                this.implicitTimer.Change(200, 200);
+                if (this.Input != null)
+                {
+                    this.Input.T2OEvent += new T2OEventHandler(this.ImplicitMessageReceived);
+                }
+            }
+            return status == EnIPNetworkStatus.OnLine;
         }
 
         #endregion

@@ -6,14 +6,13 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="Models\" />
     <Folder Include="StateMachines\" />
-    <Folder Include="Providers\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.EthernetIp\Ferretto.VW.MAS.EthernetIp.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj" />
   </ItemGroup>
 

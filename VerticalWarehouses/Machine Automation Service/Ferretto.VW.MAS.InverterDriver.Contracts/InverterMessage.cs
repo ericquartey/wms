@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         private bool heartbeatMessage;
 
+        private object lockObject;
+
         private short parameterId;
 
         private byte[] payload;
@@ -168,7 +170,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         #region Properties
 
-        public Dictionary<InverterIndex, uint> ActualPosition { get; set; }
+        public Dictionary<InverterIndex, int> ActualPosition { get; set; }
 
         public Dictionary<InverterIndex, ushort> AnalogIn { get; set; }
 
@@ -204,11 +206,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public Dictionary<InverterIndex, ushort> RampTime { get; set; }
 
+        public byte[] RawData { get; set; }
+
         public int SendDelay => this.sendDelay;
 
         public Dictionary<InverterIndex, ushort> SetpointFrequency { get; set; }
 
-        public Dictionary<InverterIndex, uint> SetpointPosition { get; set; }
+        public Dictionary<InverterIndex, int> SetpointPosition { get; set; }
 
         public short ShortParameterId => this.parameterId;
 
@@ -421,7 +425,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
                 message.StatusWord = new Dictionary<InverterIndex, ushort>();
                 message.DigitalIn = new Dictionary<InverterIndex, ushort>();
-                message.ActualPosition = new Dictionary<InverterIndex, uint>();
+                message.ActualPosition = new Dictionary<InverterIndex, int>();
                 message.Current = new Dictionary<InverterIndex, ushort>();
                 message.AnalogIn = new Dictionary<InverterIndex, ushort>();
 
@@ -435,7 +439,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                         offset += 2;
                         message.DigitalIn.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
                         offset += 2;
-                        message.ActualPosition.Add(id, BitConverter.ToUInt32(message.payload, index * 12 + offset));
+                        message.ActualPosition.Add(id, BitConverter.ToInt32(message.payload, index * 12 + offset));
                         offset += 4;
                         message.Current.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
                         offset += 2;
@@ -555,6 +559,48 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return readMessage;
+        }
+
+        public void SetPoint(InverterIndex systemIndex, ushort controlWord, ushort frequency, int position, ushort rampTime)
+        {
+            //if (this.ControlWord.ContainsKey(systemIndex))
+            //{
+            //    this.ControlWord[systemIndex] = controlWord;
+            //    this.SetpointFrequency[systemIndex] = frequency;
+            //    this.SetpointPosition[systemIndex] = position;
+            //    this.RampTime[systemIndex] = rampTime;
+            //}
+            //else
+            //{
+            //    this.ControlWord.Add(systemIndex, controlWord);
+            //    this.SetpointFrequency.Add(systemIndex, frequency);
+            //    this.SetpointPosition.Add(systemIndex, position);
+            //    this.RampTime.Add(systemIndex, rampTime);
+            //}
+
+            if (this.lockObject is null)
+            {
+                this.lockObject = new object();
+            }
+            lock (this.lockObject)
+            {
+                if (this.RawData is null)
+                {
+                    this.RawData = new byte[96];
+                }
+                int offset = (int)systemIndex * 12;
+                Array.Copy(BitConverter.GetBytes(controlWord), 0, this.RawData, offset, 2);
+                offset += 2;
+                Array.Copy(BitConverter.GetBytes(frequency), 0, this.RawData, offset, 2);
+                offset += 2;
+                Array.Copy(BitConverter.GetBytes(position), 0, this.RawData, offset, 4);
+                offset += 4;
+                if (rampTime == 0)
+                {
+                    rampTime = 200;
+                }
+                Array.Copy(BitConverter.GetBytes(rampTime), 0, this.RawData, offset, 2);
+            }
         }
 
         public byte[] ToBytes()
