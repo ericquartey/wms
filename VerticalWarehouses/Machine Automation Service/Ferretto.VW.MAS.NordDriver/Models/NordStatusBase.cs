@@ -1,6 +1,5 @@
 ﻿using System;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
 
 namespace Ferretto.VW.MAS.NordDriver
 {
@@ -12,6 +11,8 @@ namespace Ferretto.VW.MAS.NordDriver
 
         protected IStatusWord statusWord = new StatusWordBase();
 
+        private const int TOTAL_SENSOR_INPUTS = 8;
+
         private ushort operatingMode;
 
         #endregion
@@ -21,6 +22,7 @@ namespace Ferretto.VW.MAS.NordDriver
         public NordStatusBase(InverterIndex systemIndex)
         {
             this.SystemIndex = systemIndex;
+            this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
         }
 
         #endregion
@@ -84,7 +86,39 @@ namespace Ferretto.VW.MAS.NordDriver
 
         public bool UpdateInputsStates(bool[] newInputStates)
         {
-            throw new NotImplementedException();
+            if (newInputStates is null)
+            {
+                return false;
+            }
+
+            var updateRequired = false;
+            for (var index = 0; index < newInputStates.Length; index++)
+            {
+                if (index > TOTAL_SENSOR_INPUTS)
+                {
+                    break;
+                }
+
+                if (this.Inputs[index] != newInputStates[index])
+                {
+                    updateRequired = true;
+                    break;
+                }
+            }
+
+            try
+            {
+                if (updateRequired)
+                {
+                    Array.Copy(newInputStates, 0, this.Inputs, 0, newInputStates.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException("Error while updating inverter inputs.", ex);
+            }
+
+            return updateRequired;
         }
 
         #endregion

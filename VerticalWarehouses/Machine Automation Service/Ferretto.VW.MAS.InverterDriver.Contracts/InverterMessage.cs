@@ -400,66 +400,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return message;
         }
 
-        public static InverterMessage FromBytesImplicit(byte[] messageBytes)
-        {
-            if (messageBytes is null)
-            {
-                throw new ArgumentNullException(nameof(messageBytes));
-            }
-
-            var message = new InverterMessage();
-            message.responseMessage = true;
-
-            message.heartbeatMessage = false;
-
-            message.sendDelay = 0;
-            message.IsError = messageBytes[18] != 0;
-
-            message.payloadLength = BitConverter.ToInt16(messageBytes, 24);
-            message.IsWriteMessage = message.payloadLength == 0;
-            message.payload = new byte[message.payloadLength];
-
-            try
-            {
-                Array.Copy(messageBytes, 26, message.payload, 0, message.payloadLength);
-
-                message.StatusWord = new Dictionary<InverterIndex, ushort>();
-                message.DigitalIn = new Dictionary<InverterIndex, ushort>();
-                message.ActualPosition = new Dictionary<InverterIndex, int>();
-                message.Current = new Dictionary<InverterIndex, ushort>();
-                message.AnalogIn = new Dictionary<InverterIndex, ushort>();
-
-                var index = 0;
-                foreach (InverterIndex id in Enum.GetValues(typeof(InverterIndex)))
-                {
-                    var offset = 0;
-                    if (id < InverterIndex.All)
-                    {
-                        message.StatusWord.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
-                        offset += 2;
-                        message.DigitalIn.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
-                        offset += 2;
-                        message.ActualPosition.Add(id, BitConverter.ToInt32(message.payload, index * 12 + offset));
-                        offset += 4;
-                        message.Current.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
-                        offset += 2;
-                        message.AnalogIn.Add(id, BitConverter.ToUInt16(message.payload, index * 12 + offset));
-                    }
-
-                    index++;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException(
-                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{message.payloadLength}",
-                    InverterDriverExceptionCode.InverterPacketMalformed,
-                    ex);
-            }
-
-            return message;
-        }
-
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
             if (blockDefinitions is null)
@@ -504,6 +444,72 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return blockValues;
+        }
+
+        public bool[] DigitalInConverted(InverterIndex id)
+        {
+            var inputs = new bool[8];
+            if (this.DigitalIn != null)
+            {
+                for (int ib = 0; ib < 8; ib++)
+                {
+                    inputs[ib] = (this.DigitalIn[id] & (1 << ib)) != 0;
+                }
+            }
+            return inputs;
+        }
+
+        public void FromBytesImplicit(byte[] messageBytes, InverterIndex last)
+        {
+            if (messageBytes is null)
+            {
+                throw new ArgumentNullException(nameof(messageBytes));
+            }
+
+            this.payloadLength = messageBytes.Length;
+            this.IsWriteMessage = true;
+            this.payload = new byte[this.payloadLength];
+
+            try
+            {
+                Array.Copy(messageBytes, 0, this.payload, 0, this.payloadLength);
+
+                if (this.StatusWord is null)
+                {
+                    this.StatusWord = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                    this.DigitalIn = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                    this.ActualPosition = new Dictionary<InverterIndex, int>((int)last + 1);
+                    this.Current = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                    this.AnalogIn = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                }
+
+                var index = 0;
+                foreach (InverterIndex id in Enum.GetValues(typeof(InverterIndex)))
+                {
+                    var offset = 0;
+                    if (id <= last)
+                    {
+                        this.StatusWord[id] = BitConverter.ToUInt16(this.payload, index * 12 + offset);
+                        offset += 2;
+                        this.DigitalIn[id] = BitConverter.ToUInt16(this.payload, index * 12 + offset);
+                        offset += 2;
+                        this.ActualPosition[id] = BitConverter.ToInt32(this.payload, index * 12 + offset);
+                        offset += 4;
+                        this.Current[id] = BitConverter.ToUInt16(this.payload, index * 12 + offset);
+                        offset += 2;
+                        this.AnalogIn[id] = BitConverter.ToUInt16(this.payload, index * 12 + offset);
+                    }
+
+                    index++;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException(
+                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{this.payloadLength}",
+                    InverterDriverExceptionCode.InverterPacketMalformed,
+                    ex);
+            }
         }
 
         public byte[] GetHeartbeatMessage(bool setBit)

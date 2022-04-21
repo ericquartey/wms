@@ -247,14 +247,10 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private void ImplicitMessageReceived(EnIPAttribut sender)
         {
-            if (this.receiveBuffer is null
-                || this.receiveBuffer != sender.RawData)
-            {
-                this.receiveBuffer = sender.RawData;
-                var args = new ImplicitReceivedEventArgs();
-                args.receivedMessage = sender.RawData;
-                this.ImplicitReceivedChanged?.Invoke(this, args);
-            }
+            this.receiveBuffer = sender.RawData;
+            var args = new ImplicitReceivedEventArgs();
+            args.receivedMessage = sender.RawData;
+            this.ImplicitReceivedChanged?.Invoke(this, args);
         }
 
         private void ImplicitTimer(object state)

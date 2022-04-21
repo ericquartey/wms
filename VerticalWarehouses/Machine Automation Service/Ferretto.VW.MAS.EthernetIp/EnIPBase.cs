@@ -493,7 +493,7 @@ namespace System.Net.EnIPStack
                     T2O_ConnectionParameters = (T2O_ConnectionParameters << 16) + conf.T2O_datasize + 2;
                 }
                 else
-                    T2O_ConnectionParameters += (ushort)(conf.T2O_datasize + 2);
+                    T2O_ConnectionParameters += (ushort)(conf.T2O_datasize + 2 + 4);
 
                 T2O_RPI = conf.T2O_RPI;
             }
@@ -664,7 +664,7 @@ namespace System.Net.EnIPStack
             if (Lenght2 != 0)
             {
                 SequenceCount = BitConverter.ToUInt16(DataArray, Offset);
-                Offset += 2;
+                Offset += 2 + 4;
             }
             // Offset is now at the beginning of the raw data
         }

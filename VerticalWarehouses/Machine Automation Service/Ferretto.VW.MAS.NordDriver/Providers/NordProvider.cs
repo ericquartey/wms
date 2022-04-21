@@ -434,9 +434,10 @@ namespace Ferretto.VW.MAS.NordDriver
                          throw new Exception();
                  }
              })
-             .ToArray();
+             .ToArray()
+             .OrderBy(i => i.SystemIndex);
 
-            if (inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
+            if (!inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter))
             {
                 throw new Exception("No main inverter is configured in the system.");
             }

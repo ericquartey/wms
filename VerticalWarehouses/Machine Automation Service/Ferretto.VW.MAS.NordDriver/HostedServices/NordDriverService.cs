@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -31,6 +30,8 @@ namespace Ferretto.VW.MAS.NordDriver
         private readonly IEventAggregator eventAggregator;
 
         private readonly Task explicitMessagesTask;
+
+        private readonly bool[] forceStatusPublish;
 
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
@@ -60,6 +61,7 @@ namespace Ferretto.VW.MAS.NordDriver
             this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
 
             this.explicitMessagesTask = new Task(async () => await this.ExplicitMessages());
+            this.forceStatusPublish = new bool[(int)InverterIndex.Slave7 + 1];
         }
 
         #endregion
@@ -230,31 +232,47 @@ namespace Ferretto.VW.MAS.NordDriver
             {
                 try
                 {
-                    var message = InverterMessage.FromBytesImplicit(e.receivedMessage);
+                    var invertersProvider = scope.ServiceProvider.GetRequiredService<INordProvider>();
+                    var inverters = invertersProvider.GetAll();
                     if (this.processData is null)
                     {
-                        var invertersProvider = scope.ServiceProvider.GetRequiredService<INordProvider>();
                         this.processData = new InverterMessage(0, InverterParameterId.ControlWord, 0);
-                        foreach (var inverter in invertersProvider.GetAll())
+                        foreach (var inverter in inverters)
                         {
                             this.processData.SetPoint(inverter.SystemIndex, inverter.CommonControlWord.Value, inverter.SetPointFrequency, inverter.SetPointPosition, inverter.SetPointRampTime);
                         }
+                        this.processData.FromBytesImplicit(e.receivedMessage, inverters.Last().SystemIndex);
                         this.socketTransport.ImplicitMessageStart(this.processData.RawData);
+                    }
+                    else
+                    {
+                        this.processData.FromBytesImplicit(e.receivedMessage, inverters.Last().SystemIndex);
+                        foreach (var inverter in inverters)
+                        {
+                            var refresh = inverter.UpdateInputsStates(this.processData.DigitalInConverted(inverter.SystemIndex));
+                            if (refresh || this.forceStatusPublish[(int)inverter.SystemIndex])
+                            {
+                                this.Logger.LogTrace($"Inverter {inverter.SystemIndex} Sensor Update {inverter.Inputs}");
+
+                                var msgNotification = new FieldNotificationMessage(
+                                    new InverterStatusUpdateFieldMessageData(inverter.Inputs),
+                                    "Inverter Inputs update",
+                                    FieldMessageActor.DeviceManager,
+                                    FieldMessageActor.InverterDriver,
+                                    FieldMessageType.InverterStatusUpdate,
+                                    MessageStatus.OperationExecuting,
+                                    inverter.SystemIndex);
+
+                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                this.forceStatusPublish[(int)inverter.SystemIndex] = false;
+                            }
+                        }
                     }
                     //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
 
-                    if (message.IsError)
+                    if (this.processData.IsError)
                     {
-                        this.Logger.LogError($"Received error Message: {message}");
-                        var errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
-                        if (!Enum.IsDefined(typeof(DataModels.MachineErrorCode), errorCode))
-                        {
-                            errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode;
-                        }
-
-                        scope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew((DataModels.MachineErrorCode)errorCode, additionalText: message.SystemIndex.ToString());
+                        this.Logger.LogError($"Received error Message: {BitConverter.ToString(e.receivedMessage)}");
                     }
 
                     //    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
@@ -530,6 +548,10 @@ namespace Ferretto.VW.MAS.NordDriver
                 this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
 
                 this.explicitMessagesTask.Start();
+                for (var i = 0; i < this.forceStatusPublish.Length; i++)
+                {
+                    this.forceStatusPublish[i] = true;
+                }
             }
             catch (Exception ex)
             {
