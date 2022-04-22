@@ -4849,11 +4849,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Movement disable .
+        ///   Looks up a localized string similar to Movement Enabled.
         /// </summary>
-        public static string MovementDisabled {
+        public static string MovementEnabled {
             get {
-                return ResourceManager.GetString("MovementDisabled", resourceCulture);
+                return ResourceManager.GetString("MovementEnabled", resourceCulture);
             }
         }
         

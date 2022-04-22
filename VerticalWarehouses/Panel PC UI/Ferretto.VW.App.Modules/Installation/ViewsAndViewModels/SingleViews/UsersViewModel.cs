@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isEnabledEditing;
 
-        private bool isMovementDisabled;
+        private bool isMovementEnabled;
 
         private bool isOperatorEnabledWithWMS;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string operatorNewPasswordConfirm;
 
-        private DelegateCommand saveIsMovementDisabledCommand;
+        private DelegateCommand saveIsMovementEnabledCommand;
 
         private DelegateCommand saveIsOperatorEnabledWithWMSCommand;
 
@@ -115,10 +115,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isEnabledEditing, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsMovementDisabled
+        public bool IsMovementEnabled
         {
-            get => this.isMovementDisabled;
-            set => this.SetProperty(ref this.isMovementDisabled, value, this.RaiseCanExecuteChanged);
+            get => this.isMovementEnabled;
+            set => this.SetProperty(ref this.isMovementEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsOperatorEnabledWithWMS
@@ -151,10 +151,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.operatorNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand SaveIsMovementDisabledCommand =>
-          this.saveIsMovementDisabledCommand
+        public ICommand SaveIsMovementEnabledCommand =>
+          this.saveIsMovementEnabledCommand
           ??
-          (this.saveIsMovementDisabledCommand = new DelegateCommand(
+          (this.saveIsMovementEnabledCommand = new DelegateCommand(
               async () => await this.SaveIsMovementEnabled(),
               this.CanExecute));
 
@@ -197,7 +197,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
-            this.IsMovementDisabled = await this.usersService.GetIsDisabledAsync("movement");
+            this.IsMovementEnabled = !await this.usersService.GetIsDisabledAsync("movement");
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -207,7 +207,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.changeInstallerPasswordCommand?.RaiseCanExecuteChanged();
             this.changeMovementPasswordCommand?.RaiseCanExecuteChanged();
             this.saveIsOperatorEnabledWithWMSCommand?.RaiseCanExecuteChanged();
-            this.saveIsMovementDisabledCommand?.RaiseCanExecuteChanged();
+            this.saveIsMovementEnabledCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecute()
@@ -281,7 +281,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsEnabledEditing = false;
-                await this.usersService.SetIsDisabledAsync("movement", this.IsMovementDisabled);
+                await this.usersService.SetIsDisabledAsync("movement", !this.IsMovementEnabled);
                 this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)

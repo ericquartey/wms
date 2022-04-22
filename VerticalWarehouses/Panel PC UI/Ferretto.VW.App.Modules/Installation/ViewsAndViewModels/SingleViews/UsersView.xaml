@@ -261,12 +261,12 @@
                   Orientation="Horizontal">
 
         <controls:PpcCheckBox VerticalAlignment="Center"
-                              IsChecked="{Binding IsMovementDisabled, Mode=TwoWay}"
+                              IsChecked="{Binding IsMovementEnabled, Mode=TwoWay}"
                               IsEnabled="{Binding IsEnabledEditing}"
-                              LabelText="{res:Loc InstallationApp.MovementDisabled}" />
+                              LabelText="{res:Loc InstallationApp.MovementEnabled}" />
         <controls:PpcButton Margin="15,0,0,0"
                             VerticalAlignment="Center"
-                            Command="{Binding SaveIsMovementDisabledCommand}"
+                            Command="{Binding SaveIsMovementEnabledCommand}"
                             Content="{res:Loc InstallationApp.Save}" />
       </StackPanel>
 
