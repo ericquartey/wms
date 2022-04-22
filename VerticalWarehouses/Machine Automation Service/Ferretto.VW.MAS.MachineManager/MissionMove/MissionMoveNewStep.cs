@@ -874,19 +874,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 return false;
             }
 
-            var activeMission = this.MissionsDataProvider.GetAllActiveMissions()
-                .FirstOrDefault(x => x.Status == MissionStatus.Executing);
+            var activeMissions = this.MissionsDataProvider.GetAllActiveMissions();
 
-            if (activeMission != null)
+            if (activeMissions.Any(x => x.Status == MissionStatus.Executing)
+                || activeMissions.Any(x => x.Status == MissionStatus.New
+                    && x.MissionType == this.Mission.MissionType
+                    && (x.Priority < this.Mission.Priority || x.CreationDate < this.Mission.CreationDate)))
             {
-                this.Logger.LogTrace($"IsMachineOk: waiting for active Mission:Id={activeMission.Id}, Load Unit {activeMission.LoadUnitId}; bay {this.Mission.TargetBay}");
                 if (showErrors)
                 {
                     this.ErrorsProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay, this.Mission.TargetBay);
                 }
                 else
                 {
-                    this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                    this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay}. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}, executing {activeMissions.Any(x => x.Status == MissionStatus.Executing)}");
                 }
                 return false;
             }

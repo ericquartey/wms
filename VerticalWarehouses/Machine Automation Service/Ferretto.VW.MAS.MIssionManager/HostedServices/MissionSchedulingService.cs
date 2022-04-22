@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private const int CleanupTimeout = 60 * 60 * 1000;  // one hour expressed in milliseconds
 
+        private const int DelayTimeout = 3000;
+
         private readonly Timer CleanupTimer;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
@@ -1748,14 +1750,15 @@ namespace Ferretto.VW.MAS.MissionManager
             this.RestartTimer.Change(-1, -1);
 
             this.isDelayFinish = true;
-            
+            this.Logger.LogDebug("delay timer");
+
             var notificationMessage = new NotificationMessage(
-            null,
-            $"New machine mission available for bay {BayNumber.BayOne}.",
-            MessageActor.MissionManager,
-            MessageActor.MissionManager,
-            MessageType.NewMachineMissionAvailable,
-            BayNumber.BayOne);
+                null,
+                $"New machine mission available for bay {BayNumber.BayOne}.",
+                MessageActor.MissionManager,
+                MessageActor.MissionManager,
+                MessageType.NewMachineMissionAvailable,
+                BayNumber.BayOne);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
         }
@@ -1845,6 +1848,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+                        this.isDelayFinish = false;
 
                         serviceProvider
                             .GetRequiredService<IBaysDataProvider>()
@@ -1870,9 +1874,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
-                    if (!this.isDelayFinish)
+                    if (!this.isDelayFinish
+                        && wmsMission.Operations.Any(o => o.Type == WMS.Data.WebAPI.Contracts.MissionOperationType.Put))
                     {
-                        this.RestartTimer.Change(10000, -1);
+                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {DelayTimeout}ms for WMS to send an update");
+                        this.RestartTimer.Change(DelayTimeout, -1);
                     }
                     else
                     {
