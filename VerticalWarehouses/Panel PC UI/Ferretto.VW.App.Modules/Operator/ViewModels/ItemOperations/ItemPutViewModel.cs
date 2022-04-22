@@ -430,7 +430,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (canComplete)
                 {
                     await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
 
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }

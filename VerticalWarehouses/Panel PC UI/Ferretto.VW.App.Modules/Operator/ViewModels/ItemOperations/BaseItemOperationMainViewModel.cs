@@ -1036,7 +1036,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     if (item != null && itemId > 0 && quantity > 0)
                     {
                         await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
-                        await this.PrintWeightAsync(itemId, (int?)quantity);
                     }
 
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -1194,8 +1193,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     if (item != null && itemId > 0 && quantity > 0)
                     {
                         await this.UpdateWeight(loadUnitId, quantity, item.AverageWeight, type);
-
-                        await this.PrintWeightAsync(itemId, (int?)quantity);
                     }
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
@@ -1432,7 +1429,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.eventAggregator
                     .GetEvent<PubSubEvent<ItemWeightChangedMessage>>()
                     .Subscribe(
-                        (e) => this.OnItemWeightChangedAsync(e),
+                        async (e) => await this.OnItemWeightChangedAsync(e),
                         ThreadOption.UIThread,
                         false);
 
@@ -1504,7 +1501,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     //await this.UpdateWeight(loadUnitId, this.InputQuantity.Value, item.AverageWeight, type);
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -2117,10 +2113,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBusyLoading = true;
         }
 
-        private void OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
+        private async Task OnItemWeightChangedAsync(ItemWeightChangedMessage itemWeightChanged)
         {
             this.lastItemQuantityMessage = itemWeightChanged;
             this.InitializeInputQuantity();
+            var mission = this.MissionOperationsService.ActiveWmsOperation;
+            if (mission != null)
+            {
+                await this.PrintWeightAsync(mission.Id, (int?)this.InputQuantity);
+            }
         }
 
         private async Task OnMissionChangedAsync()
