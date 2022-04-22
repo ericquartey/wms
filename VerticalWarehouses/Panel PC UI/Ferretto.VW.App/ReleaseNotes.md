@@ -35,7 +35,7 @@
 - Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
 - Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
 
-## Compatibile con adapter 0.4.31
+## Compatibile con adapter 0.4.31 e 0.4.32
 ***
 
 [Versione 1.0.41](#id1041)
