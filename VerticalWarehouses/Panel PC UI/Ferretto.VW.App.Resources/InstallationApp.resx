@@ -2767,4 +2767,7 @@
   <data name="ConfirmDifferentValue" xml:space="preserve">
     <value>Values ​​are out of range, confirm anyway</value>
   </data>
+  <data name="MovementDisabled" xml:space="preserve">
+    <value>Movement disable </value>
+  </data>
 </root>

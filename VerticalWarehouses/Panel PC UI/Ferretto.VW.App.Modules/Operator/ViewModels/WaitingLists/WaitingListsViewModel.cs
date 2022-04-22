@@ -325,7 +325,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanSelectOperationOnBay()
         {
-            return this.sessionService.UserAccessLevel > UserAccessLevel.Operator;
+            return this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
         }
 
         private bool CanShowDetailCommand()

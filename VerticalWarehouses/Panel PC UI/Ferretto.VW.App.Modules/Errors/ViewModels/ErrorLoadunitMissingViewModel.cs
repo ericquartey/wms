@@ -1197,7 +1197,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
                 else
                 {
-                    if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                    if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                     {
                         this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                     }
@@ -1229,7 +1229,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
                 else
                 {
-                    if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                    if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                     {
                         this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                     }
@@ -1255,7 +1255,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
                 else
                 {
-                    if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                    if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                     {
                         this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                     }
@@ -1275,7 +1275,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
                 else
                 {
-                    if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                    if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                     {
                         this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                     }
@@ -1287,7 +1287,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             else if (this.CurrentStep is ErrorLoadunitMissingStepLoadunitOnBay3)
             {
-                if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                 {
                     this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                 }
@@ -1360,7 +1360,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                        if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                         {
                             this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                         }
@@ -1392,7 +1392,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                        if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                         {
                             this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                         }
@@ -1423,7 +1423,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                        if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                         {
                             this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                         }
@@ -1456,7 +1456,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                     }
                     else
                     {
-                        if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                        if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                         {
                             this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                         }
@@ -1487,7 +1487,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 if (e.Next)
                 {
-                    if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+                    if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
                     {
                         this.CurrentStep = default(ErrorLoadunitMissingStepAutomaticMode);
                     }

@@ -88,9 +88,10 @@ namespace Ferretto.VW.App.Controls.Controls
         protected bool IsInstaller => this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
                                       this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
-        protected bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator ||
-                                                 this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+        protected bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Movement ||
+                                        this.sessionService.UserAccessLevel == UserAccessLevel.Operator ||
+                                        this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
+                                        this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         #endregion
 

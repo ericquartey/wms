@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #endregion
 
-        private readonly List<string> BaseUser = new List<string>() { "operator", "installer", "service", "admin" };
+        private readonly List<string> BaseUser = new List<string>() { "operator", "movement", "installer", "service", "admin" };
 
         public string ActiveContextName => "Login";
 
@@ -375,6 +375,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                         Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
                         break;
 
+                    case "movement":
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
+                        break;
+
                     case "admin":
                         Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
                         break;
@@ -395,6 +399,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 var wmsUsersName = this.WmsUsers.Select(s => s.Login).ToList();
 
                 var isOperatorEnabled = await this.usersService.GetOperatorEnabledWithWMSAsync();
+                var isMovementDisabled = await this.usersService.GetIsDisabledAsync("movement");
+
+                if (isMovementDisabled)
+                {
+                    this.users.Remove("movement");
+                }
 
                 if (isOperatorEnabled)
                 {

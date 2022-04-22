@@ -541,7 +541,7 @@ namespace Ferretto.VW.App.Controls
 
         private async void OnLogoutMessageReceived(NotificationMessageUI<LogoutMessageData> message)
         {
-            if (this.sessionService.UserAccessLevel == UserAccessLevel.Operator)
+            if (this.sessionService.UserAccessLevel <= UserAccessLevel.Movement)
             {
                 this.logger.Debug($"Auto logout message processed");
 

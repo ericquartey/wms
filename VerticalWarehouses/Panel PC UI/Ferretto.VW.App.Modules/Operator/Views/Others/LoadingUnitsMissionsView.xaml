@@ -69,6 +69,6 @@
                             Command="{Binding DeleteMissionCommand}"
                             Content="{Resources:Loc OperatorApp.DeleteMission}"
                             Style="{StaticResource ConfirmButton}"
-                            Visibility="{Binding IsDeleteMissionCommand, Converter={StaticResource BTVIC}}" />
+                            Visibility="{Binding IsDeleteMissionCommand, Converter={StaticResource BTVC}}" />
     </Grid>
 </ctrls:View>

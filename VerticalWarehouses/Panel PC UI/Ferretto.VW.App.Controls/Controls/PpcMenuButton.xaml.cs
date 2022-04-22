@@ -152,6 +152,7 @@ namespace Ferretto.VW.App.Controls.Controls
                                       this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator ||
+                                     this.sessionService.UserAccessLevel == UserAccessLevel.Movement ||
                                      this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
                                      this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
@@ -167,6 +168,10 @@ namespace Ferretto.VW.App.Controls.Controls
                 switch (this.Permission)
                 {
                     case UserAccessLevel.Operator:
+                        condition = this.IsOperator;
+                        break;
+
+                    case UserAccessLevel.Movement:
                         condition = this.IsOperator;
                         break;
 

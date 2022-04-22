@@ -215,6 +215,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(users);
         }
 
+        [HttpGet("get-isDisabled")]
+        public ActionResult<bool> GetIsDisabled(string userName)
+        {
+            var users = this.usersProvider.GetIsDisabled(userName);
+            return this.Ok(users);
+        }
+
         [HttpGet("operator-enabled-wms")]
         public ActionResult<bool> GetOperatorEnabledWithWMS()
         {
@@ -232,6 +239,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.logger.LogInformation($"Get token: {token}");
 
             return this.Ok(token);
+        }
+
+        [HttpPost("change-isDisabled")]
+        public IActionResult SetIsDisabled(string userName, bool isDisabled)
+        {
+            this.logger.LogInformation($"Change isDisabled for user '{userName}' by '{this.BayNumber}'.");
+
+            this.usersProvider.SetIsDisabled(userName, isDisabled);
+            return this.Ok();
         }
 
         [HttpPost("culture")]

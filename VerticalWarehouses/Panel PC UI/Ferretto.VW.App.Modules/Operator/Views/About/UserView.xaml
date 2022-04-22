@@ -62,6 +62,7 @@
         <RowDefinition Height="100" />
         <RowDefinition Height="100" />
         <RowDefinition Height="100" />
+        <RowDefinition Height="100" />
       </Grid.RowDefinitions>
 
       <Grid.ColumnDefinitions>
@@ -99,9 +100,32 @@
                  FontSize="{StaticResource FontSize_High}"
                  Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                 Text="Installer" />
+                 Text="Movement" />
 
       <ComboBox Grid.Row="1"
+                Grid.Column="1"
+                Width="250"
+                Height="70"
+                Margin="25,15"
+                HorizontalAlignment="Left"
+                IsEditable="False"
+                IsEnabled="{Binding MovementEnabled}"
+                ItemTemplate="{StaticResource ImageComboBox}"
+                ItemsSource="{Binding LanguageList}"
+                MaxDropDownHeight="160"
+                SelectedItem="{Binding MovementLanguage}"
+                Style="{DynamicResource PpcComboBoxStyle}" />
+
+      <TextBlock Grid.Row="2"
+                 Grid.Column="0"
+                 Margin="0,15"
+                 HorizontalAlignment="Left"
+                 FontSize="{StaticResource FontSize_High}"
+                 Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
+                 Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                 Text="Installer" />
+
+      <ComboBox Grid.Row="2"
                 Grid.Column="1"
                 Width="250"
                 Height="70"
@@ -115,7 +139,7 @@
                 SelectedItem="{Binding InstallerLanguage}"
                 Style="{DynamicResource PpcComboBoxStyle}" />
 
-      <TextBlock Grid.Row="2"
+      <TextBlock Grid.Row="3"
                  Grid.Column="0"
                  Margin="0,15"
                  HorizontalAlignment="Left"
@@ -124,7 +148,7 @@
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                  Text="Service" />
 
-      <ComboBox Grid.Row="2"
+      <ComboBox Grid.Row="3"
                 Grid.Column="1"
                 Width="250"
                 Height="70"
@@ -138,7 +162,7 @@
                 SelectedItem="{Binding ServiceLanguage}"
                 Style="{DynamicResource PpcComboBoxStyle}" />
 
-      <TextBlock Grid.Row="3"
+      <TextBlock Grid.Row="4"
                  Grid.Column="0"
                  Margin="0,15"
                  HorizontalAlignment="Left"
@@ -147,7 +171,7 @@
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
                  Text="Admin" />
 
-      <ComboBox Grid.Row="3"
+      <ComboBox Grid.Row="4"
                 Grid.Column="1"
                 Width="250"
                 Height="70"
