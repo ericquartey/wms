@@ -33,6 +33,7 @@
 - Se si mettono in attesa le liste da EjLog i cassetti rientrano dalla baia
 - Il cassetto non rientra se ci sono molti versamenti su un unico scomparto
 - Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
+- Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
 
 ## Compatibile con adapter 0.4.31
 ***
