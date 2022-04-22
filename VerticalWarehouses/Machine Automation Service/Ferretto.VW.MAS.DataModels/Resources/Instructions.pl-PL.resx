@@ -183,4 +183,16 @@
   <data name="Wheels" xml:space="preserve">
     <value>Sprawdzić koła</value>
   </data>
+  <data name="BayQuote" xml:space="preserve">
+    <value>Cytuj zatokę</value>
+  </data>
+  <data name="Clean" xml:space="preserve">
+    <value>Wyczyść</value>
+  </data>
+  <data name="MotorBelt" xml:space="preserve">
+    <value>Pasek silnika</value>
+  </data>
+  <data name="VaristorsAndRelays" xml:space="preserve">
+    <value>Warystory i przekaźniki</value>
+  </data>
 </root>

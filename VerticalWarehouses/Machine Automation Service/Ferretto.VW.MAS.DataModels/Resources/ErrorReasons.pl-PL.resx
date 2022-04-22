@@ -435,4 +435,25 @@
   <data name="TelescopicBayError" xml:space="preserve">
     <value>Zatoka teleskopowa jest poza miejscem. Ustaw ją właściwie aby przywrócić ruchy automatyczne</value>
   </data>
+  <data name="BackupDatabaseOnServer" xml:space="preserve">
+    <value>Niepowodzenie kopii bazy danych</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Aktywny czujnik alarmu pożarowego</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Wysokość jest niższa niż minimalna. Proszę sprawdzić wyrównanie i czyszczenie urządzeń pomiarowych.</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Aktywny czujnik alarmu przed pożarem</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Czujnik pionowego zera jest aktywny w wysokiej pozycji. Proszę wykonać bazowanie windy.</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Czujnik zera pionowego nie jest aktywny w pozycji niskiej. Proszę wykonać bazowanie windy.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Czujnik zerowania poziomego nie jest aktywny podczas bazowania</value>
+  </data>
 </root>

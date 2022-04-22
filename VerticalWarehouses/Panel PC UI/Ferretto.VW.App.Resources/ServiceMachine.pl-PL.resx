@@ -207,4 +207,13 @@
   <data name="TestInProgress" xml:space="preserve">
     <value>Trwa test...</value>
   </data>
+  <data name="BayPositionsDisabled" xml:space="preserve">
+    <value>Wszystkie pozycje okna dostępowego są wyłączone </value>
+  </data>
+  <data name="InconsistencyStateAndSensorsBay" xml:space="preserve">
+    <value>Stan obciążenia i niespójność czujników okna dostępowego {0}</value>
+  </data>
+  <data name="ShutdownInProgress" xml:space="preserve">
+    <value>Trwa zamykanie panelu</value>
+  </data>
 </root>

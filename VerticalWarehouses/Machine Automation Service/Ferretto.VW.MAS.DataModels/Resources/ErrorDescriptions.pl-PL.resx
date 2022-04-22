@@ -441,4 +441,25 @@
   <data name="LoadUnitTareError" xml:space="preserve">
     <value>Jednostka ładunkowa nie wygląda na całkowicie wysuniętą z podnośnika po zakończeniu fazy rozładunku.</value>
   </data>
+  <data name="BackupDatabaseOnServer" xml:space="preserve">
+    <value>Kopia zapasowa bazy danych na serwerze</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Alarm pożarowy</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Wysokość za niska </value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Alarm przed pożarem </value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Błąd pozycjonowania w pionie </value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Błąd pozycjonowania w pionie </value>
+  </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Błąd bazowania osi poziomej windy</value>
+  </data>
 </root>
