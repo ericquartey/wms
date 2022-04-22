@@ -880,7 +880,7 @@ namespace Ferretto.VW.App.Services
                                         messageData.DestinationCellId is null ? string.Empty : " " + messageData.DestinationCellId
                                         );
 
-                                    if (this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                                    if (this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement)
                                     {
                                         this.Notification = msg;
                                     }
@@ -1023,7 +1023,7 @@ namespace Ferretto.VW.App.Services
                                     moveLoadingUnitMessageData.DestinationCellId is null ? string.Empty : " " + moveLoadingUnitMessageData.DestinationCellId
                                     );
 
-                                if (this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                                if (this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement)
                                 {
                                     this.Notification = msg;
                                 }
@@ -1146,7 +1146,7 @@ namespace Ferretto.VW.App.Services
                                 this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status}; IsMovingLoadingUnit({this.MachineStatus.IsMovingLoadingUnit});");
 
                                 if (!this.MachineStatus.IsMovingLoadingUnit &&
-                                    this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                                    this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement)
                                 {
                                     this.ClearNotifications();
                                 }
@@ -1956,7 +1956,7 @@ namespace Ferretto.VW.App.Services
             }
             else if (!(view is null) && this.MachineStatus.IsMovingLoadingUnit)
             {
-                if (this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+                if (this.sessionService.UserAccessLevel <= MAS.AutomationService.Contracts.UserAccessLevel.Movement)
                 {
                     switch (this.GetWarningAreaAttribute())
                     {

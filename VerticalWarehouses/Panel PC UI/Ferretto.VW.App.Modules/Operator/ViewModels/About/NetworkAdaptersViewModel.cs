@@ -219,12 +219,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanExecuteCommand()
         {
             return this.MachineModeService.MachineMode != MAS.AutomationService.Contracts.MachineMode.Automatic &&
-                this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator;
+                this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement;
         }
 
         private bool CanExecutePingCommand()
         {
-            return this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator;
+            return this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement;
         }
 
         private void CheckUwf()

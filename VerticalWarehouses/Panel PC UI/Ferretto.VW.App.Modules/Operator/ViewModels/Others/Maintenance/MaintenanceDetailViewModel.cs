@@ -377,7 +377,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await base.OnAppearedAsync();
 
-            this.isOperator = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
+            this.isOperator = this.sessionService.UserAccessLevel <= UserAccessLevel.Movement;
             this.RaisePropertyChanged(nameof(this.IsOperator));
 
             this.IsAdmin = this.sessionService.UserAccessLevel > UserAccessLevel.Installer;

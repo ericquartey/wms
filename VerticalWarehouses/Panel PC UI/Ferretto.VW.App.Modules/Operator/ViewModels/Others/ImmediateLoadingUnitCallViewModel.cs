@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isEnabledLaser, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsOperator => this.sessionService.UserAccessLevel == MAS.AutomationService.Contracts.UserAccessLevel.Operator;
+        public bool IsOperator => this.sessionService.UserAccessLevel <= MAS.AutomationService.Contracts.UserAccessLevel.Movement;
 
         public override bool IsWaitingForResponse
         {

@@ -802,7 +802,7 @@
     <value>Inwentaryzacja</value>
   </data>
   <data name="ItemListType_Pick" xml:space="preserve">
-    <value>Podnieś</value>
+    <value>Pobierz</value>
   </data>
   <data name="ItemListType_Put" xml:space="preserve">
     <value>Odłóż</value>
@@ -1003,7 +1003,7 @@
     <value>szt.</value>
   </data>
   <data name="Pick" xml:space="preserve">
-    <value>Podnieś</value>
+    <value>Pobierz</value>
   </data>
   <data name="Put" xml:space="preserve">
     <value>Odłóż</value>
@@ -1387,7 +1387,7 @@
     <value>Oś pionowa</value>
   </data>
   <data name="ConfirmPartial" xml:space="preserve">
-    <value>Wymienić</value>
+    <value>Zmienić</value>
   </data>
   <data name="ConfirmPresent" xml:space="preserve">
     <value>Potwierdź Obecny</value>
@@ -1880,5 +1880,221 @@
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Urządzenie</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Dodanie towru do jednostki ładukowej</value>
+  </data>
+  <data name="AverageHeight" xml:space="preserve">
+    <value>Średnia wysokość</value>
+  </data>
+  <data name="AverageOccupiedSpace" xml:space="preserve">
+    <value>Średnia zajęta przestrzeń.</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Automatyczne umieszczanie kodów kreskowych</value>
+  </data>
+  <data name="BarcodeServiceError" xml:space="preserve">
+    <value>Błąd usługi kodów kreskowych</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Zmiennośc zapasów magazynowych</value>
+  </data>
+  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
+    <value>Zmiennośc zapasów magazynowych</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Potwierdź grupę</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Dni</value>
+  </data>
+  <data name="EnterBarcode" xml:space="preserve">
+    <value>Wpisz kod kreskowy</value>
+  </data>
+  <data name="InsufficientSpaceAvailable" xml:space="preserve">
+    <value>Za mało dostępnej przestrzeni w magazynie </value>
+  </data>
+  <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Brak edycji dostępnej ilości towaru w pobraniu</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePick" xml:space="preserve">
+    <value>Podwójnie potwierdź wybór kodu kreskowego</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePut" xml:space="preserve">
+    <value>Podwójnie potwierdź umieszczenie kodu kreskowego</value>
+  </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>Obsługa tkanin (niestandardowy WMS)</value>
+  </data>
+  <data name="IsEnabeNoteRules" xml:space="preserve">
+    <value>Notatki muszą być wypełnione</value>
+  </data>
+  <data name="IsEnableAddItem" xml:space="preserve">
+    <value>Włącz dodawanie towaru</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Pobierz i odłuż na postawie kodu kreskowego</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
+    <value>Wyszukaj pozycję według kodu kreskowego w tabeli wymiany (niestandardowy WMS)</value>
+  </data>
+  <data name="IsLocalMachineItems" xml:space="preserve">
+    <value>Wyszukaj towary w tej maszynie</value>
+  </data>
+  <data name="IsOrderList" xml:space="preserve">
+    <value>Lista zamówień (niestandardowy WMS)</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Żądanie potwierdzenia ostatniej operacji na jednostce ładunkowej</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
+    <value>Żądanie potwierdzenia ostatniej operacji na jednostce ładunkowej</value>
+  </data>
+  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Edytuj stan magazynu według różnicy</value>
+  </data>
+  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
+    <value>Edytuj stan magazynu według różnicy</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Dodanie towru…</value>
+  </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Niepowodzenie dodania towru</value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Nieprawidłowa operacja. Towar i pojemnik muszą być przyjęte. </value>
+  </data>
+  <data name="ItemsFilteredByTable" xml:space="preserve">
+    <value>Przedmioty znalezione w tabeli wymiany</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Unikalna długość identyfikatora produktu (niestandardowy WMS) </value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Brak czujnika jednostki ładunkowej w oknie dostepowym</value>
+  </data>
+  <data name="MaintenerName" xml:space="preserve">
+    <value>Nazwa opiekuna</value>
+  </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>Winda w oknie do góry</value>
+  </data>
+  <data name="NoMaintenerNameError" xml:space="preserve">
+    <value>Imię i nazwisko opiekuna wymagane do potwierdzenia usługi</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operacja</value>
+  </data>
+  <data name="OperationAdjust" xml:space="preserve">
+    <value>Dopasuj</value>
+  </data>
+  <data name="OperationCheck" xml:space="preserve">
+    <value>Sprawdź</value>
+  </data>
+  <data name="OperationMultiMachineInfo" xml:space="preserve">
+    <value>Operacja jest kontynuowana na innej maszynie</value>
+  </data>
+  <data name="OperationSubstitute" xml:space="preserve">
+    <value>Zastąp</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operacja wykonana z powodzeniem</value>
+  </data>
+  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
+    <value>Operacja wykonana z powodzeniem</value>
+  </data>
+  <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
+    <value>Częściowo wykonane i zakończone</value>
+  </data>
+  <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
+    <value>Częściowo wykonane i oczekujące</value>
+  </data>
+  <data name="PartiallyExecuteLabel" xml:space="preserve">
+    <value>Częściowo wykonane</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorytet</value>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Brak dostępnego towaru</value>
+  </data>
+  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
+    <value>Towar niedostępny</value>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Retrieving item failed</value>
+  </data>
+  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
+    <value>Nie udało się pobrać elementu</value>
+  </data>
+  <data name="ScaleNotResponding" xml:space="preserve">
+    <value>Waga nie odpowiada.</value>
+  </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Wybierz zamówienie</value>
+  </data>
+  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
+    <value>Wybierz zamówienie</value>
+  </data>
+  <data name="SetPoint" xml:space="preserve">
+    <value>Ustaw punkt</value>
+  </data>
+  <data name="ShipmentUnitCode" xml:space="preserve">
+    <value>kod jednostki wysyłkowej</value>
+  </data>
+  <data name="ShipmentUnitDescription" xml:space="preserve">
+    <value>opis jednostki wysyłkowej</value>
+  </data>
+  <data name="ShutterBay1" xml:space="preserve">
+    <value>Zatoka zasuwy 1</value>
+  </data>
+  <data name="ShutterBay2" xml:space="preserve">
+    <value>Zatoka zasuwy 2</value>
+  </data>
+  <data name="ShutterBay3" xml:space="preserve">
+    <value>Zatoka zasuwy 3</value>
+  </data>
+  <data name="SignallingDefectOnProcess" xml:space="preserve">
+    <value>Sygnalizacja defetu w procesie…</value>
+  </data>
+  <data name="SocketLink" xml:space="preserve">
+    <value>Gnizado łącza</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Nad</value>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Umieść</value>
+  </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Zawieś</value>
+  </data>
+  <data name="Suspending" xml:space="preserve">
+    <value>Zawieszam…</value>
+  </data>
+  <data name="SuspendOperationError" xml:space="preserve">
+    <value>Błąd operacji zawieszania</value>
+  </data>
+  <data name="SuspendOperationFailed" xml:space="preserve">
+    <value>Operacja zawieszenia nie powiodła się</value>
+  </data>
+  <data name="SuspendOperationSuccess" xml:space="preserve">
+    <value>Powodzenie</value>
+  </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>Teleskopowy</value>
+  </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Pojemnik przyjęty. Kod kreskowy:</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Długość kodu kreskowego pojemnika (niestandardowy WMS) </value>
+  </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Przyjmij pojemnik…</value>
+  </data>
+  <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
+    <value>Wybór trybu unikalności dla listy</value>
   </data>
 </root>

@@ -4849,6 +4849,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movement Enabled.
+        /// </summary>
+        public static string MovementEnabled {
+            get {
+                return ResourceManager.GetString("MovementEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movements performed.
         /// </summary>
         public static string MovementPerformed {

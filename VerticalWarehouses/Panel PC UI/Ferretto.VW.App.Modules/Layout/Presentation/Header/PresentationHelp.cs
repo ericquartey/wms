@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             //   null,
             //   trackCurrentView: true);
 
-            if(this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Operator)
+            if(this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement)
             {
 
                 this.navigationService.Appear(

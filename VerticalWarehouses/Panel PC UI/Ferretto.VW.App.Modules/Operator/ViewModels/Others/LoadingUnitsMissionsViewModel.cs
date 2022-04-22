@@ -132,7 +132,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsDeleteMissionCommand = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
+            this.IsDeleteMissionCommand = this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
 
             this.RaisePropertyChanged(nameof(this.IsDeleteMissionCommand));
 
