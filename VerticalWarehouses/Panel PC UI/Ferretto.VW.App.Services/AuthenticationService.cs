@@ -99,6 +99,11 @@ namespace Ferretto.VW.App.Services
                     this.AccessLevel = UserAccessLevel.Operator;
                     break;
 
+                case UserAccessLevel.Movement:
+                    //this.AccessLevel = UserAccessLevel.Admin;
+                    this.AccessLevel = UserAccessLevel.Operator;
+                    break;
+
                 case UserAccessLevel.Installer:
                     //this.AccessLevel = UserAccessLevel.Installer;
                     this.AccessLevel = UserAccessLevel.Operator;

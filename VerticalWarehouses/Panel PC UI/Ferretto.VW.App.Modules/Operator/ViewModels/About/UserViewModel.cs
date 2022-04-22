@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using DevExpress.Xpf.Core.ReflectionExtensions.Internal;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -56,6 +53,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private Culture installerLanguage;
 
         private List<Culture> languageList;
+
+        private bool movementEnabled;
+
+        private Culture movementLanguage;
 
         private bool operatorEnabled;
 
@@ -129,6 +130,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.languageList, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool MovementEnabled
+        {
+            get => this.movementEnabled;
+            set => this.SetProperty(ref this.movementEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public Culture MovementLanguage
+        {
+            get => this.movementLanguage;
+            set
+            {
+                if (this.SetProperty(ref this.movementLanguage, value))
+                {
+                    this.localizationService.SetCulture(UserAccessLevel.Movement, value.ShortCut);
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool OperatorEnabled
         {
             get => this.operatorEnabled;
@@ -175,7 +196,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.OperatorEnabled = true;
+            this.OperatorEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Operator
+                || this.sessionService.UserAccessLevel == UserAccessLevel.Installer
+                || this.sessionService.UserAccessLevel == UserAccessLevel.Support
+                || this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+            this.MovementEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Movement
+                || this.sessionService.UserAccessLevel == UserAccessLevel.Installer
+                || this.sessionService.UserAccessLevel == UserAccessLevel.Support
+                || this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
             this.InstallerEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
                 this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
@@ -303,6 +332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ServiceLanguage = this.GetItemByCulture(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
             this.InstallerLanguage = this.GetItemByCulture(users.Where(s => s.Name == "installer").Select(s => s.Language).FirstOrDefault());
             this.OperatorLanguage = this.GetItemByCulture(users.Where(s => s.Name == "operator").Select(s => s.Language).FirstOrDefault());
+            this.MovementLanguage = this.GetItemByCulture(users.Where(s => s.Name == "movement").Select(s => s.Language).FirstOrDefault());
         }
 
         private List<Culture> SetLanguageList()

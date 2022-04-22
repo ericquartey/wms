@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int AccessLevel { get; set; }
 
+        public bool IsDisabled { get; set; }
+
         public bool IsDisabledWithWMS { get; set; }
 
         public bool IsService => string.CompareOrdinal(this.Name, "service") == 0;
@@ -46,11 +48,23 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 Id = -2,
                 Name = "installer",
-                AccessLevel = 2,
+                AccessLevel = 3,
                 PasswordHash = "RFzfGJR1H1hAi+t4eamhB1O0saoZkbKg3tWLkhlWiqs=",
                 PasswordSalt = "obChaz6W7brGMtT7Dn7TAw==",
                 Language = "it-IT",
                 Validity = DateTime.Now,
+            };
+
+            public static readonly UserParameters Movement = new UserParameters
+            {
+                Id = -4,
+                Name = "movement",
+                AccessLevel = 2,
+                PasswordHash = "+YrT7Qjs8rILy+SmYY8Ddd8nZ1JUJhtDoYdMefd5Ed4=",
+                PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
+                Language = "it-IT",
+                Validity = DateTime.Now,
+                IsDisabled = true,
             };
 
             public static readonly UserParameters Operator = new UserParameters
