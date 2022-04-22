@@ -425,9 +425,16 @@ namespace Ferretto.VW.MAS.NordDriver
              {
                  switch (i.Type)
                  {
-                     case InverterType.Acu:
-                     case InverterType.Ang:
-                     case InverterType.Agl:
+                     //case InverterType.Acu:
+                     //    return new AcuInverterStatus(i.Index);
+
+                     //case InverterType.Ang:
+                     //    return new AngInverterStatus(i.Index);
+
+                     //case InverterType.Agl:
+                     //    return new AglInverterStatus(i.Index, this.serviceScopeFactory);
+
+                     case InverterType.Nord:
                          return new NordStatusBase(i.Index);
 
                      default:

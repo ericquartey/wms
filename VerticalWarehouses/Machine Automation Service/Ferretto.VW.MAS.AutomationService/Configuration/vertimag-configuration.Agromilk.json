@@ -1044,7 +1044,7 @@
             "IpAddress": "192.168.0.100",
             "Parameters": [],
             "TcpPort": 17221,
-            "Type": "Ang"
+            "Type": "Nord"
           },
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 768.21954418275436,

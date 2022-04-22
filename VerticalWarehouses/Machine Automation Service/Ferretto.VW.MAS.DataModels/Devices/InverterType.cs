@@ -9,5 +9,7 @@
         Agl,
 
         Acu,
+
+        Nord,
     }
 }

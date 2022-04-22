@@ -4365,6 +4365,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Acu = 3,
     
+        Nord = 4,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
