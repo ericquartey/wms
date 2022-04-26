@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private const int CleanupTimeout = 60 * 60 * 1000;  // one hour expressed in milliseconds
 
-        private const int DelayTimeout = 3000;
+        private int DelayTimeout = 3000;
 
         private readonly Timer CleanupTimer;
 
@@ -49,6 +49,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private LoadingUnitLocation loadUnitSource;
 
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
+
         #endregion
 
         #region Constructors
@@ -57,12 +59,14 @@ namespace Ferretto.VW.MAS.MissionManager
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IServicingProvider servicingProvider,
             IEventAggregator eventAggregator,
+            IWmsSettingsProvider wmsSettingsProvider,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
             this.RestartTimer = new Timer(this.OnTimePeriodElapsed2, null, Timeout.Infinite, Timeout.Infinite);
         }
@@ -1877,8 +1881,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     if (!this.isDelayFinish
                         && wmsMission.Operations.Any(o => o.Type == WMS.Data.WebAPI.Contracts.MissionOperationType.Put))
                     {
-                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {DelayTimeout}ms for WMS to send an update");
-                        this.RestartTimer.Change(DelayTimeout, -1);
+                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update");
+                        this.DelayTimeout = this.wmsSettingsProvider.DelayTimeout;
+                        this.RestartTimer.Change(this.DelayTimeout, -1);
                     }
                     else
                     {

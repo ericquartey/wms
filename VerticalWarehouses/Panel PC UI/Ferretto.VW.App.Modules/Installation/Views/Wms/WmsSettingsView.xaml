@@ -162,10 +162,19 @@
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{Binding Path=HealthStatus, Converter={StaticResource ETHSC}}" />
             </StackPanel>-->
-      <controls:PpcTextBox Grid.Row="2"
-                           Width="140"
-                           InputText="{Binding ConnectionTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           LabelText="{res:Loc General.TimeoutMs}" />
+      <StackPanel Grid.Row="2"
+                  Orientation="Horizontal">
+        <controls:PpcTextBox Width="140"
+                             Margin="0,0,10,0"
+                             InputText="{Binding ConnectionTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{res:Loc General.TimeoutMs}" />
+
+        <controls:PpcTextBox Width="auto"
+                             Margin="0,0,10,0"
+                             InputText="{Binding DelayTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{res:Loc General.DelayPutOperation}" />
+      </StackPanel>
+
 
     </Grid>
 
@@ -225,12 +234,12 @@
                            LabelText="{res:Loc General.SocketLinkPolling}" />
 
       <controls:PpcCheckBox Grid.Row="0"
-                           Grid.Column="3"
-                           Margin="20,5,5,8"
-                           VerticalAlignment="Bottom"
-                           IsChecked="{Binding SocketLinkEndOfLine, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding SocketLinkIsEnabled}"
-                           LabelText="{res:Loc General.SocketLinkEndOfLine}" />
+                            Grid.Column="3"
+                            Margin="20,5,5,8"
+                            VerticalAlignment="Bottom"
+                            IsChecked="{Binding SocketLinkEndOfLine, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{Binding SocketLinkIsEnabled}"
+                            LabelText="{res:Loc General.SocketLinkEndOfLine}" />
 
     </Grid>
 
