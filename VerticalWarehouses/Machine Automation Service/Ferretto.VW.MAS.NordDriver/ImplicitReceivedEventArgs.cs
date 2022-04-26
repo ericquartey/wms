@@ -4,6 +4,8 @@
     {
         #region Fields
 
+        public bool isOk;
+
         public byte[] receivedMessage;
 
         #endregion

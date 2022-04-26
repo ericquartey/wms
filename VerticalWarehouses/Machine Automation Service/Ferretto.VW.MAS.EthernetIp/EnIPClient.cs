@@ -935,7 +935,7 @@ namespace System.Net.EnIPStack
         // output client
         public void Class1UpdateO2T()
         {
-            if (this.RawData != null)
+            if (this.RawData != null && SequenceItem != null)
             {
                 SequenceItem.data = this.RawData; // Normaly don't change between call
                 RemoteDevice.Class1SendO2T(SequenceItem);

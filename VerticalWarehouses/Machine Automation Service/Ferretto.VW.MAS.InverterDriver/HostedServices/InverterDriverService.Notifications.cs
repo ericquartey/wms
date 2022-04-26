@@ -29,7 +29,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    partial class InverterDriverService
+    internal partial class InverterDriverService
     {
         #region Methods
 
@@ -42,8 +42,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 case FieldMessageType.DataLayerReady:
                     // start communication
-                    await this.StartHardwareCommunicationsAsync(serviceProvider);
-                    this.InitializeTimers(serviceProvider);
+                    if (await this.StartHardwareCommunicationsAsync(serviceProvider))
+                    {
+                        this.InitializeTimers(serviceProvider);
+                    }
 
                     break;
 

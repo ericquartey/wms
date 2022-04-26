@@ -163,6 +163,10 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (Exception ex)
                 {
+                    if (ex.Message.Contains("No master"))
+                    {
+                        break;
+                    }
                     this.Logger.LogError("Error while processing a command: '{details}'.", ex);
                 }
             }
@@ -194,6 +198,10 @@ namespace Ferretto.VW.MAS.Utils
                 }
                 catch (Exception ex)
                 {
+                    if (ex.Message.Contains("No master"))
+                    {
+                        break;
+                    }
                     this.Logger.LogError("Error while processing a notification: '{details}'.", ex);
                 }
             }

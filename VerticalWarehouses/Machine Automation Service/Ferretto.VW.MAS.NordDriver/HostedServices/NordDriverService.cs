@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -116,6 +117,16 @@ namespace Ferretto.VW.MAS.NordDriver
             var inverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
 
             // TODO implement commands
+            {
+                var masterInverter = serviceProvider
+                    .GetRequiredService<IDigitalDevicesDataProvider>()
+                    .GetInverterByIndex(InverterIndex.MainInverter);
+
+                if (masterInverter?.Type != InverterType.Nord)
+                {
+                    throw new InvalidOperationException("No master NORD inverter available");
+                }
+            }
 
             return Task.CompletedTask;
         }
@@ -127,7 +138,7 @@ namespace Ferretto.VW.MAS.NordDriver
             {
                 case FieldMessageType.DataLayerReady:
                     // start communication
-                    await this.StartHardwareCommunicationsAsync(serviceProvider);
+                    this.StartHardwareCommunicationsAsync(serviceProvider);
                     //this.InitializeTimers(serviceProvider);
                     break;
 
@@ -181,6 +192,21 @@ namespace Ferretto.VW.MAS.NordDriver
             while (!this.CancellationToken.IsCancellationRequested);
         }
 
+        private void OnConnectionStatus(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            this.Logger.LogDebug($"Connection status tcp: {e.IsConnected}, udp: {e.IsConnectedUdp}");
+            if (!e.IsConnectedUdp)
+            {
+                // try to reconnect:
+                this.socketTransport.Disconnect();
+                // TEST
+                var localAddress = new IPAddress(new byte[] { 192, 168, 250, 199 });
+                this.inverterAddress = new IPAddress(new byte[] { 192, 168, 250, 53 });
+                // END TEST
+                this.socketTransport.Configure(this.inverterAddress, this.sendPort, localAddress);
+            }
+        }
+
         private void OnInverterMessageReceivedExplicit(byte[] messageBytes)
         {
             this.Logger.LogTrace($"1:inverterMessage={messageBytes}");
@@ -227,7 +253,7 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private void OnInverterMessageReceivedImplicit(object sender, ImplicitReceivedEventArgs e)
         {
-            this.Logger.LogTrace($"1:inverterMessage={e.receivedMessage}");
+            this.Logger.LogTrace($"1:inverterMessage={BitConverter.ToString(e.receivedMessage)}");
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 try
@@ -529,11 +555,16 @@ namespace Ferretto.VW.MAS.NordDriver
             }
         }
 
-        private Task StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
+        private bool StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
         {
             var masterInverter = serviceProvider
                 .GetRequiredService<IDigitalDevicesDataProvider>()
                 .GetInverterByIndex(InverterIndex.MainInverter);
+
+            if (masterInverter?.Type != InverterType.Nord)
+            {
+                throw new InvalidOperationException("No master NORD inverter available");
+            }
 
             this.inverterAddress = masterInverter.IpAddress;
             this.sendPort = masterInverter.TcpPort;
@@ -546,6 +577,7 @@ namespace Ferretto.VW.MAS.NordDriver
                 // END TEST
                 this.socketTransport.Configure(this.inverterAddress, this.sendPort, localAddress);
                 this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
+                this.socketTransport.ConnectionStatusChanged += this.OnConnectionStatus;
 
                 this.explicitMessagesTask.Start();
                 for (var i = 0; i < this.forceStatusPublish.Length; i++)
@@ -561,7 +593,7 @@ namespace Ferretto.VW.MAS.NordDriver
                 throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);
             }
 
-            return Task.CompletedTask;
+            return true;
         }
 
         #endregion

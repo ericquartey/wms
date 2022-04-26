@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.NordDriver
     {
         #region Events
 
+        event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
+
         event EventHandler<ImplicitReceivedEventArgs> ImplicitReceivedChanged;
 
         #endregion
@@ -20,6 +22,8 @@ namespace Ferretto.VW.MAS.NordDriver
         ///     Returns Socket Transport connection status
         /// </summary>
         bool IsConnected { get; }
+
+        bool IsConnectedUdp { get; set; }
 
         #endregion
 

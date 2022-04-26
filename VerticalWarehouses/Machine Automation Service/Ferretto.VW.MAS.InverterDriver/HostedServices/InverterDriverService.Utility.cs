@@ -36,7 +36,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    partial class InverterDriverService
+    internal partial class InverterDriverService
     {
         #region Fields
 
@@ -1275,13 +1275,18 @@ namespace Ferretto.VW.MAS.InverterDriver
             return returnValue;
         }
 
-        private async Task StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
+        private async Task<bool> StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("1:Method Start");
 
             var masterInverter = serviceProvider
                 .GetRequiredService<IDigitalDevicesDataProvider>()
                 .GetInverterByIndex(InverterIndex.MainInverter);
+
+            if (masterInverter?.Type != InverterType.Ang)
+            {
+                throw new InvalidOperationException("No master ANG inverter available");
+            }
 
             this.inverterAddress = masterInverter.IpAddress;
             this.inverterPort = masterInverter.TcpPort;
@@ -1329,6 +1334,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
                 throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);
             }
+            return true;
         }
 
         #endregion

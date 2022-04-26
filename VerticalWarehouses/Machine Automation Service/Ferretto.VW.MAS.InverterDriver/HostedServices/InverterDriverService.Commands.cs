@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -16,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    partial class InverterDriverService
+    internal partial class InverterDriverService
     {
         #region Methods
 
@@ -73,6 +74,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.SendOperationErrorMessage(inverterIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
 
                     return Task.CompletedTask;
+                }
+            }
+            else
+            {
+                var masterInverter = serviceProvider
+                    .GetRequiredService<IDigitalDevicesDataProvider>()
+                    .GetInverterByIndex(InverterIndex.MainInverter);
+
+                if (masterInverter?.Type != InverterType.Ang)
+                {
+                    throw new InvalidOperationException("No master ANG inverter available");
                 }
             }
 

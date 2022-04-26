@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private EnIPClient client;
 
+        private ForwardClose_Packet closePacket;
+
         private EnIPAttribut Input;
 
         private IPAddress inverterAddress;
@@ -40,6 +42,8 @@ namespace Ferretto.VW.MAS.NordDriver
         private EnIPAttribut Output;
 
         private byte[] receiveBuffer = new byte[1024];
+
+        private DateTimeOffset receivedImplicitTime;
 
         private EnIPRemoteDevice remoteDevice;
 
@@ -58,6 +62,8 @@ namespace Ferretto.VW.MAS.NordDriver
         #endregion
 
         #region Events
+
+        public event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
 
         public event EventHandler<ImplicitReceivedEventArgs> ImplicitReceivedChanged;
 
@@ -120,6 +126,8 @@ namespace Ferretto.VW.MAS.NordDriver
 
         public bool IsConnected => this.remoteDevice?.IsConnected() ?? false;
 
+        public bool IsConnectedUdp { get; set; }
+
         #endregion
 
         #region Methods
@@ -127,6 +135,7 @@ namespace Ferretto.VW.MAS.NordDriver
         /// <inheritdoc />
         public void Configure(IPAddress inverterAddress, int sendPort, IPAddress localAddress)
         {
+            this.IsConnectedUdp = false;
             this.inverterAddress = inverterAddress;
             this.localAddress = localAddress;
             this.sendPort = 0xAF12;
@@ -149,7 +158,18 @@ namespace Ferretto.VW.MAS.NordDriver
         /// <inheritdoc />
         public void Disconnect()
         {
-            this.remoteDevice.Disconnect();
+            if (this.closePacket != null)
+            {
+                this.implicitTimer.Change(600, 600);
+                this.remoteDevice?.ForwardClose(this.closePacket);
+                this.closePacket = null;
+                if (this.Input != null)
+                {
+                    this.Input.T2OEvent -= new T2OEventHandler(this.ImplicitMessageReceived);
+                }
+            }
+            this.remoteDevice?.Disconnect();
+            this.remoteDevice = null;
         }
 
         public void Dispose()
@@ -167,7 +187,7 @@ namespace Ferretto.VW.MAS.NordDriver
             int Offset = 0;
             byte[] msg = path.ToArray();
 
-            var status = this.remoteDevice.SendUCMM_RR_Packet(msg, serviceId, data, ref Offset, ref Lenght, out receive);
+            var status = this.remoteDevice?.SendUCMM_RR_Packet(msg, serviceId, data, ref Offset, ref Lenght, out receive);
 
             isOk = (status == EnIPNetworkStatus.OnLine) && (Lenght > 44);
 
@@ -250,6 +270,8 @@ namespace Ferretto.VW.MAS.NordDriver
             this.receiveBuffer = sender.RawData;
             var args = new ImplicitReceivedEventArgs();
             args.receivedMessage = sender.RawData;
+            args.isOk = true;
+            this.receivedImplicitTime = DateTime.UtcNow;
             this.ImplicitReceivedChanged?.Invoke(this, args);
         }
 
@@ -259,9 +281,22 @@ namespace Ferretto.VW.MAS.NordDriver
             if (this.Output != null)
             {
                 this.Output.Class1UpdateO2T();
+                var isOk = DateTimeOffset.UtcNow.Subtract(this.receivedImplicitTime).TotalMilliseconds < 400;
+                if (isOk != this.IsConnectedUdp || this.remoteDevice is null)
+                {
+                    this.IsConnectedUdp = isOk;
+                    this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.IsConnected, this.IsConnectedUdp));
+                }
             }
 
-            this.implicitTimer.Change(200, 200);
+            if (this.remoteDevice is null)
+            {
+                this.implicitTimer.Change(600, 600);
+            }
+            else
+            {
+                this.implicitTimer.Change(200, 200);
+            }
         }
 
         private void OnDeviceArrival(EnIPRemoteDevice device)
@@ -274,12 +309,13 @@ namespace Ferretto.VW.MAS.NordDriver
                     InverterDriverExceptionCode.TcpInverterConnectionFailed);
             }
             this.remoteDevice.GetObjectList();
-            this.StartImplicitMessages();
+            this.IsConnectedUdp = this.StartImplicitMessages();
+            this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.IsConnected, this.IsConnectedUdp));
         }
 
         private bool StartImplicitMessages()
         {
-            var ipClass = this.remoteDevice.SupportedClassLists.FirstOrDefault(c => c.Id == (ushort)CIPObjectLibrary.Assembly);
+            var ipClass = this.remoteDevice?.SupportedClassLists.FirstOrDefault(c => c.Id == (ushort)CIPObjectLibrary.Assembly);
             if (ipClass is null)
             {
                 throw new InverterDriverException(
@@ -299,11 +335,12 @@ namespace Ferretto.VW.MAS.NordDriver
             this.Input.ReadDataFromNetwork();
 
             var localEp = new IPEndPoint(this.localAddress, 0x8AE);
-            this.remoteDevice.Class1Activate(localEp);
+            this.remoteDevice?.Class1Activate(localEp);
 
-            var status = this.remoteDevice.ForwardOpen(null, this.Output, this.Input, out var closePacket, 200 * 1000, true, false);
+            var status = this.remoteDevice?.ForwardOpen(null, this.Output, this.Input, out this.closePacket, 200 * 1000, true, false);
             if (status == EnIPNetworkStatus.OnLine)
             {
+                this.receivedImplicitTime = DateTime.UtcNow;
                 this.implicitTimer.Change(200, 200);
                 if (this.Input != null)
                 {

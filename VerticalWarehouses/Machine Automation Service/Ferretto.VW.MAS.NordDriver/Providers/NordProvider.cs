@@ -425,28 +425,21 @@ namespace Ferretto.VW.MAS.NordDriver
              {
                  switch (i.Type)
                  {
-                     //case InverterType.Acu:
-                     //    return new AcuInverterStatus(i.Index);
-
-                     //case InverterType.Ang:
-                     //    return new AngInverterStatus(i.Index);
-
-                     //case InverterType.Agl:
-                     //    return new AglInverterStatus(i.Index, this.serviceScopeFactory);
-
                      case InverterType.Nord:
                          return new NordStatusBase(i.Index);
 
                      default:
-                         throw new Exception();
+                         return null;
                  }
              })
              .ToArray()
              .OrderBy(i => i.SystemIndex);
 
-            if (!inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter))
+            if (inverters is null
+                || !inverters.Any(i => i?.SystemIndex == InverterIndex.MainInverter))
             {
-                throw new Exception("No main inverter is configured in the system.");
+                inverters = null;
+                this.logger.LogError("No main inverter NORD is configured in the system.");
             }
             this.logger.LogTrace("OnDataLayerReady end");
         }

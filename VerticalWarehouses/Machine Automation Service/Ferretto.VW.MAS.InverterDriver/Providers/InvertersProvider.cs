@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
@@ -323,7 +324,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             if (inverters is null)
             {
-                throw new InvalidOperationException("The inverter configuration is not yet loaded because data layer is not ready.");
+                //throw new InvalidOperationException("The inverter configuration is not yet loaded because data layer is not ready.");
+                throw new EntityNotFoundException("inverters");
             }
 
             return inverters;
@@ -343,6 +345,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IAngInverterStatus GetMainInverter()
         {
+            if (inverters is null)
+            {
+                throw new EntityNotFoundException("inverters");
+            }
             System.Diagnostics.Debug.Assert(inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
 
             return inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
@@ -435,14 +441,17 @@ namespace Ferretto.VW.MAS.InverterDriver
                          return new AglInverterStatus(i.Index, this.serviceScopeFactory);
 
                      default:
-                         throw new Exception();
+                         return null;
                  }
              })
              .ToArray();
 
-            if (inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
+            if (inverters is null
+                || !inverters.Any(i => i?.SystemIndex == InverterIndex.MainInverter)
+                || inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
             {
-                throw new Exception("No main inverter is configured in the system.");
+                inverters = null;
+                this.logger.LogError("No main inverter ANG is configured in the system.");
             }
             this.logger.LogTrace("OnDataLayerReady end");
         }
