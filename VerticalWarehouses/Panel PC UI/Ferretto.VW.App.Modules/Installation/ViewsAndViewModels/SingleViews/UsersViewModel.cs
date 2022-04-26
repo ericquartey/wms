@@ -156,7 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
           ??
           (this.saveIsMovementEnabledCommand = new DelegateCommand(
               async () => await this.SaveIsMovementEnabled(),
-              this.CanExecute));
+              this.CanExecuteInstallerCommand));
 
         public ICommand SaveIsOperatorEnabledWithWMSCommand =>
                   this.saveIsOperatorEnabledWithWMSCommand
