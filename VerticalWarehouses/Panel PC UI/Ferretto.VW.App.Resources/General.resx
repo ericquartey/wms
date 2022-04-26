@@ -355,7 +355,7 @@
     <value>Find zero elevator</value>
   </data>
   <data name="DelayPutOperation" xml:space="preserve">
-    <value>Delay Put (ms)</value>
+    <value>Delay after put (ms)</value>
     
   </data>
 </root>

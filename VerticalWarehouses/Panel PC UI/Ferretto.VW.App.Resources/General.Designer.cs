@@ -277,7 +277,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delay Put (ms).
+        ///   Looks up a localized string similar to Delay after put (ms).
         /// </summary>
         public static string DelayPutOperation {
             get {
