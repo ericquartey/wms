@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int connectionTimeout;
 
+        private int delayTimeout;
+
         private HealthStatus healthStatus;
 
         private bool isAllDisabled;
@@ -94,6 +96,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set
             {
                 if (this.SetProperty(ref this.connectionTimeout, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public int DelayTimeout
+        {
+            get => this.delayTimeout;
+            set
+            {
+                if (this.SetProperty(ref this.delayTimeout, value))
                 {
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
@@ -273,6 +288,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWmsEnabled = await this.wmsStatusWebService.IsEnabledAsync();
                 this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
                 this.ConnectionTimeout = await this.wmsStatusWebService.GetConnectionTimeoutAsync();
+                this.DelayTimeout = await this.wmsStatusWebService.GetDelayTimeoutAsync();
+                
 
                 this.SocketLinkIsEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
                 this.SocketLinkPort = await this.wmsStatusWebService.GetSocketLinkPortAsync();
@@ -382,6 +399,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling, this.ConnectionTimeout, this.SocketLinkEndOfLine);
+                await this.wmsStatusWebService.UpdateDelayTimeoutAsync(this.DelayTimeout);
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
 

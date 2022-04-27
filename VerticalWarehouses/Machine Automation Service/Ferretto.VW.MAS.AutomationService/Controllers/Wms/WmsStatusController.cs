@@ -42,6 +42,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.ConnectionTimeout);
         }
 
+        [HttpGet("get-delay-timeout")]
+        public ActionResult<int> GetDelayTimeout()
+        {
+            return this.Ok(this.wmsSettingsProvider.DelayTimeout);
+        }
+
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -139,6 +145,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task UpdateIsTimeSyncEnabledAsync()
         {
             this.wmsSettingsProvider.IsTimeSyncEnabled = true;
+        }
+
+        [HttpPut("update-delay-timeout")]
+        public async Task UpdateDelayTimeout(int seconds)
+        {
+            this.wmsSettingsProvider.DelayTimeout = seconds;
         }
 
         [HttpPost("time-sync-interval-milliseconds-update")]

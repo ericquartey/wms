@@ -67,6 +67,30 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        public int DelayTimeout
+        {
+            get
+            {
+                lock (this.dataContext)
+                {
+                    if (this.dataContext.WmsSettings.AsNoTracking().Single().DelayTimeout == 0)
+                    {
+                        this.dataContext.WmsSettings.Single().DelayTimeout = 3000;
+                        this.dataContext.SaveChanges();
+                    }
+                    return this.dataContext.WmsSettings.AsNoTracking().Single().DelayTimeout;
+                }
+            }
+            set
+            {
+                lock (this.dataContext)
+                {
+                    this.dataContext.WmsSettings.Single().DelayTimeout = value;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public bool IsConnected
         {
             get

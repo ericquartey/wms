@@ -1034,7 +1034,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.maxKnownIndexSelection = 0;
             }
 
-            var selectedItemId = this.SelectedItem?.Id;
+            //var selectedItemId = this.SelectedItem?.Id;
 
             try
             {
@@ -1116,11 +1116,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
-                    this.SelectedItem = this.items.FirstOrDefault();
                 }
                 else
                 {
-                    this.SelectedItem = null;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
@@ -1154,9 +1152,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.RaisePropertyChanged(nameof(this.Items));
-            this.RaisePropertyChanged(nameof(this.SelectedItem));
-
-            this.SetCurrentIndex(selectedItemId);
             this.AdjustItemsAppearance();
         }
 
@@ -1211,13 +1206,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.maxKnownIndexSelection == 0)
                 {
                     this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize) - 1;
-                }
-
-                if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
-                    &&
-                    this.Items.Count >= this.maxKnownIndexSelection)
-                {
-                    this.SelectedItem = this.items?.ElementAtOrDefault(this.maxKnownIndexSelection);
                 }
             }
             catch (Exception ex)
