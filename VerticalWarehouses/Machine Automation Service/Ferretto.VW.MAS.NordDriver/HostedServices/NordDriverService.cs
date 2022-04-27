@@ -197,7 +197,12 @@ namespace Ferretto.VW.MAS.NordDriver
             this.Logger.LogDebug($"Connection status tcp: {e.IsConnected}, udp: {e.IsConnectedUdp}");
             if (!e.IsConnectedUdp)
             {
-                // try to reconnect:
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError);
+                }
+
+                this.Logger.LogDebug("Reconnect");
                 this.socketTransport.Disconnect();
                 // TEST
                 var localAddress = new IPAddress(new byte[] { 192, 168, 250, 199 });
@@ -575,6 +580,7 @@ namespace Ferretto.VW.MAS.NordDriver
                 var localAddress = new IPAddress(new byte[] { 192, 168, 250, 199 });
                 this.inverterAddress = new IPAddress(new byte[] { 192, 168, 250, 53 });
                 // END TEST
+                this.Logger.LogDebug("Start connection");
                 this.socketTransport.Configure(this.inverterAddress, this.sendPort, localAddress);
                 this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
                 this.socketTransport.ConnectionStatusChanged += this.OnConnectionStatus;

@@ -381,14 +381,14 @@ namespace System.Net.EnIPStack
 
         public ForwardOpen_Config(EnIPAttribut Output, EnIPAttribut Input, bool InputP2P, uint cycleTime)
         {
-            if (Output != null)
+            if (Output != null && Output.RawData != null)
             {
                 IsO2T = true;
                 O2T_datasize = (ushort)Output.RawData.Length;
                 O2T_RPI = cycleTime; // in microsecond,  here same for the two direction
                 O2T_P2P = true; // by default in this direction
             }
-            if (Input != null)
+            if (Input != null && Input.RawData != null)
             {
                 IsT2O = true;
                 T2O_datasize = (ushort)Input.RawData.Length;
