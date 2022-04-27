@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.42 rispetto la 1.0.41
 - Aggiunto utente locale Movement: è come Operator con in più i movimenti guidati e manuali
+- Aggiunto parametro wms "Attesa dopo versamento"
 
 ## Bug Risolti
 - Corretta procedura di calibrazione barriera di misura con BID e BED
@@ -35,6 +36,7 @@
 - Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
 - Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
 - Aggiornate traduzioni polacche
+- Correzione alla selezione della Ricerca Articolo
 
 ## Compatibile con adapter 0.4.31 e 0.4.32
 ***

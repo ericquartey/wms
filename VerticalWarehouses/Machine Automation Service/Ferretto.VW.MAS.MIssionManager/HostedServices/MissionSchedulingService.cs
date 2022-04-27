@@ -31,8 +31,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private const int CleanupTimeout = 60 * 60 * 1000;  // one hour expressed in milliseconds
 
-        private int DelayTimeout = 3000;
-
         private readonly Timer CleanupTimer;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
@@ -41,15 +39,17 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IServicingProvider servicingProvider;
 
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
+
         private bool dataLayerIsReady;
+
+        private int DelayTimeout = 3000;
 
         private bool firstCleanupExecuted;
 
         private bool isDelayFinish;
 
         private LoadingUnitLocation loadUnitSource;
-
-        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
@@ -1881,8 +1881,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     if (!this.isDelayFinish
                         && wmsMission.Operations.Any(o => o.Type == WMS.Data.WebAPI.Contracts.MissionOperationType.Put))
                     {
-                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update");
                         this.DelayTimeout = this.wmsSettingsProvider.DelayTimeout;
+                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update");
                         this.RestartTimer.Change(this.DelayTimeout, -1);
                     }
                     else
