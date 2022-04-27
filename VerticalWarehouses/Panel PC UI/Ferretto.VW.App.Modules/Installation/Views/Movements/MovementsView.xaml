@@ -834,7 +834,7 @@
                                 HorizontalAlignment="Right"
                                 HorizontalContentAlignment="Center"
                                 Command="{Binding IsPolicyBypassedCommand}"
-                                Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}">
+                                Visibility="{Binding IsMovementsManualLimited, Converter={StaticResource BTVC}}">
               <controls:PpcButton.Style>
                 <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                        TargetType="{x:Type controls:PpcButton}">

@@ -136,11 +136,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        private Bay Bay => this.MachineService.Bay;
-
         public bool BayIsMultiPosition => this.MachineService.Bay.IsDouble;
-
-        private IEnumerable<Cell> Cells => this.MachineService.Cells;
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -219,6 +215,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMovementsManual => !this.isMovementsGuided && !this.IsOperator;
 
+        public bool IsMovementsManualLimited => this.IsMovementsManual && this.sessionService.UserAccessLevel != UserAccessLevel.Movement;
+
         public bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
 
         public override bool IsWaitingForResponse
@@ -252,6 +250,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.title;
             set => this.SetProperty(ref this.title, value);
         }
+
+        private Bay Bay => this.MachineService.Bay;
+
+        private IEnumerable<Cell> Cells => this.MachineService.Cells;
 
         private IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
 
@@ -468,6 +470,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.MachineStatus));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+            this.RaisePropertyChanged(nameof(this.IsMovementsManualLimited));
             this.RaisePropertyChanged(nameof(this.IsOperator));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));
         }
@@ -594,6 +597,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+            this.RaisePropertyChanged(nameof(this.IsMovementsManualLimited));
             this.RaisePropertyChanged(nameof(this.IsOperator));
         }
 
@@ -606,6 +610,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+            this.RaisePropertyChanged(nameof(this.IsMovementsManualLimited));
             this.RaisePropertyChanged(nameof(this.IsOperator));
         }
 

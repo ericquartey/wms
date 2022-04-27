@@ -156,7 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
           ??
           (this.saveIsMovementEnabledCommand = new DelegateCommand(
               async () => await this.SaveIsMovementEnabled(),
-              this.CanExecuteInstallerCommand));
+              this.CanEnableMovementCommand));
 
         public ICommand SaveIsOperatorEnabledWithWMSCommand =>
                   this.saveIsOperatorEnabledWithWMSCommand
@@ -210,6 +210,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.saveIsMovementEnabledCommand?.RaiseCanExecuteChanged();
         }
 
+        private bool CanEnableMovementCommand()
+        {
+            return this.isEnabledEditing &&
+                this.sessionService.UserAccessLevel > UserAccessLevel.Installer;
+        }
+
         private bool CanExecute()
         {
             return this.isEnabledEditing &&
@@ -231,7 +237,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.movementNewPasswordConfirm) &&
                 !string.IsNullOrEmpty(this.movementNewPassword) &&
                 this.movementNewPasswordConfirm == this.movementNewPassword &&
-                this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
+                this.sessionService.UserAccessLevel > UserAccessLevel.Movement &&
+                this.sessionService.UserAccessLevel != UserAccessLevel.Installer;
         }
 
         private bool CanExecuteOperatorCommand()
