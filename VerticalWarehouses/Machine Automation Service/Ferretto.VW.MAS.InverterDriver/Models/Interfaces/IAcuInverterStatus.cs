@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
@@ -11,9 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         [Column(Order = (int)InverterSensors.ACU_EncoderChannelB)]
         bool ACU_EncoderChannelB { get; }
-
-        [Column(Order = (int)InverterSensors.ACU_ZeroSensorTop)]
-        bool ACU_ZeroSensorTop { get; }
 
         [Column(Order = (int)InverterSensors.ACU_FreeSensor1)]
         bool ACU_FreeSensor1 { get; }
@@ -29,6 +27,9 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         [Column(Order = (int)InverterSensors.ACU_ZeroSensor)]
         bool ACU_ZeroSensor { get; }
+
+        [Column(Order = (int)InverterSensors.ACU_ZeroSensorTop)]
+        bool ACU_ZeroSensorTop { get; }
 
         #endregion
     }

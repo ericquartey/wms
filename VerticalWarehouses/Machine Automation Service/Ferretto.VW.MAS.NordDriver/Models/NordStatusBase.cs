@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 namespace Ferretto.VW.MAS.NordDriver
 {
-    public class NordStatusBase : INordStatusBase
+    public class NordStatusBase : INordInverterStatus
     {
         #region Fields
 

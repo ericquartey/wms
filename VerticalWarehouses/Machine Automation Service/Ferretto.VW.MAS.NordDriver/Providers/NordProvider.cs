@@ -6,9 +6,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
@@ -22,7 +19,7 @@ namespace Ferretto.VW.MAS.NordDriver
     {
         #region Fields
 
-        private static IEnumerable<INordStatusBase> inverters;
+        private static IEnumerable<INordInverterStatus> inverters;
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -113,7 +110,7 @@ namespace Ferretto.VW.MAS.NordDriver
         }
 
         public int ComputePositioningValues(
-            INordStatusBase inverter,
+            INordInverterStatus inverter,
             IPositioningFieldMessageData positioningData,
             Orientation axisOrientation,
             int currentPosition,
@@ -269,7 +266,7 @@ namespace Ferretto.VW.MAS.NordDriver
             return (int)Math.Round(axis.Resolution * millimeters);
         }
 
-        public int ConvertMillimetersToPulses(double millimeters, INordStatusBase inverter)
+        public int ConvertMillimetersToPulses(double millimeters, INordInverterStatus inverter)
         {
             return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
         }
@@ -301,7 +298,7 @@ namespace Ferretto.VW.MAS.NordDriver
             return pulses / axis.Resolution;
         }
 
-        public double ConvertPulsesToMillimeters(int pulses, INordStatusBase inverter)
+        public double ConvertPulsesToMillimeters(int pulses, INordInverterStatus inverter)
         {
             if (pulses == 0)
             {
@@ -319,7 +316,7 @@ namespace Ferretto.VW.MAS.NordDriver
             return (pulses / resolution);
         }
 
-        public IEnumerable<INordStatusBase> GetAll()
+        public IEnumerable<INordInverterStatus> GetAll()
         {
             if (inverters is null)
             {
@@ -329,7 +326,7 @@ namespace Ferretto.VW.MAS.NordDriver
             return inverters;
         }
 
-        public INordStatusBase GetByIndex(InverterIndex index)
+        public INordInverterStatus GetByIndex(InverterIndex index)
         {
             var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
 
@@ -341,14 +338,7 @@ namespace Ferretto.VW.MAS.NordDriver
             return inverter;
         }
 
-        public IAngInverterStatus GetMainInverter()
-        {
-            System.Diagnostics.Debug.Assert(inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
-
-            return inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
-        }
-
-        public INordStatusBase GetShutterInverter(BayNumber bayNumber)
+        public INordInverterStatus GetShutterInverter(BayNumber bayNumber)
         {
             var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
             var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
@@ -421,7 +411,7 @@ namespace Ferretto.VW.MAS.NordDriver
             // retrieve inverters configuration
             inverters = inverters ?? this.digitalDevicesDataProvider
              .GetAllInverters()
-             .Select<Inverter, INordStatusBase>(i =>
+             .Select<Inverter, INordInverterStatus>(i =>
              {
                  switch (i.Type)
                  {

@@ -1,8 +1,6 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
-
-namespace Ferretto.VW.MAS.NordDriver
+﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
-    public interface INordStatusBase
+    public interface IInverterStatusBase
     {
         #region Properties
 
@@ -15,12 +13,6 @@ namespace Ferretto.VW.MAS.NordDriver
         bool IsStarted { get; }
 
         ushort OperatingMode { get; set; }
-
-        ushort SetPointFrequency { get; set; }
-
-        int SetPointPosition { get; set; }
-
-        ushort SetPointRampTime { get; set; }
 
         InverterIndex SystemIndex { get; }
 

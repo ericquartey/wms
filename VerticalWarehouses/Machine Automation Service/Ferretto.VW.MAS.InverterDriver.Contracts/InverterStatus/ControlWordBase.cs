@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.NordDriver
+﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
     public class ControlWordBase : IControlWord
     {
@@ -134,6 +134,31 @@
             }
         }
 
+        public bool HeartBeat
+        {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0400) > 0;
+                }
+            }
+            set
+            {
+                lock (this.controlWordLockObject)
+                {
+                    if (value)
+                    {
+                        this.controlWord |= 0x0400;
+                    }
+                    else
+                    {
+                        this.controlWord &= 0xFBFF;
+                    }
+                }
+            }
+        }
+
         public bool HorizontalAxis
         {
             get => (this.Value & 0x8000) > 0;
@@ -146,81 +171,6 @@
                 else
                 {
                     this.Value &= 0x7FFF;
-                }
-            }
-        }
-
-        public bool NewSetPoint
-        {
-            get
-            {
-                lock (this.controlWordLockObject)
-                {
-                    return (this.controlWord & 0x0010) > 0;
-                }
-            }
-            set
-            {
-                lock (this.controlWordLockObject)
-                {
-                    if (value)
-                    {
-                        this.controlWord |= 0x0010;
-                    }
-                    else
-                    {
-                        this.controlWord &= 0xFFEF;
-                    }
-                }
-            }
-        }
-
-        public bool ParameterSet1
-        {
-            get
-            {
-                lock (this.controlWordLockObject)
-                {
-                    return (this.controlWord & 0x0020) > 0;
-                }
-            }
-            set
-            {
-                lock (this.controlWordLockObject)
-                {
-                    if (value)
-                    {
-                        this.controlWord |= 0x0020;
-                    }
-                    else
-                    {
-                        this.controlWord &= 0xFFDF;
-                    }
-                }
-            }
-        }
-
-        public bool ParameterSet2
-        {
-            get
-            {
-                lock (this.controlWordLockObject)
-                {
-                    return (this.controlWord & 0x0040) > 0;
-                }
-            }
-            set
-            {
-                lock (this.controlWordLockObject)
-                {
-                    if (value)
-                    {
-                        this.controlWord |= 0x0040;
-                    }
-                    else
-                    {
-                        this.controlWord &= 0xFFBF;
-                    }
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.NordDriver
+﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
     public class StatusWordBase : IStatusWord
     {
@@ -42,7 +42,7 @@
             {
                 lock (this.syncRoot)
                 {
-                    return (this.statusWord & 0x0002) > 0;
+                    return (this.statusWord & 0x0004) > 0;
                 }
             }
         }
@@ -53,7 +53,7 @@
             {
                 lock (this.syncRoot)
                 {
-                    return (this.statusWord & 0x0004) > 0;
+                    return (this.statusWord & 0x00200) > 0;
                 }
             }
         }
@@ -102,17 +102,6 @@
             }
         }
 
-        public bool IsTargetReached
-        {
-            get
-            {
-                lock (this.syncRoot)
-                {
-                    return (this.statusWord & 0x0010) > 0;
-                }
-            }
-        }
-
         public bool IsVoltageEnabled
         {
             get
@@ -142,28 +131,6 @@
                 lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x8000) > 0;
-                }
-            }
-        }
-
-        public bool ParameterSet1
-        {
-            get
-            {
-                lock (this.syncRoot)
-                {
-                    return (this.statusWord & 0x0020) > 0;
-                }
-            }
-        }
-
-        public bool ParameterSet2
-        {
-            get
-            {
-                lock (this.syncRoot)
-                {
-                    return (this.statusWord & 0x0040) > 0;
                 }
             }
         }

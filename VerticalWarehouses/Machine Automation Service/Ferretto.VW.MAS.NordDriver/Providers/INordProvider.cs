@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
@@ -17,7 +16,7 @@ namespace Ferretto.VW.MAS.NordDriver
         double ComputeDisplacement(double targetPosition, double weight);
 
         int ComputePositioningValues(
-            INordStatusBase inverter,
+            INordInverterStatus inverter,
             IPositioningFieldMessageData positioningData,
             Orientation axisOrientation,
             int currentPosition,
@@ -26,21 +25,19 @@ namespace Ferretto.VW.MAS.NordDriver
 
         int ConvertMillimetersToPulses(double millimeters, Orientation orientation);
 
-        int ConvertMillimetersToPulses(double millimeters, INordStatusBase inverter);
+        int ConvertMillimetersToPulses(double millimeters, INordInverterStatus inverter);
 
         int ConvertMillimetersToPulses(double millimeters, InverterIndex bayInverterIndex);
 
         double ConvertPulsesToMillimeters(int pulses, Orientation orientation);
 
-        double ConvertPulsesToMillimeters(int pulses, INordStatusBase inverter);
+        double ConvertPulsesToMillimeters(int pulses, INordInverterStatus inverter);
 
-        IEnumerable<INordStatusBase> GetAll();
+        IEnumerable<INordInverterStatus> GetAll();
 
-        INordStatusBase GetByIndex(InverterIndex index);
+        INordInverterStatus GetByIndex(InverterIndex index);
 
-        IAngInverterStatus GetMainInverter();
-
-        INordStatusBase GetShutterInverter(BayNumber bayNumber);
+        INordInverterStatus GetShutterInverter(BayNumber bayNumber);
 
         #endregion
     }

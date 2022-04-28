@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.MAS.InverterDriver.Enumerations
+﻿namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
     public enum InverterMovementDirection
     {
