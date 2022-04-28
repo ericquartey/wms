@@ -1222,6 +1222,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBusyRequestingItemPut = false;
             this.IsBusyRequestingItemPick = false;
             this.IsWaitingForResponse = false;
+
+            this.InputQuantity = 0;
+            this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
+            this.SelectedItem = null;
         }
 
         private bool CanExecuteItemPick()
