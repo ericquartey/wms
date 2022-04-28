@@ -1068,9 +1068,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
-                    this.SelectedItem = null;
-                    this.AvailableQuantity = null;
-                    this.InputQuantity = 0;
+                    //this.SelectedItem = null;
+                    //this.AvailableQuantity = null;
+                    //this.InputQuantity = 0;
 
                     this.RaisePropertyChanged(nameof(this.Items));
                     return;
