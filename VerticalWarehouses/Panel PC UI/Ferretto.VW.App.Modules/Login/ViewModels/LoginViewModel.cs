@@ -60,11 +60,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private ObservableCollection<string> users;
 
-        private System.Collections.Generic.IEnumerable<User> wmsUsers;
+        private IEnumerable<User> wmsUsers;
 
         private readonly IMachineUsersWebService usersService;
 
         private IEnumerable<UserParameters> userList;
+
+        private List<string> baseUser;
 
         #endregion
 
@@ -99,7 +101,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
 
-            this.Users = new ObservableCollection<string>(this.BaseUser);
+            this.Users = new ObservableCollection<string>();
 #if DEBUG
             this.UserLogin = new UserLogin
             {
@@ -176,8 +178,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         }
 
         #endregion
-
-        private readonly List<string> BaseUser = new List<string>() { "operator", "movement", "installer", "service", "admin" };
 
         public string ActiveContextName => "Login";
 
@@ -301,16 +301,18 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private void SetBaseUser()
         {
-            if (!this.Users.ToList().SequenceEqual(this.BaseUser))
+            if (this.Users is null
+                || !this.Users.ToList().SequenceEqual(this.baseUser))
             {
                 this.Users.Clear();
-                this.Users.AddRange(this.BaseUser);
+                this.Users.AddRange(this.baseUser);
             }
         }
 
         public override async Task OnAppearedAsync()
         {
             this.userList = await this.usersService.GetAllUserWithCultureAsync();
+            this.baseUser = this.userList.Select(x => x.Name).ToList();
             this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
             this.sessionService.IsLogged = false;
@@ -399,16 +401,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 var wmsUsersName = this.WmsUsers.Select(s => s.Login).ToList();
 
                 var isOperatorEnabled = await this.usersService.GetOperatorEnabledWithWMSAsync();
-                var isMovementDisabled = await this.usersService.GetIsDisabledAsync("movement");
-
-                if (isMovementDisabled)
-                {
-                    this.users.Remove("movement");
-                }
 
                 if (isOperatorEnabled)
                 {
-                    var userToAdd = wmsUsersName.Except(this.BaseUser).OrderByDescending(s => s);
+                    var userToAdd = wmsUsersName.Except(this.baseUser).OrderByDescending(s => s);
 
                     foreach (var item in userToAdd)
                     {
@@ -417,7 +413,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
                 else
                 {
-                    var newBaseUser = this.BaseUser.Where(s => s != "operator").ToList();
+                    var newBaseUser = this.baseUser.Where(s => s != "operator").ToList();
 
                     var userToAdd = wmsUsersName.Except(newBaseUser).OrderByDescending(s => s);
 
@@ -515,7 +511,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                if (this.BaseUser.Contains(this.UserLogin.UserName))
+                if (this.baseUser.Contains(this.UserLogin.UserName))
                 {
                     if (!string.IsNullOrEmpty(this.UserLogin.Error))
                     {

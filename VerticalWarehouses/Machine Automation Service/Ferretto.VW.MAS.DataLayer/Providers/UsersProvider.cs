@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var count = this.dataContext.Users.Count();
-                var result = this.dataContext.Users.AsNoTracking();
+                var result = this.dataContext.Users.AsNoTracking().Where(u => !u.IsDisabled).OrderBy(o => o.AccessLevel).ThenByDescending(o => o.Id);
                 return result;
             }
         }
