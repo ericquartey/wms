@@ -1068,9 +1068,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
-                    this.SelectedItem = null;
-                    this.AvailableQuantity = null;
-                    this.InputQuantity = 0;
+                    //this.SelectedItem = null;
+                    //this.AvailableQuantity = null;
+                    //this.InputQuantity = 0;
 
                     this.RaisePropertyChanged(nameof(this.Items));
                     return;
@@ -1222,6 +1222,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBusyRequestingItemPut = false;
             this.IsBusyRequestingItemPick = false;
             this.IsWaitingForResponse = false;
+
+            this.InputQuantity = 0;
+            this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
+            this.SelectedItem = null;
         }
 
         private bool CanExecuteItemPick()
