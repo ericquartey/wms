@@ -611,7 +611,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public byte[] ToBytes()
         {
-            var messageLength = this.payload.Length + 6;
+            var messageLength = this.payloadLength + 6;
             var writeMessage = new byte[messageLength];
 
             writeMessage[0] = WriteHeader;
@@ -633,7 +633,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             try
             {
-                Array.Copy(this.payload, 0, writeMessage, 6, this.payload.Length);
+                Array.Copy(this.payload, 0, writeMessage, 6, this.payloadLength);
             }
             catch (Exception ex)
             {

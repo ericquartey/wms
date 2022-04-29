@@ -1319,6 +1319,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         private async Task<bool> StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace("1:Method Start");
+            var ret = true;
 
             var masterInverter = serviceProvider
                 .GetRequiredService<IDigitalDevicesDataProvider>()
@@ -1331,12 +1332,13 @@ namespace Ferretto.VW.MAS.InverterDriver
             else if (masterInverter?.Type == InverterType.Nord)
             {
                 await this.StartCommunicationNord(masterInverter);
+                ret = false;
             }
             else
             {
                 throw new InvalidOperationException("No master inverter available");
             }
-            return true;
+            return ret;
         }
 
         #endregion

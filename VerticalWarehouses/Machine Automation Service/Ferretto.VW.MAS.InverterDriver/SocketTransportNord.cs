@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         public SocketTransportNord(IConfiguration configuration)
         {
             this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:Drivers:Inverter:ReadTimeoutMilliseconds", -1);
-            this.localAddress = configuration.GetValue<IPAddress>("Vertimag:LocalAddress", IPAddress.Parse("192.168.0.10"));
+            this.localAddress = IPAddress.Parse(configuration.GetValue("Vertimag:LocalAddress", "192.168.0.10"));
             this.implicitTimer = new Timer(this.ImplicitTimer, null, -1, -1);
         }
 
