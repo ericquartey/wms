@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return message;
         }
 
-        public static InverterMessage FromBytesExplicit(byte[] messageBytes)
+        public static InverterMessage FromBytesExplicit(byte[] messageBytes, int length)
         {
             if (messageBytes is null)
             {
@@ -382,13 +382,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             message.sendDelay = 0;
             message.IsError = messageBytes[18] != 0;
 
-            message.payloadLength = BitConverter.ToInt16(messageBytes, 24);
+            message.payloadLength = length - 44;
             message.IsWriteMessage = message.payloadLength == 0;
             message.payload = new byte[message.payloadLength];
 
             try
             {
-                Array.Copy(messageBytes, 26, message.payload, 0, message.payloadLength);
+                Array.Copy(messageBytes, 44, message.payload, 0, message.payloadLength);
             }
             catch (Exception ex)
             {
@@ -615,8 +615,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             var writeMessage = new byte[messageLength];
 
             writeMessage[0] = WriteHeader;
-            writeMessage[1] =
-                Convert.ToByte(messageLength - 2); // VALUE Data length does not include header and length bytes
+            writeMessage[1] = Convert.ToByte(messageLength - 2); // VALUE Data length does not include header and length bytes
             writeMessage[SystemIndexByteIndex] = (byte)this.SystemIndex;
             writeMessage[DatasetByteIndex] = this.DataSetIndex;
 

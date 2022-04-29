@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
         /// </summary>
         void Disconnect();
 
-        bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive);
+        bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive, out int length);
 
         bool ImplicitMessageStart(byte[] data);
 

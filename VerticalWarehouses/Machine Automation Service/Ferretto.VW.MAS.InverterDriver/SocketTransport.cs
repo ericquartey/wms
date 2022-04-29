@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             GC.SuppressFinalize(this);
         }
 
-        public bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive)
+        public bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive, out int length)
         {
             throw new NotImplementedException();
         }

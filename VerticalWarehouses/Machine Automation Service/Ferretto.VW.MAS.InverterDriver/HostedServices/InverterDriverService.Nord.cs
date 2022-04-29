@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.EnIPStack;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -79,14 +77,14 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void OnInverterMessageReceivedExplicit(byte[] messageBytes)
+        private void OnInverterMessageReceivedExplicit(byte[] messageBytes, int length)
         {
             this.Logger.LogTrace($"1:inverterMessage={messageBytes}");
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 try
                 {
-                    var message = InverterMessage.FromBytesExplicit(messageBytes);
+                    var message = InverterMessage.FromBytesExplicit(messageBytes, length);
 
                     //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
 
@@ -190,20 +188,16 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private async Task<bool> ProcessInverterCommandNord(InverterMessage inverterMessage)
         {
-            var serviceId = inverterMessage.IsWriteMessage ? CIPServiceCodes.SetAttributeSingle : CIPServiceCodes.GetAttributeSingle;
-            var msg = inverterMessage.ToBytes();
-            var datalen = msg.Length - 6;
-            var data = new List<byte>();
-            if (datalen > 0)
-            {
-                data.AddRange(msg.ToArray().Skip(6));
-            }
+            var result = false;
 
-            //TODO - instanceId is the parameter subindex
-            var result = this.socketTransport.ExplicitMessage(101, 0, (ushort)inverterMessage.ParameterId, serviceId, data?.ToArray(), out var received);
-            if (result)
+            var nordMsg = new NordMessage(inverterMessage);
+            if (nordMsg.ParameterId != 0)
             {
-                this.OnInverterMessageReceivedExplicit(received);
+                result = this.socketTransport.ExplicitMessage(nordMsg.ClassId, nordMsg.InstanceId, nordMsg.ParameterId, nordMsg.ServiceId, nordMsg.Data, out var received, out var length);
+                if (result)
+                {
+                    this.OnInverterMessageReceivedExplicit(received, length);
+                }
             }
             return result;
         }
@@ -225,6 +219,19 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.forceStatusPublish[i] = true;
                 }
+
+                // TEST
+                var fieldMessageData = new InverterCurrentErrorFieldMessageData();
+                var commandMessage = new FieldCommandMessage(
+                    fieldMessageData,
+                    $"Request Inverter Error Code",
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.InverterCurrentError,
+                    (byte)InverterIndex.MainInverter);
+
+                this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                // END TEST
             }
             catch (Exception ex)
             {

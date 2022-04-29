@@ -180,19 +180,20 @@ namespace Ferretto.VW.MAS.InverterDriver
             GC.SuppressFinalize(this);
         }
 
-        public bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive)
+        public bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive, out int length)
         {
             var isOk = false;
 
             List<byte> path = GetPath(classId, instanceId, attributeId);
-            int Lenght = 0;
+            int Length = 0;
             int Offset = 0;
             byte[] msg = path.ToArray();
             receive = null;
 
-            var status = this.remoteDevice?.SendUCMM_RR_Packet(msg, serviceId, data, ref Offset, ref Lenght, out receive);
+            var status = this.remoteDevice?.SendUCMM_RR_Packet(msg, serviceId, data, ref Offset, ref Length, out receive);
 
-            isOk = (status == EnIPNetworkStatus.OnLine) && (Lenght > 44);
+            isOk = (status == EnIPNetworkStatus.OnLine) && (Length > 44);
+            length = Length;
 
             return isOk;
         }

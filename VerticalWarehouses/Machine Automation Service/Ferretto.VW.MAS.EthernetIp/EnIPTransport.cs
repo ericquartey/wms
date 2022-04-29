@@ -267,8 +267,8 @@ namespace System.Net.EnIPStack
                 // We are not working on a continous flow but with query/response datagram
                 // So if something is here it's a previous lost (timeout) response packet
                 // Flush all content.
-                 while (Tcpclient.Available!=0) 
-                     Tcpclient.Client.Receive(packet);
+                 while (Tcpclient?.Available!=0) 
+                     Tcpclient?.Client.Receive(packet);
 
                 Tcpclient.Client.Send(SendPkt.toByteArray());
                 Lenght = Tcpclient.Client.Receive(packet);
