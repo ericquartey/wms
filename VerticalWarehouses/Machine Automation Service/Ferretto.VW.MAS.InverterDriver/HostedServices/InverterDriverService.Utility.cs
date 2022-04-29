@@ -405,15 +405,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace($"1:currentMessage={message}");
 
-            //if (message.ParameterId == InverterParameterId.ControlWord
-            //    &&
-            //    message.SystemIndex == InverterIndex.MainInverter)
-            //{
-            //    this.Logger.LogTrace("2:Evaluate Control word");
-
-            //    var mainInverter = serviceProvider.GetRequiredService<IInvertersProvider>().GetMainInverter();
-            //}
-
             if ((currentStateMachine?.ValidateCommandMessage(message) ?? false)
                 && this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWord && x.SystemIndex == message.SystemIndex) < 1
                 )
@@ -1275,19 +1266,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             return returnValue;
         }
 
-        private async Task<bool> StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
+        private async Task StartCommunicationAng(Inverter masterInverter)
         {
-            this.Logger.LogTrace("1:Method Start");
-
-            var masterInverter = serviceProvider
-                .GetRequiredService<IDigitalDevicesDataProvider>()
-                .GetInverterByIndex(InverterIndex.MainInverter);
-
-            if (masterInverter?.Type != InverterType.Ang)
-            {
-                throw new InvalidOperationException("No master ANG inverter available");
-            }
-
             this.inverterAddress = masterInverter.IpAddress;
             this.inverterPort = masterInverter.TcpPort;
 
@@ -1333,6 +1313,28 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
                 throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);
+            }
+        }
+
+        private async Task<bool> StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            var masterInverter = serviceProvider
+                .GetRequiredService<IDigitalDevicesDataProvider>()
+                .GetInverterByIndex(InverterIndex.MainInverter);
+
+            if (masterInverter?.Type == InverterType.Ang)
+            {
+                await this.StartCommunicationAng(masterInverter);
+            }
+            else if (masterInverter?.Type == InverterType.Nord)
+            {
+                await this.StartCommunicationNord(masterInverter);
+            }
+            else
+            {
+                throw new InvalidOperationException("No master inverter available");
             }
             return true;
         }

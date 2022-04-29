@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.EnIPStack;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,12 +8,22 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
 {
     public interface ISocketTransport
     {
+        #region Events
+
+        event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
+
+        event EventHandler<ImplicitReceivedEventArgs> ImplicitReceivedChanged;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
         ///     Returns Socket Transport connection status
         /// </summary>
         bool IsConnected { get; }
+
+        bool IsConnectedUdp { get; set; }
 
         #endregion
 
@@ -48,6 +59,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
         ///     Disconnects from the remote host and closes communication sockets
         /// </summary>
         void Disconnect();
+
+        bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive);
+
+        bool ImplicitMessageStart(byte[] data);
 
         /// <summary>
         ///     Reads data from the remote host. Blocks the calling thread until new data is received from the host

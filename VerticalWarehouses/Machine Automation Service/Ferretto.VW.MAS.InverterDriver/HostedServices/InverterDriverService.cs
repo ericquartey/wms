@@ -80,6 +80,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.axisPositionUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
             this.statusWordUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
             this.forceStatusPublish = new bool[(int)InverterIndex.Slave7 + 1];
+
+            this.explicitMessagesTask = new Task(async () => await this.ExplicitMessages());
         }
 
         #endregion

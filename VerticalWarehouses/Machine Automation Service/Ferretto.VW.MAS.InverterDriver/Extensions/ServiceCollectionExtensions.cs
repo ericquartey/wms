@@ -26,8 +26,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                 var configuration = s.GetRequiredService<IConfiguration>();
 
                 return configuration.UseInverterDriverMock()
-                    ? new SocketTransportMock() as ISocketTransport
-                    : new SocketTransport(configuration) as ISocketTransport;
+                    ? new SocketTransportMock()
+                    : (configuration.UseInverterDriverEthernetIP()
+                        ? new SocketTransportNord(configuration)
+                        : new SocketTransport(configuration) as ISocketTransport);
             });
 
             return services;

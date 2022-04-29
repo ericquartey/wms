@@ -338,19 +338,6 @@ namespace Ferretto.VW.MAS.NordDriver
             return inverter;
         }
 
-        public INordInverterStatus GetShutterInverter(BayNumber bayNumber)
-        {
-            var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
-            var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
-
-            if (inverter is null)
-            {
-                throw new EntityNotFoundException(index.ToString());
-            }
-
-            return inverter;
-        }
-
         /// <summary>
         /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.
         /// </summary>

@@ -82,9 +82,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     .GetRequiredService<IDigitalDevicesDataProvider>()
                     .GetInverterByIndex(InverterIndex.MainInverter);
 
-                if (masterInverter?.Type != InverterType.Ang)
+                if (masterInverter?.Type != InverterType.Ang
+                    && masterInverter?.Type != InverterType.Nord
+                    )
                 {
-                    throw new InvalidOperationException("No master ANG inverter available");
+                    throw new InvalidOperationException("No master inverter available");
                 }
             }
 

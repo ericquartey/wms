@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.EnIPStack;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,9 +48,19 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<ConnectionStatusChangedEventArgs> ConnectionStatusChanged;
+
+        public event EventHandler<ImplicitReceivedEventArgs> ImplicitReceivedChanged;
+
+        #endregion
+
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
+
+        public bool IsConnectedUdp { get; set; }
 
         #endregion
 
@@ -141,6 +152,16 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ImplicitMessageStart(byte[] data)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

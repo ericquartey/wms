@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.NordDriver
             {
                 var configuration = s.GetRequiredService<IConfiguration>();
 
-                return new SocketTransport(configuration) as ISocketTransport;
+                return new SocketTransportNord(configuration) as ISocketTransport;
             });
 
             return services;

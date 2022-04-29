@@ -37,8 +37,6 @@ namespace Ferretto.VW.MAS.NordDriver
 
         INordInverterStatus GetByIndex(InverterIndex index);
 
-        INordInverterStatus GetShutterInverter(BayNumber bayNumber);
-
         #endregion
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
@@ -343,30 +341,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             return inverter;
         }
 
-        public IAngInverterStatus GetMainInverter()
-        {
-            if (inverters is null)
-            {
-                throw new EntityNotFoundException("inverters");
-            }
-            System.Diagnostics.Debug.Assert(inverters.Any(i => i.SystemIndex == InverterIndex.MainInverter));
-
-            return inverters.Single(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus;
-        }
-
-        public IInverterStatusBase GetShutterInverter(BayNumber bayNumber)
-        {
-            var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
-            var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
-
-            if (inverter is null)
-            {
-                throw new EntityNotFoundException(index.ToString());
-            }
-
-            return inverter;
-        }
-
         /// <summary>
         /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.
         /// </summary>
@@ -440,6 +414,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                      case InverterType.Agl:
                          return new AglInverterStatus(i.Index, this.serviceScopeFactory);
 
+                     case InverterType.Nord:
+                         return new NordInverterStatus(i.Index);
+
                      default:
                          return null;
                  }
@@ -448,10 +425,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (inverters is null
                 || !inverters.Any(i => i?.SystemIndex == InverterIndex.MainInverter)
-                || inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null)
+                //|| inverters.SingleOrDefault(i => i.SystemIndex == InverterIndex.MainInverter) as IAngInverterStatus is null
+                )
             {
                 inverters = null;
-                this.logger.LogError("No main inverter ANG is configured in the system.");
+                this.logger.LogError("No main inverter is configured in the system.");
             }
             this.logger.LogTrace("OnDataLayerReady end");
         }

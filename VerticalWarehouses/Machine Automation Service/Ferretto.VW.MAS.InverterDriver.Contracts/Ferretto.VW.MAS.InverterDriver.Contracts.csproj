@@ -17,8 +17,4 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />    
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Providers\" />
-  </ItemGroup>
-
 </Project>

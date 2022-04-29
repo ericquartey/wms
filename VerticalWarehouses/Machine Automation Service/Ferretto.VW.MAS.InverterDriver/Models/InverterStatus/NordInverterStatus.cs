@@ -1,0 +1,99 @@
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+
+namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
+{
+    public class NordInverterStatus : InverterStatusBase, INordInverterStatus
+    {
+        #region Fields
+
+        private const int TOTAL_SENSOR_INPUTS = 8;
+
+        private int currentPosition;
+
+        #endregion
+
+        #region Constructors
+
+        public NordInverterStatus(InverterIndex systemIndex)
+            : base(systemIndex)
+        {
+            this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
+        }
+
+        #endregion
+
+        #region Properties
+
+        public int CurrentPosition => this.currentPosition;
+
+        public bool IsStarted =>
+            this.CommonStatusWord.IsReadyToSwitchOn &
+            //this.CommonStatusWord.IsSwitchedOn &
+            //this.CommonStatusWord.IsVoltageEnabled &
+            this.CommonStatusWord.IsQuickStopTrue;
+
+        public ushort SetPointFrequency { get; set; }
+
+        public int SetPointPosition { get; set; }
+
+        public ushort SetPointRampTime { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public override bool UpdateInputsStates(bool[] newInputStates)
+        {
+            if (newInputStates is null)
+            {
+                return false;
+            }
+
+            var updateRequired = false;
+            for (var index = 0; index < newInputStates.Length; index++)
+            {
+                if (index > TOTAL_SENSOR_INPUTS)
+                {
+                    break;
+                }
+
+                if (this.Inputs[index] != newInputStates[index])
+                {
+                    updateRequired = true;
+                    break;
+                }
+            }
+
+            try
+            {
+                if (updateRequired)
+                {
+                    Array.Copy(newInputStates, 0, this.Inputs, 0, newInputStates.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException("Error while updating inverter inputs.", ex);
+            }
+
+            return updateRequired;
+        }
+
+        public bool UpdateInverterCurrentPosition(int position)
+        {
+            var updateRequired = false;
+
+            if (this.currentPosition != position)
+            {
+                this.currentPosition = position;
+                updateRequired = true;
+            }
+
+            return updateRequired;
+        }
+
+        #endregion
+    }
+}

@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.AutomationService
             services
                 .AddIODriver()
                 .AddInverterDriver()
-                .AddNordDriver()
+                //.AddNordDriver()
                 .AddFiniteStateMachines()
                 .AddMachineManager()
                 .AddMissionManager();

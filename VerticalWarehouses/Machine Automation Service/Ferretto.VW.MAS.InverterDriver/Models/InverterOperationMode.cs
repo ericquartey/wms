@@ -10,6 +10,8 @@
 
         ProfileVelocity = 3,
 
+        Nord = 10,
+
         SlaveGear = 253,
 
         LeaveLimitSwitch = 254,

@@ -9,15 +9,18 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Interface;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.NordDriver
+namespace Ferretto.VW.MAS.InverterDriver
 {
-    public class SocketTransport : ISocketTransport, IDisposable
+    public class SocketTransportNord : ISocketTransport, IDisposable
     {
         #region Fields
 
         private readonly Timer implicitTimer;
+
+        private readonly IPAddress localAddress;
 
         /// <summary>
         /// The timeout for read operations on the socket.
@@ -37,8 +40,6 @@ namespace Ferretto.VW.MAS.NordDriver
 
         private bool isDisposed;
 
-        private IPAddress localAddress;
-
         private EnIPAttribut Output;
 
         private byte[] receiveBuffer = new byte[1024];
@@ -53,9 +54,10 @@ namespace Ferretto.VW.MAS.NordDriver
 
         #region Constructors
 
-        public SocketTransport(IConfiguration configuration)
+        public SocketTransportNord(IConfiguration configuration)
         {
             this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:Drivers:Inverter:ReadTimeoutMilliseconds", -1);
+            this.localAddress = configuration.GetValue<IPAddress>("Vertimag:LocalAddress", IPAddress.Parse("192.168.0.10"));
             this.implicitTimer = new Timer(this.ImplicitTimer, null, -1, -1);
         }
 
@@ -133,13 +135,12 @@ namespace Ferretto.VW.MAS.NordDriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress inverterAddress, int sendPort, IPAddress localAddress)
+        public void Configure(IPAddress inverterAddress, int sendPort)
         {
             this.IsConnectedUdp = false;
             this.inverterAddress = inverterAddress;
-            this.localAddress = localAddress;
             this.sendPort = 0xAF12;
-            this.client = new EnIPClient(localAddress.ToString(), 200);
+            this.client = new EnIPClient(this.localAddress.ToString(), this.readTimeoutMilliseconds);
             this.client.DeviceArrival += new DeviceArrivalHandler(this.OnDeviceArrival);
             this.client.DiscoverServers();
             this.implicitTimer.Change(1200, 1200);
@@ -206,6 +207,21 @@ namespace Ferretto.VW.MAS.NordDriver
                 started = true;
             }
             return started;
+        }
+
+        public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
+        {
+            throw new NotImplementedException();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -338,7 +354,7 @@ namespace Ferretto.VW.MAS.NordDriver
             var localEp = new IPEndPoint(this.localAddress, 0x8AE);
             this.remoteDevice?.Class1Activate(localEp);
 
-            var status = this.remoteDevice?.ForwardOpen(null, this.Output, this.Input, out this.closePacket, 200 * 1000, true, false);
+            var status = this.remoteDevice?.ForwardOpen(null, this.Output, this.Input, out this.closePacket, (uint)this.readTimeoutMilliseconds * 1000, true, false);
             if (status == EnIPNetworkStatus.OnLine)
             {
                 this.receivedImplicitTime = DateTime.UtcNow;
