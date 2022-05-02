@@ -19,11 +19,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.ParameterId = (ushort)NordParameterId.CurrentError;
                     this.ClassId = (ushort)(101 + message.SystemIndex);
                     this.InstanceId = 0;
-                    this.Data = null;
                     break;
             }
             if (this.ParameterId != 0)
             {
+                if (message.RawData != null)
+                {
+                    this.Data = message.RawData;
+                }
                 this.ServiceId = message.IsWriteMessage ? CIPServiceCodes.SetAttributeSingle : CIPServiceCodes.GetAttributeSingle;
             }
         }

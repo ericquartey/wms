@@ -157,7 +157,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         private void EvaluateReadMessage(
             InverterMessage message,
             IInverterStateMachine currentStateMachine,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IInverterFaultCodes faultCodes)
         {
             this.Logger.LogTrace($"1:currentMessage={message}");
 
@@ -377,7 +378,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             else if (message.ParameterId == InverterParameterId.CurrentError)
             {
                 var error = message.UShortPayload;
-                this.Logger.LogDebug($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {InverterFaultCodes.GetErrorByCode(error)}");
+                this.Logger.LogDebug($"Inverter Fault: 0x{error:X4}; inverter={message.SystemIndex}; {faultCodes.GetErrorByCode(error)}");
                 if (error > 0
                     && error != 0x1454
                     )
@@ -391,7 +392,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         // Adds error related to the InverterFaultDetected
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                         var idx = (int)message.SystemIndex + 1; // it has the systemIndex on base 1
-                        errorsProvider.RecordNew(idx, error, bayNumber, InverterFaultCodes.GetErrorByCode(error));
+                        errorsProvider.RecordNew(idx, error, bayNumber, faultCodes.GetErrorByCode(error));
                     }
                 }
             }

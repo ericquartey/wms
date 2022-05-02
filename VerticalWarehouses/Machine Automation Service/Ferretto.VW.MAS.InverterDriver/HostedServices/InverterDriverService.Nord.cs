@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -77,44 +78,44 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void OnInverterMessageReceivedExplicit(byte[] messageBytes, int length)
+        private void OnInverterMessageReceivedExplicit(InverterMessage message, byte[] messageBytes, int length)
         {
-            this.Logger.LogTrace($"1:inverterMessage={messageBytes}");
+            this.Logger.LogTrace($"1:receivedMessage={messageBytes}");
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 try
                 {
-                    var message = InverterMessage.FromBytesExplicit(messageBytes, length);
+                    message.FromBytesExplicit(messageBytes, length);
 
-                    //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
+                    this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
 
                     if (message.IsError)
                     {
                         this.Logger.LogError($"Received error Message: {message}");
-                        var errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
-                        if (!Enum.IsDefined(typeof(DataModels.MachineErrorCode), errorCode))
+                        var errorCode = (int)MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
+                        if (!Enum.IsDefined(typeof(MachineErrorCode), errorCode))
                         {
-                            errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode;
+                            errorCode = (int)MachineErrorCode.InverterErrorBaseCode;
                         }
 
                         scope.ServiceProvider
                             .GetRequiredService<IErrorsProvider>()
-                            .RecordNew((DataModels.MachineErrorCode)errorCode, additionalText: message.SystemIndex.ToString());
+                            .RecordNew((MachineErrorCode)errorCode, additionalText: message.SystemIndex.ToString());
                     }
 
-                    //if (message.IsWriteMessage)
-                    //{
-                    //    this.EvaluateWriteMessage(message, messageCurrentStateMachine, serviceProvider);
-                    //}
-                    //else
-                    //{
-                    //    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
-                    //}
+                    if (message.IsWriteMessage)
+                    {
+                        this.EvaluateWriteMessage(message, messageCurrentStateMachine, scope.ServiceProvider);
+                    }
+                    else
+                    {
+                        this.EvaluateReadMessage(message, messageCurrentStateMachine, scope.ServiceProvider, this.nordFaultCodes);
+                    }
                 }
                 catch (Exception ex)
                 {
                     this.Logger.LogError(ex, $"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}");
-                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
+                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
 
                     this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
                 }
@@ -132,7 +133,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var inverters = invertersProvider.GetAll();
                     if (this.processData is null)
                     {
-                        this.processData = new InverterMessage(0, InverterParameterId.ControlWord, 0);
+                        this.processData = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.StatusWord, 0);
                         foreach (var inverter in inverters)
                         {
                             if (inverter is INordInverterStatus nord)
@@ -167,14 +168,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                         }
                     }
-                    //this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
+                    this.currentStateMachines.TryGetValue(this.processData.SystemIndex, out var messageCurrentStateMachine);
 
                     if (this.processData.IsError)
                     {
                         this.Logger.LogError($"Received error Message: {BitConverter.ToString(e.receivedMessage)}");
                     }
 
-                    //    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
+                    messageCurrentStateMachine?.ValidateCommandResponse(this.processData);
                 }
                 catch (Exception ex)
                 {
@@ -196,7 +197,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 result = this.socketTransport.ExplicitMessage(nordMsg.ClassId, nordMsg.InstanceId, nordMsg.ParameterId, nordMsg.ServiceId, nordMsg.Data, out var received, out var length);
                 if (result)
                 {
-                    this.OnInverterMessageReceivedExplicit(received, length);
+                    this.OnInverterMessageReceivedExplicit(inverterMessage, received, length);
                 }
             }
             return result;

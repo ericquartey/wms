@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
 {
-    public static class InverterFaultCodes
+    public class InverterFaultCodes : IInverterFaultCodes
     {
         #region Fields
 
-        private static readonly Dictionary<int, string> Errors = new Dictionary<int, string>()
+        private readonly Dictionary<int, string> Errors = new Dictionary<int, string>()
         {
             { 0, "No fault" },
             // Overload
@@ -91,9 +91,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
 
         #region Methods
 
-        public static string GetErrorByCode(int code)
+        public string GetErrorByCode(int code)
         {
-            return Errors.ContainsKey(code) ? Errors[code] : "Unknown error";
+            return this.Errors.ContainsKey(code) ? this.Errors[code] : "Unknown error";
         }
 
         #endregion

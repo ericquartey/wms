@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
 using Ferretto.VW.MAS.Utils;
@@ -42,9 +43,13 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
+        private readonly InverterFaultCodes inverterFaultCodes;
+
         private readonly Task inverterReceiveTask;
 
         private readonly Task inverterSendTask;
+
+        private readonly NordFaultCodes nordFaultCodes;
 
         private readonly ISocketTransport socketTransport;
 
@@ -82,6 +87,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.forceStatusPublish = new bool[(int)InverterIndex.Slave7 + 1];
 
             this.explicitMessagesTask = new Task(async () => await this.ExplicitMessages());
+
+            this.inverterFaultCodes = new InverterFaultCodes();
+
+            this.nordFaultCodes = new NordFaultCodes();
         }
 
         #endregion
@@ -186,7 +195,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 else
                 {
-                    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
+                    this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider, this.inverterFaultCodes);
                 }
                 this.writeEnableEvent.Set();
                 this.Logger.LogTrace($"writeEnableEvent unlocked");
