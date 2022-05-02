@@ -37,6 +37,7 @@
 - Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
 - Aggiornate traduzioni polacche
 - Correzione alla selezione della Ricerca Articolo
+- Correzione alla Chiamata Cassetto: offset laser
 
 ## Compatibile con adapter 0.4.31 e 0.4.32
 ***
