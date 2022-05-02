@@ -249,6 +249,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
 
             if (this.selectedLoadingUnit == null)
             {
