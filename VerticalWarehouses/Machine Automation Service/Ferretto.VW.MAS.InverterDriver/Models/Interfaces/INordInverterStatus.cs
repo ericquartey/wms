@@ -6,6 +6,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
     {
         #region Properties
 
+        ushort AnalogIn { get; }
+
+        ushort Current { get; }
+
         ushort SetPointFrequency { get; set; }
 
         int SetPointPosition { get; set; }
@@ -15,6 +19,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
         #endregion
 
         #region Methods
+
+        bool UpdateAnalogIn(ushort analogIn);
+
+        bool UpdateCurrent(ushort current);
 
         bool UpdateInverterCurrentPosition(int position);
 

@@ -454,7 +454,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 {
                     case InverterParameterId.CurrentError:
                         // no change
-                        this.parameterId = (short)InverterParameterId.CurrentError;
                         break;
 
                     default:
@@ -577,20 +576,28 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public void SetPoint(InverterIndex systemIndex, ushort controlWord, ushort frequency, int position, ushort rampTime)
         {
-            //if (this.ControlWord.ContainsKey(systemIndex))
-            //{
-            //    this.ControlWord[systemIndex] = controlWord;
-            //    this.SetpointFrequency[systemIndex] = frequency;
-            //    this.SetpointPosition[systemIndex] = position;
-            //    this.RampTime[systemIndex] = rampTime;
-            //}
-            //else
-            //{
-            //    this.ControlWord.Add(systemIndex, controlWord);
-            //    this.SetpointFrequency.Add(systemIndex, frequency);
-            //    this.SetpointPosition.Add(systemIndex, position);
-            //    this.RampTime.Add(systemIndex, rampTime);
-            //}
+            if (this.ControlWord is null)
+            {
+                this.ControlWord = new Dictionary<InverterIndex, ushort>();
+                this.SetpointFrequency = new Dictionary<InverterIndex, ushort>();
+                this.SetpointPosition = new Dictionary<InverterIndex, int>();
+                this.RampTime = new Dictionary<InverterIndex, ushort>();
+            }
+
+            if (this.ControlWord.ContainsKey(systemIndex))
+            {
+                this.ControlWord[systemIndex] = controlWord;
+                this.SetpointFrequency[systemIndex] = frequency;
+                this.SetpointPosition[systemIndex] = position;
+                this.RampTime[systemIndex] = rampTime;
+            }
+            else
+            {
+                this.ControlWord.Add(systemIndex, controlWord);
+                this.SetpointFrequency.Add(systemIndex, frequency);
+                this.SetpointPosition.Add(systemIndex, position);
+                this.RampTime.Add(systemIndex, rampTime);
+            }
 
             if (this.lockObject is null)
             {
@@ -609,10 +616,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 offset += 2;
                 Array.Copy(BitConverter.GetBytes(position), 0, this.RawData, offset, 4);
                 offset += 4;
-                if (rampTime == 0)
-                {
-                    rampTime = 200;
-                }
                 Array.Copy(BitConverter.GetBytes(rampTime), 0, this.RawData, offset, 2);
             }
         }

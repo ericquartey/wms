@@ -75,6 +75,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.Logger.LogDebug("Reconnect");
                 this.socketTransport.Disconnect();
                 this.socketTransport.Configure(this.inverterAddress, this.sendPort);
+                for (var i = 0; i < this.forceStatusPublish.Length; i++)
+                {
+                    this.forceStatusPublish[i] = true;
+                }
             }
         }
 
@@ -138,7 +142,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             if (inverter is INordInverterStatus nord)
                             {
+                                if (nord.SetPointRampTime == 0)
+                                {
+                                    nord.SetPointRampTime = 200;
+                                }
                                 this.processData.SetPoint(nord.SystemIndex, nord.CommonControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime);
+                                this.Logger.LogDebug($"SetPoint inverter {nord.SystemIndex}, CW 0x{nord.CommonControlWord.Value:X4}, Freq {nord.SetPointFrequency}, Pos {nord.SetPointPosition}, ramp {nord.SetPointRampTime}");
                             }
                         }
                         this.processData.FromBytesImplicit(e.receivedMessage, inverters.Last().SystemIndex);
@@ -147,40 +156,128 @@ namespace Ferretto.VW.MAS.InverterDriver
                     else
                     {
                         this.processData.FromBytesImplicit(e.receivedMessage, inverters.Last().SystemIndex);
+                        if (!e.isOk)
+                        {
+                            this.Logger.LogError($"Received error Message: {BitConverter.ToString(e.receivedMessage)}");
+                        }
+                        var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                         foreach (var inverter in inverters)
                         {
-                            var refresh = inverter.UpdateInputsStates(this.processData.DigitalInConverted(inverter.SystemIndex));
-                            if (refresh || this.forceStatusPublish[(int)inverter.SystemIndex])
+                            if (inverter is INordInverterStatus nordInverter)
                             {
-                                this.Logger.LogTrace($"Inverter {inverter.SystemIndex} Sensor Update {inverter.Inputs}");
+                                if (nordInverter.CommonStatusWord.Value != this.processData.StatusWord[inverter.SystemIndex])
+                                {
+                                    nordInverter.CommonStatusWord.Value = this.processData.StatusWord[inverter.SystemIndex];
+                                    this.Logger.LogDebug($"status word 0x{nordInverter.CommonStatusWord.Value:X4}");
+                                }
 
-                                var msgNotification = new FieldNotificationMessage(
-                                    new InverterStatusUpdateFieldMessageData(inverter.Inputs),
-                                    "Inverter Inputs update",
-                                    FieldMessageActor.DeviceManager,
-                                    FieldMessageActor.InverterDriver,
-                                    FieldMessageType.InverterStatusUpdate,
-                                    MessageStatus.OperationExecuting,
-                                    inverter.SystemIndex);
+                                var refresh = nordInverter.UpdateInputsStates(this.processData.DigitalInConverted(inverter.SystemIndex));
+                                var refreshPosition = nordInverter.UpdateInverterCurrentPosition(this.processData.ActualPosition[inverter.SystemIndex]);
+                                var refreshAnalogIn = nordInverter.UpdateAnalogIn(this.processData.AnalogIn[inverter.SystemIndex]);
+                                var refreshCurrent = nordInverter.UpdateCurrent(this.processData.Current[inverter.SystemIndex]);
 
-                                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                if (refresh || refreshPosition || this.forceStatusPublish[(int)inverter.SystemIndex])
+                                {
+                                    InverterStatusUpdateFieldMessageData notificationData;
+                                    if (refreshPosition || this.forceStatusPublish[(int)inverter.SystemIndex])
+                                    {
+                                        // TODO - MainInverter can move both Horizontal and Vertical?
+                                        var axis = inverter.SystemIndex == InverterIndex.MainInverter
+                                            ? Axis.Vertical
+                                            : Axis.Horizontal;
+
+                                        if (inverter.SystemIndex > InverterIndex.Slave1)
+                                        {
+                                            axis = Axis.BayChain;
+                                        }
+                                        var axisOrientation = (axis == Axis.Horizontal || axis == Axis.BayChain) ? Orientation.Horizontal : Orientation.Vertical;
+
+                                        double currentAxisPosition = 0;
+                                        double offset = 0;
+                                        if (axis == Axis.BayChain)
+                                        {
+                                            currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(this.processData.ActualPosition[inverter.SystemIndex], inverter);
+                                        }
+                                        else
+                                        {
+                                            currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(this.processData.ActualPosition[inverter.SystemIndex], axisOrientation);
+                                            offset = (axis == Axis.Vertical)
+                                                ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
+                                                : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
+                                        }
+                                        currentAxisPosition += offset;
+
+                                        this.Logger.LogTrace($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}; Sensors={inverter.Inputs}");
+                                        notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
+
+                                        // TEST
+                                        nordInverter.CommonControlWord.SwitchOn = true;
+                                        //nordInverter.CommonControlWord.FaultReset = nordInverter.CommonStatusWord.IsFault;
+                                        // TEST end
+                                    }
+                                    else
+                                    {
+                                        this.Logger.LogTrace($"Inverter {inverter.SystemIndex} Sensors={inverter.Inputs}");
+                                        notificationData = new InverterStatusUpdateFieldMessageData(inverter.Inputs);
+                                    }
+                                    var msgNotification = new FieldNotificationMessage(
+                                        notificationData,
+                                        "Inverter values update",
+                                        FieldMessageActor.DeviceManager,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.InverterStatusUpdate,
+                                        MessageStatus.OperationExecuting,
+                                        (byte)inverter.SystemIndex);
+
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                }
+
                                 this.forceStatusPublish[(int)inverter.SystemIndex] = false;
+
+                                if (refreshAnalogIn)
+                                {
+                                    var notificationData = new MeasureProfileFieldMessageData(profile: nordInverter.AnalogIn);
+                                    var msgNotification = new FieldNotificationMessage(
+                                        notificationData,
+                                        "Inverter measure profile",
+                                        FieldMessageActor.DeviceManager,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.MeasureProfile,
+                                        MessageStatus.OperationEnd,
+                                        (byte)inverter.SystemIndex);
+
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                                    this.Logger.LogDebug($"ProfileInput inverter={inverter.SystemIndex}; value={nordInverter.AnalogIn}");
+                                }
+                            }
+                        }
+                        this.currentStateMachines.TryGetValue(this.processData.SystemIndex, out var messageCurrentStateMachine);
+                        var update = messageCurrentStateMachine?.ValidateCommandResponse(this.processData);
+
+                        if (true ||
+                            update.HasValue && update == true)
+                        {
+                            foreach (var inverter in inverters)
+                            {
+                                if (inverter is INordInverterStatus nord
+                                    && (this.processData.ControlWord[inverter.SystemIndex] != nord.CommonControlWord.Value
+                                        || this.processData.SetpointFrequency[inverter.SystemIndex] != nord.SetPointFrequency
+                                        || this.processData.SetpointPosition[inverter.SystemIndex] != nord.SetPointPosition
+                                        || this.processData.RampTime[inverter.SystemIndex] != nord.SetPointRampTime
+                                    ))
+                                {
+                                    this.processData.SetPoint(nord.SystemIndex, nord.CommonControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime);
+                                    this.Logger.LogDebug($"SetPoint inverter {nord.SystemIndex}, CW 0x{nord.CommonControlWord.Value:X4}, Freq {nord.SetPointFrequency}, Pos {nord.SetPointPosition}, ramp {nord.SetPointRampTime}");
+                                }
                             }
                         }
                     }
-                    this.currentStateMachines.TryGetValue(this.processData.SystemIndex, out var messageCurrentStateMachine);
-
-                    if (this.processData.IsError)
-                    {
-                        this.Logger.LogError($"Received error Message: {BitConverter.ToString(e.receivedMessage)}");
-                    }
-
-                    messageCurrentStateMachine?.ValidateCommandResponse(this.processData);
                 }
                 catch (Exception ex)
                 {
                     this.Logger.LogError(ex, $"Exception while parsing Inverter raw message bytes {BitConverter.ToString(e.receivedMessage)}");
-                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
+                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
 
                     this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
                 }

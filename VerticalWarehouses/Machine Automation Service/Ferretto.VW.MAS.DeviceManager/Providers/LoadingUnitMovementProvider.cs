@@ -769,19 +769,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 else
                 {
                     // with this trick we rely only on sensors
+                    this.logger.LogDebug($"1-Reset horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
                     distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
                     highSpeed = false;
+                    this.elevatorDataProvider.UpdateLastIdealPosition(-999999);
                 }
             }
             if (distance > horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset))
             {
-                this.logger.LogDebug($"Invalid horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
+                this.logger.LogDebug($"2-Reset horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
                 distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
                 highSpeed = false;
-
-                //this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
-                //stopRequest = StopRequestReason.Abort;
-                //return false;
+                this.elevatorDataProvider.UpdateLastIdealPosition(-999999);
             }
 
             // Vertical

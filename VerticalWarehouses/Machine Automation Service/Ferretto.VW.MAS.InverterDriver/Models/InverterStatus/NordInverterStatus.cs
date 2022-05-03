@@ -10,6 +10,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private const int TOTAL_SENSOR_INPUTS = 8;
 
+        private ushort analogIn;
+
+        private ushort current;
+
         private int currentPosition;
 
         #endregion
@@ -25,6 +29,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         #endregion
 
         #region Properties
+
+        public ushort AnalogIn => this.analogIn;
+
+        public ushort Current => this.current;
 
         public int CurrentPosition => this.currentPosition;
 
@@ -43,6 +51,32 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         #endregion
 
         #region Methods
+
+        public bool UpdateAnalogIn(ushort analogIn)
+        {
+            var updateRequired = false;
+
+            if (this.analogIn != analogIn)
+            {
+                this.analogIn = analogIn;
+                updateRequired = true;
+            }
+
+            return updateRequired;
+        }
+
+        public bool UpdateCurrent(ushort current)
+        {
+            var updateRequired = false;
+
+            if (this.current != current)
+            {
+                this.current = current;
+                updateRequired = true;
+            }
+
+            return updateRequired;
+        }
 
         public override bool UpdateInputsStates(bool[] newInputStates)
         {

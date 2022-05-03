@@ -282,10 +282,10 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             if (pulses == 0)
             {
-                if (orientation == Orientation.Vertical)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
-                }
+                //if (orientation == Orientation.Vertical)
+                //{
+                //    throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+                //}
                 return 0;
             }
 
@@ -304,7 +304,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             if (pulses == 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+                //throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+                return 0;
             }
 
             var resolution = this.baysDataProvider.GetResolution(inverter.SystemIndex);

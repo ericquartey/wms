@@ -325,6 +325,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var axisOrientation = (axis == Axis.Horizontal || axis == Axis.BayChain) ? Orientation.Horizontal : Orientation.Vertical;
 
                         double currentAxisPosition = 0;
+                        double offset = 0;
                         if (message.IntPayload != 0)
                         {
                             if (axis == Axis.BayChain)
@@ -334,12 +335,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                             else
                             {
                                 currentAxisPosition = invertersProvider.ConvertPulsesToMillimeters(message.IntPayload, axisOrientation);
+                                offset = (axis == Axis.Vertical)
+                                    ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
+                                    : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
                             }
                         }
 
-                        var offset = (axis == Axis.Vertical)
-                            ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
-                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
                         currentAxisPosition += offset;
                         this.Logger.LogTrace($"5b:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}");
 
