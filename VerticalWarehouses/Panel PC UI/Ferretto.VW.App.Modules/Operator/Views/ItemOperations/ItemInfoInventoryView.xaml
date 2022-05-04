@@ -129,6 +129,26 @@
         </Border>
       </StackPanel>
 
+      <controls:PpcLabeledText Grid.Row="3"
+                               Grid.Column="1"
+                               Margin="0,0,0,5"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               ContentText="{Binding MissionOperation.Sscc, TargetNullValue={x:Static resources:General.TargetNullValue}}"
+                               LabelText="{resources:Loc OperatorApp.Sscc}"
+                               Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+      <!--  Only reserved for Carrefour  -->
+
+      <controls:PpcLabeledText Grid.Row="3"
+                               Grid.Column="0"
+                               Margin="0,0,0,5"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               ContentText="{Binding MissionOperation.ExpirationDate, TargetNullValue={x:Static resources:General.TargetNullValue}, StringFormat={x:Static resources:General.DateFormatDayNumber}}"
+                               LabelText="{resources:Loc OperatorApp.ExpirationDate}"
+                               Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+      <!--  Only reserved for Carrefour  -->
+
       <Label Grid.Row="2"
              Grid.Column="2"
              HorizontalAlignment="Left"

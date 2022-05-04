@@ -151,7 +151,7 @@
                                  Grid.Column="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding MissionOperation.ExpirationDate}"
+                                 ContentText="{Binding MissionOperation.ExpirationDate, StringFormat={x:Static resources:General.DateFormatDayNumber}}"
                                  LabelText="{resources:Loc OperatorApp.ExpirationDate}"
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
