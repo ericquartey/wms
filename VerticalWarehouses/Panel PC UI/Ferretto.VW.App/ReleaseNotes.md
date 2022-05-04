@@ -25,22 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.42 rispetto la 1.0.41
-- Aggiunto utente locale Movement: è come Operator con in più i movimenti guidati e manuali
-- Aggiunto parametro wms "Attesa dopo versamento"
+## Nuove Funzionalità 1.0.43 rispetto la 1.0.42
+- 
 
 ## Bug Risolti
-- Corretta procedura di calibrazione barriera di misura con BID e BED
-- Se si mettono in attesa le liste da EjLog i cassetti rientrano dalla baia
-- Il cassetto non rientra se ci sono molti versamenti su un unico scomparto
-- Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
-- Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
-- Aggiornate traduzioni polacche
-- Correzione alla selezione della Ricerca Articolo
-- Correzione alla Chiamata Cassetto: offset laser
+- Aggiunta data di scadenza nell'inventario
+- Correzione ai ripristini automatici
 
 ## Compatibile con adapter 0.4.31 e 0.4.32
 ***
+
+[Versione 1.0.42](#id1042)
 
 [Versione 1.0.41](#id1041)
 
@@ -126,6 +121,23 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1042"></a>
+## Nuove Funzionalità 1.0.42 rispetto la 1.0.41
+- Aggiunto utente locale Movement: è come Operator con in più i movimenti guidati e manuali
+- Aggiunto parametro wms "Attesa dopo versamento"
+
+## Bug Risolti
+- Corretta procedura di calibrazione barriera di misura con BID e BED
+- Se si mettono in attesa le liste da EjLog i cassetti rientrano dalla baia
+- Il cassetto non rientra se ci sono molti versamenti su un unico scomparto
+- Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
+- Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
+- Aggiornate traduzioni polacche
+- Correzione alla selezione della Ricerca Articolo
+- Correzione alla Chiamata Cassetto: offset laser
+
+## Compatibile con adapter 0.4.31 e 0.4.32
 
 <a id="id1041"></a>
 ## Nuove Funzionalità 1.0.41 rispetto la 1.0.40
