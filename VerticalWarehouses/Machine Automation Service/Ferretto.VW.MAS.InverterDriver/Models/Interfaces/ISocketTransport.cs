@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
 
         bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive, out int length);
 
-        bool ImplicitMessageStart(byte[] data);
+        bool ImplicitMessageWrite(byte[] data);
 
         /// <summary>
         ///     Reads data from the remote host. Blocks the calling thread until new data is received from the host

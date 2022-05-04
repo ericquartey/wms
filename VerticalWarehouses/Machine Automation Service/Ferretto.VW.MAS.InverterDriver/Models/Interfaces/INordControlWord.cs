@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
     {
         #region Properties
 
+        bool FreeBit10 { set; }
+
         bool NewSetPoint { set; }
 
         bool ParameterSet1 { set; }

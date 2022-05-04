@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             throw new NotImplementedException();
         }
 
-        public bool ImplicitMessageStart(byte[] data)
+        public bool ImplicitMessageWrite(byte[] data)
         {
             throw new NotImplementedException();
         }

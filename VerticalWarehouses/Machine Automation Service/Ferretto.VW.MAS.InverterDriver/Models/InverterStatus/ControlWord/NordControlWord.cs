@@ -31,6 +31,21 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         #region Properties
 
+        public bool FreeBit10
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0400;
+                }
+                else
+                {
+                    this.Value &= 0xFBFF;
+                }
+            }
+        }
+
         public bool NewSetPoint
         {
             set

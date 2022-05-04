@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 {
@@ -9,6 +10,10 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
         ushort AnalogIn { get; }
 
         ushort Current { get; }
+
+        INordControlWord NordControlWord { get; }
+
+        INordStatusWord NordStatusWord { get; }
 
         ushort SetPointFrequency { get; set; }
 

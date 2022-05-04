@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
@@ -24,6 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             : base(systemIndex)
         {
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
+            this.OperatingMode = (ushort)InverterOperationMode.Nord;
         }
 
         #endregion
@@ -41,6 +44,32 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             //this.CommonStatusWord.IsSwitchedOn &
             //this.CommonStatusWord.IsVoltageEnabled &
             this.CommonStatusWord.IsQuickStopTrue;
+
+        public INordControlWord NordControlWord
+        {
+            get
+            {
+                if (this.controlWord is INordControlWord word)
+                {
+                    return word;
+                }
+
+                throw new InvalidOperationException($"Current Control Word Type {this.controlWord.GetType().Name} is not compatible with Nord Mode");
+            }
+        }
+
+        public INordStatusWord NordStatusWord
+        {
+            get
+            {
+                if (this.statusWord is INordStatusWord word)
+                {
+                    return word;
+                }
+
+                throw new InvalidOperationException($"Current Status Word Type {this.statusWord.GetType().Name} is not compatible with Nord Mode");
+            }
+        }
 
         public ushort SetPointFrequency { get; set; }
 

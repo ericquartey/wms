@@ -198,16 +198,15 @@ namespace Ferretto.VW.MAS.InverterDriver
             return isOk;
         }
 
-        public bool ImplicitMessageStart(byte[] data)
+        public bool ImplicitMessageWrite(byte[] data)
         {
-            var started = false;
-            if (this.Output != null
-                && this.Output.RawData is null)
+            var write = false;
+            if (this.Output != null)
             {
                 this.Output.RawData = data;
-                started = true;
+                write = true;
             }
-            return started;
+            return write;
         }
 
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
