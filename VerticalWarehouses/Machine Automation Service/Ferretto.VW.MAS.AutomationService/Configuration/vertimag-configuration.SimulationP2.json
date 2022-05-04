@@ -130,7 +130,7 @@
                 "IoDevice": {
                     "Id": 1,
                     "Index": "IoDevice1",
-                    "IpAddress": "127.0.0.1",
+                    "IpAddress": "192.168.0.1",
                     "TcpPort": 19550
                 },
                 "IsActive": true,
@@ -196,8 +196,8 @@
                 "IoDevice": {
                     "Id": 2,
                     "Index": "IoDevice2",
-                    "IpAddress": "127.0.0.1",
-                    "TcpPort": 19551
+                    "IpAddress": "192.168.0.2",
+                    "TcpPort": 19550
                 },
                 "IsActive": false,
                 "IsExternal": false,
@@ -258,66 +258,67 @@
         ],
         "Elevator": {
             "Axes": [
-                {
-                    "AssistedMovements": {
-                        "FeedRate": 0.15,
-                        "FeedRateAfterZero": 0.9,
-                        "Id": 3
-                    },
-                    "BrakeActivatePercent": 10.0,
-                    "BrakeReleaseTime": 150.0,
-                    "ChainOffset": 0.0,
-                    "EmptyLoadMovement": {
-                        "Acceleration": 1000.0,
-                        "Deceleration": 1000.0,
-                        "Id": 4,
-                        "Speed": 600.0
-                    },
-                    "FullLoadMovement": {
-                        "Acceleration": 400.0,
-                        "Deceleration": 400.0,
-                        "Id": 6,
-                        "Speed": 420.0
-                    },
-                    "HomingCreepSpeed": 6.0,
-                    "HomingFastSpeed": 25.0,
-                    "Id": 1,
-                    "Inverter": {
-                        "Id": 1,
-                        "Index": "MainInverter",
-                        "IpAddress": "127.0.0.1",
-                        "TcpPort": 17221,
-                        "Type": "Ang"
-                    },
-                    "LastCalibrationCycles": 0,
-                    "LastIdealPosition": 1438.0,
-                    "LowerBound": 350.0,
-                    "ManualMovements": {
-                        "FeedRate": 0.1,
-                        "FeedRateAfterZero": 0.2,
-                        "Id": 4,
-                        "TargetDistance": 30.0,
-                        "TargetDistanceAfterZero": 30.0
-                    },
-                    "Offset": 350.0,
-                    "Orientation": "Vertical",
-                    "ProfileCalibrateLength": 0.0,
-                    "ProfileCalibratePosition": 0,
-                    "ProfileCalibrateSpeed": 0.0,
-                    "Profiles": [],
-                    "Resolution": 99.177657,
-                    "UpperBound": 8750.0,
-                    "VerticalDepositOffset": 0.0,
-                    "VerticalPickupOffset": 0.0,
-                    "WeightMeasurement": {
-                        "Id": 1,
-                        "MeasureConst0": -1130.6,
-                        "MeasureConst1": 249.75,
-                        "MeasureConst2": -4.9268,
-                        "MeasureSpeed": 20.0,
-                        "MeasureTime": 15
-                    }
+              {
+                "AssistedMovements": {
+                  "FeedRate": 0.15,
+                  "FeedRateAfterZero": 0.9,
+                  "Id": 3
                 },
+                "BrakeActivatePercent": 10.0,
+                "BrakeReleaseTime": 150.0,
+                "ChainOffset": 0.0,
+                "EmptyLoadMovement": {
+                  "Acceleration": 1000.0,
+                  "Deceleration": 1000.0,
+                  "Id": 4,
+                  "Speed": 600.0
+                },
+                "FullLoadMovement": {
+                  "Acceleration": 400.0,
+                  "Deceleration": 400.0,
+                  "Id": 6,
+                  "Speed": 420.0
+                },
+                "HomingAcceleration": 100.0,
+                "HomingCreepSpeed": 10.0,
+                "HomingFastSpeed": 100.0,
+                "Id": 1,
+                "Inverter": {
+                  "Id": 1,
+                  "Index": "MainInverter",
+                  "IpAddress": "192.168.0.100",
+                  "TcpPort": 17221,
+                  "Type": "Ang"
+                },
+                "LastCalibrationCycles": 0,
+                "LastIdealPosition": 1438.0,
+                "LowerBound": 442.0,
+                "ManualMovements": {
+                  "FeedRate": 0.1,
+                  "FeedRateAfterZero": 0.2,
+                  "Id": 4,
+                  "TargetDistance": 30.0,
+                  "TargetDistanceAfterZero": 30.0
+                },
+                "Offset": 601.5,
+                "Orientation": "Vertical",
+                "ProfileCalibrateLength": 0.0,
+                "ProfileCalibratePosition": 0,
+                "ProfileCalibrateSpeed": 0.0,
+                "Profiles": [],
+                "Resolution": 99.177657,
+                "UpperBound": 8750.0,
+                "VerticalDepositOffset": 0.0,
+                "VerticalPickupOffset": 0.0,
+                "WeightMeasurement": {
+                  "Id": 1,
+                  "MeasureConst0": -1130.6,
+                  "MeasureConst1": 249.75,
+                  "MeasureConst2": -4.9268,
+                  "MeasureSpeed": 20.0,
+                  "MeasureTime": 15
+                }
+              },
                 {
                     "AssistedMovements": {
                         "FeedRate": 0.3,
@@ -6053,7 +6054,7 @@
             }
         ],
         "SerialNumber": "MV20-P012",
-        "Simulation": false
+        "Simulation": true
     },
     "SetupProcedures": {
         "Bay1CarouselCalibration": {

@@ -672,7 +672,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.IsBay3PositionUpVisible = false;
                 this.IsBay3PositionDownVisible = false;
 
-                this.ManualMode = ((this.MachineError.Code == 27 || this.MachineError.Code == 26 || this.MachineError.Code == 29) && this.sessionService.UserAccessLevel != UserAccessLevel.Operator);
+                this.ManualMode = ((this.MachineError.Code == 27 || this.MachineError.Code == 26 || this.MachineError.Code == 29) && this.sessionService.UserAccessLevel > UserAccessLevel.Movement);
 
                 // Elevator
                 //this.LuIdOnElevator = null;

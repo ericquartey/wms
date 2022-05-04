@@ -2418,6 +2418,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<UserParameters>> GetAllUserWithCultureAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsDisabledAsync(string userName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsDisabledAsync(string userName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetOperatorEnabledWithWMSAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2430,6 +2437,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> GetSupportTokenAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetIsDisabledAsync(string userName, bool isDisabled);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetIsDisabledAsync(string userName, bool isDisabled, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetMASCultureAsync(string culture);
@@ -2846,6 +2860,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetConnectionTimeoutAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetDelayTimeoutAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetDelayTimeoutAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> GetHealthAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2928,6 +2949,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateTimeSyncIntervalMillisecondsAsync(int seconds);
@@ -6028,6 +6056,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ConnectionTimeout", Required = Newtonsoft.Json.Required.Always)]
         public int ConnectionTimeout { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("DelayTimeout", Required = Newtonsoft.Json.Required.Always)]
+        public int DelayTimeout { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsConnected", Required = Newtonsoft.Json.Required.Always)]
         public bool IsConnected { get; set; }
     
@@ -7724,9 +7755,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Operator = 1,
     
-        Installer = 2,
+        Movement = 2,
     
-        Support = 3,
+        Installer = 3,
+    
+        Support = 4,
     
         Admin = 99,
     
@@ -7760,6 +7793,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     {
         [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
         public int AccessLevel { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDisabled", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDisabled { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsDisabledWithWMS", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDisabledWithWMS { get; set; }

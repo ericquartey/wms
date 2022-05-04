@@ -371,7 +371,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
-
             this.IsAddItemFeatureAvailable = configuration.Machine.IsEnableAddItem &&
                 configuration.Machine.IsDrapery &&
                 this.IsCurrentDraperyItem;
@@ -755,7 +754,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                             if (canComplete)
                             {
-                                await this.PrintWeightAsync(itemId, (int?)quantity);
                                 this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                             }
                             else
@@ -857,7 +855,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                         if (canComplete)
                         {
-                            await this.PrintWeightAsync(itemId, (int?)quantity);
                             this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                         }
                         else
@@ -877,7 +874,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     if (canComplete)
                     {
-                        await this.PrintWeightAsync(itemId, (int?)quantity);
                         this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                     }
                     else

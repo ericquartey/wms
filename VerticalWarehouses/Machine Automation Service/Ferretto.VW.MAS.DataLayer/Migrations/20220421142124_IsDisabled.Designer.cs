@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20220421142124_IsDisabled")]
+    partial class IsDisabled
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1976,8 +1978,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("ConnectionTimeout");
 
-                    b.Property<int>("DelayTimeout");
-
                     b.Property<bool>("IsConnected");
 
                     b.Property<bool>("IsEnabled");
@@ -2010,7 +2010,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = -1,
                             ConnectionTimeout = 5000,
-                            DelayTimeout = 0,
                             IsConnected = false,
                             IsEnabled = false,
                             IsTimeSyncEnabled = false,

@@ -768,7 +768,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 else
                 {
-                    // with this trick we rely only on sensors
                     this.logger.LogDebug($"1-Reset horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
                     distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
                     highSpeed = false;

@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isConfirmServiceVisible;
 
-        private bool isOperator;
+        private bool isOperatorOrMovement;
 
         private string machineModel;
 
@@ -106,10 +106,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isConfirmServiceVisible, value);
         }
 
-        public bool IsOperator
+        public bool IsOperatorOrMovement
         {
-            get => this.isOperator;
-            set => this.SetProperty(ref this.isOperator, value);
+            get => this.isOperatorOrMovement;
+            set => this.SetProperty(ref this.isOperatorOrMovement, value);
         }
 
         public string MachineModel
@@ -166,14 +166,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsOperator = this.sessionService.UserAccessLevel == UserAccessLevel.Operator;
+            this.IsOperatorOrMovement = this.sessionService.UserAccessLevel <= UserAccessLevel.Movement;
             var bays = await this.machineBaysWebService.GetAllAsync();
 
             this.IsBay2 = bays.Any(b => b.Number == BayNumber.BayTwo);
             this.IsBay3 = bays.Any(b => b.Number == BayNumber.BayThree);
 
-            this.IsBay2Operator = this.IsBay2 && !this.IsOperator;
-            this.IsBay3Operator = this.IsBay3 && !this.IsOperator;
+            this.IsBay2Operator = this.IsBay2 && !this.IsOperatorOrMovement;
+            this.IsBay3Operator = this.IsBay3 && !this.IsOperatorOrMovement;
 
             await this.machineServicingWebService.UpdateServiceStatusAsync();
 
@@ -207,7 +207,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanConfirmService() => true;
 
-        private bool CanDetailCommand() => this.selectedServicingInfo != null && !this.IsOperator;
+        private bool CanDetailCommand() => this.selectedServicingInfo != null && !this.IsOperatorOrMovement;
 
         private async Task ConfirmServiceAsync()
         {

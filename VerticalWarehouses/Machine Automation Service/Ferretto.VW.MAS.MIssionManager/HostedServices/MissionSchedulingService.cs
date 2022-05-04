@@ -35,11 +35,19 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly Timer RestartTimer;
+
         private readonly IServicingProvider servicingProvider;
+
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         private bool dataLayerIsReady;
 
+        private int DelayTimeout = 3000;
+
         private bool firstCleanupExecuted;
+
+        private bool isDelayFinish;
 
         private LoadingUnitLocation loadUnitSource;
 
@@ -51,13 +59,16 @@ namespace Ferretto.VW.MAS.MissionManager
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IServicingProvider servicingProvider,
             IEventAggregator eventAggregator,
+            IWmsSettingsProvider wmsSettingsProvider,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
+            this.RestartTimer = new Timer(this.OnTimePeriodElapsed2, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -1738,6 +1749,24 @@ namespace Ferretto.VW.MAS.MissionManager
             this.servicingProvider.UpdateServiceStatus();
         }
 
+        private void OnTimePeriodElapsed2(object state)
+        {
+            this.RestartTimer.Change(-1, -1);
+
+            this.isDelayFinish = true;
+            this.Logger.LogDebug("delay timer");
+
+            var notificationMessage = new NotificationMessage(
+                null,
+                $"New machine mission available for bay {BayNumber.BayOne}.",
+                MessageActor.MissionManager,
+                MessageActor.MissionManager,
+                MessageType.NewMachineMissionAvailable,
+                BayNumber.BayOne);
+
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+        }
+
         private void RestoreFullTest(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -1775,9 +1804,9 @@ namespace Ferretto.VW.MAS.MissionManager
         }
 
         private async Task ScheduleWmsMissionAsync(
-            BayNumber bayNumber,
-            IServiceProvider serviceProvider,
-            Mission mission)
+        BayNumber bayNumber,
+        IServiceProvider serviceProvider,
+        Mission mission)
         {
             System.Diagnostics.Debug.Assert(mission.WmsId.HasValue);
 
@@ -1823,6 +1852,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+                        this.isDelayFinish = false;
 
                         serviceProvider
                             .GetRequiredService<IBaysDataProvider>()
@@ -1848,16 +1878,28 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
-                    // wms mission is finished
-                    mission.Status = MissionStatus.Completed;
-                    mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
-                    missionsDataProvider.Update(mission);
-                    machineProvider.UpdateMissionTime(mission.MissionTime);
-                    baysDataProvider.ClearMission(bayNumber);
+                    if (!this.isDelayFinish
+                        && wmsMission.Operations.Any(o => o.Type == WMS.Data.WebAPI.Contracts.MissionOperationType.Put))
+                    {
+                        this.DelayTimeout = this.wmsSettingsProvider.DelayTimeout;
+                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update");
+                        this.RestartTimer.Change(this.DelayTimeout, -1);
+                    }
+                    else
+                    {
+                        // wms mission is finished
+                        mission.Status = MissionStatus.Completed;
+                        mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
+                        missionsDataProvider.Update(mission);
+                        machineProvider.UpdateMissionTime(mission.MissionTime);
+                        baysDataProvider.ClearMission(bayNumber);
 
-                    this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed and move back from bay load unit {LoadUnitId}.", bayNumber, mission.WmsId.Value, mission.LoadUnitId);
-                    var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
-                    missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN);
+                        this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed and move back from bay load unit {LoadUnitId}.", bayNumber, mission.WmsId.Value, mission.LoadUnitId);
+                        var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                        missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN);
+
+                        this.isDelayFinish = false;
+                    }
                 }
             }
             catch (Exception ex)

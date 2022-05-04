@@ -430,7 +430,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (canComplete)
                 {
                     await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
-                    await this.PrintWeightAsync(itemId, (int?)quantity);
 
                     this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
                 }
@@ -517,7 +516,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.BarcodeImageExist = false;
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
+            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 

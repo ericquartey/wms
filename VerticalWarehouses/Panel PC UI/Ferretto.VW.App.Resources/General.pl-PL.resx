@@ -318,4 +318,22 @@
   <data name="TimeoutMs" xml:space="preserve">
     <value>Przekroczenie limitu czasu (ms)</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Potwierdź</value>
+  </data>
+  <data name="Confirm_Duplicate[1]" xml:space="preserve">
+    <value>Potwierdź</value>
+  </data>
+  <data name="LotManagedProduct" xml:space="preserve">
+    <value>Proszę wybrać dużo tego produktu</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="SocketLinkEndOfLine" xml:space="preserve">
+    <value>Koniec linii LF</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>Limit czasu połączenia z gniazdem</value>
+  </data>
 </root>

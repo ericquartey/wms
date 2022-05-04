@@ -1034,7 +1034,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.maxKnownIndexSelection = 0;
             }
 
-            var selectedItemId = this.SelectedItem?.Id;
+            //var selectedItemId = this.SelectedItem?.Id;
 
             try
             {
@@ -1068,9 +1068,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!newItems.Any())
                 {
-                    this.SelectedItem = null;
-                    this.AvailableQuantity = null;
-                    this.InputQuantity = 0;
+                    //this.SelectedItem = null;
+                    //this.AvailableQuantity = null;
+                    //this.InputQuantity = 0;
 
                     this.RaisePropertyChanged(nameof(this.Items));
                     return;
@@ -1116,11 +1116,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
-                    this.SelectedItem = this.items.FirstOrDefault();
                 }
                 else
                 {
-                    this.SelectedItem = null;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
@@ -1154,9 +1152,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.RaisePropertyChanged(nameof(this.Items));
-            this.RaisePropertyChanged(nameof(this.SelectedItem));
-
-            this.SetCurrentIndex(selectedItemId);
             this.AdjustItemsAppearance();
         }
 
@@ -1212,13 +1207,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize) - 1;
                 }
-
-                if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
-                    &&
-                    this.Items.Count >= this.maxKnownIndexSelection)
-                {
-                    this.SelectedItem = this.items?.ElementAtOrDefault(this.maxKnownIndexSelection);
-                }
             }
             catch (Exception ex)
             {
@@ -1234,6 +1222,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBusyRequestingItemPut = false;
             this.IsBusyRequestingItemPick = false;
             this.IsWaitingForResponse = false;
+
+            this.InputQuantity = 0;
+            this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
+            this.SelectedItem = null;
         }
 
         private bool CanExecuteItemPick()

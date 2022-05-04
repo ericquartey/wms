@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
@@ -27,15 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
 
-            if (!this.AreSetUsers())
-            {
-                this.dataContext.Users.Add(UserParameters.Values.Service);
-                this.dataContext.Users.Add(UserParameters.Values.Operator);
-                this.dataContext.Users.Add(UserParameters.Values.Installer);
-                this.dataContext.Users.Add(UserParameters.Values.Admin);
+            this.AreSetUsers();
 
-                this.dataContext.SaveChanges();
-            }
             //var salt = Convert.ToBase64String(GeneratePasswordSalt());
             //var hash = Encrypt("password", salt);
             //var psw = Decrypt(hash, salt);
@@ -92,22 +85,76 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool AreSetUsers()
+        public void AreSetUsers()
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.Users.Any() &&
-                    this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Admin.ToString().ToLower()) &&
-                    this.dataContext.Users.Any(s => s.Name == "service") &&
-                    this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Operator.ToString().ToLower()) &&
-                    this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Installer.ToString().ToLower()))
+                if (!this.dataContext.Users.Any())
                 {
-                    return true;
+                    this.dataContext.Users.Add(UserParameters.Values.Operator);
+                    this.dataContext.Users.Add(UserParameters.Values.Movement);
+                    this.dataContext.Users.Add(UserParameters.Values.Installer);
+                    this.dataContext.Users.Add(UserParameters.Values.Service);
+                    this.dataContext.Users.Add(UserParameters.Values.Admin);
                 }
                 else
                 {
-                    return false;
+                    if (!this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Admin.ToString().ToLower()))
+                    {
+                        this.dataContext.Users.Add(UserParameters.Values.Admin);
+                    }
+
+                    if (!this.dataContext.Users.Any(s => s.Name == "service"))
+                    {
+                        this.dataContext.Users.Add(UserParameters.Values.Service);
+                    }
+
+                    if (!this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Installer.ToString().ToLower()))
+                    {
+                        this.dataContext.Users.Add(UserParameters.Values.Installer);
+                    }
+
+                    if (!this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Movement.ToString().ToLower()))
+                    {
+                        this.dataContext.Users.Add(UserParameters.Values.Movement);
+                    }
+
+                    if (!this.dataContext.Users.Any(s => s.Name == UserAccessLevel.Operator.ToString().ToLower()))
+                    {
+                        this.dataContext.Users.Add(UserParameters.Values.Operator);
+                    }
                 }
+                foreach (var item in this.dataContext.Users)
+                {
+                    switch (item.Name)
+                    {
+                        case "admin":
+                            item.AccessLevel = ((int)UserAccessLevel.Admin);
+                            break;
+
+                        case "service":
+                            item.AccessLevel = ((int)UserAccessLevel.Admin);
+                            break;
+
+                        case "installer":
+                            item.AccessLevel = ((int)UserAccessLevel.Installer);
+                            break;
+
+                        case "movement":
+                            item.AccessLevel = ((int)UserAccessLevel.Movement);
+                            break;
+
+                        case "operator":
+                            item.AccessLevel = ((int)UserAccessLevel.Operator);
+                            break;
+
+                        default:
+                            item.AccessLevel = ((int)UserAccessLevel.NoAccess);
+                            break;
+                    }
+                }
+
+                this.dataContext.SaveChanges();
             }
         }
 
@@ -215,9 +262,29 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var count = this.dataContext.Users.Count();
-                var result = this.dataContext.Users.AsNoTracking();
+                var result = this.dataContext.Users.AsNoTracking().Where(u => !u.IsDisabled).OrderBy(o => o.AccessLevel).ThenByDescending(o => o.Id);
                 return result;
             }
+        }
+
+        public bool GetIsDisabled(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
+                if (user != null)
+                {
+                    return user.IsDisabled;
+                }
+            }
+
+            throw new EntityNotFoundException(userName);
         }
 
         public string GetServiceToken()
@@ -257,6 +324,33 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
             throw new EntityNotFoundException("Operator");
+        }
+
+        public void SetIsDisabled(string userName, bool isDisabled)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
+            }
+
+            if (isDisabled == null)
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(isDisabled));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
+                if (user != null)
+                {
+                    user.IsDisabled = isDisabled;
+                    this.dataContext.SaveChanges();
+                    return;
+                }
+            }
+
+            throw new EntityNotFoundException(userName);
         }
 
         public void SetOperatorEnabledWithWMS(bool isEnabled)

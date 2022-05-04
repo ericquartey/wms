@@ -331,7 +331,7 @@
     <value>Całkowita ilość paneli</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Tył</value>
+    <value>Powrót</value>
   </data>
   <data name="Front" xml:space="preserve">
     <value>Przód</value>
@@ -2477,5 +2477,110 @@
   </data>
   <data name="WmsMissionActive" xml:space="preserve">
     <value>W tej szufladzie są aktywne misje przez WMS</value>
+  </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>Wewnętrzna brama bezpieczeństwa</value>
+  </data>
+  <data name="AttachMeterToElevator" xml:space="preserve">
+    <value>przymocuj miernik bezpiecznie do windy</value>
+  </data>
+  <data name="AutoLogoutIsActive" xml:space="preserve">
+    <value>Wylogowanie aktywne</value>
+  </data>
+  <data name="AutoLogoutSetings" xml:space="preserve">
+    <value>Auto-wylogowanie</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Czas początkowy</value>
+  </data>
+  <data name="CheckEmptyBayAndCell" xml:space="preserve">
+    <value>Wybierz pozycję okna dostępowego. Otwórz żaluzję (jeśli jest) i sprawdź, czy w oknie dostepowym i naprzeciwko okna w regale nie ma tac. Wykonaj kalibrację łańcucha. Naciśnij START, aby rozpocząć procedurę</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Potwierdź nowe hasło</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="EnabledWithWMS" xml:space="preserve">
+    <value>Włączone z aktywnym WMS</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Czas końcowy</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Alarm pożarowy</value>
+  </data>
+  <data name="HorizontalResolutionCalibration" xml:space="preserve">
+    <value>Rozdzielczość poziomej osi łańcucha</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
+    <value>Wykonuje rozdzielczości poziomej osi łańcucha</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
+    <value>Kalibracja rozdzielczości poziomej osi łańcucha umożliwia prawidłowe ustawienie wartości za pomocą tej procedury. Procedura działa w kolejnych krokach aż do prawidłowego zakończenia.</value>
+  </data>
+  <data name="HorizontalZeroOffset" xml:space="preserve">
+    <value>Przesunięcie punktu zerowego w poziomie</value>
+  </data>
+  <data name="HorizontalZeroOffsetDescription" xml:space="preserve">
+    <value>Wykonuje pomiar przesunięcia zerowego łańcucha</value>
+  </data>
+  <data name="HorizontalZeroOffsetHelp" xml:space="preserve">
+    <value>Funkcja poziomego przesunięcia punktu zerowego umożliwia zmierzenie prawidłowej wartości za pomocą określonej procedury. Procedura działa w kolejnych krokach aż do prawidłowego zakończenia.</value>
+  </data>
+  <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
+    <value>Wykonaj pomiar przesunięcia punktu zerowego łańcucha. Czujnik zera poziomego musi być aktywny.</value>
+  </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Maksymalna długość wiadomości</value>
+  </data>
+  <data name="MetricCordPerpendicular" xml:space="preserve">
+    <value>linka metryczna musi być idealnie prostopadła do windy i równolegle do pasa</value>
+  </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>Wielokrotny wybór</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Nowe hasło</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Alarm pred pożarowy</value>
+  </data>
+  <data name="ResultOutOfStandard" xml:space="preserve">
+    <value>Wynik poza standardem. Oto kilka porad:</value>
+  </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Ścieżka serwera</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>Procedura wyłączania</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Wykonaj kalibrację windy i wyłącz panel</value>
+  </data>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Wyłącz panel (kalibracja windy nie jest teraz dostępna)</value>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Wsparcie</value>
+  </data>
+  <data name="SuspendOperation" xml:space="preserve">
+    <value>Zawieś bieżącą operację</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Koniec czasu (min)</value>
+  </data>
+  <data name="UseLaserLevelToGetValue" xml:space="preserve">
+    <value>pomóż sobie za pomocą niwelatora laserowego, aby uzyskać powtarzalny wynik odczytu</value>
+  </data>
+  <data name="UseMachineFullStroke" xml:space="preserve">
+    <value>spróbuj użyć pełnego skoku maszyny</value>
+  </data>
+  <data name="WantRepeatProcedure" xml:space="preserve">
+    <value>Czy chcesz powtórzyć procedurę? </value>
+  </data>
+  <data name="WrongDataSave" xml:space="preserve">
+    <value>Nie można zapisać błędnych danych</value>
   </data>
 </root>

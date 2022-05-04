@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int ConnectionTimeout { get; set; }
 
+        public int DelayTimeout { get; set; }
+
         public bool IsConnected { get; set; }
 
         public bool IsEnabled { get; set; }

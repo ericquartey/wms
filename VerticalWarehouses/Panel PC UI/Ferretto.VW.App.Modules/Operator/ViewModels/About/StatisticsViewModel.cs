@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             // TODO: Insert code here
-            this.IsVisibleDetails = this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
+            this.IsVisibleDetails = this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
             await base.OnAppearedAsync();
         }
 
@@ -198,7 +198,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 await base.OnDataRefreshAsync();
-                this.IsVisibleDetails = this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
+                this.IsVisibleDetails = this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
                 var cells = await this.machineCellsWebService.GetStatisticsAsync();
                 this.FragmentBackPercent = cells.FragmentBackPercent;
                 this.FragmentFrontPercent = cells.FragmentFrontPercent;

@@ -331,4 +331,7 @@
   <data name="FindZeroElevator" xml:space="preserve">
     <value>Trova lo zero dell'elevatore</value>
   </data>
+  <data name="DelayPutOperation" xml:space="preserve">
+    <value>Attesa dopo versamento (ms)</value>
+  </data>
 </root>

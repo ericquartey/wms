@@ -221,7 +221,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanExecuteDiagnosticCommand()
         {
-            return this.sessionService.UserAccessLevel != MAS.AutomationService.Contracts.UserAccessLevel.Operator;
+            return this.sessionService.UserAccessLevel > MAS.AutomationService.Contracts.UserAccessLevel.Movement;
         }
 
         private bool CanExecuteUserCommand()

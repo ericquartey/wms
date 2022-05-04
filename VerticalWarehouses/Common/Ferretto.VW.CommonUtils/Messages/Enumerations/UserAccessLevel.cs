@@ -6,9 +6,11 @@
 
         Operator = 1,   // No manuali
 
-        Installer = 2,  // Con sicurezze
+        Movement = 2, // Si manuali
 
-        Support = 3,
+        Installer = 3,  // Con sicurezze
+
+        Support = 4,
 
         Admin = 99,     // Tutto
     }
