@@ -936,6 +936,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             Debug.WriteLine($"Command Release fired");
 
+            if (this.IsWaitingForResponse)
+            {
+                Debug.WriteLine($"-- Command rejected");
+                return;
+            }
+
             try
             {
                 this.IsWaitingForResponse = true;
