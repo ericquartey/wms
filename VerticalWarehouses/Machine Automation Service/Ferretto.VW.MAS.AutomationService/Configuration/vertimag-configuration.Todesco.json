@@ -1076,8 +1076,6 @@
             "HighSpeedDurationOpen": 14.0,
             "HighSpeedHalfDurationClose": 6.0,
             "HighSpeedHalfDurationOpen": 7.0,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0,
             "Id": 2
           },
           "Id": 1,
@@ -1092,10 +1090,10 @@
             "FeedRate": 0.1,
             "HighSpeedDurationClose": 0.0,
             "HighSpeedDurationOpen": 0.0,
-            "MaxSpeed": 40000.0,
-            "MinSpeed": 5000.0,
             "Id": 1
           },
+          "MaxSpeed": 40000.0,
+          "MinSpeed": 5000.0,
           "Type": "ThreeSensors"
         },
         "Side": "Front",
@@ -1457,9 +1455,11 @@
     "ExpireCountPrecent": 10,
     "ExpireDays": 14,
     "Height": 6861.0,
-    "HorizontalCyclesToCalibrate": 50,
+    "HorizontalCyclesToCalibrate": 10,
     "HorizontalPositionToCalibrate": 10000,
     "Id": 2,
+    "IsAxisChanged": true,
+    "IsDbSaveOnTelemetry": true,
     "LoadUnitMaxHeight": 395.0,
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitMinHeight": 125.0,
@@ -5816,7 +5816,8 @@
       }
     ],
     "SerialNumber": "MV20-0003",
-    "Simulation": true
+    "Simulation": true,
+    "VerticalCyclesToCalibrate": 50
   },
   "MachineStatistics": [
     {

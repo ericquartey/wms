@@ -53,7 +53,7 @@
             {
                 lock (this.syncRoot)
                 {
-                    return (this.statusWord & 0x00200) > 0;
+                    return (this.statusWord & 0x0020) > 0;
                 }
             }
         }
