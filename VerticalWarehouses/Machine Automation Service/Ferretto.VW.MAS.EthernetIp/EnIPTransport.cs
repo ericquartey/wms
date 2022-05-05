@@ -151,10 +151,10 @@ namespace System.Net.EnIPStack
         // so this method is overridable (this allows the implementation of operating system specific code)
         // Marc solution http://stackoverflow.com/questions/8119414/how-to-query-the-subnet-masks-using-mono-on-linux for instance
         //
-        protected virtual IPEndPoint _GetBroadcastAddress()
+        protected virtual IPEndPoint _GetBroadcastAddress(int port)
         {
             // general broadcast
-            System.Net.IPEndPoint ep = new IPEndPoint(System.Net.IPAddress.Parse("255.255.255.255"), 0xAF12);
+            System.Net.IPEndPoint ep = new IPEndPoint(System.Net.IPAddress.Parse("255.255.255.255"), port);
             // restricted local broadcast (directed ... routable)
             foreach (System.Net.NetworkInformation.NetworkInterface adapter in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
                 foreach (System.Net.NetworkInformation.UnicastIPAddressInformation ip in adapter.GetIPProperties().UnicastAddresses)
@@ -170,7 +170,7 @@ namespace System.Net.EnIPStack
                                 BroadcastStr.Append(((byte)(int.Parse(strCurrentIP[i]) | ~int.Parse(strIPNetMask[i]))).ToString());
                                 if (i != 3) BroadcastStr.Append('.');
                             }
-                            ep = new IPEndPoint(System.Net.IPAddress.Parse(BroadcastStr.ToString()), 0xAF12);
+                            ep = new IPEndPoint(System.Net.IPAddress.Parse(BroadcastStr.ToString()), port);
                         }
                         catch { }  //On mono IPv4Mask feature not implemented
                     }
@@ -179,9 +179,9 @@ namespace System.Net.EnIPStack
         }
 
         IPEndPoint BroadcastAddress = null;
-        public IPEndPoint GetBroadcastAddress()
+        public IPEndPoint GetBroadcastAddress(int port)
         {
-            if (BroadcastAddress == null) BroadcastAddress = _GetBroadcastAddress();
+            if (BroadcastAddress == null) BroadcastAddress = _GetBroadcastAddress(port);
             return BroadcastAddress;
         }
 

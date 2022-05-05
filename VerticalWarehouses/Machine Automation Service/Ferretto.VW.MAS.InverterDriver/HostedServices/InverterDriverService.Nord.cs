@@ -9,10 +9,13 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxisNord;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOnNord;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -70,19 +73,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
                     scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError);
-                }
 
-                this.Logger.LogDebug("Reconnect");
-                this.socketTransport.Disconnect();
-                this.socketTransport.Configure(this.inverterAddress, this.sendPort);
-                for (var i = 0; i < this.forceStatusPublish.Length; i++)
-                {
-                    this.forceStatusPublish[i] = true;
+                    this.Logger.LogDebug("Reconnect");
+                    try
+                    {
+                        this.socketTransport.Disconnect();
+                        this.socketTransport.Configure(this.inverterAddress, this.sendPort);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Logger.LogError($"Exception {ex.Message} while reconnecting");
+                        scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
+
+                        this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while reconnecting", 0), FieldMessageType.InverterException);
+                    }
                 }
             }
             else
             {
-                // TEST
+                // TEST begin
                 var fieldMessageData = new InverterCurrentErrorFieldMessageData();
                 var commandMessage = new FieldCommandMessage(
                     fieldMessageData,
@@ -93,8 +102,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                     (byte)InverterIndex.MainInverter);
 
                 this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
-                // END TEST
+                // TEST end
 
+                for (var i = 0; i < this.forceStatusPublish.Length; i++)
+                {
+                    this.forceStatusPublish[i] = true;
+                }
             }
         }
 
@@ -185,6 +198,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 {
                                     nord.NordStatusWord.Value = this.processData.StatusWord[inverter.SystemIndex];
                                     this.Logger.LogDebug($"status word 0x{nord.NordStatusWord.Value:X4}");
+
+                                    if (nord.NordStatusWord.IsNoPower)
+                                    {
+                                        scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterErrorBaseCode, BayNumber.BayOne, "No power");
+                                    }
                                     // TEST begin
                                     nord.NordControlWord.EnableVoltage = true;
                                     nord.NordControlWord.QuickStop = true;
@@ -233,12 +251,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                                         }
                                         currentAxisPosition += offset;
 
-                                        this.Logger.LogTrace($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}; Sensors={inverter.Inputs}");
+                                        this.Logger.LogDebug($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}; Sensors={inverter.InputsToString()}");
                                         notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
                                     }
                                     else
                                     {
-                                        this.Logger.LogTrace($"Inverter {inverter.SystemIndex} Sensors={inverter.Inputs}");
+                                        this.Logger.LogDebug($"Inverter {inverter.SystemIndex} Sensors={inverter.InputsToString()}");
                                         notificationData = new InverterStatusUpdateFieldMessageData(inverter.Inputs);
                                     }
                                     var msgNotification = new FieldNotificationMessage(
@@ -274,31 +292,27 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                         }
                         this.currentStateMachines.TryGetValue(this.processData.SystemIndex, out var messageCurrentStateMachine);
-                        var update = messageCurrentStateMachine?.ValidateCommandResponse(this.processData);
+                        messageCurrentStateMachine?.ValidateCommandResponse(this.processData);
 
-                        if (true ||
-                            update.HasValue && update == true)
+                        var toWrite = false;
+                        foreach (var inverter in inverters)
                         {
-                            var toWrite = false;
-                            foreach (var inverter in inverters)
+                            if (inverter is INordInverterStatus nord
+                                && (this.processData.ControlWord[inverter.SystemIndex] != nord.NordControlWord.Value
+                                    || this.processData.SetpointFrequency[inverter.SystemIndex] != nord.SetPointFrequency
+                                    || this.processData.SetpointPosition[inverter.SystemIndex] != nord.SetPointPosition
+                                    || this.processData.RampTime[inverter.SystemIndex] != nord.SetPointRampTime
+                                ))
                             {
-                                if (inverter is INordInverterStatus nord
-                                    && (this.processData.ControlWord[inverter.SystemIndex] != nord.NordControlWord.Value
-                                        || this.processData.SetpointFrequency[inverter.SystemIndex] != nord.SetPointFrequency
-                                        || this.processData.SetpointPosition[inverter.SystemIndex] != nord.SetPointPosition
-                                        || this.processData.RampTime[inverter.SystemIndex] != nord.SetPointRampTime
-                                    ))
-                                {
-                                    this.processData.SetPoint(nord.SystemIndex, nord.NordControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime);
-                                    this.Logger.LogDebug($"SetPoint inverter {nord.SystemIndex}, CW 0x{nord.NordControlWord.Value:X4}, Freq {nord.SetPointFrequency}, Pos {nord.SetPointPosition}, ramp {nord.SetPointRampTime}");
-                                    toWrite = true;
-                                }
+                                this.processData.SetPoint(nord.SystemIndex, nord.NordControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime);
+                                this.Logger.LogDebug($"SetPoint inverter {nord.SystemIndex}, CW 0x{nord.NordControlWord.Value:X4}, Freq {nord.SetPointFrequency}, Pos {nord.SetPointPosition}, ramp {nord.SetPointRampTime}");
+                                toWrite = true;
                             }
+                        }
 
-                            if (toWrite)
-                            {
-                                this.socketTransport.ImplicitMessageWrite(this.processData.RawData);
-                            }
+                        if (toWrite)
+                        {
+                            this.socketTransport.ImplicitMessageWrite(this.processData.RawData);
                         }
                     }
                 }
@@ -309,6 +323,58 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
                 }
+            }
+        }
+
+        private void ProcessCalibrateAxisMessageNord(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
+        {
+            if (receivedMessage.Data is ICalibrateAxisFieldMessageData calibrateData)
+            {
+                if (inverter.IsStarted)
+                {
+                    this.Logger.LogDebug($"Starting Calibrate Axis {calibrateData.AxisToCalibrate}");
+
+                    this.currentAxis = calibrateData.AxisToCalibrate;
+                    var currentStateMachine = new CalibrateAxisNordStateMachine(
+                        this.currentAxis,
+                        calibrateData.CalibrationType,
+                        inverter,
+                        this.Logger,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.ServiceScopeFactory);
+
+                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+                    currentStateMachine.Start();
+                }
+                else
+                {
+                    this.Logger.LogDebug("4:Inverter is not ready. Powering up the inverter");
+
+                    var currentStateMachine = new PowerOnNordStateMachine(
+                        calibrateData.AxisToCalibrate,
+                        inverter,
+                        this.Logger,
+                        this.eventAggregator,
+                        this.inverterCommandQueue,
+                        this.ServiceScopeFactory,
+                        receivedMessage);
+
+                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+                    currentStateMachine.Start();
+                }
+
+                if (inverter.SystemIndex == InverterIndex.MainInverter || inverter.SystemIndex == InverterIndex.Slave1)
+                {
+                    this.dataOld = null;
+                }
+            }
+            else
+            {
+                this.Logger.LogError("5:Wrong message Data data type");
+
+                var ex = new Exception();
+                this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.CalibrateAxis);
             }
         }
 
@@ -328,6 +394,77 @@ namespace Ferretto.VW.MAS.InverterDriver
             return result;
         }
 
+        private void ProcessNordCommand(FieldCommandMessage receivedMessage, IServiceProvider serviceProvider, IInverterStatusBase inverter)
+        {
+            if (this.socketTransport.IsConnected)
+            {
+                switch (receivedMessage.Type)
+                {
+                    case FieldMessageType.CalibrateAxis:
+                        this.ProcessCalibrateAxisMessageNord(receivedMessage, inverter);
+                        break;
+
+                    case FieldMessageType.InverterPowerOff:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.InverterPowerOn:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.Positioning:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.ShutterPositioning:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.InverterSetTimer:
+                        // no need in EthernetIP protocol
+                        break;
+
+                    // not used
+                    //case FieldMessageType.InverterSwitchOff:
+                    //    this.ProcessInverterSwitchOffMessage(inverter);
+                    //    break;
+
+                    case FieldMessageType.InverterSwitchOn:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.InverterStop:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.InverterFaultReset:
+                        throw new NotImplementedException();
+                        break;
+
+                    // not used
+                    //case FieldMessageType.InverterDisable:
+                    //    this.ProcessDisableMessage(inverter);
+                    //    break;
+
+                    case FieldMessageType.MeasureProfile:
+                        // no need in EthernetIP protocol
+                        break;
+
+                    case FieldMessageType.InverterCurrentError:
+                        this.ProcessReadCurrentError(inverter);
+                        break;
+
+                    case FieldMessageType.InverterProgramming:
+                        throw new NotImplementedException();
+                        break;
+
+                    case FieldMessageType.InverterReading:
+                        throw new NotImplementedException();
+                        break;
+                }
+            }
+        }
+
         private Task StartCommunicationNord(Inverter masterInverter)
         {
             this.inverterAddress = masterInverter.IpAddress;
@@ -336,23 +473,22 @@ namespace Ferretto.VW.MAS.InverterDriver
             try
             {
                 this.Logger.LogDebug("Start connection");
-                this.socketTransport.Configure(this.inverterAddress, this.sendPort);
                 this.socketTransport.ImplicitReceivedChanged += this.OnInverterMessageReceivedImplicit;
                 this.socketTransport.ConnectionStatusChanged += this.OnConnectionStatus;
-
                 this.explicitMessagesTask.Start();
-                for (var i = 0; i < this.forceStatusPublish.Length; i++)
-                {
-                    this.forceStatusPublish[i] = true;
-                }
-
+                this.socketTransport.Configure(this.inverterAddress, this.sendPort);
             }
             catch (Exception ex)
             {
                 this.Logger.LogCritical($"Error while starting inverter socket threads: {ex.Message}");
 
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                    errorsProvider.RecordNew(MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
+                }
                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
-                throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);
             }
             return Task.CompletedTask;
         }

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.EnIPStack;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Interface;
 using Microsoft.Extensions.Configuration;
+using NLog;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
@@ -18,9 +17,13 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
+        private const int udpPort = 0x8AE;
+
         private readonly Timer implicitTimer;
 
         private readonly IPAddress localAddress;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// The timeout for read operations on the socket.
@@ -51,6 +54,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         private int sendPort;
 
         #endregion
+
+        // 0xAF12;
 
         #region Constructors
 
@@ -137,24 +142,19 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public void Configure(IPAddress inverterAddress, int sendPort)
         {
+            this.implicitTimer.Change(1200, 1200);
             this.IsConnectedUdp = false;
             this.inverterAddress = inverterAddress;
-            this.sendPort = 0xAF12;
-            this.client = new EnIPClient(this.localAddress.ToString(), this.readTimeoutMilliseconds);
+            this.sendPort = sendPort;
+            this.client = new EnIPClient(this.localAddress.ToString(), this.readTimeoutMilliseconds, udpPort);
             this.client.DeviceArrival += new DeviceArrivalHandler(this.OnDeviceArrival);
-            this.client.DiscoverServers();
-            this.implicitTimer.Change(1200, 1200);
+            this.client.DiscoverServers(this.sendPort);
         }
 
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            if (!this.remoteDevice.Connect())
-            {
-                throw new InverterDriverException(
-                    "Failed to connect to Inverter Hardware",
-                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
-            }
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -296,18 +296,27 @@ namespace Ferretto.VW.MAS.InverterDriver
         private void ImplicitTimer(object state)
         {
             this.implicitTimer.Change(-1, -1);
-            if (this.Output != null)
+            var isOk = false;
+            try
             {
-                this.Output.Class1UpdateO2T();
+                if (this.Output != null)
+                {
+                    this.Output.Class1UpdateO2T();
+                }
+                isOk = DateTimeOffset.UtcNow.Subtract(this.receivedImplicitTime).TotalMilliseconds < 1500;
             }
-            var isOk = DateTimeOffset.UtcNow.Subtract(this.receivedImplicitTime).TotalMilliseconds < 1500;
+            catch (Exception ex)
+            {
+                this.logger.Error(ex.Message);
+            }
+
             if (!isOk || isOk != this.IsConnectedUdp || this.remoteDevice is null)
             {
                 this.IsConnectedUdp = isOk;
                 this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.IsConnected, this.IsConnectedUdp));
             }
 
-            if (this.remoteDevice is null)
+            if (!isOk)
             {
                 this.implicitTimer.Change(1200, 1200);
             }
@@ -320,14 +329,18 @@ namespace Ferretto.VW.MAS.InverterDriver
         private void OnDeviceArrival(EnIPRemoteDevice device)
         {
             this.remoteDevice = device;
-            if (!this.remoteDevice.Connect())
+            try
             {
-                throw new InverterDriverException(
-                    "Failed to connect to Inverter Hardware",
-                    InverterDriverExceptionCode.TcpInverterConnectionFailed);
+                if (this.remoteDevice.Connect())
+                {
+                    this.remoteDevice?.GetObjectList();
+                    this.StartImplicitMessages();
+                }
             }
-            this.remoteDevice.GetObjectList();
-            this.StartImplicitMessages();
+            catch (Exception ex)
+            {
+                this.logger.Error(ex.Message);
+            }
         }
 
         private bool StartImplicitMessages()
@@ -351,7 +364,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.Input = new EnIPAttribut(instIn, 3);
             this.Input.ReadDataFromNetwork();
 
-            var localEp = new IPEndPoint(this.localAddress, 0x8AE);
+            var localEp = new IPEndPoint(this.localAddress, udpPort);
             this.remoteDevice?.Class1Activate(localEp);
 
             var status = this.remoteDevice?.ForwardOpen(null, this.Output, this.Input, out this.closePacket, (uint)this.readTimeoutMilliseconds * 1000, true, false);

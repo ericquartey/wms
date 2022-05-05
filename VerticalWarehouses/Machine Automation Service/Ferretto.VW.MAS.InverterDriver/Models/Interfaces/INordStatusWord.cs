@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
     {
         #region Properties
 
+        bool IsNoPower { get; }
+
         bool IsOperationEnabledNord { get; }
 
         bool IsQuickStopTrueNord { get; }

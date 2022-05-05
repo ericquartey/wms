@@ -20,6 +20,8 @@
 
         #region Methods
 
+        string InputsToString();
+
         bool UpdateInputsStates(bool[] newInputStates);
 
         #endregion

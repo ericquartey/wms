@@ -339,7 +339,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         var offset = (axis == Axis.Vertical)
                             ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
-                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
+                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;      // the horizontal offset is always 0: bay chain do not use offset in positioning
                         currentAxisPosition += offset;
                         this.Logger.LogTrace($"5b:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}");
 
@@ -1272,11 +1272,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.inverterAddress = masterInverter.IpAddress;
             this.inverterPort = masterInverter.TcpPort;
 
-            this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
-            this.Logger.LogInformation($"1:Configure Inverter {masterInverter.Index}, tcp-endpoint={this.inverterAddress}:{this.inverterPort}");
-
             try
             {
+                this.socketTransport.Configure(this.inverterAddress, this.inverterPort);
+                this.Logger.LogInformation($"1:Configure Inverter {masterInverter.Index}, tcp-endpoint={this.inverterAddress}:{this.inverterPort}");
+
                 await this.socketTransport.ConnectAsync();
             }
             catch (InverterDriverException ex)

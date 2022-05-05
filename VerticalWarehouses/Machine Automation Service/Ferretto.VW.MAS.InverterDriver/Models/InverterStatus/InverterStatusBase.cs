@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System.Text;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord;
@@ -81,6 +82,17 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         #endregion
 
         #region Methods
+
+        public string InputsToString()
+        {
+            var sb = new StringBuilder();
+            foreach (var b in this.Inputs)
+            {
+                sb.AppendFormat("{0} ", b ? 1 : 0);
+            }
+
+            return $"[{sb}]";
+        }
 
         public abstract bool UpdateInputsStates(bool[] newInputStates);
 

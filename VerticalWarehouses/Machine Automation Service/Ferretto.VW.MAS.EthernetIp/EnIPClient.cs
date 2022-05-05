@@ -45,16 +45,18 @@ namespace System.Net.EnIPStack
     public class EnIPClient
     {
         public EnIPUDPTransport udp;
-        int TcpTimeout;
+        private int tcpTimeout;
+        private int udpPort;
 
         public event DeviceArrivalHandler DeviceArrival;
 
         // Local endpoint is important for broadcast messages
         // When more than one interface are present, broadcast
         // requests are sent on the first one, not all !
-        public EnIPClient(String End_point, int TcpTimeout=100)
+        public EnIPClient(String End_point, int TcpTimeout=100, int UdpPort = 0)
         {
-            this.TcpTimeout = TcpTimeout;
+            this.tcpTimeout = TcpTimeout;
+            this.udpPort = UdpPort;
             udp = new EnIPUDPTransport(End_point, 0);
             udp.EncapMessageReceived += new EncapMessageReceivedHandler(on_MessageReceived);
         }
@@ -71,7 +73,7 @@ namespace System.Net.EnIPStack
                     offset += 2;
                     for (int i = 0; i < NbDevices; i++)
                     {
-                        EnIPRemoteDevice device = new EnIPRemoteDevice(remote_address, TcpTimeout, packet, ref offset);
+                        EnIPRemoteDevice device = new EnIPRemoteDevice(remote_address, this.udpPort, this.tcpTimeout, packet, ref offset);
                         DeviceArrival(device);
                     }
                 }
@@ -87,9 +89,9 @@ namespace System.Net.EnIPStack
             Trace.WriteLine("Send ListIdentity to "+ep.Address.ToString());
         }
         // Broadcast ListIdentity
-        public void DiscoverServers()
+        public void DiscoverServers(int port)
         {
-            DiscoverServers(udp.GetBroadcastAddress());
+            DiscoverServers(udp.GetBroadcastAddress(port));
         }
     }
 
@@ -182,10 +184,10 @@ namespace System.Net.EnIPStack
         // This constuctor is used with the ListIdentity response buffer
         // No local endpoint given here, the TCP/IP stack should do the job
         // if more than one interface is present
-        public EnIPRemoteDevice(IPEndPoint ep, int TcpTimeout, byte[] DataArray, ref int Offset)
+        public EnIPRemoteDevice(IPEndPoint ep, int udpPort, int TcpTimeout, byte[] DataArray, ref int Offset)
         {
             this.ep = ep;
-            this.epUdp = new IPEndPoint(ep.Address, 2222);
+            this.epUdp = new IPEndPoint(ep.Address, udpPort);
             Tcpclient = new EnIPTCPClientTransport(TcpTimeout);
             FromListIdentityResponse(DataArray, ref Offset);
         }

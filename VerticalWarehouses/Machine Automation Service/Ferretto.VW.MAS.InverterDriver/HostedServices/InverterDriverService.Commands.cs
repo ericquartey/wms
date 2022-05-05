@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -96,6 +97,45 @@ namespace Ferretto.VW.MAS.InverterDriver
                     .GetRequiredService<IInvertersProvider>()
                     .GetByIndex(inverterIndex);
 
+                if (inverter is NordInverterStatus)
+                {
+                    this.ProcessNordCommand(receivedMessage, serviceProvider, inverter);
+                }
+                else
+                {
+                    this.ProcessInverterCommand(receivedMessage, serviceProvider, inverter);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Received invalid command");
+
+                this.SendOperationErrorMessage(
+                    (InverterIndex)receivedMessage.DeviceIndex,
+                    new InverterExceptionFieldMessageData(ex, "Inverter number {currentInverter} is not configured for this machine", 0),
+                    FieldMessageType.InverterStop);
+            }
+
+            var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
+            var notificationMessage = new NotificationMessage(
+                notificationMessageData,
+                $"Inverter current machine status {receivedMessage.Type}",
+                MessageActor.Any,
+                MessageActor.InverterDriver,
+                MessageType.MachineStatusActive,
+                BayNumber.None,
+                BayNumber.None,
+                MessageStatus.OperationStart);
+
+            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+            return Task.CompletedTask;
+        }
+
+        private void ProcessInverterCommand(FieldCommandMessage receivedMessage, IServiceProvider serviceProvider, IInverterStatusBase inverter)
+        {
+            if (this.socketTransport.IsConnected)
+            {
                 switch (receivedMessage.Type)
                 {
                     case FieldMessageType.CalibrateAxis:
@@ -161,30 +201,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         break;
                 }
             }
-            catch (Exception ex)
-            {
-                this.Logger.LogError(ex, "Received invalid command");
-
-                this.SendOperationErrorMessage(
-                    (InverterIndex)receivedMessage.DeviceIndex,
-                    new InverterExceptionFieldMessageData(ex, "Inverter number {currentInverter} is not configured for this machine", 0),
-                    FieldMessageType.InverterStop);
-            }
-
-            var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.InverterDriver, receivedMessage.Type.ToString(), MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"Inverter current machine status {receivedMessage.Type}",
-                MessageActor.Any,
-                MessageActor.InverterDriver,
-                MessageType.MachineStatusActive,
-                BayNumber.None,
-                BayNumber.None,
-                MessageStatus.OperationStart);
-
-            this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-
-            return Task.CompletedTask;
         }
 
         #endregion

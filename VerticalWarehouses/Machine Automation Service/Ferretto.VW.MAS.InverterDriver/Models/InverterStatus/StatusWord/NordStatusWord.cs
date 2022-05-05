@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
 
         #region Properties
 
+        public bool IsNoPower => (this.Value & 0x0800) > 0;
+
         public bool IsOperationEnabledNord => (this.Value & 0x0002) > 0;
 
         public bool IsQuickStopTrueNord => (this.Value & 0x0004) > 0;
