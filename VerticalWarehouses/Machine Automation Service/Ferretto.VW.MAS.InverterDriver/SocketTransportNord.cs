@@ -51,11 +51,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private EnIPRemoteDevice remoteDevice;
 
+        // 0xAF12;
         private int sendPort;
 
         #endregion
-
-        // 0xAF12;
 
         #region Constructors
 
