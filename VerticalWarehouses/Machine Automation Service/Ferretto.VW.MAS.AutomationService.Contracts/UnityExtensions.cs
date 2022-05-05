@@ -162,6 +162,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.RegisterType<IMachineLogoutSettingsWebService>(
                 new InjectionFactory(c => new MachineLogoutSettingsWebService(urlString, resolveFunction(c))));
 
+            container.RegisterType<IMachineAutoCompactingSettingsWebService>(
+                new InjectionFactory(c => new MachineAutoCompactingSettingsWebService(urlString, resolveFunction(c))));
+
             return containerRegistry;
         }
     }

@@ -38,6 +38,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Accessory> Accessories { get; set; }
 
+        public DbSet<AutoCompactingSettings> AutoCompactingSettings { get; set; }
+
         public DbSet<BayAccessories> BayAccessories { get; set; }
 
         public DbSet<BayPosition> BayPositions { get; set; }
@@ -84,6 +86,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<LogEntry> LogEntries { get; set; }
 
+        public DbSet<LogoutSettings> LogoutSettings { get; set; }
+
         public DbSet<Machine> Machines { get; set; }
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
@@ -113,8 +117,6 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
 
         public DbSet<WmsSettings> WmsSettings { get; set; }
-
-        public DbSet<LogoutSettings> LogoutSettings { get; set; }
 
         #endregion
 

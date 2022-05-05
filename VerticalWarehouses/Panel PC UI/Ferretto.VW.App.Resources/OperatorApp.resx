@@ -2579,4 +2579,7 @@
   <data name="DialogGroupByLot" xml:space="preserve">
     <value>Attention, item managed in lot, do you still confirm?</value>
   </data>
+  <data name="ShowAutoCompactingSetting" xml:space="preserve">
+    <value>Auto compacting settings</value>
+  </data>
 </root>
