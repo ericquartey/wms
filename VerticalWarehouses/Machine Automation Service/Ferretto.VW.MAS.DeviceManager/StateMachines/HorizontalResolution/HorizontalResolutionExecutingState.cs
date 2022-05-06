@@ -262,8 +262,6 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.HorizontalResolution
             {
                 case MovementMode.HorizontalResolution:
                     {
-                        var machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-
                         var machineModeProvider = this.scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
                         if (machineModeProvider.Mode != MachineMode.Test &&
                             machineModeProvider.Mode != MachineMode.Test2 &&

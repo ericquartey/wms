@@ -2062,7 +2062,7 @@
     <value>Note obbligatorie</value>
   </data>
   <data name="IsLocalMachineItems" xml:space="preserve">
-    <value>Cerca gli articoli in questa macchina</value>
+    <value>Cerca gli articoli in questa area</value>
   </data>
   <data name="IsOrderList" xml:space="preserve">
     <value>Elenco commesse (WMS custom)</value>

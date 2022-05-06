@@ -2789,7 +2789,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search items in this machine.
+        ///   Looks up a localized string similar to Search items in this area.
         /// </summary>
         public static string IsLocalMachineItems {
             get {
