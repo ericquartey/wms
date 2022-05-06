@@ -14,8 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     BeginTime = table.Column<TimeSpan>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false),
-                    RemainingTime = table.Column<double>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly DataLayerContext dataContext;
 
         private readonly IEventAggregator eventAggregator;
@@ -23,8 +25,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
-        private readonly IBaysDataProvider baysDataProvider;
-
         #endregion
 
         #region Constructors
@@ -34,7 +34,6 @@ namespace Ferretto.VW.MAS.DataLayer
             IEventAggregator eventAggregator,
             IMissionsDataProvider missionsDataProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
-            IMachineProvider machineProvider,
             IBaysDataProvider baysDataProvider,
             ILogger<DataLayerService> logger) : base(eventAggregator)
         {
@@ -113,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             try
             {
-                var activeSettings = this.GetAllAutoCompactingSettings().ToList().Find(x => x.IsActive && DateTime.Now.TimeOfDay.TotalMinutes - x.BeginTime.TotalMinutes >= 0 && DateTime.Now.TimeOfDay.TotalMinutes - x.BeginTime.TotalMinutes <= 1 && x.RemainingTime == 0);
+                var activeSettings = this.GetAllAutoCompactingSettings().ToList().Find(x => x.IsActive && DateTime.Now.TimeOfDay.TotalMinutes - x.BeginTime.TotalMinutes >= 0 && DateTime.Now.TimeOfDay.TotalMinutes - x.BeginTime.TotalMinutes <= 1);
 
                 if (activeSettings != null)
                 {

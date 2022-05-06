@@ -52,8 +52,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<double>("RemainingTime");
-
                     b.HasKey("Id");
 
                     b.ToTable("AutoCompactingSettings");

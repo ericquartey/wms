@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20220502081323_AutoCompactingSettings")]
+    [Migration("20220506150647_AutoCompactingSettings")]
     partial class AutoCompactingSettings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,8 +53,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<TimeSpan>("BeginTime");
 
                     b.Property<bool>("IsActive");
-
-                    b.Property<double>("RemainingTime");
 
                     b.HasKey("Id");
 

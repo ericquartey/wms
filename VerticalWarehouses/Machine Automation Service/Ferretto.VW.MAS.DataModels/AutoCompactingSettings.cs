@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
-        public double RemainingTime { get; set; }
-
         #endregion
     }
 }
