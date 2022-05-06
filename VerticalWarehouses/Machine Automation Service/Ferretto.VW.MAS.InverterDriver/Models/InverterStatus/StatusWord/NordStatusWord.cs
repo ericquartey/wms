@@ -27,17 +27,21 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
 
         #region Properties
 
-        public bool IsNoPower => (this.Value & 0x0800) > 0;
+        public bool Active481_10 => (this.Value & 0x2000) > 0;
 
-        public bool IsOperationEnabledNord => (this.Value & 0x0002) > 0;
+        public bool Active481_9 => (this.Value & 0x0400) > 0;
 
-        public bool IsQuickStopTrueNord => (this.Value & 0x0004) > 0;
+        public bool BusControlActive => (this.Value & 0x0200) > 0;
 
-        public bool ParameterSet1 => (this.Value & 0x0020) > 0;
+        public bool ParameterSet1 => (this.Value & 0x4000) > 0;
 
-        public bool ParameterSet2 => (this.Value & 0x0040) > 0;
+        public bool ParameterSet2 => (this.Value & 0x8000) > 0;
 
-        public bool TargetReached => (this.Value & 0x0010) > 0;
+        public bool RotationLeft => (this.Value & 0x1000) > 0;
+
+        public bool RotationRight => (this.Value & 0x0800) > 0;
+
+        public bool SetpointReached => (this.Value & 0x0100) > 0;
 
         #endregion
     }

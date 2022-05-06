@@ -6,13 +6,29 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
     {
         #region Properties
 
-        bool FreeBit10 { set; }
+        bool ControlWordValid { set; }
 
-        bool NewSetPoint { set; }
+        bool DisableVoltage { set; }
+
+        bool EnableAcceleration { set; }
+
+        bool EnableRamp { set; }
+
+        bool EnableSetPoint { set; }
+
+        bool NotReadyForOperation { set; }
 
         bool ParameterSet1 { set; }
 
         bool ParameterSet2 { set; }
+
+        bool RotationLeft { set; }
+
+        bool RotationRight { set; }
+
+        bool Start480_11 { set; }
+
+        bool Start480_12 { set; }
 
         #endregion
     }

@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         #region Properties
 
-        public bool FreeBit10
+        public bool ControlWordValid
         {
             set
             {
@@ -46,7 +46,22 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
             }
         }
 
-        public bool NewSetPoint
+        public bool DisableVoltage
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0002;
+                }
+                else
+                {
+                    this.Value &= 0xFFFD;
+                }
+            }
+        }
+
+        public bool EnableAcceleration
         {
             set
             {
@@ -61,7 +76,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
             }
         }
 
-        public bool ParameterSet1
+        public bool EnableRamp
         {
             set
             {
@@ -76,7 +91,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
             }
         }
 
-        public bool ParameterSet2
+        public bool EnableSetPoint
         {
             set
             {
@@ -87,6 +102,111 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
                 else
                 {
                     this.Value &= 0xFFBF;
+                }
+            }
+        }
+
+        public bool NotReadyForOperation
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0001;
+                }
+                else
+                {
+                    this.Value &= 0xFFFE;
+                }
+            }
+        }
+
+        public bool ParameterSet1
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x4000;
+                }
+                else
+                {
+                    this.Value &= 0xBFFF;
+                }
+            }
+        }
+
+        public bool ParameterSet2
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x8000;
+                }
+                else
+                {
+                    this.Value &= 0x7FFF;
+                }
+            }
+        }
+
+        public bool RotationLeft
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x1000;
+                }
+                else
+                {
+                    this.Value &= 0xEFFF;
+                }
+            }
+        }
+
+        public bool RotationRight
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0800;
+                }
+                else
+                {
+                    this.Value &= 0xF7FF;
+                }
+            }
+        }
+
+        public bool Start480_11
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0200;
+                }
+                else
+                {
+                    this.Value &= 0xFDFF;
+                }
+            }
+        }
+
+        public bool Start480_12
+        {
+            set
+            {
+                if (value)
+                {
+                    this.Value |= 0x0100;
+                }
+                else
+                {
+                    this.Value &= 0xFEFF;
                 }
             }
         }

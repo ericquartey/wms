@@ -6,17 +6,21 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus
     {
         #region Properties
 
-        bool IsNoPower { get; }
+        bool Active481_10 { get; }
 
-        bool IsOperationEnabledNord { get; }
+        bool Active481_9 { get; }
 
-        bool IsQuickStopTrueNord { get; }
+        bool BusControlActive { get; }
 
         bool ParameterSet1 { get; }
 
         bool ParameterSet2 { get; }
 
-        bool TargetReached { get; }
+        bool RotationLeft { get; }
+
+        bool RotationRight { get; }
+
+        bool SetpointReached { get; }
 
         #endregion
     }

@@ -25,6 +25,10 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
+        private const int UdpPollingIntervalFast = 100;
+
+        private const int UdpPollingIntervalSlow = 500;
+
         private readonly Task explicitMessagesTask;
 
         private InverterMessage processData;
@@ -199,19 +203,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     nord.NordStatusWord.Value = this.processData.StatusWord[inverter.SystemIndex];
                                     this.Logger.LogDebug($"status word 0x{nord.NordStatusWord.Value:X4}");
 
-                                    if (nord.NordStatusWord.IsNoPower)
-                                    {
-                                        scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterErrorBaseCode, BayNumber.BayOne, "No power");
-                                    }
                                     // TEST begin
-                                    nord.NordControlWord.EnableVoltage = true;
+                                    nord.NordControlWord.DisableVoltage = true;
                                     nord.NordControlWord.QuickStop = true;
-                                    nord.NordControlWord.EnableOperation = true;
-                                    nord.NordControlWord.NewSetPoint = true;
-                                    nord.NordControlWord.ParameterSet1 = true;
-                                    nord.NordControlWord.ParameterSet2 = true;
-                                    nord.NordControlWord.FreeBit10 = true;
-                                    nord.NordControlWord.FaultReset = nord.NordStatusWord.IsFault;
+                                    nord.NordControlWord.ControlWordValid = true;
+                                    //nord.NordControlWord.FaultReset = nord.NordStatusWord.IsFault;
                                     // TEST end
                                 }
 

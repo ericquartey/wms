@@ -17,6 +17,10 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
+        public const int UdpPollingInterval = 50;
+
+        private const int idlePollingInterval = 1200;
+
         private const int udpPort = 0x8AE;
 
         private readonly Timer implicitTimer;
@@ -141,7 +145,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public void Configure(IPAddress inverterAddress, int sendPort)
         {
-            this.implicitTimer.Change(1200, 1200);
+            this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
             this.IsConnectedUdp = false;
             this.inverterAddress = inverterAddress;
             this.sendPort = sendPort;
@@ -170,7 +174,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             this.remoteDevice?.Disconnect();
             this.remoteDevice = null;
-            this.implicitTimer.Change(1200, 1200);
+            this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
         }
 
         public void Dispose()
@@ -282,6 +286,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             return lb;
         }
 
+        // this always arrives with a 50ms interval - even if ImplicitTimer is slower
         private void ImplicitMessageReceived(EnIPAttribut sender)
         {
             this.receiveBuffer = sender.RawData;
@@ -294,7 +299,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ImplicitTimer(object state)
         {
-            this.implicitTimer.Change(-1, -1);
+            this.implicitTimer?.Change(-1, -1);
             var isOk = false;
             try
             {
@@ -302,7 +307,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.Output.Class1UpdateO2T();
                 }
-                isOk = DateTimeOffset.UtcNow.Subtract(this.receivedImplicitTime).TotalMilliseconds < 1500;
+                isOk = DateTimeOffset.UtcNow.Subtract(this.receivedImplicitTime).TotalMilliseconds < this.readTimeoutMilliseconds + 500;
             }
             catch (Exception ex)
             {
@@ -317,11 +322,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (!isOk)
             {
-                this.implicitTimer.Change(1200, 1200);
+                this.implicitTimer?.Change(idlePollingInterval, idlePollingInterval);
             }
             else
             {
-                this.implicitTimer.Change(200, 200);
+                this.implicitTimer?.Change(UdpPollingInterval, UdpPollingInterval);
             }
         }
 
