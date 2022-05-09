@@ -144,12 +144,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified || bay.CurrentMission == null) &&
                 !activeMission.Any(x => x.Status == MissionStatus.Executing);
 
-            //var result = !this.IsWaitingForResponse &&
-            //       this.MachineService.MachinePower == MachinePowerState.Powered &&
-            //       (this.MachineService.HasShutter || this.MachineService.Bay.CurrentMission is null) &&
-            //       !this.IsMachineMoving &&
-            //       this.SensorsService.IsZeroChain;
-
             return res;
         }
 
