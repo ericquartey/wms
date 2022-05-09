@@ -118,12 +118,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (this.CanCompactingStart())
                     {
-                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} :  Compacting allowed: machine is in automatic mode");
+                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} :  Compacting allowed.");
                         this.machineVolatileDataProvider.Mode = CommonUtils.Messages.MachineMode.Compact;
                     }
                     else
                     {
-                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} : Compacting denied: machine is not in automatic mode.");
+                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} : Compacting denied.");
                     }
                 }
             }
