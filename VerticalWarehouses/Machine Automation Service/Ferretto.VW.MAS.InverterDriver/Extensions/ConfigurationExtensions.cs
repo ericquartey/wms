@@ -6,18 +6,11 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private const string VertimagInverterDriverEthernetIPKey = "Vertimag:Drivers:Inverter:EthernetIP";
-
         private const string VertimagInverterDriverUseMockKey = "Vertimag:Drivers:Inverter:UseMock";
 
         #endregion
 
         #region Methods
-
-        public static bool UseInverterDriverEthernetIP(this IConfiguration configuration)
-        {
-            return configuration.GetValue<bool>(VertimagInverterDriverEthernetIPKey);
-        }
 
         public static bool UseInverterDriverMock(this IConfiguration configuration)
         {

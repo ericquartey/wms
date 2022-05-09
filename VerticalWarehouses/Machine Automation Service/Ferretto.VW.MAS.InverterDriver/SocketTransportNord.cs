@@ -13,7 +13,7 @@ using NLog;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public class SocketTransportNord : ISocketTransport, IDisposable
+    public class SocketTransportNord : ISocketTransportNord, IDisposable
     {
         #region Fields
 

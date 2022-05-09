@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public class SocketTransport : ISocketTransport, IDisposable
+    public class SocketTransport : ISocketTransportInverter, IDisposable
     {
         #region Fields
 

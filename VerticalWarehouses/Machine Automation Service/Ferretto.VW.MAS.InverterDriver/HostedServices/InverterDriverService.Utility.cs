@@ -30,6 +30,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -1326,6 +1327,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                 .GetRequiredService<IDigitalDevicesDataProvider>()
                 .GetInverterByIndex(InverterIndex.MainInverter);
 
+            // set the socket transport according to configuration
+            if (this.configuration.UseInverterDriverMock())
+            {
+                this.socketTransport = this.socketTransportMock;
+            }
+            else if (masterInverter?.Type == InverterType.Ang)
+            {
+                this.socketTransport = this.socketTransportInverter;
+            }
+            else if (masterInverter?.Type == InverterType.Nord)
+            {
+                this.socketTransport = this.socketTransportNord;
+            }
+            else
+            {
+                throw new InvalidOperationException("No master inverter available");
+            }
+
+            // start communication
             if (masterInverter?.Type == InverterType.Ang)
             {
                 await this.StartCommunicationAng(masterInverter);
@@ -1334,10 +1354,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 await this.StartCommunicationNord(masterInverter);
                 ret = false;
-            }
-            else
-            {
-                throw new InvalidOperationException("No master inverter available");
             }
             return ret;
         }

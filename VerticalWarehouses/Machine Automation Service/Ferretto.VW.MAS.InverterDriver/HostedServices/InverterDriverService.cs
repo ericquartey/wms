@@ -16,6 +16,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -35,6 +36,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Timer[] axisPositionUpdateTimer;
 
+        private readonly IConfiguration configuration;
+
         private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
 
         private readonly IEventAggregator eventAggregator;
@@ -51,7 +54,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly NordFaultCodes nordFaultCodes;
 
-        private readonly ISocketTransport socketTransport;
+        private readonly ISocketTransportInverter socketTransportInverter;
+
+        private readonly ISocketTransportMock socketTransportMock;
+
+        private readonly ISocketTransportNord socketTransportNord;
 
         private readonly Timer[] statusWordUpdateTimer;
 
@@ -65,6 +72,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Timer sensorStatusUpdateTimer;
 
+        private ISocketTransport socketTransport;
+
         #endregion
 
         #region Constructors
@@ -73,11 +82,18 @@ namespace Ferretto.VW.MAS.InverterDriver
             ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
             IServiceScopeFactory serviceScopeFactory,
-            ISocketTransport socketTransport)
+            ISocketTransportInverter socketTransportInverter,
+            ISocketTransportMock socketTransportMock,
+            ISocketTransportNord socketTransportNord,
+            IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
+            this.socketTransportInverter = socketTransportInverter ?? throw new ArgumentNullException(nameof(socketTransportInverter));
+            this.socketTransportMock = socketTransportMock ?? throw new ArgumentNullException(nameof(socketTransportMock));
+            this.socketTransportNord = socketTransportNord ?? throw new ArgumentNullException(nameof(socketTransportNord));
+            this.socketTransport = this.socketTransportInverter;
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.configuration = configuration;
 
             this.inverterReceiveTask = new Task(async () => await this.ReceiveInverterData());
             this.inverterSendTask = new Task(async () => await this.SendInverterCommand());

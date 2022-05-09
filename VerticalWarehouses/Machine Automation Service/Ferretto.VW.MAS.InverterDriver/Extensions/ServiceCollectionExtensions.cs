@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Methods
 
         public static IServiceCollection AddInverterDriver(
-            this IServiceCollection services)
+                    this IServiceCollection services)
         {
             if (services == null)
             {
@@ -21,19 +21,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             services.AddScoped<IInvertersProvider, InvertersProvider>();
 
-            services.AddSingleton(s =>
-            {
-                var configuration = s.GetRequiredService<IConfiguration>();
-                if (configuration.UseInverterDriverMock())
-                {
-                    return new SocketTransportMock();
-                }
-                if (configuration.UseInverterDriverEthernetIP())
-                {
-                    return new SocketTransportNord(configuration);
-                }
-                return new SocketTransport(configuration) as ISocketTransport;
-            });
+            services.AddSingleton<ISocketTransportMock, SocketTransportMock>();
+            services.AddSingleton<ISocketTransportInverter, SocketTransport>();
+            services.AddSingleton<ISocketTransportNord, SocketTransportNord>();
 
             return services;
         }

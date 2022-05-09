@@ -10,7 +10,7 @@ using Ferretto.VW.MAS.InverterDriver.Interface;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    public class SocketTransportMock : ISocketTransport, IDisposable
+    public class SocketTransportMock : ISocketTransportMock, IDisposable
     {
         #region Fields
 
