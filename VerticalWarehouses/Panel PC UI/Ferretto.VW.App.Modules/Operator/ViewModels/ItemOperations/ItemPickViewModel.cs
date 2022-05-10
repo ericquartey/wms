@@ -292,7 +292,53 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     if (userAction.UserAction == UserAction.VerifyItem)
                     {
-                        await base.CommandUserActionAsync(userAction);
+                        if (this.IsCarrefour)
+                        {
+                            if (userAction.Code == this.MissionOperation?.ItemCode)
+                            {
+                                this.barcodeItem = userAction.Code;
+                            }
+                            else if (userAction.Code == this.MissionOperation?.ItemDetails?.BoxId)
+                            {
+                                this.toteBarcode = userAction.Code;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(userAction.Code);
+
+                                    if (userAction.Code == barcodeItemService?.Code)
+                                    {
+                                        this.barcodeItem = userAction.Code;
+                                    }
+                                    else
+                                    {
+                                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(this.barcodeItem))
+                            {
+                                var lists = await this.MissionOperationsService.GetAllMissionsMachineAsync();
+                                if (!string.IsNullOrEmpty(this.toteBarcode)
+                                    || string.IsNullOrEmpty(this.MissionOperation?.ItemDetails?.BoxId)
+                                    || lists is null
+                                    || lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) <= 1)
+                                {
+                                    await this.ConfirmOperationAsync(this.barcodeItem);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            await base.CommandUserActionAsync(userAction);
+                        }
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
                     {
@@ -790,59 +836,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
                                 this.barcodeItem = string.Empty;
                             }
-                        }
-                    }
-                    else if (this.IsCarrefour)
-                    {
-                        if (barcode == this.MissionOperation.ItemDetails?.BoxId)
-                        {
-                            this.toteBarcode = barcode;
-                        }
-                        else if (barcode == this.MissionOperation?.ItemCode)
-                        {
-                            this.barcodeItem = barcode;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(barcode);
-
-                                if (barcode == barcodeItemService?.Code)
-                                {
-                                    this.barcodeItem = barcode;
-                                }
-                                else
-                                {
-                                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), barcode), Services.Models.NotificationSeverity.Error);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), barcode), Services.Models.NotificationSeverity.Error);
-                            }
-                        }
-
-                        var machine = await this.MachineIdentityWebService.GetAsync();
-                        var missions = await this.MissionOperationsService.GetAllMissionsMachineAsync();
-
-                        if (!string.IsNullOrEmpty(this.barcodeItem) && this.MissionOperation.ItemDetails != null && missions.ToList().FindAll(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick).Count <= 0)
-                        {
-                            await this.MissionOperationsService.CompleteAsync(
-                                    this.MissionOperation.Id,
-                                    this.InputQuantity.Value,
-                                    this.barcodeItem,
-                                    0,
-                                    this.MissionOperation.ItemDetails.BoxId);
-                        }
-                        else if (!string.IsNullOrEmpty(this.barcodeItem) && this.toteBarcode == this.MissionOperation.ItemDetails?.BoxId)
-                        {
-                            await this.MissionOperationsService.CompleteAsync(
-                                    this.MissionOperation.Id,
-                                    this.InputQuantity.Value,
-                                    this.barcodeItem,
-                                    0,
-                                    this.MissionOperation.ItemDetails.BoxId);
                         }
                     }
                     else

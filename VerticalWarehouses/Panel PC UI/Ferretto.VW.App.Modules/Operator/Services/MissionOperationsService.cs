@@ -150,8 +150,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public async Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync()
         {
             var machine = await this.identityService.GetAsync();
-            var bay = await this.bayManager.GetBayAsync();
-            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, (int)this.bayNumber, true);
 
             return list;
         }
