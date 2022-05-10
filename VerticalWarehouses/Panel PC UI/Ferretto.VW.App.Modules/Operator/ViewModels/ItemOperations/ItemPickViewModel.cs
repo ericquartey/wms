@@ -308,7 +308,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 {
                                     var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(userAction.Code);
 
-                                    if (userAction.Code == barcodeItemService?.Code)
+                                    if (barcodeItemService?.Code == this.MissionOperation?.ItemCode)
                                     {
                                         this.barcodeItem = userAction.Code;
                                     }
