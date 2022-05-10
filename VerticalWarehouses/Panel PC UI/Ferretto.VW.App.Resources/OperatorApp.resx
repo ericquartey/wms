@@ -2579,4 +2579,7 @@
   <data name="DialogGroupByLot" xml:space="preserve">
     <value>Attention, item managed in lot, do you still confirm?</value>
   </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Check if the list continues on another machine</value>
+  </data>
 </root>

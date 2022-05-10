@@ -2178,4 +2178,7 @@
   <data name="DialogGroupByLot" xml:space="preserve">
     <value>Attenzione, articolo gestito a lotto, confermi ugualmente?</value>
   </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Controlla se la lista continua in un altra macchina</value>
+  </data>
 </root>
