@@ -318,11 +318,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                     else
                                     {
                                         this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                        return;
                                     }
                                 }
                                 catch (Exception ex)
                                 {
                                     this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                    return;
                                 }
                             }
 
@@ -335,6 +337,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                     || lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) <= 1)
                                 {
                                     await this.ConfirmOperationAsync(this.barcodeItem);
+                                    this.barcodeItem = string.Empty;
+                                    this.toteBarcode = string.Empty;
                                 }
                             }
                         }
