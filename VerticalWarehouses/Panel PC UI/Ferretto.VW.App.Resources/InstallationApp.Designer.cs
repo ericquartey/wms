@@ -322,6 +322,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compacting Is Active.
+        /// </summary>
+        public static string AutoCompactingIsActive {
+            get {
+                return ResourceManager.GetString("AutoCompactingIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logout active.
         /// </summary>
         public static string AutoLogoutIsActive {
@@ -5718,6 +5727,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RemoveMenuTitle {
             get {
                 return ResourceManager.GetString("RemoveMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Successful.
+        /// </summary>
+        public static string RemoveSuccessful {
+            get {
+                return ResourceManager.GetString("RemoveSuccessful", resourceCulture);
             }
         }
         

@@ -119,6 +119,8 @@
 
                 public const string MAIN = "DrawerCompactingViewModel";
 
+                public const string SETTINGS = "AutoCompactingSettingsViewModel";
+
                 #endregion
             }
 

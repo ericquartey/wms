@@ -344,6 +344,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.lastMode = this.mode;
 
             this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<ILogoutSettingsProvider>().UpdateStatus(TimeSpan.FromMilliseconds(TIMERINTERVAL).TotalMinutes);
+            this.serviceScopeFactory.CreateScope().ServiceProvider.GetService<IAutoCompactingSettingsProvider>().UpdateStatus();
         }
 
         #endregion
