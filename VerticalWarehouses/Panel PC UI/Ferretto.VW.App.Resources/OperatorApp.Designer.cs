@@ -5210,6 +5210,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto compacting settings.
+        /// </summary>
+        public static string ShowAutoCompactingSetting {
+            get {
+                return ResourceManager.GetString("ShowAutoCompactingSetting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show barcode image.
         /// </summary>
         public static string ShowBarcodeImage {

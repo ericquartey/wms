@@ -1,0 +1,146 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.AutoCompactingSettingsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+  <Grid Margin="15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+
+    <TextBlock VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc OperatorApp.ShowAutoCompactingSetting}" />
+
+    <Border Grid.Row="1"
+            Margin="0,0,0,15"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
+
+      <DataGrid Width="auto"
+                Height="auto"
+                AutoGenerateColumns="False"
+                Background="{DynamicResource VWAPP_BACKGROUND}"
+                BorderThickness="0"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="True"
+                FontSize="{StaticResource FontSize_High}"
+                HeadersVisibility="Column"
+                HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                IsReadOnly="True"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding AutoCompactingSettings}"
+                RowHeight="40"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedAutoCompactingSettings}"
+                SelectionMode="Single"
+                VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                VerticalScrollBarVisibility="Auto">
+
+        <DataGrid.Columns>
+          <DataGridTextColumn x:Name="Column1"
+                              Width="2*"
+                              Binding="{Binding Path=BeginTime}"
+                              Header="{res:Loc InstallationApp.BeginTime}">
+            <DataGridTextColumn.CellStyle>
+              <Style TargetType="DataGridCell">
+                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+              </Style>
+            </DataGridTextColumn.CellStyle>
+            <DataGridTextColumn.ElementStyle>
+              <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+              </Style>
+            </DataGridTextColumn.ElementStyle>
+          </DataGridTextColumn>
+          <DataGridTemplateColumn x:Name="Column2"
+                                  Width="1*"
+                                  Header="{res:Loc InstallationApp.AutoCompactingIsActive}">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <icon:PackIconMaterial Width="auto"
+                                       Height="auto"
+                                       Margin="10"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Kind="{Binding Path=IsActive, Converter={StaticResource BTIKC}}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Border>
+
+    <Border Grid.Row="2"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
+      <Grid Margin="15">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition />
+          <ColumnDefinition />
+          <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <controls:PpcCheckBox Grid.Row="0"
+                              Grid.Column="0"
+                              Margin="0,0,0,10"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              IsChecked="{Binding SelectedAutoCompactingSettings.IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              LabelText="{res:Loc InstallationApp.AutoCompactingIsActive}" />
+
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="0"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             InputText="{Binding SelectedAutoCompactingSettings.BeginTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{res:Loc InstallationApp.BeginTime}" />
+
+      </Grid>
+    </Border>
+
+    <StackPanel Grid.Row="3"
+                Orientation="Horizontal">
+      <controls:PpcButton Margin="0,15,50,0"
+                          HorizontalAlignment="Left"
+                          Command="{Binding SaveCommand}"
+                          Content="{res:Loc InstallationApp.Save}"
+                          IsBusy="{Binding IsBusy}" />
+
+      <controls:PpcButton Margin="0,15,0,0"
+                          HorizontalAlignment="Left"
+                          Command="{Binding DeleteCommand}"
+                          Content="{res:Loc InstallationApp.Delete}"
+                          IsBusy="{Binding IsBusy}"
+                          Visibility="{Binding IsInstaller, Converter={StaticResource BTVC}}" />
+    </StackPanel>
+
+
+  </Grid>
+</ctrls:View>

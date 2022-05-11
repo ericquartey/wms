@@ -2770,4 +2770,10 @@
   <data name="MovementEnabled" xml:space="preserve">
     <value>Movement Enabled</value>
   </data>
+  <data name="AutoCompactingIsActive" xml:space="preserve">
+    <value>Compacting Is Active</value>
+  </data>
+  <data name="RemoveSuccessful" xml:space="preserve">
+    <value>Remove Successful</value>
+  </data>
 </root>

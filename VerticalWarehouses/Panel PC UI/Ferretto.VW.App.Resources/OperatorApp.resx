@@ -2582,4 +2582,7 @@
   <data name="CheckListContinueInOtherMachine" xml:space="preserve">
     <value>Check if the list continues on another machine</value>
   </data>
+  <data name="ShowAutoCompactingSetting" xml:space="preserve">
+    <value>Auto compacting settings</value>
+  </data>
 </root>

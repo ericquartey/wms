@@ -2,6 +2,7 @@
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Views;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -36,7 +37,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-
             containerProvider.Resolve<IOperatorNavigationService>();
             containerProvider.Resolve<IWmsDataProvider>().Start();
             containerProvider.Resolve<IMissionOperationsService>().StartAsync();
@@ -91,6 +91,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<ImmediateLoadingUnitCallView>();
             containerRegistry.RegisterForNavigation<LoadingUnitsMissionsView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
+            containerRegistry.RegisterForNavigation<AutoCompactingSettingsView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
             containerRegistry.RegisterForNavigation<StatisticsCellsView>();
