@@ -336,10 +336,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 {
                                     await this.ConfirmOperationAsync(this.barcodeItem);
                                 }
-                                else
-                                {
-                                    this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
-                                }
                             }
                         }
                         else
