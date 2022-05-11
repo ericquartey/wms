@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class OperatorApp {
@@ -759,6 +759,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CheckIntrusion {
             get {
                 return ResourceManager.GetString("CheckIntrusion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check if the list continues on another machine.
+        /// </summary>
+        public static string CheckListContinueInOtherMachine {
+            get {
+                return ResourceManager.GetString("CheckListContinueInOtherMachine", resourceCulture);
             }
         }
         
@@ -2789,7 +2798,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search items in this machine.
+        ///   Looks up a localized string similar to Search items in this area.
         /// </summary>
         public static string IsLocalMachineItems {
             get {

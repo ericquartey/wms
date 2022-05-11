@@ -2062,7 +2062,7 @@
     <value>Note obbligatorie</value>
   </data>
   <data name="IsLocalMachineItems" xml:space="preserve">
-    <value>Cerca gli articoli in questa macchina</value>
+    <value>Cerca gli articoli in questa area</value>
   </data>
   <data name="IsOrderList" xml:space="preserve">
     <value>Elenco commesse (WMS custom)</value>
@@ -2177,5 +2177,8 @@
   </data>
   <data name="DialogGroupByLot" xml:space="preserve">
     <value>Attenzione, articolo gestito a lotto, confermi ugualmente?</value>
+  </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Controlla se la lista continua in un altra macchina</value>
   </data>
 </root>

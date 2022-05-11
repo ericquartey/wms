@@ -109,5 +109,10 @@ namespace Ferretto.VW.App.Modules.Operator.Views
         }
 
         #endregion
+
+        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataGrid.SelectedItems.Clear();
+        }
     }
 }

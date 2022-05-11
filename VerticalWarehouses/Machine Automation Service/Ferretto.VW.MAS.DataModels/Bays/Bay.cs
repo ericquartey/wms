@@ -73,6 +73,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool ShowBarcodeImage { get; set; }
 
+        public bool CheckListContinueInOtherMachine { get; set; }
+
         public Shutter Shutter { get; set; }
 
         public WarehouseSide Side { get; set; }

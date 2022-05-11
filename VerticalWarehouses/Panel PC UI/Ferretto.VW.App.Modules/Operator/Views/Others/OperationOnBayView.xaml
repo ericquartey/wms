@@ -113,6 +113,11 @@
                             IsChecked="{Binding IsShowBarcodeImage, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.ShowBarcodeImage}" />
 
+      <controls:PpcCheckBox Margin="0,10,0,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsCheckListContinueInOtherMachine, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.CheckListContinueInOtherMachine}" />
+
       <controls:PpcTextBox Margin="0,10,15,0"
                            VerticalAlignment="Center"
                            InputText="{Binding ToteBarcodeLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

@@ -2463,7 +2463,7 @@
     <value>Notes must be filled</value>
   </data>
   <data name="IsLocalMachineItems" xml:space="preserve">
-    <value>Search items in this machine</value>
+    <value>Search items in this area</value>
   </data>
   <data name="IsOrderList" xml:space="preserve">
     <value>Order List (WMS custom)</value>
@@ -2578,5 +2578,8 @@
   </data>
   <data name="DialogGroupByLot" xml:space="preserve">
     <value>Attention, item managed in lot, do you still confirm?</value>
+  </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Check if the list continues on another machine</value>
   </data>
 </root>
