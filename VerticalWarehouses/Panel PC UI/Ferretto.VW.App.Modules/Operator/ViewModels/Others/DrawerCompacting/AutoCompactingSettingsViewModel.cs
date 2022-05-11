@@ -165,7 +165,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.AutoCompactingSettings = IEnumConvert(await this.machineAutoCompactingSettingsWebService.GetAllAutoCompactingSettingsAsync());
 
-            if (this.sessionService.UserAccessLevel > UserAccessLevel.Movement)
+            if (this.sessionService.UserAccessLevel > UserAccessLevel.Movement && this.AutoCompactingSettings.Count < 3)
             {
                 this.AutoCompactingSettings.Add(new AutoCompactingSettings());
             }
