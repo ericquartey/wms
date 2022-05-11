@@ -297,10 +297,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             if (userAction.Code == this.MissionOperation?.ItemCode)
                             {
                                 this.barcodeItem = userAction.Code;
+                                this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + this.barcodeItem);
                             }
                             else if (userAction.Code == this.MissionOperation?.ItemDetails?.BoxId)
                             {
                                 this.toteBarcode = userAction.Code;
+                                this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + this.toteBarcode);
                             }
                             else
                             {
@@ -311,6 +313,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                     if (barcodeItemService?.Code == this.MissionOperation?.ItemCode)
                                     {
                                         this.barcodeItem = userAction.Code;
+                                        this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + this.barcodeItem);
                                     }
                                     else
                                     {
@@ -332,6 +335,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                     || lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) <= 1)
                                 {
                                     await this.ConfirmOperationAsync(this.barcodeItem);
+                                }
+                                else
+                                {
+                                    this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
                                 }
                             }
                         }
