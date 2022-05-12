@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken loadingUnitToken;
 
+        private bool multilist;
+
         private int unitId;
 
         #endregion
@@ -320,6 +322,19 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.isRecallUnit;
         }
 
+        public async Task<bool> MustCheckToteBarcode()
+        {
+            if (this.multilist)
+            {
+                return true;
+            }
+
+            var lists = await this.GetAllMissionsMachineAsync();
+            this.multilist = lists != null
+                && lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) > 1;
+            return this.multilist;
+        }
+
         public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
         {
             this.logger.Debug($"User requested to partially complete operation '{operationId}' with quantity {quantity}.");
@@ -539,6 +554,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 else
                 {
                     this.logger.Trace($"No Active mission.");
+
+                    this.multilist = false;
 
                     if (this.ActiveMachineMission?.LoadUnitId != null)
                     {
