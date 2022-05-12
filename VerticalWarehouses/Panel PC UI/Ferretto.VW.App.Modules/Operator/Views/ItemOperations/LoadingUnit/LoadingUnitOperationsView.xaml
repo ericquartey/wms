@@ -133,7 +133,7 @@
                                      Margin="0,10,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItemCompartment.Sscc, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                                     ContentText="{Binding SelectedItemCompartment.ItemSscc, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                      LabelText="{res:Loc OperatorApp.Sscc}"
                                      Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
             <!--  Only reserved for Carrefour  -->

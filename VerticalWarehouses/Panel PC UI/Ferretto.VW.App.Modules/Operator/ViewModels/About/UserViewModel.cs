@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private Culture installerLanguage;
 
+        private bool isMovementDisabled;
+
         private List<Culture> languageList;
 
         private bool movementEnabled;
@@ -122,6 +124,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool IsMovementDisabled
+        {
+            get => this.isMovementDisabled;
+            set => this.SetProperty(ref this.isMovementDisabled, value, this.RaiseCanExecuteChanged);
         }
 
         public List<Culture> LanguageList
@@ -196,6 +204,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsMovementDisabled = await this.machineUsersWebService.GetIsDisabledAsync("movement");
+
             this.OperatorEnabled = this.sessionService.UserAccessLevel == UserAccessLevel.Operator
                 || this.sessionService.UserAccessLevel == UserAccessLevel.Installer
                 || this.sessionService.UserAccessLevel == UserAccessLevel.Support
@@ -332,7 +342,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ServiceLanguage = this.GetItemByCulture(users.Where(s => s.Name == "service").Select(s => s.Language).FirstOrDefault());
             this.InstallerLanguage = this.GetItemByCulture(users.Where(s => s.Name == "installer").Select(s => s.Language).FirstOrDefault());
             this.OperatorLanguage = this.GetItemByCulture(users.Where(s => s.Name == "operator").Select(s => s.Language).FirstOrDefault());
-            this.MovementLanguage = this.GetItemByCulture(users.Where(s => s.Name == "movement").Select(s => s.Language).FirstOrDefault());
+            if (!this.IsMovementDisabled)
+            {
+                this.MovementLanguage = this.GetItemByCulture(users.Where(s => s.Name == "movement").Select(s => s.Language).FirstOrDefault());
+            }
         }
 
         private List<Culture> SetLanguageList()

@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 )
             {
                 this.Logger.LogInformation($"Destination {this.Mission.LoadUnitDestination} is busy, waiting for resume. Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
+                this.Mission.Status = MissionStatus.Waiting;
+                this.MissionsDataProvider.Update(this.Mission);
                 return true;
             }
             this.Mission.CloseShutterPosition = this.LoadingUnitMovementProvider.GetShutterClosedPosition(bay, this.Mission.LoadUnitDestination);
@@ -315,6 +317,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 targetCellId,
                 waitContinue);
             this.Mission.RestoreConditions = false;
+            this.Mission.Status = MissionStatus.Executing;
             this.MissionsDataProvider.Update(this.Mission);
 
             this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationExecuting);

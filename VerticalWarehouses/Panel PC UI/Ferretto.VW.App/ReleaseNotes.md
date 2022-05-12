@@ -26,11 +26,13 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.43 rispetto la 1.0.42
-- 
+- Aggiunto parametro "Controlla se la lista continua in un'altra macchina"
+- Aggiunta funzione di compattazione automatica
 
 ## Bug Risolti
 - Aggiunta data di scadenza nell'inventario
 - Correzione ai ripristini automatici
+- Correzioni per Carrefour
 
 ## Compatibile con adapter 0.4.31 e 0.4.32
 ***

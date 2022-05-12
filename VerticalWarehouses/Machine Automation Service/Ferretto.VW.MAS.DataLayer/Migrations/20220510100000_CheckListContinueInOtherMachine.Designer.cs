@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20220510100000_CheckListContinueInOtherMachine")]
+    partial class CheckListContinueInOtherMachine
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,20 +43,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("Accessories");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Accessory");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.AutoCompactingSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<TimeSpan>("BeginTime");
-
-                    b.Property<bool>("IsActive");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AutoCompactingSettings");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>

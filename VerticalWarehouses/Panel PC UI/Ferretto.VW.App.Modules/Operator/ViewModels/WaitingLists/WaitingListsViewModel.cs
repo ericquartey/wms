@@ -302,6 +302,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.LoadListsAsync();
 
             await this.RefreshListsAsync();
+
+            this.SelectedLists.Clear();
         }
 
         protected override void RaiseCanExecuteChanged()

@@ -69,6 +69,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool view;
 
+        private bool isCheckListContinueInOtherMachine;
+
         #endregion
 
         #region Constructors
@@ -190,6 +192,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isShowBarcodeImage, value, this.CanExecute);
         }
 
+        public bool IsCheckListContinueInOtherMachine
+        {
+            get => this.isCheckListContinueInOtherMachine;
+            set => this.SetProperty(ref this.isCheckListContinueInOtherMachine, value, this.CanExecute);
+        }
+
         public bool IsUpdatingStockByDifference
         {
             get => this.isUpdatingStockByDifference;
@@ -277,6 +285,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Inventory = this.Bay.Inventory;
                 this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
                 this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage;
+                this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine;
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
                 this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
@@ -313,7 +322,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage);
+                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage, this.IsCheckListContinueInOtherMachine);
 
                 var machine = new Machine();
                 machine.IsEnableHandlingItemOperations = this.IsEnableHandlingItemOperations;

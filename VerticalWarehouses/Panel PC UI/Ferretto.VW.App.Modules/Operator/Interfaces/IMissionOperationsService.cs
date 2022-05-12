@@ -32,6 +32,7 @@ namespace Ferretto.VW.App.Modules.Operator
         Task<bool> IsMultiMachineAsync(int missionId);
 
         bool IsRecallLoadingUnitId();
+        Task<bool> MustCheckToteBarcode();
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>

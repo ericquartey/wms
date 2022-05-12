@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken loadingUnitToken;
 
+        private bool multilist;
+
         private int unitId;
 
         #endregion
@@ -150,8 +152,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public async Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync()
         {
             var machine = await this.identityService.GetAsync();
-            var bay = await this.bayManager.GetBayAsync();
-            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, (int)this.bayNumber, true);
 
             return list;
         }
@@ -291,13 +292,13 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 var configuration = await this.machineConfigurationWebService.GetAsync();
 
-                if (!configuration.Machine.IsCarrefour)
+                var machine = await this.identityService.GetAsync();
+                var bay = await this.bayManager.GetBayAsync();
+
+                if (!bay.CheckListContinueInOtherMachine)
                 {
                     return false;
                 }
-
-                var machine = await this.identityService.GetAsync();
-                var bay = await this.bayManager.GetBayAsync();
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
 
@@ -319,6 +320,19 @@ namespace Ferretto.VW.App.Modules.Operator
         public bool IsRecallLoadingUnitId()
         {
             return this.isRecallUnit;
+        }
+
+        public async Task<bool> MustCheckToteBarcode()
+        {
+            if (this.multilist)
+            {
+                return true;
+            }
+
+            var lists = await this.GetAllMissionsMachineAsync();
+            this.multilist = lists != null
+                && lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) > 1;
+            return this.multilist;
         }
 
         public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
@@ -540,6 +554,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 else
                 {
                     this.logger.Trace($"No Active mission.");
+
+                    this.multilist = false;
 
                     if (this.ActiveMachineMission?.LoadUnitId != null)
                     {

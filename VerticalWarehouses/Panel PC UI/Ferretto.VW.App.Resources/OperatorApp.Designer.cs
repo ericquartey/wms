@@ -763,6 +763,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check if the list continues on another machine.
+        /// </summary>
+        public static string CheckListContinueInOtherMachine {
+            get {
+                return ResourceManager.GetString("CheckListContinueInOtherMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Check operation has been cancelled.
         /// </summary>
         public static string CheckOperationCancelled {
@@ -2789,7 +2798,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search items in this machine.
+        ///   Looks up a localized string similar to Search items in this area.
         /// </summary>
         public static string IsLocalMachineItems {
             get {
@@ -5197,6 +5206,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ShipmentUnitDescription {
             get {
                 return ResourceManager.GetString("ShipmentUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto compacting settings.
+        /// </summary>
+        public static string ShowAutoCompactingSetting {
+            get {
+                return ResourceManager.GetString("ShowAutoCompactingSetting", resourceCulture);
             }
         }
         
