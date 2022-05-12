@@ -15,11 +15,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
+        public int CanOpenNode => (int)this.Index + 1;
+
         public InverterIndex Index { get; set; }
 
         public System.Net.IPAddress IpAddress { get; set; }
 
-        //public System.Net.IPAddress LocalIpAddress { get; set; }
+        public bool IsCanOpen => this.TcpPort == 0;
 
         public IEnumerable<InverterParameter> Parameters { get; set; }
 
@@ -28,7 +30,7 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.tcpPort;
             set
             {
-                if (value < System.Net.IPEndPoint.MinPort || value > System.Net.IPEndPoint.MaxPort)
+                if (value < 0 || value > System.Net.IPEndPoint.MaxPort)
                 {
                     throw new System.ArgumentException("The TCP port is not in the allowed range of values.", nameof(value));
                 }
