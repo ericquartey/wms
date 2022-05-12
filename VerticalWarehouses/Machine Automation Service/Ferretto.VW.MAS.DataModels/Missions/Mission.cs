@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DataModels
             || (this.Status is MissionStatus.Executing && this.Step is MissionStep.WaitDepositCell)
             || (this.Status is MissionStatus.Waiting && this.Step is MissionStep.WaitDepositExternalBay)
             || (this.Status is MissionStatus.Waiting && this.Step is MissionStep.WaitDepositInternalBay)
-            || (this.Status is MissionStatus.Executing && this.Step is MissionStep.BackToBay);
+            || (this.Status is MissionStatus.Waiting && this.Step is MissionStep.BackToBay);
         }
 
         public bool IsRestoringType()

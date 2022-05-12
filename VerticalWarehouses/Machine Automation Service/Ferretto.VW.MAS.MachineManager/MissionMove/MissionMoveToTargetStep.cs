@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     retValue = this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay).Any(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick) &&
+                            (m.Status == MissionStatus.Waiting && (m.Step == MissionStep.WaitPick || m.RestoreStep == MissionStep.WaitPick)) &&
                             (!inError || m.ErrorCode != MachineErrorCode.NoError)
                         );
                 }
