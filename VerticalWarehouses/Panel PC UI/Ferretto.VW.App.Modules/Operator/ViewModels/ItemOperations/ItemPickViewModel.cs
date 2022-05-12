@@ -330,11 +330,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                             if (!string.IsNullOrEmpty(this.barcodeItem))
                             {
-                                var lists = await this.MissionOperationsService.GetAllMissionsMachineAsync();
                                 if (!string.IsNullOrEmpty(this.toteBarcode)
                                     || string.IsNullOrEmpty(this.MissionOperation?.ItemDetails?.BoxId)
-                                    || lists is null
-                                    || lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) <= 1)
+                                    || !await this.MissionOperationsService.MustCheckToteBarcode())
                                 {
                                     await this.ConfirmOperationAsync(this.barcodeItem);
                                     this.barcodeItem = string.Empty;
