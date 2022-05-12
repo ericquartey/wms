@@ -59,7 +59,7 @@
 
       <Grid.RowDefinitions>
         <RowDefinition Height="100" />
-        <RowDefinition Height="100" />
+        <RowDefinition Height="auto" />
         <RowDefinition Height="100" />
         <RowDefinition Height="100" />
         <RowDefinition Height="100" />
@@ -100,7 +100,8 @@
                  FontSize="{StaticResource FontSize_High}"
                  Foreground="{DynamicResource VWAPP_ViewTitleTextBlock_Foreground}"
                  Style="{StaticResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                 Text="Movement" />
+                 Text="Movement"
+                 Visibility="{Binding IsMovementDisabled, Converter={StaticResource BTVIC}}" />
 
       <ComboBox Grid.Row="1"
                 Grid.Column="1"
@@ -114,7 +115,9 @@
                 ItemsSource="{Binding LanguageList}"
                 MaxDropDownHeight="160"
                 SelectedItem="{Binding MovementLanguage}"
-                Style="{DynamicResource PpcComboBoxStyle}" />
+                Style="{DynamicResource PpcComboBoxStyle}"
+                Visibility="{Binding IsMovementDisabled, Converter={StaticResource BTVIC}}" />
+
 
       <TextBlock Grid.Row="2"
                  Grid.Column="0"
