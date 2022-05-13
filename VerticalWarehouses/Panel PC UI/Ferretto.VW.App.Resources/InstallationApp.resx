@@ -2776,4 +2776,10 @@
   <data name="RemoveSuccessful" xml:space="preserve">
     <value>Remove Successful</value>
   </data>
+  <data name="FixBackDrawers" xml:space="preserve">
+    <value>Back Offset</value>
+  </data>
+  <data name="FixBackDrawersDescription" xml:space="preserve">
+    <value>Fix all back cell positions</value>
+  </data>
 </root>

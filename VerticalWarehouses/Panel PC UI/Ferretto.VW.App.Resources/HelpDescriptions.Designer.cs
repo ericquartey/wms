@@ -1492,6 +1492,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This operation allows you to update all the positions of the cells on the back side, the saving may take a few seconds.
+        /// </summary>
+        public static string HelpFBDDescription {
+            get {
+                return ResourceManager.GetString("HelpFBDDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Indicates the number of cycles currently completed..
         /// </summary>
         public static string HelpGCCompleted {

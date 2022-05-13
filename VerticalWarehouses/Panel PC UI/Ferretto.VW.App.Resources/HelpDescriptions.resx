@@ -1656,4 +1656,8 @@
   <data name="BayOperationsDescriptionWarning" xml:space="preserve">
     <value>WARNING: some features need a WMS customization</value>
   </data>
+  <data name="HelpFBDDescription" xml:space="preserve">
+    <value>This operation allows you to update all the positions of the cells on the back side, the saving may take a few seconds</value>
+    
+  </data>
 </root>
