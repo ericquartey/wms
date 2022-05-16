@@ -660,7 +660,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.Cells.UpdateRange(cells);
-                this.logger.LogDebug($"SaveCells() : Update {cells.Count()} Cells" );
+                this.logger.LogDebug($"Change back drawers position. {cells.Count()} cells updated" );
                 this.dataContext.SaveChanges();
             }
         }
