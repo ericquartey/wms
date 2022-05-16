@@ -4327,11 +4327,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Inverter : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("CanOpenNode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CanOpenNode { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Index", Required = Newtonsoft.Json.Required.Always)]
         public InverterIndex Index { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IpAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public IPAddress IpAddress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCanOpen", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCanOpen { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsEthernetIP", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsEthernetIP { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LocalAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPAddress LocalAddress { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Parameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<InverterParameter> Parameters { get; set; }

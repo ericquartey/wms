@@ -15,13 +15,21 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
-        public int CanOpenNode => (int)this.Index + 1;
+        public int? CanOpenNode { get; set; }
 
+        /// <summary>
+        /// Index corresponds to the SystemBus node
+        /// node 0 MainInverter is the Master of the SystemBus
+        /// </summary>
         public InverterIndex Index { get; set; }
 
         public System.Net.IPAddress IpAddress { get; set; }
 
-        public bool IsCanOpen => this.TcpPort == 0;
+        public bool IsCanOpen => this.CanOpenNode.HasValue && this.CanOpenNode.Value > 0;
+
+        public bool? IsEthernetIP { get; set; }
+
+        public System.Net.IPAddress LocalAddress => this.IsEthernetIP.HasValue && this.IsEthernetIP == true ? this.IpAddress : null;
 
         public IEnumerable<InverterParameter> Parameters { get; set; }
 

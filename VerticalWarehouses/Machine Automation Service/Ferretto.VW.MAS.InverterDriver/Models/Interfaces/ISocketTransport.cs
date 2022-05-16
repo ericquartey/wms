@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.EnIPStack;
 using System.Threading;
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
         /// </summary>
         /// <param name="inverterAddress">Address of the Inverter device</param>
         /// <param name="sendPort">TCP/IP Port for the Inverter device</param>
-        void Configure(IPAddress inverterAddress, int sendPort);
+        void Configure(IPAddress inverterAddress, int sendPort, IEnumerable<int> nodeList = null);
 
         /// <summary>
         ///     Creates the TCP client object and connects it to the remote inverter host
@@ -62,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
 
         bool ExplicitMessage(ushort classId, uint instanceId, ushort attributeId, CIPServiceCodes serviceId, byte[] data, out byte[] receive, out int length);
 
-        bool ImplicitMessageWrite(byte[] data);
+        bool ImplicitMessageWrite(byte[] data, int node);
 
         /// <summary>
         ///     Reads data from the remote host. Blocks the calling thread until new data is received from the host
@@ -71,6 +72,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
         /// <returns>A byte array containing the bytes read from the socket stream</returns>
         /// <exception cref="InverterDriverException">Read operation Failed. Inspect exception details for more details</exception>
         ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken);
+
+        bool SDOMessage(byte node, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length);
 
         /// <summary>
         ///     Sends data to the remote host asynchronously.

@@ -1334,7 +1334,18 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else if (masterInverter?.Type == InverterType.Ang)
             {
-                this.socketTransport = this.socketTransportInverter;
+                if (masterInverter?.IsCanOpen == true)
+                {
+                    this.socketTransport = this.socketTransportCan;
+                }
+                else if (masterInverter?.IsEthernetIP == true)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    this.socketTransport = this.socketTransportInverter;
+                }
             }
             else if (masterInverter?.Type == InverterType.Nord)
             {
@@ -1348,7 +1359,15 @@ namespace Ferretto.VW.MAS.InverterDriver
             // start communication
             if (masterInverter?.Type == InverterType.Ang)
             {
-                await this.StartCommunicationAng(masterInverter);
+                if (masterInverter?.IsCanOpen == true)
+                {
+                    var nodeList = serviceProvider.GetRequiredService<IInvertersProvider>().GetAll().Where(w => w.CanOpenNode.HasValue).Select(x => x.CanOpenNode.Value);
+                    await this.StartCommunicationCan(masterInverter, nodeList);
+                }
+                else
+                {
+                    await this.StartCommunicationAng(masterInverter);
+                }
             }
             else if (masterInverter?.Type == InverterType.Nord)
             {

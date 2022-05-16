@@ -25,9 +25,17 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             this.SystemIndex = systemIndex;
         }
 
+        protected InverterStatusBase(InverterIndex systemIndex, int? canOpenNode)
+        {
+            this.SystemIndex = systemIndex;
+            this.CanOpenNode = canOpenNode;
+        }
+
         #endregion
 
         #region Properties
+
+        public int? CanOpenNode { get; }
 
         public IControlWord CommonControlWord => this.controlWord;
 

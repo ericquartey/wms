@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -67,7 +68,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress inverterAddress, int sendPort)
+        public void Configure(IPAddress inverterAddress, int sendPort, IEnumerable<int> nodeList = null)
         {
             this.inverterAddress = inverterAddress;
             this.sendPort = sendPort;
@@ -159,7 +160,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             throw new NotImplementedException();
         }
 
-        public bool ImplicitMessageWrite(byte[] data)
+        public bool ImplicitMessageWrite(byte[] data, int node)
         {
             throw new NotImplementedException();
         }
@@ -244,6 +245,11 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             return receivedData;
+        }
+
+        public bool SDOMessage(byte node, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />

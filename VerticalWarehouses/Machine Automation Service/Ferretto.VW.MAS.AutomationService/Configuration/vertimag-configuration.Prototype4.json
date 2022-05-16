@@ -1041,10 +1041,12 @@
           "Inverter": {
             "Id": 3,
             "Index": "MainInverter",
-            "IpAddress": "192.168.250.53",
+            "IpAddress": "192.168.250.199",
+            "CanOpenNode": 1,
+            "IsEthernetIP": false,
             "Parameters": [],
             "TcpPort": 44818,
-            "Type": "Nord"
+            "Type": "Ang"
           },
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 768.21954418275436,

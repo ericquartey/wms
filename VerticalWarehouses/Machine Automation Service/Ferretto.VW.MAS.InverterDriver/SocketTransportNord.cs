@@ -25,8 +25,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Timer implicitTimer;
 
-        private readonly IPAddress localAddress;
-
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -43,9 +41,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private EnIPAttribut Input;
 
-        private IPAddress inverterAddress;
-
         private bool isDisposed;
+
+        private IPAddress localAddress;
 
         private EnIPAttribut Output;
 
@@ -65,7 +63,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         public SocketTransportNord(IConfiguration configuration)
         {
             this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:Drivers:Inverter:ReadTimeoutMilliseconds", -1);
-            this.localAddress = IPAddress.Parse(configuration.GetValue("Vertimag:LocalAddress", "192.168.0.10"));
             this.implicitTimer = new Timer(this.ImplicitTimer, null, -1, -1);
         }
 
@@ -143,11 +140,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress inverterAddress, int sendPort)
+        public void Configure(IPAddress inverterAddress, int sendPort, IEnumerable<int> nodeList = null)
         {
             this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
             this.IsConnectedUdp = false;
-            this.inverterAddress = inverterAddress;
+            this.localAddress = inverterAddress;
             this.sendPort = sendPort;
             this.client = new EnIPClient(this.localAddress.ToString(), this.readTimeoutMilliseconds, udpPort);
             this.client.DeviceArrival += new DeviceArrivalHandler(this.OnDeviceArrival);
@@ -201,7 +198,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             return isOk;
         }
 
-        public bool ImplicitMessageWrite(byte[] data)
+        public bool ImplicitMessageWrite(byte[] data, int node)
         {
             var write = false;
             if (this.Output != null)
@@ -213,6 +210,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         }
 
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool SDOMessage(byte node, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
         {
             throw new NotImplementedException();
         }

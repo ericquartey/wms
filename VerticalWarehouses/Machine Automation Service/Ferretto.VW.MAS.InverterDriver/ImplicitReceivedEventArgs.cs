@@ -6,6 +6,8 @@
 
         public bool isOk;
 
+        public byte node;
+
         public byte[] receivedMessage;
 
         #endregion

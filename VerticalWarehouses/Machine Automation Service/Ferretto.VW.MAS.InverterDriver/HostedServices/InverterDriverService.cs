@@ -54,6 +54,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly NordFaultCodes nordFaultCodes;
 
+        private readonly ISocketTransportCan socketTransportCan;
+
         private readonly ISocketTransportInverter socketTransportInverter;
 
         private readonly ISocketTransportMock socketTransportMock;
@@ -85,12 +87,14 @@ namespace Ferretto.VW.MAS.InverterDriver
             ISocketTransportInverter socketTransportInverter,
             ISocketTransportMock socketTransportMock,
             ISocketTransportNord socketTransportNord,
+            ISocketTransportCan socketTransportCan,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.socketTransportInverter = socketTransportInverter ?? throw new ArgumentNullException(nameof(socketTransportInverter));
             this.socketTransportMock = socketTransportMock ?? throw new ArgumentNullException(nameof(socketTransportMock));
             this.socketTransportNord = socketTransportNord ?? throw new ArgumentNullException(nameof(socketTransportNord));
+            this.socketTransportCan = socketTransportCan ?? throw new ArgumentNullException(nameof(socketTransportCan));
             this.socketTransport = this.socketTransportInverter;
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.configuration = configuration;

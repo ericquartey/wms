@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             services.AddSingleton<ISocketTransportMock, SocketTransportMock>();
             services.AddSingleton<ISocketTransportInverter, SocketTransport>();
             services.AddSingleton<ISocketTransportNord, SocketTransportNord>();
+            services.AddSingleton<ISocketTransportCan, SocketTransportCan>();
 
             return services;
         }

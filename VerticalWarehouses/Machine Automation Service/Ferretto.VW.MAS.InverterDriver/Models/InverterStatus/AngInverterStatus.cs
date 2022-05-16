@@ -21,8 +21,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         #region Constructors
 
-        public AngInverterStatus(InverterIndex systemIndex)
-            : base(systemIndex)
+        public AngInverterStatus(InverterIndex systemIndex, int? canOpenNode)
+            : base(systemIndex, canOpenNode)
         {
             this.Inputs = new bool[TOTAL_SENSOR_INPUTS];
         }

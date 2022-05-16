@@ -410,7 +410,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                          return new AcuInverterStatus(i.Index);
 
                      case InverterType.Ang:
-                         return new AngInverterStatus(i.Index);
+                         return new AngInverterStatus(i.Index, i.CanOpenNode);
 
                      case InverterType.Agl:
                          return new AglInverterStatus(i.Index, this.serviceScopeFactory);

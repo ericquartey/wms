@@ -4,6 +4,8 @@
     {
         #region Properties
 
+        int? CanOpenNode { get; }
+
         IControlWord CommonControlWord { get; }
 
         IStatusWord CommonStatusWord { get; }
