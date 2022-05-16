@@ -115,12 +115,13 @@
           <controls:PpcButton Title="{res:Loc InstallationApp.FixBackDrawers}"
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
-                              Abbrevation="4.4.5"
+                              Abbrevation="4.4.6"
                               BorderBrush="{DynamicResource FerrettoRed}"
                               Command="{Binding FixBackDrawersCommand}"
                               Content="{res:Loc InstallationApp.FixBackDrawersDescription}"
                               Kind="Account"
-                              Style="{DynamicResource PpcButtonMenuCardStyle}" />
+                              Style="{DynamicResource PpcButtonMenuCardStyle}"
+                              Visibility="{Binding ShowFixBackDrawers, Converter={StaticResource BTVC}}" />
 
         </WrapPanel>
       </Grid>

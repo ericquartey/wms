@@ -2833,6 +2833,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change all back cell position by {0}mm?.
+        /// </summary>
+        public static string FixBackDrawersAsk {
+            get {
+                return ResourceManager.GetString("FixBackDrawersAsk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fix all back cell positions.
         /// </summary>
         public static string FixBackDrawersDescription {

@@ -2706,4 +2706,7 @@
   <data name="FixBackDrawersDescription" xml:space="preserve">
     <value>Corregge tutte le quote delle celle posteriori</value>
   </data>
+  <data name="FixBackDrawersAsk" xml:space="preserve">
+    <value>Cambia tutte le quote posteriori di {0}mm?</value>
+  </data>
 </root>

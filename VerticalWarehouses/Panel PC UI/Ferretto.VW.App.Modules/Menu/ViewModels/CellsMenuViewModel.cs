@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
+        private readonly ISessionService sessionService;
+
         private DelegateCommand bayFirstLoadingUnitCommand;
 
         private DelegateCommand cellPanelsCheckCommand;
@@ -29,15 +31,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand fixBackDrawersCommand;
 
+        private bool showFixBackDrawers;
+
         #endregion
 
         #region Constructors
 
         public CellsMenuViewModel(
-            IMachineSetupStatusWebService machineSetupStatusWebService)
+            IMachineSetupStatusWebService machineSetupStatusWebService,
+            ISessionService sessionService)
             : base()
         {
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.SetupStatusCapabilities = new SetupStatusCapabilities();
         }
@@ -119,7 +125,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.fixBackDrawersCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.FixBackDrawers),
-                this.CanExecuteCommand));
+                () => this.CanExecuteCommand() &&
+                      (this.MachineService.IsHoming || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public bool IsBayFirstLoadingUnitProcedure => this.FirstLoadingUnit.IsCompleted && !this.FirstLoadingUnit.IsBypassed;
 
@@ -132,6 +139,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public bool IsCellsHeightCheckProcedure => this.CellsHeightCheck.IsCompleted && !this.CellsHeightCheck.IsBypassed;
 
         public bool IsCellsHeightCheckProcedureBypassed => this.CellsHeightCheck.IsBypassed;
+
+        public bool ShowFixBackDrawers
+        {
+            get => this.showFixBackDrawers;
+            set => this.SetProperty(ref this.showFixBackDrawers, value, this.RaiseCanExecuteChanged);
+        }
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
@@ -148,6 +161,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
         protected override async Task OnDataRefreshAsync()
         {
             await this.UpdateSetupStatusAsync();
+        }
+
+        public override Task OnAppearedAsync()
+        {
+            this.ShowFixBackDrawers = this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+            return base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()

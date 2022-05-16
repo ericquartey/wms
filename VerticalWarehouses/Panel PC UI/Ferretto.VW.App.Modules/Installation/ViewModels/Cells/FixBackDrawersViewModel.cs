@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -17,15 +19,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineCellsWebService machineCellsWebService;
+        private readonly IBayManager bayManager;
 
         private readonly IDialogService dialogService;
+
+        private readonly IMachineCellsWebService machineCellsWebService;
+
+        private readonly ISessionService sessionService;
+
+        private readonly ITelemetryHubClient telemetryHubClient;
+
+        private bool isFree;
 
         private DelegateCommand saveCommand;
 
         private double stepValue;
-
-        private bool isFree;
 
         #endregion
 
@@ -33,19 +41,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public FixBackDrawersViewModel(
             IMachineCellsWebService machineCellsWebService,
+            ISessionService sessionService,
+            ITelemetryHubClient telemetryHubClient,
+            IBayManager bayManager,
             IDialogService dialogService)
             : base(PresentationMode.Installer)
         {
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
 
         #region Properties
 
+        public bool IsFree
+        {
+            get => this.isFree;
+            set => this.SetProperty(ref this.isFree, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand SaveCommand =>
-                                    this.saveCommand
+                                            this.saveCommand
             ??
             (this.saveCommand = new DelegateCommand(
                 async () => await this.SaveAsync(), this.CanSave));
@@ -54,11 +74,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.stepValue;
             set => this.SetProperty(ref this.stepValue, value, this.RaiseCanExecuteChanged);
-        }
-        public bool IsFree
-        {
-            get => this.isFree;
-            set => this.SetProperty(ref this.isFree, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -99,11 +114,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var dialogResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.FixBackDrawers"), DialogType.Question, DialogButtons.YesNo);
+                var dialogResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), string.Format(Localized.Get("InstallationApp.FixBackDrawersAsk"), this.StepValue), DialogType.Question, DialogButtons.YesNo);
 
                 if (dialogResult == DialogResult.Yes)
                 {
                     var cells = IEnumConvert(this.MachineService.CellsPlus.Where(s => s.Side == WarehouseSide.Back).OrderBy(s => s.Id));
+
+                    this.Logger.Debug($"Change back drawers position by {this.stepValue}.");
+
+                    await this.TelemetryLoginLogoutAsync($"Change back drawers position by {this.stepValue}.");
 
                     cells.ForEach(c => c.Position += this.stepValue);
 
@@ -122,6 +141,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsFree = true;
             }
+        }
+
+        private async Task TelemetryLoginLogoutAsync(string action, string supportToken = "")
+        {
+            var bay = await this.bayManager.GetBayAsync();
+
+            var errorLog = new ErrorLog
+            {
+                AdditionalText = $"{action} {this.sessionService.UserAccessLevel} {supportToken} {this.sessionService.UserAccessLevel}",
+                BayNumber = (int)bay.Number,
+                Code = 0,
+                DetailCode = (int)this.sessionService.UserAccessLevel,
+                ErrorId = int.Parse(DateTime.Now.ToString("-MMddHHmmss")),
+                InverterIndex = 0,
+                OccurrenceDate = DateTimeOffset.Now,
+                ResolutionDate = null
+            };
+
+            await this.telemetryHubClient.SendErrorLogAsync(errorLog);
         }
 
         #endregion

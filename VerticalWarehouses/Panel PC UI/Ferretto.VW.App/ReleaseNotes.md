@@ -28,6 +28,7 @@
 ## Nuove Funzionalità 1.0.43 rispetto la 1.0.42
 - Aggiunto parametro "Controlla se la lista continua in un'altra macchina"
 - Aggiunta funzione di compattazione automatica
+- Aggiunta funzione di correzione quote posteriori
 
 ## Bug Risolti
 - Aggiunta data di scadenza nell'inventario

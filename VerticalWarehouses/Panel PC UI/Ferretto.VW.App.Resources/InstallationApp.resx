@@ -2782,4 +2782,7 @@
   <data name="FixBackDrawersDescription" xml:space="preserve">
     <value>Fix all back cell positions</value>
   </data>
+  <data name="FixBackDrawersAsk" xml:space="preserve">
+    <value>Change all back cell position by {0}mm?</value>
+  </data>
 </root>
