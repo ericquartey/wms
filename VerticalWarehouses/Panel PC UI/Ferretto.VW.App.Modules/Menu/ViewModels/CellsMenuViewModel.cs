@@ -166,6 +166,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.cellsHeightCheckCommand?.RaiseCanExecuteChanged();
             this.cellsBlockTuningCommand?.RaiseCanExecuteChanged();
             this.bayFirstLoadingUnitCommand?.RaiseCanExecuteChanged();
+            this.fixBackDrawersCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
