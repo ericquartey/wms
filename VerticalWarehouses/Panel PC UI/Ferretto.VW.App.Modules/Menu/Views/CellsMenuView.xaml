@@ -116,7 +116,7 @@
                               Margin="0,0,30,30"
                               Padding="-2,1,0,0"
                               Abbrevation="4.4.6"
-                              BorderBrush="{DynamicResource FerrettoRed}"
+                              BorderBrush="{DynamicResource FerrettoOrange}"
                               Command="{Binding FixBackDrawersCommand}"
                               Content="{res:Loc InstallationApp.FixBackDrawersDescription}"
                               Kind="Account"
