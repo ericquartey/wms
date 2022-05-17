@@ -16,6 +16,8 @@
 
         ushort OperatingMode { get; set; }
 
+        int SetPointPosition { get; set; }
+
         InverterIndex SystemIndex { get; }
 
         #endregion

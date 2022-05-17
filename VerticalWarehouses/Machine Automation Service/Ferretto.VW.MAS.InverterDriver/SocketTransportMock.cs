@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             return null;
         }
 
-        public bool SDOMessage(byte node, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
+        public bool SDOMessage(byte nodeId, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
         {
             throw new NotImplementedException();
         }

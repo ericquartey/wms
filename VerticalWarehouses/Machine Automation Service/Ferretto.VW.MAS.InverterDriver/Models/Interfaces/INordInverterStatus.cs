@@ -17,8 +17,6 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces
 
         ushort SetPointFrequency { get; set; }
 
-        int SetPointPosition { get; set; }
-
         ushort SetPointRampTime { get; set; }
 
         #endregion

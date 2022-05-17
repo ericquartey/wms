@@ -519,6 +519,78 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
         }
 
+        public void FromBytesPDO(byte[] messageBytes, InverterIndex index, InverterIndex last)
+        {
+            if (messageBytes is null)
+            {
+                throw new ArgumentNullException(nameof(messageBytes));
+            }
+
+            this.IsWriteMessage = true;
+
+            try
+            {
+                if (this.StatusWord is null)
+                {
+                    this.StatusWord = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                    this.DigitalIn = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                    this.ActualPosition = new Dictionary<InverterIndex, int>((int)last + 1);
+                    this.Current = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                    this.AnalogIn = new Dictionary<InverterIndex, ushort>((int)last + 1);
+                }
+
+                var offset = 0;
+                this.StatusWord[index] = BitConverter.ToUInt16(messageBytes, offset);
+                offset += 2;
+                this.ActualPosition[index] = BitConverter.ToInt32(messageBytes, offset);
+                offset += 4;
+                this.DigitalIn[index] = BitConverter.ToUInt16(messageBytes, offset);
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException(
+                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length}",
+                    InverterDriverExceptionCode.InverterPacketMalformed,
+                    ex);
+            }
+        }
+
+        public InverterMessage FromBytesSDO(byte[] messageBytes, int length)
+        {
+            if (messageBytes is null)
+            {
+                throw new ArgumentNullException(nameof(messageBytes));
+            }
+            this.payloadLength = length;
+            this.IsWriteMessage = this.payloadLength == 0;
+            this.payload = new byte[this.payloadLength];
+
+            try
+            {
+                if (this.payloadLength > 0)
+                {
+                    Array.Copy(messageBytes, 0, this.payload, 0, this.payloadLength);
+                }
+                switch (this.ParameterId)
+                {
+                    case InverterParameterId.CurrentError:
+                        // no change
+                        break;
+
+                    default:
+                        throw new NotImplementedException(this.ParameterId.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InverterDriverException(
+                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{this.payloadLength}",
+                    InverterDriverExceptionCode.InverterPacketMalformed,
+                    ex);
+            }
+            return this;
+        }
+
         public byte[] GetHeartbeatMessage(bool setBit)
         {
             if (this.parameterId != (short)InverterParameterId.ControlWord)

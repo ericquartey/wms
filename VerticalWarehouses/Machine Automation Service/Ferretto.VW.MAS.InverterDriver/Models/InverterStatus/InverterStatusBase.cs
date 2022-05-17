@@ -85,6 +85,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
         }
 
+        public int SetPointPosition { get; set; }
+
         public InverterIndex SystemIndex { get; }
 
         #endregion

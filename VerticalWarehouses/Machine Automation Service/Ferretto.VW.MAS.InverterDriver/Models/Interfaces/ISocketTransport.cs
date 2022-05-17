@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Interface
         /// <exception cref="InverterDriverException">Read operation Failed. Inspect exception details for more details</exception>
         ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken);
 
-        bool SDOMessage(byte node, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length);
+        bool SDOMessage(byte nodeId, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length);
 
         /// <summary>
         ///     Sends data to the remote host asynchronously.

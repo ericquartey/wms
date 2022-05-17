@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool IsWriteMessage { get; }
 
-        public byte Node { get; set; }
+        public byte NodeId { get; set; }
 
         public byte Subindex { get; }
 

@@ -243,7 +243,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             throw new NotImplementedException();
         }
 
-        public bool SDOMessage(byte node, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
+        public bool SDOMessage(byte nodeId, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
         {
             receive = null;
             Byte[] rxdata = new Byte[4096];
@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (isWriteMessage && data != null)
             {
                 res = CANopenMasterAPI6.COP_WriteSDO(this.m_boardHandle   //  handle of CAN board
-                                                      , node         //  number of the node
+                                                      , nodeId         //  number of the node
                                                       , CANopenMasterAPI6.COP_k_DEFAULT_SDO
                                                       , CANopenMasterAPI6.COP_k_NO_BLOCKTRANSFER
                                                       , index           //  index in OV
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             else if (!isWriteMessage)
             {
                 res = CANopenMasterAPI6.COP_ReadSDO(this.m_boardHandle   //  handle of CAN board
-                                                    , node         //  number of the node
+                                                    , nodeId         //  number of the node
                                                     , CANopenMasterAPI6.COP_k_DEFAULT_SDO
                                                     , CANopenMasterAPI6.COP_k_NO_BLOCKTRANSFER
                                                     , index           //  index in OV
@@ -281,8 +281,23 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (isOk)
             {
-                length = receive.Length;
+                length = (int)rxlen;
                 receive = rxdata;
+                this.logger.Trace("Node: " + nodeId
+                                + $" object 0x{index:X04}/{subindex}"
+                                + $" tx {BitConverter.ToString(data)} rx {BitConverter.ToString(receive)}");
+            }
+            else if (CANopenMasterAPI6.COP_k_ABORT == res)
+            {
+                this.logger.Error("Node: " + nodeId
+                                + $" object 0x[{index:X04}/{subindex}] "
+                                + $" AbortCode {abortcode:X08}h (" + CANopenMasterAPI6.CopAbortCodeString(abortcode) + ")");
+            }
+            else
+            {
+                this.logger.Error("Node: " + nodeId
+                                + $" object 0x[{index:X04}/{subindex}] "
+                                + CANopenMasterAPI6.CopErrorString(res));
             }
 
             return isOk;
@@ -333,7 +348,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 switch (result)
                 {
                     case CANopenMasterAPI6.COP_k_OK:
-                        this.logger.Error($" Node: " + nodeId
+                        this.logger.Debug($" Node: " + nodeId
                                               + "  ErrVal: " + errorValue.ToString("X04") + "h"
                                               + "  ErrReg: " + errorRegister.ToString("X02") + "h"
                                               + "  Data: "
@@ -438,7 +453,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 switch (result)
                 {
                     case CANopenMasterAPI6.COP_k_OK:
-                        this.logger.Error(" EventType: " + eventType.ToString("X02") + "h "
+                        this.logger.Debug(" EventType: " + eventType.ToString("X02") + "h "
                                                 + "(" + CANopenMasterAPI6.CopEventTypeString(eventType) + ")"
                                                 + "\tData: "
                                                 + eventData1.ToString("X02") + " "

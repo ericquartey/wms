@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void OnInverterMessageReceivedExplicit(InverterMessage message, byte[] messageBytes, int length)
         {
-            this.Logger.LogTrace($"1:receivedMessage={messageBytes}");
+            this.Logger.LogTrace($"1:receivedMessage={BitConverter.ToString(messageBytes)}");
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 try
