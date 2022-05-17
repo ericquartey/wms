@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -2820,6 +2820,33 @@ namespace Ferretto.VW.App.Resources {
         public static string FirstTest {
             get {
                 return ResourceManager.GetString("FirstTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back Offset.
+        /// </summary>
+        public static string FixBackDrawers {
+            get {
+                return ResourceManager.GetString("FixBackDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change all back cell position by {0}mm?.
+        /// </summary>
+        public static string FixBackDrawersAsk {
+            get {
+                return ResourceManager.GetString("FixBackDrawersAsk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fix all back cell positions.
+        /// </summary>
+        public static string FixBackDrawersDescription {
+            get {
+                return ResourceManager.GetString("FixBackDrawersDescription", resourceCulture);
             }
         }
         
