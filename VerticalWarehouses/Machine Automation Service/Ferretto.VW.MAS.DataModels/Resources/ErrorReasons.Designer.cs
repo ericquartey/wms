@@ -556,7 +556,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Power on error. Check the safety devices.
+        ///   Looks up a localized string similar to The Power on command has failed. Check the safety devices and the side door sensors.
         /// </summary>
         public static string IoResetSecurityTimeout {
             get {
