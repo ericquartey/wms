@@ -152,7 +152,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public async Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync()
         {
             var machine = await this.identityService.GetAsync();
-            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, (int)this.bayNumber, true);
+            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, (int)this.bayNumber, true, null);
 
             return list;
         }
@@ -300,7 +300,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     return false;
                 }
 
-                var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+                var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, null);
 
                 var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission.Operations.FirstOrDefault().ItemListCode);
                 if (currentMission is null)

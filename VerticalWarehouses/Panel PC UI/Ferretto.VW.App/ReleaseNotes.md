@@ -25,18 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.43 rispetto la 1.0.42
-- Aggiunto parametro "Controlla se la lista continua in un'altra macchina"
-- Aggiunta funzione di compattazione automatica
-- Aggiunta funzione di correzione quote posteriori
+## Nuove Funzionalità 1.0.44 rispetto la 1.0.43
+- Ferretto NuGet package 0.16.42.
+- Aggiunto userName in GetItemLists
 
 ## Bug Risolti
-- Aggiunta data di scadenza nell'inventario
-- Correzione ai ripristini automatici
-- Correzioni per Carrefour
+- 
 
 ## Compatibile con adapter 0.4.31 e 0.4.32
 ***
+
+[Versione 1.0.43](#id1043)
 
 [Versione 1.0.42](#id1042)
 
@@ -124,6 +123,19 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1043"></a>
+## Nuove Funzionalità 1.0.43 rispetto la 1.0.42
+- Aggiunto parametro "Controlla se la lista continua in un'altra macchina"
+- Aggiunta funzione di compattazione automatica
+- Aggiunta funzione di correzione quote posteriori
+
+## Bug Risolti
+- Aggiunta data di scadenza nell'inventario
+- Correzione ai ripristini automatici
+- Correzioni per Carrefour
+
+## Compatibile con adapter 0.4.31 e 0.4.32
 
 <a id="id1042"></a>
 ## Nuove Funzionalità 1.0.42 rispetto la 1.0.41
