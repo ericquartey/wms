@@ -32,7 +32,7 @@
 ## Bug Risolti
 - 
 
-## Compatibile con adapter 0.4.31 e 0.4.32
+## Compatibile con adapter 0.4.33
 ***
 
 [Versione 1.0.43](#id1043)
