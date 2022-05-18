@@ -457,7 +457,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     var bay = await this.bayManager.GetBayAsync();
-                    var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, null);
+                    var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, this.authenticationService.UserName);
 
                     var ItemExecutionList = new List<ItemListExecution>();
                     fullLists.ForEach(x => ItemExecutionList.Add(new ItemListExecution(x, this.machineId)));
@@ -541,7 +541,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var bay = await this.bayManager.GetBayAsync();
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, null);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, this.authenticationService.UserName);
 
                 // check upcoming lists retrieved from EjLog
                 if (this.CheckUpcomingItemLists(newLists))
