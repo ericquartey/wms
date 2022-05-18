@@ -196,6 +196,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public bool IsWriteMessage { get; private set; }
 
+        public Dictionary<InverterIndex, ushort> OperatingMode { get; set; }
+
         public InverterParameterId ParameterId => (InverterParameterId)this.parameterId;
 
         public object Payload
@@ -565,28 +567,58 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.IsWriteMessage = this.payloadLength == 0;
             this.payload = new byte[this.payloadLength];
 
-            try
+            if (this.payloadLength > 0)
             {
-                if (this.payloadLength > 0)
+                try
                 {
                     Array.Copy(messageBytes, 0, this.payload, 0, this.payloadLength);
-                }
-                switch (this.ParameterId)
-                {
-                    case InverterParameterId.CurrentError:
-                        // no change
-                        break;
+                    switch (this.ParameterId)
+                    {
+                        case InverterParameterId.CurrentError:
+                        case InverterParameterId.HomingFastSpeed:
+                        case InverterParameterId.HomingCreepSpeed:
+                        case InverterParameterId.HomingAcceleration:
+                        case InverterParameterId.HomingOffset:
+                        case InverterParameterId.PositionAcceleration:
+                        case InverterParameterId.PositionDeceleration:
+                        case InverterParameterId.PositionTargetSpeed:
+                        case InverterParameterId.ShutterTargetPosition:
+                        case InverterParameterId.ShutterTargetVelocity:
+                        case InverterParameterId.ShutterLowVelocity:
+                        case InverterParameterId.ShutterHighVelocityDuration:
+                        case InverterParameterId.TableTravelTableIndex:
+                        case InverterParameterId.TableTravelTargetPosition:
+                        case InverterParameterId.TableTravelTargetSpeeds:
+                        case InverterParameterId.TableTravelTargetAccelerations:
+                        case InverterParameterId.TableTravelTargetDecelerations:
+                        case InverterParameterId.TableTravelDirection:
+                        case InverterParameterId.TorqueCurrent:
+                        case InverterParameterId.ProfileInput:
+                        case InverterParameterId.BlockDefinition:
+                        case InverterParameterId.BlockWrite:
+                        case InverterParameterId.AxisChanged:
+                        case InverterParameterId.ActiveDataset:
+                        case InverterParameterId.RunMode:
+                        case InverterParameterId.Program:
+                            // no change
+                            break;
 
-                    default:
-                        throw new NotImplementedException(this.ParameterId.ToString());
+                        case InverterParameterId.HomingCalibration:
+                            // from byte to ushort
+                            this.payload = BitConverter.GetBytes((ushort)messageBytes[0]);
+                            break;
+
+                        default:
+                            throw new NotImplementedException(this.ParameterId.ToString());
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new InverterDriverException(
-                    $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{this.payloadLength}",
-                    InverterDriverExceptionCode.InverterPacketMalformed,
-                    ex);
+                catch (Exception ex)
+                {
+                    throw new InverterDriverException(
+                        $"Invalid inverter message Exception {ex.Message} while parsing raw message bytes\nLength:{messageBytes.Length} payloadLength:{this.payloadLength}",
+                        InverterDriverExceptionCode.InverterPacketMalformed,
+                        ex);
+                }
             }
             return this;
         }
@@ -646,30 +678,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return readMessage;
         }
 
-        public void SetPoint(InverterIndex systemIndex, ushort controlWord, ushort frequency, int position, ushort rampTime)
+        public void SetPoint(InverterIndex systemIndex, ushort controlWord, ushort frequency, int position, ushort rampTime, ushort operatingMode)
         {
-            if (this.ControlWord is null)
-            {
-                this.ControlWord = new Dictionary<InverterIndex, ushort>();
-                this.SetpointFrequency = new Dictionary<InverterIndex, ushort>();
-                this.SetpointPosition = new Dictionary<InverterIndex, int>();
-                this.RampTime = new Dictionary<InverterIndex, ushort>();
-            }
-
-            if (this.ControlWord.ContainsKey(systemIndex))
-            {
-                this.ControlWord[systemIndex] = controlWord;
-                this.SetpointFrequency[systemIndex] = frequency;
-                this.SetpointPosition[systemIndex] = position;
-                this.RampTime[systemIndex] = rampTime;
-            }
-            else
-            {
-                this.ControlWord.Add(systemIndex, controlWord);
-                this.SetpointFrequency.Add(systemIndex, frequency);
-                this.SetpointPosition.Add(systemIndex, position);
-                this.RampTime.Add(systemIndex, rampTime);
-            }
+            this.SetPointInit(systemIndex, controlWord, frequency, position, rampTime, operatingMode);
 
             if (this.lockObject is null)
             {
@@ -689,6 +700,29 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 Array.Copy(BitConverter.GetBytes(position), 0, this.RawData, offset, 4);
                 offset += 4;
                 Array.Copy(BitConverter.GetBytes(rampTime), 0, this.RawData, offset, 2);
+            }
+        }
+
+        public void SetPointCan(InverterIndex systemIndex, ushort controlWord, ushort frequency, int position, ushort rampTime, ushort operatingMode)
+        {
+            this.SetPointInit(systemIndex, controlWord, frequency, position, rampTime, operatingMode);
+
+            if (this.lockObject is null)
+            {
+                this.lockObject = new object();
+            }
+            lock (this.lockObject)
+            {
+                if (this.RawData is null)
+                {
+                    this.payload = new byte[8];
+                }
+                int offset = 0;
+                Array.Copy(BitConverter.GetBytes(controlWord), 0, this.RawData, offset, 2);
+                offset += 2;
+                Array.Copy(BitConverter.GetBytes(operatingMode), 0, this.RawData, offset, 2);
+                offset += 2;
+                Array.Copy(BitConverter.GetBytes(position), 0, this.RawData, offset, 4);
             }
         }
 
@@ -1087,6 +1121,35 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             this.payloadLength = this.payload.Length;
+        }
+
+        private void SetPointInit(InverterIndex systemIndex, ushort controlWord, ushort frequency, int position, ushort rampTime, ushort operatingMode)
+        {
+            if (this.ControlWord is null)
+            {
+                this.ControlWord = new Dictionary<InverterIndex, ushort>();
+                this.SetpointFrequency = new Dictionary<InverterIndex, ushort>();
+                this.SetpointPosition = new Dictionary<InverterIndex, int>();
+                this.RampTime = new Dictionary<InverterIndex, ushort>();
+                this.OperatingMode = new Dictionary<InverterIndex, ushort>();
+            }
+
+            if (this.ControlWord.ContainsKey(systemIndex))
+            {
+                this.ControlWord[systemIndex] = controlWord;
+                this.SetpointFrequency[systemIndex] = frequency;
+                this.SetpointPosition[systemIndex] = position;
+                this.RampTime[systemIndex] = rampTime;
+                this.OperatingMode[systemIndex] = operatingMode;
+            }
+            else
+            {
+                this.ControlWord.Add(systemIndex, controlWord);
+                this.SetpointFrequency.Add(systemIndex, frequency);
+                this.SetpointPosition.Add(systemIndex, position);
+                this.RampTime.Add(systemIndex, rampTime);
+                this.OperatingMode.Add(systemIndex, operatingMode);
+            }
         }
 
         #endregion

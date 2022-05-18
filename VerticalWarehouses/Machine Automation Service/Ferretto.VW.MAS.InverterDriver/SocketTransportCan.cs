@@ -89,7 +89,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public void Configure(IPAddress inverterAddress, int sendPort, IEnumerable<int> nodeList = null)
         {
-            this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
             var boardID = CANopenMasterAPI6.COP_1stBOARD;
             var boardType = CANopenMasterAPI6.COP_DEFAULTBOARD;
             UInt32 abortcode = 0;
@@ -154,7 +153,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (CANopenMasterAPI6.COP_k_OK == result)
                 {
                     // set the producer heartbeat time
-                    Byte[] txdata = BitConverter.GetBytes(this.readTimeoutMilliseconds);
+                    Byte[] txdata = BitConverter.GetBytes((ushort)this.readTimeoutMilliseconds);
 
                     result = CANopenMasterAPI6.COP_WriteSDO(this.m_boardHandle, (byte)nodeId,
                                                             CANopenMasterAPI6.COP_k_DEFAULT_SDO, CANopenMasterAPI6.COP_k_NO_BLOCKTRANSFER,
@@ -201,6 +200,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     this.m_pdoOutData.Add(nodeId, new byte[8]);
                     this.m_pdoInData.Add(nodeId, new byte[8]);
+                    this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
                 }
             }
             this.IsConnected = true;

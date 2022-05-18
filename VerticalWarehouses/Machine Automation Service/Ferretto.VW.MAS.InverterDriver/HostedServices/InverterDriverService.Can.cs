@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         && this.canData is null)
                     {
                         this.canData = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.StatusWord, 0);
-                        this.canData.SetPoint(inverter.SystemIndex, inverter.CommonControlWord.Value, 0, inverter.SetPointPosition, 0);
+                        this.canData.SetPointCan(inverter.SystemIndex, inverter.CommonControlWord.Value, 0, inverter.SetPointPosition, 0, inverter.OperatingMode);
                         this.Logger.LogDebug($"SetPoint inverter {inverter.SystemIndex}, CW 0x{inverter.CommonControlWord.Value:X4}, Pos {inverter.SetPointPosition}");
                         this.canData.FromBytesPDO(e.receivedMessage, inverterIndex, inverters.Last().SystemIndex);
                         this.socketTransport.ImplicitMessageWrite(this.canData.RawData, e.node);
@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 || this.canData.SetpointPosition[inverter.SystemIndex] != inverter.SetPointPosition
                             ))
                         {
-                            this.canData.SetPoint(inverter.SystemIndex, inverter.CommonControlWord.Value, 0, inverter.SetPointPosition, 0);
+                            this.canData.SetPointCan(inverter.SystemIndex, inverter.CommonControlWord.Value, 0, inverter.SetPointPosition, 0, inverter.OperatingMode);
                             this.Logger.LogDebug($"SetPoint inverter {inverter.SystemIndex}, CW 0x{inverter.CommonControlWord.Value:X4}, Pos {inverter.SetPointPosition}");
                             this.socketTransport.ImplicitMessageWrite(this.canData.RawData, inverter.CanOpenNode.Value);
                         }
@@ -207,7 +207,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 try
                 {
-                    message.FromBytesSDO(messageBytes, length);
+                    if (messageBytes != null && messageBytes.Length > 0)
+                    {
+                        message.FromBytesSDO(messageBytes, length);
+                    }
 
                     this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
 
@@ -240,129 +243,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
 
                     this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
-                }
-            }
-        }
-
-        private void ProcessCalibrateAxisMessageCan(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)
-        {
-            if (receivedMessage.Data is ICalibrateAxisFieldMessageData calibrateData)
-            {
-                if (inverter.IsStarted)
-                {
-                    this.Logger.LogDebug($"Starting Calibrate Axis {calibrateData.AxisToCalibrate}");
-
-                    this.currentAxis = calibrateData.AxisToCalibrate;
-                    var currentStateMachine = new CalibrateAxisNordStateMachine(
-                        this.currentAxis,
-                        calibrateData.CalibrationType,
-                        inverter,
-                        this.Logger,
-                        this.eventAggregator,
-                        this.inverterCommandQueue,
-                        this.ServiceScopeFactory);
-
-                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
-                    currentStateMachine.Start();
-                }
-                else
-                {
-                    this.Logger.LogDebug("4:Inverter is not ready. Powering up the inverter");
-
-                    var currentStateMachine = new PowerOnNordStateMachine(
-                        calibrateData.AxisToCalibrate,
-                        inverter,
-                        this.Logger,
-                        this.eventAggregator,
-                        this.inverterCommandQueue,
-                        this.ServiceScopeFactory,
-                        receivedMessage);
-
-                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
-                    currentStateMachine.Start();
-                }
-
-                if (inverter.SystemIndex == InverterIndex.MainInverter || inverter.SystemIndex == InverterIndex.Slave1)
-                {
-                    this.dataOld = null;
-                }
-            }
-            else
-            {
-                this.Logger.LogError("5:Wrong message Data data type");
-
-                var ex = new Exception();
-                this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.CalibrateAxis);
-            }
-        }
-
-        private void ProcessCanCommand(FieldCommandMessage receivedMessage, IServiceProvider serviceProvider, IInverterStatusBase inverter)
-        {
-            if (this.socketTransport.IsConnected)
-            {
-                switch (receivedMessage.Type)
-                {
-                    case FieldMessageType.CalibrateAxis:
-                        this.ProcessCalibrateAxisMessageCan(receivedMessage, inverter);
-                        break;
-
-                    case FieldMessageType.InverterPowerOff:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.InverterPowerOn:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.Positioning:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.ShutterPositioning:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.InverterSetTimer:
-                        // no need in EthernetIP protocol
-                        break;
-
-                    // not used
-                    //case FieldMessageType.InverterSwitchOff:
-                    //    this.ProcessInverterSwitchOffMessage(inverter);
-                    //    break;
-
-                    case FieldMessageType.InverterSwitchOn:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.InverterStop:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.InverterFaultReset:
-                        throw new NotImplementedException();
-                        break;
-
-                    // not used
-                    //case FieldMessageType.InverterDisable:
-                    //    this.ProcessDisableMessage(inverter);
-                    //    break;
-
-                    case FieldMessageType.MeasureProfile:
-                        // no need in EthernetIP protocol
-                        break;
-
-                    case FieldMessageType.InverterCurrentError:
-                        this.ProcessReadCurrentError(inverter);
-                        break;
-
-                    case FieldMessageType.InverterProgramming:
-                        throw new NotImplementedException();
-                        break;
-
-                    case FieldMessageType.InverterReading:
-                        throw new NotImplementedException();
-                        break;
                 }
             }
         }

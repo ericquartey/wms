@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 {
                                     nord.SetPointRampTime = 200;
                                 }
-                                this.processData.SetPoint(nord.SystemIndex, nord.NordControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime);
+                                this.processData.SetPoint(nord.SystemIndex, nord.NordControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime, nord.OperatingMode);
                                 this.Logger.LogDebug($"SetPoint inverter {nord.SystemIndex}, CW 0x{nord.NordControlWord.Value:X4}, Freq {nord.SetPointFrequency}, Pos {nord.SetPointPosition}, ramp {nord.SetPointRampTime}");
                             }
                         }
@@ -305,7 +305,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     || this.processData.RampTime[inverter.SystemIndex] != nord.SetPointRampTime
                                 ))
                             {
-                                this.processData.SetPoint(nord.SystemIndex, nord.NordControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime);
+                                this.processData.SetPoint(nord.SystemIndex, nord.NordControlWord.Value, nord.SetPointFrequency, nord.SetPointPosition, nord.SetPointRampTime, nord.OperatingMode);
                                 this.Logger.LogDebug($"SetPoint inverter {nord.SystemIndex}, CW 0x{nord.NordControlWord.Value:X4}, Freq {nord.SetPointFrequency}, Pos {nord.SetPointPosition}, ramp {nord.SetPointRampTime}");
                                 toWrite = true;
                             }
