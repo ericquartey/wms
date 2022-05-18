@@ -101,10 +101,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.ProcessNordCommand(receivedMessage, serviceProvider, inverter);
                 }
-                else if (inverter.CanOpenNode.HasValue)
-                {
-                    this.ProcessCanCommand(receivedMessage, serviceProvider, inverter);
-                }
                 else
                 {
                     this.ProcessInverterCommand(receivedMessage, serviceProvider, inverter);

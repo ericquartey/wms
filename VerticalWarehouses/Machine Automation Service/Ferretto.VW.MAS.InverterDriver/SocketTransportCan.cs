@@ -153,6 +153,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 result = CANopenMasterAPI6.COP_SearchNode(this.m_boardHandle, (byte)nodeId);
                 if (CANopenMasterAPI6.COP_k_OK == result)
                 {
+                    // set the producer heartbeat time
                     Byte[] txdata = BitConverter.GetBytes(this.readTimeoutMilliseconds);
 
                     result = CANopenMasterAPI6.COP_WriteSDO(this.m_boardHandle, (byte)nodeId,
@@ -160,6 +161,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                                             0x1017, 0x00,
                                                             (UInt32)txdata.Length, txdata, out abortcode);
 
+                    // create PDOs
                     result = CANopenMasterAPI6.COP_CreatePDO(this.m_boardHandle         //  handle of CAN board
                                                             , (byte)nodeId              //  number of the node
                                                             , m_cPDO                //  number of the pdo
@@ -188,6 +190,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         throw new ApplicationException($"CANopenMasterAPI6: Error COP_CreatePDO tx Node {nodeId}");
                     }
 
+                    // start node
                     result = CANopenMasterAPI6.COP_StartNode(this.m_boardHandle, 0);
                     if (CANopenMasterAPI6.COP_k_OK != result)
                     {

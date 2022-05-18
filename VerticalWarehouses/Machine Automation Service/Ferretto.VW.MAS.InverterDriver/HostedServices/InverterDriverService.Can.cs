@@ -120,7 +120,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         var refresh = inverter.UpdateInputsStates(this.canData.DigitalInConverted(inverter.SystemIndex));
                         var refreshPosition = false;
-                        // TODO - MainInverter can move both Horizontal and Vertical?
                         var axis = inverter.SystemIndex == InverterIndex.MainInverter
                             ? Axis.Vertical
                             : Axis.Horizontal;

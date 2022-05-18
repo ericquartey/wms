@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
+using Ferretto.VW.MAS.InverterDriver.Interface;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -577,8 +578,24 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             try
             {
-                result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
-                this.Logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
+                if ((this.socketTransport is ISocketTransportCan
+                        || this.socketTransport is ISocketTransportNord)
+                    && (message.ParameterId == InverterParameterId.ControlWord
+                        || message.ParameterId == InverterParameterId.StatusWord
+                        || message.ParameterId == InverterParameterId.DigitalInputsOutputs
+                        || message.ParameterId == InverterParameterId.PositionTargetPosition
+                        || message.ParameterId == InverterParameterId.ActualPositionShaft))
+                {
+                    // some commands are not used in CAN and Ethernet/IP protocols
+                    this.writeEnableEvent.Set();
+                    this.Logger.LogTrace($"writeEnableEvent unlocked");
+                    result = true;
+                }
+                else
+                {
+                    result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
+                    this.Logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
+                }
             }
             catch (InverterDriverException ex)
             {
@@ -687,7 +704,15 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (receivedMessage.Data is IInverterSetTimerFieldMessageData updateData)
             {
                 updateData.InverterIndex = inverter.SystemIndex;
-                this.ConfigureTimer(updateData);
+                if (this.socketTransport is ISocketTransportCan
+                    || this.socketTransport is ISocketTransportNord)
+                {
+                    // timers are not needed in CAN and Ethernet/IP protocols
+                }
+                else
+                {
+                    this.ConfigureTimer(updateData);
+                }
             }
             else
             {
