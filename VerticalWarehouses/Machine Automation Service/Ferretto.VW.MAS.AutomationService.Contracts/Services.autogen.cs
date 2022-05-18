@@ -27668,14 +27668,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting)
+        public System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, string userName)
         {
-            return GetItemListsAsync(id, machineId, bayNumber, includeExecuting, System.Threading.CancellationToken.None);
+            return GetItemListsAsync(id, machineId, bayNumber, includeExecuting, userName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, string userName, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -27694,6 +27694,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (includeExecuting != null) 
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("includeExecuting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(includeExecuting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (userName != null) 
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("userName") + "=").Append(System.Uri.EscapeDataString(ConvertToString(userName, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
     
