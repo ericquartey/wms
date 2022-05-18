@@ -463,7 +463,7 @@
     <value>Elevator horizontal axis homing error</value>
   </data>
   <data name="IoResetSecurityTimeout" xml:space="preserve">
-    <value>I/O device  command timeout</value>
+    <value>Power on error</value>
   </data>
   <data name="ProfileResolutionFail" xml:space="preserve">
     <value>Profile resolution not completed</value>

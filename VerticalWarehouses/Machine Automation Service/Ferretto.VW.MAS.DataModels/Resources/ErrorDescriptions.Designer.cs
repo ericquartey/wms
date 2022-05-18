@@ -565,7 +565,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I/O device  command timeout.
+        ///   Looks up a localized string similar to Power on error.
         /// </summary>
         public static string IoResetSecurityTimeout {
             get {
