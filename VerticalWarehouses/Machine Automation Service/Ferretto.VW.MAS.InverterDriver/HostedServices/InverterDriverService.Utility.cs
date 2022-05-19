@@ -578,36 +578,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             try
             {
-                // some commands are not used in CANOpen and Ethernet/IP protocols
-                if ((this.socketTransport is ISocketTransportCan
-                        || this.socketTransport is ISocketTransportNord)
-                    && (message.ParameterId == InverterParameterId.ControlWord
-                        || message.ParameterId == InverterParameterId.StatusWord
-                        || message.ParameterId == InverterParameterId.DigitalInputsOutputs
-                        || message.ParameterId == InverterParameterId.PositionTargetPosition
-                        || message.ParameterId == InverterParameterId.ActualPositionShaft
-                        || message.ParameterId == InverterParameterId.SetOperatingMode))
-                {
-                    if (message.ParameterId == InverterParameterId.PositionTargetPosition
-                        && message.IsWriteMessage)
-                    {
-                        // we use this message to cash the inverter target position
-                        using (var scope = this.ServiceScopeFactory.CreateScope())
-                        {
-                            var invertersProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
-                            var inverter = invertersProvider.GetByIndex(message.SystemIndex);
-                            inverter.SetPointPosition = (int)message.Payload;
-                        }
-                    }
-                    this.writeEnableEvent.Set();
-                    this.Logger.LogTrace($"writeEnableEvent unlocked");
-                    result = true;
-                }
-                else
-                {
-                    result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
-                    this.Logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
-                }
+                result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
+                this.Logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
             }
             catch (InverterDriverException ex)
             {

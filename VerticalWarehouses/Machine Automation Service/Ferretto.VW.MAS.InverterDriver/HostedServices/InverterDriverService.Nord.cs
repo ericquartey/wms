@@ -22,6 +22,38 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
+    private async Task ExplicitMessages()
+    {
+        do
+        {
+            try
+            {
+                if (this.socketTransport.IsConnected
+                    && this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
+                    && inverterMessage != null)
+                {
+                    this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                    this.Logger.LogTrace($"2:Command queue length: {this.inverterCommandQueue.Count}");
+
+                    var result = this.socketTransport is ISocketTransportNord
+                        ? await this.ProcessInverterCommandNord(inverterMessage)
+                        : await this.ProcessInverterCommandCan(inverterMessage);
+
+                    if (result)
+                    {
+                        this.inverterCommandQueue.Dequeue(out _);
+                    }
+                }
+            }
+            catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+            {
+                this.Logger.LogDebug("Terminating ExplicitMessages task.");
+                break;
+            }
+        }
+        while (!this.CancellationToken.IsCancellationRequested);
+    }
+
     internal partial class InverterDriverService
     {
         #region Fields
@@ -41,38 +73,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         #endregion
 
         #region Methods
-
-        private async Task ExplicitMessages()
-        {
-            do
-            {
-                try
-                {
-                    if (this.socketTransport.IsConnected
-                        && this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
-                        && inverterMessage != null)
-                    {
-                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-                        this.Logger.LogTrace($"2:Command queue length: {this.inverterCommandQueue.Count}");
-
-                        var result = this.socketTransport is ISocketTransportNord
-                            ? await this.ProcessInverterCommandNord(inverterMessage)
-                            : await this.ProcessInverterCommandCan(inverterMessage);
-
-                        if (result)
-                        {
-                            this.inverterCommandQueue.Dequeue(out _);
-                        }
-                    }
-                }
-                catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
-                {
-                    this.Logger.LogDebug("Terminating ExplicitMessages task.");
-                    break;
-                }
-            }
-            while (!this.CancellationToken.IsCancellationRequested);
-        }
 
         private void OnConnectionStatus(object sender, ConnectionStatusChangedEventArgs e)
         {
@@ -382,14 +382,38 @@ namespace Ferretto.VW.MAS.InverterDriver
         private async Task<bool> ProcessInverterCommandNord(InverterMessage inverterMessage)
         {
             var result = false;
-
-            var nordMsg = new NordMessage(inverterMessage);
-            if (nordMsg.ParameterId != 0)
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                result = this.socketTransport.ExplicitMessage(nordMsg.ClassId, nordMsg.InstanceId, nordMsg.ParameterId, nordMsg.ServiceId, nordMsg.Data, out var received, out var length);
-                if (result)
+                var invertersProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
+                var inverters = invertersProvider.GetAll();
+                // some commands are not used in Ethernet/IP
+                if (inverterMessage.ParameterId == InverterParameterId.ControlWord
+                    || inverterMessage.ParameterId == InverterParameterId.StatusWord
+                    || inverterMessage.ParameterId == InverterParameterId.DigitalInputsOutputs
+                    || inverterMessage.ParameterId == InverterParameterId.PositionTargetPosition
+                    || inverterMessage.ParameterId == InverterParameterId.ActualPositionShaft
+                    || inverterMessage.ParameterId == InverterParameterId.SetOperatingMode)
                 {
-                    this.OnInverterMessageReceivedExplicit(inverterMessage, received, length);
+                    if (inverterMessage.ParameterId == InverterParameterId.PositionTargetPosition
+                        && inverterMessage.IsWriteMessage)
+                    {
+                        // we use this message to cash the inverter target position
+                        var inverter = invertersProvider.GetByIndex(inverterMessage.SystemIndex);
+                        inverter.SetPointPosition = (int)inverterMessage.Payload;
+                    }
+                    result = true;
+                }
+                else
+                {
+                    var nordMsg = new NordMessage(inverterMessage);
+                    if (nordMsg.ParameterId != 0)
+                    {
+                        result = this.socketTransport.ExplicitMessage(nordMsg.ClassId, nordMsg.InstanceId, nordMsg.ParameterId, nordMsg.ServiceId, nordMsg.Data, out var received, out var length);
+                        if (result)
+                        {
+                            this.OnInverterMessageReceivedExplicit(inverterMessage, received, length);
+                        }
+                    }
                 }
             }
             return result;

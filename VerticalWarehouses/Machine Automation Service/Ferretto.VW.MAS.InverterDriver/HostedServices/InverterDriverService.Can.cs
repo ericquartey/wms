@@ -96,6 +96,18 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.Logger.LogDebug($"SetPoint inverter {inverter.SystemIndex}, CW 0x{inverter.CommonControlWord.Value:X4}, Pos {inverter.SetPointPosition}");
                         this.canData.FromBytesPDO(e.receivedMessage, inverterIndex, inverters.Last().SystemIndex);
                         this.socketTransport.ImplicitMessageWrite(this.canData.RawData, e.node);
+                        // TEST begin
+                        var fieldMessageData = new InverterCurrentErrorFieldMessageData();
+                        var commandMessage = new FieldCommandMessage(
+                            fieldMessageData,
+                            $"Request Inverter Error Code",
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageType.InverterCurrentError,
+                            (byte)InverterIndex.MainInverter);
+
+                        this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                        // TEST end
                     }
                     else if (inverter.CanOpenNode.HasValue)
                     {
@@ -251,18 +263,39 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var result = false;
 
-            var canMsg = new CanMessage(inverterMessage);
-            if (canMsg.Index != 0)
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                using (var scope = this.ServiceScopeFactory.CreateScope())
+                var invertersProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
+                var inverters = invertersProvider.GetAll();
+
+                // some commands are not used in CANOpen
+                if (inverterMessage.ParameterId == InverterParameterId.ControlWord
+                        || inverterMessage.ParameterId == InverterParameterId.StatusWord
+                        || inverterMessage.ParameterId == InverterParameterId.DigitalInputsOutputs
+                        || inverterMessage.ParameterId == InverterParameterId.PositionTargetPosition
+                        || inverterMessage.ParameterId == InverterParameterId.ActualPositionShaft
+                        || inverterMessage.ParameterId == InverterParameterId.SetOperatingMode)
                 {
-                    var invertersProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
-                    var inverters = invertersProvider.GetAll();
-                    canMsg.NodeId = (byte)inverters.First(x => x.SystemIndex == inverterMessage.SystemIndex).CanOpenNode;
-                    result = this.socketTransport.SDOMessage(canMsg.NodeId, canMsg.Index, canMsg.Subindex, canMsg.IsWriteMessage, canMsg.Data, out var received, out var length);
-                    if (result)
+                    if (inverterMessage.ParameterId == InverterParameterId.PositionTargetPosition
+                        && inverterMessage.IsWriteMessage)
                     {
-                        this.OnInverterMessageReceivedSDO(inverterMessage, received, length);
+                        // we use this message to cash the inverter target position
+                        var inverter = invertersProvider.GetByIndex(inverterMessage.SystemIndex);
+                        inverter.SetPointPosition = (int)inverterMessage.Payload;
+                    }
+                    result = true;
+                }
+                else
+                {
+                    var canMsg = new CanMessage(inverterMessage);
+                    if (canMsg.Index != 0)
+                    {
+                        canMsg.NodeId = (byte)inverters.First(x => x.SystemIndex == inverterMessage.SystemIndex).CanOpenNode;
+                        result = this.socketTransport.SDOMessage(canMsg.NodeId, canMsg.Index, canMsg.Subindex, canMsg.IsWriteMessage, canMsg.Data, out var received, out var length);
+                        if (result)
+                        {
+                            this.OnInverterMessageReceivedSDO(inverterMessage, received, length);
+                        }
                     }
                 }
             }

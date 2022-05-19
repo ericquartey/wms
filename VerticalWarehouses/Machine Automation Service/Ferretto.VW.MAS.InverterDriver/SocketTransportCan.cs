@@ -288,7 +288,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 receive = rxdata;
                 this.logger.Trace("Node: " + nodeId
                                 + $" object 0x{index:X04}/{subindex}"
-                                + $" tx {BitConverter.ToString(data)} rx {BitConverter.ToString(receive)}");
+                                + (isWriteMessage ? $" tx {BitConverter.ToString(data)} " : $"  rx {BitConverter.ToString(receive)}"));
             }
             else if (CANopenMasterAPI6.COP_k_ABORT == res)
             {
@@ -417,17 +417,26 @@ namespace Ferretto.VW.MAS.InverterDriver
                             && this.m_pdoInData.ContainsKey(node))
                         {
                             this.m_pdoInData[node] = rxData;
+                            var args = new ImplicitReceivedEventArgs();
+                            args.receivedMessage = this.m_pdoInData[node];
+                            args.isOk = true;
+                            args.node = node;
+                            this.receivedImplicitTime = DateTime.UtcNow;
+                            this.ImplicitReceivedChanged?.Invoke(this, args);
                         }
                         break;
 
                     case CANopenMasterAPI6.COP_k_QUEUE_EMPTY:
                         // No more data to read
-                        var args = new ImplicitReceivedEventArgs();
-                        args.receivedMessage = this.m_pdoInData[node];
-                        args.isOk = true;
-                        args.node = node;
-                        this.receivedImplicitTime = DateTime.UtcNow;
-                        this.ImplicitReceivedChanged?.Invoke(this, args);
+                        if (this.m_pdoInData.ContainsKey(node))
+                        {
+                            var args = new ImplicitReceivedEventArgs();
+                            args.receivedMessage = this.m_pdoInData[node];
+                            args.isOk = true;
+                            args.node = node;
+                            this.receivedImplicitTime = DateTime.UtcNow;
+                            this.ImplicitReceivedChanged?.Invoke(this, args);
+                        }
                         break;
 
                     default:
