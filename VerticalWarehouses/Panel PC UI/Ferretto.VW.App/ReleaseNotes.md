@@ -30,7 +30,8 @@
 - Aggiunto userName in GetItemLists
 
 ## Bug Risolti
-- 
+- Manutenzioni con istruzioni duplicate
+- Notifica di manutenzioni in scadenza dopo una conferma servizio
 
 ## Compatibile con adapter 0.4.33
 ***
