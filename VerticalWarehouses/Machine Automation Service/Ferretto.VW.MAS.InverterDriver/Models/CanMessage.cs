@@ -16,10 +16,12 @@ namespace Ferretto.VW.MAS.InverterDriver
             switch (message?.ParameterId)
             {
                 case InverterParameterId.CurrentError:
-                    //this.Index = 0x603F;
-                    //this.Subindex = 0;
+                    // TEST with Nord
                     this.Index = (ushort)(0x2000 + 700);
                     this.Subindex = 1;
+                    // no test
+                    //this.Index = 0x603F;
+                    //this.Subindex = 0;
                     break;
 
                 case InverterParameterId.HomingCalibration:

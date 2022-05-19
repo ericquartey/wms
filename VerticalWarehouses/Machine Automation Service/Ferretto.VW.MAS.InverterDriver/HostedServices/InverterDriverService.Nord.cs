@@ -22,38 +22,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    private async Task ExplicitMessages()
-    {
-        do
-        {
-            try
-            {
-                if (this.socketTransport.IsConnected
-                    && this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
-                    && inverterMessage != null)
-                {
-                    this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
-                    this.Logger.LogTrace($"2:Command queue length: {this.inverterCommandQueue.Count}");
-
-                    var result = this.socketTransport is ISocketTransportNord
-                        ? await this.ProcessInverterCommandNord(inverterMessage)
-                        : await this.ProcessInverterCommandCan(inverterMessage);
-
-                    if (result)
-                    {
-                        this.inverterCommandQueue.Dequeue(out _);
-                    }
-                }
-            }
-            catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
-            {
-                this.Logger.LogDebug("Terminating ExplicitMessages task.");
-                break;
-            }
-        }
-        while (!this.CancellationToken.IsCancellationRequested);
-    }
-
     internal partial class InverterDriverService
     {
         #region Fields
@@ -73,6 +41,38 @@ namespace Ferretto.VW.MAS.InverterDriver
         #endregion
 
         #region Methods
+
+        private async Task ExplicitMessages()
+        {
+            do
+            {
+                try
+                {
+                    if (this.socketTransport.IsConnected
+                        && this.inverterCommandQueue.TryPeek(Timeout.Infinite, this.CancellationToken, out var inverterMessage)
+                        && inverterMessage != null)
+                    {
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                        this.Logger.LogTrace($"2:Command queue length: {this.inverterCommandQueue.Count}");
+
+                        var result = this.socketTransport is ISocketTransportNord
+                            ? await this.ProcessInverterCommandNord(inverterMessage)
+                            : await this.ProcessInverterCommandCan(inverterMessage);
+
+                        if (result)
+                        {
+                            this.inverterCommandQueue.Dequeue(out _);
+                        }
+                    }
+                }
+                catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+                {
+                    this.Logger.LogDebug("Terminating ExplicitMessages task.");
+                    break;
+                }
+            }
+            while (!this.CancellationToken.IsCancellationRequested);
+        }
 
         private void OnConnectionStatus(object sender, ConnectionStatusChangedEventArgs e)
         {
