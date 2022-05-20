@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void OnConnectionStatusCan(object sender, ConnectionStatusChangedEventArgs e)
         {
-            this.Logger.LogDebug($"Connection status tcp: {e.IsConnected}, udp: {e.IsConnectedUdp}");
-            if (!e.IsConnectedUdp)
+            this.Logger.LogDebug($"Connection status tcp: {e.IsConnected}");
+            if (!e.IsConnected)
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
@@ -288,7 +288,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 else
                 {
                     var canMsg = new CanMessage(inverterMessage);
-                    if (canMsg.Index != 0)
+                    if (canMsg.Index != 0
+                        && this.socketTransport.IsConnected)
                     {
                         canMsg.NodeId = (byte)inverters.First(x => x.SystemIndex == inverterMessage.SystemIndex).CanOpenNode;
                         result = this.socketTransport.SDOMessage(canMsg.NodeId, canMsg.Index, canMsg.Subindex, canMsg.IsWriteMessage, canMsg.Data, out var received, out var length);

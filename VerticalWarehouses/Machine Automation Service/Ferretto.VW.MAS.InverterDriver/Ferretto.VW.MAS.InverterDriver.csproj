@@ -3,6 +3,7 @@
   <PropertyGroup>
       <TargetFramework>netcoreapp2.2</TargetFramework>
       <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+      <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,10 +34,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="XatCOP60-64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="XatCOP60.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="XatCOP_VCI3.dll">
+    <None Update="XatCOP_VCI3-64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

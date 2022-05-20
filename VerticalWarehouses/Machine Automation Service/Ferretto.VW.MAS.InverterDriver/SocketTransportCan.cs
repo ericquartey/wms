@@ -212,8 +212,12 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public void Disconnect()
         {
+            if (0 != this.m_boardHandle)
+            {
+                this.implicitTimer.Change(-1, -1);
+                CANopenMasterAPI6.COP_ReleaseBoard(this.m_boardHandle);
+            }
             this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
-            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -379,7 +383,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.m_pdoOutData.ContainsKey(nodeId)
                     && this.m_pdoOutData[nodeId] != null
-                    && this.m_pdoOutData[nodeId].Length > 0)
+                    && this.m_pdoOutData[nodeId].Length > 0
+                    && this.IsConnected)
                 {
                     result = CANopenMasterAPI6.COP_WritePDO(this.m_boardHandle             //  handle of CAN board
                                                             , (byte)nodeId                  //  number of the node
@@ -468,6 +473,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                                 + eventData1.ToString("X02") + " "
                                                 + eventData2.ToString("X02") + " "
                                                 + eventData3.ToString("X02") + " hex");
+                        this.IsConnected = eventData1 == CANopenMasterAPI6.COP_k_OK;
                         break;
 
                     default:
@@ -479,6 +485,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
                 // Important: Always read until queue is empty
             } while (CANopenMasterAPI6.COP_k_QUEUE_EMPTY != result);
+            this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.IsConnected, this.IsConnectedUdp));
         }
 
         #endregion
