@@ -70,6 +70,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger.LogDebug("Terminating ExplicitMessages task.");
                     break;
                 }
+                catch (Exception ex)
+                {
+                    break;
+                }
             }
             while (!this.CancellationToken.IsCancellationRequested);
         }
@@ -252,7 +256,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                         }
                                         currentAxisPosition += offset;
 
-                                        this.Logger.LogDebug($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}; Sensors={inverter.InputsToString()}");
+                                        this.Logger.LogDebug($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition:0.0000}; Sensors={inverter.InputsToString()}");
                                         notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
                                     }
                                     else

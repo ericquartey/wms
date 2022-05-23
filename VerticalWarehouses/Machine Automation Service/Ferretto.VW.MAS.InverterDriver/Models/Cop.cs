@@ -4347,6 +4347,35 @@ namespace IXXAT
             return description;
         }
 
+        ///*************************************************************************
+        /// <summary>
+        /// Return description of given node state
+        /// </summary>
+        /// <param name="copStateCode">
+        /// Value of any CANopen Master API status event (COP_k_aaa_EVT)
+        /// </param>
+        /// <returns>
+        /// CANopen MAster API node state description
+        /// </returns>
+
+        public static string CopNodeStateString(UInt16 copStateCode)
+        {
+            string description;
+
+            switch (copStateCode)
+            {
+                case COP_k_NS_BOOTUP: description = "Node is booting up and will enter pre-operational state in an instant"; break;
+                case COP_k_NS_DISCONNECTED: description = "A monitoring error with the node has been encountered"; break;
+                case COP_k_NS_OPERATIONAL: description = "Node is in operational state"; break;
+                case COP_k_NS_PREOPERATIONAL: description = "Node is in pre operational state"; break;
+                case COP_k_NS_STOPPED: description = "Node is in stopped state"; break;
+                case COP_k_NS_UNKNOWN: description = "Node state is unclear"; break;
+                default: description = "Unknown EventType"; break;
+            }
+
+            return description;
+        }
+
         #endregion
     }
 }

@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxisNord;
-using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOnNord;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
-using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -33,18 +28,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void OnConnectionStatusCan(object sender, ConnectionStatusChangedEventArgs e)
         {
-            this.Logger.LogDebug($"Connection status tcp: {e.IsConnected}");
+            this.Logger.LogDebug($"Connection status can: {e.IsConnected}");
             if (!e.IsConnected)
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError);
-
                     this.Logger.LogDebug("Reconnect");
                     try
                     {
                         this.socketTransport.Disconnect();
-                        this.socketTransport.Configure(this.inverterAddress, 0, this.nodeList);
+                        scope.ServiceProvider.GetRequiredService<IErrorsProvider>().RecordNew(MachineErrorCode.InverterConnectionError);
+                        this.socketTransport.ConnectAsync();
                     }
                     catch (Exception ex)
                     {
@@ -166,7 +160,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                                 currentAxisPosition += offset;
 
-                                this.Logger.LogDebug($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}; Sensors={inverter.InputsToString()}");
+                                this.Logger.LogDebug($"refreshPosition inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition:0.0000}; Sensors={inverter.InputsToString()}");
                                 notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
                             }
                             else

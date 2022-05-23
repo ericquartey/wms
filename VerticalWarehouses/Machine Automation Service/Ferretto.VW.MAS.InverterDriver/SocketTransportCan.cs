@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
 
                     // start node
-                    result = CANopenMasterAPI6.COP_StartNode(this.m_boardHandle, 0);
+                    result = CANopenMasterAPI6.COP_StartNode(this.m_boardHandle, (byte)nodeId);
                     if (CANopenMasterAPI6.COP_k_OK != result)
                     {
                         CANopenMasterAPI6.COP_ReleaseBoard(this.m_boardHandle);
@@ -206,7 +206,14 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            throw new NotImplementedException();
+            foreach (var nodeId in this.nodeList)
+            {
+                var result = CANopenMasterAPI6.COP_StartNode(this.m_boardHandle, (byte)nodeId);
+                if (CANopenMasterAPI6.COP_k_OK != result)
+                {
+                    this.logger.Error($"COP_StartNode error {result} " + CANopenMasterAPI6.CopErrorString(result));
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -215,7 +222,17 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (0 != this.m_boardHandle)
             {
                 this.implicitTimer.Change(-1, -1);
-                CANopenMasterAPI6.COP_ReleaseBoard(this.m_boardHandle);
+                foreach (var nodeId in this.nodeList)
+                {
+                    var result = CANopenMasterAPI6.COP_GetNodeState(this.m_boardHandle, (byte)nodeId, out var nodeState);
+                    this.logger.Debug($"COP_GetNodeState ns {nodeState} {CANopenMasterAPI6.CopNodeStateString(nodeState)}. Error {result} " + CANopenMasterAPI6.CopErrorString(result));
+
+                    result = CANopenMasterAPI6.COP_StopNode(this.m_boardHandle, (byte)nodeId);
+                    if (CANopenMasterAPI6.COP_k_OK != result)
+                    {
+                        throw new ApplicationException($"CANopenMasterAPI6: Error COP_StartNode {CANopenMasterAPI6.CopErrorString(result)}");
+                    }
+                }
             }
             this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
         }
