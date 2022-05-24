@@ -252,8 +252,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
             }
-
-            return this.Ok(await loadingUnitsWmsWebService.GetByIdAsync(id));
+            var lu = await loadingUnitsWmsWebService.GetByIdAsync(id);
+            if (lu?.Note != null)
+            {
+                var local = this.loadingUnitsDataProvider.GetById(id);
+                if (local?.Description != lu.Note)
+                {
+                    local.Description = lu.Note;
+                    this.loadingUnitsDataProvider.Save(local);
+                }
+            }
+            return this.Ok(lu);
         }
 
         [HttpPost("{id}/immediate-additem")]
