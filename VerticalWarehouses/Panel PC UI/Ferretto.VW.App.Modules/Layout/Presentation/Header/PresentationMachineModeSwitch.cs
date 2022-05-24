@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public bool IsMachineInTestMode3
         {
-            get => this.isMachineInTestMode;
+            get => this.isMachineInTestMode3;
             set => this.SetProperty(ref this.isMachineInTestMode3, value, this.RaiseCanExecuteChanged);
         }
 
