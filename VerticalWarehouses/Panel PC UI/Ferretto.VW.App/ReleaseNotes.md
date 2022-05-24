@@ -28,6 +28,7 @@
 ## Nuove Funzionalità 1.0.44 rispetto la 1.0.43
 - Ferretto NuGet package 0.16.42.
 - Aggiunto userName in GetItemLists
+- Aggiunta descrizione cassetti da EjLog
 
 ## Bug Risolti
 - Manutenzioni con istruzioni duplicate
