@@ -7,12 +7,18 @@ namespace Ferretto.VW.MAS.IODriver
 {
     internal interface IIoDevice
     {
-        #region Methods
+        #region Properties
 
         bool IsCommandExecuting { get; }
 
+        #endregion
+
+        #region Methods
+
         void DestroyStateMachine();
+
         void Disconnect();
+
         void ExecuteBayLight(FieldCommandMessage receivedMessage);
 
         void ExecuteIoPowerUp();
@@ -31,7 +37,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         void ExecuteSwitchAxis(FieldCommandMessage receivedMessage);
 
-        Task ReceiveIoDataTaskFunction(IHostingEnvironment env);
+        Task ReceiveIoDataTaskFunction(IHostEnvironment env);
 
         Task SendIoCommandTaskFunction();
 

@@ -11,7 +11,7 @@ namespace Ferretto.VW.TelemetryService.Providers
 
         WebProxy GetWebProxy();
 
-        void SaveAsync(IProxy proxy);
+        void SaveAsync(IProxy? proxy);
 
         #endregion
     }

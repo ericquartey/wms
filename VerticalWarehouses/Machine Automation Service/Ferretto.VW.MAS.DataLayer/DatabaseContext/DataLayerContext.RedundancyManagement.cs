@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NLog;
 
 namespace Ferretto.VW.MAS.DataLayer

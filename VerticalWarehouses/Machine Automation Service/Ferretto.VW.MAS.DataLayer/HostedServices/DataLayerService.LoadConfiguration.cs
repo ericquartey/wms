@@ -870,7 +870,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var environment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+                var environment = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
                 var seedFileName = GetSeedFileName(environment.EnvironmentName);
 
                 if (File.Exists(seedFileName))
@@ -880,7 +880,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     var seedScript = await File.ReadAllTextAsync(seedFileName);
 
                     var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-                    await dataContext.Database.ExecuteSqlCommandAsync(seedScript);
+                    await dataContext.Database.ExecuteSqlRawAsync(seedScript);
                 }
             }
         }

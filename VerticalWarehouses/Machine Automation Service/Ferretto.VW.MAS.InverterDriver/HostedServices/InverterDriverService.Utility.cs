@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             // INFO The Overrun elevator must be inverted (WORKAROUND)
                             ioStatuses[5] = !ioStatuses[5];
 
-                            if (serviceProvider.GetRequiredService<IHostingEnvironment>().IsEnvironment("Bender"))
+                            if (serviceProvider.GetRequiredService<IHostEnvironment>().IsEnvironment("Bender"))
                             {
                                 ioStatuses[7] = angInverter.ANG_ZeroCradleSensor;
                             }

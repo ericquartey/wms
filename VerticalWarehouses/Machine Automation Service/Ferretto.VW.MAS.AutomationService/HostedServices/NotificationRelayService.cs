@@ -9,13 +9,11 @@ using Ferretto.VW.MAS.TimeManagement.Models;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore.Update;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -25,7 +23,7 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
-        private readonly IApplicationLifetime applicationLifetime;
+        private readonly IHostApplicationLifetime applicationLifetime;
 
         private readonly IConfiguration configuration;
 
@@ -45,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService
             ILogger<NotificationRelayService> logger,
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
-            IApplicationLifetime applicationLifetime,
+            IHostApplicationLifetime applicationLifetime,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)

@@ -333,11 +333,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
             }
 
-            if (isDisabled == null)
-            {
-                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(isDisabled));
-            }
-
             lock (this.dataContext)
             {
                 var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);

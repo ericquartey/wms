@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.AutomationService.Controllers;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -9,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
     {
         #region Methods
 
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (context is null)
             {
@@ -23,17 +24,16 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
             if (operation.Parameters is null)
             {
-                operation.Parameters = new List<IParameter>();
+                operation.Parameters = new List<OpenApiParameter>();
             }
 
             if (context.MethodInfo.DeclaringType.GetInterface(nameof(IRequestingBayController)) != null)
             {
                 operation.Parameters.Add(
-                    new NonBodyParameter
+                    new OpenApiParameter
                     {
                         Name = BayNumberActionFilter.HeaderName,
-                        In = "header",
-                        Type = "string",
+                        In = ParameterLocation.Header,
                         Required = true,
                     });
             }

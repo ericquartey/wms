@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Modules.Operator.ViewModels;
-using System.Linq;
 
 namespace Ferretto.VW.App.Modules.Operator.Views
 {
@@ -28,9 +27,9 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             {
                 var selectedList = grid.SelectedItems.OfType<ItemListExecution>().ToList();
 
-                if (selectedList.Exists(x=>x.IsDispatchable == false))
+                if (selectedList.Exists(x => x.IsDispatchable == false))
                 {
-                    viewModel.SelectedLists = selectedList.FindAll(x=>x.IsDispatchable == false);
+                    viewModel.SelectedLists = selectedList.FindAll(x => x.IsDispatchable == false);
                 }
                 else
                 {

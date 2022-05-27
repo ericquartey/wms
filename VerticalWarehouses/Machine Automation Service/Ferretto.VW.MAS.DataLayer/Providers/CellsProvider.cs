@@ -783,7 +783,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException();
                 }
 
-                var statistics = this.dataContext.MachineStatistics.LastOrDefault();
+                var statistics = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
 
                 if (loadingUnitId is null)
                 {

@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (this.dataContext.MachineStatistics.Any())
                 {
-                    var statistics = this.dataContext.MachineStatistics.Last();
+                    var statistics = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
                     summary.TotalLoadingUnits = statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
                     if (summary.TotalLoadingUnits > 0)
                     {
@@ -157,6 +157,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var count = 0;
                 var errors = this.dataContext.Errors
+                    .AsEnumerable()
                     .Where(x => x.ResolutionDate.HasValue
                         && DateTime.UtcNow.Subtract(x.ResolutionDate.Value).Days > 31
                         )

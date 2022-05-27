@@ -6,6 +6,7 @@ using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,6 +30,10 @@ namespace Ferretto.VW.MAS.AutomationService
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseNLog()
+                .ConfigureServices((context, services) =>
+                {
+                    services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
+                })
                 .UseStartup<Startup>();
 
         public static int Main(string[] args)

@@ -108,9 +108,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = true;
                 this.devices.Clear();
-                var result = await this.machineDevicesServices.GetAllAsync();
-                this.devices.AddRange(result.Item2);
-                this.devices.AddRange(result.Item1);
+                var deviceInfo = await this.machineDevicesServices.GetDeviceInfoAsync();
+                this.devices.AddRange(deviceInfo);
+                var inverterInfo = await this.machineDevicesServices.GetInverterInfoAsync();
+                this.devices.AddRange(inverterInfo);
                 this.RaisePropertyChanged(nameof(this.Devices));
             }
             catch

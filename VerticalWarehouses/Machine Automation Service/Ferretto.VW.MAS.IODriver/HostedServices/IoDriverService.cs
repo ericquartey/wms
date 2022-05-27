@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IConfiguration configuration;
 
-        private readonly IHostingEnvironment env;
+        private readonly IHostEnvironment env;
 
         private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.IODriver
             ILogger<IoDriverService> logger,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory,
-            IHostingEnvironment env)
+            IHostEnvironment env)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.ioDeviceService = iIoDeviceService ?? throw new ArgumentNullException(nameof(iIoDeviceService));

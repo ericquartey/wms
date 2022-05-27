@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.IODriver
             Bay bay,
             ILogger logger,
             CancellationToken cancellationToken,
-            IHostingEnvironment env)
+            IHostEnvironment env)
         {
             this.eventAggregator = eventAggregator;
             this.ipAddress = ipAddress;
@@ -201,7 +201,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.Dispose(true);
         }
 
-        public async Task ReceiveIoDataTaskFunction(IHostingEnvironment env)
+        public async Task ReceiveIoDataTaskFunction(IHostEnvironment env)
         {
             if (this.isDisposed)
             {

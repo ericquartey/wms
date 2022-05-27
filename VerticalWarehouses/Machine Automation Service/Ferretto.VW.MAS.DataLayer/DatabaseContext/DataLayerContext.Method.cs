@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -39,6 +40,54 @@ namespace Ferretto.VW.MAS.DataLayer
                 var result = this.Set<TSource>().Select(selector).Except(entity.Select(selector)).ToList();
                 result.ForEach(f => this.Set<TSource>().Remove(this.Set<TSource>().Find(f)));
             }
+        }
+
+        public EntityEntry<TSource> FirstOrNull<TSource, TKey>(IEnumerable<TSource> entity, Func<TSource, TKey> order, Func<TSource, bool> selector = null)
+            where TSource : class
+        {
+            if (entity == null
+                || !entity.Any())
+            {
+                return null;
+            }
+            TSource ret;
+            if (selector != null)
+            {
+                ret = entity.OrderBy(order).First(selector);
+            }
+            else
+            {
+                ret = entity.OrderBy(order).First();
+            }
+            if (ret != null)
+            {
+                return this.Entry(ret);
+            }
+            return null;
+        }
+
+        public EntityEntry<TSource> LastOrNull<TSource, TKey>(IEnumerable<TSource> entity, Func<TSource, TKey> order, Func<TSource, bool> selector = null)
+            where TSource : class
+        {
+            if (entity == null
+                || !entity.Any())
+            {
+                return null;
+            }
+            TSource ret;
+            if (selector != null)
+            {
+                ret = entity.OrderByDescending(order).First(selector);
+            }
+            else
+            {
+                ret = entity.OrderByDescending(order).First();
+            }
+            if (ret != null)
+            {
+                return this.Entry(ret);
+            }
+            return null;
         }
 
         #endregion

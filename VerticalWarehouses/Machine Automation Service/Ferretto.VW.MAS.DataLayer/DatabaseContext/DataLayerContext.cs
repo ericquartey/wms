@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -153,6 +154,7 @@ namespace Ferretto.VW.MAS.DataLayer
             optionsBuilder
                 .UseSqlite(connectionString)
                 .EnableSensitiveDataLogging();
+            //.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.QueryClientEvaluationWarning));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

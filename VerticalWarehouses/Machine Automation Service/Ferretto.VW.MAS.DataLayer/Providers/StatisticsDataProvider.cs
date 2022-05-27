@@ -61,14 +61,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
             }
 
-            return this.dataContext.MachineStatistics.Last().Id;
+            return this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id).Entity.Id;
         }
 
         public MachineStatistics GetActual()
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.LastOrDefault();
+                return this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.Where(s => s.Id == id).FirstOrDefault();
+                return this.dataContext.FirstOrNull(this.dataContext.MachineStatistics, o => o.Id, s => s.Id == id)?.Entity;
             }
         }
 
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.ServicingInfo.LastOrDefault()?.TotalMissions ?? 0;
+                return this.dataContext.LastOrNull(this.dataContext.ServicingInfo, o => o.Id)?.Entity?.TotalMissions ?? 0;
             }
         }
 
@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.Last().TotalVerticalAxisKilometers;
+                return this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalVerticalAxisKilometers ?? 0;
             }
         }
 

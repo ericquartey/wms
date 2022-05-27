@@ -59,7 +59,7 @@ namespace Ferretto.VW.TelemetryService.Providers
             }
         }
 
-        public void SaveAsync(IProxy proxy)
+        public void SaveAsync(IProxy? proxy)
         {
             if (proxy is null)
             {
