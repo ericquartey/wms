@@ -70,11 +70,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(cellPanelId);
                 }
 
-                var highestPanelHeight = cellPanel?.Cells.Max(c => c.Position) + heightDifference;
-                var lowestPanelHeight = cellPanel?.Cells.Min(c => c.Position) + heightDifference;
+                var highestPanelHeight = cellPanel.Cells.Max(c => c.Position) + heightDifference;
+                var lowestPanelHeight = cellPanel.Cells.Min(c => c.Position) + heightDifference;
 
                 var isOverlapping = this.dataContext.Cells
                     .Include(c => c.Panel)
+                    .ToList()
                     .Any(c =>
                         c.Position < highestPanelHeight
                         &&

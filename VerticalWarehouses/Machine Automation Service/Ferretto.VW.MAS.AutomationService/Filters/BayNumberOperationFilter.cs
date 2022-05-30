@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                         In = ParameterLocation.Header,
                         Required = true,
                     });
+                operation.Description = "BayNumber";
             }
         }
 

@@ -32,19 +32,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 EF.CompileQuery((DataLayerContext context) =>
                 context.Elevators
                     .AsNoTracking()
+                    .Include(p => p.BayPosition).ThenInclude(p => p.LoadingUnit)
+                    .Include(p => p.BayPosition).ThenInclude(p => p.Bay)
                     .Select(e => e.BayPosition)
-                        .Include(p => p.LoadingUnit)
-                        .Include(p => p.Bay)
-                    .SingleOrDefault());
+                    .Single());
 
         private static readonly Func<DataLayerContext, Cell> GetCurrentCellCompile =
                 EF.CompileQuery((DataLayerContext context) =>
                 context.Elevators
                     .AsNoTracking()
+                    .Include(p => p.Cell).ThenInclude(p => p.Panel)
+                    .Include(p => p.Cell).ThenInclude(p => p.LoadingUnit)
                    .Select(e => e.Cell)
-                   .Include(c => c.Panel)
-                   .Include(c => c.LoadingUnit)
-                   .SingleOrDefault());
+                   .Single());
 
         private static readonly Func<DataLayerContext, Elevator> GetLoadingUnitOnBoardCompile =
                 EF.CompileQuery((DataLayerContext context) =>
@@ -210,9 +210,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
-
-                return currentBayPosition;
+                try
+                {
+                    var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
+                    return currentBayPosition;
+                }
+                catch (EntityNotFoundException)
+                {
+                    return null;
+                }
             }
         }
 
@@ -220,9 +226,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var currentCell = GetCurrentCellCompile(this.dataContext);
+                try
+                {
+                    var currentCell = GetCurrentCellCompile(this.dataContext);
 
-                return currentCell;
+                    return currentCell;
+                }
+                catch (EntityNotFoundException)
+                {
+                    return null;
+                }
             }
         }
 

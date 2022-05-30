@@ -596,8 +596,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             RatioBackCells = g.Count(c => c.Side == WarehouseSide.Back) / (double)totalCells,
                         });
 
-                var occupiedOrUnusableCellsCount = this.dataContext.Cells
-                    .Count(c => !c.IsFree || c.IsNotAvailable);
+                var occupiedOrUnusableCellsCount = cellsWithSide.Count(c => !c.IsFree || c.IsNotAvailable);
 
                 var cellStatistics = new CellStatisticsSummary()
                 {

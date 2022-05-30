@@ -106,6 +106,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     var totalWeight = this.dataContext
                         .LoadingUnits
+                        .ToList()
                         .Where(lu => lu.IsIntoMachineOrBlocked)
                         .Sum(lu => lu.GrossWeight);
                     if (loadingUnit.GrossWeight + totalWeight > machine.MaxGrossWeight)

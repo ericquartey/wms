@@ -465,10 +465,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                 //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
-                ServicingInfo si = this.dataContext.ServicingInfo
-                   .Include(s => s.Instructions)
-                   .ThenInclude(e => e.Definition)
-                   .Include(s => s.MachineStatistics).LastOrDefault();
+                ServicingInfo si = this.dataContext
+                   .LastOrNull(this.dataContext.ServicingInfo
+                        .Include(s => s.Instructions)
+                        .ThenInclude(e => e.Definition)
+                        .Include(s => s.MachineStatistics)
+                        , o => o.Id)?.Entity;
                 return si;
             }
         }

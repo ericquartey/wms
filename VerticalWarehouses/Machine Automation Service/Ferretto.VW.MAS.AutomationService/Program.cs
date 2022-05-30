@@ -30,10 +30,6 @@ namespace Ferretto.VW.MAS.AutomationService
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseNLog()
-                .ConfigureServices((context, services) =>
-                {
-                    services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
-                })
                 .UseStartup<Startup>();
 
         public static int Main(string[] args)

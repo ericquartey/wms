@@ -787,7 +787,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateSolo(Machine machine, DataLayerContext dataContext)
         {
-            _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+            _ = machine ?? throw new ArgumentNullException(nameof(machine));
             if (dataContext is null)
             {
                 dataContext = this.dataContext;
@@ -878,7 +878,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
                 if (machineStat != null)
                 {
                     machineStat.TotalVerticalAxisCycles++;

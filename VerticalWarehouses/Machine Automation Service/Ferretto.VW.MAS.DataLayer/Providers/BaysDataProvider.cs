@@ -56,18 +56,19 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                 .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId)));
 
-        private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =
-                EF.CompileQuery((DataLayerContext context, Cell cell) =>
-                context.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.External)
-                    .Include(b => b.Positions)
-                    .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
-                    .OrderBy(o => cell.Position - o.Positions.First().Height)
-                    .FirstOrDefault());
+        // this query does not work in EF 3.1
+        //private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =
+        //        EF.CompileQuery((DataLayerContext context, Cell cell) =>
+        //        context.Bays
+        //            .AsNoTracking()
+        //            .Include(b => b.Shutter)
+        //                .ThenInclude(s => s.Inverter)
+        //            .Include(b => b.Carousel)
+        //            .Include(b => b.External)
+        //            .Include(b => b.Positions)
+        //            .Where(b => b.Side == cell.Side && b.Positions.First().Height < cell.Position)
+        //            .OrderBy(o => cell.Position - o.Positions.First().Height)
+        //            .FirstOrDefault());
 
         private static readonly Func<DataLayerContext, IoIndex, Bay> GetByIoIndexCompile =
                 EF.CompileQuery((DataLayerContext context, IoIndex ioIndex) =>
@@ -463,7 +464,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return GetByCellCompile(this.dataContext, cell);
+                //return GetByCellCompile(this.dataContext, cell);
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Carousel)
+                    .Include(b => b.External)
+                    .Include(b => b.Positions)
+                    .AsEnumerable()
+                    .Where(b => b.Side == cell.Side && b.Positions.All(p => p.Height < cell.Position))
+                    .OrderBy(o => cell.Position - o.Positions.First().Height)
+                    .FirstOrDefault();
             }
         }
 

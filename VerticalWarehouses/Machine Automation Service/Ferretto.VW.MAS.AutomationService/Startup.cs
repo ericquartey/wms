@@ -70,18 +70,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 SupportedUICultures = supportedCultures,
             });
 
-            //app.UseSignalR(routes =>
-            //{
-            //    routes.MapHub<InstallationHub>("/installation-endpoint");
-            //    routes.MapHub<OperatorHub>("/operator-endpoint");
-            //});
-
             app.UseMessageLogging();
 
             if (!env.IsProduction())
             {
-                //app.UseOpenApi();
-                //app.UseSwaggerUi3();
                 SwaggerBuilderExtensions.UseSwagger(app);
                 app.UseSwaggerUI(config =>
                 {
@@ -93,14 +85,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseDataLayer();
 
-            //app.UseMvc();
-            app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(origin => true) // allow any origin
-                .AllowCredentials()); // allow credentials
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -117,18 +103,6 @@ namespace Ferretto.VW.MAS.AutomationService
             services.AddDataLayer();
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
-
-            //services
-            //  .AddMvc(options =>
-            //  {
-            //      options.Filters.Add(typeof(ReadinessFilter));
-            //      options.Filters.Add(typeof(BayNumberActionFilter));
-            //      options.Filters.Add(typeof(ExceptionsFilter));
-            //      options.Conventions.Add(
-            //          new RouteTokenTransformerConvention(
-            //            new SlugifyParameterTransformer()));
-            //  });
-            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddControllers(options =>
             {
@@ -159,22 +133,18 @@ namespace Ferretto.VW.MAS.AutomationService
                 config.CustomSchemaIds(i => i.FullName);
             });
 
-            //services.AddSwaggerDocument(c =>
-            //{
-            //    c.Title = "Machine Automation Web API";
-            //    c.Version = "v1";
-
-            //    var versionAttribute = this.GetType().Assembly
-            //       .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
-            //       .FirstOrDefault() as AssemblyInformationalVersionAttribute;
-
-            //    c.Version = versionAttribute?.InformationalVersion ?? typeof(Program).Assembly.GetName().Version.ToString();
-            //    c.AddOperationFilter(BayNumberOperationFilter);
-            //});
-
             services.AddSingleton<IEventAggregator, EventAggregator>();
 
-            services.AddCors();
+            services.AddCors(options =>
+
+                options.AddPolicy("AllowAll", builder =>
+
+                    builder
+                        .SetIsOriginAllowed(x => true)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials())
+            );
 
             AddWmsServices(services);
 
@@ -197,8 +167,8 @@ namespace Ferretto.VW.MAS.AutomationService
             var telemetryUrl = this.Configuration.GetValue<string>("Telemetry:Url");
             services.AddTelemetryHub(new Uri(telemetryUrl));
 
-            services.AddSignalR();
-            //.AddNewtonsoftJsonProtocol();
+            services.AddSignalR()
+                .AddNewtonsoftJsonProtocol();
         }
 
         private static void AddWmsServices(IServiceCollection services)
