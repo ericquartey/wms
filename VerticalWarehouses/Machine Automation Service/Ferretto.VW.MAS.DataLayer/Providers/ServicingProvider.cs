@@ -74,7 +74,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    var instruction = this.dataContext.LastOrNull(this.dataContext.Instructions,
+                        o => o.Id,
+                        s => s.Id == instructionId)?.Entity;
                     instruction.InstructionStatus = MachineServiceStatus.Completed;
                     //instruction.MaintenanceDate = DateTime.UtcNow;
                     instruction.IsDone = true;
@@ -500,12 +502,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo
+                ServicingInfo si = this.dataContext.FirstOrNull(this.dataContext.ServicingInfo
                     .Include(s => s.Instructions)
                     .ThenInclude(e => e.Definition)
                     .Include(s => s.MachineStatistics)
-                    .Where(s => s.Id == id)
-                    .FirstOrDefault();
+                    , o => o.Id
+                    , s => s.Id == id)?.Entity;
                 //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                 //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
                 return si;
@@ -516,12 +518,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo
+                ServicingInfo si = this.dataContext.FirstOrNull(this.dataContext.ServicingInfo
                     .Include(s => s.Instructions)
                     .ThenInclude(e => e.Definition)
                     .Include(s => s.MachineStatistics)
-                    .Where(s => s.InstallationDate != null)
-                    .FirstOrDefault();
+                    , o => o.Id
+                    , s => s.InstallationDate != null)?.Entity;
 
                 if (si != null && si.MachineStatisticsId.HasValue)
                 {
@@ -532,11 +534,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else
                 {
-                    ServicingInfo siTot = this.dataContext.ServicingInfo
+                    ServicingInfo siTot = this.dataContext.FirstOrNull(this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
                         .Include(s => s.MachineStatistics)
-                        .FirstOrDefault();
+                        , o => o.Id)?.Entity;
 
                     if (siTot == null)
                     {
@@ -569,12 +571,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    ServicingInfo si = this.dataContext.ServicingInfo
+                    ServicingInfo si = this.dataContext.LastOrNull(this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
                         .Include(s => s.MachineStatistics)
-                        .Where(S => S.ServiceStatus == MachineServiceStatus.Completed)
-                        .LastOrDefault();
+                        , o => o.Id
+                        , s => s.ServiceStatus == MachineServiceStatus.Completed)?.Entity;
                     si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
@@ -595,10 +597,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    ServicingInfo si = this.dataContext.ServicingInfo
+                    ServicingInfo si = this.dataContext.LastOrNull(this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
-                        .Include(s => s.MachineStatistics).LastOrDefault();
+                        .Include(s => s.MachineStatistics)
+                        , o => o.Id)?.Entity;
                     //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
@@ -747,7 +750,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.allStat = this.dataContext.ServicingInfo
                             .Include(i => i.Instructions)
                             .Include(i => i.MachineStatistics)
-                            .ToArray()
+                            .ToList()
                             .OrderBy(o => o.Id)
                             .ToList();
 

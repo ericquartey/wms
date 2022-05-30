@@ -117,8 +117,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var cellsInRange = this.dataContext.Cells.Where(c => c.Panel.Side == cell.Side
                     && (c.Position >= cell.Position - (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
-                    && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance
-                    );
+                    && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance)
+                .ToList();
             if (!cellsInRange.Any())
             {
                 return false;
@@ -135,7 +135,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 // in cell-to-cell movements we check only the cells not presently occupied by this load unit
                 var cellsFrom = this.dataContext.Cells.Where(c => c.Panel.Side == loadUnit.Cell.Side
                     && c.Position >= loadUnit.Cell.Position
-                    && c.Position <= loadUnit.Cell.Position + loadUnitHeight + VerticalPositionTolerance);
+                    && c.Position <= loadUnit.Cell.Position + loadUnitHeight + VerticalPositionTolerance)
+                    .ToList();
                 var lastPosition = cellsFrom.LastOrDefault().Position;
                 return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadUnit.Cell.Position - (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
                     || (!c.IsFree && c.Position > lastPosition)

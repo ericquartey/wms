@@ -53,11 +53,11 @@ namespace Ferretto.VW.MAS.DataLayer
             TSource ret;
             if (selector != null)
             {
-                ret = entity.OrderBy(order).First(selector);
+                ret = entity.OrderBy(order).FirstOrDefault(selector);
             }
             else
             {
-                ret = entity.OrderBy(order).First();
+                ret = entity.OrderBy(order).FirstOrDefault();
             }
             if (ret != null)
             {
@@ -77,11 +77,11 @@ namespace Ferretto.VW.MAS.DataLayer
             TSource ret;
             if (selector != null)
             {
-                ret = entity.OrderByDescending(order).First(selector);
+                ret = entity.OrderByDescending(order).FirstOrDefault(selector);
             }
             else
             {
-                ret = entity.OrderByDescending(order).First();
+                ret = entity.OrderByDescending(order).FirstOrDefault();
             }
             if (ret != null)
             {
