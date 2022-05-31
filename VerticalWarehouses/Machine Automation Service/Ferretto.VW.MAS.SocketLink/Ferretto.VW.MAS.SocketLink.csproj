@@ -6,13 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.42" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.25" />
-    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
@@ -10,14 +10,17 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.25" />
-    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
-    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.42" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.InverterDriver.Contracts\Ferretto.VW.MAS.InverterDriver.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices">
+      <Version>3.1.25</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
