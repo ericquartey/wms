@@ -71,6 +71,141 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
         //************************************************************************
         /// <summary>
+        ///   Finalizes the application
+        /// </summary>
+        //************************************************************************
+        public void FinalizeApp()
+        {
+            //
+            // Dispose all hold VCI objects.
+            //
+
+            // Dispose message reader
+            DisposeVciObject(mReader);
+
+            // Dispose message writer
+            DisposeVciObject(mWriter);
+
+            // Dispose CAN channel
+            DisposeVciObject(mCanChn);
+
+            // Dispose CAN controller
+            DisposeVciObject(mCanCtl);
+
+            // Dispose VCI device
+            DisposeVciObject(mDevice);
+        }
+
+        //************************************************************************
+        /// <summary>
+        ///   Opens the specified socket, creates a message channel, initializes
+        ///   and starts the CAN controller.
+        /// </summary>
+        /// <param name="canNo">
+        ///   Number of the CAN controller to open.
+        /// </param>
+        /// <returns>
+        ///   A value indicating if the socket initialization succeeded or failed.
+        /// </returns>
+        //************************************************************************
+        public bool InitSocket(Byte canNo)
+        {
+            IBalObject bal = null;
+            bool succeeded = false;
+
+            try
+            {
+                //
+                // Open bus access layer
+                //
+                bal = mDevice.OpenBusAccessLayer();
+
+                //
+                // Open a message channel for the CAN controller
+                //
+                mCanChn = bal.OpenSocket(canNo, typeof(ICanChannel)) as ICanChannel;
+
+                //
+                // Open the scheduler of the CAN controller
+                //
+                mCanSched = bal.OpenSocket(canNo, typeof(ICanScheduler)) as ICanScheduler;
+
+                // Initialize the message channel
+                mCanChn.Initialize(1024, 128, false);
+
+                // Get a message reader object
+                mReader = mCanChn.GetMessageReader();
+
+                // Initialize message reader
+                mReader.Threshold = 1;
+
+                // Create and assign the event that's set if at least one message
+                // was received.
+                mRxEvent = new AutoResetEvent(false);
+                mReader.AssignEvent(mRxEvent);
+
+                // Get a message wrtier object
+                mWriter = mCanChn.GetMessageWriter();
+
+                // Initialize message writer
+                mWriter.Threshold = 1;
+
+                // Activate the message channel
+                mCanChn.Activate();
+
+                //
+                // Open the CAN controller
+                //
+                mCanCtl = bal.OpenSocket(canNo, typeof(ICanControl)) as ICanControl;
+
+                // Initialize the CAN controller
+                mCanCtl.InitLine(CanOperatingModes.Standard |
+                  CanOperatingModes.Extended |
+                  CanOperatingModes.ErrFrame,
+                  CanBitrate.Cia250KBit);
+
+                //
+                // print line status
+                //
+                Console.WriteLine(" LineStatus: {0}", mCanCtl.LineStatus);
+
+                // Set the acceptance filter for std identifiers
+                mCanCtl.SetAccFilter(CanFilter.Std,
+                                     (uint)CanAccCode.All, (uint)CanAccMask.All);
+
+                // Set the acceptance filter for ext identifiers
+                mCanCtl.SetAccFilter(CanFilter.Ext,
+                                     (uint)CanAccCode.All, (uint)CanAccMask.All);
+
+                // Start the CAN controller
+                mCanCtl.StartLine();
+
+                //
+                // start the receive thread
+                //
+                rxThread = new Thread(new ThreadStart(ReceiveThreadFunc));
+                rxThread.Start();
+
+                succeeded = true;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Error: Initializing socket failed : " + exc.Message);
+                succeeded = false;
+            }
+            finally
+            {
+                //
+                // Dispose bus access layer
+                //
+                DisposeVciObject(bal);
+            }
+
+            return succeeded;
+        }
+
+        //************************************************************************
+        /// <summary>
         ///   Selects the first CAN adapter.
         /// </summary>
         //************************************************************************
@@ -139,6 +274,37 @@ namespace Ferretto.VW.MAS.CanOpenClient
             }
         }
 
+        public void Stop()
+        {
+            //
+            // tell receive thread to quit
+            //
+            Interlocked.Exchange(ref mMustQuit, 1);
+
+            //
+            // Wait for termination of receive thread
+            //
+            rxThread.Join();
+
+            this.FinalizeApp();
+        }
+
+        private static ICanCyclicTXMsg CreateCyclicMsg(uint id, byte[] data, byte dataLength)
+        {
+            ICanCyclicTXMsg cyclicMsg = mCanSched.AddMessage();
+
+            cyclicMsg.Identifier = id;
+            cyclicMsg.CycleTicks = 100;
+            cyclicMsg.DataLength = dataLength;
+            cyclicMsg.SelfReceptionRequest = true;
+
+            for (var i = 0; i < cyclicMsg.DataLength; i++)
+            {
+                cyclicMsg[i] = data[i];
+            }
+            return cyclicMsg;
+        }
+
         //************************************************************************
         /// <summary>
         ///   This method tries to dispose the specified object.
@@ -202,15 +368,21 @@ namespace Ferretto.VW.MAS.CanOpenClient
                     {
                         // the string stops with a zero
                         if (byteArray[i] != 0)
+                        {
                             resultText += (char)byteArray[i];
+                        }
                         else
+                        {
                             break;
+                        }
                         i++;
 
                         // stop also when all bytes are converted to the string
                         // but this should never happen
                         if (i == byteArray.Length)
+                        {
                             break;
+                        }
                     }
                 }
                 else
@@ -227,13 +399,179 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 for (int i = 0; i < tempString.Length; i++)
                 {
                     if (tempString[i] != 0)
+                    {
                         resultText += tempString[i];
+                    }
                     else
+                    {
                         break;
+                    }
                 }
             }
 
             return resultText;
+        }
+
+        //************************************************************************
+        /// <summary>
+        /// Print a CAN message
+        /// </summary>
+        /// <param name="canMessage"></param>
+        //************************************************************************
+        private static void PrintMessage(ICanMessage canMessage)
+        {
+            switch (canMessage.FrameType)
+            {
+                //
+                // show data frames
+                //
+                case CanMsgFrameType.Data:
+                    {
+                        if (!canMessage.RemoteTransmissionRequest)
+                        {
+                            Console.Write("\nTime: {0,10}  ID: {1,3:X}  DLC: {2,1}  Data:",
+                                          canMessage.TimeStamp,
+                                          canMessage.Identifier,
+                                          canMessage.DataLength);
+
+                            for (int index = 0; index < canMessage.DataLength; index++)
+                            {
+                                Console.Write(" {0,2:X}", canMessage[index]);
+                            }
+                        }
+                        else
+                        {
+                            Console.Write("\nTime: {0,10}  ID: {1,3:X}  DLC: {2,1}  Remote Frame",
+                                          canMessage.TimeStamp,
+                                          canMessage.Identifier,
+                                          canMessage.DataLength);
+                        }
+                        break;
+                    }
+
+                //
+                // show informational frames
+                //
+                case CanMsgFrameType.Info:
+                    {
+                        switch ((CanMsgInfoValue)canMessage[0])
+                        {
+                            case CanMsgInfoValue.Start:
+                                Console.Write("\nCAN started...");
+                                break;
+
+                            case CanMsgInfoValue.Stop:
+                                Console.Write("\nCAN stopped...");
+                                break;
+
+                            case CanMsgInfoValue.Reset:
+                                Console.Write("\nCAN reseted...");
+                                break;
+                        }
+                        break;
+                    }
+
+                //
+                // show error frames
+                //
+                case CanMsgFrameType.Error:
+                    {
+                        switch ((CanMsgError)canMessage[0])
+                        {
+                            case CanMsgError.Stuff:
+                                Console.Write("\nstuff error...");
+                                break;
+
+                            case CanMsgError.Form:
+                                Console.Write("\nform error...");
+                                break;
+
+                            case CanMsgError.Acknowledge:
+                                Console.Write("\nacknowledgment error...");
+                                break;
+
+                            case CanMsgError.Bit:
+                                Console.Write("\nbit error...");
+                                break;
+
+                            case CanMsgError.Fdb:
+                                Console.Write("\nfast data bit error...");
+                                break;
+
+                            case CanMsgError.Crc:
+                                Console.Write("\nCRC error...");
+                                break;
+
+                            case CanMsgError.Dlc:
+                                Console.Write("\nData length error...");
+                                break;
+
+                            case CanMsgError.Other:
+                                Console.Write("\nother error...");
+                                break;
+                        }
+                        break;
+                    }
+            }
+        }
+
+        //************************************************************************
+        /// <summary>
+        /// Demonstrate reading messages via MsgReader::ReadMessage() function
+        /// </summary>
+        //************************************************************************
+        private static void ReadMsgsViaReadMessage()
+        {
+            ICanMessage canMessage;
+
+            do
+            {
+                // Wait 50 msec for a message reception
+                if (mRxEvent.WaitOne(50, false))
+                {
+                    // read a CAN message from the receive FIFO
+                    while (mReader.ReadMessage(out canMessage))
+                    {
+                        PrintMessage(canMessage);
+                    }
+                }
+            } while (0 == mMustQuit);
+        }
+
+        //************************************************************************
+        /// <summary>
+        ///   This method is the works as receive thread.
+        /// </summary>
+        //************************************************************************
+        private static void ReceiveThreadFunc()
+        {
+            ReadMsgsViaReadMessage();
+            //
+            // alternative: use ReadMultipleMsgsViaReadMessages();
+            //
+        }
+
+        /// <summary>
+        ///   Transmits a CAN message by SDO.
+        /// </summary>
+        private static void TransmitData(uint id, byte[] data, byte dataLength)
+        {
+            IMessageFactory factory = VciServer.Instance().MsgFactory;
+            ICanMessage canMsg = (ICanMessage)factory.CreateMsg(typeof(ICanMessage));
+
+            canMsg.TimeStamp = 0;
+            canMsg.Identifier = id;
+            canMsg.FrameType = CanMsgFrameType.Data;
+            canMsg.DataLength = dataLength;
+            canMsg.SelfReceptionRequest = true;  // show this message in the console window
+
+            for (Byte i = 0; i < canMsg.DataLength; i++)
+            {
+                canMsg[i] = data[i];
+            }
+
+            // Write the CAN message into the transmit FIFO
+            mWriter.SendMessage(canMsg);
         }
 
         #endregion

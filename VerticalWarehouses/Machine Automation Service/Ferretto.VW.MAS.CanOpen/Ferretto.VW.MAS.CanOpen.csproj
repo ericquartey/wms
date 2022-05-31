@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFrameworks>net471</TargetFrameworks>
+      <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
       <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ixxat.Vci4.StrongName" Version="4.0.436" />
+    <PackageReference Include="Ixxat.Vci4.Core.StrongName" Version="4.0.439" />
   </ItemGroup>
 
 </Project>
