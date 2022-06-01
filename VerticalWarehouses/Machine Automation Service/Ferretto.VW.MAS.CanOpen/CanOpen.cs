@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Ixxat.Vci4;
@@ -11,6 +12,29 @@ namespace Ferretto.VW.MAS.CanOpenClient
     public class CanOpen
     {
         #region Fields
+
+        private static readonly Dictionary<ulong, string> errorStrings = new Dictionary<ulong, string>()
+        {
+            {0, "No error" },
+            {1, "Server error: too many SDO objects" },
+            {2, "Server error: SDO object not found" },
+            {3, "Server error: timeout" },
+            {4, "Server error: SDO read received length 0" },
+            {0x06010000, "Unsupported access to an object. Parameter cannot be written or read" },
+            {0x06020000, "Object does not exist. Parameter does not exist" },
+            {0x06040047, "General internal incompatibility in the device. Data sets differ" },
+            {0x06060000, "Access failed due to a hardware error. EEPROM Error (R/W/checksum)" },
+            {0x06070010, "Data type does not match. Parameter has a different data type" },
+            {0x06070012, "Data type does not match or length of Service telegram too big. Parameter has a different data type or telegram length not correct." },
+            {0x06070013, "Data type does not match or length of Service telegram too small. Parameter has a different data type or telegram length not correct." },
+            {0x06090011, "Subindex does not exist. Data set does not exist" },
+            {0x06090030, "Value range of parameter exceeded. Parameter value too large or too small" },
+            {0x06090031, "Value of parameter written too high. Parameter value too large" },
+            {0x06090032, "Value of parameter written too low. Parameter value too small" },
+            {0x08000020, "Data cannot be transmitted or saved. Invalid value for operation" },
+            {0x08000021, "Data cannot be transferred because of local control. Parameter cannot be written in operation" },
+            {0x08000022, "No data transfer because of present device state. NMT state machine is not in correct state" },
+        };
 
         /// <summary>
         ///   Reference to the CAN message communication channel.
@@ -57,6 +81,14 @@ namespace Ferretto.VW.MAS.CanOpenClient
         /// </summary>
         private static Thread rxThread;
 
+        private Dictionary<byte, ICanCyclicTXMsg> messagePDO;
+
+        private Dictionary<byte, MessageSDO> messageSDO;
+
+        private int readTimeout;
+
+        private AutoResetEvent sdoEvent;
+
         #endregion
 
         #region Constructors
@@ -68,6 +100,15 @@ namespace Ferretto.VW.MAS.CanOpenClient
         #endregion
 
         #region Methods
+
+        public string ErrorString(ulong abortCode)
+        {
+            if (errorStrings.TryGetValue(abortCode, out var errorString))
+            {
+                return errorString;
+            }
+            return $"Error code {abortCode:X08}";
+        }
 
         //************************************************************************
         /// <summary>
@@ -94,6 +135,8 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
             // Dispose VCI device
             DisposeVciObject(mDevice);
+
+            DisposeVciObject(this.sdoEvent);
         }
 
         //************************************************************************
@@ -108,7 +151,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
         ///   A value indicating if the socket initialization succeeded or failed.
         /// </returns>
         //************************************************************************
-        public bool InitSocket(Byte canNo)
+        public bool InitSocket(Byte canNo, IEnumerable<int> nodeList)
         {
             IBalObject bal = null;
             bool succeeded = false;
@@ -144,7 +187,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 mRxEvent = new AutoResetEvent(false);
                 mReader.AssignEvent(mRxEvent);
 
-                // Get a message wrtier object
+                // Get a message writer object
                 mWriter = mCanChn.GetMessageWriter();
 
                 // Initialize message writer
@@ -183,8 +226,21 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 //
                 // start the receive thread
                 //
-                rxThread = new Thread(new ThreadStart(ReceiveThreadFunc));
+                rxThread = new Thread(new ThreadStart(this.ReceiveThreadFunc));
                 rxThread.Start();
+
+                this.messageSDO = new Dictionary<byte, MessageSDO>();
+                this.sdoEvent = new AutoResetEvent(false);
+
+                this.messagePDO = new Dictionary<byte, ICanCyclicTXMsg>();
+                foreach (var node in nodeList)
+                {
+                    // TXPDO
+                    this.messagePDO.Add((byte)node, CreateCyclicMsg(0x180 + (uint)node, 8));
+
+                    // RXPDO
+                    this.messagePDO.Add((byte)node, CreateCyclicMsg(0x200 + (uint)node, 8));
+                }
 
                 succeeded = true;
             }
@@ -204,12 +260,70 @@ namespace Ferretto.VW.MAS.CanOpenClient
             return succeeded;
         }
 
+        /// <summary>
+        /// ReadSDO
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="index"></param>
+        /// <param name="subindex"></param>
+        /// <param name="data"></param>
+        /// <param name="dataLength"></param>
+        /// <returns>true if message is written without errors</returns>
+        public bool ReadSDO(byte node, ushort index, byte subindex, out byte[] data, out int dataLength, out ulong abortCode)
+        {
+            data = null;
+            dataLength = 0;
+            abortCode = 0;
+            // only one SDO at a time
+            if (this.messageSDO != null && this.messageSDO.ContainsKey(node))
+            {
+                abortCode = 1;
+                return false;
+            }
+            var isOk = false;
+            this.sdoEvent.Reset();
+            var msg = new MessageSDO(node, index, subindex, data, 0);
+            this.messageSDO.Add(node, msg);
+
+            TransmitData(msg.Id, msg.TxData, 8);
+
+            if (this.sdoEvent.WaitOne(this.readTimeout))
+            {
+                if (this.messageSDO.TryGetValue(node, out var rxMsg))
+                {
+                    if (rxMsg.DataLength > 0)
+                    {
+                        dataLength = rxMsg.DataLength;
+                        data = new byte[rxMsg.DataLength];
+                        Array.Copy(rxMsg.Data, data, dataLength);
+                        abortCode = rxMsg.AbortCode;
+                        isOk = abortCode == 0;
+                    }
+                    else
+                    {
+                        abortCode = 4;
+                    }
+                }
+                else
+                {
+                    abortCode = 2;
+                }
+            }
+            else
+            {
+                abortCode = 3;
+            }
+            this.sdoEvent.Reset();
+            this.messageSDO.Remove(node);
+            return isOk;
+        }
+
         //************************************************************************
         /// <summary>
         ///   Selects the first CAN adapter.
         /// </summary>
         //************************************************************************
-        public void SelectDevice()
+        public void SelectDevice(int readTimout)
         {
             IVciDeviceManager deviceManager = null;
             IVciDeviceList deviceList = null;
@@ -250,6 +364,8 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 string serialNumberText = GetSerialNumberText(ref serialNumberGuid);
                 Console.Write(" Interface    : " + mDevice.Description + "\n");
                 Console.Write(" Serial number: " + serialNumberText + "\n");
+
+                this.readTimeout = readTimout;
             }
             catch (Exception exc)
             {
@@ -289,7 +405,71 @@ namespace Ferretto.VW.MAS.CanOpenClient
             this.FinalizeApp();
         }
 
-        private static ICanCyclicTXMsg CreateCyclicMsg(uint id, byte[] data, byte dataLength)
+        public bool WritePDO(byte node, byte[] data)
+        {
+            if (this.messagePDO.TryGetValue(node, out var msg))
+            {
+                for (int i = 0; i < data.Length; i++)
+                {
+                    msg[i] = data[i];
+                }
+                if (msg.Status != CanCyclicTXStatus.Busy)
+                {
+                    msg.Start(0);
+                }
+
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// WriteSDO
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="index"></param>
+        /// <param name="subindex"></param>
+        /// <param name="data"></param>
+        /// <param name="dataLength"></param>
+        /// <returns>true if message is written without errors</returns>
+        public bool WriteSDO(byte node, ushort index, byte subindex, byte[] data, ushort dataLength, out ulong abortCode)
+        {
+            abortCode = 0;
+            // only one SDO at a time
+            if (this.messageSDO != null && this.messageSDO.ContainsKey(node))
+            {
+                abortCode = 1;
+                return false;
+            }
+            var isOk = false;
+            this.sdoEvent.Reset();
+            var msg = new MessageSDO(node, index, subindex, data, dataLength);
+            this.messageSDO.Add(node, msg);
+
+            TransmitData(msg.Id, msg.TxData, 8);
+
+            if (this.sdoEvent.WaitOne(this.readTimeout))
+            {
+                if (this.messageSDO.TryGetValue(node, out var txMsg))
+                {
+                    abortCode = txMsg.AbortCode;
+                    isOk = (abortCode == 0) && (txMsg.TransmittedBytes == dataLength);
+                }
+                else
+                {
+                    abortCode = 2;
+                }
+            }
+            else
+            {
+                abortCode = 3;
+            }
+            this.sdoEvent.Reset();
+            this.messageSDO.Remove(node);
+            return isOk;
+        }
+
+        private static ICanCyclicTXMsg CreateCyclicMsg(uint id, byte dataLength)
         {
             ICanCyclicTXMsg cyclicMsg = mCanSched.AddMessage();
 
@@ -298,10 +478,6 @@ namespace Ferretto.VW.MAS.CanOpenClient
             cyclicMsg.DataLength = dataLength;
             cyclicMsg.SelfReceptionRequest = true;
 
-            for (var i = 0; i < cyclicMsg.DataLength; i++)
-            {
-                cyclicMsg[i] = data[i];
-            }
             return cyclicMsg;
         }
 
@@ -332,6 +508,18 @@ namespace Ferretto.VW.MAS.CanOpenClient
                     dispose.Dispose();
                     obj = null;
                 }
+            }
+        }
+
+        private static byte EncodedLength(byte dataLength)
+        {
+            switch (dataLength)
+            {
+                case 1: return 0xF;
+                case 2: return 0xB;
+                case 3: return 0x7;
+                case 4: return 0x3;
+                default: return 0;
             }
         }
 
@@ -515,42 +703,6 @@ namespace Ferretto.VW.MAS.CanOpenClient
             }
         }
 
-        //************************************************************************
-        /// <summary>
-        /// Demonstrate reading messages via MsgReader::ReadMessage() function
-        /// </summary>
-        //************************************************************************
-        private static void ReadMsgsViaReadMessage()
-        {
-            ICanMessage canMessage;
-
-            do
-            {
-                // Wait 50 msec for a message reception
-                if (mRxEvent.WaitOne(50, false))
-                {
-                    // read a CAN message from the receive FIFO
-                    while (mReader.ReadMessage(out canMessage))
-                    {
-                        PrintMessage(canMessage);
-                    }
-                }
-            } while (0 == mMustQuit);
-        }
-
-        //************************************************************************
-        /// <summary>
-        ///   This method is the works as receive thread.
-        /// </summary>
-        //************************************************************************
-        private static void ReceiveThreadFunc()
-        {
-            ReadMsgsViaReadMessage();
-            //
-            // alternative: use ReadMultipleMsgsViaReadMessages();
-            //
-        }
-
         /// <summary>
         ///   Transmits a CAN message by SDO.
         /// </summary>
@@ -572,6 +724,127 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
             // Write the CAN message into the transmit FIFO
             mWriter.SendMessage(canMsg);
+        }
+
+        //************************************************************************
+        /// <summary>
+        /// Demonstrate reading messages via MsgReader::ReadMessage() function
+        /// </summary>
+        //************************************************************************
+        private void ReadMsgsViaReadMessage()
+        {
+            ICanMessage canMessage;
+
+            do
+            {
+                // Wait 50 msec for a message reception
+                if (mRxEvent.WaitOne(50, false))
+                {
+                    // read a CAN message from the receive FIFO
+                    while (mReader.ReadMessage(out canMessage))
+                    {
+                        PrintMessage(canMessage);
+                        if (canMessage.FrameType == CanMsgFrameType.Data
+                            && canMessage.DataLength > 0)
+                        {
+                            var data = new byte[canMessage.DataLength];
+                            for (int i = 0; i < data.Length; i++)
+                            {
+                                data[i] = canMessage[i];
+                            }
+                            if (!this.ReceiveSDO(canMessage.Identifier, data)
+                                && !this.ReceivePDO(canMessage.Identifier, data))
+                            {
+                            }
+                        }
+                    }
+                }
+            } while (0 == mMustQuit);
+        }
+
+        private bool ReceivePDO(uint identifier, byte[] data)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// ReceiveSDO
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="data"></param>
+        /// <returns>true if the received message is an SDO</returns>
+        private bool ReceiveSDO(uint id, byte[] data)
+        {
+            byte node = 0;
+            if (id > 0x580 && id < 0x600)
+            {
+                node = (byte)(id - 0x580);
+                var command = data[0];
+                if (this.messageSDO != null
+                    && this.messageSDO.TryGetValue(node, out var msg))
+                {
+                    if (command == 0x80)
+                    {
+                        msg.AbortCode = data[4];
+                        msg.AbortCode <<= 8 + data[5];
+                        msg.AbortCode <<= 16 + data[6];
+                        this.sdoEvent.Set();
+                        return true;
+                    }
+                    if (msg.CheckSegmented(command, data))
+                    {
+                        if (msg.IsWrite)
+                        {
+                            if (command == 0x41
+                                || command == 0x20
+                                || command == 0x30)
+                            {
+                                msg.ContinueWrite();
+                                TransmitData(msg.Id, msg.TxData, 8);
+                            }
+                        }
+                        else
+                        {
+                            if (command == 0x41
+                                || command == 0
+                                || command == 0x10)
+                            {
+                                msg.ContinueRead();
+                                TransmitData(msg.Id, msg.TxData, 8);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (msg.IsWrite)
+                        {
+                            // SDO message transmitted
+                            msg.TransmittedBytes = msg.DataLength;
+                        }
+                        else
+                        {
+                            // SDO message received
+                            msg.DataLength = msg.ReceivedBytes;
+                        }
+                        this.sdoEvent.Set();
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //************************************************************************
+        /// <summary>
+        ///   This method is the works as receive thread.
+        /// </summary>
+        //************************************************************************
+        private void ReceiveThreadFunc()
+        {
+            this.ReadMsgsViaReadMessage();
+            //
+            // alternative: use ReadMultipleMsgsViaReadMessages();
+            //
         }
 
         #endregion

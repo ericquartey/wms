@@ -86,13 +86,13 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.nodeList = nodeList;
             try
             {
-                this.client.SelectDevice();
+                this.client.SelectDevice(this.readTimeoutMilliseconds);
             }
             catch (Exception ex)
             {
                 throw new ApplicationException($"CanOpen.SelectDevice error {ex.Message}");
             }
-            var isOk = this.client.InitSocket(0);
+            var isOk = this.client.InitSocket(0, nodeList);
             if (!isOk)
             {
                 this.client.FinalizeApp();
@@ -116,13 +116,13 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             try
             {
-                this.client.SelectDevice();
+                this.client.SelectDevice(this.readTimeoutMilliseconds);
             }
             catch (Exception ex)
             {
                 throw new ApplicationException($"CanOpen.SelectDevice error {ex.Message}");
             }
-            var isOk = this.client.InitSocket(0);
+            var isOk = this.client.InitSocket(0, this.nodeList);
             if (!isOk)
             {
                 this.client.FinalizeApp();
@@ -168,7 +168,31 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool SDOMessage(byte nodeId, ushort index, byte subindex, bool isWriteMessage, byte[] data, out byte[] receive, out int length)
         {
-            throw new NotImplementedException();
+            var isOk = false;
+            ulong abortCode = 0;
+            receive = null;
+            length = 0;
+            if (isWriteMessage)
+            {
+                isOk = this.client.WriteSDO(nodeId, index, subindex, data, (ushort)data.Length, out abortCode);
+            }
+            else
+            {
+                isOk = this.client.ReadSDO(nodeId, index, subindex, out receive, out length, out abortCode);
+            }
+            if (isOk)
+            {
+                this.logger.Trace("Node: " + nodeId
+                                + $" object 0x{index:X04}/{subindex}"
+                                + (isWriteMessage ? $" tx {BitConverter.ToString(data)} " : $"  rx {BitConverter.ToString(receive)}"));
+            }
+            else
+            {
+                this.logger.Error("Node: " + nodeId
+                                + $" object 0x[{index:X04}/{subindex}] "
+                                + this.client.ErrorString(abortCode));
+            }
+            return isOk;
         }
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
