@@ -1275,4 +1275,7 @@
   <data name="BayOperationsDescriptionWarning" xml:space="preserve">
     <value>UWAGA: Jeśli dany typ operacji jest wyłączony, listy wysyłane przez system WMS będą odrzucane </value>
   </data>
+  <data name="HelpFBDDescription" xml:space="preserve">
+    <value>Ta operacja pozwala zaktualizować wszystkie pozycje komórek na tylnej stronie, zapisanie może potrwać kilka sekund.</value>
+  </data>
 </root>

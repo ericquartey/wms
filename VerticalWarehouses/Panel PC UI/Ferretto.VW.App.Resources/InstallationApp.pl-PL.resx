@@ -2583,4 +2583,145 @@
   <data name="WrongDataSave" xml:space="preserve">
     <value>Nie można zapisać błędnych danych</value>
   </data>
+  <data name="TestBarcode" xml:space="preserve">
+    <value>Generuj kod kreskowy</value>
+  </data>
+  <data name="ProxySaved" xml:space="preserve">
+    <value>Proxy zapisany</value>
+  </data>
+  <data name="ProxyNotSaved" xml:space="preserve">
+    <value>Proxy niezapisany</value>
+  </data>
+  <data name="ProxyMissing" xml:space="preserve">
+    <value>Brakujące dane</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Zapisywanie nie powiodło się</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Hasło</value>
+  </data>
+  <data name="ProxyPasswordConfirm" xml:space="preserve">
+    <value>Potwierdź hasło</value>
+  </data>
+  <data name="ProxyUser" xml:space="preserve">
+    <value>Użytkonik Proxy</value>
+  </data>
+  <data name="ProxyUrl" xml:space="preserve">
+    <value>URL Proxy</value>
+  </data>
+  <data name="PasswordFailConfirm" xml:space="preserve">
+    <value>Nieprawidłowe hasła</value>
+  </data>
+  <data name="ProfileResolutionCalibration" xml:space="preserve">
+    <value>Kalibracja rozdzielczości kalibracji wysokości</value>
+  </data>
+  <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
+    <value>Kalibracja urządzenia do pomiaru wysokości umożliwia prawidłowe ustawienie wartości za pomocą tej procedury. Procedura działa w kolejnych krokach aż do prawidłowego zakończenia.</value>
+  </data>
+  <data name="VerticalCalibrationProcedureRequired" xml:space="preserve">
+    <value>Wykonaj kalibrację windy</value>
+  </data>
+  <data name="CurrentExit" xml:space="preserve">
+    <value>Bieżące wyjście</value>
+  </data>
+  <data name="ExitError" xml:space="preserve">
+    <value>Błąd wyjścia</value>
+  </data>
+  <data name="CurrentExit1" xml:space="preserve">
+    <value>Bierzące wyjście 1:</value>
+  </data>
+  <data name="CurrentExit2" xml:space="preserve">
+    <value>Bierzące wyjście 2:</value>
+  </data>
+  <data name="CurrentExit3" xml:space="preserve">
+    <value>Bierzące wyjście 3:</value>
+  </data>
+  <data name="CurrentExit4" xml:space="preserve">
+    <value>Bierzące wyjście 4:</value>
+  </data>
+  <data name="CurrentExit5" xml:space="preserve">
+    <value>Bierzące wyjście 5:</value>
+  </data>
+  <data name="CurrentExit6" xml:space="preserve">
+    <value>Bierzące wyjście 6:</value>
+  </data>
+  <data name="CurrentExit7" xml:space="preserve">
+    <value>Bierzące wyjście 7:</value>
+  </data>
+  <data name="CurrentExit8" xml:space="preserve">
+    <value>Bierzące wyjście 8:</value>
+  </data>
+  <data name="ExitError1" xml:space="preserve">
+    <value>Błąd wyjścia 1</value>
+  </data>
+  <data name="ExitError2" xml:space="preserve">
+    <value>Błąd wyjścia 2</value>
+  </data>
+  <data name="ExitError3" xml:space="preserve">
+    <value>Błąd wyjścia 3</value>
+  </data>
+  <data name="ExitError4" xml:space="preserve">
+    <value>Błąd wyjścia 4</value>
+  </data>
+  <data name="ExitError5" xml:space="preserve">
+    <value>Błąd wyjścia 5</value>
+  </data>
+  <data name="ExitError6" xml:space="preserve">
+    <value>Błąd wyjścia 6</value>
+  </data>
+  <data name="ExitError7" xml:space="preserve">
+    <value>Błąd wyjścia 7</value>
+  </data>
+  <data name="ExitError8" xml:space="preserve">
+    <value>Błąd wyjścia 8</value>
+  </data>
+  <data name="DeviceIO1" xml:space="preserve">
+    <value>Urzadzenie IO (zatoka 1)</value>
+  </data>
+  <data name="DeviceIO2" xml:space="preserve">
+    <value>Urzadzenie IO (zatoka 2)</value>
+  </data>
+  <data name="DeviceIO3" xml:space="preserve">
+    <value>Urzadzenie IO (zatoka 3)</value>
+  </data>
+  <data name="ProfileConst" xml:space="preserve">
+    <value>Stałe profilu</value>
+  </data>
+  <data name="ProfileConst0" xml:space="preserve">
+    <value>Profil K0 stały</value>
+  </data>
+  <data name="ProfileConst1" xml:space="preserve">
+    <value>Profil K1 stały</value>
+  </data>
+  <data name="ProfileSamples" xml:space="preserve">
+    <value>Odczyt profilu %</value>
+  </data>
+  <data name="ProfileSample" xml:space="preserve">
+    <value>Odczyt</value>
+  </data>
+  <data name="ProfileCalibrationDescription" xml:space="preserve">
+    <value>Winda i zatoka muszą być puste. Proszę wykonać ręczną kalibrację urządzenia do pomiaru profilu przed tą procedurą.</value>
+  </data>
+  <data name="ConfirmDifferentValue" xml:space="preserve">
+    <value>Wartości są poza zakresem, mimo to potwierdź.</value>
+  </data>
+  <data name="MovementEnabled" xml:space="preserve">
+    <value>Ruch włączony</value>
+  </data>
+  <data name="AutoCompactingIsActive" xml:space="preserve">
+    <value>Kompaktowanie jest aktywne</value>
+  </data>
+  <data name="RemoveSuccessful" xml:space="preserve">
+    <value>Usunięcie pomyślne</value>
+  </data>
+  <data name="FixBackDrawers" xml:space="preserve">
+    <value>Cofnij odsunięcie</value>
+  </data>
+  <data name="FixBackDrawersDescription" xml:space="preserve">
+    <value>Napraw wszystkie tylne pozycje komórek</value>
+  </data>
+  <data name="FixBackDrawersAsk" xml:space="preserve">
+    <value>Zmień położenie wszystkich tylnych komórek o {0}mm?</value>
+  </data>
 </root>

@@ -2097,4 +2097,88 @@
   <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
     <value>Wybór trybu unikalności dla listy</value>
   </data>
+  <data name="ExpirationDate" xml:space="preserve">
+    <value>Termin ważności</value>
+  </data>
+  <data name="Sscc" xml:space="preserve">
+    <value>Sscc</value>
+  </data>
+  <data name="BoxId" xml:space="preserve">
+    <value>Id pojemnika</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Kod klienta</value>
+  </data>
+  <data name="CustomerDescription" xml:space="preserve">
+    <value>Opis klienta</value>
+  </data>
+  <data name="Dock" xml:space="preserve">
+    <value>Dok</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Misja</value>
+  </data>
+  <data name="BoxType" xml:space="preserve">
+    <value>Typ pojemnika</value>
+  </data>
+  <data name="IsCarrefour" xml:space="preserve">
+    <value>Carrefour (modyfikowany WMS)</value>
+  </data>
+  <data name="InventoryGap" xml:space="preserve">
+    <value>Potwierdzona ilość bardzo różni się od stanu magazynowego</value>
+  </data>
+  <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
+    <value>Operacje inwentaryzacyjne na jednostce n.</value>
+  </data>
+  <data name="IdMachineNotDefined" xml:space="preserve">
+    <value>Id maszyna niezidentyfikowana</value>
+  </data>
+  <data name="BoxAssociateShelf" xml:space="preserve">
+    <value>Pojemnik {0} był powiązany z półką {1}</value>
+  </data>
+  <data name="BoxClosed" xml:space="preserve">
+    <value>Pojemnik {0} został zamknięty</value>
+  </data>
+  <data name="StartAssociateBoxToShelf" xml:space="preserve">
+    <value>Początek łączenia pojemnika z półką. Zeskanuj półkę.</value>
+  </data>
+  <data name="StartMarkingFullBox" xml:space="preserve">
+    <value>Rozpocznij znakowanie pełnego pojemnika. Zeskanuj półkę.</value>
+  </data>
+  <data name="StartClosingBox" xml:space="preserve">
+    <value>Zacznij zamykać pojemnik. Zeskanuj półkę.</value>
+  </data>
+  <data name="BoxIsFull" xml:space="preserve">
+    <value>Pojemnik {0} został oznaczony jako pełny</value>
+  </data>
+  <data name="ScanActionCodeFirst" xml:space="preserve">
+    <value>Zeskanuj kod kreskowy akcji, która ma być wykonana jako pierwsza.</value>
+  </data>
+  <data name="ScanShelfFirst" xml:space="preserve">
+    <value>Najpierw zeskanuj kod kreskowy półki.</value>
+  </data>
+  <data name="SelectedBox" xml:space="preserve">
+    <value>Wybrany pojemnik {0}.</value>
+  </data>
+  <data name="NoBoxCode" xml:space="preserve">
+    <value>W kodzie kreskowym nie znaleziono kodu pojemnika</value>
+  </data>
+  <data name="SelectedShelf" xml:space="preserve">
+    <value>Wybrana półka {0}. Zeskanuj pojemnik.</value>
+  </data>
+  <data name="NoShelfCode" xml:space="preserve">
+    <value>W kodzie kreskowym nie znaleziono kodu półki.</value>
+  </data>
+  <data name="ShowBarcodeImage" xml:space="preserve">
+    <value>Pokaż obraz kodu kreskowego</value>
+  </data>
+  <data name="DialogGroupByLot" xml:space="preserve">
+    <value>Uwaga, przedmiot zarządzany w partii, czy nadal potwierdzasz?</value>
+  </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Sprawdź, czy lista jest kontynuowana na innej maszynie</value>
+  </data>
+  <data name="ShowAutoCompactingSetting" xml:space="preserve">
+    <value>Ustawienia automatycznego kompaktowania</value>
+  </data>
 </root>

@@ -147,4 +147,22 @@
   <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
     <value>Wartość nie może być pusta lub zawierać znaków niedrukowalnych.</value>
   </data>
+  <data name="DataEntryError" xml:space="preserve">
+    <value>Błąd wprowadzania danych</value>
+  </data>
+  <data name="IntrusionDetected" xml:space="preserve">
+    <value>Wtargnięcie wykryte przez barierę odczytu wysokości</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Nieprawidłowe czujniki obecności: czujnik zero: {0}, całkowicie na pokładzie: {1}</value>
+  </data>
+  <data name="FindZeroFullElevator" xml:space="preserve">
+    <value>Znalezienie zero nie jest możliwe przy pełnej windzie</value>
+  </data>
+  <data name="HomingShutterOpen" xml:space="preserve">
+    <value>Homing nie jest możliwy przy otwartej zasuwie</value>
+  </data>
+  <data name="FindZeroInvalidBayZero" xml:space="preserve">
+    <value>Znalezienie zero nie jest możliwe: nieprawidłowy czujnik punktu zerowego zatoki</value>
+  </data>
 </root>

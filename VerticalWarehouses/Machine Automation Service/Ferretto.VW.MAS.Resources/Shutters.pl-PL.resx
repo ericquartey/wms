@@ -141,4 +141,10 @@
   <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
     <value>Migawka zatoki {0} nie jest całkowicie zamknięta.</value>
   </data>
+  <data name="TheShutterSpeedIsNotValid" xml:space="preserve">
+    <value>Szybkość migawki nie jest prawidłowa</value>
+  </data>
+  <data name="TheShutterOfBayIsNotCompletelyOpen" xml:space="preserve">
+    <value>Zasuwa zatoki {0} nie jest całkowicie otwarta</value>
+  </data>
 </root>
