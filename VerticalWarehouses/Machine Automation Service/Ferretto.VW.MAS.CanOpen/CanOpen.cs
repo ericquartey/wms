@@ -9,32 +9,11 @@ using Ixxat.Vci4.Bal.Can;
 
 namespace Ferretto.VW.MAS.CanOpenClient
 {
+    public delegate void ImplicitMessageEventHandler(CanOpen sender);
+
     public class CanOpen
     {
         #region Fields
-
-        private static readonly Dictionary<ulong, string> errorStrings = new Dictionary<ulong, string>()
-        {
-            {0, "No error" },
-            {1, "Server error: too many SDO objects" },
-            {2, "Server error: SDO object not found" },
-            {3, "Server error: timeout" },
-            {4, "Server error: SDO read received length 0" },
-            {0x06010000, "Unsupported access to an object. Parameter cannot be written or read" },
-            {0x06020000, "Object does not exist. Parameter does not exist" },
-            {0x06040047, "General internal incompatibility in the device. Data sets differ" },
-            {0x06060000, "Access failed due to a hardware error. EEPROM Error (R/W/checksum)" },
-            {0x06070010, "Data type does not match. Parameter has a different data type" },
-            {0x06070012, "Data type does not match or length of Service telegram too big. Parameter has a different data type or telegram length not correct." },
-            {0x06070013, "Data type does not match or length of Service telegram too small. Parameter has a different data type or telegram length not correct." },
-            {0x06090011, "Subindex does not exist. Data set does not exist" },
-            {0x06090030, "Value range of parameter exceeded. Parameter value too large or too small" },
-            {0x06090031, "Value of parameter written too high. Parameter value too large" },
-            {0x06090032, "Value of parameter written too low. Parameter value too small" },
-            {0x08000020, "Data cannot be transmitted or saved. Invalid value for operation" },
-            {0x08000021, "Data cannot be transferred because of local control. Parameter cannot be written in operation" },
-            {0x08000022, "No data transfer because of present device state. NMT state machine is not in correct state" },
-        };
 
         /// <summary>
         ///   Reference to the CAN message communication channel.
@@ -99,16 +78,29 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
         #endregion
 
-        #region Methods
+        #region Events
 
-        public string ErrorString(ulong abortCode)
-        {
-            if (errorStrings.TryGetValue(abortCode, out var errorString))
-            {
-                return errorString;
-            }
-            return $"Error code {abortCode:X08}";
-        }
+        public event ImplicitMessageEventHandler ImplicitMessageEvent;
+
+        #endregion
+
+        #region Properties
+
+        public ushort EmergencyError { get; set; }
+
+        public ushort EmergencyManufacturerError { get; set; }
+
+        public byte EmergencyNode { get; set; }
+
+        public byte EmergencyRegister { get; set; }
+
+        public bool IsSync { get; set; }
+
+        public byte NMTBootNode { get; private set; }
+
+        #endregion
+
+        #region Methods
 
         //************************************************************************
         /// <summary>
@@ -235,10 +227,10 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 this.messagePDO = new Dictionary<byte, ICanCyclicTXMsg>();
                 foreach (var node in nodeList)
                 {
-                    // TXPDO
+                    // TXPDO (from inverter to PC)
                     this.messagePDO.Add((byte)node, CreateCyclicMsg(0x180 + (uint)node, 8));
 
-                    // RXPDO
+                    // RXPDO (from pc to inverter)
                     this.messagePDO.Add((byte)node, CreateCyclicMsg(0x200 + (uint)node, 8));
                 }
 
@@ -753,7 +745,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                                 data[i] = canMessage[i];
                             }
                             if (!this.ReceiveSDO(canMessage.Identifier, data)
-                                && !this.ReceivePDO(canMessage.Identifier, data))
+                                && !this.ReceiveCanBase(canMessage.Identifier, data))
                             {
                             }
                         }
@@ -762,9 +754,37 @@ namespace Ferretto.VW.MAS.CanOpenClient
             } while (0 == mMustQuit);
         }
 
-        private bool ReceivePDO(uint identifier, byte[] data)
+        private bool ReceiveCanBase(uint id, byte[] data)
         {
-            throw new NotImplementedException();
+            this.EmergencyError = 0;
+            this.EmergencyRegister = 0;
+            this.EmergencyManufacturerError = 0;
+            this.EmergencyNode = 0;
+            this.IsSync = false;
+            this.NMTBootNode = 0;
+            if (id > 0x80 && id < 0x100)
+            {
+                this.EmergencyNode = (byte)(id - 0x80);
+                this.EmergencyError = BitConverter.ToUInt16(data);
+                this.EmergencyRegister = data[2];
+                this.EmergencyManufacturerError = BitConverter.ToUInt16(data, 6);
+                this.ImplicitMessageEvent?.Invoke(this);
+                return true;
+            }
+            if (id == 0x80)
+            {
+                this.IsSync = true;
+                this.ImplicitMessageEvent?.Invoke(this);
+                return true;
+            }
+            if (id > 0x700 && id < 0x780)
+            {
+                // boot up message
+                this.NMTBootNode = (byte)(id - 0x80);
+                this.ImplicitMessageEvent?.Invoke(this);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>

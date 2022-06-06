@@ -108,6 +108,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.m_pdoInData.Add(nodeId, new byte[8]);
             }
             this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
+            this.client.ImplicitMessageEvent += new ImplicitMessageEventHandler(this.ImplicitMessageReceived);
             this.IsConnected = true;
         }
 
@@ -188,9 +189,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             else
             {
-                this.logger.Error("Node: " + nodeId
-                                + $" object 0x[{index:X04}/{subindex}] "
-                                + this.client.ErrorString(abortCode));
+                length = (int)abortCode;
             }
             return isOk;
         }
@@ -220,6 +219,26 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
+        private void ImplicitMessageReceived(CanOpen sender)
+        {
+            //this.receiveBuffer = sender.RawData;
+            var args = new ImplicitReceivedEventArgs();
+            //args.receivedMessage = sender.RawData;
+            args.isEmergency = sender.EmergencyNode > 0;
+            if (args.isEmergency)
+            {
+                args.EmergencyError = sender.EmergencyError;
+                args.EmergencyManufacturerError = sender.EmergencyManufacturerError;
+                args.EmergencyRegister = sender.EmergencyRegister;
+                args.EmergencyNode = sender.EmergencyNode;
+            }
+            args.isSync = sender.IsSync;
+            args.isNMT = sender.NMTBootNode > 0;
+            args.isOk = !args.isEmergency && !sender.IsSync && !args.isNMT;
+            this.receivedImplicitTime = DateTime.UtcNow;
+            this.ImplicitReceivedChanged?.Invoke(this, args);
+        }
+
         private void ImplicitTimer(object state)
         {
             this.implicitTimer?.Change(-1, -1);
@@ -236,11 +255,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 }
             }
             this.implicitTimer?.Change(UdpPollingInterval, UdpPollingInterval);
-        }
-
-        private void PDOCallback(ushort boardhdl, byte que_num, byte canline)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
