@@ -154,9 +154,14 @@ namespace Ferretto.VW.MAS.InverterDriver
         public bool ImplicitMessageWrite(byte[] data, int node)
         {
             var write = false;
-            if (this.m_pdoOutData != null)
+            if (this.m_pdoOutData != null
+                && this.IsConnected)
             {
                 this.m_pdoOutData[node] = data;
+                if (!this.client.WritePDO((byte)node, this.m_pdoOutData[node]))
+                {
+                    throw new ApplicationException($"CanOpen.WritePDO error");
+                }
                 write = true;
             }
             return write;
@@ -221,22 +226,47 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ImplicitMessageReceived(CanOpen sender)
         {
-            //this.receiveBuffer = sender.RawData;
-            var args = new ImplicitReceivedEventArgs();
-            //args.receivedMessage = sender.RawData;
-            args.isEmergency = sender.EmergencyNode > 0;
-            if (args.isEmergency)
+            while (sender.GetPDO(out var node, out var data))
             {
-                args.EmergencyError = sender.EmergencyError;
-                args.EmergencyManufacturerError = sender.EmergencyManufacturerError;
-                args.EmergencyRegister = sender.EmergencyRegister;
-                args.EmergencyNode = sender.EmergencyNode;
+                var args = new ImplicitReceivedEventArgs();
+                args.receivedMessage = data;
+                args.node = node;
+                args.isOk = true;
+                this.receivedImplicitTime = DateTime.UtcNow;
+                this.ImplicitReceivedChanged?.Invoke(this, args);
             }
-            args.isSync = sender.IsSync;
-            args.isNMT = sender.NMTBootNode > 0;
-            args.isOk = !args.isEmergency && !sender.IsSync && !args.isNMT;
-            this.receivedImplicitTime = DateTime.UtcNow;
-            this.ImplicitReceivedChanged?.Invoke(this, args);
+            while (sender.GetEmergency(out var node,
+                out var error,
+                out var register,
+                out var manufacturerError))
+            {
+                var args = new ImplicitReceivedEventArgs();
+                args.isEmergency = node > 0;
+                if (args.isEmergency)
+                {
+                    args.emergencyError = error;
+                    args.emergencyManufacturerError = manufacturerError;
+                    args.emergencyRegister = register;
+                    args.emergencyNode = node;
+                }
+                this.receivedImplicitTime = DateTime.UtcNow;
+                this.ImplicitReceivedChanged?.Invoke(this, args);
+            }
+            while (sender.GetNMT(out var node,
+                out var state,
+                out var isSync))
+            {
+                var args = new ImplicitReceivedEventArgs();
+                args.isNMT = node > 0;
+                args.isSync = isSync;
+                if (args.isNMT)
+                {
+                    args.nMTNode = node;
+                    args.nMTState = state;
+                }
+                this.receivedImplicitTime = DateTime.UtcNow;
+                this.ImplicitReceivedChanged?.Invoke(this, args);
+            }
         }
 
         private void ImplicitTimer(object state)
@@ -244,14 +274,15 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.implicitTimer?.Change(-1, -1);
             foreach (var nodeId in this.nodeList)
             {
-                Int16 result;
-
                 if (this.m_pdoOutData.ContainsKey(nodeId)
                     && this.m_pdoOutData[nodeId] != null
                     && this.m_pdoOutData[nodeId].Length > 0
                     && this.IsConnected)
                 {
-                    throw new NotImplementedException();
+                    if (!this.client.WritePDO((byte)nodeId, this.m_pdoOutData[nodeId]))
+                    {
+                        throw new ApplicationException($"CanOpen.WritePDO error");
+                    }
                 }
             }
             this.implicitTimer?.Change(UdpPollingInterval, UdpPollingInterval);

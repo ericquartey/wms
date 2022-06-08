@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -14,6 +15,18 @@ namespace Ferretto.VW.MAS.CanOpenClient
     public class CanOpen
     {
         #region Fields
+
+        private const int COB_ID_NMT = 0x700;
+
+        private const int COB_ID_RXPDO = 0x200;
+
+        private const int COB_ID_RXSDO = 0x580;
+
+        private const int COB_ID_SYNC = 0x80;
+
+        private const int COB_ID_TXPDO = 0x180;
+
+        private const int COB_MAX_NODE = 0x80;
 
         /// <summary>
         ///   Reference to the CAN message communication channel.
@@ -55,18 +68,41 @@ namespace Ferretto.VW.MAS.CanOpenClient
         /// </summary>
         private static ICanMessageWriter mWriter;
 
+        private static Thread pdoThread;
+
         /// <summary>
         ///   Thread that handles the message reception.
         /// </summary>
         private static Thread rxThread;
 
-        private Dictionary<byte, ICanCyclicTXMsg> messagePDO;
+        private ConcurrentQueue<MessageEmergency> messageEmergency;
 
+        private ConcurrentQueue<MessageNMT> messageNMT;
+
+        /// <summary>
+        /// list of all pdo message variations detected, consumed by GetPDO
+        /// </summary>
+        private ConcurrentQueue<MessagePDO> messagePDO;
+
+        /// <summary>
+        /// list of all sdo messages to be transmitted. Only one by node is allowed
+        /// produced and consumed at runtime
+        /// </summary>
         private Dictionary<byte, MessageSDO> messageSDO;
+
+        /// <summary>
+        /// list of pdo messages to be received. Only one by node is allowed
+        /// must stay alive for all communication
+        /// </summary>
+        private Dictionary<byte, ICanCyclicTXMsg> readPDO;
 
         private int readTimeout;
 
         private AutoResetEvent sdoEvent;
+
+        /// list of pdo messages to be trasmitted. Only one by node is allowed
+        /// must stay alive for all communication
+        private Dictionary<byte, ICanCyclicTXMsg> writePDO;
 
         #endregion
 
@@ -84,21 +120,19 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
         #endregion
 
-        #region Properties
+        //public ushort EmergencyError { get; set; }
 
-        public ushort EmergencyError { get; set; }
+        //public ushort EmergencyManufacturerError { get; set; }
 
-        public ushort EmergencyManufacturerError { get; set; }
+        //public byte EmergencyNode { get; set; }
 
-        public byte EmergencyNode { get; set; }
+        //public byte EmergencyRegister { get; set; }
 
-        public byte EmergencyRegister { get; set; }
+        //public bool IsSync { get; set; }
 
-        public bool IsSync { get; set; }
+        //public byte NMTNode { get; private set; }
 
-        public byte NMTBootNode { get; private set; }
-
-        #endregion
+        //public byte NMTState { get; private set; }
 
         #region Methods
 
@@ -129,6 +163,81 @@ namespace Ferretto.VW.MAS.CanOpenClient
             DisposeVciObject(mDevice);
 
             DisposeVciObject(this.sdoEvent);
+        }
+
+        public bool GetEmergency(out byte node,
+            out ushort error,
+            out byte register,
+            out ushort manufacturerError)
+        {
+            node = 0;
+            error = 0;
+            register = 0;
+            manufacturerError = 0;
+
+            if (this.messageEmergency.IsEmpty)
+            {
+                return false;
+            }
+            if (this.messageEmergency.TryDequeue(out var message))
+            {
+                node = message.Node;
+                error = message.Error;
+                register = message.Register;
+                manufacturerError = message.ManufacturerError;
+                return true;
+            }
+            return false;
+        }
+
+        public bool GetNMT(out byte node,
+            out byte state,
+            out bool isSync)
+        {
+            node = 0;
+            state = 0;
+            isSync = false;
+
+            if (this.messageNMT.IsEmpty)
+            {
+                return false;
+            }
+            if (this.messageNMT.TryDequeue(out var message))
+            {
+                node = message.Node;
+                state = message.State;
+                isSync = message.IsSync;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Reads all the changes to the reading PDO object. call multiple times until it gets empty
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="data"></param>
+        /// <returns>true if data is valid</returns>
+        public bool GetPDO(out byte node, out byte[] data)
+        {
+            node = 0;
+            data = null;
+            if (this.messagePDO.IsEmpty)
+            {
+                return false;
+            }
+            if (this.messagePDO.TryDequeue(out var message))
+            {
+                node = message.Node;
+                data = message.Data;
+                return true;
+            }
+            return false;
+        }
+
+        public void Guarding(byte node)
+        {
+            TransmitData((uint)COB_ID_NMT + node, null, 0);
         }
 
         //************************************************************************
@@ -224,14 +333,24 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 this.messageSDO = new Dictionary<byte, MessageSDO>();
                 this.sdoEvent = new AutoResetEvent(false);
 
-                this.messagePDO = new Dictionary<byte, ICanCyclicTXMsg>();
+                this.writePDO = new Dictionary<byte, ICanCyclicTXMsg>();
+                this.readPDO = new Dictionary<byte, ICanCyclicTXMsg>();
                 foreach (var node in nodeList)
                 {
                     // TXPDO (from inverter to PC)
-                    this.messagePDO.Add((byte)node, CreateCyclicMsg(0x180 + (uint)node, 8));
+                    this.readPDO.Add((byte)node, CreateCyclicMsg(COB_ID_TXPDO + (uint)node, 8));
 
                     // RXPDO (from pc to inverter)
-                    this.messagePDO.Add((byte)node, CreateCyclicMsg(0x200 + (uint)node, 8));
+                    this.writePDO.Add((byte)node, CreateCyclicMsg(COB_ID_RXPDO + (uint)node, 8));
+                }
+
+                this.messageEmergency = new ConcurrentQueue<MessageEmergency>();
+                this.messageNMT = new ConcurrentQueue<MessageNMT>();
+                if (this.readPDO.Count > 0)
+                {
+                    this.messagePDO = new ConcurrentQueue<MessagePDO>();
+                    pdoThread = new Thread(new ThreadStart(this.PdoThreadFunc));
+                    pdoThread.Start();
                 }
 
                 succeeded = true;
@@ -394,12 +513,24 @@ namespace Ferretto.VW.MAS.CanOpenClient
             //
             rxThread.Join();
 
+            pdoThread.Join();
+
+            mCanCtl.StopLine();
+
             this.FinalizeApp();
+        }
+
+        /// <summary>
+        /// Sync: send SYNC message
+        /// </summary>
+        public void Sync()
+        {
+            TransmitData(COB_ID_SYNC, null, 0);
         }
 
         public bool WritePDO(byte node, byte[] data)
         {
-            if (this.messagePDO.TryGetValue(node, out var msg))
+            if (this.writePDO.TryGetValue(node, out var msg))
             {
                 for (int i = 0; i < data.Length; i++)
                 {
@@ -500,18 +631,6 @@ namespace Ferretto.VW.MAS.CanOpenClient
                     dispose.Dispose();
                     obj = null;
                 }
-            }
-        }
-
-        private static byte EncodedLength(byte dataLength)
-        {
-            switch (dataLength)
-            {
-                case 1: return 0xF;
-                case 2: return 0xB;
-                case 3: return 0x7;
-                case 4: return 0x3;
-                default: return 0;
             }
         }
 
@@ -718,6 +837,48 @@ namespace Ferretto.VW.MAS.CanOpenClient
             mWriter.SendMessage(canMsg);
         }
 
+        private void PdoThreadFunc()
+        {
+            if (this.readPDO == null || this.readPDO.Count == 0)
+            {
+                throw new ApplicationException("missing readPDO");
+            }
+            var savePDO = new Dictionary<byte, ICanCyclicTXMsg>(this.readPDO);
+            do
+            {
+                var isChanged = false;
+                foreach (var pdo in this.readPDO)
+                {
+                    var node = pdo.Key;
+                    var pdoMsg = pdo.Value;
+                    if (savePDO.TryGetValue(node, out var tmp))
+                    {
+                        var isChangedNode = false;
+                        var pdoData = new byte[tmp.DataLength];
+                        for (int i = 0; i < pdoMsg.DataLength; i++)
+                        {
+                            if (pdoMsg[i] != tmp[i])
+                            {
+                                tmp[i] = pdoMsg[i];
+                                isChangedNode = true;
+                            }
+                            pdoData[i] = pdoMsg[i];
+                        }
+                        if (isChangedNode)
+                        {
+                            isChanged = true;
+                            this.messagePDO.Enqueue(new MessagePDO(node, pdoData));
+                        }
+                    }
+                }
+                if (isChanged)
+                {
+                    this.ImplicitMessageEvent?.Invoke(this);
+                }
+                Thread.Sleep(10);
+            } while (0 == mMustQuit);
+        }
+
         //************************************************************************
         /// <summary>
         /// Demonstrate reading messages via MsgReader::ReadMessage() function
@@ -756,31 +917,27 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
         private bool ReceiveCanBase(uint id, byte[] data)
         {
-            this.EmergencyError = 0;
-            this.EmergencyRegister = 0;
-            this.EmergencyManufacturerError = 0;
-            this.EmergencyNode = 0;
-            this.IsSync = false;
-            this.NMTBootNode = 0;
-            if (id > 0x80 && id < 0x100)
+            if (id > COB_ID_SYNC && id < (COB_ID_SYNC + COB_MAX_NODE))
             {
-                this.EmergencyNode = (byte)(id - 0x80);
-                this.EmergencyError = BitConverter.ToUInt16(data);
-                this.EmergencyRegister = data[2];
-                this.EmergencyManufacturerError = BitConverter.ToUInt16(data, 6);
+                this.messageEmergency.Enqueue(new MessageEmergency(
+                    node: (byte)(id - COB_ID_SYNC),
+                    error: BitConverter.ToUInt16(data),
+                    register: data[2],
+                    manufacturerError: BitConverter.ToUInt16(data, 6)));
                 this.ImplicitMessageEvent?.Invoke(this);
                 return true;
             }
-            if (id == 0x80)
+            if (id == COB_ID_SYNC)
             {
-                this.IsSync = true;
+                this.messageNMT.Enqueue(new MessageNMT(true));
                 this.ImplicitMessageEvent?.Invoke(this);
                 return true;
             }
-            if (id > 0x700 && id < 0x780)
+            if (id > COB_ID_NMT && id < (COB_ID_NMT + COB_MAX_NODE))
             {
-                // boot up message
-                this.NMTBootNode = (byte)(id - 0x80);
+                this.messageNMT.Enqueue(new MessageNMT(
+                    node: (byte)(id - COB_ID_NMT),
+                    state: (byte)(data.Length > 0 ? (data[0] & 0x7F) : 0)));
                 this.ImplicitMessageEvent?.Invoke(this);
                 return true;
             }
@@ -796,9 +953,9 @@ namespace Ferretto.VW.MAS.CanOpenClient
         private bool ReceiveSDO(uint id, byte[] data)
         {
             byte node = 0;
-            if (id > 0x580 && id < 0x600)
+            if (id > COB_ID_RXSDO && id < (COB_ID_RXSDO + COB_MAX_NODE))
             {
-                node = (byte)(id - 0x580);
+                node = (byte)(id - COB_ID_RXSDO);
                 var command = data[0];
                 if (this.messageSDO != null
                     && this.messageSDO.TryGetValue(node, out var msg))

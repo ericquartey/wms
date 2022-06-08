@@ -4,13 +4,13 @@
     {
         #region Fields
 
-        public ushort EmergencyError;
+        public ushort emergencyError;
 
-        public ushort EmergencyManufacturerError;
+        public ushort emergencyManufacturerError;
 
-        public byte EmergencyNode;
+        public byte emergencyNode;
 
-        public byte EmergencyRegister;
+        public byte emergencyRegister;
 
         public bool isEmergency;
 
@@ -19,6 +19,10 @@
         public bool isOk;
 
         public bool isSync;
+
+        public byte nMTNode;
+
+        public byte nMTState;
 
         public byte node;
 

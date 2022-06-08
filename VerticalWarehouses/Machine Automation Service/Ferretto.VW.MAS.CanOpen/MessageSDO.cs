@@ -6,6 +6,12 @@ namespace Ferretto.VW.MAS.CanOpenClient
 {
     public class MessageSDO
     {
+        #region Fields
+
+        private const int COB_ID_TXSDO = 0x600;
+
+        #endregion
+
         #region Constructors
 
         public MessageSDO()
@@ -23,7 +29,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 this.Data = new byte[dataLength];
                 Array.Copy(data, 0, this.Data, 0, data.Length);
             }
-            this.Id = (uint)(node + 0x600);
+            this.Id = (uint)(node + COB_ID_TXSDO);
             this.TxData = new byte[8];
             for (var i = 0; i < 8; i++)
             {

@@ -196,29 +196,29 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         else if (e.isEmergency)
                         {
-                            var error = e.EmergencyManufacturerError;
-                            this.Logger.LogError($"Received error {CanMessage.ErrorString(e.EmergencyError)} register {e.EmergencyRegister} node {e.EmergencyNode} inverter error {error:X4}{this.inverterFaultCodes.GetErrorByCode(error)}");
+                            var error = e.emergencyManufacturerError;
+                            this.Logger.LogError($"Received error {CanMessage.ErrorString(e.emergencyError)} register {e.emergencyRegister} node {e.emergencyNode} inverter error {error:X4}{this.inverterFaultCodes.GetErrorByCode(error)}");
                             if (error > 0
                                 && error != 0x1454
                                 )
                             {
                                 // Retrieve the bay number related to the inverter index
                                 var baysProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                                var bayNumber = baysProvider.GetByInverterIndex((InverterIndex)e.EmergencyNode);
+                                var bayNumber = baysProvider.GetByInverterIndex((InverterIndex)e.emergencyNode);
 
                                 // Adds error related to the InverterFaultDetected
                                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                                var idx = e.EmergencyNode + 1; // it has the systemIndex on base 1
-                                errorsProvider.RecordNew(idx, error, bayNumber, CanMessage.ErrorString(e.EmergencyError) + this.inverterFaultCodes.GetErrorByCode(error));
+                                var idx = e.emergencyNode + 1; // it has the systemIndex on base 1
+                                errorsProvider.RecordNew(idx, error, bayNumber, CanMessage.ErrorString(e.emergencyError) + this.inverterFaultCodes.GetErrorByCode(error));
                             }
                         }
                         else if (e.isSync)
                         {
-                            this.Logger.LogError($"Received SYNC Message: {BitConverter.ToString(e.receivedMessage)}");
+                            this.Logger.LogDebug($"Received SYNC Message");
                         }
                         else if (e.isNMT)
                         {
-                            this.Logger.LogError($"Received NMT Message: {BitConverter.ToString(e.receivedMessage)}");
+                            this.Logger.LogDebug($"Received NMT Message: node {e.nMTNode} state {e.nMTState}");
                         }
                     }
                 }
