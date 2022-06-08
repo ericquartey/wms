@@ -568,7 +568,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
                     throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
-
                 if (bay != null && bay.IsExternal)
                 {
                     var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
