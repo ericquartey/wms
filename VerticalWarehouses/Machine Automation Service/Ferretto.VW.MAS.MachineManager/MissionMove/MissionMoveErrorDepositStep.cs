@@ -482,6 +482,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
 
+                if (bay != null && bay.IsExternal)
+                {
+                    var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
+                    if (result != MachineErrorCode.NoError)
+                    {
+                        this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                        var error = this.ErrorsProvider.RecordNew(result, bay.Number);
+                        throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                }
+
                 this.Logger.LogInformation($"{this.GetType().Name}: Manual Horizontal forward positioning start Mission:Id={this.Mission.Id}");
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, true, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
                 {
@@ -546,6 +557,29 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             else
             {
+                var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+                var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+                if (bay != null &&
+                  bay.Carousel != null &&
+                  !machineResourcesProvider.IsSensorZeroOnBay(this.Mission.TargetBay) &&
+                  this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                {
+                    this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
+                    throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
+                }
+
+                if (bay != null && bay.IsExternal)
+                {
+                    var result = this.LoadingUnitMovementProvider.CheckBaySensors(bay, this.Mission.LoadUnitDestination, deposit: true);
+                    if (result != MachineErrorCode.NoError)
+                    {
+                        this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                        var error = this.ErrorsProvider.RecordNew(result, bay.Number);
+                        throw new StateMachineException(error.Reason, this.Mission.TargetBay, MessageActor.MachineManager);
+                    }
+                }
+
                 var isLoaded = (this.Mission.RestoreStep == MissionStep.DepositUnit);
                 if (this.LoadingUnitMovementProvider.MoveManualLoadingUnitForward(this.Mission.Direction, isLoaded, false, this.Mission.LoadUnitId, null, MessageActor.MachineManager, this.Mission.TargetBay))
                 {

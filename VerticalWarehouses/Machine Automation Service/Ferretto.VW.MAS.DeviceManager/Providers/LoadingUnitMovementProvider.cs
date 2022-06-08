@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     var isUpper = loadingUnitPosition == LoadingUnitLocation.InternalBay1Up || loadingUnitPosition == LoadingUnitLocation.InternalBay2Up || loadingUnitPosition == LoadingUnitLocation.InternalBay3Up;
                     if (deposit)
                     {
-                        return this.externalBayProvider.CanElevatorDeposit(bay.Number, isUpper);
+                        return this.externalBayProvider.CanElevatorDepositExternal(bay.Number, isUpper);
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (deposit)
                     {
-                        return this.externalBayProvider.CanElevatorDeposit(bay.Number, false);
+                        return this.externalBayProvider.CanElevatorDepositExternal(bay.Number, false);
                     }
                     else
                     {
