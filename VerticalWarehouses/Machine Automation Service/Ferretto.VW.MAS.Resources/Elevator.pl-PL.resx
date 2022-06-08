@@ -177,4 +177,10 @@
   <data name="VerticalCompensationDistanceOutOfBounds" xml:space="preserve">
     <value>Odległość kompensacji pionowej jest poza zakresem</value>
   </data>
+  <data name="TheHomingCreepSpeedCannotBeZero" xml:space="preserve">
+    <value>Prędkość homing creep nie może być równe zero</value>
+  </data>
+  <data name="TheHorizontalCalibrateSpeedCannotBeZero" xml:space="preserve">
+    <value>Prędkość kalibracji poziomej nie może być równe zero</value>
+  </data>
 </root>

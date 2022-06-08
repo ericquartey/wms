@@ -126,4 +126,16 @@
   <data name="ProcedureCannotBeStartedBecauseOfTheCurrentSetupStatus" xml:space="preserve">
     <value>Procedura nie może zostać rozpoczęta z powodu aktualnego stanu ustawienia.</value>
   </data>
+  <data name="ProfileResolutionMissingSignal" xml:space="preserve">
+    <value>Krok 1 - Brak skalibrowanego sygnału</value>
+  </data>
+  <data name="ProfileResolutionTooHigh" xml:space="preserve">
+    <value>Krok 0 - Profil zbyt wysoki na początku</value>
+  </data>
+  <data name="ProfileResolutionTooLow" xml:space="preserve">
+    <value>Krok 2 - Profil zbyt niski na końcu</value>
+  </data>
+  <data name="ProfileResolutionConstantsOutOfRange" xml:space="preserve">
+    <value>Stałe profilu są poza zakresem</value>
+  </data>
 </root>

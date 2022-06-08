@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,9 +29,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BarcodeRule>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<BarcodeRule>>> GetAllAsync([FromServices] IWmsSettingsProvider wmsSettingsProvider)
         {
-            return this.Ok(await this.barcodesWmsWebService.GetAllAsync());
+            if (wmsSettingsProvider is null)
+            {
+                throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            }
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                return this.Ok(await this.barcodesWmsWebService.GetAllAsync());
+            }
+            else
+            {
+                throw new ApplicationException("WMS disabled");
+            }
         }
 
         #endregion

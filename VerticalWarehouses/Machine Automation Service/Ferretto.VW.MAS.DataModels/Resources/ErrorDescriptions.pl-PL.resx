@@ -462,4 +462,10 @@
   <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
     <value>Błąd bazowania osi poziomej windy</value>
   </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Błąd włączonego zasilania</value>
+  </data>
+  <data name="ProfileResolutionFail" xml:space="preserve">
+    <value>Rozdzielczość profilu nieukończona</value>
+  </data>
 </root>
