@@ -399,6 +399,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
+            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
@@ -422,6 +423,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             await base.OnAppearedAsync();
+            if (this.IsQuantityLimited && this.MissionOperation != null)
+            {
+                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+            }
 
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
@@ -546,6 +551,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value != this.MissionRequestedQuantity
                     &&
                     this.InputQuantity.Value <= this.AvailableQuantity
+                    &&
+                    (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity)
                     &&
                     !this.CanPickBox
                     && !(this.IsDoubleConfirmBarcodePick && string.IsNullOrEmpty(this.barcodeOk));

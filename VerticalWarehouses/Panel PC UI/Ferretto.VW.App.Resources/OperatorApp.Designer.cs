@@ -2816,6 +2816,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Limit quantity in pick and put.
+        /// </summary>
+        public static string IsQuantityLimited {
+            get {
+                return ResourceManager.GetString("IsQuantityLimited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Request confirm for last operation on load unit.
         /// </summary>
         public static string IsRequestConfirmForLastOperationOnLoadingUnit {

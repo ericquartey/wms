@@ -26,7 +26,7 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.45 rispetto la 1.0.44
-- 
+- Aggiunto parametro "Quantità limitata in prelievo e deposito"
 
 ## Bug Risolti
 - Aggiornate traduzioni polacche

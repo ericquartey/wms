@@ -2585,4 +2585,7 @@
   <data name="ShowAutoCompactingSetting" xml:space="preserve">
     <value>Auto compacting settings</value>
   </data>
+  <data name="IsQuantityLimited" xml:space="preserve">
+    <value>Limit quantity in pick and put</value>
+  </data>
 </root>

@@ -5153,6 +5153,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsOrderList", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOrderList { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsQuantityLimited", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsQuantityLimited { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
     

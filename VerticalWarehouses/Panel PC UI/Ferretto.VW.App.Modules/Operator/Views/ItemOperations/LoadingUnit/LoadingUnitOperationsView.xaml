@@ -189,8 +189,7 @@
                                Increment="{Binding QuantityIncrement}"
                                IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{Binding InputQuantityInfo}"
-                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                               MinValue="0" />
+                               Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
 
             <Grid Grid.Column="1">
               <Grid.RowDefinitions>

@@ -262,6 +262,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value >= 0 &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
+                    (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity) &&
                     !this.IsOperationCanceled;
 
                 if (this.confirmPartialOperation && this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
@@ -312,6 +313,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                this.InputQuantity.HasValue
                &&
                this.InputQuantity.Value != this.MissionRequestedQuantity
+               &&
+               (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity)
                &&
                !this.canPutBox;
         }
@@ -499,6 +502,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
+            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
@@ -515,6 +519,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             await base.OnAppearedAsync();
 
+            if (this.IsQuantityLimited && this.MissionOperation != null)
+            {
+                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+            }
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
@@ -603,6 +611,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.HasValue
                     &&
                     this.InputQuantity.Value >= 0
+                    &&
+                    (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity)
                     &&
                     !this.CanPutBox;
             }
