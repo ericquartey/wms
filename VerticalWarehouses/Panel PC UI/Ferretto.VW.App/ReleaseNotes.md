@@ -31,6 +31,7 @@
 ## Bug Risolti
 - Aggiornate traduzioni polacche
 - Corretto ripristino in BED e BES se si sposta la slitta in manuale
+- Corretto stato di manutenzione se scadono i cicli
 
 ## Compatibile con adapter 0.4.33
 ***
