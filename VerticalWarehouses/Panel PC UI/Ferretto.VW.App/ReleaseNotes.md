@@ -33,7 +33,7 @@
 - Corretto ripristino in BED e BES se si sposta la slitta in manuale
 - Corretto stato di manutenzione se scadono i cicli
 
-## Compatibile con adapter 0.4.33
+## Compatibile con adapter 0.4.33 e 0.4.34
 ***
 
 [Versione 1.0.44](#id1044)

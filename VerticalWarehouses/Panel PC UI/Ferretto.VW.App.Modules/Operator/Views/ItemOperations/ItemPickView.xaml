@@ -525,6 +525,7 @@
 
         <controls:PpcButton Grid.Row="5"
                             Height="50"
+                            Width="110"
                             Margin="15,8,15,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
