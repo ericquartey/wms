@@ -163,7 +163,12 @@
                             IsChecked="{Binding IsCarrefour, Mode=TwoWay}"
                             LabelText="{res:Loc OperatorApp.IsCarrefour}" />
 
-      <controls:PpcTextBox Margin="0,10,15,0"
+            <controls:PpcCheckBox Margin="0,10,15,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding IsQuantityLimited, Mode=TwoWay}"
+                            LabelText="{res:Loc OperatorApp.IsQuantityLimited}" />
+
+            <controls:PpcTextBox Margin="0,10,15,0"
                            VerticalAlignment="Center"
                            InputText="{Binding ItemUniqueIdLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            LabelText="{res:Loc OperatorApp.ItemUniqueIdLength}" />

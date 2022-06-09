@@ -601,4 +601,10 @@
   <data name="Machine_TouchHelper" xml:space="preserve">
     <value>Pomocnik dotykowy</value>
   </data>
+  <data name="Bay_ProfileConst0" xml:space="preserve">
+    <value>Profil K0 stały</value>
+  </data>
+  <data name="Bay_ProfileConst1" xml:space="preserve">
+    <value>Profil K1 stały</value>
+  </data>
 </root>

@@ -454,8 +454,7 @@
                          Increment="{Binding QuantityIncrement}"
                          IsEnabled="{Binding CanInputQuantity}"
                          LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
-                         Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                         MinValue="0" />
+                         Mask="{Binding QuantityTolerance, StringFormat=F{0}}"/>
 
       <controls:PpcButton Grid.Row="4"
                           Width="110"
@@ -526,6 +525,7 @@
 
         <controls:PpcButton Grid.Row="5"
                             Height="50"
+                            Width="110"
                             Margin="15,8,15,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"

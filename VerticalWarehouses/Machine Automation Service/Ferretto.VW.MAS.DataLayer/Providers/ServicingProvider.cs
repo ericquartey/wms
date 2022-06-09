@@ -750,6 +750,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         if (ins.InstructionStatus == MachineServiceStatus.Expired)
                         {
                             this.logger.LogWarning($"{Resources.General.MaintenanceStateExpired}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
+                            if (service.ServiceStatus == MachineServiceStatus.Valid
+                                || service.ServiceStatus == MachineServiceStatus.Expiring)
+                            {
+                                service.ServiceStatus = MachineServiceStatus.Expired;
+                                this.dataContext.ServicingInfo.Update(service);
+                                this.logger.LogWarning(Resources.General.MaintenanceStateExpired);
+                            }
                         }
 
                         if (ins.InstructionStatus == MachineServiceStatus.Expiring && ins.Definition.MaxDays.HasValue)
@@ -775,6 +782,13 @@ namespace Ferretto.VW.MAS.DataLayer
                                 this.dataContext.Instructions.Update(ins);
                                 this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                                 this.logger.LogWarning($"{Resources.General.MaintenanceStateExpired}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
+                                if (service.ServiceStatus == MachineServiceStatus.Valid
+                                    || service.ServiceStatus == MachineServiceStatus.Expiring)
+                                {
+                                    service.ServiceStatus = ins.InstructionStatus;
+                                    this.dataContext.ServicingInfo.Update(service);
+                                    this.logger.LogWarning(Resources.General.MaintenanceStateExpired);
+                                }
                             }
                         }
 
@@ -812,6 +826,12 @@ namespace Ferretto.VW.MAS.DataLayer
                                 this.dataContext.Instructions.Update(ins);
                                 this.ScheduleNotification(service, ins.Id, ins.InstructionStatus);
                                 this.logger.LogWarning($"{Resources.General.MaintenanceStateExpiring}: {ins.Definition.Description}, {ins.Definition.CounterName} {ins.DoubleCounter}, days {ins.IntCounter}");
+                                if (service.ServiceStatus == MachineServiceStatus.Valid)
+                                {
+                                    service.ServiceStatus = ins.InstructionStatus;
+                                    this.dataContext.ServicingInfo.Update(service);
+                                    this.logger.LogWarning(Resources.General.MaintenanceStateExpiring);
+                                }
                             }
                         }
                     }

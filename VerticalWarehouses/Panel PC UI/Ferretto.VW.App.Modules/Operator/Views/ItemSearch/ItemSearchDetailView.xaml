@@ -242,8 +242,7 @@
                            EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            Increment="{Binding Item.PickIncrement}"
                            LabelText="{Binding ItemTxt, TargetNullValue={x:Static Resources:OperatorApp.RequestedQuantityBase}}"
-                           Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
-                           MinValue="0" />
+                           Mask="{Binding Item.PickTolerance, StringFormat=F{0}}" />
 
         <StackPanel Grid.Row="3"
                     VerticalAlignment="Bottom"

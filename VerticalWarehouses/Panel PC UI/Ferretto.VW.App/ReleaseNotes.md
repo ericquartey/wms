@@ -25,17 +25,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.44 rispetto la 1.0.43
-- Ferretto NuGet package 0.16.42.
-- Aggiunto userName in GetItemLists
-- Aggiunta descrizione cassetti da EjLog
+## Nuove Funzionalità 1.0.45 rispetto la 1.0.44
+- Aggiunto parametro "Quantità limitata in prelievo e deposito"
 
 ## Bug Risolti
-- Manutenzioni con istruzioni duplicate
-- Notifica di manutenzioni in scadenza dopo una conferma servizio
+- Aggiornate traduzioni polacche
+- Corretto ripristino in BED e BES se si sposta la slitta in manuale
+- Corretto stato di manutenzione se scadono i cicli
 
-## Compatibile con adapter 0.4.33
+## Compatibile con adapter 0.4.33 e 0.4.34
 ***
+
+[Versione 1.0.44](#id1044)
 
 [Versione 1.0.43](#id1043)
 
@@ -124,6 +125,19 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1044"></a>
+## Nuove Funzionalità 1.0.44 rispetto la 1.0.43
+- Ferretto NuGet package 0.16.42.
+- Aggiunto userName in GetItemLists
+- Aggiunta descrizione cassetti da EjLog
+
+## Bug Risolti
+- Manutenzioni con istruzioni duplicate
+- Notifica di manutenzioni in scadenza dopo una conferma servizio
+
+## Compatibile con adapter 0.4.33
 ***
 
 <a id="id1043"></a>

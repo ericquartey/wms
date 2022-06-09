@@ -2184,4 +2184,7 @@
   <data name="ShowAutoCompactingSetting" xml:space="preserve">
     <value>Impostazioni compattazione automatica</value>
   </data>
+  <data name="IsQuantityLimited" xml:space="preserve">
+    <value>Quantità limitata in prelievo e deposito</value>
+  </data>
 </root>
