@@ -243,7 +243,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (bResult && !isItemDeleted)
+                if (bResult)
                 {
                     // Go back to the Pick view
                     this.NavigationService.GoBack();

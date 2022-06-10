@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.CommonUtils.Messages.Data;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -224,6 +225,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var mission = this.missionsDataProvider.CreateRecallMission(loadingUnitId, sourceBayNumber, missionType);
 
                 this.NotifyNewMachineMissionAvailable(mission.TargetBay);
+                this.NotifyAssignedMissionChanged(mission.TargetBay, mission.Id);
             }
             else
             {
@@ -344,6 +346,27 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
             }
             return false;
+        }
+
+        private void NotifyAssignedMissionChanged(
+                                            BayNumber bayNumber,
+            int? missionId)
+        {
+            var data = new AssignedMissionChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission assigned to bay {bayNumber} has changed.",
+                MessageActor.WebApi,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionChanged,
+                bayNumber);
+
+            this.notificationEvent.Publish(notificationMessage);
         }
 
         private void NotifyNewMachineMissionAvailable(BayNumber bay)
