@@ -32,6 +32,7 @@
 - Aggiornate traduzioni polacche
 - Corretto ripristino in BED e BES se si sposta la slitta in manuale
 - Corretto stato di manutenzione se scadono i cicli
+- Barra alfanumerica: corretto cambio scomparto con stesso articolo
 
 ## Compatibile con adapter 0.4.33 e 0.4.34
 ***

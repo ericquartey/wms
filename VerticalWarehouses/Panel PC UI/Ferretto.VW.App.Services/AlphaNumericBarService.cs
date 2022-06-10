@@ -275,7 +275,7 @@ namespace Ferretto.VW.App.Services
                         var message = this.GetMessageFromMissionChangedEventArg(e);
 
                         if (this.alphaNumericBarDriver.SelectedMessage != message
-                            //&& this.alphaNumericBarDriver.SelectedPosition != compartmentSelected.XPosition
+                            || this.alphaNumericBarDriver.SelectedPosition != compartmentSelected.XPosition
                             )
                         {
                             this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
@@ -302,7 +302,6 @@ namespace Ferretto.VW.App.Services
                                 {
                                     await this.alphaNumericBarDriver.SetAndWriteMessageAsync(message, offsetMessage, false);
                                 }
-                                this.alphaNumericBarDriver.SelectedMessage = message;
                             }
                         }
 
