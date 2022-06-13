@@ -514,10 +514,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.FullCompartment = false;
             this.EmptyCompartment = false;
 
-            // Setup only reserved for Tendaggi Paradiso
-            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
-
             await base.OnAppearedAsync();
+
+            // Setup only reserved for Tendaggi Paradiso
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation?.FullyRequested != null && this.MissionOperation?.FullyRequested.Value == true;
+
 
             if (this.IsQuantityLimited && this.MissionOperation != null)
             {

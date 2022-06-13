@@ -2254,7 +2254,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     CanInputQuantity = this.CanInputQuantity,
                     QuantityIncrement = this.QuantityIncrement,
                     QuantityTolerance = this.QuantityTolerance,
-                    MeasureUnitTxt = string.Empty,
+                    MeasureUnitTxt = string.Format(Localized.Get("OperatorApp.PickedQuantity"), ""),
                     Barcode = barcode,
                     BarcodeLength = this.BarcodeLenght,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,

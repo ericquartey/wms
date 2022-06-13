@@ -199,7 +199,20 @@ namespace Ferretto.VW.App.Modules.Operator
                 ||
                 activeViewModelName is Utils.Modules.Operator.ItemOperations.LOADING_UNIT_INFO
                 ||
-                activeViewModelName is Utils.Modules.Operator.ItemOperations.ITEMADD;
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.ITEMADD
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.SIGNALLINGDEFECT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.SOCKETLINKOPERATION
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.ADD_DRAPERYITEM_INTO_LOADINGUNIT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.DRAPERYCONFIRM
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.WEIGHT
+                ||
+                activeViewModelName is Utils.Modules.Operator.ItemOperations.ADDITEMINTOLOADINGUNIT
+                ;
         }
 
         private bool IsOperatorViewModel(string activeViewModelName)

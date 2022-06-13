@@ -420,7 +420,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Compartments = null;
             this.SelectedCompartment = null;
 
-            this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+            this.MeasureUnitTxt = string.Format(Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             await base.OnAppearedAsync();
             if (this.IsQuantityLimited && this.MissionOperation != null)
@@ -436,7 +436,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsCurrentDraperyItem;
 
             // Setup only reserved for Tendaggi Paradiso
-            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation?.FullyRequested != null && this.MissionOperation.FullyRequested.Value;
 
             this.barcodeItem = string.Empty;
             this.toteBarcode = string.Empty;

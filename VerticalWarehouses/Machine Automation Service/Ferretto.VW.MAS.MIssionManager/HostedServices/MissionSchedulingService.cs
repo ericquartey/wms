@@ -1469,6 +1469,17 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.dataLayerIsReady = true;
 
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(
+                    new NotificationMessage
+                    {
+                        Data = new MachineModeMessageData(MachineMode.NotSpecified),
+                        Destination = MessageActor.Any,
+                        Source = MessageActor.DataLayer,
+                        Type = MessageType.MachineMode,
+                    });
+
             this.Logger.LogDebug("InvokeSchedulerAsync");
             await this.InvokeSchedulerAsync(serviceProvider);
 
