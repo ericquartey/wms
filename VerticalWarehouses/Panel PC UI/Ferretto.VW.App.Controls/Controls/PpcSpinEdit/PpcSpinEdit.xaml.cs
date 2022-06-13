@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using CommonServiceLocator;
+using DevExpress.Xpf.Editors;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
 using Ferretto.VW.App.Controls.Keyboards;
 using Ferretto.VW.App.Keyboards;
@@ -16,7 +18,7 @@ namespace Ferretto.VW.App.Controls
 {
     public partial class PpcSpinEdit : UserControl
     {
-        #region Fields
+        #region Public Fields
 
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register(
             nameof(BorderColor),
@@ -94,6 +96,10 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(250)));
 
+        #endregion
+
+        #region Private Fields
+
         private const string DECIMAL_STYLE = "VWAPP_SpinEdit_DecimalStyle";
 
         private const string DOUBLE_STYLE = "VWAPP_SpinEdit_DoubleStyle";
@@ -116,7 +122,7 @@ namespace Ferretto.VW.App.Controls
 
         #endregion
 
-        #region Constructors
+        #region Public Constructors
 
         public PpcSpinEdit()
         {
@@ -135,7 +141,7 @@ namespace Ferretto.VW.App.Controls
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         public SolidColorBrush BorderColor
         {
@@ -225,7 +231,7 @@ namespace Ferretto.VW.App.Controls
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
         public void SetStyle(string styleName)
         {
@@ -234,10 +240,18 @@ namespace Ferretto.VW.App.Controls
             this.isStyleSet = true;
         }
 
+        #endregion
+
+        #region Protected Methods
+
         protected void Disappear()
         {
             this.machineIdentityWebService = null;
         }
+
+        #endregion
+
+        #region Private Methods
 
         private static PropertyInfo GetProperty(Type type, string fieldPathName)
         {
@@ -424,6 +438,12 @@ namespace Ferretto.VW.App.Controls
 
         private async void PpcSpinEdit_Loaded(object sender, RoutedEventArgs e)
         {
+            var spinEdit = sender as PpcSpinEdit;
+            var descr = DependencyPropertyDescriptor.FromProperty(BaseEdit.DisplayTextProperty, typeof(SpinEdit));
+            var eventTextChange = new EventHandler(this.TextChanged);
+
+            descr.AddValueChanged(spinEdit.InnerSpinEdit, eventTextChange);
+
             this.machineIdentityWebService = ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
             this.touchHelperEnabled = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
             this.KeyboardButton.Visibility = this.touchHelperEnabled && this.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
@@ -477,6 +497,24 @@ namespace Ferretto.VW.App.Controls
             {
                 this.SetStyle(DECIMAL_STYLE);
                 return;
+            }
+        }
+
+        private void TextChanged(object sender, EventArgs e)
+        {
+            var spinEdit = sender as SpinEdit;
+            string spinEditTextDisplay = spinEdit.DisplayText;
+            if (!string.IsNullOrEmpty(spinEditTextDisplay))
+            {
+                if (decimal.Parse(spinEditTextDisplay) > spinEdit.MaxValue)
+                {
+                    spinEdit.EditValue = (double)spinEdit.MaxValue;
+                }
+
+                if (decimal.Parse(spinEditTextDisplay) < spinEdit.MinValue)
+                {
+                    spinEdit.EditValue = (double)spinEdit.MinValue;
+                }
             }
         }
 
