@@ -33,7 +33,8 @@
 - Corretto ripristino in BED se si sposta la slitta in manuale
 - Corretto stato di manutenzione se scadono i cicli
 - Barra alfanumerica: corretto cambio scomparto con stesso articolo
-- Correzioni in caso di liste chiuse da EjLog 
+- Correzioni in caso di liste chiuse da EjLog
+- Correzioni per Tendaggi Paradiso 
 
 ## Compatibile con adapter 0.4.33 e 0.4.34
 ***

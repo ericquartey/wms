@@ -420,7 +420,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Compartments = null;
             this.SelectedCompartment = null;
 
-            this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+            this.MeasureUnitTxt = string.Format(Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             await base.OnAppearedAsync();
             if (this.IsQuantityLimited && this.MissionOperation != null)
