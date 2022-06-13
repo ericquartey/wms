@@ -502,34 +502,46 @@ namespace Ferretto.VW.App.Controls
 
         private void TextChanged(object sender, EventArgs e)
         {
-            var spinEdit = sender as SpinEdit;
-            var spinEditTextDisplay = spinEdit.DisplayText;
 
-            var dataContextType = this.DataContext.GetType();
-            var bindingExpression = BindingOperations.GetBindingExpression(this, PpcSpinEdit.EditValueProperty);
-            var path = bindingExpression.ParentBinding.Path.Path;
-
-            var property = GetProperty(dataContextType, path);
-
-            var type = property.PropertyType;
-
-            if (Nullable.GetUnderlyingType(property.PropertyType) is Type nullType)
+            try
             {
-                type = nullType;
+                if (this.MaxValue != null || this.MinValue != null)
+                {
+                    var spinEdit = sender as SpinEdit;
+                    var spinEditTextDisplay = spinEdit.DisplayText;
+
+                    var dataContextType = this.DataContext.GetType();
+                    var bindingExpression = BindingOperations.GetBindingExpression(this, PpcSpinEdit.EditValueProperty);
+                    var path = bindingExpression.ParentBinding.Path.Path;
+
+                    var property = GetProperty(dataContextType, path);
+
+                    var type = property.PropertyType;
+
+                    if (Nullable.GetUnderlyingType(property.PropertyType) is Type nullType)
+                    {
+                        type = nullType;
+                    }
+
+                    if (!string.IsNullOrEmpty(spinEditTextDisplay))
+                    {
+                        if (decimal.Parse(spinEditTextDisplay) > spinEdit.MaxValue)
+                        {
+                            spinEdit.EditValue = Convert.ChangeType(spinEdit.MaxValue, type);
+                        }
+
+                        if (decimal.Parse(spinEditTextDisplay) < spinEdit.MinValue)
+                        {
+                            spinEdit.EditValue = Convert.ChangeType(spinEdit.MinValue, type);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
             }
 
-            if (!string.IsNullOrEmpty(spinEditTextDisplay))
-            {
-                if (decimal.Parse(spinEditTextDisplay) > spinEdit.MaxValue)
-                {
-                    spinEdit.EditValue = Convert.ChangeType(spinEdit.MaxValue, type);
-                }
-
-                if (decimal.Parse(spinEditTextDisplay) < spinEdit.MinValue)
-                {
-                    spinEdit.EditValue = Convert.ChangeType(spinEdit.MinValue, type);
-                }
-            }
         }
 
         #endregion
