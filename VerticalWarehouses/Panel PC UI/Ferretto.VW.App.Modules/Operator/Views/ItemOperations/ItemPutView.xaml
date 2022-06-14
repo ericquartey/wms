@@ -225,7 +225,9 @@
                          Increment="{Binding QuantityIncrement}"
                          IsEnabled="{Binding CanInputQuantity}"
                          LabelText="{Binding MeasureUnitDescription}"
-                         Mask="{Binding QuantityTolerance, StringFormat=F{0}}"/>
+                         Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                         MinValue="0"
+                         MaxValue="{Binding MaxInputQuantity}"/>
 
       <Border Grid.Row="2"
               Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}">

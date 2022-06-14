@@ -337,7 +337,8 @@
                            EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            Increment="{Binding QuantityIncrement}"
                            LabelText="{Binding SelectedItemTxt}"
-                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
+                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                           MinValue="0"/>
 
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal">
