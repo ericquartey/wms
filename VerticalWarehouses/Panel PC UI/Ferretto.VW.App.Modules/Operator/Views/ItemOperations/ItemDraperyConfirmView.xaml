@@ -142,7 +142,8 @@
                            Increment="{Binding QuantityIncrement}"
                            IsEnabled="{Binding CanInputQuantity}"
                            LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
-                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}" />
+                           Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
+                           MinValue="0"/>
 
         <ctrls:PpcSpinEdit Grid.Row="6"
                            Width="230"
