@@ -142,7 +142,7 @@
 - Manutenzioni con istruzioni duplicate
 - Notifica di manutenzioni in scadenza dopo una conferma servizio
 
-## Compatibile con adapter 0.4.33
+## Compatibile con adapter 0.4.33 e 0.4.34
 ***
 
 <a id="id1043"></a>

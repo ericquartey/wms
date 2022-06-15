@@ -23,6 +23,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private string selectedBasketCode;
 
+        private string selectedCarCode;
+
+        private string selectedMachineCode;
+
         private string selectedShelfCode;
 
         private UserAction selectedUserAction;
@@ -61,6 +65,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 case UserAction.AssociateBasketToShelf:
                 case UserAction.CompleteBasket:
                 case UserAction.RemoveFullBasket:
+                case UserAction.CarToMachine:
 
                     this.InitiateUserAction(e);
                     break;
@@ -73,6 +78,15 @@ namespace Ferretto.VW.App.Modules.Operator
                 case UserAction.SelectShelf:
 
                     await this.SelectShelfAsync(e);
+                    break;
+
+                case UserAction.SelectCar:
+
+                    await this.SelectCarAsync(e);
+                    break;
+
+                case UserAction.SelectMachine:
+                    await this.SelectMachineAsync(e);
                     break;
 
                 default:
@@ -97,6 +111,30 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 await this.putToLightWebService.AssociateBasketToShelfAsync(this.selectedBasketCode, this.selectedShelfCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxAssociateShelf"), this.selectedBasketCode, this.selectedShelfCode));
+
+                this.ResetUserSelection();
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
+        private async Task CarToMachineAsync()
+        {
+            try
+            {
+                var machineIdentity = await this.identityService.GetAsync();
+                if (machineIdentity is null)
+                {
+                    this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
+                    return;
+                }
+
+                var machineId = machineIdentity.Id;
+
+                //await this.putToLightWebService.CarToMachineAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
+                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxAssociateShelf"), this.selectedCarCode, this.selectedMachineCode));
 
                 this.ResetUserSelection();
             }
@@ -135,6 +173,8 @@ namespace Ferretto.VW.App.Modules.Operator
             this.selectedUserAction = e.UserAction;
             this.selectedBasketCode = null;
             this.selectedShelfCode = null;
+            this.selectedCarCode = null;
+            this.selectedMachineCode = null;
 
             switch (e.UserAction)
             {
@@ -148,6 +188,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 case UserAction.CompleteBasket:
                     this.NotifyInfo(Localized.Get("OperatorApp.StartClosingBox"));
+                    break;
+
+                case UserAction.CarToMachine:
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartCarToMachine"));
                     break;
             }
         }
@@ -209,39 +253,66 @@ namespace Ferretto.VW.App.Modules.Operator
             this.selectedUserAction = default(UserAction);
             this.selectedBasketCode = null;
             this.selectedShelfCode = null;
+            this.selectedCarCode = null;
+            this.selectedMachineCode = null;
         }
 
         private async Task RunActionAsync()
         {
-            if (string.IsNullOrWhiteSpace(this.selectedBasketCode)
-                ||
-                string.IsNullOrWhiteSpace(this.selectedShelfCode))
-            {
-                return;
-            }
-
             switch (this.selectedUserAction)
             {
                 case UserAction.AssociateBasketToShelf:
+
+                    if (string.IsNullOrWhiteSpace(this.selectedBasketCode)
+                        ||
+                        string.IsNullOrWhiteSpace(this.selectedShelfCode))
+                    {
+                        return;
+                    }
 
                     await this.AssociateBasketToShelfAsync();
                     break;
 
                 case UserAction.CompleteBasket:
 
+                    if (string.IsNullOrWhiteSpace(this.selectedBasketCode)
+                        ||
+                        string.IsNullOrWhiteSpace(this.selectedShelfCode))
+                    {
+                        return;
+                    }
+
                     await this.CompleteBasketAsync();
                     break;
 
                 case UserAction.RemoveFullBasket:
 
+                    if (string.IsNullOrWhiteSpace(this.selectedBasketCode)
+                        ||
+                        string.IsNullOrWhiteSpace(this.selectedShelfCode))
+                    {
+                        return;
+                    }
+
                     await this.RemoveFullBasketAsync();
+                    break;
+
+                case UserAction.CarToMachine:
+                    if (string.IsNullOrWhiteSpace(this.selectedMachineCode)
+                        ||
+                        string.IsNullOrWhiteSpace(this.selectedCarCode))
+                    {
+                        return;
+                    }
+
+                    await this.CarToMachineAsync();
                     break;
             }
         }
 
         private async Task SelectBasketAsync(UserActionEventArgs e)
         {
-            if (this.selectedUserAction is UserAction.NotSpecified)
+            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction is UserAction.CarToMachine)
             {
                 this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
@@ -256,7 +327,6 @@ namespace Ferretto.VW.App.Modules.Operator
             }
 
             this.selectedBasketCode = e.GetBasketCode();
-            this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedBox"), this.selectedBasketCode));
 
             if (this.selectedBasketCode is null)
             {
@@ -264,13 +334,65 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             else
             {
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedBox"), this.selectedBasketCode));
+                await this.RunActionAsync();
+            }
+        }
+
+        private async Task SelectCarAsync(UserActionEventArgs e)
+        {
+            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction != UserAction.CarToMachine)
+            {
+                this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
+
+                return;
+            }
+
+            this.selectedMachineCode = null;
+            this.selectedCarCode = e.GetCarCode();
+
+            if (this.selectedCarCode is null)
+            {
+                this.NotifyWarning(Localized.Get("OperatorApp.NoCarCode"));
+            }
+            else
+            {
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedCar"), this.selectedCarCode));
+                await this.RunActionAsync();
+            }
+        }
+
+        private async Task SelectMachineAsync(UserActionEventArgs e)
+        {
+            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction != UserAction.CarToMachine)
+            {
+                this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
+
+                return;
+            }
+
+            if (this.selectedCarCode == null)
+            {
+                this.NotifyWarning(Localized.Get("OperatorApp.ScanCarFirst"));
+
+                return;
+            }
+
+            this.selectedMachineCode = e.GetMachineCode();
+            if (this.selectedMachineCode is null)
+            {
+                this.NotifyWarning(Localized.Get("OperatorApp.NoMachineCode"));
+            }
+            else
+            {
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedMachine"), this.selectedMachineCode));
                 await this.RunActionAsync();
             }
         }
 
         private async Task SelectShelfAsync(UserActionEventArgs e)
         {
-            if (this.selectedUserAction is UserAction.NotSpecified)
+            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction is UserAction.CarToMachine)
             {
                 this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
@@ -279,7 +401,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
             this.selectedBasketCode = null;
             this.selectedShelfCode = e.GetShelfCode();
-            this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedShelf"), this.selectedShelfCode));
 
             if (this.selectedShelfCode is null)
             {
@@ -287,6 +408,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             else
             {
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedShelf"), this.selectedShelfCode));
                 await this.RunActionAsync();
             }
         }

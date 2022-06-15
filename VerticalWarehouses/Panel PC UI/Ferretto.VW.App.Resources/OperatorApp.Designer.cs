@@ -2041,6 +2041,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The car {0} is matched to the machine {1}.
+        /// </summary>
+        public static string EndCarToMachine {
+            get {
+                return ResourceManager.GetString("EndCarToMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter the barcode.
         /// </summary>
         public static string EnterBarcode {
@@ -4391,6 +4400,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Car code found in the barcode.
+        /// </summary>
+        public static string NoCarCode {
+            get {
+                return ResourceManager.GetString("NoCarCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No item on selected compartment..
         /// </summary>
         public static string NoItemOnSelectedCompartment {
@@ -4432,6 +4450,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NoLocation {
             get {
                 return ResourceManager.GetString("NoLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No machine code found in barcode.
+        /// </summary>
+        public static string NoMachineCode {
+            get {
+                return ResourceManager.GetString("NoMachineCode", resourceCulture);
             }
         }
         
@@ -5093,6 +5120,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan the Car barcode first.
+        /// </summary>
+        public static string ScanCarFirst {
+            get {
+                return ResourceManager.GetString("ScanCarFirst", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan the shelf barcode first..
         /// </summary>
         public static string ScanShelfFirst {
@@ -5116,6 +5152,24 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectedBox {
             get {
                 return ResourceManager.GetString("SelectedBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Car {0}..
+        /// </summary>
+        public static string SelectedCar {
+            get {
+                return ResourceManager.GetString("SelectedCar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Machine {0}..
+        /// </summary>
+        public static string SelectedMachine {
+            get {
+                return ResourceManager.GetString("SelectedMachine", resourceCulture);
             }
         }
         
@@ -5332,6 +5386,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StartAssociateBoxToShelf {
             get {
                 return ResourceManager.GetString("StartAssociateBoxToShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start matching car to machine.
+        /// </summary>
+        public static string StartCarToMachine {
+            get {
+                return ResourceManager.GetString("StartCarToMachine", resourceCulture);
             }
         }
         

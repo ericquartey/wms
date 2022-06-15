@@ -33,5 +33,11 @@
         Notes,
 
         ConfirmKey,
+
+        CarToMachine,
+
+        SelectCar,
+
+        SelectMachine
     }
 }
