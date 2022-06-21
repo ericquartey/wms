@@ -17,7 +17,7 @@ INSERT INTO BarcodeActions VALUES ('SelectShelf', NULL, '^#SHELF(?<ShelfCode>[0-
 INSERT INTO BarcodeActions VALUES ('AssociateBasketToShelf', NULL, '^\$APRICOLLO', 10, 12, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('CompleteBasket', NULL, '^\$CHIUDICOLLO', 10, 12, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('RemoveFullBasket', NULL, '^\$COLLOPIENO', 10, 12, 'TRUE')
-INSERT INTO BarcodeActions VALUES ('SelectMachine', NULL, '^#(?<MachineCode>[0-9a-zA-Z]+)', 10, NULL, 'TRUE')
+INSERT INTO BarcodeActions VALUES ('SelectMachine', NULL, '^$MAC(?<MachineCode>[0-9a-zA-Z]+)', 10, NULL, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('SelectCar', NULL, '^\$CARRELLO(?<CarCode>[0-9a-zA-Z]+)', 0, 15, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('CarToMachine', NULL, '^\$APERTURACARRELLO', 10, 16, 'TRUE')
 INSERT INTO BarcodeActions VALUES ('Notes', 'NoteDescription', '^(?<ItemCode>[0-9A-Za-z_\.\/ \-\+\|]+)', 0, NULL, 'FALSE')
