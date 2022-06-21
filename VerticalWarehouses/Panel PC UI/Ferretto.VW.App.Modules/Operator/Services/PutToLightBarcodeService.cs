@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 var machineId = machineIdentity.Id;
 
-                //await this.putToLightWebService.CarToMachineAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
+                await this.putToLightWebService.CarToMachineAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxAssociateShelf"), this.selectedCarCode, this.selectedMachineCode));
 
                 this.ResetUserSelection();

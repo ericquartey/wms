@@ -40,6 +40,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost("shelves/{machineCode}/car-to-machine/{carCode}")]
+        public async Task<IActionResult> CarToMachine(string carCode, string machineCode, int machineId, int bayNumber)
+        {
+            //await this.putToLightWmsWebService.CarToMachineAsync(carCode, machineCode, machineId, bayNumber);
+
+            return this.Ok();
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("shelves/{shelfCode}/complete-basket/{basketCode}")]
         public async Task<IActionResult> CompleteBasket(string basketCode, string shelfCode, int machineId, int bayNumber)
         {

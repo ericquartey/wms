@@ -2867,6 +2867,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CarToMachineAsync(string carCode, string machineCode, int machineId, int bayNumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CarToMachineAsync(string carCode, string machineCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode, int machineId, int bayNumber);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
