@@ -2665,10 +2665,10 @@
     <value>Scheda IO  (Baia 3)</value>
   </data>
   <data name="ProfileResolutionCalibration" xml:space="preserve">
-    <value>Calibrazione barriera di misura</value>
+    <value>Test barriera di misura</value>
   </data>
   <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
-    <value>La funzione di calibrazione della barriera di misura permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
+    <value>La funzione di test della barriera di misura permette di tarare il corretto valore tramite la sua apposita procedura. La procedura opera per passi successivi fino al corretto completamento.</value>
   </data>
   <data name="ProfileConst0" xml:space="preserve">
     <value>Costante K0 misura</value>
