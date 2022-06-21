@@ -34,7 +34,9 @@
 - Corretto stato di manutenzione se scadono i cicli
 - Barra alfanumerica: corretto cambio scomparto con stesso articolo
 - Correzioni in caso di liste chiuse da EjLog
-- Correzioni per Tendaggi Paradiso 
+- Correzioni per Tendaggi Paradiso
+- Aggiunto ritardo per allarme 70 "Il sensore di zero della baia non risulta attivo alla fine del posizionamento"
+- Correzione ai campi numerici con comandi incrementali
 
 ## Compatibile con adapter 0.4.33 e 0.4.34
 ***

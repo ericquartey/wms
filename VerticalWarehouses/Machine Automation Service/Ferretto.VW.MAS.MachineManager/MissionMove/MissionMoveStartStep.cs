@@ -52,10 +52,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.CloseShutterBayNumber = BayNumber.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.ErrorCode = MachineErrorCode.NoError;
-            if (this.Mission.NeedHomingAxis == Axis.None)
+            if (this.Mission.NeedHomingAxis == Axis.None
+                || this.Mission.NeedHomingAxis == Axis.BayChain)
             {
                 this.MachineVolatileDataProvider.IsHomingExecuted = this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
-                this.Mission.NeedHomingAxis = (this.MachineVolatileDataProvider.IsHomingExecuted ? Axis.None : Axis.HorizontalAndVertical);
+                if (!this.MachineVolatileDataProvider.IsHomingExecuted)
+                {
+                    this.Mission.NeedHomingAxis =  Axis.HorizontalAndVertical;
+                }
             }
             this.Mission.Status = MissionStatus.Executing;
             this.MissionsDataProvider.Update(this.Mission);
