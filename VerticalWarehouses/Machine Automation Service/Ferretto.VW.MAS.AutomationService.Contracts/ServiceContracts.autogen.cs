@@ -4806,6 +4806,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ThreeSensors = 2,
     
+        UpperHalf = 3,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]

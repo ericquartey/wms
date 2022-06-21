@@ -497,6 +497,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.isDisposed = true;
         }
 
+        private void DelayBayChainEnd(object state)
+        {
+            if (this.IsBracketSensorError())
+            {
+                this.Logger.LogError($"Bracket sensor error");
+                this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+                this.Stop(StopRequestReason.Stop);
+            }
+            else
+            {
+                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
+            }
+        }
+
         private void DelayDoubleExtBayElapsed(object state)
         {
             this.Logger.LogInformation($"Start another BayTest after {this.performedCycles} cycles to {this.machineData.MessageData.RequiredCycles}");
@@ -1668,20 +1682,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         }
                     }
                     break;
-            }
-        }
-
-        private void DelayBayChainEnd(object state)
-        {
-            if (this.IsBracketSensorError())
-            {
-                this.Logger.LogError($"Bracket sensor error");
-                this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
-                this.Stop(StopRequestReason.Stop);
-            }
-            else
-            {
-                this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData, this.Logger));
             }
         }
 
