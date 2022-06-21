@@ -719,7 +719,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.MachineService.MachineStatus.IsMovingLoadingUnit &&
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
-                   this.SensorsService.ShutterSensors.Closed;
+                   (this.SensorsService.ShutterSensors.Closed || (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf));
         }
 
         private async Task CompleteAsync()
