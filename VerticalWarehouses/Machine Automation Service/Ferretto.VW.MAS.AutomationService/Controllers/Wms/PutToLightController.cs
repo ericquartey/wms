@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("shelves/{machineCode}/car-to-machine/{carCode}")]
         public async Task<IActionResult> CarToMachine(string carCode, string machineCode, int machineId, int bayNumber)
         {
-            //await this.putToLightWmsWebService.CarToMachineAsync(carCode, machineCode, machineId, bayNumber);
+            await this.putToLightWmsWebService.CarToMachineAsync(carCode, machineCode, machineId, bayNumber);
 
             return this.Ok();
         }
