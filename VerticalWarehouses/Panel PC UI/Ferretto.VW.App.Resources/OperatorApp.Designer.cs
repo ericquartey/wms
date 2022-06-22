@@ -601,6 +601,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The car {0} has been closed.
+        /// </summary>
+        public static string CarClosed {
+            get {
+                return ResourceManager.GetString("CarClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel bay1 down.
         /// </summary>
         public static string CarouselBay1Down {
@@ -660,6 +669,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CarouselCalibration {
             get {
                 return ResourceManager.GetString("CarouselCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The car {0} is linked to the machine {1}.
+        /// </summary>
+        public static string CarToMachine {
+            get {
+                return ResourceManager.GetString("CarToMachine", resourceCulture);
             }
         }
         
@@ -5404,6 +5422,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StartClosingBox {
             get {
                 return ResourceManager.GetString("StartClosingBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start closing car. Scan the car id.
+        /// </summary>
+        public static string StartClosingCar {
+            get {
+                return ResourceManager.GetString("StartClosingCar", resourceCulture);
             }
         }
         

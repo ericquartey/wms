@@ -66,6 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 case UserAction.CompleteBasket:
                 case UserAction.RemoveFullBasket:
                 case UserAction.CarToMachine:
+                case UserAction.CarComplete:
 
                     this.InitiateUserAction(e);
                     break;
@@ -120,6 +121,30 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
+        private async Task CarCompleteAsync()
+        {
+            try
+            {
+                var machineIdentity = await this.identityService.GetAsync();
+                if (machineIdentity is null)
+                {
+                    this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
+                    return;
+                }
+
+                var machineId = machineIdentity.Id;
+
+                await this.putToLightWebService.CarCompleteAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
+                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.CarClosed"), this.selectedCarCode));
+
+                this.ResetUserSelection();
+            }
+            catch (Exception ex)
+            {
+                this.NotifyError(ex);
+            }
+        }
+
         private async Task CarToMachineAsync()
         {
             try
@@ -134,7 +159,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machineId = machineIdentity.Id;
 
                 await this.putToLightWebService.CarToMachineAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
-                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.BoxAssociateShelf"), this.selectedCarCode, this.selectedMachineCode));
+                this.NotifySuccess(string.Format(Localized.Get("OperatorApp.CarToMachine"), this.selectedCarCode, this.selectedMachineCode));
 
                 this.ResetUserSelection();
             }
@@ -192,6 +217,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 case UserAction.CarToMachine:
                     this.NotifyInfo(Localized.Get("OperatorApp.StartCarToMachine"));
+                    break;
+
+                case UserAction.CarComplete:
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingCar"));
                     break;
             }
         }
@@ -306,6 +335,17 @@ namespace Ferretto.VW.App.Modules.Operator
                     }
 
                     await this.CarToMachineAsync();
+                    break;
+
+                case UserAction.CarComplete:
+                    if (string.IsNullOrWhiteSpace(this.selectedMachineCode)
+                        ||
+                        string.IsNullOrWhiteSpace(this.selectedCarCode))
+                    {
+                        return;
+                    }
+
+                    await this.CarCompleteAsync();
                     break;
             }
         }

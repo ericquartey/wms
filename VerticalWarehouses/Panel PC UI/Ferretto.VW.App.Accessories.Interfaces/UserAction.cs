@@ -38,6 +38,8 @@
 
         SelectCar,
 
-        SelectMachine
+        SelectMachine,
+
+        CarComplete
     }
 }

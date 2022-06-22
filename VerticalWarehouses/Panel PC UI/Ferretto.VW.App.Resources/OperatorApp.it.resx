@@ -2208,4 +2208,13 @@
   <data name="ScanCarFirst" xml:space="preserve">
     <value>Scansionare prima il codice a barre del carrello</value>
   </data>
+  <data name="StartClosingCar" xml:space="preserve">
+    <value>Inizio chiusura carrello. Scansionare il carrello</value>
+  </data>
+  <data name="CarToMachine" xml:space="preserve">
+    <value>Il carrello {0} è collegato alla macchina {1}</value>
+  </data>
+  <data name="CarClosed" xml:space="preserve">
+    <value>Il carrello {0} è stato chiuso</value>
+  </data>
 </root>

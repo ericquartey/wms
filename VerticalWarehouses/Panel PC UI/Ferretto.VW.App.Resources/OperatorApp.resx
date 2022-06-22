@@ -2609,4 +2609,13 @@
   <data name="ScanCarFirst" xml:space="preserve">
     <value>Scan the Car barcode first</value>
   </data>
+  <data name="StartClosingCar" xml:space="preserve">
+    <value>Start closing car. Scan the car id</value>
+  </data>
+  <data name="CarToMachine" xml:space="preserve">
+    <value>The car {0} is linked to the machine {1}</value>
+  </data>
+  <data name="CarClosed" xml:space="preserve">
+    <value>The car {0} has been closed</value>
+  </data>
 </root>
