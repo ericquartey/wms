@@ -381,7 +381,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task SelectCarAsync(UserActionEventArgs e)
         {
-            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction != UserAction.CarToMachine)
+            if (this.selectedUserAction is UserAction.NotSpecified ||
+                (this.selectedUserAction != UserAction.CarToMachine && this.selectedUserAction != UserAction.CarComplete))
             {
                 this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
@@ -404,7 +405,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task SelectMachineAsync(UserActionEventArgs e)
         {
-            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction != UserAction.CarToMachine)
+            if (this.selectedUserAction is UserAction.NotSpecified ||
+                (this.selectedUserAction != UserAction.CarToMachine && this.selectedUserAction != UserAction.CarComplete))
             {
                 this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
