@@ -25,21 +25,19 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.45 rispetto la 1.0.44
-- Aggiunto parametro "Quantità limitata in prelievo e deposito"
+## Nuove Funzionalità 1.0.46 rispetto la 1.0.45
+- Aggiunta gestione Put and Go
+- Ferretto NuGet package 0.16.43
+- Aggiunta serranda UpperHalf per fiera
 
 ## Bug Risolti
-- Aggiornate traduzioni polacche
-- Corretto ripristino in BED se si sposta la slitta in manuale
-- Corretto stato di manutenzione se scadono i cicli
-- Barra alfanumerica: corretto cambio scomparto con stesso articolo
-- Correzioni in caso di liste chiuse da EjLog
-- Correzioni per Tendaggi Paradiso
-- Aggiunto ritardo per allarme 70 "Il sensore di zero della baia non risulta attivo alla fine del posizionamento"
-- Correzione ai campi numerici con comandi incrementali
+- BIG: corretto ripristino in caso di perdita del sensore di zero
+- Parametri asse orizzontale: la velocità a vuoto può essere minore di quelle dei profili 
 
-## Compatibile con adapter 0.4.33 e 0.4.34
+## Compatibile con adapter 0.4.35
 ***
+
+[Versione 1.0.45](#id1045)
 
 [Versione 1.0.44](#id1044)
 
@@ -130,6 +128,24 @@
 [Versione 1.0.1](#id101)
 
 [Versione 1.0.0](#id100)
+***
+
+<a id="id1045"></a>
+
+## Nuove Funzionalità 1.0.45 rispetto la 1.0.44
+- Aggiunto parametro "Quantità limitata in prelievo e deposito"
+
+## Bug Risolti
+- Aggiornate traduzioni polacche
+- Corretto ripristino in BED se si sposta la slitta in manuale
+- Corretto stato di manutenzione se scadono i cicli
+- Barra alfanumerica: corretto cambio scomparto con stesso articolo
+- Correzioni in caso di liste chiuse da EjLog
+- Correzioni per Tendaggi Paradiso
+- Aggiunto ritardo per allarme 70 "Il sensore di zero della baia non risulta attivo alla fine del posizionamento"
+- Correzione ai campi numerici con comandi incrementali
+
+## Compatibile con adapter 0.4.33 e 0.4.34
 ***
 
 <a id="id1044"></a>
