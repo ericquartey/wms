@@ -5,6 +5,7 @@ using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Operator
@@ -18,6 +19,8 @@ namespace Ferretto.VW.App.Modules.Operator
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineIdentityWebService identityService;
+
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachinePutToLightWebService putToLightWebService;
 
@@ -133,6 +136,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
 
                 var machineId = machineIdentity.Id;
+                this.logger.Trace(string.Format(Localized.Get("OperatorApp.CarClosed"), this.selectedCarCode));
 
                 await this.putToLightWebService.CarCompleteAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess(string.Format(Localized.Get("OperatorApp.CarClosed"), this.selectedCarCode));
@@ -157,6 +161,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
 
                 var machineId = machineIdentity.Id;
+                this.logger.Trace(string.Format(Localized.Get("OperatorApp.CarToMachine"), this.selectedCarCode, this.selectedMachineCode));
 
                 await this.putToLightWebService.CarToMachineAsync(this.selectedCarCode, this.selectedMachineCode, machineId, (int)this.bayNumber);
                 this.NotifySuccess(string.Format(Localized.Get("OperatorApp.CarToMachine"), this.selectedCarCode, this.selectedMachineCode));
