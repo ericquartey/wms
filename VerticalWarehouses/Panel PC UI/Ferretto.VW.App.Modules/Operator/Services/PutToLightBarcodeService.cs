@@ -352,7 +352,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task SelectBasketAsync(UserActionEventArgs e)
         {
-            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction is UserAction.CarToMachine)
+            if (this.selectedUserAction is UserAction.NotSpecified
+                || this.selectedUserAction is UserAction.CarToMachine
+                || this.selectedUserAction is UserAction.CarComplete)
             {
                 this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
@@ -434,7 +436,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private async Task SelectShelfAsync(UserActionEventArgs e)
         {
-            if (this.selectedUserAction is UserAction.NotSpecified || this.selectedUserAction is UserAction.CarToMachine)
+            if (this.selectedUserAction is UserAction.NotSpecified
+                || this.selectedUserAction is UserAction.CarToMachine
+                || this.selectedUserAction is UserAction.CarComplete)
             {
                 this.NotifyWarning(Localized.Get("OperatorApp.ScanActionCodeFirst"));
 
