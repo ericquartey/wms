@@ -23,6 +23,10 @@
 
         ShelfCode,
 
-        IsDoubleConfirm
+        IsDoubleConfirm,
+
+        CarCode,
+
+        MachineCode
     }
 }

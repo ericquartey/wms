@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class ShutterProvider : BaseProvider, IShutterProvider
     {
-        #region Fields
+        #region Private Fields
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #endregion
 
-        #region Constructors
+        #region Public Constructors
 
         public ShutterProvider(
             IBaysDataProvider baysDataProvider,
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
         public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
         {
@@ -79,6 +79,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
+            if (targetPosition == ShutterPosition.Closed && bay.Shutter.Type == ShutterType.UpperHalf)
+            {
+                targetPosition = ShutterPosition.Half;
+            }
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
                 direction,
@@ -126,6 +130,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var direction = ShutterMovementDirection.NotSpecified;
             var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
             var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            if (targetPosition == ShutterPosition.Closed && bay.Shutter.Type == ShutterType.UpperHalf)
+            {
+                targetPosition = ShutterPosition.Half;
+            }
 
             switch (targetPosition)
             {
@@ -169,8 +179,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var speedRate = parameters.FeedRate * maxSpeed;
             var lowSpeed = parameters.FeedRate * minSpeed;
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             if (bay.Shutter.Type == ShutterType.NotSpecified)
             {

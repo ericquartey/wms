@@ -183,7 +183,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     try
                     {
                         this.IsExecutingProcedure = true;
-                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.BarrierCalibration"), DialogType.Question, DialogButtons.YesNo);
+                        var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.BypassTest"), Localized.Get("InstallationApp.ProfileResolutionCalibration"), DialogType.Question, DialogButtons.YesNo);
                         if (messageBoxResult == DialogResult.Yes)
                         {
                             await this.machineSetupStatusWebService.BayProfileCheckBypassAsync();

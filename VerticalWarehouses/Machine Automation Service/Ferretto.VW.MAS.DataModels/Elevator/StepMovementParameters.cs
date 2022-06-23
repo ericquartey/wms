@@ -96,15 +96,10 @@ namespace Ferretto.VW.MAS.DataModels
 
             if (this.AdjustSpeedByWeight)
             {
-                if (this.Speed >= axis.FullLoadMovement.Speed && this.Speed <= axis.EmptyLoadMovement.Speed)
-                {
-                    var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
-                    this.Speed = Math.Max(this.Speed - deltaSpeed, axis.FullLoadMovement.Speed);
-                }
-                else
-                {
-                    throw new InvalidOperationException(string.Format(Resources.ErrorReasons.InvalidAxisSpeedRange, axis.Orientation, this.Speed));
-                }
+                var highSpeed = Math.Min(this.Speed, axis.EmptyLoadMovement.Speed);
+                var lowSpeed = Math.Min(this.Speed, axis.FullLoadMovement.Speed);
+                var deltaSpeed = (highSpeed - lowSpeed) * scalingFactor;
+                this.Speed = Math.Max(highSpeed - deltaSpeed, lowSpeed);
             }
             if (this.AdjustAccelerationByWeight)
             {

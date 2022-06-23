@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningStartState : StateBase
     {
-        #region Fields
+        #region Private Fields
 
         private readonly IShutterPositioningMachineData machineData;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #endregion
 
-        #region Constructors
+        #region Public Constructors
 
         public ShutterPositioningStartState(IShutterPositioningStateData stateData, ILogger logger)
             : base(stateData.ParentMachine, logger)
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -100,11 +100,14 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                 {
                                     // first step: close shutter
                                     ShutterPosition shutterPositionTarget;
+
                                     shutterPositionTarget = ShutterPosition.Closed;
-                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors)
+
+                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors || this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
                                     {
                                         shutterPositionTarget = ShutterPosition.Half;
                                     }
+
                                     var commandData = new ShutterPositioningFieldMessageData(
                                         shutterPositionTarget,
                                         ShutterMovementDirection.Down,
@@ -214,9 +217,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 // TestLoop:
                 // not all starting positions are allowed
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors &&
-                    (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
-                    )
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+                    && inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
                 {
                     this.Logger.LogError($"Shutter in Intermediate position before Test Loop");
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData, this.Logger));

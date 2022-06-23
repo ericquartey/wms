@@ -2588,4 +2588,34 @@
   <data name="IsQuantityLimited" xml:space="preserve">
     <value>Limit quantity in pick and put</value>
   </data>
+  <data name="StartCarToMachine" xml:space="preserve">
+    <value>Start matching car to machine</value>
+  </data>
+  <data name="EndCarToMachine" xml:space="preserve">
+    <value>The car {0} is matched to the machine {1}</value>
+  </data>
+  <data name="SelectedCar" xml:space="preserve">
+    <value>Selected Car {0}.</value>
+  </data>
+  <data name="SelectedMachine" xml:space="preserve">
+    <value>Selected Machine {0}.</value>
+  </data>
+  <data name="NoCarCode" xml:space="preserve">
+    <value>No Car code found in the barcode</value>
+  </data>
+  <data name="NoMachineCode" xml:space="preserve">
+    <value>No machine code found in barcode</value>
+  </data>
+  <data name="ScanCarFirst" xml:space="preserve">
+    <value>Scan the Car barcode first</value>
+  </data>
+  <data name="StartClosingCar" xml:space="preserve">
+    <value>Start closing car. Scan the car id</value>
+  </data>
+  <data name="CarToMachine" xml:space="preserve">
+    <value>The car {0} is linked to the machine {1}</value>
+  </data>
+  <data name="CarClosed" xml:space="preserve">
+    <value>The car {0} has been closed</value>
+  </data>
 </root>

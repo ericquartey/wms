@@ -502,7 +502,6 @@ namespace Ferretto.VW.App.Controls
 
         private void TextChanged(object sender, EventArgs e)
         {
-
             try
             {
                 if (this.MaxValue != null || this.MinValue != null)
@@ -511,7 +510,14 @@ namespace Ferretto.VW.App.Controls
                     var spinEditTextDisplay = spinEdit.DisplayText;
 
                     var dataContextType = this.DataContext.GetType();
+                    
                     var bindingExpression = BindingOperations.GetBindingExpression(this, PpcSpinEdit.EditValueProperty);
+
+                    if (bindingExpression is null)
+                    {
+                        throw new ArgumentNullException();
+                    }
+
                     var path = bindingExpression.ParentBinding.Path.Path;
 
                     var property = GetProperty(dataContextType, path);

@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 {
     internal sealed partial class MovementsViewModel : BaseMainViewModel
     {
-        #region Fields
+        #region Private Fields
 
         private bool canInputCellId;
 
@@ -115,7 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         public bool CanInputCellId
         {
@@ -387,7 +387,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Methods
+        #region Public Methods
 
         public async Task CloseCarouselAsync()
         {
@@ -460,6 +460,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.lastActiveCommand = "ShutterMoveUp";
             await this.ManualShutterStartMovementAsync(ShutterMovementDirection.Up);
         }
+
+        #endregion
+
+        #region Private Methods
 
         private bool CanMoveToCellHeight()
         {
@@ -684,6 +688,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                              ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator) &&
                                              !this.IsCarouselOpening && !this.IsCarouselOpening &&
                                              !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight &&
+                                             !((this.SensorsService?.ShutterSensors?.MidWay ?? false) && !this.BayIsShutterUpperHalf) &&
                                            this.MachineModeService?.MachinePower == MachinePowerState.Powered &&
                                        IsCorrectManual;
 
