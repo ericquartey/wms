@@ -24,9 +24,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IErrorsProvider errorsProvider;
+
+        private readonly WMS.Data.WebAPI.Contracts.ILoadingUnitsWmsWebService loadingUnitsWmsWebService;
+
         private readonly ILogger<LoadingUnitsDataProvider> logger;
 
         private readonly IMachineProvider machineProvider;
+
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
 
@@ -37,6 +43,9 @@ namespace Ferretto.VW.MAS.DataLayer
             IMachineProvider machineProvider,
             ICellsProvider cellsProvider,
             IBaysDataProvider baysDataProvider,
+            IErrorsProvider errorsProvider,
+            IWmsSettingsProvider wmsSettingsProvider,
+            WMS.Data.WebAPI.Contracts.ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
             ILogger<LoadingUnitsDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
@@ -44,6 +53,9 @@ namespace Ferretto.VW.MAS.DataLayer
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
+            this.loadingUnitsWmsWebService = loadingUnitsWmsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
         }
 
         #endregion
@@ -471,6 +483,36 @@ namespace Ferretto.VW.MAS.DataLayer
                 originalStatus != LoadingUnitStatus.InElevator)
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
+            }
+            this.SaveToWms(loadingUnit.Id);
+        }
+
+        public void SaveToWms(int loadingUnitId)
+        {
+            if (this.wmsSettingsProvider.IsEnabled)
+            {
+                var loadUnitDetail = new WMS.Data.WebAPI.Contracts.LoadingUnitDetails();
+                var loadingUnit = this.GetCellById(loadingUnitId);
+                loadUnitDetail.Id = loadingUnit.Id;
+                loadUnitDetail.Height = loadingUnit.Height;
+                loadUnitDetail.CellId = loadingUnit.CellId;
+                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
+                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
+                loadUnitDetail.CellSide = (loadingUnit.CellId.HasValue && loadingUnit.Cell.Side != WarehouseSide.NotSpecified)
+                    ? (loadingUnit.Cell.Side == WarehouseSide.Front ? WMS.Data.WebAPI.Contracts.Side.Front : WMS.Data.WebAPI.Contracts.Side.Back)
+                    : WMS.Data.WebAPI.Contracts.Side.NotSpecified;
+                loadUnitDetail.Code = loadingUnit.Code;
+                loadUnitDetail.CreationDate = DateTime.Now;
+
+                try
+                {
+                    this.loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
+                    this.logger.LogInformation($"Update load unit {loadingUnit.Id} to wms ");
+                }
+                catch (Exception ex)
+                {
+                    this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+                }
             }
         }
 

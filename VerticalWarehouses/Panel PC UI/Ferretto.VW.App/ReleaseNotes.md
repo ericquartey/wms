@@ -32,7 +32,9 @@
 
 ## Bug Risolti
 - BIG: corretto ripristino in caso di perdita del sensore di zero
-- Parametri asse orizzontale: la velocità a vuoto può essere minore di quelle dei profili 
+- Parametri asse orizzontale: la velocità a vuoto può essere minore di quelle dei profili
+- Versamenti: Salda riga è falso di default
+- Conferma collaudo: corretta baia esterna
 
 ## Compatibile con adapter 0.4.35
 ***

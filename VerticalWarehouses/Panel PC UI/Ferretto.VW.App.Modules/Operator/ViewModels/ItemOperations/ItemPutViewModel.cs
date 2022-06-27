@@ -510,7 +510,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddItem = false;
 
-            this.CloseLine = true;
+            this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
 
@@ -518,7 +518,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             // Setup only reserved for Tendaggi Paradiso
             this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation?.FullyRequested != null && this.MissionOperation?.FullyRequested.Value == true;
-
 
             if (this.IsQuantityLimited && this.MissionOperation != null)
             {
