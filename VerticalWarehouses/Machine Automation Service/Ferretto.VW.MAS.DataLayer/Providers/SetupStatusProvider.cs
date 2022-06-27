@@ -64,37 +64,51 @@ namespace Ferretto.VW.MAS.DataLayer
             var bay2AllTestCompleted = false;
             var bay3AllTestCompleted = false;
 
+            // some procedures are not implemented now. Maybe in the future
+            setup.Bay1ExternalCalibration.IsBypassed = true;
+            setup.Bay2ExternalCalibration.IsBypassed = true;
+            setup.Bay3ExternalCalibration.IsBypassed = true;
+            setup.Bay1ExternalCalibration.IsCompleted = true;
+            setup.Bay2ExternalCalibration.IsCompleted = true;
+            setup.Bay3ExternalCalibration.IsCompleted = true;
+            setup.Bay1Laser.IsBypassed = true;
+            setup.Bay2Laser.IsBypassed = true;
+            setup.Bay3Laser.IsBypassed = true;
+            setup.Bay1Laser.IsCompleted = true;
+            setup.Bay2Laser.IsCompleted = true;
+            setup.Bay3Laser.IsCompleted = true;
+
             if (!(bay1 is null))
             {
-                bay1AllTestCompleted = (setup.Bay1CarouselCalibration.IsCompleted || bay1.Carousel is null) &&
-                               (setup.Bay1ExternalCalibration.IsCompleted || !bay1.IsExternal) &&
-                               (setup.Bay1ShutterTest.IsCompleted || bay1.Shutter is null) &&
-                                setup.Bay1HeightCheck.IsCompleted &&
-                               //(setup.Bay1Laser.IsCompleted || bay1.Accessories?.LaserPointer is null) &&
-                               setup.Bay1FullTest.IsCompleted &&
-                                setup.Bay1ProfileCheck.IsCompleted;
+                bay1AllTestCompleted = (setup.Bay1CarouselCalibration.IsCompleted || bay1.Carousel is null || setup.Bay1CarouselCalibration.IsBypassed) &&
+                               (setup.Bay1ExternalCalibration.IsCompleted || !bay1.IsExternal || setup.Bay1ExternalCalibration.IsBypassed) &&
+                               (setup.Bay1ShutterTest.IsCompleted || bay1.Shutter is null || setup.Bay1ShutterTest.IsBypassed) &&
+                               (setup.Bay1HeightCheck.IsCompleted || setup.Bay1HeightCheck.IsBypassed) &&
+                               (setup.Bay1Laser.IsCompleted || bay1.Accessories?.LaserPointer is null) &&
+                               (setup.Bay1FullTest.IsCompleted || setup.Bay1FullTest.IsBypassed) &&
+                               (setup.Bay1ProfileCheck.IsCompleted || setup.Bay1ProfileCheck.IsBypassed);
             }
 
             if (!(bay2 is null))
             {
-                bay2AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null) &&
-                               (setup.Bay2ExternalCalibration.IsCompleted || !bay2.IsExternal) &&
-                               (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null) &&
-                                setup.Bay2HeightCheck.IsCompleted &&
-                               //(setup.Bay2Laser.IsCompleted || bay2.Accessories?.LaserPointer is null) &&
-                               setup.Bay2FullTest.IsCompleted &&
-                                setup.Bay2ProfileCheck.IsCompleted;
+                bay2AllTestCompleted = (setup.Bay2CarouselCalibration.IsCompleted || bay2.Carousel is null || setup.Bay2CarouselCalibration.IsBypassed) &&
+                               (setup.Bay2ExternalCalibration.IsCompleted || !bay2.IsExternal || setup.Bay2ExternalCalibration.IsBypassed) &&
+                               (setup.Bay2ShutterTest.IsCompleted || bay2.Shutter is null || setup.Bay2ShutterTest.IsBypassed) &&
+                               (setup.Bay2HeightCheck.IsCompleted || setup.Bay2HeightCheck.IsBypassed) &&
+                               (setup.Bay2Laser.IsCompleted || bay2.Accessories?.LaserPointer is null) &&
+                               (setup.Bay2FullTest.IsCompleted || setup.Bay2FullTest.IsBypassed) &&
+                               (setup.Bay2ProfileCheck.IsCompleted || setup.Bay2ProfileCheck.IsBypassed);
             }
 
             if (!(bay3 is null))
             {
-                bay3AllTestCompleted = (setup.Bay3CarouselCalibration.IsCompleted || bay3.Carousel is null) &&
-                               (setup.Bay3ExternalCalibration.IsCompleted || !bay3.IsExternal) &&
-                               (setup.Bay3ShutterTest.IsCompleted || bay3.Shutter is null) &&
-                                setup.Bay3HeightCheck.IsCompleted &&
-                               //(setup.Bay3Laser.IsCompleted || bay3.Accessories?.LaserPointer is null) &&
-                               setup.Bay3FullTest.IsCompleted &&
-                                setup.Bay3ProfileCheck.IsCompleted;
+                bay3AllTestCompleted = (setup.Bay3CarouselCalibration.IsCompleted || bay3.Carousel is null || setup.Bay3CarouselCalibration.IsBypassed) &&
+                               (setup.Bay3ExternalCalibration.IsCompleted || !bay3.IsExternal || setup.Bay3ExternalCalibration.IsBypassed) &&
+                               (setup.Bay3ShutterTest.IsCompleted || bay3.Shutter is null || setup.Bay3ShutterTest.IsBypassed) &&
+                               (setup.Bay3HeightCheck.IsCompleted || setup.Bay3HeightCheck.IsBypassed) &&
+                               (setup.Bay3Laser.IsCompleted || bay3.Accessories?.LaserPointer is null) &&
+                               (setup.Bay3FullTest.IsCompleted || setup.Bay3FullTest.IsBypassed) &&
+                               (setup.Bay3ProfileCheck.IsCompleted || setup.Bay3ProfileCheck.IsBypassed);
             }
 
             var statusCapabilities = new SetupStatusCapabilities
@@ -134,9 +148,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     ExternalBayCalibration = new SetupStepStatus
                     {
-                        IsCompleted = true, // setup.Bay1ExternalCalibration.IsCompleted,
+                        IsCompleted = setup.Bay1ExternalCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
-                        IsBypassed = true, // setup.Bay1ExternalCalibration.IsBypassed, TODO - decide how to perform an external bay calibration test
+                        IsBypassed = setup.Bay1ExternalCalibration.IsBypassed,
                     },
                     FullTest = new SetupStepStatus
                     {
@@ -183,9 +197,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     ExternalBayCalibration = new SetupStepStatus
                     {
-                        IsCompleted = true, //setup.Bay2ExternalCalibration.IsCompleted,
+                        IsCompleted = setup.Bay2ExternalCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
-                        IsBypassed = true, //setup.Bay2ExternalCalibration.IsBypassed, TODO remove bypass
+                        IsBypassed = setup.Bay2ExternalCalibration.IsBypassed,
                     },
                     FullTest = new SetupStepStatus
                     {
@@ -232,9 +246,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     },
                     ExternalBayCalibration = new SetupStepStatus
                     {
-                        IsCompleted = true, // setup.Bay3ExternalCalibration.IsCompleted,
+                        IsCompleted = setup.Bay3ExternalCalibration.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
-                        IsBypassed = true, // setup.Bay3ExternalCalibration.IsBypassed, TODO remove bypass
+                        IsBypassed = setup.Bay3ExternalCalibration.IsBypassed,
                     },
                     FullTest = new SetupStepStatus
                     {
