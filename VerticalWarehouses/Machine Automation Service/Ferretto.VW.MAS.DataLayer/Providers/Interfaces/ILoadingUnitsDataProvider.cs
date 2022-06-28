@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 
@@ -50,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Save(LoadingUnit loadingUnit);
 
-        void SaveToWms(int loadingUnitsId);
+        Task SaveToWmsAsync(int loadingUnitsId);
 
         void SetHeight(int loadingUnitId, double height);
 

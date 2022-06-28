@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
@@ -484,30 +485,56 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }
-            this.SaveToWms(loadingUnit.Id);
+            this.SaveToWmsAsync(loadingUnit.Id);
         }
 
-        public void SaveToWms(int loadingUnitId)
+        public async Task SaveToWmsAsync(int loadingUnitId)
         {
             if (this.wmsSettingsProvider.IsEnabled)
             {
                 var loadUnitDetail = new WMS.Data.WebAPI.Contracts.LoadingUnitDetails();
                 var loadingUnit = this.GetCellById(loadingUnitId);
-                loadUnitDetail.Id = loadingUnit.Id;
-                loadUnitDetail.Height = loadingUnit.Height;
+                var machineId = this.machineProvider.GetIdentity();
                 loadUnitDetail.CellId = loadingUnit.CellId;
-                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
-                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
                 loadUnitDetail.CellSide = (loadingUnit.CellId.HasValue && loadingUnit.Cell.Side != WarehouseSide.NotSpecified)
                     ? (loadingUnit.Cell.Side == WarehouseSide.Front ? WMS.Data.WebAPI.Contracts.Side.Front : WMS.Data.WebAPI.Contracts.Side.Back)
                     : WMS.Data.WebAPI.Contracts.Side.NotSpecified;
                 loadUnitDetail.Code = loadingUnit.Code;
-                loadUnitDetail.CreationDate = DateTime.Now;
+                loadUnitDetail.CreationDate = DateTimeOffset.UtcNow;
+                loadUnitDetail.LastModificationDate = DateTimeOffset.UtcNow;
+                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
+                loadUnitDetail.Height = loadingUnit.Height;
+                loadUnitDetail.Id = loadingUnit.Id;
+                loadUnitDetail.MachineId = machineId;
+                loadUnitDetail.MissionsCount = loadingUnit.MissionsCount;
+                loadUnitDetail.Note = loadingUnit.Description;
+                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
+
+                //loadUnitDetail.AbcClassDescription = string.Empty;
+                //loadUnitDetail.AbcClassId = string.Empty;
+                //loadUnitDetail.AreaName = string.Empty;
+                //loadUnitDetail.CellPositionDescription = string.Empty;
+                //loadUnitDetail.LoadingUnitStatusDescription = string.Empty;
+                //loadUnitDetail.LoadingUnitStatusId = string.Empty;
+                //loadUnitDetail.LoadingUnitTypeDescription = string.Empty;
+                //loadUnitDetail.InventoryDate = DateTimeOffset.UtcNow;
+                //loadUnitDetail.LastHandlingDate = DateTimeOffset.UtcNow;
+                //loadUnitDetail.LastPickDate = DateTimeOffset.UtcNow;
+                //loadUnitDetail.LastPutDate = DateTimeOffset.UtcNow;
+
+                //loadUnitDetail.AisleId = 0;
+                //loadUnitDetail.AreaFillRate = 0;
+                //loadUnitDetail.AreaId = 0;
+                //loadUnitDetail.CellPositionId = 0;
+                //loadUnitDetail.HandlingParametersCorrection = 0;
+
+                //var test = loadUnitDetail.ToJson();
 
                 try
                 {
-                    this.loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
-                    this.logger.LogInformation($"Update load unit {loadingUnit.Id} to wms ");
+                    //this.loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
+                    await this.loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail);
+                    this.logger.LogInformation($"Save load unit {loadingUnit.Id} to wms ");
                 }
                 catch (Exception ex)
                 {
