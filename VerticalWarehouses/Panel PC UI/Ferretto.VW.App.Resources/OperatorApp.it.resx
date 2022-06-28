@@ -2184,4 +2184,37 @@
   <data name="ShowAutoCompactingSetting" xml:space="preserve">
     <value>Impostazioni compattazione automatica</value>
   </data>
+  <data name="IsQuantityLimited" xml:space="preserve">
+    <value>Quantità limitata in prelievo e deposito</value>
+  </data>
+  <data name="StartCarToMachine" xml:space="preserve">
+    <value>Inizio associazione carrello a vertimag</value>
+  </data>
+  <data name="EndCarToMachine" xml:space="preserve">
+    <value>Il carrello {0} è associato con il vertimag {1}</value>
+  </data>
+  <data name="SelectedCar" xml:space="preserve">
+    <value>Carrello {0} selezionato.</value>
+  </data>
+  <data name="SelectedMachine" xml:space="preserve">
+    <value>Vertimag {0} selezionato.</value>
+  </data>
+  <data name="NoCarCode" xml:space="preserve">
+    <value>Nessun codice carrello trovato nel codice a barre</value>
+  </data>
+  <data name="NoMachineCode" xml:space="preserve">
+    <value>Nessun codice macchina trovato nel codice a barre</value>
+  </data>
+  <data name="ScanCarFirst" xml:space="preserve">
+    <value>Scansionare prima il codice a barre del carrello</value>
+  </data>
+  <data name="StartClosingCar" xml:space="preserve">
+    <value>Inizio chiusura carrello. Scansionare il carrello</value>
+  </data>
+  <data name="CarToMachine" xml:space="preserve">
+    <value>Il carrello {0} è collegato alla macchina {1}</value>
+  </data>
+  <data name="CarClosed" xml:space="preserve">
+    <value>Il carrello {0} è stato chiuso</value>
+  </data>
 </root>

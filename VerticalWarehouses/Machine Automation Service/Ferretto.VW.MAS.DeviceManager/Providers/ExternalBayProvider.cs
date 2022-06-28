@@ -115,6 +115,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return returnValue;
         }
 
+        public MachineErrorCode CanElevatorDepositExternal(BayNumber bayNumber, bool isPositionUpper)
+        {
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var returnValue = MachineErrorCode.NoError;
+
+            if (isPositionUpper)
+            {
+                // Check the zero sensor
+                if (!this.machineResourcesProvider.IsSensorZeroTopOnBay(bayNumber))
+                {
+                    returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                }
+            }
+            else
+            {
+                // Check the zero sensor
+                if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+                {
+                    returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+                }
+            }
+
+            return returnValue;
+        }
+
         public void StartDoubleExtBayTest(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender, bool isUpper)
         {
             var policy = this.CanMoveExtDouble(direction, bayNumber, MovementCategory.Assisted, isUpper);
@@ -811,7 +836,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             var targetPosition = bay.External.Race;    // USE for .Relative
-            // Check the module of distance to be moved
+                                                       // Check the module of distance to be moved
             const double EXT_RACE_FOR_EXTRACTION = 250.0d;
             if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset) + EXT_RACE_FOR_EXTRACTION)
             {
@@ -905,7 +930,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             var targetPosition = bay.External.Race;    // USE for .Relative
-            // Check the module of distance to be moved
+                                                       // Check the module of distance to be moved
             const double EXT_RACE_FOR_EXTRACTION = 250.0d;
             if (distance > 0 && distance < bay.External.Race + Math.Abs(bay.ChainOffset) + EXT_RACE_FOR_EXTRACTION)
             {

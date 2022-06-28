@@ -463,7 +463,7 @@
     <value>Errore nella calibrazione dell'asse orizzontale</value>
   </data>
   <data name="IoResetSecurityTimeout" xml:space="preserve">
-    <value>Errore di comando della scheda di ingressi / uscite</value>
+    <value>Errore di accensione</value>
   </data>
   <data name="ProfileResolutionFail" xml:space="preserve">
     <value>Calcolo della risoluzione della barriera di misura non completato</value>

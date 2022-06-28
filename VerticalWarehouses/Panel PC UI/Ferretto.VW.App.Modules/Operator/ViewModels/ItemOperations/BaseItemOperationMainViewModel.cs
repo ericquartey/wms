@@ -150,6 +150,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOperationCanceled;
 
+        private bool isQuantityLimited;
+
         private bool isSearching;
 
         private SubscriptionToken itemWeightToken;
@@ -157,6 +159,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
+
+        private double maxInputQuantity;
 
         private int maxKnownIndexSelection;
 
@@ -390,17 +394,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? InputQuantity
         {
             get => this.inputQuantity;
-            set => this.SetProperty(
-                ref this.inputQuantity,
-                value,
-                () =>
+            set
+            {
+                if (value >= 0
+                    && value <= this.MaxInputQuantity)
                 {
+                    this.SetProperty(ref this.inputQuantity, value);
                     this.CanInputAvailableQuantity = false;
                     this.CanConfirmPresent = false;
                     this.CanInputQuantity = true;
                     this.IsInputQuantityValid = this[nameof(this.InputQuantity)] != null;
                     this.RaiseCanExecuteChanged();
-                });
+                }
+            }
         }
 
         public string InputSerialNumber
@@ -512,6 +518,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isOperationCanceled, value);
         }
 
+        public bool IsQuantityLimited
+        {
+            get => this.isQuantityLimited;
+            set => this.SetProperty(ref this.isQuantityLimited, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsSearching
         {
             get => this.isSearching;
@@ -533,6 +545,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public IMachineIdentityWebService MachineIdentityWebService => this.machineIdentityWebService;
+
+        public double MaxInputQuantity
+        {
+            get => this.maxInputQuantity;
+            set => this.SetProperty(ref this.maxInputQuantity, value, this.RaiseCanExecuteChanged);
+        }
 
         public double MissionRequestedQuantity
         {
@@ -1382,6 +1400,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var disableQtyItemEditingPick = machine.IsDisableQtyItemEditingPick;
             this.IsEnableAvailableQtyItemEditingPick = !disableQtyItemEditingPick;
+            this.MaxInputQuantity = double.MaxValue;
 
             //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
 
@@ -2235,7 +2254,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     CanInputQuantity = this.CanInputQuantity,
                     QuantityIncrement = this.QuantityIncrement,
                     QuantityTolerance = this.QuantityTolerance,
-                    MeasureUnitTxt = string.Empty,
+                    MeasureUnitTxt = string.Format(Localized.Get("OperatorApp.PickedQuantity"), ""),
                     Barcode = barcode,
                     BarcodeLength = this.BarcodeLenght,
                     IsPartiallyCompleteOperation = isPartiallyConfirmOperation,

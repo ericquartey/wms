@@ -2675,10 +2675,10 @@
     <value>Incorrect passwords</value>
   </data>
   <data name="ProfileResolutionCalibration" xml:space="preserve">
-    <value>Height measure Resolution Calibration</value>
+    <value>Height measure test</value>
   </data>
   <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
-    <value>The calibration of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
+    <value>The test of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion.</value>
   </data>
   <data name="VerticalCalibrationProcedureRequired" xml:space="preserve">
     <value>Perform the Elevator calibration.</value>
@@ -2775,5 +2775,14 @@
   </data>
   <data name="RemoveSuccessful" xml:space="preserve">
     <value>Remove Successful</value>
+  </data>
+  <data name="FixBackDrawers" xml:space="preserve">
+    <value>Back Offset</value>
+  </data>
+  <data name="FixBackDrawersDescription" xml:space="preserve">
+    <value>Fix all back cell positions</value>
+  </data>
+  <data name="FixBackDrawersAsk" xml:space="preserve">
+    <value>Change all back cell position by {0}mm?</value>
   </data>
 </root>

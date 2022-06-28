@@ -457,7 +457,7 @@
     <value>The horizontal zero sensor in not active during homing</value>
   </data>
   <data name="IoResetSecurityTimeout" xml:space="preserve">
-    <value>Power on error. Check the safety devices</value>
+    <value>The Power on command has failed. Check the safety devices and the side door sensors</value>
   </data>
   <data name="ProfileResolutionFail" xml:space="preserve">
     <value>The profile measure barrier is not calibrated</value>

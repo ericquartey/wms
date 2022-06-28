@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors;
+        public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors || this.MachineService.Bay.Shutter.Type == ShutterType.UpperHalf;
 
         public ICommand CarouselDownCommand =>
             this.moveCarouselDownCommand
@@ -526,8 +526,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 && ((this.SensorsService?.IsZeroChain ?? false) || this.SensorsService.IsLoadingUnitOnElevator)
-                &&
-                (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
+                && this.BayIsShutterUpperHalf
+                && (this.SensorsService.ShutterSensors != null && (this.SensorsService.ShutterSensors.Open || this.SensorsService.ShutterSensors.MidWay));
         }
 
         private bool CanExecuteIntermediateCommand()

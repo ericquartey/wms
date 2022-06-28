@@ -170,7 +170,7 @@
                            IsEnabled="True"
                            LabelText="{resources:Loc OperatorApp.Quantity}"
                            Mask="{Binding QuantityTolerance, StringFormat=#########.######}"
-                           MinValue="0" />
+                           MinValue="0"/>
 
             <controls:PpcButton Grid.Column="1"
                             Margin="15,8,15,0"

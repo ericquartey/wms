@@ -252,8 +252,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
             }
-
-            return this.Ok(await loadingUnitsWmsWebService.GetByIdAsync(id));
+            var lu = await loadingUnitsWmsWebService.GetByIdAsync(id);
+            if (lu?.Note != null)
+            {
+                var local = this.loadingUnitsDataProvider.GetById(id);
+                if (local?.Description != lu.Note)
+                {
+                    local.Description = lu.Note;
+                    this.loadingUnitsDataProvider.Save(local);
+                }
+            }
+            return this.Ok(lu);
         }
 
         [HttpPost("{id}/immediate-additem")]
@@ -455,9 +464,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit,
-            [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
-            [FromServices] IWmsSettingsProvider wmsSettingsProvider)
+        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit)
         {
             if (loadingUnit is null)
             {
@@ -465,38 +472,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
 
             this.loadingUnitsDataProvider.Save(loadingUnit);
-
-            if (wmsSettingsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(wmsSettingsProvider));
-            }
-
-            if (wmsSettingsProvider.IsEnabled)
-            {
-                if (loadingUnitsWmsWebService is null)
-                {
-                    throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
-                }
-                var loadUnitDetail = new LoadingUnitDetails();
-                loadingUnit = this.loadingUnitsDataProvider.GetCellById(loadingUnit.Id);
-                loadUnitDetail.Id = loadingUnit.Id;
-                loadUnitDetail.Height = loadingUnit.Height;
-                loadUnitDetail.CellId = loadingUnit.CellId;
-                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
-                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
-                loadUnitDetail.CellSide = (loadingUnit.CellId.HasValue && loadingUnit.Cell.Side != WarehouseSide.NotSpecified) ? (loadingUnit.Cell.Side == WarehouseSide.Front ? Side.Front : Side.Back) : Side.NotSpecified;
-                loadUnitDetail.Code = loadingUnit.Code;
-                loadUnitDetail.CreationDate = DateTime.Now;
-
-                try
-                {
-                    loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
-                }
-                catch (Exception ex)
-                {
-                    this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
-                }
-            }
 
             return this.Accepted();
         }

@@ -1189,6 +1189,7 @@
           },
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
+          "HorizontalCalibrateSpeed": 1.5,
           "Id": 2,
           "LastCalibrationCycles": 0,
           "LastIdealPosition": 0.0,

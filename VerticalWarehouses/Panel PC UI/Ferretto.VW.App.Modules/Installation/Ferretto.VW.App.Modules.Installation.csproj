@@ -40,6 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Cells\FixBackDrawersView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Elevator\HorizontalResolutionCalibrationView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

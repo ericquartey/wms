@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCarrefour;
 
+        private bool isCheckListContinueInOtherMachine;
+
         private bool isDisableQtyItemEditingPick;
 
         private bool isDoubleConfirmBarcodeInventory;
@@ -51,6 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOrderList;
 
+        private bool isQuantityLimited;
+
         private bool isRequestConfirmForLastOperationOnLoadingUnit;
 
         private bool isShowBarcodeImage;
@@ -68,8 +72,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int toteBarcodeLength;
 
         private bool view;
-
-        private bool isCheckListContinueInOtherMachine;
 
         #endregion
 
@@ -117,6 +119,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCarrefour;
             set => this.SetProperty(ref this.isCarrefour, value, this.CanExecute);
+        }
+
+        public bool IsCheckListContinueInOtherMachine
+        {
+            get => this.isCheckListContinueInOtherMachine;
+            set => this.SetProperty(ref this.isCheckListContinueInOtherMachine, value, this.CanExecute);
         }
 
         public bool IsDisableQtyItemEditingPick
@@ -180,6 +188,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isOrderList, value, this.CanExecute);
         }
 
+        public bool IsQuantityLimited
+        {
+            get => this.isQuantityLimited;
+            set => this.SetProperty(ref this.isQuantityLimited, value, this.CanExecute);
+        }
+
         public bool IsRequestConfirmForLastOperationOnLoadingUnit
         {
             get => this.isRequestConfirmForLastOperationOnLoadingUnit;
@@ -190,12 +204,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isShowBarcodeImage;
             set => this.SetProperty(ref this.isShowBarcodeImage, value, this.CanExecute);
-        }
-
-        public bool IsCheckListContinueInOtherMachine
-        {
-            get => this.isCheckListContinueInOtherMachine;
-            set => this.SetProperty(ref this.isCheckListContinueInOtherMachine, value, this.CanExecute);
         }
 
         public bool IsUpdatingStockByDifference
@@ -302,6 +310,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnabeNoteRules = configuration.Machine.EnabeNoteRules;
                 this.IsLocalMachineItems = configuration.Machine.IsLocalMachineItems;
                 this.IsOrderList = configuration.Machine.IsOrderList;
+                this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
                 this.ItemUniqueIdLength = configuration.Machine.ItemUniqueIdLength;
                 this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
             }
@@ -341,6 +350,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.ItemUniqueIdLength = this.ItemUniqueIdLength;
                 machine.ToteBarcodeLength = this.ToteBarcodeLength;
                 machine.IsDrapery = this.IsDrapery;
+                machine.IsQuantityLimited = this.IsQuantityLimited;
 
                 await this.identityService.SetBayOperationParamsAsync(machine);
 

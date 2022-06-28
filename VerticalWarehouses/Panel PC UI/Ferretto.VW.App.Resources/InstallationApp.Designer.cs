@@ -2824,6 +2824,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back Offset.
+        /// </summary>
+        public static string FixBackDrawers {
+            get {
+                return ResourceManager.GetString("FixBackDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change all back cell position by {0}mm?.
+        /// </summary>
+        public static string FixBackDrawersAsk {
+            get {
+                return ResourceManager.GetString("FixBackDrawersAsk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fix all back cell positions.
+        /// </summary>
+        public static string FixBackDrawersDescription {
+            get {
+                return ResourceManager.GetString("FixBackDrawersDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forwards.
         /// </summary>
         public static string Forwards {
@@ -5506,7 +5533,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height measure Resolution Calibration.
+        ///   Looks up a localized string similar to Height measure test.
         /// </summary>
         public static string ProfileResolutionCalibration {
             get {
@@ -5515,7 +5542,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The calibration of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
+        ///   Looks up a localized string similar to The test of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
         /// </summary>
         public static string ProfileResolutionCalibrationHelp {
             get {

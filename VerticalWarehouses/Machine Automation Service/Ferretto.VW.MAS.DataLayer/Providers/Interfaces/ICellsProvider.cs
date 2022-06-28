@@ -34,6 +34,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Save(Cell cell);
 
+        void SaveCells(IEnumerable<Cell> cells);
+
         int SetCellsToTest(BayNumber bayNumber, double height);
 
         void SetLoadingUnit(int cellId, int? loadingUnitId);

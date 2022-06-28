@@ -447,7 +447,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 (!this.MachineService.MachineStatus.IsMoving || this.isCarouselCalibration)
                 &&
-                (this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter)
+                (this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter ||
+                (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf))
                 //&&
                 //(!this.IsExecutingProcedure || this.isCarouselCalibration)
                 &&

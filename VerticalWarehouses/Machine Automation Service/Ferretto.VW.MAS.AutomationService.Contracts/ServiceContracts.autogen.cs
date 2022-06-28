@@ -407,6 +407,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task SaveCellAsync(Cell cell, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SaveCellsAsync(System.Collections.Generic.IEnumerable<Cell> cells);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SaveCellsAsync(System.Collections.Generic.IEnumerable<Cell> cells, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2552,11 +2559,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ProductInMachine>> GetAllProductsAsync(string search, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<ItemList>> GetItemListsAsync(int id, int machineId, int bayNumber, bool? includeExecuting, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ProductInMachine> GetProductByBarcodeAsync(string barcode);
@@ -2865,6 +2872,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task AssociateBasketToShelfAsync(string basketCode, string shelfCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CarCompleteAsync(string carCode, string machineCode, int machineId, int bayNumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CarCompleteAsync(string carCode, string machineCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CarToMachineAsync(string carCode, string machineCode, int machineId, int bayNumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CarToMachineAsync(string carCode, string machineCode, int machineId, int bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task CompleteBasketAsync(string basketCode, string shelfCode, int machineId, int bayNumber);
@@ -4811,6 +4832,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ThreeSensors = 2,
     
+        UpperHalf = 3,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v12.0.0.0)")]
@@ -5164,6 +5187,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsOrderList", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOrderList { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsQuantityLimited", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsQuantityLimited { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }

@@ -177,4 +177,7 @@
   <data name="AutoLogoutServiceUser" xml:space="preserve">
     <value>Sesja użytkownika 'service' wygasła</value>
   </data>
+  <data name="NoAccessLevel" xml:space="preserve">
+    <value>Nieprawidłowy lub niezdefiniowany poziom dostępu</value>
+  </data>
 </root>

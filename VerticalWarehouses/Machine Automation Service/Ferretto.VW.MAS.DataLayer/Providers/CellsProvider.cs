@@ -655,6 +655,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SaveCells(IEnumerable<Cell> cells)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Cells.UpdateRange(cells);
+                this.logger.LogDebug($"Change back drawers position. {cells.Count()} cells updated" );
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public int SetCellsToTest(BayNumber bayNumber, double height)
         {
             lock (this.dataContext)

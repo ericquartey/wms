@@ -165,7 +165,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.ErrorMovements == MissionErrorMovements.None)
                     {
                         this.Mission.StepTime = DateTime.UtcNow;
-                        if (this.Mission.NeedHomingAxis == Axis.None)
+                        if (this.Mission.NeedHomingAxis == Axis.None && this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay])
                         {
                             this.Mission.NeedHomingAxis = Axis.BayChain;
                         }
@@ -383,6 +383,14 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 this.ErrorsProvider.RecordNew(MachineErrorCode.TopLevelBayEmpty, this.Mission.TargetBay);
                 throw new StateMachineException(ErrorDescriptions.TopLevelBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);
+            }
+            else if ((destination.LoadingUnit is null || destination.LoadingUnit.Id == this.Mission.LoadUnitId)
+                && this.SensorsProvider.IsLoadingUnitInLocation(destination.Location)
+                && !this.LoadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.Mission.TargetBay)
+                )
+            {
+                this.ErrorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay);
+                throw new StateMachineException(ErrorDescriptions.SensorZeroBayNotActiveAtStart, this.Mission.TargetBay, MessageActor.MachineManager);
             }
             else
             {

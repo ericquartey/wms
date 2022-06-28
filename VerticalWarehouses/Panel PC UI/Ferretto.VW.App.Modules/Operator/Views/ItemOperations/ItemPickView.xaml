@@ -455,7 +455,8 @@
                          IsEnabled="{Binding CanInputQuantity}"
                          LabelText="{Binding MeasureUnitTxt, Mode=OneWay}"
                          Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                         MinValue="0" />
+                         MinValue="0"
+                         MaxValue="{Binding MaxInputQuantity}"/>
 
       <controls:PpcButton Grid.Row="4"
                           Width="110"
@@ -526,6 +527,7 @@
 
         <controls:PpcButton Grid.Row="5"
                             Height="50"
+                            Width="110"
                             Margin="15,8,15,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Bottom"
@@ -535,7 +537,31 @@
 
       </Grid>
 
-      <controls:PpcButton Grid.Row="6"
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right">
+
+                <controls:PpcButton
+                          Width="55"
+                          Height="50"
+                          Margin="5,8,0,0"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding ShowBarcodeReaderCommand}"
+                          KindMaterial="BarcodeScan"
+                          Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
+
+                <controls:PpcButton
+                          Width="55"
+                          Height="50"
+                          Margin="5,8,15,0"
+                          HorizontalAlignment="right"
+                          VerticalAlignment="Bottom"
+                          Command="{Binding SuspendCommand}"
+                          KindMaterial="Pause"/>
+
+            </StackPanel>
+
+
+        <controls:PpcButton Grid.Row="6"
                           Width="110"
                           Height="50"
                           Margin="15,8,15,0"
@@ -571,6 +597,7 @@
                           Visibility="{Binding CanConfirm, Converter={StaticResource BTVC}}" />
 
       <controls:PpcButton Grid.Row="6"
+                          Width="110"
                           Height="50"
                           Margin="15,8,15,0"
                           HorizontalAlignment="Left"
@@ -584,40 +611,19 @@
 
       <StackPanel Grid.Row="6"
                   Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
-        <TextBlock Margin="10,5,0,0"
-                   HorizontalAlignment="Left"
+        <TextBlock Margin="10,5,15,0"
+                   HorizontalAlignment="Right"
                    VerticalAlignment="Top"
                    FontSize="{StaticResource FontSize_Small}"
                    Foreground="{DynamicResource PpcForeground}"
                    Text="{resources:Loc OperatorApp.CloseLine}" />
 
         <controls:PpcCheckBox Margin="20,5,15,0"
-                              HorizontalAlignment="Left"
+                              HorizontalAlignment="Right"
                               VerticalAlignment="Bottom"
                               IsChecked="{Binding CloseLine, Mode=TwoWay}" />
       </StackPanel>
 
-      <StackPanel Grid.Row="6">
-                
-            <controls:PpcButton
-                          Width="55"
-                          Height="50"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding SuspendCommand}"
-                          KindMaterial="Pause"/>
-
-            <controls:PpcButton
-                          Width="55"
-                          Height="50"
-                          Margin="15,8,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ShowBarcodeReaderCommand}"
-                          KindMaterial="BarcodeScan"
-                          Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
-            </StackPanel>
 
             <!--<StackPanel Grid.Column="2"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">

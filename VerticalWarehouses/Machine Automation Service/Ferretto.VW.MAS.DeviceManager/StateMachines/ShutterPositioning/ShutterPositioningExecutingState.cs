@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.delayTimerDown.Change(Timeout.Infinite, Timeout.Infinite);
 
             // delay expired
-            this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
+                this.StartPositioning(ShutterPosition.Closed, ShutterMovementDirection.Up);
         }
 
         private void DelayTimerMethodUp(object state)
@@ -235,7 +235,39 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     break;
 
                 case ShutterPosition.Half:
-                    this.StartPositioning(messageData.ShutterPosition, this.oldDirection);
+                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
+                    {
+                        setupProceduresDataProvider = this.ParentStateMachine.ServiceScopeFactory
+                        .CreateScope()
+                        .ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>();
+
+                        testParameters = setupProceduresDataProvider.IncreasePerformedCycles(
+                            setupProceduresDataProvider.GetBayShutterTest(this.machineData.RequestingBay));
+
+                        this.machineData.PositioningMessageData.PerformedCycles = testParameters.PerformedCycles;
+
+                        if (testParameters.PerformedCycles >= testParameters.RequiredCycles)
+                        {
+                            setupProceduresDataProvider.MarkAsCompleted(setupProceduresDataProvider.GetBayShutterTest(this.machineData.RequestingBay));
+                            this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData, this.Logger));
+                        }
+                        else
+                        {
+                            if (this.machineData.PositioningMessageData.Delay > 0)
+                            {
+                                this.delayTimerDown.Change(this.machineData.PositioningMessageData.Delay, this.machineData.PositioningMessageData.Delay);
+                            }
+                            else
+                            {
+                                this.StartPositioning(ShutterPosition.Half, ShutterMovementDirection.Up);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        this.StartPositioning(messageData.ShutterPosition, this.oldDirection);
+                    }
                     break;
 
                 default:
@@ -252,7 +284,9 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             if (direction == ShutterMovementDirection.Down)
             {
                 shutterPositionTarget = ShutterPosition.Closed;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+
+                if ((this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+                    || this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
                     &&
                     position == ShutterPosition.Opened)
                 {
