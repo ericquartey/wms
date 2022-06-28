@@ -15,6 +15,138 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2"
+                                   RadiusX="1"
+                                   RadiusY="1"
+                                   SnapsToDevicePixels="true"
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                   StrokeDashArray="1 2"
+                                   StrokeThickness="1" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="6,0,0,0"
+                                   RadiusX="1"
+                                   RadiusY="1"
+                                   SnapsToDevicePixels="true"
+                                   Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                   StrokeDashArray="1 2"
+                                   StrokeThickness="1" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <SolidColorBrush x:Key="OptionMark.Disabled.Background"
+                         Color="#FFE6E6E6" />
+        <SolidColorBrush x:Key="OptionMark.Disabled.Border"
+                         Color="#FFBCBCBC" />
+        <SolidColorBrush x:Key="OptionMark.Disabled.Glyph"
+                         Color="#FF707070" />
+
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
+            <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+            <Setter Property="Width" Value="35" />
+            <Setter Property="Height" Value="35" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid x:Name="templateRoot"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Background="Transparent"
+                              SnapsToDevicePixels="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="checkBoxBorder"
+                                    Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Height}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{DynamicResource PpcCornerRadius}">
+                                <!--<Border.Effect>
+                                    <DropShadowEffect BlurRadius="6"
+                                                      Opacity="0.5"
+                                                      RenderingBias="Quality"
+                                                      ShadowDepth="2"
+                                                      Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
+                                </Border.Effect>-->
+
+                                <Grid x:Name="markGrid"
+                                      SnapsToDevicePixels="True">
+                                    <Path x:Name="optionMark"
+                                          Margin="5"
+                                          Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z "
+                                          Fill="{StaticResource FerrettoPureWhite}"
+                                          Opacity="0"
+                                          Stretch="Uniform" />
+                                    <Rectangle x:Name="indeterminateMark"
+                                               Margin="3"
+                                               Fill="{StaticResource FerrettoBlack}"
+                                               Opacity="0"
+                                               RadiusX="1"
+                                               RadiusY="1" />
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Grid.Column="1"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Focusable="False"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}" />
+                                <Setter Property="Padding" Value="4,-1,0,0" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="checkBoxBorder" Property="Background" Value="{StaticResource OptionMark.Disabled.Background}" />
+                                <Setter TargetName="checkBoxBorder" Property="BorderBrush" Value="{StaticResource OptionMark.Disabled.Border}" />
+                                <Setter TargetName="optionMark" Property="Fill" Value="{StaticResource OptionMark.Disabled.Glyph}" />
+                                <Setter TargetName="indeterminateMark" Property="Fill" Value="{StaticResource OptionMark.Disabled.Glyph}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="optionMark" Property="Opacity" Value="1" />
+                                <Setter TargetName="indeterminateMark" Property="Opacity" Value="0" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter TargetName="optionMark" Property="Opacity" Value="0" />
+                                <Setter TargetName="indeterminateMark" Property="Opacity" Value="1" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -252,6 +384,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
 
@@ -274,13 +407,25 @@
                                        Text="{Binding Model.ServiceStatus, Converter={StaticResource MSSEC}}" />
                         </StackPanel>
 
-                        <TextBlock Grid.Row="2"
-                                   Margin="10,5"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
-                                   Text="{Resources:Loc OperatorApp.GeneralInfoWmsStatus}"
-                                   TextAlignment="Right" />
+                        <StackPanel Grid.Row="2"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Orientation="Horizontal">
+                            <TextBlock Grid.Row="2"
+                                       Margin="10,5"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Bottom"
+                                       Style="{DynamicResource VWAPP_ViewInformationTitleSmallTextBlockStyle}"
+                                       Text="{Resources:Loc OperatorApp.GeneralInfoWmsStatus}"
+                                       TextAlignment="Right" />
+
+                            <CheckBox Grid.Row="3"
+                                      Grid.Column="1"
+                                      Command="{Binding ChangeWmsStatusCommand}"
+                                      IsChecked="{Binding WmsStatus}"
+                                      Visibility="{Binding IsVisibleWmsStatus, Converter={StaticResource BTVC}}" />
+
+                        </StackPanel>
 
                         <StackPanel Grid.Row="3"
                                     Margin="15,5"
@@ -294,6 +439,8 @@
                             <TextBlock Style="{DynamicResource VWAPP_ViewInformationSmallTitleTextBlockStyle}"
                                        Text="{Binding WmsServicesStatusDescription}" />
                         </StackPanel>
+
+
 
                     </Grid>
                 </Border>
