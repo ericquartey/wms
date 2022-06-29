@@ -1294,6 +1294,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear on close view.
+        /// </summary>
+        public static string ClearAlphaBarOnCloseView {
+            get {
+                return ResourceManager.GetString("ClearAlphaBarOnCloseView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear temp folder &apos;{0}&apos;..
         /// </summary>
         public static string ClearTempFolder {

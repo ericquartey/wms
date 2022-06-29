@@ -29,6 +29,8 @@
 - Aggiunta gestione Put and Go
 - Ferretto NuGet package 0.16.43
 - Aggiunta serranda UpperHalf per fiera
+- Barra alfanumerica: aggiunto parametro per cancellare alla chiusura della vista di prelievo o versamento
+- I cassetti sono salvati sull'adapter
 
 ## Bug Risolti
 - BIG: corretto ripristino in caso di perdita del sensore di zero
@@ -36,7 +38,7 @@
 - Versamenti: Salda riga è falso di default
 - Conferma collaudo: corretta baia esterna
 
-## Compatibile con adapter 0.4.35
+## Compatibile con adapter 0.4.35 e 0.4.36
 ***
 
 [Versione 1.0.45](#id1045)
