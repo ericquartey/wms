@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void RemoveTestUnit(LoadingUnit loadingUnit);
 
-        void Save(LoadingUnit loadingUnit);
+        Task SaveAsync(LoadingUnit loadingUnit);
 
         Task SaveToWmsAsync(int loadingUnitsId);
 
