@@ -517,7 +517,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
                                     cellsProvider.SetLoadingUnit(cell.Id, null);
                                     this.Logger.LogDebug($"SetLoadingUnit: Load Unit {cell.LoadingUnit.Id}; in elevator from Cell id {cell.Id}");
-                                    loadingUnitProvider.SaveToWms(cell.LoadingUnit.Id);
+                                    loadingUnitProvider.SaveToWmsAsync(cell.LoadingUnit.Id);
                                     isChanged = true;
                                 }
                             }

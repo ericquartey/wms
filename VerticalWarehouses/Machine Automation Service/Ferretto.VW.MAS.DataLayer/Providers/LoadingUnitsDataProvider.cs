@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
@@ -380,7 +381,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Save(LoadingUnit loadingUnit)
+        public async Task SaveAsync(LoadingUnit loadingUnit)
         {
             int? cellIdOld = null;
             double luHeightOld = 0;
@@ -484,30 +485,35 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }
-            this.SaveToWms(loadingUnit.Id);
+            await this.SaveToWmsAsync(loadingUnit.Id);
         }
 
-        public void SaveToWms(int loadingUnitId)
+        public async Task SaveToWmsAsync(int loadingUnitId)
         {
             if (this.wmsSettingsProvider.IsEnabled)
             {
                 var loadUnitDetail = new WMS.Data.WebAPI.Contracts.LoadingUnitDetails();
                 var loadingUnit = this.GetCellById(loadingUnitId);
-                loadUnitDetail.Id = loadingUnit.Id;
-                loadUnitDetail.Height = loadingUnit.Height;
+                var machineId = this.machineProvider.GetIdentity();
                 loadUnitDetail.CellId = loadingUnit.CellId;
-                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
-                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
                 loadUnitDetail.CellSide = (loadingUnit.CellId.HasValue && loadingUnit.Cell.Side != WarehouseSide.NotSpecified)
                     ? (loadingUnit.Cell.Side == WarehouseSide.Front ? WMS.Data.WebAPI.Contracts.Side.Front : WMS.Data.WebAPI.Contracts.Side.Back)
                     : WMS.Data.WebAPI.Contracts.Side.NotSpecified;
                 loadUnitDetail.Code = loadingUnit.Code;
-                loadUnitDetail.CreationDate = DateTime.Now;
+                loadUnitDetail.CreationDate = DateTimeOffset.UtcNow;
+                loadUnitDetail.LastModificationDate = DateTimeOffset.UtcNow;
+                loadUnitDetail.EmptyWeight = loadingUnit.Tare;
+                loadUnitDetail.Height = loadingUnit.Height;
+                loadUnitDetail.Id = loadingUnit.Id;
+                loadUnitDetail.MachineId = machineId;
+                loadUnitDetail.MissionsCount = loadingUnit.MissionsCount;
+                loadUnitDetail.Note = loadingUnit.Description;
+                loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
 
                 try
                 {
-                    this.loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
-                    this.logger.LogInformation($"Update load unit {loadingUnit.Id} to wms ");
+                    await this.loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail);
+                    this.logger.LogInformation($"Save load unit {loadingUnit.Id} to wms ");
                 }
                 catch (Exception ex)
                 {

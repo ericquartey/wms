@@ -2709,4 +2709,7 @@
   <data name="FixBackDrawersAsk" xml:space="preserve">
     <value>Cambiare tutte le quote posteriori di {0}mm?</value>
   </data>
+  <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
+    <value>Cancella in chiusura vista</value>
+  </data>
 </root>
