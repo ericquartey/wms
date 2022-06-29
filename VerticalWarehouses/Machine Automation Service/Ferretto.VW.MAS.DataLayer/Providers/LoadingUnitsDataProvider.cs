@@ -382,7 +382,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Save(LoadingUnit loadingUnit)
+        public async Task SaveAsync(LoadingUnit loadingUnit)
         {
             int? cellIdOld = null;
             double luHeightOld = 0;
@@ -486,7 +486,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }
-            this.SaveToWmsAsync(loadingUnit.Id);
+            await this.SaveToWmsAsync(loadingUnit.Id);
         }
 
         public async Task SaveToWmsAsync(int loadingUnitId)

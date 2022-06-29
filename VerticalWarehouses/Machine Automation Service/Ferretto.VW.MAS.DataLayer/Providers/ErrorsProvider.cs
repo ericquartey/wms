@@ -193,66 +193,73 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var existingUnresolvedError = this.dataContext.Errors.Where(
-                    e => e.ResolutionDate == null
-                        &&
-                        e.BayNumber == bayNumber)
-                    .ToList();
-
-                var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
-
-                if (existingUnresolvedError.Any())
+                try
                 {
-                    // discard only the same error
-                    if (newError.Severity >= (int)MachineErrorSeverity.High && existingUnresolvedError.Any(e => e.Code == (int)code))
+                    var existingUnresolvedError = this.dataContext.Errors.Where(
+                        e => e.ResolutionDate == null
+                            &&
+                            e.BayNumber == bayNumber)
+                        .ToList();
+
+                    var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
+
+                    if (existingUnresolvedError.Any())
                     {
-                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
-                        return existingUnresolvedError.First(e => e.Code == (int)code);
-                    }
-
-                    // there are active errors different from code
-
-                    //// TODO enable this loop to discard subsequent errors of lower severity
-                    //foreach (var activeError in existingUnresolvedError)
-                    //{
-                    //    if (activeError.Severity < errorStatistics.Severity && activeError.Code > 0)
-                    //    {
-                    //        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because a higher severity error is already active.");
-                    //        return newError;
-                    //    }
-                    //}
-
-                    if (newError.Severity == (int)MachineErrorSeverity.High)
-                    {
-                        // resolve low priority errors
-                        foreach (var activeError in existingUnresolvedError.Where(e => e.Severity == (int)MachineErrorSeverity.Low))
+                        // discard only the same error
+                        if (newError.Severity >= (int)MachineErrorSeverity.High && existingUnresolvedError.Any(e => e.Code == (int)code))
                         {
-                            this.logger.LogTrace($"Machine error {activeError.Code} ({activeError.Code}) for {bayNumber} was resolved by higher priority error {code}.");
-                            this.Resolve(activeError.Id, force: true);
+                            this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already active.");
+                            return existingUnresolvedError.First(e => e.Code == (int)code);
                         }
-                    }
 
-                    if (newError.Severity < (int)MachineErrorSeverity.High)
+                        // there are active errors different from code
+
+                        //// TODO enable this loop to discard subsequent errors of lower severity
+                        //foreach (var activeError in existingUnresolvedError)
+                        //{
+                        //    if (activeError.Severity < errorStatistics.Severity && activeError.Code > 0)
+                        //    {
+                        //        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because a higher severity error is already active.");
+                        //        return newError;
+                        //    }
+                        //}
+
+                        if (newError.Severity == (int)MachineErrorSeverity.High)
+                        {
+                            // resolve low priority errors
+                            foreach (var activeError in existingUnresolvedError.Where(e => e.Severity == (int)MachineErrorSeverity.Low))
+                            {
+                                this.logger.LogTrace($"Machine error {activeError.Code} ({activeError.Code}) for {bayNumber} was resolved by higher priority error {code}.");
+                                this.Resolve(activeError.Id, force: true);
+                            }
+                        }
+
+                        if (newError.Severity < (int)MachineErrorSeverity.High)
+                        {
+                            // discard all subsequent errors
+                            this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another high priority error is already active.");
+                            return newError;
+                        }
+                    };
+
+                    this.dataContext.Errors.Add(newError);
+
+                    if (errorStatistics != null)
                     {
-                        // discard all subsequent errors
-                        this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because another high priority error is already active.");
-                        return newError;
+                        errorStatistics.TotalErrors++;
+                        this.dataContext.ErrorStatistics.Update(errorStatistics);
                     }
-                };
+                    else
+                    {
+                        this.dataContext.ErrorStatistics.Add(new ErrorStatistic { Code = newError.Code, TotalErrors = 1 });
+                    }
 
-                this.dataContext.Errors.Add(newError);
-
-                if (errorStatistics != null)
-                {
-                    errorStatistics.TotalErrors++;
-                    this.dataContext.ErrorStatistics.Update(errorStatistics);
+                    this.dataContext.SaveChanges();
                 }
-                else
+                catch (Exception ex)
                 {
-                    this.dataContext.ErrorStatistics.Add(new ErrorStatistic { Code = newError.Code, TotalErrors = 1 });
+                    this.logger.LogError(ex.Message);
                 }
-
-                this.dataContext.SaveChanges();
             }
 
             this.NotifyErrorCreation(newError, bayNumber);
