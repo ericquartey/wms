@@ -31,6 +31,7 @@
 - Aggiunta serranda UpperHalf per fiera
 - Barra alfanumerica: aggiunto parametro per cancellare alla chiusura della vista di prelievo o versamento
 - I cassetti sono salvati sull'adapter
+- Menu Info - Generale: aggiunto cambio Stato Wms per Operator
 
 ## Bug Risolti
 - BIG: corretto ripristino in caso di perdita del sensore di zero

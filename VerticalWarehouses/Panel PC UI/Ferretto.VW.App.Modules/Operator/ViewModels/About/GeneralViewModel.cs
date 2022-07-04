@@ -16,15 +16,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IDialogService dialogService;
+
         private readonly IHealthProbeService healthProbeService;
 
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineAboutWebService machineAboutWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+        private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
+
         private int averageHeight;
 
         private int averageOccupiedSpace;
+
+        private DelegateCommand changeWmsStatusCommand;
+
+        private bool isVisibleWmsStatus;
 
         private Brush machineServiceStatusBrush;
 
@@ -44,13 +57,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string wmsServicesStatusDescription;
 
+        private bool wmsStatus;
+
         #endregion
 
         #region Constructors
 
-        public GeneralViewModel(
+        public GeneralViewModel(IDialogService dialogService,
+            IMachineWmsStatusWebService wmsStatusWebService,
             IMachineIdentityWebService identityService,
             IMachineAboutWebService machineAboutWebService,
+            IMachineIdentityWebService machineIdentityWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
             IHealthProbeService healthProbeService)
             : base()
         {
@@ -59,6 +78,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineAboutWebService = machineAboutWebService ?? throw new ArgumentNullException(nameof(machineAboutWebService));
 
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+
+            this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
+
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
 
             this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
@@ -77,6 +104,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.averageOccupiedSpace;
             set => this.SetProperty(ref this.averageOccupiedSpace, value);
+        }
+
+        public ICommand ChangeWmsStatusCommand =>
+                          this.changeWmsStatusCommand
+          ??
+          (this.changeWmsStatusCommand = new DelegateCommand(
+              () => this.ChangeWmsStatus(),
+              this.CanChangeWmsStatus));
+
+        public bool IsVisibleWmsStatus
+        {
+            get => this.isVisibleWmsStatus;
+            set => this.SetProperty(ref this.isVisibleWmsStatus, value);
         }
 
         public Brush MachineServiceStatusBrush
@@ -140,6 +180,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.wmsServicesStatusDescription, value);
         }
 
+        public bool WmsStatus
+        {
+            get => this.wmsStatus;
+            set => this.SetProperty(ref this.wmsStatus, value);
+        }
+
         #endregion
 
         #region Methods
@@ -148,7 +194,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
+            this.IsVisibleWmsStatus = await this.machineIdentityWebService.GetCanUserEnableWmsAsync();
+
+            this.WmsStatus = await this.wmsStatusWebService.IsEnabledAsync();
+
             await base.OnAppearedAsync();
+        }
+
+        internal bool CanChangeWmsStatus()
+        {
+            return this.CanExecute()
+                && this.machineService.MachineMode != MachineMode.Automatic
+                && this.machineService.MachineMode < MachineMode.Shutdown;
         }
 
         internal bool CanExecuteCommand()
@@ -210,6 +267,77 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.RaiseCanExecuteChanged();
 
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
+            this.changeWmsStatusCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecute()
+        {
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayTwo:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayThree:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                default:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            }
+        }
+
+        private async void ChangeWmsStatus()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var dialogResult = this.dialogService.ShowMessage(Resources.InstallationApp.ChangeWmsStatus, Resources.InstallationApp.WmsSetting, DialogType.Question, DialogButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    var WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
+                    var SocketLinkIsEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
+                    var SocketLinkPort = await this.wmsStatusWebService.GetSocketLinkPortAsync();
+                    var SocketLinkTimeout = await this.wmsStatusWebService.GetSocketLinkTimeoutAsync();
+                    var SocketLinkPolling = await this.wmsStatusWebService.GetSocketLinkPollingAsync();
+                    var ConnectionTimeout = await this.wmsStatusWebService.GetConnectionTimeoutAsync();
+                    var SocketLinkEndOfLine = await this.wmsStatusWebService.GetSocketLinkEndOfLineAsync();
+
+                    await this.wmsStatusWebService.UpdateAsync(this.WmsStatus, WmsHttpUrl, SocketLinkIsEnabled, SocketLinkPort, SocketLinkTimeout, SocketLinkPolling, ConnectionTimeout, SocketLinkEndOfLine);
+                    if (!this.WmsStatus)
+                    {
+                        var missions = await this.machineMissionsWebService.GetAllAsync();
+                        foreach (var mission in missions)
+                        {
+                            if (mission.MissionType == MissionType.WMS)
+                            {
+                                await this.machineLoadingUnitsWebService.AbortAsync(mission.Id, mission.TargetBay);
+                            }
+                        }
+                    }
+
+                    await this.OnDataRefreshAsync();
+                }
+                else
+                {
+                    this.WmsStatus = !this.WmsStatus;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private Brush GetBrushForServiceStatus(HealthStatus serviceStatus)
