@@ -25,8 +25,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineAboutWebService machineAboutWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
+        private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
 
         private int averageHeight;
 
@@ -62,9 +65,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public GeneralViewModel(IDialogService dialogService,
             IMachineWmsStatusWebService wmsStatusWebService,
-        IMachineIdentityWebService identityService,
+            IMachineIdentityWebService identityService,
             IMachineAboutWebService machineAboutWebService,
             IMachineIdentityWebService machineIdentityWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineMissionsWebService machineMissionsWebService,
             IHealthProbeService healthProbeService)
             : base()
         {
@@ -79,6 +84,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
 
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
 
             this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
@@ -187,7 +194,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            //this.IsVisibleWmsStatus = await this.machineIdentityWebService.GetCanUserEnableWms();
+            this.IsVisibleWmsStatus = await this.machineIdentityWebService.GetCanUserEnableWmsAsync();
 
             this.WmsStatus = await this.wmsStatusWebService.IsEnabledAsync();
 
@@ -196,7 +203,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         internal bool CanChangeWmsStatus()
         {
-            return this.CanExecute() && true;
+            return this.CanExecute()
+                && this.machineService.MachineMode != MachineMode.Automatic
+                && this.machineService.MachineMode < MachineMode.Shutdown;
         }
 
         internal bool CanExecuteCommand()
@@ -302,6 +311,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var SocketLinkEndOfLine = await this.wmsStatusWebService.GetSocketLinkEndOfLineAsync();
 
                     await this.wmsStatusWebService.UpdateAsync(this.WmsStatus, WmsHttpUrl, SocketLinkIsEnabled, SocketLinkPort, SocketLinkTimeout, SocketLinkPolling, ConnectionTimeout, SocketLinkEndOfLine);
+                    if (!this.WmsStatus)
+                    {
+                        var missions = await this.machineMissionsWebService.GetAllAsync();
+                        foreach (var mission in missions)
+                        {
+                            if (mission.MissionType == MissionType.WMS)
+                            {
+                                await this.machineLoadingUnitsWebService.AbortAsync(mission.Id, mission.TargetBay);
+                            }
+                        }
+                    }
 
                     await this.OnDataRefreshAsync();
                 }
