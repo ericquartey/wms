@@ -62,6 +62,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsAxisChanged();
 
+        bool IsCanUserEnableWmsEnabled();
+
         bool IsDbSaveOnServer();
 
         bool IsDbSaveOnTelemetry();
