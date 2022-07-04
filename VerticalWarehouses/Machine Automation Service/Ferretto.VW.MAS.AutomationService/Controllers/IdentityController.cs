@@ -109,6 +109,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.GetBox());
         }
 
+        [HttpPost("get/can/user/enable/wms")]
+        public ActionResult<bool> GetCanUserEnableWms()
+        {
+            return this.Ok(this.machineProvider.IsCanUserEnableWmsEnabled());
+        }
+
         [HttpPost("get/firealarm/enable")]
         public ActionResult<bool> GetFireAlarmEnable()
         {

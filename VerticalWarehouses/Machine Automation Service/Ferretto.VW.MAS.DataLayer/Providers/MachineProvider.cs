@@ -430,6 +430,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsCanUserEnableWmsEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().CanUserEnableWms;
+            }
+        }
+
         public bool IsDbSaveOnServer()
         {
             lock (this.dataContext)

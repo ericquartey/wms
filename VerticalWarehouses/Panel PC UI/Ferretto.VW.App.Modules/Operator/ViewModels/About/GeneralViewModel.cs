@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAboutWebService machineAboutWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
         private int averageHeight;
@@ -62,6 +64,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineWmsStatusWebService wmsStatusWebService,
         IMachineIdentityWebService identityService,
             IMachineAboutWebService machineAboutWebService,
+            IMachineIdentityWebService machineIdentityWebService,
             IHealthProbeService healthProbeService)
             : base()
         {
@@ -74,6 +77,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             this.wmsStatusWebService = wmsStatusWebService ?? throw new ArgumentNullException(nameof(wmsStatusWebService));
+
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);
         }
@@ -182,33 +187,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.IsVisibleWmsStatus = true;
+            //this.IsVisibleWmsStatus = await this.machineIdentityWebService.GetCanUserEnableWms();
 
             this.WmsStatus = await this.wmsStatusWebService.IsEnabledAsync();
 
             await base.OnAppearedAsync();
-        }
-
-        private bool CanExecute()
-        {
-            switch (this.MachineService.BayNumber)
-            {
-                case BayNumber.BayOne:
-                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
-
-                case BayNumber.BayTwo:
-                    return !(this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
-
-                case BayNumber.BayThree:
-                    return !(this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
-
-                default:
-                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
-                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
-            }
         }
 
         internal bool CanChangeWmsStatus()
@@ -276,6 +259,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
             this.changeWmsStatusCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecute()
+        {
+            switch (this.MachineService.BayNumber)
+            {
+                case BayNumber.BayOne:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayTwo:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test2 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                case BayNumber.BayThree:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test3 || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+
+                default:
+                    return !(this.MachineModeService.MachineMode == MachineMode.Test || this.MachineModeService.MachineMode == MachineMode.Automatic) &&
+                      (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy || this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            }
         }
 
         private async void ChangeWmsStatus()
