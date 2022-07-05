@@ -17,11 +17,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAlphaNumericBarService alphaNumericBarService;
+
         private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private readonly IMissionOperationsService missionOperationsService;
 
         private string barcodeItem;
 
@@ -85,9 +89,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineAccessoriesWebService accessoriesWebService)
+            IMachineAccessoriesWebService accessoriesWebService,
+            IAlphaNumericBarService alphaNumericBarService)
             : base(
-                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   machineConfigurationWebService,
@@ -109,6 +113,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.barcodeReaderService = barcodeReaderService;
+            this.missionOperationsService = missionOperationsService;
+            this.alphaNumericBarService = alphaNumericBarService;
         }
 
         #endregion
@@ -386,6 +392,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //{
             //    this.lastSelectedCompartmentDetail.Stock = this.AvailableQuantity.Value;
             //}
+
+            this.alphaNumericBarService.ClearMessage();
 
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;

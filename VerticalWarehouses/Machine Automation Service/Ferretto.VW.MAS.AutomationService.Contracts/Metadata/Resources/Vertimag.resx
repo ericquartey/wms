@@ -627,4 +627,7 @@
   <data name="Bay_ProfileConst1" xml:space="preserve">
     <value>Profile K1 constant</value>
   </data>
+  <data name="CanUserEnableWms" xml:space="preserve">
+    <value>Can User Enable Wms</value>
+  </data>
 </root>

@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 if (local?.Description != lu.Note)
                 {
                     local.Description = lu.Note;
-                    this.loadingUnitsDataProvider.SaveAsync(local);
+                    await this.loadingUnitsDataProvider.SaveAsync(local);
                 }
             }
             return this.Ok(lu);

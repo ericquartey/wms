@@ -1204,6 +1204,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Wms Status?.
+        /// </summary>
+        public static string ChangeWmsStatus {
+            get {
+                return ResourceManager.GetString("ChangeWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check the alignment between the bay and the elevator. If they are not aligned, proceed to correct the position of the elevator..
         /// </summary>
         public static string CheckBayElevatorAlignment {
@@ -1290,6 +1299,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ChecksumCompleted {
             get {
                 return ResourceManager.GetString("ChecksumCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear on close view.
+        /// </summary>
+        public static string ClearAlphaBarOnCloseView {
+            get {
+                return ResourceManager.GetString("ClearAlphaBarOnCloseView", resourceCulture);
             }
         }
         

@@ -35,6 +35,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly int pollingDelay = 200;
 
+        private bool clearOnClose;
+
         private bool isEnabled;
 
         private SubscriptionToken missionToken;
@@ -113,10 +115,11 @@ namespace Ferretto.VW.App.Services
                     var ipAddress = alphaNumericBar.IpAddress;
                     var port = alphaNumericBar.TcpPort;
                     var size = alphaNumericBar.Size;
+                    this.clearOnClose = alphaNumericBar.ClearAlphaBarOnCloseView is true;
 
                     var bay = await this.bayManager.GetBayAsync();
 
-                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal, alphaNumericBar.MaxMessageLength);
+                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal, alphaNumericBar.MaxMessageLength, alphaNumericBar.ClearAlphaBarOnCloseView is true);
                     this.isEnabled = true;
                 }
                 else
@@ -127,6 +130,27 @@ namespace Ferretto.VW.App.Services
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+            }
+        }
+
+        public async Task ClearMessage()
+        {
+            await this.AlphaNumericBarConfigureAsync();
+
+            if (this.alphaNumericBarDriver != null
+                && this.clearOnClose
+                )
+            {
+                var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
+                if (!socketLink)
+                {
+                    this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
+                    await this.alphaNumericBarDriver.EnabledAsync(false);
+                    //await this.alphaNumericBarDriver.EnabledAsync(false);
+
+                    this.alphaNumericBarDriver.SelectedMessage = string.Empty;
+                    this.alphaNumericBarDriver.SelectedPosition = null;
+                }
             }
         }
 
@@ -224,22 +248,7 @@ namespace Ferretto.VW.App.Services
             {
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
-                    await this.AlphaNumericBarConfigureAsync();
-
-                    if (this.alphaNumericBarDriver != null)
-                    {
-                        var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
-                        if (!socketLink)
-                        {
-                            this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
-                            await this.alphaNumericBarDriver.EnabledAsync(false);
-                            //await this.alphaNumericBarDriver.EnabledAsync(false);
-
-                            this.alphaNumericBarDriver.SelectedMessage = string.Empty;
-                            this.alphaNumericBarDriver.SelectedPosition = null;
-                        }
-                    }
-
+                    await this.ClearMessage();
                     return;
                 }
 

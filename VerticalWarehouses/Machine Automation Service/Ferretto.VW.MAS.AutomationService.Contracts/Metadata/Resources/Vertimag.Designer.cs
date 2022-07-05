@@ -385,6 +385,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can User Enable Wms.
+        /// </summary>
+        public static string CanUserEnableWms {
+            get {
+                return ResourceManager.GetString("CanUserEnableWms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carousel.
         /// </summary>
         public static string Carousel {

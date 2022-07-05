@@ -511,29 +511,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 loadUnitDetail.Note = loadingUnit.Description;
                 loadUnitDetail.Weight = (int)loadingUnit.GrossWeight;
 
-                //loadUnitDetail.AbcClassDescription = string.Empty;
-                //loadUnitDetail.AbcClassId = string.Empty;
-                //loadUnitDetail.AreaName = string.Empty;
-                //loadUnitDetail.CellPositionDescription = string.Empty;
-                //loadUnitDetail.LoadingUnitStatusDescription = string.Empty;
-                //loadUnitDetail.LoadingUnitStatusId = string.Empty;
-                //loadUnitDetail.LoadingUnitTypeDescription = string.Empty;
-                //loadUnitDetail.InventoryDate = DateTimeOffset.UtcNow;
-                //loadUnitDetail.LastHandlingDate = DateTimeOffset.UtcNow;
-                //loadUnitDetail.LastPickDate = DateTimeOffset.UtcNow;
-                //loadUnitDetail.LastPutDate = DateTimeOffset.UtcNow;
-
-                //loadUnitDetail.AisleId = 0;
-                //loadUnitDetail.AreaFillRate = 0;
-                //loadUnitDetail.AreaId = 0;
-                //loadUnitDetail.CellPositionId = 0;
-                //loadUnitDetail.HandlingParametersCorrection = 0;
-
-                //var test = loadUnitDetail.ToJson();
-
                 try
                 {
-                    //this.loadingUnitsWmsWebService.UpdateAsync(loadUnitDetail, loadingUnit.Id);
                     await this.loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail);
                     this.logger.LogInformation($"Save load unit {loadingUnit.Id} to wms ");
                 }

@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20220627145225_CanUserEnableWms")]
+    partial class CanUserEnableWms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1160,14 +1162,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("CanOpenNode");
-
                     b.Property<byte>("Index");
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
-
-                    b.Property<bool?>("IsEthernetIP");
 
                     b.Property<int>("TcpPort");
 
@@ -2171,8 +2169,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.AlphaNumericBar", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
-
-                    b.Property<bool?>("ClearAlphaBarOnCloseView");
 
                     b.Property<int>("MaxMessageLength");
 

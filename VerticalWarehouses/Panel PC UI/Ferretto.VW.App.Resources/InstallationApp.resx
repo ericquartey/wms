@@ -2785,4 +2785,10 @@
   <data name="FixBackDrawersAsk" xml:space="preserve">
     <value>Change all back cell position by {0}mm?</value>
   </data>
+  <data name="ChangeWmsStatus" xml:space="preserve">
+    <value>Change Wms Status?</value>
+  </data>
+  <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
+    <value>Clear on close view</value>
+  </data>
 </root>

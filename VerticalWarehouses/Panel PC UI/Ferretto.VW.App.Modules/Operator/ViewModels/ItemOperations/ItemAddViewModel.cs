@@ -54,7 +54,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IAuthenticationService authenticationService,
             IMachineAccessoriesWebService accessoriesWebService)
             : base(
-                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   machineConfigurationWebService,
