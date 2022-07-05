@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.CanOpenClient
 
         private const int COB_ID_TXPDO = 0x180;
 
+        private const int COB_ID_TXSDO = 0x600;
+
         private const int COB_MAX_NODE = 0x80;
 
         /// <summary>
@@ -896,7 +898,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                     // read a CAN message from the receive FIFO
                     while (mReader.ReadMessage(out canMessage))
                     {
-                        PrintMessage(canMessage);
+                        //PrintMessage(canMessage);
                         if (canMessage.FrameType == CanMsgFrameType.Data
                             && canMessage.DataLength > 0)
                         {
@@ -908,6 +910,10 @@ namespace Ferretto.VW.MAS.CanOpenClient
                             if (!this.ReceiveSDO(canMessage.Identifier, data)
                                 && !this.ReceiveCanBase(canMessage.Identifier, data))
                             {
+                            }
+                            else
+                            {
+                                PrintMessage(canMessage);
                             }
                         }
                     }

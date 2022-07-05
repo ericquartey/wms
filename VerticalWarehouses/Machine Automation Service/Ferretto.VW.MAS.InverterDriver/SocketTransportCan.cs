@@ -110,6 +110,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.implicitTimer.Change(idlePollingInterval, idlePollingInterval);
             this.client.ImplicitMessageEvent += new ImplicitMessageEventHandler(this.ImplicitMessageReceived);
             this.IsConnected = true;
+            this.ConnectionStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArgs(this.IsConnected, this.IsConnectedUdp));
         }
 
         /// <inheritdoc />

@@ -29,6 +29,10 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 this.Data = new byte[dataLength];
                 Array.Copy(data, 0, this.Data, 0, data.Length);
             }
+            else
+            {
+                this.Data = new byte[10000];
+            }
             this.Id = (uint)(node + COB_ID_TXSDO);
             this.TxData = new byte[8];
             for (var i = 0; i < 8; i++)
