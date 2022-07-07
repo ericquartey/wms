@@ -20,6 +20,7 @@ namespace Ferretto.VW.App.Services
         #region Methods
 
         Task AlphaNumericBarConfigureAsync();
+        Task ClearMessage();
 
         /// <summary>
         ///

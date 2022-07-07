@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
                                 this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Cell id {destinationCellId}");
-                                this.LoadingUnitsDataProvider.SaveToWms(this.Mission.LoadUnitId);
+                                this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
                             }
                             catch (Exception ex)
                             {
@@ -480,7 +480,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.MachineProvider.UpdateServiceStatistics();
                             }
-                            this.LoadingUnitsDataProvider.SaveToWms(this.Mission.LoadUnitId);
+                            this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
                         }
                         catch (Exception ex)
                         {

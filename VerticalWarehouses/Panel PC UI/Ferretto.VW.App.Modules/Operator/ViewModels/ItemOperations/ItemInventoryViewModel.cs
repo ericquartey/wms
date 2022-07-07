@@ -62,7 +62,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IAuthenticationService authenticationService,
             IMachineAccessoriesWebService accessoriesWebService)
             : base(
-                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   machineConfigurationWebService,
@@ -227,7 +226,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
-
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.InventoryQuantityDetected"), this.MeasureUnit);
 

@@ -2712,4 +2712,7 @@
   <data name="ChangeWmsStatus" xml:space="preserve">
     <value>Vuoi Cambiare lo stato del WMS</value>
   </data>
+  <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
+    <value>Cancella in chiusura vista</value>
+  </data>
 </root>

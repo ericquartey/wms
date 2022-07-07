@@ -2788,4 +2788,7 @@
   <data name="ChangeWmsStatus" xml:space="preserve">
     <value>Change Wms Status?</value>
   </data>
+  <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
+    <value>Clear on close view</value>
+  </data>
 </root>

@@ -259,7 +259,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 if (local?.Description != lu.Note)
                 {
                     local.Description = lu.Note;
-                    this.loadingUnitsDataProvider.Save(local);
+                    await this.loadingUnitsDataProvider.SaveAsync(local);
                 }
             }
             return this.Ok(lu);
@@ -464,14 +464,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult SaveLoadUnit(DataModels.LoadingUnit loadingUnit)
+        public async Task<IActionResult> SaveLoadUnitAsync(DataModels.LoadingUnit loadingUnit)
         {
             if (loadingUnit is null)
             {
                 throw new ArgumentNullException(nameof(loadingUnit));
             }
 
-            this.loadingUnitsDataProvider.Save(loadingUnit);
+            await this.loadingUnitsDataProvider.SaveAsync(loadingUnit);
 
             return this.Accepted();
         }

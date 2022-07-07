@@ -46,11 +46,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<BayAccessories> GetAllWithBayNumberAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength);
+        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateBarcodeReaderDeviceInfoAsync(DeviceInformation deviceInformation);
@@ -3059,6 +3059,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class AlphaNumericBar : TcpIpAccessory
     {
+        [Newtonsoft.Json.JsonProperty("ClearAlphaBarOnCloseView", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ClearAlphaBarOnCloseView { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MaxMessageLength", Required = Newtonsoft.Json.Required.Always)]
         public int MaxMessageLength { get; set; }
     

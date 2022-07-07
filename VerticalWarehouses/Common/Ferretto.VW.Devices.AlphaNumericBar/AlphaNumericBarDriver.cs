@@ -35,6 +35,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private bool barEnabled;
 
+        private bool clearOnClose;
+
         private TcpClient client;
 
         private IPAddress ipAddress;
@@ -178,12 +180,13 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.SelectedMessage = null;
         }
 
-        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125)
+        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125, bool clearOnClose = false)
         {
             this.ipAddress = ipAddress;
             this.Port = port;
             this.size = size;
             this.maxMessageLength = maxMessageLength;
+            this.clearOnClose = clearOnClose;
 
             switch (size)
             {

@@ -379,9 +379,9 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.unitId;
         }
 
-        public async Task RefreshAsync()
+        public async Task RefreshAsync(bool force = false)
         {
-            await this.RefreshActiveMissionAsync();
+            await this.RefreshActiveMissionAsync(force: force);
         }
 
         public async Task StartAsync()
@@ -507,7 +507,7 @@ namespace Ferretto.VW.App.Modules.Operator
                .Publish(new MissionChangedEventArgs(this.ActiveMachineMission, this.ActiveWmsMission, this.ActiveWmsOperation));
         }
 
-        private async Task RefreshActiveMissionAsync(int? missionId = null)
+        private async Task RefreshActiveMissionAsync(int? missionId = null, bool force = false)
         {
             try
             {
@@ -597,7 +597,9 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true)
                    ||
-                   missionId.HasValue)
+                   missionId.HasValue
+                   ||
+                   force)
                 {
                     this.ActiveMachineMission = newMachineMission;
                     this.ActiveWmsMission = newWmsMission;

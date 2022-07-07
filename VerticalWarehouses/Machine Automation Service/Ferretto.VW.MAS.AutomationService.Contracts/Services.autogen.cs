@@ -376,14 +376,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength)
+        public System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose)
         {
-            return UpdateAlphaNumericBarAsync(isEnabled, ipAddress, port, size, maxMessageLength, System.Threading.CancellationToken.None);
+            return UpdateAlphaNumericBarAsync(isEnabled, ipAddress, port, size, maxMessageLength, clearOnClose, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, System.Threading.CancellationToken cancellationToken)
         {
             if (isEnabled == null)
                 throw new System.ArgumentNullException("isEnabled");
@@ -397,6 +397,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             if (maxMessageLength == null)
                 throw new System.ArgumentNullException("maxMessageLength");
     
+            if (clearOnClose == null)
+                throw new System.ArgumentNullException("clearOnClose");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/accessories/alpha-numeric-bar?");
             urlBuilder_.Append(System.Uri.EscapeDataString("isEnabled") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isEnabled, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -404,6 +407,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(System.Uri.EscapeDataString("port") + "=").Append(System.Uri.EscapeDataString(ConvertToString(port, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("size") + "=").Append(System.Uri.EscapeDataString(ConvertToString(size, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("maxMessageLength") + "=").Append(System.Uri.EscapeDataString(ConvertToString(maxMessageLength, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("clearOnClose") + "=").Append(System.Uri.EscapeDataString(ConvertToString(clearOnClose, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

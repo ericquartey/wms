@@ -139,8 +139,15 @@
                              InputText="{Binding MaxMessageLength, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsEnabledEditing}"
                              LabelText="{res:Loc InstallationApp.MaxMessageLength}" />
+                <controls:PpcCheckBox Grid.Row="2"
+                                      Grid.Column="2"
+                            Margin="10,0,10,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding ClearOnClose, Mode=TwoWay}"
+                            IsEnabled="{Binding IsEnabled}"
+                            LabelText="{res:Loc InstallationApp.ClearAlphaBarOnCloseView}" />
 
-        <StackPanel Grid.Row="1"
+                <StackPanel Grid.Row="1"
                     Grid.Column="2"
                     Margin="0,5,5,5"
                     HorizontalAlignment="Stretch"

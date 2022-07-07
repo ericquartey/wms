@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayAccessories GetAccessories(BayNumber bayNumber);
 
-        void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength);
+        void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose);
 
         void UpdateBarcodeReaderDeviceInfo(BayNumber bayNumber, DeviceInformation deviceInformation);
 
