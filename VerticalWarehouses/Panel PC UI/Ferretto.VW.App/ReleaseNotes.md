@@ -30,7 +30,7 @@
 
 ## Bug Risolti
 - L'utente Installer può modificare Offset catena e Numero macchina
-- La descrizione dei cassetti è sempre aggiornata 
+- La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
 - Corretto un caso di missione duplicata di rientro cassetto
 - 
 
