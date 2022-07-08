@@ -32,6 +32,10 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 {
                     return false;
                 }
+                if (entity.Property.Name == "ChainOffset" && this.machineService.Bays.Any(s => s.IsExternal) && this.sessionService.UserAccessLevel == UserAccessLevel.Installer)
+                {
+                    return true;
+                }
                 if ((entity.Property.Name == "Center" || entity.Property.Name == "Race") && this.sessionService.UserAccessLevel == UserAccessLevel.Installer)
                 {
                     return true;

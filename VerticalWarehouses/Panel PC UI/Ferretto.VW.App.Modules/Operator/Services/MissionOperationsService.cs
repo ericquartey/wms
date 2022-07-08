@@ -302,7 +302,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, this.authenticationService.UserName);
 
-                var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission.Operations.FirstOrDefault().ItemListCode);
+                var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission?.Operations.FirstOrDefault().ItemListCode);
                 if (currentMission is null)
                 {
                     return false;
@@ -565,24 +565,6 @@ namespace Ferretto.VW.App.Modules.Operator
                     this.logger.Trace($"No Active mission.");
 
                     this.multilist = false;
-
-                    if (this.ActiveMachineMission?.LoadUnitId != null)
-                    {
-                        var machineMissions = await this.missionsWebService.GetAllAsync();
-                        if (this.ActiveMachineMission?.LoadUnitId != null
-                                && !machineMissions.Any(m =>
-                                    m.LoadUnitId == this.ActiveMachineMission?.LoadUnitId
-                                    &&
-                                    m.TargetBay == this.bayNumber
-                                    &&
-                                    (m.Status == MissionStatus.Waiting || m.Status == MissionStatus.Executing || m.Status == MissionStatus.New)
-                                )
-                            )
-                        {
-                            this.logger.Debug($"Old WMS mission '{this.ActiveMachineMission?.Id}' was removed, but must be completed before proceeding: removing loading unit '{this.ActiveMachineMission?.LoadUnitId}'.");
-                            await this.loadingUnitsWebService.RemoveFromBayAsync(this.ActiveMachineMission.LoadUnitId);
-                        }
-                    }
                 }
 
                 if (newMachineMission?.Id != this.ActiveMachineMission?.Id

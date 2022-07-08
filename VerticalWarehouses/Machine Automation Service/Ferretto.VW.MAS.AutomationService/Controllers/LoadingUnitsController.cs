@@ -246,21 +246,40 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("{id}/wms/details")]
-        public async Task<ActionResult<LoadingUnitDetails>> GetWmsDetailsByIdAsync(int id, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<LoadingUnitDetails>> GetWmsDetailsByIdAsync(int id,
+            [FromServices] IWmsSettingsProvider wmsSettingsProvider,
+            [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
             if (loadingUnitsWmsWebService is null)
             {
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
             }
-            var lu = await loadingUnitsWmsWebService.GetByIdAsync(id);
-            if (lu?.Note != null)
+            var lu = new LoadingUnitDetails();
+            if (wmsSettingsProvider != null && wmsSettingsProvider.IsEnabled)
             {
-                var local = this.loadingUnitsDataProvider.GetById(id);
-                if (local?.Description != lu.Note)
+                try
                 {
-                    local.Description = lu.Note;
-                    await this.loadingUnitsDataProvider.SaveAsync(local);
+                    lu = await loadingUnitsWmsWebService.GetByIdAsync(id);
+                    if (!string.IsNullOrEmpty(lu?.Note))
+                    {
+                        var local = this.loadingUnitsDataProvider.GetById(id);
+                        if (local?.Description != lu.Note)
+                        {
+                            local.Description = lu.Note;
+                            await this.loadingUnitsDataProvider.SaveAsync(local);
+                        }
+                    }
                 }
+                catch (Exception)
+                {
+                    return this.BadRequest();
+                }
+            }
+            else
+            {
+                return this.BadRequest();
             }
             return this.Ok(lu);
         }
