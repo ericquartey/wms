@@ -17,7 +17,6 @@
                    Margin="30"
                    gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
                    gif:ImageBehavior.AutoStart="true" />
-            
             <TextBlock HorizontalAlignment="Center"
                        Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
                        Text="{res:Loc InstallationApp.InitializingWithEllipsis}" />
