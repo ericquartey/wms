@@ -65,6 +65,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("save-cells")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult SaveCells(IEnumerable<Cell> cells)
+        {
+            this.cellsProvider.SaveCells(cells);
+            return this.Accepted();
+        }
+
         [HttpPost("{id}/height")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

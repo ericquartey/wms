@@ -161,8 +161,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
 
-            this.ChangeMachineIdVisible = this.sessionService.UserAccessLevel == UserAccessLevel.Support ||
-                                      this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+            this.ChangeMachineIdVisible = this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
+                                            this.sessionService.UserAccessLevel == UserAccessLevel.Support ||
+                                            this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
             var model = await this.identityService.GetAsync();
 

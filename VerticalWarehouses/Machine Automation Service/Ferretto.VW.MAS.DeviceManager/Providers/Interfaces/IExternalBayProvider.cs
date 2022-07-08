@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MachineErrorCode CanElevatorDeposit(BayNumber bayNumber, bool isPositionUpper);
 
+        MachineErrorCode CanElevatorDepositExternal(BayNumber bayNumber, bool isPositionUpper);
+
         MachineErrorCode CanElevatorPickup(BayNumber bayNumber, bool isPositionUpper);
 
         ActionPolicy CanMove(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory);

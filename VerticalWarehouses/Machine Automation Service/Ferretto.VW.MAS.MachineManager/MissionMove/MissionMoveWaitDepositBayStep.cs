@@ -209,7 +209,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var waitMissions = this.MissionsDataProvider.GetAllActiveMissions()
                 .Where(m =>
                     m.TargetBay == this.Mission.TargetBay &&
-                    ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                    ((m.Status == MissionStatus.Waiting && (m.Step == MissionStep.WaitPick || m.RestoreStep == MissionStep.WaitPick))
                         || m.Status == MissionStatus.New
                         )
                 );
@@ -217,7 +217,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             var isWaitingRequested = false;
 
             foreach (var m in waitMissions.Where(x => x.Status == MissionStatus.Waiting
-                && x.Step == MissionStep.WaitPick
+                && (x.Step == MissionStep.WaitPick || x.RestoreStep == MissionStep.WaitPick)
                 && x.LoadUnitId != this.Mission.LoadUnitId)
                 )
             {

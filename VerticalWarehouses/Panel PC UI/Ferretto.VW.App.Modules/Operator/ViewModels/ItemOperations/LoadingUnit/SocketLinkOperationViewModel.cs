@@ -97,7 +97,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? InputQuantity
         {
             get => this.inputQuantity;
-            set => this.SetProperty(ref this.inputQuantity, value);
+            set
+            {
+                if (value >= 0)
+                {
+                    this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+                }
+            }
         }
 
         public bool IsCompartmentValid

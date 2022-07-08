@@ -150,4 +150,13 @@
   <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
     <value>Zewnętrzna zatoka nie może wykonać nieprawidłowego ruchu</value>
   </data>
+  <data name="TheBayPositionIsBlocked" xml:space="preserve">
+    <value>Pozycja w zatoce zablokowana</value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Brak czujnika Jednostki ładunkowej w zatoce</value>
+  </data>
+  <data name="TheBayContainsTwoLoadingUnits" xml:space="preserve">
+    <value>Zatoka zawiera dwie jednostki ładunkowe</value>
+  </data>
 </root>

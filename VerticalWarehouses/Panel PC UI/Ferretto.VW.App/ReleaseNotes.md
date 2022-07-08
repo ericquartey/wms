@@ -25,21 +25,30 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.42 rispetto la 1.0.41
-- Aggiunto utente locale Movement: è come Operator con in più i movimenti guidati e manuali
-- Aggiunto parametro wms "Attesa dopo versamento"
+## Nuove Funzionalità 1.0.46 rispetto la 1.0.45
+- Aggiunta gestione Put and Go
+- Ferretto NuGet package 0.16.43
+- Aggiunta serranda UpperHalf per fiera
+- Barra alfanumerica: aggiunto parametro per cancellare alla chiusura della vista di prelievo o versamento
+- I cassetti sono salvati sull'adapter
+- Menu Info - Generale: aggiunto cambio Stato Wms per Operator
 
 ## Bug Risolti
-- Corretta procedura di calibrazione barriera di misura con BID e BED
-- Se si mettono in attesa le liste da EjLog i cassetti rientrano dalla baia
-- Il cassetto non rientra se ci sono molti versamenti su un unico scomparto
-- Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
-- Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
-- Aggiornate traduzioni polacche
-- Correzione alla selezione della Ricerca Articolo
+- BIG: corretto ripristino in caso di perdita del sensore di zero
+- Parametri asse orizzontale: la velocità a vuoto può essere minore di quelle dei profili
+- Versamenti: Salda riga è falso di default
+- Conferma collaudo: corretta baia esterna
 
-## Compatibile con adapter 0.4.31 e 0.4.32
+## Compatibile con adapter 0.4.35 e 0.4.36
 ***
+
+[Versione 1.0.45](#id1045)
+
+[Versione 1.0.44](#id1044)
+
+[Versione 1.0.43](#id1043)
+
+[Versione 1.0.42](#id1042)
 
 [Versione 1.0.41](#id1041)
 
@@ -125,6 +134,67 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1045"></a>
+
+## Nuove Funzionalità 1.0.45 rispetto la 1.0.44
+- Aggiunto parametro "Quantità limitata in prelievo e deposito"
+
+## Bug Risolti
+- Aggiornate traduzioni polacche
+- Corretto ripristino in BED se si sposta la slitta in manuale
+- Corretto stato di manutenzione se scadono i cicli
+- Barra alfanumerica: corretto cambio scomparto con stesso articolo
+- Correzioni in caso di liste chiuse da EjLog
+- Correzioni per Tendaggi Paradiso
+- Aggiunto ritardo per allarme 70 "Il sensore di zero della baia non risulta attivo alla fine del posizionamento"
+- Correzione ai campi numerici con comandi incrementali
+
+## Compatibile con adapter 0.4.33 e 0.4.34
+***
+
+<a id="id1044"></a>
+## Nuove Funzionalità 1.0.44 rispetto la 1.0.43
+- Ferretto NuGet package 0.16.42.
+- Aggiunto userName in GetItemLists
+- Aggiunta descrizione cassetti da EjLog
+
+## Bug Risolti
+- Manutenzioni con istruzioni duplicate
+- Notifica di manutenzioni in scadenza dopo una conferma servizio
+
+## Compatibile con adapter 0.4.33 e 0.4.34
+***
+
+<a id="id1043"></a>
+## Nuove Funzionalità 1.0.43 rispetto la 1.0.42
+- Aggiunto parametro "Controlla se la lista continua in un'altra macchina"
+- Aggiunta funzione di compattazione automatica
+- Aggiunta funzione di correzione quote posteriori
+
+## Bug Risolti
+- Aggiunta data di scadenza nell'inventario
+- Correzione ai ripristini automatici
+- Correzioni per Carrefour
+
+## Compatibile con adapter 0.4.31 e 0.4.32
+
+<a id="id1042"></a>
+## Nuove Funzionalità 1.0.42 rispetto la 1.0.41
+- Aggiunto utente locale Movement: è come Operator con in più i movimenti guidati e manuali
+- Aggiunto parametro wms "Attesa dopo versamento"
+
+## Bug Risolti
+- Corretta procedura di calibrazione barriera di misura con BID e BED
+- Se si mettono in attesa le liste da EjLog i cassetti rientrano dalla baia
+- Il cassetto non rientra se ci sono molti versamenti su un unico scomparto
+- Aggiunto allarme di presenza in baia dopo il sollevamento della giostra
+- Aggiunto controllo per rispettare l'ordine di chiamata dei cassetti
+- Aggiornate traduzioni polacche
+- Correzione alla selezione della Ricerca Articolo
+- Correzione alla Chiamata Cassetto: offset laser
+
+## Compatibile con adapter 0.4.31 e 0.4.32
 
 <a id="id1041"></a>
 ## Nuove Funzionalità 1.0.41 rispetto la 1.0.40

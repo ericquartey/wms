@@ -43,6 +43,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(28)]
             public bool FireAlarm { get; set; }
 
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.CanUserEnableWms))]
+            [Id(29)]
+            public bool CanUserEnableWms { get; set; }
+
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
             [Id(3)]

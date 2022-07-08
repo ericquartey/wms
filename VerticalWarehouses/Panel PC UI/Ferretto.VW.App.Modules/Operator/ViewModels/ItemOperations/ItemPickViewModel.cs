@@ -17,11 +17,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAlphaNumericBarService alphaNumericBarService;
+
         private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private readonly IMissionOperationsService missionOperationsService;
 
         private string barcodeItem;
 
@@ -85,9 +89,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineAccessoriesWebService accessoriesWebService)
+            IMachineAccessoriesWebService accessoriesWebService,
+            IAlphaNumericBarService alphaNumericBarService)
             : base(
-                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   machineConfigurationWebService,
@@ -109,6 +113,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.barcodeReaderService = barcodeReaderService;
+            this.missionOperationsService = missionOperationsService;
+            this.alphaNumericBarService = alphaNumericBarService;
         }
 
         #endregion
@@ -292,7 +298,62 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     if (userAction.UserAction == UserAction.VerifyItem)
                     {
-                        await base.CommandUserActionAsync(userAction);
+                        if (this.IsCarrefour)
+                        {
+                            // test begin
+                            //this.MissionOperation.MaximumQuantity = decimal.One;
+                            //this.MissionOperation.ItemDetails.BoxId = "box";
+                            // test end
+                            if (userAction.Code == this.MissionOperation?.ItemCode)
+                            {
+                                this.barcodeItem = userAction.Code;
+                                this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + this.barcodeItem);
+                            }
+                            else if (userAction.Code == this.MissionOperation?.ItemDetails?.BoxId)
+                            {
+                                this.toteBarcode = userAction.Code;
+                                this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + this.toteBarcode);
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(userAction.Code);
+
+                                    if (barcodeItemService?.Code == this.MissionOperation?.ItemCode)
+                                    {
+                                        this.barcodeItem = userAction.Code;
+                                        this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + this.barcodeItem);
+                                    }
+                                    else
+                                    {
+                                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                        return;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                    return;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(this.barcodeItem))
+                            {
+                                if (!string.IsNullOrEmpty(this.toteBarcode)
+                                    || string.IsNullOrEmpty(this.MissionOperation?.ItemDetails?.BoxId)
+                                    || !await this.MissionOperationsService.MustCheckToteBarcode())
+                                {
+                                    await this.ConfirmOperationAsync(this.barcodeItem);
+                                    this.barcodeItem = string.Empty;
+                                    this.toteBarcode = string.Empty;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            await base.CommandUserActionAsync(userAction);
+                        }
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
                     {
@@ -332,6 +393,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //    this.lastSelectedCompartmentDetail.Stock = this.AvailableQuantity.Value;
             //}
 
+            this.alphaNumericBarService.ClearMessage();
+
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 
@@ -344,6 +407,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
+            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
@@ -364,9 +428,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Compartments = null;
             this.SelectedCompartment = null;
 
-            this.MeasureUnitTxt = string.Format(Resources.Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
+            this.MeasureUnitTxt = string.Format(Localized.Get("OperatorApp.PickedQuantity"), this.MeasureUnit);
 
             await base.OnAppearedAsync();
+            if (this.IsQuantityLimited && this.MissionOperation != null)
+            {
+                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+            }
 
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
@@ -376,7 +444,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsCurrentDraperyItem;
 
             // Setup only reserved for Tendaggi Paradiso
-            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation?.FullyRequested != null && this.MissionOperation.FullyRequested.Value;
 
             this.barcodeItem = string.Empty;
             this.toteBarcode = string.Empty;
@@ -491,6 +559,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.Value != this.MissionRequestedQuantity
                     &&
                     this.InputQuantity.Value <= this.AvailableQuantity
+                    &&
+                    (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity)
                     &&
                     !this.CanPickBox
                     && !(this.IsDoubleConfirmBarcodePick && string.IsNullOrEmpty(this.barcodeOk));
@@ -790,59 +860,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 this.ShowNotification(Localized.Get("OperatorApp.ItemAndToteInvalidPickOperation"), Services.Models.NotificationSeverity.Error);
                                 this.barcodeItem = string.Empty;
                             }
-                        }
-                    }
-                    else if (this.IsCarrefour)
-                    {
-                        if (barcode == this.MissionOperation.ItemDetails?.BoxId)
-                        {
-                            this.toteBarcode = barcode;
-                        }
-                        else if (barcode == this.MissionOperation?.ItemCode)
-                        {
-                            this.barcodeItem = barcode;
-                        }
-                        else
-                        {
-                            try
-                            {
-                                var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(barcode);
-
-                                if (barcode == barcodeItemService?.Code)
-                                {
-                                    this.barcodeItem = barcode;
-                                }
-                                else
-                                {
-                                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), barcode), Services.Models.NotificationSeverity.Error);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), barcode), Services.Models.NotificationSeverity.Error);
-                            }
-                        }
-
-                        var machine = await this.MachineIdentityWebService.GetAsync();
-                        var missions = await this.MissionOperationsService.GetAllMissionsMachineAsync();
-
-                        if (!string.IsNullOrEmpty(this.barcodeItem) && this.MissionOperation.ItemDetails != null && missions.ToList().FindAll(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick).Count <= 0)
-                        {
-                            await this.MissionOperationsService.CompleteAsync(
-                                    this.MissionOperation.Id,
-                                    this.InputQuantity.Value,
-                                    this.barcodeItem,
-                                    0,
-                                    this.MissionOperation.ItemDetails.BoxId);
-                        }
-                        else if (!string.IsNullOrEmpty(this.barcodeItem) && this.toteBarcode == this.MissionOperation.ItemDetails?.BoxId)
-                        {
-                            await this.MissionOperationsService.CompleteAsync(
-                                    this.MissionOperation.Id,
-                                    this.InputQuantity.Value,
-                                    this.barcodeItem,
-                                    0,
-                                    this.MissionOperation.ItemDetails.BoxId);
                         }
                     }
                     else

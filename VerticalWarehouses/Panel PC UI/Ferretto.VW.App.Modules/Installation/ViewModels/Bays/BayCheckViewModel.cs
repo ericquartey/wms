@@ -394,8 +394,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanDisplacementCommand()
         {
-            return this.CanBaseExecute() && 
-                   (!this.HasShutter || this.SensorsService.ShutterSensors.Closed) &&
+            return this.CanBaseExecute() &&
+                   (!this.HasShutter || this.SensorsService.ShutterSensors.Closed ||
+                    (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf)) &&
                    ((this.CurrentStep == BayCheckStep.PositionUp && this.StepValueUp != 0) ||
                    (this.CurrentStep == BayCheckStep.PositionDown && this.StepValueDown != 0));
         }
@@ -403,7 +404,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToBayPosition()
         {
             return this.CanBaseExecute() &&
-                   (!this.HasShutter || this.SensorsService.ShutterSensors.Closed);
+                   (!this.HasShutter || this.SensorsService.ShutterSensors.Closed ||
+                (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf));
         }
 
         private bool CanStop()

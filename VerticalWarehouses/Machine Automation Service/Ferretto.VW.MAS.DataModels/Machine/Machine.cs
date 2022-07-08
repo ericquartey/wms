@@ -105,6 +105,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool IsOrderList { get; set; }
 
+        public bool IsQuantityLimited { get; set; }
+
+        public bool CanUserEnableWms { get; set; }
+
         /// <summary>
         /// Get/set a value indicating if it is requested a confirm on last operation to be performed in a loading unit.
         /// </summary>

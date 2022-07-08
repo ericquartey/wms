@@ -32,6 +32,10 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.OnButtonUp();
             };
+            this.TouchUp += (o, a) =>
+            {
+                this.OnButtonUp();
+            };
 
             this.PreviewMouseLeftButtonDown += (o, a) =>
             {

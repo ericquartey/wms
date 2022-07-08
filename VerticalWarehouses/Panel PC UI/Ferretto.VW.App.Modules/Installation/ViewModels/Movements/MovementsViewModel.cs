@@ -138,6 +138,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool BayIsMultiPosition => this.MachineService.Bay.IsDouble;
 
+        public bool BayIsShutterUpperHalf => this.HasShutter && this.MachineService.Bay.Shutter.Type != ShutterType.UpperHalf;
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public string Error => string.Join(
@@ -935,6 +937,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private async Task StopMovingReleaseAsync()
         {
             Debug.WriteLine($"Command Release fired");
+
+            if (this.IsWaitingForResponse)
+            {
+                Debug.WriteLine($"-- Command rejected");
+                return;
+            }
 
             try
             {

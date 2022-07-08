@@ -456,4 +456,10 @@
   <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
     <value>Czujnik zerowania poziomego nie jest aktywny podczas bazowania</value>
   </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Brak zasilania na komendę. Sprawdź urządzenia bezpieczeństwa i czujniki paneli bocznych.</value>
+  </data>
+  <data name="ProfileResolutionFail" xml:space="preserve">
+    <value>Kurtyna pomiarowa profilu nieskalibrowana</value>
+  </data>
 </root>

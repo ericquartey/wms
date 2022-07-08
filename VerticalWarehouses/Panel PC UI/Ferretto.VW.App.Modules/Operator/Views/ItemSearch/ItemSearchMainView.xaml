@@ -338,7 +338,7 @@
                            Increment="{Binding QuantityIncrement}"
                            LabelText="{Binding SelectedItemTxt}"
                            Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                           MinValue="0" />
+                           MinValue="0"/>
 
         <StackPanel Grid.Row="4"
                     Orientation="Horizontal">

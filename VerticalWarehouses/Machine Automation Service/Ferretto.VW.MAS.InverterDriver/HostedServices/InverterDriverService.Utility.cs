@@ -36,7 +36,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    partial class InverterDriverService
+    internal partial class InverterDriverService
     {
         #region Fields
 
@@ -338,7 +338,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         var offset = (axis == Axis.Vertical)
                             ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
-                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
+                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;      // the horizontal offset is always 0: bay chain do not use offset in positioning
                         currentAxisPosition += offset;
                         this.Logger.LogTrace($"5b:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}");
 

@@ -430,6 +430,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsCanUserEnableWmsEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault().CanUserEnableWms;
+            }
+        }
+
         public bool IsDbSaveOnServer()
         {
             lock (this.dataContext)
@@ -553,6 +561,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
+                machineDB.IsQuantityLimited = machine.IsQuantityLimited;
                 this.dataContext.SaveChanges();
             }
         }

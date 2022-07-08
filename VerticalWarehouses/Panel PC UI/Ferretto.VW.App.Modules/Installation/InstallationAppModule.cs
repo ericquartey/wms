@@ -79,6 +79,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<WeightCalibrationView>();
 
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
+            containerRegistry.RegisterForNavigation<FixBackDrawersView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToBayView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromCellToBayView>();

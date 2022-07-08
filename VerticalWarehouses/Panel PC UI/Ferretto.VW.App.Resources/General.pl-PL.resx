@@ -336,4 +336,10 @@
   <data name="SocketLinkTimeout" xml:space="preserve">
     <value>Limit czasu połączenia z gniazdem</value>
   </data>
+  <data name="FindZeroElevator" xml:space="preserve">
+    <value>Znajdź zero windy</value>
+  </data>
+  <data name="DelayPutOperation" xml:space="preserve">
+    <value>Opóźnienie po umieszczeniu (ms)</value>
+  </data>
 </root>

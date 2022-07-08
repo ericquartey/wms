@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         bool IsRecallLoadingUnitId();
 
+        Task<bool> MustCheckToteBarcode();
+
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
         Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment);
@@ -41,7 +43,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         int RecallLoadingUnitId();
 
-        Task RefreshAsync();
+        Task RefreshAsync(bool force = false);
 
         Task StartAsync();
 

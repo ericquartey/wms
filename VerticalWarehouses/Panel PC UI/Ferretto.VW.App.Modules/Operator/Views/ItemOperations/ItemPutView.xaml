@@ -226,7 +226,8 @@
                          IsEnabled="{Binding CanInputQuantity}"
                          LabelText="{Binding MeasureUnitDescription}"
                          Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
-                         MinValue="0" />
+                         MinValue="0"
+                         MaxValue="{Binding MaxInputQuantity}"/>
 
       <Border Grid.Row="2"
               Visibility="{Binding InputQuantity, Converter={StaticResource RTVC}}">
@@ -356,7 +357,7 @@
 
         <controls:PpcButton Width="54"
                             Height="50"
-                            Margin="4,0,15,0"
+                            Margin="5,8,0,0"
                             HorizontalAlignment="right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SuspendCommand}"
@@ -364,7 +365,7 @@
 
         <controls:PpcButton Width="54"
                             Height="50"
-                            Margin="4,0,15,0"
+                            Margin="5,8,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding ShowBarcodeReaderCommand}"

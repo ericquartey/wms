@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength)
+        public void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose)
         {
             lock (this.dataContext)
             {
@@ -72,6 +72,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 barBay.Accessories.AlphaNumericBar.TcpPort = port;
                 barBay.Accessories.AlphaNumericBar.Size = size;
                 barBay.Accessories.AlphaNumericBar.MaxMessageLength = maxMessageLength;
+                barBay.Accessories.AlphaNumericBar.ClearAlphaBarOnCloseView = clearOnClose;
 
                 this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
                 this.dataContext.SaveChanges();

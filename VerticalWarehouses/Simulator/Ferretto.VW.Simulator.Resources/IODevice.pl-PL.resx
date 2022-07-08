@@ -192,4 +192,7 @@
   <data name="UpperBayBoxSensorPresence" xml:space="preserve">
     <value>Czujnik obecności górnej skrzynki ładunkowej</value>
   </data>
+  <data name="InnerLightCurtain" xml:space="preserve">
+    <value>Wewnętrzna, świetlna kurtyna bezpieczeństwa</value>
+  </data>
 </root>

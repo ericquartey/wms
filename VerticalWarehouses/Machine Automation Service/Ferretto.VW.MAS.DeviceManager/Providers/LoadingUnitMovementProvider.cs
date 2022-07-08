@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var newHeight = height;
             if (weightUp > 0 || weightDown > 0)
             {
-                newHeight -= Math.Max(3, 0.003 * (weightUp + (weightDown / 4)));
+                newHeight -= Math.Min(3, 0.003 * (weightUp + (weightDown / 4)));
                 this.logger.LogInformation($"Vertical positioning to bay adjusted from {height:0.00} to {newHeight:0.00}. Upper weight {weightUp:0.00}, Down Weight {weightDown:0.00}");
             }
             return newHeight;
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     var isUpper = loadingUnitPosition == LoadingUnitLocation.InternalBay1Up || loadingUnitPosition == LoadingUnitLocation.InternalBay2Up || loadingUnitPosition == LoadingUnitLocation.InternalBay3Up;
                     if (deposit)
                     {
-                        return this.externalBayProvider.CanElevatorDeposit(bay.Number, isUpper);
+                        return this.externalBayProvider.CanElevatorDepositExternal(bay.Number, isUpper);
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     if (deposit)
                     {
-                        return this.externalBayProvider.CanElevatorDeposit(bay.Number, false);
+                        return this.externalBayProvider.CanElevatorDepositExternal(bay.Number, false);
                     }
                     else
                     {
@@ -768,20 +768,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
                 else
                 {
-                    // with this trick we rely only on sensors
+                    this.logger.LogDebug($"1-Reset horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
                     distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
                     highSpeed = false;
+                    this.elevatorDataProvider.UpdateLastIdealPosition(-999999);
                 }
             }
             if (distance > horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset))
             {
-                this.logger.LogDebug($"Invalid horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
+                this.logger.LogDebug($"2-Reset horizontal distance={distance:0.00} mm value [current HorizontalPosition={horizontalPosition:0.00} mm, horizontal LastIdealPosition={horizontalAxis.LastIdealPosition:0.00} mm");
                 distance = horizontalAxis.Profiles.First().TotalDistance + Math.Abs(horizontalAxis.ChainOffset);
                 highSpeed = false;
-
-                //this.errorsProvider.RecordNew(MachineErrorCode.AutomaticRestoreNotAllowed, requestingBay);
-                //stopRequest = StopRequestReason.Abort;
-                //return false;
+                this.elevatorDataProvider.UpdateLastIdealPosition(-999999);
             }
 
             // Vertical

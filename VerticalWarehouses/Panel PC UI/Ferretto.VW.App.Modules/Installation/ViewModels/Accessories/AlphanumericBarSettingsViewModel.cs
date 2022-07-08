@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IAlphaNumericBarService deviceService;
 
+        private bool clearOnClose;
+
         private IPAddress ipAddress;
 
         private int maxMessageLength;
@@ -61,6 +63,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public bool ClearOnClose
+        {
+            get => this.clearOnClose;
+            set
+            {
+                if (this.SetProperty(ref this.clearOnClose, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public IPAddress IpAddress
         {
@@ -253,6 +268,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Port = bayAccessories.AlphaNumericBar.TcpPort;
                     this.Size = bayAccessories.AlphaNumericBar.Size;
                     this.MaxMessageLength = bayAccessories.AlphaNumericBar.MaxMessageLength;
+                    this.ClearOnClose = bayAccessories.AlphaNumericBar.ClearAlphaBarOnCloseView is true;
                     await this.deviceService.AlphaNumericBarConfigureAsync();
                     //this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
                     //if (this.IsAccessoryEnabled)
@@ -308,7 +324,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                await this.bayManager.SetAlphaNumericBarAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.size, this.maxMessageLength);
+                await this.bayManager.SetAlphaNumericBarAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.size, this.maxMessageLength, this.clearOnClose);
                 await this.deviceService.AlphaNumericBarConfigureAsync();
             }
             catch (Exception ex)
@@ -326,7 +342,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.deviceDriver.Configure(this.ipAddress, this.port, this.size, this.MachineService.Bay.IsExternal, this.maxMessageLength);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.size, this.MachineService.Bay.IsExternal, this.maxMessageLength, this.clearOnClose);
                 await this.deviceDriver.EnabledAsync(false);
                 if (this.deviceDriver.TestEnabled)
                 {
@@ -352,7 +368,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.deviceDriver.Configure(this.ipAddress, this.port, this.size, this.MachineService.Bay.IsExternal, this.maxMessageLength);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.size, this.MachineService.Bay.IsExternal, this.maxMessageLength, this.clearOnClose);
                 return await this.deviceDriver.TestAsync(enable);
             }
             catch (Exception ex)
@@ -372,7 +388,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.deviceDriver.Configure(this.ipAddress, this.port, this.size, this.MachineService.Bay.IsExternal, this.maxMessageLength);
+                this.deviceDriver.Configure(this.ipAddress, this.port, this.size, this.MachineService.Bay.IsExternal, this.maxMessageLength, this.clearOnClose);
 
                 this.Logger.Debug($"DoTestMessageOnAsync; message {message}");
 

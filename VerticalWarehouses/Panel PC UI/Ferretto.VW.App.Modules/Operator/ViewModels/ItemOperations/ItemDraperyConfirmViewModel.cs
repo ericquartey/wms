@@ -116,7 +116,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double? InputQuantity
         {
             get => this.inputQuantity;
-            set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+            set
+            {
+                if (value >= 0)
+                {
+                    this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+                }
+            }
         }
 
         public bool IsCurrentDraperyItemFullyRequested
@@ -270,7 +276,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             else
             {
-                canConfirm = this.InputQuantity.Value + this.wastedDraperyQuantity <= this.AvailableQuantity.Value;
+                canConfirm = this.InputQuantity.Value + this.wastedDraperyQuantity < this.AvailableQuantity.Value + this.QuantityIncrement;
             }
 
             return canConfirm;

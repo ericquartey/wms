@@ -43,6 +43,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Accessory");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.AutoCompactingSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<TimeSpan>("BeginTime");
+
+                    b.Property<bool>("IsActive");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AutoCompactingSettings");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
                     b.Property<int>("Id")
@@ -55,6 +69,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("CarouselId");
 
                     b.Property<double>("ChainOffset");
+
+                    b.Property<bool>("CheckListContinueInOtherMachine");
 
                     b.Property<int?>("CurrentMissionId");
 
@@ -1336,6 +1352,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Box");
 
+                    b.Property<bool>("CanUserEnableWms");
+
                     b.Property<int?>("ElevatorId");
 
                     b.Property<bool>("EnabeNoteRules");
@@ -1379,6 +1397,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsLocalMachineItems");
 
                     b.Property<bool>("IsOrderList");
+
+                    b.Property<bool>("IsQuantityLimited");
 
                     b.Property<bool>("IsRequestConfirmForLastOperationOnLoadingUnit");
 
@@ -2147,6 +2167,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.AlphaNumericBar", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
+
+                    b.Property<bool?>("ClearAlphaBarOnCloseView");
 
                     b.Property<int>("MaxMessageLength");
 

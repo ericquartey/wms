@@ -1275,4 +1275,7 @@
   <data name="BayOperationsDescriptionWarning" xml:space="preserve">
     <value>ATTENZIONE: alcune funzionalità necessitano di una personalizzazione sul WMS</value>
   </data>
+  <data name="HelpFBDDescription" xml:space="preserve">
+    <value>Questa operazione permette di aggiornare tutte le quote delle celle del lato posteriore, il salvataggio può impiegare qualche secondo.</value>
+  </data>
 </root>

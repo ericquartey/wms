@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken loadingUnitToken;
 
+        private bool multilist;
+
         private int unitId;
 
         #endregion
@@ -150,8 +152,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public async Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync()
         {
             var machine = await this.identityService.GetAsync();
-            var bay = await this.bayManager.GetBayAsync();
-            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+            var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, (int)this.bayNumber, true, this.authenticationService.UserName);
 
             return list;
         }
@@ -291,15 +292,15 @@ namespace Ferretto.VW.App.Modules.Operator
             {
                 var configuration = await this.machineConfigurationWebService.GetAsync();
 
-                if (!configuration.Machine.IsCarrefour)
+                var machine = await this.identityService.GetAsync();
+                var bay = await this.bayManager.GetBayAsync();
+
+                if (!bay.CheckListContinueInOtherMachine)
                 {
                     return false;
                 }
 
-                var machine = await this.identityService.GetAsync();
-                var bay = await this.bayManager.GetBayAsync();
-
-                var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true);
+                var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, this.authenticationService.UserName);
 
                 var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission.Operations.FirstOrDefault().ItemListCode);
                 if (currentMission is null)
@@ -319,6 +320,19 @@ namespace Ferretto.VW.App.Modules.Operator
         public bool IsRecallLoadingUnitId()
         {
             return this.isRecallUnit;
+        }
+
+        public async Task<bool> MustCheckToteBarcode()
+        {
+            if (this.multilist)
+            {
+                return true;
+            }
+
+            var lists = await this.GetAllMissionsMachineAsync();
+            this.multilist = lists != null
+                && lists.Count(z => z.Status == ItemListStatus.Executing && z.ItemListType == ItemListType.Pick) > 1;
+            return this.multilist;
         }
 
         public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
@@ -365,9 +379,9 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.unitId;
         }
 
-        public async Task RefreshAsync()
+        public async Task RefreshAsync(bool force = false)
         {
-            await this.RefreshActiveMissionAsync();
+            await this.RefreshActiveMissionAsync(force: force);
         }
 
         public async Task StartAsync()
@@ -493,7 +507,7 @@ namespace Ferretto.VW.App.Modules.Operator
                .Publish(new MissionChangedEventArgs(this.ActiveMachineMission, this.ActiveWmsMission, this.ActiveWmsOperation));
         }
 
-        private async Task RefreshActiveMissionAsync(int? missionId = null)
+        private async Task RefreshActiveMissionAsync(int? missionId = null, bool force = false)
         {
             try
             {
@@ -533,13 +547,24 @@ namespace Ferretto.VW.App.Modules.Operator
                     {
                         this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo}.");
                         newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+                        try
+                        {
+                            await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.Debug($"Active WMS mission '{newMachineMission.WmsId}' has failed activation {ex.Message}.");
 
-                        await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
+                            newMachineMission = null;
+                            newWmsMission = null;
+                        }
                     }
                 }
                 else
                 {
                     this.logger.Trace($"No Active mission.");
+
+                    this.multilist = false;
 
                     if (this.ActiveMachineMission?.LoadUnitId != null)
                     {
@@ -572,7 +597,9 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true)
                    ||
-                   missionId.HasValue)
+                   missionId.HasValue
+                   ||
+                   force)
                 {
                     this.ActiveMachineMission = newMachineMission;
                     this.ActiveWmsMission = newWmsMission;

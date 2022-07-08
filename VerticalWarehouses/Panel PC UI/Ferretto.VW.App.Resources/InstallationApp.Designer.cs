@@ -322,6 +322,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compacting Is Active.
+        /// </summary>
+        public static string AutoCompactingIsActive {
+            get {
+                return ResourceManager.GetString("AutoCompactingIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logout active.
         /// </summary>
         public static string AutoLogoutIsActive {
@@ -1195,6 +1204,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Wms Status?.
+        /// </summary>
+        public static string ChangeWmsStatus {
+            get {
+                return ResourceManager.GetString("ChangeWmsStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check the alignment between the bay and the elevator. If they are not aligned, proceed to correct the position of the elevator..
         /// </summary>
         public static string CheckBayElevatorAlignment {
@@ -1281,6 +1299,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ChecksumCompleted {
             get {
                 return ResourceManager.GetString("ChecksumCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear on close view.
+        /// </summary>
+        public static string ClearAlphaBarOnCloseView {
+            get {
+                return ResourceManager.GetString("ClearAlphaBarOnCloseView", resourceCulture);
             }
         }
         
@@ -2811,6 +2838,33 @@ namespace Ferretto.VW.App.Resources {
         public static string FirstTest {
             get {
                 return ResourceManager.GetString("FirstTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back Offset.
+        /// </summary>
+        public static string FixBackDrawers {
+            get {
+                return ResourceManager.GetString("FixBackDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change all back cell position by {0}mm?.
+        /// </summary>
+        public static string FixBackDrawersAsk {
+            get {
+                return ResourceManager.GetString("FixBackDrawersAsk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fix all back cell positions.
+        /// </summary>
+        public static string FixBackDrawersDescription {
+            get {
+                return ResourceManager.GetString("FixBackDrawersDescription", resourceCulture);
             }
         }
         
@@ -5497,7 +5551,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height measure Resolution Calibration.
+        ///   Looks up a localized string similar to Height measure test.
         /// </summary>
         public static string ProfileResolutionCalibration {
             get {
@@ -5506,7 +5560,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The calibration of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
+        ///   Looks up a localized string similar to The test of the height measure device enables the correct value setting by this procedure. The procedure works in successive steps until correct completion..
         /// </summary>
         public static string ProfileResolutionCalibrationHelp {
             get {
@@ -5718,6 +5772,15 @@ namespace Ferretto.VW.App.Resources {
         public static string RemoveMenuTitle {
             get {
                 return ResourceManager.GetString("RemoveMenuTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Successful.
+        /// </summary>
+        public static string RemoveSuccessful {
+            get {
+                return ResourceManager.GetString("RemoveSuccessful", resourceCulture);
             }
         }
         

@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCarrefour;
 
+        private bool isCheckListContinueInOtherMachine;
+
         private bool isDisableQtyItemEditingPick;
 
         private bool isDoubleConfirmBarcodeInventory;
@@ -50,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isLocalMachineItems;
 
         private bool isOrderList;
+
+        private bool isQuantityLimited;
 
         private bool isRequestConfirmForLastOperationOnLoadingUnit;
 
@@ -117,6 +121,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isCarrefour, value, this.CanExecute);
         }
 
+        public bool IsCheckListContinueInOtherMachine
+        {
+            get => this.isCheckListContinueInOtherMachine;
+            set => this.SetProperty(ref this.isCheckListContinueInOtherMachine, value, this.CanExecute);
+        }
+
         public bool IsDisableQtyItemEditingPick
         {
             get => this.isDisableQtyItemEditingPick;
@@ -176,6 +186,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isOrderList;
             set => this.SetProperty(ref this.isOrderList, value, this.CanExecute);
+        }
+
+        public bool IsQuantityLimited
+        {
+            get => this.isQuantityLimited;
+            set => this.SetProperty(ref this.isQuantityLimited, value, this.CanExecute);
         }
 
         public bool IsRequestConfirmForLastOperationOnLoadingUnit
@@ -277,6 +293,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Inventory = this.Bay.Inventory;
                 this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
                 this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage;
+                this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine;
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
                 this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
@@ -293,6 +310,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnabeNoteRules = configuration.Machine.EnabeNoteRules;
                 this.IsLocalMachineItems = configuration.Machine.IsLocalMachineItems;
                 this.IsOrderList = configuration.Machine.IsOrderList;
+                this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
                 this.ItemUniqueIdLength = configuration.Machine.ItemUniqueIdLength;
                 this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
             }
@@ -313,7 +331,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage);
+                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage, this.IsCheckListContinueInOtherMachine);
 
                 var machine = new Machine();
                 machine.IsEnableHandlingItemOperations = this.IsEnableHandlingItemOperations;
@@ -332,6 +350,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.ItemUniqueIdLength = this.ItemUniqueIdLength;
                 machine.ToteBarcodeLength = this.ToteBarcodeLength;
                 machine.IsDrapery = this.IsDrapery;
+                machine.IsQuantityLimited = this.IsQuantityLimited;
 
                 await this.identityService.SetBayOperationParamsAsync(machine);
 

@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAlphaNumericBarService alphaNumericBarService;
+
         private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IMachineCompartmentsWebService compartmentsWebService;
@@ -23,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineItemsWebService itemsWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private readonly IMissionOperationsService missionOperationsService;
 
         private DelegateCommand barcodeReaderCancelCommand;
 
@@ -80,9 +84,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineAccessoriesWebService accessoriesWebService)
+            IMachineAccessoriesWebService accessoriesWebService,
+            IAlphaNumericBarService alphaNumericBarService)
             : base(
-                  deviceService,
                   areasWebService,
                   machineIdentityWebService,
                   machineConfigurationWebService,
@@ -106,6 +110,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
 
             this.barcodeReaderService = barcodeReaderService;
+
+            this.missionOperationsService = missionOperationsService;
+
+            this.alphaNumericBarService = alphaNumericBarService;
         }
 
         #endregion
@@ -262,6 +270,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.confirmPartialOperation = this.MissionOperation != null &&
                     this.InputQuantity.Value >= 0 &&
                     this.InputQuantity.Value != this.MissionRequestedQuantity &&
+                    (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity) &&
                     !this.IsOperationCanceled;
 
                 if (this.confirmPartialOperation && this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
@@ -312,6 +321,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                this.InputQuantity.HasValue
                &&
                this.InputQuantity.Value != this.MissionRequestedQuantity
+               &&
+               (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity)
                &&
                !this.canPutBox;
         }
@@ -491,6 +502,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.BarcodeImageExist = false;
 
+            this.alphaNumericBarService.ClearMessage();
+
             base.Disappear();
         }
 
@@ -499,6 +512,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
+            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
@@ -506,15 +520,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddItem = false;
 
-            this.CloseLine = true;
+            this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
 
-            // Setup only reserved for Tendaggi Paradiso
-            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation.FullyRequested.HasValue && this.MissionOperation.FullyRequested.Value;
-
             await base.OnAppearedAsync();
 
+            // Setup only reserved for Tendaggi Paradiso
+            this.IsCurrentDraperyItemFullyRequested = this.IsCurrentDraperyItem && this.MissionOperation?.FullyRequested != null && this.MissionOperation?.FullyRequested.Value == true;
+
+            if (this.IsQuantityLimited && this.MissionOperation != null)
+            {
+                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+            }
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
@@ -603,6 +621,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.InputQuantity.HasValue
                     &&
                     this.InputQuantity.Value >= 0
+                    &&
+                    (!this.IsQuantityLimited || this.InputQuantity.Value <= this.MissionRequestedQuantity)
                     &&
                     !this.CanPutBox;
             }

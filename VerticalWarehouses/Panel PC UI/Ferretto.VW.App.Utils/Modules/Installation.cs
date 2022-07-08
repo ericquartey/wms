@@ -53,6 +53,8 @@
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
+        public const string LOADFIXBACKDRAWERS = "FixBackDrawersViewModel";
+
         public const string LOGOUTSETTINGS = "LogoutSettingsViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
