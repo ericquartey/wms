@@ -302,7 +302,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, this.authenticationService.UserName);
 
-                var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission.Operations.FirstOrDefault().ItemListCode);
+                var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission?.Operations.FirstOrDefault().ItemListCode);
                 if (currentMission is null)
                 {
                     return false;

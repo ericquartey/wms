@@ -433,9 +433,27 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task GetLoadUnits()
+        public async Task GetLoadUnits(bool details = false)
         {
             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+            if (details && this.healthProbeService.HealthWmsStatus is HealthStatus.Healthy)
+            {
+                foreach (var lu in this.Loadunits)
+                {
+                    try
+                    {
+                        var luDetails = await this.machineLoadingUnitsWebService.GetWmsDetailsByIdAsync(lu.Id);
+                        if (!string.IsNullOrEmpty(luDetails?.Note))
+                        {
+                            lu.Description = luDetails.Note;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        this.ShowNotification($"{Resources.Localized.Get("ServiceMachine.LoadUnitNotFound")} {lu.Id}", NotificationSeverity.Error);
+                    }
+                }
+            }
         }
 
         public async Task GetTuningStatus()
@@ -481,7 +499,7 @@ namespace Ferretto.VW.App.Services
                 {
                     await this.InitializationHoming();
                     await this.InitializationBay();
-                    await this.GetLoadUnits();
+                    await this.GetLoadUnits(details: true);
                     await this.GetTuningStatus();
                     await this.GetCells();
 
@@ -1256,7 +1274,7 @@ namespace Ferretto.VW.App.Services
                 {
                     await this.UpdateBay();
                 }
-                await this.GetLoadUnits();
+                await this.GetLoadUnits(details: true);
             }
             catch (Exception exc)
             {

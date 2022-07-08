@@ -187,6 +187,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load unit not found in WMS:.
+        /// </summary>
+        public static string LoadUnitNotFound {
+            get {
+                return ResourceManager.GetString("LoadUnitNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LoadUnit on  board has invalid height.
         /// </summary>
         public static string LoadUnitOnBoardHasInvalidHeight {
