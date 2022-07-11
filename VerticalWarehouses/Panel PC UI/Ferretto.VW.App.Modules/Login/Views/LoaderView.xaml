@@ -13,6 +13,7 @@
            mc:Ignorable="d">
     <Grid>
         <StackPanel VerticalAlignment="Center">
+            
             <Image Width="60"
                    Margin="30"
                    gif:ImageBehavior.AnimatedSource="{DynamicResource SpinnerImageSource}"
