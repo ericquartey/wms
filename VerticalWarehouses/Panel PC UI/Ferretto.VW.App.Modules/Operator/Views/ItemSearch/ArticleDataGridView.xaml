@@ -8,6 +8,7 @@
   <ctrls:PpcDataGrid Name="DataGrid"
                      extensionsNamespace:DataGridExtensions.ScrollChangedCommand="{Binding ScrollCommand}"
                      IsHitTestVisible="True"
+                     CanUserSortColumns="True"
                      ItemsSource="{Binding Items}"
                      RowHeight="50"
                      SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
@@ -36,6 +37,7 @@
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
+        
       <DataGridTextColumn x:Name="Column2"
                           Width="4*"
                           Binding="{Binding Path=Description}"
@@ -55,8 +57,11 @@
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
+        
       <DataGridTemplateColumn x:Name="Column3"
                               Width="100"
+                              CanUserSort="True"
+                              SortMemberPath="IsQtyOnMachine"
                               Header="{Resources:Loc OperatorApp.ListAvailable}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate>
@@ -67,6 +72,7 @@
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
+        
       <DataGridTextColumn x:Name="Column4"
                           Width="100"
                           Binding="{Binding Path=Lot}"
@@ -86,6 +92,7 @@
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
+        
       <DataGridTextColumn x:Name="Column5"
                           Width="100"
                           Binding="{Binding Path=SerialNumber}"
