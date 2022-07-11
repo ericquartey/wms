@@ -25,22 +25,19 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.46 rispetto la 1.0.45
-- Aggiunta gestione Put and Go
-- Ferretto NuGet package 0.16.43
-- Aggiunta serranda UpperHalf per fiera
-- Barra alfanumerica: aggiunto parametro per cancellare alla chiusura della vista di prelievo o versamento
-- I cassetti sono salvati sull'adapter
-- Menu Info - Generale: aggiunto cambio Stato Wms per Operator
+## Nuove Funzionalità 1.0.47 rispetto la 1.0.46
+- 
 
 ## Bug Risolti
-- BIG: corretto ripristino in caso di perdita del sensore di zero
-- Parametri asse orizzontale: la velocità a vuoto può essere minore di quelle dei profili
-- Versamenti: Salda riga è falso di default
-- Conferma collaudo: corretta baia esterna
+- L'utente Installer può modificare Offset catena e Numero macchina
+- La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
+- Corretto un caso di missione duplicata di rientro cassetto
+- 
 
 ## Compatibile con adapter 0.4.35 e 0.4.36
 ***
+
+[Versione 1.0.46](#id1046)
 
 [Versione 1.0.45](#id1045)
 
@@ -134,6 +131,24 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1046"></a>
+
+## Nuove Funzionalità 1.0.46 rispetto la 1.0.45
+- Aggiunta gestione Put and Go
+- Ferretto NuGet package 0.16.43
+- Aggiunta serranda UpperHalf per fiera
+- Barra alfanumerica: aggiunto parametro per cancellare alla chiusura della vista di prelievo o versamento
+- I cassetti sono salvati sull'adapter
+- Menu Info - Generale: aggiunto cambio Stato Wms per Operator
+
+## Bug Risolti
+- BIG: corretto ripristino in caso di perdita del sensore di zero
+- Parametri asse orizzontale: la velocità a vuoto può essere minore di quelle dei profili
+- Versamenti: Salda riga è falso di default
+- Conferma collaudo: corretta baia esterna
+
+## Compatibile con adapter 0.4.35 e 0.4.36
 
 <a id="id1045"></a>
 

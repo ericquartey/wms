@@ -216,4 +216,7 @@
   <data name="InconsistencyStateAndSensorsBay" xml:space="preserve">
     <value>Load state and sensors inconsistency Bay {0}</value>
   </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Load unit not found in WMS:</value>
+  </data>
 </root>

@@ -272,7 +272,7 @@ namespace Ferretto.VW.Devices.LaserPointer
                             this.stream.Write(data, 0, data.Length);
                             this.logger.Debug($"ExecuteCommands();Sent: {sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
 
-                            if (this.IsWaitResponse(sendMessage))
+                            if (this.IsConnected && this.IsWaitResponse(sendMessage))
                             {
                                 data = new byte[this.client.ReceiveBufferSize];
                                 var bytes = 0;
