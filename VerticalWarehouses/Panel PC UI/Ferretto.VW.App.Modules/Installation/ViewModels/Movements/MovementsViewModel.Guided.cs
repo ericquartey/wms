@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO.Packaging;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.CodeParser;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
@@ -129,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors || this.MachineService.Bay.Shutter.Type == ShutterType.UpperHalf;
+        public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors || this.MachineService.Bay.Shutter?.Type == ShutterType.UpperHalf;
 
         public ICommand CarouselDownCommand =>
             this.moveCarouselDownCommand
