@@ -251,6 +251,8 @@
 
       <DataGridTemplateColumn x:Name="Column9"
                               Width="100"
+                              SortMemberPath="ExecutionMode"
+                              CanUserSort="True"
                               Header="{Resources:Loc OperatorApp.ListAvailable}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate>

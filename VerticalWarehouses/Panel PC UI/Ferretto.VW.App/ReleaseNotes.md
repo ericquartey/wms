@@ -26,12 +26,14 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.47 rispetto la 1.0.46
+- Lista articoli: aggiunto ordinamento delle colonne
 - 
 
 ## Bug Risolti
 - L'utente Installer può modificare Offset catena e Numero macchina
 - La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
 - Corretto un caso di missione duplicata di rientro cassetto
+- Movimenti: corretto errore in assenza della serranda
 - 
 
 ## Compatibile con adapter 0.4.35 e 0.4.36
