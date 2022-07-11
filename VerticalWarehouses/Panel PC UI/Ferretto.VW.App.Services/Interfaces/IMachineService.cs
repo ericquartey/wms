@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Services
 
         Task GetCells();
 
-        Task GetLoadUnits();
+        Task GetLoadUnits(bool details = false);
 
         Task GetTuningStatus();
 

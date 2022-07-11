@@ -228,6 +228,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            await this.MachineService.GetLoadUnits(details: true);
             this.loadingUnits = this.MachineService.Loadunits.ToList();
             this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
