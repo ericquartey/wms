@@ -73,7 +73,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void OnInverterMessageReceivedPDO(object sender, ImplicitReceivedEventArgs e)
         {
-            this.Logger.LogTrace($"1:inverterMessage={BitConverter.ToString(e.receivedMessage)}");
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 try
@@ -86,6 +85,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         && this.canData is null
                         && e.isOk)
                     {
+                        this.Logger.LogTrace($"1:inverterMessage={BitConverter.ToString(e.receivedMessage)}");
                         this.canData = new InverterMessage(InverterIndex.MainInverter, InverterParameterId.StatusWord, 0);
                         this.canData.SetPointCan(inverter.SystemIndex, inverter.CommonControlWord.Value, 0, inverter.SetPointPosition, 0, inverter.OperatingMode);
                         this.Logger.LogDebug($"SetPoint inverter {inverter.SystemIndex}, CW 0x{inverter.CommonControlWord.Value:X4}, Pos {inverter.SetPointPosition}");
@@ -108,6 +108,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (e.isOk)
                         {
+                            this.Logger.LogTrace($"1:inverterMessage={BitConverter.ToString(e.receivedMessage)}");
                             this.canData.FromBytesPDO(e.receivedMessage, inverterIndex, inverters.Last().SystemIndex);
                             var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                             if (inverter.CommonStatusWord.Value != this.canData.StatusWord[inverter.SystemIndex])

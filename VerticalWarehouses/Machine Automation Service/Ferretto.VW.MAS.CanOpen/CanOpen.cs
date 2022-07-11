@@ -846,6 +846,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 throw new ApplicationException("missing readPDO");
             }
             var savePDO = new Dictionary<byte, ICanCyclicTXMsg>(this.readPDO);
+            bool firstLoop = true;
             do
             {
                 var isChanged = false;
@@ -855,7 +856,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                     var pdoMsg = pdo.Value;
                     if (savePDO.TryGetValue(node, out var tmp))
                     {
-                        var isChangedNode = false;
+                        var isChangedNode = firstLoop;
                         var pdoData = new byte[tmp.DataLength];
                         for (int i = 0; i < pdoMsg.DataLength; i++)
                         {
@@ -875,6 +876,7 @@ namespace Ferretto.VW.MAS.CanOpenClient
                 }
                 if (isChanged)
                 {
+                    firstLoop = false;
                     this.ImplicitMessageEvent?.Invoke(this);
                 }
                 Thread.Sleep(10);

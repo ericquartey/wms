@@ -243,6 +243,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 var args = new ImplicitReceivedEventArgs();
                 args.isEmergency = node > 0;
+                args.node = node;
                 if (args.isEmergency)
                 {
                     args.emergencyError = error;
@@ -260,6 +261,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                 var args = new ImplicitReceivedEventArgs();
                 args.isNMT = node > 0;
                 args.isSync = isSync;
+                args.node = node;
                 if (args.isNMT)
                 {
                     args.nMTNode = node;
