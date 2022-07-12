@@ -63,7 +63,8 @@
       </Grid.RowDefinitions>
 
       <Border Grid.Row="0"
-              Height="90"
+              Height="auto"
+              MaxHeight="150"
               MinHeight="90"
               Margin="15,0,15,0"
               Background="{DynamicResource PpcBackground}">
@@ -71,11 +72,11 @@
                 BorderThickness="{DynamicResource PpcBorderThickness}">
 
           <Grid Grid.Column="8"
-                Grid.ColumnSpan="4">
+                          Grid.ColumnSpan="4">
 
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
-              <RowDefinition Height="*" />
+              <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
@@ -88,12 +89,14 @@
                        Style="{DynamicResource VWAPP_CardSensor}"
                        Text="{Resources:Loc OperatorApp.CommonNote}" />
 
-            <TextBlock Grid.Row="1"
-                       Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Style="{DynamicResource VWAPP_CardSensor_Data}"
-                       Text="{Binding SelectedLoadingUnit.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}" />
+                        <TextBlock Grid.Row="1"
+                                   Margin="4,0,4,4"
+                                   MaxWidth="350"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding SelectedLoadingUnit.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}" />
 
           </Grid>
         </Border>
@@ -102,6 +105,7 @@
       <ctrls:PpcSpinEdit Grid.Row="1"
                          Width="230"
                          Height="90"
+                         HorizontalAlignment="Right"
                          Margin="15,15,15,0"
                          EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
                          KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
