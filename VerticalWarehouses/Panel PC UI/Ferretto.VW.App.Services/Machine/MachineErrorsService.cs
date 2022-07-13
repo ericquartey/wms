@@ -152,6 +152,38 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        public bool IsErrorZero(int activeErrorCode)
+        {
+            bool isError = false;
+            switch (activeErrorCode)
+            {
+                case (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator:
+                case (int)MachineErrorCode.ZeroSensorErrorAfterDeposit:
+                    isError = !this.sensorsService.IsZeroChain &&
+                        !this.sensorsService.Sensors.LuPresentInMachineSide &&
+                        !this.sensorsService.Sensors.LuPresentInOperatorSide;
+                    break;
+
+                case (int)MachineErrorCode.SensorZeroBayNotActiveAtEnd:
+                case (int)MachineErrorCode.SensorZeroBayNotActiveAtStart:
+                    isError = !this.sensorsService.BayZeroChain &&
+                        this.machineService.Bay.Carousel != null;
+                    break;
+
+                case (int)MachineErrorCode.ConditionsNotMetForHoming:
+                    isError = !this.sensorsService.IsZeroChain &&
+                        !this.sensorsService.Sensors.LuPresentInMachineSide &&
+                        !this.sensorsService.Sensors.LuPresentInOperatorSide;
+                    if (!isError)
+                    {
+                        isError = !this.sensorsService.BayZeroChain &&
+                            this.machineService.Bay.Carousel != null;
+                    }
+                    break;
+            }
+            return isError;
+        }
+
         private async Task CheckErrorsPresenceAsync()
         {
             try
@@ -212,38 +244,6 @@ namespace Ferretto.VW.App.Services
             }
 
             return viewDesc;
-        }
-
-        private bool IsErrorZero(int activeErrorCode)
-        {
-            bool isError = false;
-            switch (activeErrorCode)
-            {
-                case (int)MachineErrorCode.MissingZeroSensorWithEmptyElevator:
-                case (int)MachineErrorCode.ZeroSensorErrorAfterDeposit:
-                    isError = !this.sensorsService.IsZeroChain &&
-                        !this.sensorsService.Sensors.LuPresentInMachineSide &&
-                        !this.sensorsService.Sensors.LuPresentInOperatorSide;
-                    break;
-
-                case (int)MachineErrorCode.SensorZeroBayNotActiveAtEnd:
-                case (int)MachineErrorCode.SensorZeroBayNotActiveAtStart:
-                    isError = !this.sensorsService.BayZeroChain &&
-                        this.machineService.Bay.Carousel != null;
-                    break;
-
-                case (int)MachineErrorCode.ConditionsNotMetForHoming:
-                    isError = !this.sensorsService.IsZeroChain &&
-                        !this.sensorsService.Sensors.LuPresentInMachineSide &&
-                        !this.sensorsService.Sensors.LuPresentInOperatorSide;
-                    if (!isError)
-                    {
-                        isError = !this.sensorsService.BayZeroChain &&
-                            this.machineService.Bay.Carousel != null;
-                    }
-                    break;
-            }
-            return isError;
         }
 
         private async Task NavigateToErrorPageAsync()

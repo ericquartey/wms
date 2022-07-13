@@ -287,6 +287,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             if (this.IsMissionInErrorByLoadUnitOperations)
             {
                 await this.machineModeWebService.SetAutomaticAsync();
+                this.machineErrorsService.AutoNavigateOnError = true;
             }
             else if (this.machineMode is MachineMode.Automatic)
             {
@@ -302,6 +303,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineModeWebService.SetAutomaticAsync();
+                        this.machineErrorsService.AutoNavigateOnError = true;
                     }
                 }
                 else
@@ -319,6 +321,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineModeWebService.SetAutomaticAsync();
+                        this.machineErrorsService.AutoNavigateOnError = true;
                     }
                 }
                 else
@@ -335,6 +338,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     if (messageBoxResult == DialogResult.Yes)
                     {
                         await this.machineModeWebService.SetAutomaticAsync();
+                        this.machineErrorsService.AutoNavigateOnError = true;
                     }
                 }
                 else

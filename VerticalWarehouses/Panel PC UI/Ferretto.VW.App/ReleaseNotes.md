@@ -35,6 +35,7 @@
 - Corretto un caso di missione duplicata di rientro cassetto
 - Movimenti: corretto errore in assenza della serranda
 - Barra alfanumerica: corretto mancato spegnimento a fine operazione
+- Errore ricerca di zero: la finestra non è più bloccante
 
 ## Compatibile con adapter 0.4.35 e 0.4.36
 ***

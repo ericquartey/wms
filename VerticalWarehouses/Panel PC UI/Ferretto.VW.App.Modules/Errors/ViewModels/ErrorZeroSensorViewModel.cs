@@ -258,7 +258,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             base.Disappear();
 
             this.MachineError = null;
-            this.machineErrorsService.AutoNavigateOnError = true;
+            //this.machineErrorsService.AutoNavigateOnError = true;
 
             if (this.stepChangedToken != null)
             {
@@ -708,7 +708,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.CalibrateStepVisible = false;
 
                 this.MachineError = await this.machineErrorsWebService.GetCurrentAsync();
-                this.Instruction = $"{this.MachineError.Reason} {Localized.Get("ErrorsApp.PowerOnInstruction")}";
+                if (this.MachineError != null)
+                {
+                    this.Instruction = $"{this.MachineError.Reason} {Localized.Get("ErrorsApp.PowerOnInstruction")}";
+
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is HttpRequestException)
             {

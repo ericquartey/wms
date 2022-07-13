@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Services
 
         string ViewErrorActive { get; }
 
+        bool IsErrorZero(int activeErrorCode);
+
         #endregion
     }
 }
