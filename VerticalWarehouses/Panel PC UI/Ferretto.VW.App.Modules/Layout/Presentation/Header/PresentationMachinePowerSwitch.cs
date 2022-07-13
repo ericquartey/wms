@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
+        private readonly IMachineErrorsService machineErrorsService;
+
         private readonly IMachineModeService machineModeService;
 
         private readonly SubscriptionToken machinePowerChangedToken;
@@ -37,12 +39,14 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public PresentationMachinePowerSwitch(
             IMachineModeService machineModeService,
             IDialogService dialogService,
+            IMachineErrorsService machineErrorsService,
             IMachineService machineService)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
+            this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
 
             this.machinePowerChangedToken = this.EventAggregator
                 .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
@@ -104,6 +108,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();
+                    this.machineErrorsService.AutoNavigateOnError = true;
                 }
             }
         }
