@@ -108,7 +108,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();
-                    this.machineErrorsService.AutoNavigateOnError = true;
+                    if (this.machineErrorsService.ActiveError is null || !this.machineErrorsService.IsErrorZero(this.machineErrorsService.ActiveError.Code))
+                    {
+                        this.machineErrorsService.AutoNavigateOnError = true;
+                    }
                 }
             }
         }
