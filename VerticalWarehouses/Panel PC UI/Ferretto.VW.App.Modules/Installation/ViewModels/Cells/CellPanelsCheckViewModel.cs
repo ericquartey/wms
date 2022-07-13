@@ -515,7 +515,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentCellId > 0)
             {
                 var cell = originalCells.FirstOrDefault(c => c.Id == this.CurrentCellId);
-                if (cell != null && Math.Abs(this.CurrentCell.Position + this.Displacement - cell.Position) > 5)
+                if (cell != null && Math.Abs(this.CurrentCell.Position + this.Displacement - cell.Position) > 6.51)
                 {
                     isOk = false;
                 }

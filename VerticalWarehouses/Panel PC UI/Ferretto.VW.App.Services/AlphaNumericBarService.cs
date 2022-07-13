@@ -133,12 +133,12 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task ClearMessage()
+        public async Task ClearMessage(bool force = false)
         {
             await this.AlphaNumericBarConfigureAsync();
 
             if (this.alphaNumericBarDriver != null
-                && this.clearOnClose
+                && (force || this.clearOnClose)
                 )
             {
                 var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
@@ -248,7 +248,7 @@ namespace Ferretto.VW.App.Services
             {
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
-                    await this.ClearMessage();
+                    await this.ClearMessage(force: true);
                     return;
                 }
 
