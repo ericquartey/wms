@@ -34,7 +34,7 @@
 - La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
 - Corretto un caso di missione duplicata di rientro cassetto
 - Movimenti: corretto errore in assenza della serranda
-- 
+- Barra alfanumerica: corretto mancato spegnimento a fine operazione
 
 ## Compatibile con adapter 0.4.35 e 0.4.36
 ***
