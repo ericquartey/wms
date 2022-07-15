@@ -66,6 +66,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool isDisposed;
 
+        private bool isSimulation;
+
         private bool isTestStopped;
 
         private int performedCycles;
@@ -122,6 +124,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            var machine = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>().GetMinMaxHeight();
+            this.isSimulation = machine.Simulation;
         }
 
         #endregion
@@ -708,7 +712,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsLoadingErrorDuringPickup()
         {
-            if (!this.machineData.MessageData.IsStartedOnBoard)
+            if (!this.machineData.MessageData.IsStartedOnBoard
+                && !this.isSimulation)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
@@ -749,7 +754,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
-            if (this.machineData.MessageData.IsStartedOnBoard)
+            if (this.machineData.MessageData.IsStartedOnBoard
+                && !this.isSimulation)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
@@ -808,6 +814,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 && this.machineData.MessageData.AxisMovement == Axis.Vertical
                 && !this.machineData.MessageData.BypassConditions
                 && !this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                && !this.isSimulation
                 && this.elevatorProvider.VerticalPosition < this.verticalBounds.Offset * 0.7;
         }
 
