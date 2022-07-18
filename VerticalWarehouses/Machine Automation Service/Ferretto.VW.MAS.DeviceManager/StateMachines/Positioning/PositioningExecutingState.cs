@@ -1057,17 +1057,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (this.IsLoadingErrorDuringPickup())
                         {
-                            //this.Logger.LogWarning("Cradle not correctly loaded during pickup");
                             this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
                             this.Stop(StopRequestReason.Stop);
                         }
                         else if (this.IsUnloadingErrorDuringDeposit())
                         {
-                            // TODO - if this warning is reliable we can enable the alarm
-                            //this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
                             this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
-                            //this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Stop);
                         }
 
@@ -1094,28 +1090,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);
-                        }
-                        if (!this.machineData.MessageData.BypassConditions
-                            && this.IsVerticalZeroHighError()
-                            )
-                        {
-                            // TODO - if this warning is reliable we can enable the alarm
-                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroHighError, this.machineData.RequestingBay);
-
-                            //this.stateData.FieldMessage = message;
-                            //this.Stop(StopRequestReason.Error);
-                            this.Logger.LogWarning("The vertical zero sensor is active in a high position");
-                        }
-                        if (!this.machineData.MessageData.BypassConditions
-                            && this.IsVerticalZeroLowError()
-                            )
-                        {
-                            // TODO - if this warning is reliable we can enable the alarm
-                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroLowError, this.machineData.RequestingBay);
-
-                            //this.stateData.FieldMessage = message;
-                            //this.Stop(StopRequestReason.Error);
-                            this.Logger.LogWarning("The vertical zero sensor is not active in a low position");
                         }
                         else if (this.machineData.MessageData.MovementMode == MovementMode.Position
                             && this.machineData.MessageData.AxisMovement == Axis.Horizontal
