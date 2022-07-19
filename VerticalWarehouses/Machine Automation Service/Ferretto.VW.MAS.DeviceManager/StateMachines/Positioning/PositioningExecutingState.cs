@@ -841,11 +841,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case MovementMode.BayChainManual:
                     {
-                        if (this.IsStartBayNotZero && this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        if (this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
                         {
-                            this.IsBayZeroReached = true;
+                            if (this.IsStartBayNotZero)
+                            {
+                                this.IsBayZeroReached = true;
+                            }
 
                             if (this.IsStartPartiallyOnBoard
+                                && this.IsStartBayNotZero
                                 && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay))
                             {
                                 var data = new PositioningMessageData();
@@ -870,10 +874,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.IsStartPartiallyOnBoard = false;
                             }
                         }
+                        else if (!this.IsStartBayNotZero)
+                        {
+                            this.IsStartBayNotZero = true;
+                        }
                         if (this.IsBayZeroReached && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
                         {
                             this.Logger.LogWarning("Bay chain in wrong position!");
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
 
                             //this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Stop);
