@@ -165,23 +165,24 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                 } // REMOVE
 
-                if (positioningData.AxisMovement == Axis.BayChain)  // ADD THIS SNIPPET CODE
-                {
-                    // Check lower position (Absolute scale)
-                    const double INTERNAL_LIMIT = -150.0d;
-                    if (position < INTERNAL_LIMIT)
-                    {
-                        this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                        throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the bay internal limit ({INTERNAL_LIMIT:0.00}).");
-                    }
-                    // Check upper position
-                    const double EXTERNAL_MAX_LIMIT = 1450.0d;
-                    if (position > EXTERNAL_MAX_LIMIT)
-                    {
-                        this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                        throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the bay external limit ({EXTERNAL_MAX_LIMIT}:0.00).");
-                    }
-                }
+                // not used in absolute positioning - only relative for external bays
+                //if (positioningData.AxisMovement == Axis.BayChain && positioningData.IsExternal)
+                //{
+                //    // Check lower position (Absolute scale)
+                //    const double INTERNAL_LIMIT = -150.0d;
+                //    if (position < INTERNAL_LIMIT)
+                //    {
+                //        this.errorsProvider.RecordNew(MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                //        throw new InvalidOperationException($"The requested position ({position:0.00}) is less than the bay internal limit ({INTERNAL_LIMIT:0.00}).");
+                //    }
+                //    // Check upper position
+                //    const double EXTERNAL_MAX_LIMIT = 1450.0d;
+                //    if (position > EXTERNAL_MAX_LIMIT)
+                //    {
+                //        this.errorsProvider.RecordNew(MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
+                //        throw new InvalidOperationException($"The requested position ({position:0.00}) is greater than the bay external limit ({EXTERNAL_MAX_LIMIT}:0.00).");
+                //    }
+                //}
             }
             if (positioningData.AxisMovement == Axis.BayChain)
             {
