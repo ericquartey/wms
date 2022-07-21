@@ -1319,11 +1319,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsWaitingForResponse = false;
         }
 
-        private async Task AddListOperationAsync()
-        {
-
-        }
-
         private void AdjustItemsAppearance()
         {
             try
@@ -1580,7 +1575,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : -1;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId);
 
-
                 var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {
                     ItemId = selectedItemId,
@@ -1592,7 +1586,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     MeasureUnitTxt = OperatorApp.Quantity,
                     MissionOperation = this.SelectedList,
                 };
-
 
                 // Show the view to adding item into current loading unit
                 this.navigationService.Appear(

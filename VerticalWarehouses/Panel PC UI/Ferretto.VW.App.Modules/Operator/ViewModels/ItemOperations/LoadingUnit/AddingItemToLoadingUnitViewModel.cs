@@ -168,7 +168,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public double QuantityIncrement
         {
             get => this.quantityIncrement;
-            set => this.SetProperty(ref this.quantityIncrement, value);
+            set => this.SetProperty(ref this.quantityIncrement, value, this.RaiseCanExecuteChanged);
         }
 
         public int? QuantityTolerance
@@ -176,10 +176,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.quantityTolerance;
             set
             {
-                if (this.SetProperty(ref this.quantityTolerance, value))
-                {
-                    this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance.Value);
-                }
+                this.SetProperty(ref this.quantityTolerance, value);
+                this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance.Value);
             }
         }
 
@@ -281,7 +279,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.acquiredSerialNumberValue = false;
 
             this.InputQuantity = 1;
-            this.QuantityTolerance = 1;
+            this.QuantityTolerance = 0;
             this.Lot = null;
             this.SerialNumber = null;
             this.ExpireDate = null;
@@ -294,7 +292,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (dataBundle.MissionOperation != null)
                 {
                     this.missionOperation = dataBundle.MissionOperation;
-                    this.inputQuantity = this.missionOperation.RequestedQuantity;
+                    this.InputQuantity = this.missionOperation.RequestedQuantity;
                 }
 
                 this.itemId = dataBundle.ItemId;
@@ -303,7 +301,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.LoadingUnitId = dataBundle.LoadingUnitId;
                 this.ItemDescription = dataBundle.ItemDescription;
                 this.MeasureUnitTxt = dataBundle.MeasureUnitTxt;
-                this.QuantityTolerance = dataBundle.QuantityTolerance ?? 1;
+                this.QuantityTolerance = dataBundle.QuantityTolerance ?? 0;
 
                 this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId) && this.missionOperation is null;
                 this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId) && this.missionOperation is null;
@@ -317,56 +315,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.addItemCommand.RaiseCanExecuteChanged();
         }
 
-        private async Task AddItemByListToLoadingUnitAsync()
-        {
-            this.ClearNotifications();
-
-            try
-            {
-                this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
-                this.ShowNotification(Localized.Get("OperatorApp.ItemAdding"), Services.Models.NotificationSeverity.Info);
-
-                await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
-                                     this.LoadingUnitId,
-                                     "listNum",
-                                     this.InputQuantity,
-                                     this.compartmentId,
-                                     string.Empty,
-                                     string.Empty,
-                                     string.Empty);
-
-                this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);
-
-                this.NavigationService.GoBack();
-            }
-            catch (Exception exc)
-            {
-                this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} failed. Error: {exc}");
-                this.ShowNotification(Localized.Get("OperatorApp.ItemAddingFailed"), Services.Models.NotificationSeverity.Error);
-            }
-        }
-
         private async Task AddItemToLoadingUnitAsync()
         {
             this.ClearNotifications();
 
             try
             {
-                this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
                 this.ShowNotification(Localized.Get("OperatorApp.ItemAdding"), Services.Models.NotificationSeverity.Info);
 
                 if (this.missionOperation != null)
                 {
-                    await this.machineLoadingUnitsWebService.ImmediateAddItemAsync(
+                    this.Logger.Debug($"Immediate adding item {this.itemId} by list {this.missionOperation.ItemListCode} into loading unit {this.LoadingUnitId} ...");
+                    await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
                                          this.LoadingUnitId,
-                                         this.itemId,
+                                         this.missionOperation.ItemListCode,
                                          this.InputQuantity,
                                          this.compartmentId,
                                          this.missionOperation.Lot,
-                    this.missionOperation.SerialNumber);
+                                         this.missionOperation.SerialNumber,
+                                         string.Empty);
                 }
                 else
                 {
+                    this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
                     await this.machineLoadingUnitsWebService.ImmediateAddItemAsync(
                                          this.LoadingUnitId,
                                          this.itemId,
