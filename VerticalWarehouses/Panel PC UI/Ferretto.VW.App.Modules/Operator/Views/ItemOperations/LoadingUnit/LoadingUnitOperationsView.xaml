@@ -586,9 +586,9 @@
 
             <Grid Grid.Row="0"
                   Height="30"
-                  Margin="0"
-                  Visibility="Collapsed">
-              <Grid.ColumnDefinitions>
+                    Margin="0"
+                    Visibility="{Binding IsBusyLoading, Converter={StaticResource BTVC}}">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
