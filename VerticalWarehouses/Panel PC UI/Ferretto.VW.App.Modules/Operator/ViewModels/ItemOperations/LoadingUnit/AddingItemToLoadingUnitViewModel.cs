@@ -317,6 +317,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.addItemCommand.RaiseCanExecuteChanged();
         }
 
+        private async Task AddItemByListToLoadingUnitAsync()
+        {
+            this.ClearNotifications();
+
+            try
+            {
+                this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
+                this.ShowNotification(Localized.Get("OperatorApp.ItemAdding"), Services.Models.NotificationSeverity.Info);
+
+                await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
+                                     this.LoadingUnitId,
+                                     "listNum",
+                                     this.InputQuantity,
+                                     this.compartmentId,
+                                     string.Empty,
+                                     string.Empty,
+                                     string.Empty);
+
+                this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);
+
+                this.NavigationService.GoBack();
+            }
+            catch (Exception exc)
+            {
+                this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} failed. Error: {exc}");
+                this.ShowNotification(Localized.Get("OperatorApp.ItemAddingFailed"), Services.Models.NotificationSeverity.Error);
+            }
+        }
+
         private async Task AddItemToLoadingUnitAsync()
         {
             this.ClearNotifications();
