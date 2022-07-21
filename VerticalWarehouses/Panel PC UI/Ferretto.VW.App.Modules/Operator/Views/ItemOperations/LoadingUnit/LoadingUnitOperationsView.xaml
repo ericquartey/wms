@@ -827,7 +827,7 @@
           </Grid>
 
 
-          <controls:PpcButton Grid.Column="{Binding ConfirmButtonColumnIndexPosition}"
+          <controls:PpcButton Grid.Column="1"
                               Width="100"
                               Margin="0,5"
                               HorizontalAlignment="Center"
