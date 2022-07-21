@@ -2217,4 +2217,7 @@
   <data name="CarClosed" xml:space="preserve">
     <value>Il carrello {0} è stato chiuso</value>
   </data>
+  <data name="AddList" xml:space="preserve">
+    <value>Aggiungi lista</value>
+  </data>
 </root>

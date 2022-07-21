@@ -2618,4 +2618,7 @@
   <data name="CarClosed" xml:space="preserve">
     <value>The car {0} has been closed</value>
   </data>
+  <data name="AddList" xml:space="preserve">
+    <value>Add List</value>
+  </data>
 </root>

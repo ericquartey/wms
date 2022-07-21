@@ -120,6 +120,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string inputSerialNumber;
 
+        private bool isAddEnabled;
+
         private bool isAddItem;
 
         private bool isBoxEnabled;
@@ -277,6 +279,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.barcodeImageExist, value);
         }
 
+        public bool IsWmsEnabledAndHealthy =>
+           this.IsWmsHealthy
+               && this.wmsDataProvider.IsEnabled;
         public ImageSource BarcodeImageSource
         {
             get => this.barcodeImageSource;
@@ -329,6 +334,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.confirmOperationCanceledCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationCanceledAsync(),
                 this.CanConfirmOperationCanceled));
+
+        //public ICommand ConfirmMissionOperationCommand =>
+        //    this.confirmMissionOperationCommand
+        //    ??
+        //    (this.confirmMissionOperationCommand = new DelegateCommand(
+        //        async () => await this.ConfirmMissionOperationAsync(),
+        //        this.CanConfirmMissionOperationPut));
 
         public ICommand ConfirmOperationCommand =>
             this.confirmOperationCommand
@@ -414,6 +426,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 ref this.inputSerialNumber,
                 value,
                 () => this.IsItemSerialNumberValid = this.inputSerialNumber is null || this[nameof(this.InputSerialNumber)] != null);
+        }
+
+        public bool IsAddEnabled
+        {
+            get => this.isAddEnabled;
+            set => this.SetProperty(ref this.isAddEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsAddItem
@@ -687,8 +705,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     //        }
                     //        }
 
-                    //        break;
-                    //    }
+                    // break; }
 
                     case nameof(this.InputItemCode):
                         {
@@ -716,14 +733,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         //            return columnName;
                         //        }
 
-                        //        break;
-                        //    }
+                        // break; }
                 }
                 return null;
             }
         }
 
         #endregion
+
+        //public bool CanConfirmMissionOperationPut()
+        //{
+        //    return this.IsAddEnabled;
+        //}
 
         #region Methods
 
@@ -794,6 +815,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew;
         }
+
+        //public async Task ConfirmMissionOperationAsync()
+        //{
+        //}
 
         public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
@@ -1116,8 +1141,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(Localized.Get("OperatorApp.OperationCancelledConfirmed"));
 
-                // ?????????????? this.NavigationService.GoBack();
-                // this.MissionOperation = null;
+                // ?????????????? this.NavigationService.GoBack(); this.MissionOperation = null;
                 // this.Mission = null;
                 await this.MissionOperationsService.RefreshAsync();
             }
@@ -1381,6 +1405,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.ClearNotifications();
+
+            this.IsAddEnabled = await this.machineIdentityWebService.IsEnableAddItemAsync();
 
             this.IsBusyLoading = false;
             //string value = System.Configuration.ConfigurationManager.AppSettings["Box"];
@@ -1755,6 +1781,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
             this.weightCommand?.RaiseCanExecuteChanged();
             this.signallingDefectCommand?.RaiseCanExecuteChanged();
+            //this.confirmMissionOperationCommand?.RaiseCanExecuteChanged();
         }
 
         protected void ShowOperationCanceledMessage()
@@ -1882,12 +1909,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ConfirmItemOperationAsync()
         {
-            // Note:
-            // The add item operation to loading unit is based only the barcode value (for the item) given by the user.
-            // No one product is selected in the grid items (the grid items is not visible).
+            // Note: The add item operation to loading unit is based only the barcode value (for the
+            // item) given by the user. No one product is selected in the grid items (the grid items
+            // is not visible).
             //
             // TODO: insert code to handle the generic (manual) add operation to loading unit
-            //
 
             if (string.IsNullOrEmpty(this.SearchItem))
             {
@@ -2261,8 +2287,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         /// <summary>
-        /// Show details for items via barcode data.
-        /// Only reserved for drapery items management.
+        /// Show details for items via barcode data. Only reserved for drapery items management.
         /// </summary>
         private async Task ShowItemDetailsByBarcode_DraperyItemStuff_Async(string itemCode)
         {

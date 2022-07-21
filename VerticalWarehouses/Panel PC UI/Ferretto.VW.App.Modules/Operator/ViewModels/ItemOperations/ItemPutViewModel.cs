@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -28,6 +29,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMissionOperationsService missionOperationsService;
 
+        private readonly IMachineIdentityWebService identityService;
+
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
         private DelegateCommand barcodeReaderCancelCommand;
 
         private DelegateCommand barcodeReaderConfirmCommand;
@@ -35,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private string barcodeString;
 
         private bool canPutBox;
+
+        private DelegateCommand confirmMissionOperationCommand;
 
         private bool confirmOperation;
 
@@ -46,6 +53,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand fullOperationCommand;
 
+        private bool isAddItemVisible;
+
+        private bool isAddListItemVisible;
+
+        private bool isAdjustmentVisible;
+
+        private bool isPutVisible;
+
+        private bool isPickVisible;
+
+        private bool isBoxOperationVisible;
+
         private bool isBarcodeActive;
 
         private bool isCarrefour;
@@ -54,6 +73,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCurrentDraperyItemFullyRequested;
 
+        private bool isOperationVisible;
+
         private bool isVisibleBarcodeReader;
 
         private DelegateCommand putBoxCommand;
@@ -61,6 +82,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand showBarcodeReaderCommand;
 
         private DelegateCommand suspendCommand;
+
+        private List<MissionOperation> putLists = new List<MissionOperation>();
+
+        private MissionOperation selectedList;
 
         #endregion
 
@@ -81,6 +106,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
+        IMachineIdentityWebService identityService,
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
@@ -108,6 +134,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
+
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
 
             this.barcodeReaderService = barcodeReaderService;
 
@@ -146,6 +176,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.canPutBox, value && this.IsBoxEnabled, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand ConfirmMissionOperationCommand =>
+                    this.confirmMissionOperationCommand
+            ??
+            (this.confirmMissionOperationCommand = new DelegateCommand(
+                async () => await this.ConfirmMissionOperationAsync(),
+                this.CanConfirmMissionOperation));
+
         public bool ConfirmOperation
         {
             get => this.confirmOperation;
@@ -158,6 +195,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.confirmOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationAsync(this.barcodeOk),
                 this.CanConfirmOperationPut));
+
+        public List<MissionOperation> PutLists
+        {
+            get => this.putLists;
+            set => this.SetProperty(ref this.putLists, value);
+        }
+
+        public MissionOperation SelectedList
+        {
+            get => this.selectedList;
+            set => this.SetProperty(ref this.selectedList, value);
+        }
 
         public bool ConfirmPartialOperation
         {
@@ -178,6 +227,48 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.fullOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmPartialOperationAsync(),
                 this.CanPartiallyCompleteOnFullCompartment));
+
+        public bool IsAddItemVisible
+        {
+            get => this.isAddItemVisible;
+            set => this.SetProperty(ref this.isAddItemVisible, value);
+        }
+
+        public bool IsAddListItemVisible
+        {
+            get => this.isAddListItemVisible;
+            set
+            {
+                if (this.SetProperty(ref this.isAddListItemVisible, value && this.IsAddEnabled) && value)
+                {
+                    this.IsPickVisible = false;
+                    this.IsPutVisible = false;
+                    this.IsBoxOperationVisible = false;
+                    this.IsAdjustmentVisible = false;
+                }
+            }
+        }
+        public bool IsPickVisible
+        {
+            get => this.isPickVisible;
+            set => this.SetProperty(ref this.isPickVisible, value);
+        }
+        public bool IsPutVisible
+        {
+            get => this.isPutVisible;
+            set => this.SetProperty(ref this.isPutVisible, value);
+        }
+        public bool IsAdjustmentVisible
+        {
+            get => this.isAdjustmentVisible;
+            set => this.SetProperty(ref this.isAdjustmentVisible, value);
+        }
+
+        public bool IsBoxOperationVisible
+        {
+            get => this.isBoxOperationVisible;
+            set => this.SetProperty(ref this.isBoxOperationVisible, value);
+        }
 
         public bool IsBarcodeActive
         {
@@ -201,6 +292,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCurrentDraperyItemFullyRequested;
             set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsOperationVisible
+        {
+            get => this.isOperationVisible;
+            set => this.SetProperty(ref this.isOperationVisible, value);
         }
 
         public bool IsVisibleBarcodeReader
@@ -514,15 +611,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
             this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
 
-            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
-            this.IsVisibleBarcodeReader = false;
-            this.BarcodeString = string.Empty;
+            this.IsAddListItemVisible = this.IsBusyLoading && !this.IsAddEnabled;
 
             this.IsAddItem = false;
 
             this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
+
+            this.IsOperationVisible = true;
+            this.IsAddItemVisible = false;
+            this.IsBoxOperationVisible = false;
+            this.IsAdjustmentVisible = false;
+
+            this.ReloadPutLists();
+
+            this.SelectedList = this.MissionOperation;
 
             await base.OnAppearedAsync();
 
@@ -539,6 +643,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
+
+            this.RaiseCanExecuteChanged();
         }
 
         public override void OnMisionOperationRetrieved()
@@ -575,11 +681,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand.RaiseCanExecuteChanged();
             this.confirmPartialOperationCommand.RaiseCanExecuteChanged();
             this.putBoxCommand.RaiseCanExecuteChanged();
+            this.confirmMissionOperationCommand?.RaiseCanExecuteChanged();
         }
 
         protected void ShowBarcodeReader()
         {
             this.IsVisibleBarcodeReader = true;
+        }
+
+        private async Task ReloadPutLists()
+        {
+            try
+            {
+                var machineId = (await this.identityService.GetAsync()).Id;
+
+                this.putLists.Clear();
+
+                var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId);
+
+                this.PutLists.AddRange(missionLists);
+            }
+            catch (TaskCanceledException)
+            {
+                // normal situation
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         protected override void ShowOperationDetails()
@@ -599,6 +728,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 RequestedQuantity = this.MissionOperation.RequestedQuantity.ToString(),
             },
             trackCurrentView: true);
+        }
+
+        private bool CanConfirmMissionOperation()
+        {
+            return this.IsAddEnabled;
         }
 
         private bool CanPartiallyCompleteOnFullCompartment()
@@ -659,6 +793,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanSuspendButton()
         {
             return true;
+        }
+
+        private async Task ConfirmMissionOperationAsync()
+        {
+            this.IsAddListItemVisible = !this.IsAddListItemVisible;
+
+            this.IsBusyLoading = false;
         }
 
         private async Task PutBoxAsync(string barcode)

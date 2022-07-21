@@ -9,9 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -80,9 +78,15 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <summary>
         /// Marks the specified WMS mission as complete.
         /// </summary>
-        /// <param name="wmsId">The identifier of the WMS mission to complete.</param>
-        /// <param name="quantity">The product quantity that was involved.</param>
-        /// <returns>Returns HTTP 200 if the completion request was successfully processed.</returns>
+        /// <param name="wmsId">
+        /// The identifier of the WMS mission to complete.
+        /// </param>
+        /// <param name="quantity">
+        /// The product quantity that was involved.
+        /// </param>
+        /// <returns>
+        /// Returns HTTP 200 if the completion request was successfully processed.
+        /// </returns>
         public async Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null, double wastedQuantity = 0, string toteBarcode = null, string userName = null)
         {
             try
@@ -143,6 +147,11 @@ namespace Ferretto.VW.MAS.MissionManager
             return await this.missionOperationsWmsWebService.GetAllOrdersAsync();
         }
 
+        public async Task<IEnumerable<MissionOperation>> GetPutListsAsync(int machineId)
+        {
+            return await this.missionOperationsWmsWebService.GetPutListsAsync(machineId);
+        }
+
         public async Task<IEnumerable<OperationReason>> GetReasonsAsync(MissionOperationType type)
         {
             return await this.missionOperationsWmsWebService.GetAllReasonsAsync(type);
@@ -165,9 +174,13 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <summary>
         /// the UI informs mission manager that the operation is completed
         /// </summary>
-        /// <param name="id">operation id</param>
-        /// <param name="quantity"></param>
-        /// <returns></returns>
+        /// <param name="id">
+        /// operation id
+        /// </param>
+        /// <param name="quantity">
+        /// </param>
+        /// <returns>
+        /// </returns>
         public async Task PartiallyCompleteAsync(int wmsId, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null)
         {
             if (!this.wmsSettingsProvider.IsEnabled)
