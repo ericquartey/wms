@@ -325,10 +325,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.missionOperation != null)
                 {
-                    this.Logger.Debug($"Immediate adding item {this.itemId} by list {this.missionOperation.ItemListCode} into loading unit {this.LoadingUnitId} ...");
+                    this.Logger.Debug($"Immediate adding item {this.itemId} by list {this.missionOperation.ItemListRowCode} into loading unit {this.LoadingUnitId} ...");
                     await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
                                          this.LoadingUnitId,
-                                         this.missionOperation.ItemListCode,
+                                         this.missionOperation.ItemListRowCode,
                                          this.InputQuantity,
                                          this.compartmentId,
                                          this.missionOperation.Lot,
