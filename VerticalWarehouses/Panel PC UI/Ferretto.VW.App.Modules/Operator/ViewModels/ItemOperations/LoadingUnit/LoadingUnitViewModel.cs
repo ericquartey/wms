@@ -2259,6 +2259,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     // Handle the show/hide of "Adjustment" button
                     this.IsAdjustmentButtonVisible = true;
+                    this.SearchItem = string.Empty;
                 }
                 else if (operationType == OperatorApp.AddList)
                 {
@@ -2267,6 +2268,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     // Handle the show/hide of "Adjustment" button
                     this.IsAdjustmentButtonVisible = true;
+                    this.SearchItem = string.Empty;
                 }
                 else if (operationType == "LoadingUnitView_PickPutItemAppearance")
                 {
