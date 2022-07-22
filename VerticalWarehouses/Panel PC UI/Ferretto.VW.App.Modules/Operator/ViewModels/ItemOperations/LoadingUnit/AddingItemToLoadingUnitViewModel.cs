@@ -307,6 +307,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.MissionOperation = dataBundle.MissionOperation;
                     this.InputQuantity = this.MissionOperation.RequestedQuantity;
+
+                    this.Lot = this.MissionOperation.Lot;
+                    this.SerialNumber = this.MissionOperation.SerialNumber;
                 }
 
                 this.IsFromList = this.MissionOperation != null;
@@ -319,8 +322,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MeasureUnitTxt = dataBundle.MeasureUnitTxt;
                 this.QuantityTolerance = dataBundle.QuantityTolerance ?? 0;
 
-                this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId) && this.MissionOperation is null;
-                this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId) && this.MissionOperation is null;
+                this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId);
+                this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId);
             }
 
             await base.OnAppearedAsync();
@@ -347,8 +350,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                          this.missionOperation.ItemListRowCode,
                                          this.InputQuantity,
                                          this.compartmentId,
-                                         this.missionOperation.Lot,
-                                         this.missionOperation.SerialNumber,
+                                         this.Lot,
+                                         this.SerialNumber,
                                          string.Empty);
                 }
                 else
