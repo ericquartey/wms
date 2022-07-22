@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
+        private readonly List<MissionOperation> putLists = new List<MissionOperation>();
+
         private DelegateCommand barcodeReaderCancelCommand;
 
         private DelegateCommand barcodeReaderConfirmCommand;
@@ -41,9 +43,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canPutBox;
 
-        private DelegateCommand confirmListOperationCommand;
+        private bool chargeListTextViewVisibility;
 
-        private DelegateCommand confirmMissionOperationCommand;
+        private DelegateCommand confirmListOperationCommand;
 
         private bool confirmOperation;
 
@@ -71,8 +73,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCurrentDraperyItemFullyRequested;
 
-        private bool chargeListTextViewVisibility;
-
         private bool isOperationVisible;
 
         private bool isPickVisible;
@@ -81,17 +81,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isVisibleBarcodeReader;
 
-        private string itemSearchKeyTitleName;
+        private string itemSearchKeyTitleName = OperatorApp.ItemSearchKeySearch;
 
         private DelegateCommand putBoxCommand;
 
         private bool putListDataGridViewVisibility;
 
-        private List<MissionOperation> putLists = new List<MissionOperation>();
-
         private MissionOperation selectedList;
 
         private DelegateCommand showBarcodeReaderCommand;
+
+        private DelegateCommand showPutListsCommand;
 
         private DelegateCommand suspendCommand;
 
@@ -184,18 +184,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.canPutBox, value && this.IsBoxEnabled, this.RaiseCanExecuteChanged);
         }
 
+        public bool ChargeListTextViewVisibility
+        {
+            get => this.chargeListTextViewVisibility;
+            set => this.SetProperty(ref this.chargeListTextViewVisibility, value);
+        }
+
         public ICommand ConfirmListOperationCommand =>
-                           this.confirmListOperationCommand
+                                   this.confirmListOperationCommand
            ??
            (this.confirmListOperationCommand = new DelegateCommand(
                async () => await this.ConfirmListOperationAsync(), this.CanConfirmListOperation));
-
-        public ICommand ConfirmMissionOperationCommand =>
-                            this.confirmMissionOperationCommand
-            ??
-            (this.confirmMissionOperationCommand = new DelegateCommand(
-                async () => await this.ConfirmMissionOperationAsync(),
-                this.CanConfirmMissionOperation));
 
         public bool ConfirmOperation
         {
@@ -281,11 +280,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isCarrefourOrDraperyItem, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool ChargeListTextViewVisibility
-        {
-            get => this.chargeListTextViewVisibility;
-            set => this.SetProperty(ref this.chargeListTextViewVisibility, value);
-        }
         public bool IsCurrentDraperyItemFullyRequested
         {
             get => this.isCurrentDraperyItemFullyRequested;
@@ -310,15 +304,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isPutVisible, value);
         }
 
-        public string ItemSearchKeyTitleName
-        {
-            get => this.itemSearchKeyTitleName;
-            set => this.SetProperty(ref this.itemSearchKeyTitleName, value);
-        }
         public bool IsVisibleBarcodeReader
         {
             get => this.isVisibleBarcodeReader;
             set => this.SetProperty(ref this.isVisibleBarcodeReader, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ItemSearchKeyTitleName
+        {
+            get => this.itemSearchKeyTitleName;
+            set => this.SetProperty(ref this.itemSearchKeyTitleName, value);
         }
 
         public ICommand PutBoxCommand =>
@@ -346,6 +341,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.showBarcodeReaderCommand
             ??
             (this.showBarcodeReaderCommand = new DelegateCommand(this.ShowBarcodeReader));
+
+        public ICommand ShowPutListsCommand =>
+                                                                                                                                                                                                                    this.showPutListsCommand
+            ??
+            (this.showPutListsCommand = new DelegateCommand(
+                () => this.ShowPutLists(),
+                this.CanShowPutLists));
 
         public ICommand SuspendCommand =>
             this.suspendCommand
@@ -635,31 +637,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsOperationVisible = true;
+            this.IsAddItemVisible = false;
+            this.IsBoxOperationVisible = false;
+            this.IsAdjustmentVisible = false;
+
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
             this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
 
-            this.IsAddListItemVisible = this.IsBusyLoading && !this.IsAddEnabled;
+            this.IsAddListItemVisible = !this.IsAddEnabled;
 
             this.IsAddItem = false;
 
             this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
-
-            this.IsOperationVisible = true;
-            this.IsAddItemVisible = false;
-            this.IsBoxOperationVisible = false;
-            this.IsAdjustmentVisible = false;
-            this.PutListDataGridViewVisibility = false;
-            this.ChargeListTextViewVisibility = true;
-            await this.ReloadPutLists();
-            this.ChargeListTextViewVisibility = false;
-            this.PutListDataGridViewVisibility = this.IsBusyLoading && this.PutLists.Any();
-            this.ItemSearchKeyTitleName = OperatorApp.ItemSearchKeySearch;
-
-            //this.SelectedList = this.MissionOperation;
 
             await base.OnAppearedAsync();
 
@@ -676,6 +670,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
+
+            await this.ReloadPutLists();
+            this.PutListDataGridViewVisibility = this.PutLists.Any() && !this.ChargeListTextViewVisibility;
+            this.SelectedList = this.putLists.Find(l => l.ItemListCode == this.MissionOperation?.ItemListCode);
 
             this.RaiseCanExecuteChanged();
         }
@@ -714,7 +712,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmOperationCommand.RaiseCanExecuteChanged();
             this.confirmPartialOperationCommand.RaiseCanExecuteChanged();
             this.putBoxCommand.RaiseCanExecuteChanged();
-            this.confirmMissionOperationCommand?.RaiseCanExecuteChanged();
+            this.showPutListsCommand?.RaiseCanExecuteChanged();
+            this.confirmListOperationCommand?.RaiseCanExecuteChanged();
         }
 
         protected void ShowBarcodeReader()
@@ -745,21 +744,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var retValue = this.IsWmsEnabledAndHealthy &&
                 !this.IsWaitingForResponse &&
-                //!this.IsBusyConfirmingRecallOperation &&
-                !this.IsBusyConfirmingOperation;
-
-            if (!this.IsAddEnabled)
-            {
-                // check if selected product is valid
-                retValue = retValue && (this.selectedList != null);
-            }
+                !this.IsBusyConfirmingOperation &&
+                this.MissionOperation != null &&
+                this.selectedList != null;
 
             return retValue;
-        }
-
-        private bool CanConfirmMissionOperation()
-        {
-            return this.IsAddEnabled;
         }
 
         private bool CanPartiallyCompleteOnFullCompartment()
@@ -817,6 +806,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private bool CanShowPutLists()
+        {
+            return this.IsAddEnabled;
+        }
+
         private bool CanSuspendButton()
         {
             return true;
@@ -868,12 +862,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.IsWaitingForResponse = false;
-        }
-
-        private async Task ConfirmMissionOperationAsync()
-        {
-            this.IsAddListItemVisible = !this.IsAddListItemVisible;
-            this.PutListDataGridViewVisibility = true;
         }
 
         private async Task PutBoxAsync(string barcode)
@@ -952,6 +940,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task ReloadPutLists()
         {
+            this.ChargeListTextViewVisibility = !this.PutLists.Any();
+
             try
             {
                 var machineId = (await this.identityService.GetAsync()).Id;
@@ -972,6 +962,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.ShowNotification(ex);
             }
+            finally
+            {
+                this.ChargeListTextViewVisibility = false;
+            }
+        }
+
+        private void ShowPutLists()
+        {
+            this.IsAddListItemVisible = !this.IsAddListItemVisible;
         }
 
         #endregion

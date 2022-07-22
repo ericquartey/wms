@@ -318,7 +318,7 @@
                                 Grid.Row="4"
                                 VerticalAlignment="Center"
                                 Width="auto"
-                                Command="{Binding ConfirmMissionOperationCommand}"
+                                Command="{Binding ShowPutListsCommand}"
                                 KindFontAwesome="CartPlusSolid"
                                 Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}" />
                                 <!--CommandParameter="{x:Static res:OperatorApp.AddList}"-->

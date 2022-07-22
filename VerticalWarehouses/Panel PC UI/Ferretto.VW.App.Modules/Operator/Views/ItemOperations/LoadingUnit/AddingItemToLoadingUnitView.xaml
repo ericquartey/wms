@@ -34,12 +34,90 @@
             </TextBlock>
         </StackPanel>
 
-        <controls:PpcLabeledText Grid.Row="1"
+        <!--<controls:PpcLabeledText Grid.Row="1"
                                  Margin="8,0,0,8"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding ItemDescription}"
-                                 LabelText="{resources:Loc OperatorApp.Description}" />
+                                 LabelText="{resources:Loc OperatorApp.Description}" />-->
+
+        <Grid Grid.Row="1"
+              Grid.Column="1"
+              VerticalAlignment="Top"
+              Visibility="{Binding IsFromList}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"
+                                     MaxHeight="65"
+                                     Margin="0,0,0,5"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemDescription}"
+                                     LabelText="{resources:Loc OperatorApp.CommonItemDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="1"
+                                     Margin="0,0,0,5"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListCode}"
+                                     LabelText="{resources:Loc OperatorApp.CommonListCode}" />
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="2"
+                                     Margin="0,0,0,5"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListRowCode}"
+                                     LabelText="{resources:Loc OperatorApp.CommonListRow}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="0"
+                                     HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.Lot}"
+                                         LabelText="{resources:Loc OperatorApp.CommonLot}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.SerialNumber}"
+                                         LabelText="{resources:Loc OperatorApp.SerialNumber}" />
+
+            
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="2"
+                                     MaxHeight="40"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListDescription}"
+                                     LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="0"
+                                     Margin="0,0,0,5"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.Sscc}"
+                                     LabelText="{resources:Loc OperatorApp.Sscc}"
+                                     Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+            <!--  Only reserved for Carrefour  -->
+        </Grid>
 
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Width="230"

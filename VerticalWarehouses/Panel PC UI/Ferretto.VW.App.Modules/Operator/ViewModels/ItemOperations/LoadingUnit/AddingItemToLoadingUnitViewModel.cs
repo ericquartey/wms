@@ -59,6 +59,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool serialNumberVisibility;
 
+        private bool isFromList;
+
         private string titleText;
 
         #endregion
@@ -103,6 +105,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     // this.TriggerSearchAsync().GetAwaiter(); // Do not perform the searching routine
                 }
             }
+        }
+
+        public MissionOperation MissionOperation
+        {
+            get => this.missionOperation;
+            set => this.SetProperty(ref this.missionOperation, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsFromList
+        {
+            get => this.isFromList;
+            set => this.SetProperty(ref this.isFromList, value, this.RaiseCanExecuteChanged);
         }
 
         public bool ExpireDateVisibility
@@ -285,7 +299,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.Lot = null;
             this.SerialNumber = null;
             this.ExpireDate = null;
-            this.missionOperation = null;
+            this.MissionOperation = null;
 
             this.TitleText = Localized.Get("OperatorApp.AddingItemPageHeader");
 
@@ -293,9 +307,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (dataBundle.MissionOperation != null)
                 {
-                    this.missionOperation = dataBundle.MissionOperation;
-                    this.inputQuantity = this.missionOperation.RequestedQuantity;
+                    this.MissionOperation = dataBundle.MissionOperation;
+                    this.InputQuantity = this.MissionOperation.RequestedQuantity;
                 }
+
+                this.IsFromList = this.MissionOperation != null;
 
                 this.itemId = dataBundle.ItemId;
                 this.compartmentId = dataBundle.CompartmentId;
@@ -305,8 +321,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MeasureUnitTxt = dataBundle.MeasureUnitTxt;
                 this.QuantityTolerance = dataBundle.QuantityTolerance ?? 1;
 
-                this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId) && this.missionOperation is null;
-                this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId) && this.missionOperation is null;
+                this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId) && this.MissionOperation is null;
+                this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId) && this.MissionOperation is null;
             }
 
             await base.OnAppearedAsync();
@@ -326,15 +342,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
                 this.ShowNotification(Localized.Get("OperatorApp.ItemAdding"), Services.Models.NotificationSeverity.Info);
 
-                if (this.missionOperation != null)
+                if (this.MissionOperation != null)
                 {
                     await this.machineLoadingUnitsWebService.ImmediateAddItemAsync(
                                          this.LoadingUnitId,
                                          this.itemId,
                                          this.InputQuantity,
                                          this.compartmentId,
-                                         this.missionOperation.Lot,
-                    this.missionOperation.SerialNumber);
+                                         this.MissionOperation.Lot,
+                    this.MissionOperation.SerialNumber);
                 }
                 else
                 {
