@@ -65,26 +65,32 @@ namespace Ferretto.VW.App.Services
         {
             lock (this.portsSyncRoot)
             {
-                var systemPorts = System.IO.Ports.SerialPort.GetPortNames();
-
-                Application.Current.Dispatcher.Invoke(() =>
+                try
                 {
-                    foreach (var systemPort in systemPorts)
-                    {
-                        if (!this.portNames.Contains(systemPort))
-                        {
-                            this.portNames.Add(systemPort);
-                        }
-                    }
+                    var systemPorts = System.IO.Ports.SerialPort.GetPortNames();
 
-                    foreach (var knownPort in this.portNames.ToArray())
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        if (!systemPorts.Contains(knownPort))
+                        foreach (var systemPort in systemPorts)
                         {
-                            this.portNames.Remove(knownPort);
+                            if (!this.portNames.Contains(systemPort))
+                            {
+                                this.portNames.Add(systemPort);
+                            }
                         }
-                    }
-                });
+
+                        foreach (var knownPort in this.portNames.ToArray())
+                        {
+                            if (!systemPorts.Contains(knownPort))
+                            {
+                                this.portNames.Remove(knownPort);
+                            }
+                        }
+                    });
+                }
+                finally
+                {
+                }
             }
         }
 

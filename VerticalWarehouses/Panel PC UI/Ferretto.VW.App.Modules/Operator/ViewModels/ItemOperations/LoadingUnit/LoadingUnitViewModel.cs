@@ -1319,11 +1319,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsWaitingForResponse = false;
         }
 
-        private async Task AddListOperationAsync()
-        {
-
-        }
-
         private void AdjustItemsAppearance()
         {
             try
@@ -1580,7 +1575,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : -1;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId);
 
-
                 var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {
                     ItemId = selectedItemId,
@@ -1592,7 +1586,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     MeasureUnitTxt = OperatorApp.Quantity,
                     MissionOperation = this.SelectedList,
                 };
-
 
                 // Show the view to adding item into current loading unit
                 this.navigationService.Appear(
@@ -1942,12 +1935,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.areaId.HasValue)
                 {
-                    // retrieve all products from warehouse
-                    var totalProducts = await this.MissionOperationsService.GetProductsAsync(this.areaId, this.searchItem, cancellationToken);
-
-                    if (totalProducts != null)
+                    if (this.IsAddListItemVisible)
                     {
-                        this.allProducts.AddRange(totalProducts);
+                        await this.ReloadAllPutLists(cancellationToken);
+                    }
+                    else
+                    {
+                        // retrieve all products from warehouse
+                        var totalProducts = await this.MissionOperationsService.GetProductsAsync(this.areaId, this.searchItem, cancellationToken);
+
+                        if (totalProducts != null)
+                        {
+                            this.allProducts.AddRange(totalProducts);
+                        }
                     }
                 }
             }
@@ -1965,13 +1965,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var machineId = (await this.identityService.GetAsync()).Id;
+                var machineId = (await this.identityService.GetAsync(cancellationToken)).Id;
 
                 this.putLists.Clear();
 
-                var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId);
+                var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId, cancellationToken);
 
-                this.putLists.AddRange(missionLists);
+                if (string.IsNullOrEmpty(this.searchItem))
+                {
+                    this.putLists.AddRange(missionLists);
+                }
+                else
+                {
+                    this.putLists.AddRange(missionLists.Where(m => m.ItemCode.Contains(this.searchItem)
+                        || m.ItemDescription.Contains(this.searchItem)
+                        || m.ItemListCode.Contains(this.searchItem)
+                        || m.ItemListRowCode.Contains(this.searchItem)));
+                }
 
                 this.RaisePropertyChanged(nameof(this.PutLists));
             }
@@ -2249,6 +2259,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     // Handle the show/hide of "Adjustment" button
                     this.IsAdjustmentButtonVisible = true;
+                    this.SearchItem = string.Empty;
                 }
                 else if (operationType == OperatorApp.AddList)
                 {
@@ -2257,6 +2268,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     // Handle the show/hide of "Adjustment" button
                     this.IsAdjustmentButtonVisible = true;
+                    this.SearchItem = string.Empty;
                 }
                 else if (operationType == "LoadingUnitView_PickPutItemAppearance")
                 {
