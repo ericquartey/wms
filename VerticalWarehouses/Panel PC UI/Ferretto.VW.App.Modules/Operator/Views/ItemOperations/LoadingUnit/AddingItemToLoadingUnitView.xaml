@@ -107,16 +107,6 @@
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemListDescription}"
                                      LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
-
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="0"
-                                     Margin="0,0,0,5"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding MissionOperation.Sscc}"
-                                     LabelText="{resources:Loc OperatorApp.Sscc}"
-                                     Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
-            <!--  Only reserved for Carrefour  -->
         </Grid>
 
         <ctrls:PpcSpinEdit Grid.Row="2"
