@@ -1935,12 +1935,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.areaId.HasValue)
                 {
-                    // retrieve all products from warehouse
-                    var totalProducts = await this.MissionOperationsService.GetProductsAsync(this.areaId, this.searchItem, cancellationToken);
-
-                    if (totalProducts != null)
+                    if (this.IsAddListItemVisible)
                     {
-                        this.allProducts.AddRange(totalProducts);
+                        await this.ReloadAllPutLists(cancellationToken);
+                    }
+                    else
+                    {
+                        // retrieve all products from warehouse
+                        var totalProducts = await this.MissionOperationsService.GetProductsAsync(this.areaId, this.searchItem, cancellationToken);
+
+                        if (totalProducts != null)
+                        {
+                            this.allProducts.AddRange(totalProducts);
+                        }
                     }
                 }
             }
@@ -1958,13 +1965,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var machineId = (await this.identityService.GetAsync()).Id;
+                var machineId = (await this.identityService.GetAsync(cancellationToken)).Id;
 
                 this.putLists.Clear();
 
-                var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId);
+                var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId, cancellationToken);
 
-                this.putLists.AddRange(missionLists);
+                if (string.IsNullOrEmpty(this.searchItem))
+                {
+                    this.putLists.AddRange(missionLists);
+                }
+                else
+                {
+                    this.putLists.AddRange(missionLists.Where(m => m.ItemCode.Contains(this.searchItem)
+                        || m.ItemDescription.Contains(this.searchItem)
+                        || m.ItemListCode.Contains(this.searchItem)
+                        || m.ItemListRowCode.Contains(this.searchItem)));
+                }
 
                 this.RaisePropertyChanged(nameof(this.PutLists));
             }
