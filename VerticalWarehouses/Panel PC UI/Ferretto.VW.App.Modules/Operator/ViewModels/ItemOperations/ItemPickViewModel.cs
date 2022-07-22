@@ -477,6 +477,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = this.MissionRequestedQuantity;
                 base.InitializeInputQuantity();
                 //this.AvailableQuantity = this.MissionRequestedQuantity;
+                this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
                 this.RaisePropertyChanged(nameof(this.InputQuantity));
                 this.RaisePropertyChanged(nameof(this.AvailableQuantity));

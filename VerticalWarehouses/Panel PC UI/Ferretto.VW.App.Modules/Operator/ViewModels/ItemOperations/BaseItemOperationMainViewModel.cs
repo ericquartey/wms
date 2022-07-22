@@ -1282,7 +1282,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                if (!string.IsNullOrEmpty(barcodeString))
+                if (!string.IsNullOrEmpty(barcodeString)
+                    && this.bay.ShowBarcodeImage
+                    && (this.MissionOperation.Type == MissionOperationType.Inventory
+                        || this.MissionOperation.Type == MissionOperationType.Put
+                        || this.MissionOperation.Type == MissionOperationType.Pick))
                 {
                     int width = 400;
 
@@ -1328,7 +1332,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                         bitmapImage.EndInit();
 
-                        this.BarcodeImageExist = this.bay.ShowBarcodeImage && (this.MissionOperation.Type == MissionOperationType.Inventory || this.MissionOperation.Type == MissionOperationType.Put || this.MissionOperation.Type == MissionOperationType.Pick);
+                        this.BarcodeImageExist = true;
 
                         return bitmapImage;
                     }
