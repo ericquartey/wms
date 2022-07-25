@@ -114,7 +114,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
-        IMachineIdentityWebService identityService,
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
@@ -143,7 +142,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
 
-            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.identityService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
 
@@ -650,6 +649,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsAddListItemVisible = !this.IsAddEnabled;
 
             this.IsAddItem = false;
+            this.IsAddItemLists = configuration.Machine.IsAddItemByList;
 
             this.CloseLine = false;
             this.FullCompartment = false;

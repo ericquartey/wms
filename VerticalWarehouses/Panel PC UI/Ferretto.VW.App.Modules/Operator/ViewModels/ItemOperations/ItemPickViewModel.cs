@@ -411,6 +411,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
+            this.IsAddItemLists = false;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;

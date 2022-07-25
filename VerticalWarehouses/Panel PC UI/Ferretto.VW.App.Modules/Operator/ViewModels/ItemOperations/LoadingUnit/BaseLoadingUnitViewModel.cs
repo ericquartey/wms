@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly ISessionService sessionService;
@@ -47,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int? currentLoadingUnitId;
 
         private bool isAddEnabled;
+
+        private bool isAddItemLists;
 
         private bool isBoxEnabled;
 
@@ -118,7 +122,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             ILaserPointerDriver laserPointerDriver,
             ISessionService sessionService,
-            IWmsDataProvider wmsDataProvider)
+            IWmsDataProvider wmsDataProvider,
+            IMachineConfigurationWebService machineConfigurationWebService
+            )
             : base(PresentationMode.Operator)
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
@@ -130,6 +136,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.laserPointerDriver = laserPointerDriver ?? throw new ArgumentNullException(nameof(laserPointerDriver));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -162,6 +169,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAddEnabled;
             set => this.SetProperty(ref this.isAddEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsAddItemLists
+        {
+            get => this.isAddItemLists;
+            set => this.SetProperty(ref this.isAddItemLists, value);
         }
 
         public bool IsBaySideBack => this.MachineService.Bay.Side is WarehouseSide.Back;
@@ -504,8 +517,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ItemSerialNumberVisibility = false;
             this.ItemLotVisibility = false;
 
-            this.IsAddEnabled = await this.machineIdentityWebService.IsEnableAddItemAsync();
-            this.IsBoxEnabled = await this.machineIdentityWebService.GetBoxEnableAsync();
+            var configuration = await this.machineConfigurationWebService.GetAsync();
+            this.IsAddEnabled = configuration.Machine.IsEnableAddItem;
+            this.IsAddItemLists = configuration.Machine.IsAddItemByList;
+            this.IsBoxEnabled = configuration.Machine.Box;
 
             var accessories = await this.bayManager.GetBayAccessoriesAsync();
             this.isLaserEnabled = accessories?.LaserPointer?.IsEnabledNew ?? false;

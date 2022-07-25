@@ -124,6 +124,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAddItem;
 
+        private bool isAddItemLists;
+
         private bool isBoxEnabled;
 
         private bool isBusyAbortingOperation;
@@ -279,9 +281,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.barcodeImageExist, value);
         }
 
-        public bool IsWmsEnabledAndHealthy =>
-           this.IsWmsHealthy
-               && this.wmsDataProvider.IsEnabled;
         public ImageSource BarcodeImageSource
         {
             get => this.barcodeImageSource;
@@ -335,13 +334,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.ConfirmOperationCanceledAsync(),
                 this.CanConfirmOperationCanceled));
 
-        //public ICommand ConfirmMissionOperationCommand =>
-        //    this.confirmMissionOperationCommand
-        //    ??
-        //    (this.confirmMissionOperationCommand = new DelegateCommand(
-        //        async () => await this.ConfirmMissionOperationAsync(),
-        //        this.CanConfirmMissionOperationPut));
-
         public ICommand ConfirmOperationCommand =>
             this.confirmOperationCommand
             ??
@@ -349,6 +341,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.ConfirmOperationAsync(this.barcodeOk),
                 this.CanConfirmOperation));
 
+        //public ICommand ConfirmMissionOperationCommand =>
+        //    this.confirmMissionOperationCommand
+        //    ??
+        //    (this.confirmMissionOperationCommand = new DelegateCommand(
+        //        async () => await this.ConfirmMissionOperationAsync(),
+        //        this.CanConfirmMissionOperationPut));
         public ICommand ConfirmPartialOperationCommand =>
             this.confirmPartialOperationCommand
             ??
@@ -438,6 +436,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAddItem;
             set => this.SetProperty(ref this.isAddItem, value);
+        }
+
+        public bool IsAddItemLists
+        {
+            get => this.isAddItemLists;
+            set => this.SetProperty(ref this.isAddItemLists, value);
         }
 
         public bool IsBaySideBack => this.bay?.Side == WarehouseSide.Back;
@@ -545,6 +549,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isSearching;
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsWmsEnabledAndHealthy =>
+                                                                                                                                                                                                                                                                                                                                                                   this.IsWmsHealthy
+               && this.wmsDataProvider.IsEnabled;
 
         public IMachineItemsWebService ItemsWebService => this.itemsWebService;
 

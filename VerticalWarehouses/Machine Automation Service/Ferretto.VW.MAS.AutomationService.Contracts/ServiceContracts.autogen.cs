@@ -5127,6 +5127,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Box", Required = Newtonsoft.Json.Required.Always)]
         public bool Box { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("CanUserEnableWms", Required = Newtonsoft.Json.Required.Always)]
+        public bool CanUserEnableWms { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Elevator Elevator { get; set; }
     
@@ -5150,6 +5153,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsAddItemByList", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAddItemByList { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsAxisChanged", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAxisChanged { get; set; }
@@ -5195,9 +5201,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsQuantityLimited", Required = Newtonsoft.Json.Required.Always)]
         public bool IsQuantityLimited { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CanUserEnableWms", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanUserEnableWms { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }

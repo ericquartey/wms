@@ -221,8 +221,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ILaserPointerDriver laserPointerDriver,
             ISessionService sessionService,
             IWmsDataProvider wmsDataProvider,
-            IAuthenticationService authenticationService)
-            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider)
+            IAuthenticationService authenticationService,
+            IMachineConfigurationWebService machineConfigurationWebService)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider, machineConfigurationWebService)
         {
             this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
@@ -372,7 +373,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isAddListItemVisible;
             set
             {
-                if (this.SetProperty(ref this.isAddListItemVisible, value && this.IsAddEnabled) && value)
+                if (this.SetProperty(ref this.isAddListItemVisible, value && this.IsAddItemLists) && value)
                 {
                     this.IsPickVisible = false;
                     this.IsPutVisible = false;

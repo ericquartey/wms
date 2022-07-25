@@ -320,7 +320,7 @@
                                 Width="auto"
                                 Command="{Binding ShowPutListsCommand}"
                                 KindFontAwesome="CartPlusSolid"
-                                Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding IsAddItemLists, Converter={StaticResource BTVC}}" />
                                 <!--CommandParameter="{x:Static res:OperatorApp.AddList}"-->
 
             <controls:PpcButton Grid.Row="5"
