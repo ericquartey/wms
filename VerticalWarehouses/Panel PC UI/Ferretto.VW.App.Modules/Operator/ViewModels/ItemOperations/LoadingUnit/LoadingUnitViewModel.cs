@@ -965,6 +965,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.loadingUnitId = loadingUnitId;
             }
 
+            this.SelectedCompartment = null;
+
             this.ClearNotifications();
             this.IsBusyLoading = false;
             this.ProductsDataGridViewVisibility = this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
@@ -1445,7 +1447,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     &&
                     this.IsWmsHealthy;
             }
-            else if (param == OperatorApp.Add)
+            else if (param == OperatorApp.Add || param == OperatorApp.AddList)
             {
                 return
                     !this.IsWaitingForResponse
@@ -1454,7 +1456,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     &&
                     !this.IsBusyConfirmingOperation
                     &&
-                    this.IsWmsHealthy;
+                    this.IsWmsHealthy
+                    &&
+                    this.SelectedCompartment != null;
             }
 
             return this.SelectedItemCompartment?.ItemId != null
