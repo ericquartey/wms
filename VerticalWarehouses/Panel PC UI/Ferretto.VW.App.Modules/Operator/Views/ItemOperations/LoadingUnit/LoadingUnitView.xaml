@@ -281,13 +281,13 @@
                                             Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}" />
                         
                         <controls:PpcButton Margin="15,0,15,15"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Width="auto"
-                                        Command="{Binding OperationCommand}"
-                                        CommandParameter="{x:Static res:OperatorApp.AddList}"
-                                        KindFontAwesome="CartPlusSolid"
-                                        Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}" />
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Width="auto"
+                                            Command="{Binding OperationCommand}"
+                                            CommandParameter="{x:Static res:OperatorApp.AddList}"
+                                            KindFontAwesome="CartPlusSolid"
+                                            Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}" />
                     </Grid>
                     
                     <controls:PpcButton Margin="15,0,15,0"
