@@ -308,6 +308,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("{id}/immediate-additem-bylist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName,
+            [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        {
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            try
+            {
+                await loadingUnitsWmsWebService.ImmediateAddByListAsync(id, listNum, quantity, compartmentId, lot, serialNumber, userName);
+            }
+            catch (WmsWebApiException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+            }
+
+            return this.Ok();
+        }
+
         [HttpPost("insert-loading-unit")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

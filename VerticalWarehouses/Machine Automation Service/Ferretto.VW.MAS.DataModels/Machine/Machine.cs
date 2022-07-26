@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool Box { get; set; }
 
+        public bool CanUserEnableWms { get; set; }
+
         /// <summary>
         /// Gets or sets the machine's elevator.
         /// </summary>
@@ -49,6 +51,11 @@ namespace Ferretto.VW.MAS.DataModels
         public int HorizontalCyclesToCalibrate { get; set; } = 50;
 
         public int HorizontalPositionToCalibrate { get; set; } = 10000;
+
+        /// <summary>
+        /// Get a value indicating if add item by list operation is enabled.
+        /// </summary>
+        public bool IsAddItemByList { get; set; }
 
         public bool IsAxisChanged { get; set; }
 
@@ -84,7 +91,7 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDrapery { get; set; }
 
         /// <summary>
-        /// Get a value indicating if add item operation is enabled.
+        /// Get/set a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }
 
@@ -106,8 +113,6 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsOrderList { get; set; }
 
         public bool IsQuantityLimited { get; set; }
-
-        public bool CanUserEnableWms { get; set; }
 
         /// <summary>
         /// Get/set a value indicating if it is requested a confirm on last operation to be performed in a loading unit.

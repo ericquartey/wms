@@ -1524,6 +1524,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task ImmediateAddItemAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2825,6 +2832,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<OperationReason>> GetOrdersAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MissionOperation>> GetPutListsAsync(int id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<MissionOperation>> GetPutListsAsync(int id, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SocketLinkOperation> GetSocketLinkOperationAsync();
@@ -5113,6 +5127,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Box", Required = Newtonsoft.Json.Required.Always)]
         public bool Box { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("CanUserEnableWms", Required = Newtonsoft.Json.Required.Always)]
+        public bool CanUserEnableWms { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Elevator", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Elevator Elevator { get; set; }
     
@@ -5136,6 +5153,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsAddItemByList", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAddItemByList { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsAxisChanged", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAxisChanged { get; set; }
@@ -5181,9 +5201,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsQuantityLimited", Required = Newtonsoft.Json.Required.Always)]
         public bool IsQuantityLimited { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CanUserEnableWms", Required = Newtonsoft.Json.Required.Always)]
-        public bool CanUserEnableWms { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }

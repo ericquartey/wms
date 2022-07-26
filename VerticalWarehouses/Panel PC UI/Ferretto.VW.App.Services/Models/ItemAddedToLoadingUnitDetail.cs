@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.App.Services
+﻿using Ferretto.VW.MAS.AutomationService.Contracts;
+
+namespace Ferretto.VW.App.Services
 {
     public class ItemAddedToLoadingUnitDetail
     {
@@ -13,6 +15,8 @@
         public int LoadingUnitId { get; set; }
 
         public string MeasureUnitTxt { get; set; }
+
+        public MissionOperation MissionOperation { get; set; }
 
         public double QuantityIncrement { get; set; }
 
