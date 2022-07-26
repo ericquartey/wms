@@ -32,7 +32,7 @@
 ## Bug Risolti
 - Corretto falso allarme 32 - Destinazione maggiore del limite superiore - con macchine da 1000kg
 - BIG: il movimento si ferma se si perde il sensore di zero
-- Mostra l'immagine del barcode - si aggiorna ad ogni cambio di articolo
+- Correzione a Mostra l'immagine del barcode: si aggiorna ad ogni cambio di articolo
 - Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
 
 ## Compatibile con adapter 0.4.37
