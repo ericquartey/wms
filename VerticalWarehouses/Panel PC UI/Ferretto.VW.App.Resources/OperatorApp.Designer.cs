@@ -2815,6 +2815,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Add Item By List.
+        /// </summary>
+        public static string isEnableAddItemByList {
+            get {
+                return ResourceManager.GetString("isEnableAddItemByList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick and Put by barcode
         ///.
         /// </summary>

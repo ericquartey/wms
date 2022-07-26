@@ -2621,4 +2621,7 @@
   <data name="AddList" xml:space="preserve">
     <value>Add List</value>
   </data>
+  <data name="isEnableAddItemByList" xml:space="preserve">
+    <value>Enable Add Item By List</value>
+  </data>
 </root>
