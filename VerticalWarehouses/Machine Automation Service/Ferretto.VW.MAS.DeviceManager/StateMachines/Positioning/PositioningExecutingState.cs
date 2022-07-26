@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly double firstPosition;
 
+        private readonly bool isSimulation;
+
         private readonly IPositioningMachineData machineData;
 
         private readonly IServiceScope scope;
@@ -122,6 +124,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            var machine = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>().GetMinMaxHeight();
+            this.isSimulation = machine.Simulation;
         }
 
         #endregion
@@ -247,7 +251,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.verticalStartingPosition = this.elevatorProvider.VerticalPosition;
                             this.verticalBounds = this.elevatorProvider.GetVerticalBounds();
                         }
-                        if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual)
+                        if (this.machineData.MessageData.MovementMode == MovementMode.BayChainManual
+                            || this.machineData.MessageData.MovementMode == MovementMode.BayChain)
                         {
                             this.IsStartBayNotZero = !(this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay));
                             this.IsStartPartiallyOnBoard = this.machineData.MessageData.LoadingUnitId.HasValue && this.machineData.MessageData.LoadingUnitId.Value > 0;
@@ -708,7 +713,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsLoadingErrorDuringPickup()
         {
-            if (!this.machineData.MessageData.IsStartedOnBoard)
+            if (!this.machineData.MessageData.IsStartedOnBoard
+                && !this.isSimulation)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
@@ -749,7 +755,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool IsUnloadingErrorDuringDeposit()
         {
-            if (this.machineData.MessageData.IsStartedOnBoard)
+            if (this.machineData.MessageData.IsStartedOnBoard
+                && !this.isSimulation)
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
@@ -808,6 +815,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 && this.machineData.MessageData.AxisMovement == Axis.Vertical
                 && !this.machineData.MessageData.BypassConditions
                 && !this.machineData.MachineSensorStatus.IsSensorZeroOnElevator
+                && !this.isSimulation
                 && this.elevatorProvider.VerticalPosition < this.verticalBounds.Offset * 0.7;
         }
 
@@ -834,11 +842,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case MovementMode.BayChainManual:
                     {
-                        if (this.IsStartBayNotZero && this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        if (this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
                         {
-                            this.IsBayZeroReached = true;
+                            if (this.IsStartBayNotZero)
+                            {
+                                this.IsBayZeroReached = true;
+                            }
 
                             if (this.IsStartPartiallyOnBoard
+                                && this.IsStartBayNotZero
                                 && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.RequestingBay))
                             {
                                 var data = new PositioningMessageData();
@@ -863,10 +875,39 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.IsStartPartiallyOnBoard = false;
                             }
                         }
+                        else if (!this.IsStartBayNotZero)
+                        {
+                            this.IsStartBayNotZero = true;
+                        }
                         if (this.IsBayZeroReached && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
                         {
                             this.Logger.LogWarning("Bay chain in wrong position!");
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
+
+                            //this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Stop);
+                            this.IsBayZeroReached = false;
+                        }
+                    }
+                    break;
+
+                case MovementMode.BayChain:
+                    {
+                        if (this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        {
+                            if (this.IsStartBayNotZero)
+                            {
+                                this.IsBayZeroReached = true;
+                            }
+                        }
+                        else if (!this.IsStartBayNotZero)
+                        {
+                            this.IsStartBayNotZero = true;
+                        }
+                        if (this.IsBayZeroReached && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.RequestingBay))
+                        {
+                            this.Logger.LogWarning("Bay chain in wrong position!");
+                            this.errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtEnd, this.machineData.RequestingBay);
 
                             //this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Stop);
@@ -1050,17 +1091,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (this.IsLoadingErrorDuringPickup())
                         {
-                            //this.Logger.LogWarning("Cradle not correctly loaded during pickup");
                             this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
                             this.Stop(StopRequestReason.Stop);
                         }
                         else if (this.IsUnloadingErrorDuringDeposit())
                         {
-                            // TODO - if this warning is reliable we can enable the alarm
-                            //this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
                             this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
-                            //this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Stop);
                         }
 
@@ -1083,32 +1120,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             && this.IsSensorsError(this.machineData.MessageData.AxisMovement)
                             )
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
                             this.stateData.FieldMessage = message;
                             this.Stop(StopRequestReason.Error);
-                        }
-                        if (!this.machineData.MessageData.BypassConditions
-                            && this.IsVerticalZeroHighError()
-                            )
-                        {
-                            // TODO - if this warning is reliable we can enable the alarm
-                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroHighError, this.machineData.RequestingBay);
-
-                            //this.stateData.FieldMessage = message;
-                            //this.Stop(StopRequestReason.Error);
-                            this.Logger.LogWarning("The vertical zero sensor is active in a high position");
-                        }
-                        if (!this.machineData.MessageData.BypassConditions
-                            && this.IsVerticalZeroLowError()
-                            )
-                        {
-                            // TODO - if this warning is reliable we can enable the alarm
-                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.VerticalZeroLowError, this.machineData.RequestingBay);
-
-                            //this.stateData.FieldMessage = message;
-                            //this.Stop(StopRequestReason.Error);
-                            this.Logger.LogWarning("The vertical zero sensor is not active in a low position");
                         }
                         else if (this.machineData.MessageData.MovementMode == MovementMode.Position
                             && this.machineData.MessageData.AxisMovement == Axis.Horizontal
@@ -1194,7 +1209,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BeltBurnishing:
                     if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
                     {
-                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+                        this.errorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
 
                         this.stateData.FieldMessage = message;
                         this.Stop(StopRequestReason.Error);

@@ -800,6 +800,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.Reasons = null;
                     this.Orders = null;
+                    this.IsOrderVisible = false;
+                    this.IsReasonVisible = false;
+                    this.IsWaitingForReason = false;
 
                     this.ShowNotification(
                     string.Format(

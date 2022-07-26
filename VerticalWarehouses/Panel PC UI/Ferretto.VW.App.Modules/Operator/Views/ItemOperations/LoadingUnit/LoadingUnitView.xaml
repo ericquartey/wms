@@ -166,6 +166,7 @@
                                            Foreground="{DynamicResource Text_Foreground}"
                                            Text="{res:Loc OperatorApp.BoxCode}" />
 
+                                
                                 <TextBlock x:Name="ItemCodeValue"
                                            Grid.Row="1"
                                            Margin="4,0,4,4"
@@ -269,15 +270,26 @@
                                         Style="{DynamicResource PpcButtonMarkStyle}"
                                         Visibility="{Binding IsBoxEnabled, Converter={StaticResource BTVC}}" />
 
-                    <controls:PpcButton Margin="15,0,15,15"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Top"
-                                        Command="{Binding OperationCommand}"
-                                        CommandParameter="{x:Static res:OperatorApp.Add}"
-                                        Content="{res:Loc OperatorApp.Add}"
-                                        Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}"/>
-                    <!--  Visibility="{Binding IsAddItemFeatureForDraperyManagementAvailable, Converter={StaticResource BTVC}}" />  -->
-
+                    <Grid>
+                        <controls:PpcButton Margin="15,0,15,15"
+                                            HorizontalAlignment="left"
+                                            VerticalAlignment="Top"
+                                            Width="auto"
+                                            Command="{Binding OperationCommand}"
+                                            CommandParameter="{x:Static res:OperatorApp.Add}"
+                                            KindFontAwesome="PlusSquareSolid"
+                                            Visibility="{Binding IsAddEnabled, Converter={StaticResource BTVC}}" />
+                        
+                        <controls:PpcButton Margin="15,0,15,15"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            Width="auto"
+                                            Command="{Binding OperationCommand}"
+                                            CommandParameter="{x:Static res:OperatorApp.AddList}"
+                                            KindFontAwesome="CartPlusSolid"
+                                            Visibility="{Binding IsAddItemLists, Converter={StaticResource BTVC}}" />
+                    </Grid>
+                    
                     <controls:PpcButton Margin="15,0,15,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Top"
@@ -289,6 +301,8 @@
                                         Style="{DynamicResource PpcButtonMarkStyle}"
                                         Visibility="{Binding IsAdjustmentButtonVisible, Converter={StaticResource BTVC}}"/>
 
+                   
+                    
                     <controls:PpcButton Margin="15,15,15,0"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Top"

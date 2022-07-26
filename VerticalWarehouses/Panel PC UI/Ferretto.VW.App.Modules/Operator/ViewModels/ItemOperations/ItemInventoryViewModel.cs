@@ -235,6 +235,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = null;
+            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
         }
 
         protected override void RaiseCanExecuteChanged()

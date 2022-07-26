@@ -124,6 +124,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add List.
+        /// </summary>
+        public static string AddList {
+            get {
+                return ResourceManager.GetString("AddList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjustment.
         /// </summary>
         public static string Adjustment {
@@ -2802,6 +2811,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IsEnableAddItem {
             get {
                 return ResourceManager.GetString("IsEnableAddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Add Item By List.
+        /// </summary>
+        public static string isEnableAddItemByList {
+            get {
+                return ResourceManager.GetString("isEnableAddItemByList", resourceCulture);
             }
         }
         

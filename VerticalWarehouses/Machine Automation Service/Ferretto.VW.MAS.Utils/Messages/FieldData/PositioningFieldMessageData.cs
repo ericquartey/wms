@@ -60,8 +60,14 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.IsTorqueCurrentSamplingEnabled = messageData.MovementMode == MovementMode.TorqueCurrentSampling;
             this.IsWeightMeasure = (messageData.MovementMode == MovementMode.PositionAndMeasureWeight && this.AxisMovement == Axis.Vertical);
             this.IsProfileCalibrate = (messageData.MovementMode == MovementMode.ProfileCalibration);
-            this.IsHorizontalCalibrate = (messageData.MovementMode == MovementMode.HorizontalCalibration || messageData.MovementMode == MovementMode.FindZero || messageData.MovementMode == MovementMode.HorizontalResolution);
+            this.IsHorizontalCalibrate = (messageData.MovementMode == MovementMode.HorizontalCalibration
+                    || messageData.MovementMode == MovementMode.FindZero
+                    || messageData.MovementMode == MovementMode.HorizontalResolution);
             this.IsBayCalibrate = messageData.MovementMode == MovementMode.BayChainFindZero;
+            this.IsExternal = this.AxisMovement == Axis.BayChain && (messageData.MovementMode == MovementMode.ExtBayChain
+                    || messageData.MovementMode == MovementMode.ExtBayChainManual
+                    || messageData.MovementMode == MovementMode.ExtBayTest
+                    || messageData.MovementMode == MovementMode.DoubleExtBayTest);
             this.LoadedNetWeight = messageData.LoadedNetWeight;
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
@@ -86,6 +92,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         public double FeedRate { get; }
 
         public bool IsBayCalibrate { get; set; }
+
+        public bool IsExternal { get; set; }
 
         public bool IsHorizontalCalibrate { get; set; }
 

@@ -411,6 +411,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
+            this.IsAddItemLists = false;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
@@ -477,6 +478,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = this.MissionRequestedQuantity;
                 base.InitializeInputQuantity();
                 //this.AvailableQuantity = this.MissionRequestedQuantity;
+                this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
                 this.RaisePropertyChanged(nameof(this.InputQuantity));
                 this.RaisePropertyChanged(nameof(this.AvailableQuantity));
