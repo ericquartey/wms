@@ -1884,10 +1884,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource?.Cancel(false);
 
             this.tokenSource = new CancellationTokenSource();
-            await this.ReloadAllItems(this.tokenSource.Token);
+            //await this.ReloadAllItems(this.tokenSource.Token);
 
             this.tokenSource = new CancellationTokenSource();
-            await this.ReloadAllPutLists(this.tokenSource.Token);
+            //await this.ReloadAllPutLists(this.tokenSource.Token);
             await this.RefreshItemsAsync();
 
             this.RaisePropertyChanged(nameof(this.Products));
@@ -2266,6 +2266,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     // Handle the show/hide of "Adjustment" button
                     this.IsAdjustmentButtonVisible = true;
                     this.SearchItem = string.Empty;
+                    // Searching routine
+                    this.TriggerSearchAsync().GetAwaiter();
                 }
                 else if (operationType == OperatorApp.AddList)
                 {
@@ -2275,6 +2277,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     // Handle the show/hide of "Adjustment" button
                     this.IsAdjustmentButtonVisible = true;
                     this.SearchItem = string.Empty;
+                    // Searching routine
+                    this.TriggerSearchAsync().GetAwaiter();
                 }
                 else if (operationType == "LoadingUnitView_PickPutItemAppearance")
                 {
