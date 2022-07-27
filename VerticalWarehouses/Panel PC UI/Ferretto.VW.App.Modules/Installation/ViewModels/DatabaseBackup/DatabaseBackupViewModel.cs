@@ -358,7 +358,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     if (this.IsBackupOnTelemetry)
                     {
-                        if (!string.IsNullOrEmpty(this.ProxyUrl) && !string.IsNullOrEmpty(this.ProxyUser) && !string.IsNullOrEmpty(this.ProxyPassword) && !string.IsNullOrEmpty(this.ProxyPasswordCheck))
+                        if (!string.IsNullOrEmpty(this.ProxyUrl))
                         {
                             if (this.ProxyPassword != this.ProxyPasswordCheck)
                             {
@@ -376,14 +376,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             await this.telemetryHubClient.SendProxyAsync(proxy);
                             this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful") + " " + Localized.Get("InstallationApp.ProxySaved"), Services.Models.NotificationSeverity.Success);
                         }
-                        else if (string.IsNullOrEmpty(this.ProxyUrl) && string.IsNullOrEmpty(this.ProxyUser) && string.IsNullOrEmpty(this.ProxyPassword) && string.IsNullOrEmpty(this.ProxyPasswordCheck))
+                        else
                         {
                             await this.telemetryHubClient.SendProxyAsync(null);
                             this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Info);
-                        }
-                        else
-                        {
-                            this.ShowNotification(Localized.Get("InstallationApp.SaveFailed") + " " + Localized.Get("InstallationApp.ProxyMissing"), Services.Models.NotificationSeverity.Warning);
                         }
                     }
                     else
