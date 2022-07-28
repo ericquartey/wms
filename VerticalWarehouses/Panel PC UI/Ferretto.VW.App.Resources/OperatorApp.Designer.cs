@@ -1627,6 +1627,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move tray back to storage?.
+        /// </summary>
+        public static string DrawerBackToStorage {
+            get {
+                return ResourceManager.GetString("DrawerBackToStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compacting.
         /// </summary>
         public static string DrawerCompacting {
