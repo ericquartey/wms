@@ -86,7 +86,7 @@
         <WmsControls:TrayControl Name="TrayControl"
                                  Grid.Row="0"
                                  Grid.Column="0"
-                                 Margin="0,0,0,0"
+                                 Margin="0,0,10,0"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  Compartments="{Binding Compartments}"
@@ -105,12 +105,12 @@
                                     Margin="0,0,0,0"
                                     VerticalAlignment="Top" />
 
-                <views:LoadingUnitOperationsView 
-                                                 Grid.Row="1"
-                                                 Margin="0"
-                                                 Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
+        <views:LoadingUnitOperationsView
+                                Grid.Row="1"
+                                Margin="0,-20,0,0"
+                                Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
 
-            </Grid>
+      </Grid>
 
     </Border>
 
