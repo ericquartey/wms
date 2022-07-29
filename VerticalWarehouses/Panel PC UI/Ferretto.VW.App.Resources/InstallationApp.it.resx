@@ -2715,4 +2715,7 @@
   <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
     <value>Cancella in chiusura vista</value>
   </data>
+  <data name="MissionActive" xml:space="preserve">
+    <value>Terminare le missioni attive</value>
+  </data>
 </root>
