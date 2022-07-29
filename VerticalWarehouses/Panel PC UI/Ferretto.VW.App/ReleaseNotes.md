@@ -25,20 +25,21 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.47 rispetto la 1.0.46
-- Lista articoli: aggiunto ordinamento delle colonne
-- 
+## Nuove Funzionalità 1.0.48 rispetto la 1.0.47
+- Ferretto Nuget Package 0.16.45
+- Operazioni di visione e versamento: aggiunto comando (icona carrello) per aggiungere un articolo scegliendo la lista di versamento
 
 ## Bug Risolti
-- L'utente Installer può modificare Offset catena e Numero macchina
-- La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
-- Corretto un caso di missione duplicata di rientro cassetto
-- Movimenti: corretto errore in assenza della serranda
-- Barra alfanumerica: corretto mancato spegnimento a fine operazione
-- Errore ricerca di zero: la finestra non è più bloccante
+- Corretto falso allarme 32 - Destinazione maggiore del limite superiore - con macchine da 1000kg
+- BIG: il movimento si ferma se si perde il sensore di zero
+- Correzione a Mostra l'immagine del barcode: si aggiorna ad ogni cambio di articolo
+- Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
+- Conferma ultima operazione: invia la conferma a cassetto fermo
 
-## Compatibile con adapter 0.4.35 e 0.4.36
+## Compatibile con adapter 0.4.37
 ***
+
+[Versione 1.0.47](#id1047)
 
 [Versione 1.0.46](#id1046)
 
@@ -134,6 +135,21 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1047"></a>
+## Nuove Funzionalità 1.0.47 rispetto la 1.0.46
+- Lista articoli: aggiunto ordinamento delle colonne
+- 
+
+## Bug Risolti
+- L'utente Installer può modificare Offset catena e Numero macchina
+- La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
+- Corretto un caso di missione duplicata di rientro cassetto
+- Movimenti: corretto errore in assenza della serranda
+- Barra alfanumerica: corretto mancato spegnimento a fine operazione
+- Errore ricerca di zero: la finestra non è più bloccante
+
+## Compatibile con adapter 0.4.35 e 0.4.36
 
 <a id="id1046"></a>
 

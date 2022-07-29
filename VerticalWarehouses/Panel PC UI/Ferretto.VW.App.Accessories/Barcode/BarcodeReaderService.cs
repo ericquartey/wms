@@ -293,7 +293,7 @@ namespace Ferretto.VW.App.Accessories
         /// </summary>
         /// <param name="barcode">The barcode to match.</param>
         /// <param name="activeContextName">The name of the active context.</param>
-        /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if not match was found.</returns>
+        /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if no match was found.</returns>
         private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
         {
             foreach (var rule in this.ruleSet

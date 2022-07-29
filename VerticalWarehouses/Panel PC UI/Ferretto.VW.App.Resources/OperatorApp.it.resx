@@ -2221,6 +2221,9 @@
     <value>Aggiungi lista</value>
   </data>
   <data name="isEnableAddItemByList" xml:space="preserve">
-    <value>Abilita aggiungi articola da una lista</value>
+    <value>Abilita aggiungi articolo da una lista</value>
+  </data>
+  <data name="DrawerBackToStorage" xml:space="preserve">
+    <value>Muovi il cassetto verso il magazzino?</value>
   </data>
 </root>

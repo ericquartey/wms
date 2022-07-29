@@ -1195,6 +1195,9 @@ namespace Ferretto.VW.App.Services
                         }
 
                     case MessageStatus.OperationError:
+                    case MessageStatus.OperationFaultStop:
+                    case MessageStatus.OperationInverterFault:
+                    case MessageStatus.OperationRunningStop:
                         {
                             if (message?.Data is PositioningMessageData dataLog)
                             {
@@ -1209,6 +1212,7 @@ namespace Ferretto.VW.App.Services
                             {
                                 this.MachineStatus.MessageStatus = message.Status;
                                 this.MachineStatus.IsMoving = false;
+                                this.MachineStatus.IsMovingLoadingUnit = false;
                                 this.MachineStatus.IsError = true;
                                 this.MachineStatus.ErrorDescription = message.Description;
 

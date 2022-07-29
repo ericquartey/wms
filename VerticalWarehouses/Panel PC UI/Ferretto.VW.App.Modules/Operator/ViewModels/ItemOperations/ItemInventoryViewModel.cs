@@ -60,7 +60,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineAccessoriesWebService accessoriesWebService)
+            IMachineAccessoriesWebService accessoriesWebService,
+            IMachineBaysWebService machineBaysWebService)
             : base(
                   areasWebService,
                   machineIdentityWebService,
@@ -77,7 +78,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   dialogService,
                   wmsDataProvider,
                   authenticationService,
-                  accessoriesWebService)
+                  accessoriesWebService,
+                  machineBaysWebService)
         {
             this.barcodeReaderService = barcodeReaderService;
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -235,6 +237,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = null;
+            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
         }
 
         protected override void RaiseCanExecuteChanged()

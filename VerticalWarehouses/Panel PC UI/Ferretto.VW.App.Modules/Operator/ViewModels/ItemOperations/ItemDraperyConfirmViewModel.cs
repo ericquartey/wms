@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly IMissionOperationsService missionOperationsService;
@@ -62,13 +64,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineItemsWebService itemsWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineIdentityWebService machineIdentityWebService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Operator)
         {
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
@@ -299,22 +303,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.CanConfirmDraperyItemButton();
 
-                    // Show the confirm message dialog, if requested
+                    var isLastMissionOnCurrentLoadingUnit = false;
                     var isRequestConfirm = await this.machineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                     if (isRequestConfirm)
                     {
-                        var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
+                        isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
                         if (isLastMissionOnCurrentLoadingUnit)
                         {
-                            var messageBoxResult = this.dialogService.ShowMessage(
-                                Localized.Get("InstallationApp.ConfirmationOperation"),
-                                Localized.Get("InstallationApp.ConfirmationOperation"),
-                                DialogType.Question,
-                                DialogButtons.OK);
-                            if (messageBoxResult is DialogResult.OK)
-                            {
-                                // go away...
-                            }
+                            this.Logger.Debug($"Deactivate Bay");
+                            await this.machineBaysWebService.DeactivateAsync();
                         }
                     }
 
@@ -336,6 +333,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     else
                     {
                         this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                    }
+
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        var messageBoxResult = this.dialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("OperatorApp.DrawerBackToStorage"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                        this.Logger.Debug($"Activate Bay");
+                        await this.machineBaysWebService.ActivateAsync();
                     }
 
                     this.NavigationService.GoBack();
@@ -368,6 +380,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsWaitingForResponse = false;
                     this.forceDisablingConfirmButton = false;
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
             }
             else
@@ -388,22 +402,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.CanConfirmDraperyItemButton();
 
-                    // Show the confirm message dialog, if requested
+                    var isLastMissionOnCurrentLoadingUnit = false;
                     var isRequestConfirm = await this.machineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                     if (isRequestConfirm)
                     {
-                        var isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
+                        isLastMissionOnCurrentLoadingUnit = await this.missionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionId);
                         if (isLastMissionOnCurrentLoadingUnit)
                         {
-                            var messageBoxResult = this.dialogService.ShowMessage(
-                                Localized.Get("InstallationApp.ConfirmationOperation"),
-                                Localized.Get("InstallationApp.ConfirmationOperation"),
-                                DialogType.Question,
-                                DialogButtons.OK);
-                            if (messageBoxResult is DialogResult.OK)
-                            {
-                                // go away...
-                            }
+                            this.Logger.Debug($"Deactivate Bay");
+                            await this.machineBaysWebService.DeactivateAsync();
                         }
                     }
 
@@ -442,6 +449,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.forceDisablingConfirmButton = false;
 
+                    if (isLastMissionOnCurrentLoadingUnit)
+                    {
+                        var messageBoxResult = this.dialogService.ShowMessage(
+                            Localized.Get("InstallationApp.ConfirmationOperation"),
+                            Localized.Get("OperatorApp.DrawerBackToStorage"),
+                            DialogType.Question,
+                            DialogButtons.OK);
+                        if (messageBoxResult is DialogResult.OK)
+                        {
+                            // go away...
+                        }
+                        this.Logger.Debug($"Activate Bay");
+                        await this.machineBaysWebService.ActivateAsync();
+                    }
                     this.NavigationService.GoBack();
                 }
                 catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -473,6 +494,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     // Do not enable the interface. Wait for a new notification to arrive.
                     this.IsWaitingForResponse = false;
                     this.forceDisablingConfirmButton = false;
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
             }
 
