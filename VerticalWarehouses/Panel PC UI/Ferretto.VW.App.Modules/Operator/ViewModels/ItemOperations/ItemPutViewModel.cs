@@ -348,6 +348,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.SetProperty(ref this.searchItem, value))
                 {
                     this.IsSearching = true;
+                    this.SelectedList = null;
 
                     this.TriggerSearchAsync().GetAwaiter();
                 }
@@ -708,7 +709,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource?.Cancel(false);
 
             this.tokenSource = new CancellationTokenSource();
-            this.SearchItem = this.MissionOperation?.ItemCode;
+            this.searchItem = this.MissionOperation?.ItemCode;
+            this.RaisePropertyChanged(nameof(this.SearchItem));
             await this.ReloadPutLists();
             this.PutListDataGridViewVisibility = this.PutLists.Any();
             this.SelectedList = this.putLists.Find(l => l.ItemListCode == this.MissionOperation?.ItemListCode);
@@ -989,16 +991,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId);
 
-                if (string.IsNullOrEmpty(this.SearchItem))
+                if (string.IsNullOrEmpty(this.searchItem))
                 {
                     this.putLists.AddRange(missionLists);
                 }
                 else
                 {
-                    this.putLists.AddRange(missionLists.Where(m => m.ItemCode.Contains(this.SearchItem)
-                        || m.ItemDescription.Contains(this.SearchItem)
-                        || m.ItemListCode.Contains(this.SearchItem)
-                        || m.ItemListRowCode.Contains(this.SearchItem)));
+                    this.putLists.AddRange(missionLists.Where(m => m.ItemCode.Contains(this.searchItem)
+                        || m.ItemDescription.Contains(this.searchItem)
+                        || m.ItemListCode.Contains(this.searchItem)
+                        || m.ItemListRowCode.Contains(this.searchItem)));
                 }
 
                 this.RaisePropertyChanged(nameof(this.PutLists));
@@ -1034,7 +1036,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
                 await this.ReloadPutLists();
-                this.SelectedList = this.putLists.Find(l => l.ItemListCode == this.MissionOperation?.ItemListCode);
             }
             catch (TaskCanceledException)
             {
