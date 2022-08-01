@@ -60,6 +60,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
@@ -220,11 +222,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineAccessoriesWebService accessoriesWebService)
+            IMachineAccessoriesWebService accessoriesWebService,
+            IMachineBaysWebService machineBaysWebService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.eventAggregator = eventAggregator;
             this.compartmentsWebService = compartmentsWebService;
             this.missionOperationsWebService = missionOperationsWebService;
@@ -1051,21 +1055,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
+                var isLastMissionOnCurrentLoadingUnit = false;
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {
-                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
                     if (isLastMissionOnCurrentLoadingUnit)
                     {
-                        var messageBoxResult = this.DialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
-                        {
-                            // go away...
-                        }
+                        this.Logger.Debug($"Deactivate Bay");
+                        await this.machineBaysWebService.DeactivateAsync();
                     }
                 }
 
@@ -1096,6 +1094,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT,
                         "ConfirmOperationAsync");
+                }
+
+                if (isLastMissionOnCurrentLoadingUnit)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.DrawerBackToStorage"),
+                        DialogType.Question,
+                        DialogButtons.OK);
+                    if (messageBoxResult is DialogResult.OK)
+                    {
+                        // go away...
+                    }
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
 
                 //this.navigationService.GoBackTo(
@@ -1135,6 +1148,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.lastItemQuantityMessage = null;
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
+                this.Logger.Debug($"Activate Bay");
+                await this.machineBaysWebService.ActivateAsync();
             }
         }
 
@@ -1202,21 +1217,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
+                var isLastMissionOnCurrentLoadingUnit = false;
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {
-                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
                     if (isLastMissionOnCurrentLoadingUnit)
                     {
-                        var messageBoxResult = this.DialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
-                        {
-                            // go away...
-                        }
+                        this.Logger.Debug($"Deactivate Bay");
+                        await this.machineBaysWebService.DeactivateAsync();
                     }
                 }
 
@@ -1247,6 +1256,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
+                }
+
+                if (isLastMissionOnCurrentLoadingUnit)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.DrawerBackToStorage"),
+                        DialogType.Question,
+                        DialogButtons.OK);
+                    if (messageBoxResult is DialogResult.OK)
+                    {
+                        // go away...
+                    }
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
 
                 this.navigationService.GoBackTo(
@@ -1292,6 +1316,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
+                this.Logger.Debug($"Activate Bay");
+                await this.machineBaysWebService.ActivateAsync();
             }
         }
 
@@ -1512,21 +1538,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var itemId = this.MissionOperation.Id;
                 var quantity = this.InputQuantity;
 
+                var isLastMissionOnCurrentLoadingUnit = false;
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {
-                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
                     if (isLastMissionOnCurrentLoadingUnit)
                     {
-                        var messageBoxResult = this.DialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
-                        {
-                            // go away...
-                        }
+                        this.Logger.Debug($"Deactivate Bay");
+                        await this.machineBaysWebService.DeactivateAsync();
                     }
                 }
                 if (this.closeLine)
@@ -1554,6 +1574,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     //await this.UpdateWeight(loadUnitId, this.InputQuantity.Value, item.AverageWeight, type);
+                }
+
+                if (isLastMissionOnCurrentLoadingUnit)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.DrawerBackToStorage"),
+                        DialogType.Question,
+                        DialogButtons.OK);
+                    if (messageBoxResult is DialogResult.OK)
+                    {
+                        // go away...
+                    }
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -1585,6 +1620,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = false;
                 this.lastItemQuantityMessage = null;
+                this.Logger.Debug($"Activate Bay");
+                await this.machineBaysWebService.ActivateAsync();
             }
         }
 

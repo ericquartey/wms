@@ -199,7 +199,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id, this.authenticationService.UserName);
 
-                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit?.Id), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) // when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

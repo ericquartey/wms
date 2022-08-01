@@ -4678,6 +4678,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End active missions.
+        /// </summary>
+        public static string MissionActive {
+            get {
+                return ResourceManager.GetString("MissionActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missions.
         /// </summary>
         public static string MissionsCount {

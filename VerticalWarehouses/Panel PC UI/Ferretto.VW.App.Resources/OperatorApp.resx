@@ -2624,4 +2624,7 @@
   <data name="isEnableAddItemByList" xml:space="preserve">
     <value>Enable Add Item By List</value>
   </data>
+  <data name="DrawerBackToStorage" xml:space="preserve">
+    <value>Move tray back to storage?</value>
+  </data>
 </root>

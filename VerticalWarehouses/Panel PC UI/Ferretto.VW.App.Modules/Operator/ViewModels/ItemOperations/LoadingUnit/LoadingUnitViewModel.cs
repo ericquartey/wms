@@ -1886,7 +1886,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.tokenSource = new CancellationTokenSource();
             //await this.ReloadAllItems(this.tokenSource.Token);
 
-            this.tokenSource = new CancellationTokenSource();
+            //this.tokenSource = new CancellationTokenSource();
             //await this.ReloadAllPutLists(this.tokenSource.Token);
             await this.RefreshItemsAsync();
 

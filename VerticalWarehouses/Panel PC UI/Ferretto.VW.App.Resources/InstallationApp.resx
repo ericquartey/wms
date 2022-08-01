@@ -2791,4 +2791,7 @@
   <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
     <value>Clear on close view</value>
   </data>
+  <data name="MissionActive" xml:space="preserve">
+    <value>End active missions</value>
+  </data>
 </root>

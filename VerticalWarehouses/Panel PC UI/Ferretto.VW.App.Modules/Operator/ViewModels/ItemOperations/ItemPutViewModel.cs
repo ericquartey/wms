@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineItemsWebService itemsWebService;
+
+        private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
@@ -83,9 +86,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string itemSearchKeyTitleName = OperatorApp.ItemSearchKeySearch;
 
+        private bool productsDataGridViewVisibility;
+
         private DelegateCommand putBoxCommand;
 
         private bool putListDataGridViewVisibility;
+
+        private string searchItem;
 
         private MissionOperation selectedList;
 
@@ -95,12 +102,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand suspendCommand;
 
+        private CancellationTokenSource tokenSource;
+
         #endregion
 
         #region Constructors
 
         public ItemPutViewModel(
-            IBarcodeReaderService barcodeReaderService,
+                    IBarcodeReaderService barcodeReaderService,
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
@@ -118,7 +127,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
             IMachineAccessoriesWebService accessoriesWebService,
-            IAlphaNumericBarService alphaNumericBarService)
+            IAlphaNumericBarService alphaNumericBarService,
+            IMachineBaysWebService machineBaysWebService)
             : base(
                   areasWebService,
                   machineIdentityWebService,
@@ -135,10 +145,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   dialogService,
                   wmsDataProvider,
                   authenticationService,
-                  accessoriesWebService)
+                  accessoriesWebService,
+                  machineBaysWebService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
 
@@ -315,8 +327,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.itemSearchKeyTitleName, value);
         }
 
+        public bool ProductsDataGridViewVisibility
+        {
+            get => this.productsDataGridViewVisibility;
+            set => this.SetProperty(ref this.productsDataGridViewVisibility, value);
+        }
+
         public ICommand PutBoxCommand =>
-                    this.putBoxCommand
+                            this.putBoxCommand
             ??
             (this.putBoxCommand = new DelegateCommand(
                 async () => await this.PutBoxAsync("0"),
@@ -329,6 +347,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public IList<MissionOperation> PutLists => new List<MissionOperation>(this.putLists);
+
+        public string SearchItem
+        {
+            get => this.searchItem;
+            set
+            {
+                if (this.SetProperty(ref this.searchItem, value))
+                {
+                    this.IsSearching = true;
+                    this.SelectedList = null;
+
+                    this.TriggerSearchAsync().GetAwaiter();
+                }
+            }
+        }
 
         public MissionOperation SelectedList
         {
@@ -529,25 +562,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
+                var compartmentId = this.MissionOperation.CompartmentId;
+                var isLastMissionOnCurrentLoadingUnit = false;
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {
-                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
                     if (isLastMissionOnCurrentLoadingUnit)
                     {
-                        var messageBoxResult = this.DialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
-                        {
-                            // go away...
-                        }
+                        this.Logger.Debug($"Deactivate Bay");
+                        await this.machineBaysWebService.DeactivateAsync();
                     }
                 }
-
-                var compartmentId = this.MissionOperation.CompartmentId;
 
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)//16 => lunghezza matrice
                 {
@@ -578,6 +604,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.WAIT,
                         "ConfirmOperationAsync");
+                }
+
+                if (isLastMissionOnCurrentLoadingUnit)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.DrawerBackToStorage"),
+                        DialogType.Question,
+                        DialogButtons.OK);
+                    if (messageBoxResult is DialogResult.OK)
+                    {
+                        // go away...
+                    }
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
 
                 //this.navigationService.GoBackTo(
@@ -616,6 +657,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
                 this.lastItemQuantityMessage = null;
+                this.Logger.Debug($"Activate Bay");
+                await this.machineBaysWebService.ActivateAsync();
 
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;
@@ -654,6 +697,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
+            this.ProductsDataGridViewVisibility = false;
+            this.IsKeyboardButtonVisible = configuration.Machine.TouchHelper;
 
             await base.OnAppearedAsync();
 
@@ -667,12 +712,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
-            this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
+            this.MeasureUnitDescription = string.Format(Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
 
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+            this.searchItem = this.MissionOperation?.ItemCode;
+            this.RaisePropertyChanged(nameof(this.SearchItem));
             await this.ReloadPutLists();
-            this.PutListDataGridViewVisibility = this.PutLists.Any() && !this.ChargeListTextViewVisibility;
+            this.PutListDataGridViewVisibility = this.PutLists.Any();
             this.SelectedList = this.putLists.Find(l => l.ItemListCode == this.MissionOperation?.ItemListCode);
 
             this.RaiseCanExecuteChanged();
@@ -951,7 +1001,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId);
 
-                this.putLists.AddRange(missionLists);
+                if (string.IsNullOrEmpty(this.searchItem))
+                {
+                    this.putLists.AddRange(missionLists);
+                }
+                else
+                {
+                    this.putLists.AddRange(missionLists.Where(m => m.ItemCode.Contains(this.searchItem)
+                        || m.ItemDescription.Contains(this.searchItem)
+                        || m.ItemListCode.Contains(this.searchItem)
+                        || m.ItemListRowCode.Contains(this.searchItem)));
+                }
 
                 this.RaisePropertyChanged(nameof(this.PutLists));
             }
@@ -972,6 +1032,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void ShowPutLists()
         {
             this.IsAddListItemVisible = !this.IsAddListItemVisible;
+        }
+
+        private async Task TriggerSearchAsync()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 500;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                await this.ReloadPutLists();
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         #endregion

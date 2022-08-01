@@ -716,6 +716,7 @@
                       Grid.Row="1"
                       Grid.Column="0"
                       Margin="0,15,0,0"
+                      SelectionChanged="DataGrid2_SelectionChanged"
                       extensionsNamespace:DataGridExtensions.ScrollChangedCommand="{Binding ScrollCommand}"
                       HorizontalScrollBarVisibility="Disabled"
                       ItemsSource="{Binding PutLists}"
