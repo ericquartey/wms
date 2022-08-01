@@ -20,7 +20,10 @@ namespace Ferretto.VW.App.Modules.Operator.Views
 
         private void DataGrid2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.DataGrid2.ScrollIntoView(this.DataGrid2.SelectedItem);
+            if (this.DataGrid2.SelectedItem != null)
+            {
+                this.DataGrid2.ScrollIntoView(this.DataGrid2.SelectedItem);
+            }
         }
 
         private void KeyboardButton_Click(object sender, System.Windows.RoutedEventArgs e)

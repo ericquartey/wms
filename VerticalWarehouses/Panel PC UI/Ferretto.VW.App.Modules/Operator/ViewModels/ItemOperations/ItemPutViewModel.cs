@@ -86,6 +86,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string itemSearchKeyTitleName = OperatorApp.ItemSearchKeySearch;
 
+        private bool productsDataGridViewVisibility;
+
         private DelegateCommand putBoxCommand;
 
         private bool putListDataGridViewVisibility;
@@ -325,8 +327,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.itemSearchKeyTitleName, value);
         }
 
+        public bool ProductsDataGridViewVisibility
+        {
+            get => this.productsDataGridViewVisibility;
+            set => this.SetProperty(ref this.productsDataGridViewVisibility, value);
+        }
+
         public ICommand PutBoxCommand =>
-                    this.putBoxCommand
+                            this.putBoxCommand
             ??
             (this.putBoxCommand = new DelegateCommand(
                 async () => await this.PutBoxAsync("0"),
@@ -689,6 +697,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
+            this.ProductsDataGridViewVisibility = false;
+            this.IsKeyboardButtonVisible = configuration.Machine.TouchHelper;
 
             await base.OnAppearedAsync();
 
@@ -702,7 +712,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
-            this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
+            this.MeasureUnitDescription = string.Format(Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
 
