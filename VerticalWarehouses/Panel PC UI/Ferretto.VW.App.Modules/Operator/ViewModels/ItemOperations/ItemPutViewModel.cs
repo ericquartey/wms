@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -89,6 +90,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool putListDataGridViewVisibility;
 
+        private string searchItem;
+
         private MissionOperation selectedList;
 
         private DelegateCommand showBarcodeReaderCommand;
@@ -97,12 +100,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand suspendCommand;
 
+        private CancellationTokenSource tokenSource;
+
         #endregion
 
         #region Constructors
 
         public ItemPutViewModel(
-            IBarcodeReaderService barcodeReaderService,
+                    IBarcodeReaderService barcodeReaderService,
             ILaserPointerService deviceService,
             IMachineAreasWebService areasWebService,
             IMachineIdentityWebService machineIdentityWebService,
@@ -334,6 +339,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public IList<MissionOperation> PutLists => new List<MissionOperation>(this.putLists);
+
+        public string SearchItem
+        {
+            get => this.searchItem;
+            set
+            {
+                if (this.SetProperty(ref this.searchItem, value))
+                {
+                    this.IsSearching = true;
+                    this.SelectedList = null;
+
+                    this.TriggerSearchAsync().GetAwaiter();
+                }
+            }
+        }
 
         public MissionOperation SelectedList
         {
@@ -686,8 +706,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
 
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+            this.searchItem = this.MissionOperation?.ItemCode;
+            this.RaisePropertyChanged(nameof(this.SearchItem));
             await this.ReloadPutLists();
-            this.PutListDataGridViewVisibility = this.PutLists.Any() && !this.ChargeListTextViewVisibility;
+            this.PutListDataGridViewVisibility = this.PutLists.Any();
             this.SelectedList = this.putLists.Find(l => l.ItemListCode == this.MissionOperation?.ItemListCode);
 
             this.RaiseCanExecuteChanged();
@@ -966,7 +991,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var missionLists = await this.missionOperationsWebService.GetPutListsAsync(machineId);
 
-                this.putLists.AddRange(missionLists);
+                if (string.IsNullOrEmpty(this.searchItem))
+                {
+                    this.putLists.AddRange(missionLists);
+                }
+                else
+                {
+                    this.putLists.AddRange(missionLists.Where(m => m.ItemCode.Contains(this.searchItem)
+                        || m.ItemDescription.Contains(this.searchItem)
+                        || m.ItemListCode.Contains(this.searchItem)
+                        || m.ItemListRowCode.Contains(this.searchItem)));
+                }
 
                 this.RaisePropertyChanged(nameof(this.PutLists));
             }
@@ -987,6 +1022,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private void ShowPutLists()
         {
             this.IsAddListItemVisible = !this.IsAddListItemVisible;
+        }
+
+        private async Task TriggerSearchAsync()
+        {
+            this.tokenSource?.Cancel(false);
+
+            this.tokenSource = new CancellationTokenSource();
+
+            try
+            {
+                const int callDelayMilliseconds = 500;
+
+                await Task.Delay(callDelayMilliseconds, this.tokenSource.Token);
+                await this.ReloadPutLists();
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
         }
 
         #endregion
