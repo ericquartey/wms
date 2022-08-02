@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string serialNumber;
 
+        private DelegateCommand testCommand;
+
         #endregion
 
         #region Constructors
@@ -153,6 +155,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public System.Windows.Input.ICommand TestCommand =>
+                   this.testCommand
+           ??
+           (this.testCommand = new DelegateCommand(
+               async () =>
+               {
+                   try
+                   {
+                       await this.TestAsync();
+                       this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                       this.AreSettingsChanged = false;
+                   }
+                   catch (Exception ex)
+                   {
+                       this.ShowNotification(ex);
+                   }
+               },
+               this.CanTest));
+
         #endregion
 
         #region Methods
@@ -177,11 +198,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.AreSettingsChanged;
         }
 
+        protected virtual bool CanTest()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.AreSettingsChanged
+                &&
+                this.IsAccessoryEnabled;
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
             this.saveCommand?.RaiseCanExecuteChanged();
+            this.testCommand?.RaiseCanExecuteChanged();
         }
 
         protected abstract Task SaveAsync();
@@ -198,6 +230,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ManufactureDate = deviceInformation.ManufactureDate;
             this.ModelNumber = deviceInformation.ModelNumber;
         }
+
+        protected abstract Task TestAsync();
 
         #endregion
     }

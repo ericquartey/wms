@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -12,6 +13,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManagerService;
+
         private readonly IMachineAccessoriesWebService machineAccessoriesWebService;
 
         private string printerName;
@@ -20,10 +23,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public LabelPrinterSettingsViewModel(
+        public LabelPrinterSettingsViewModel(IBayManager bayManagerService,
                IMachineAccessoriesWebService machineAccessoriesWebService)
         {
             this.machineAccessoriesWebService = machineAccessoriesWebService;
+            this.bayManagerService = bayManagerService;
         }
 
         #endregion
@@ -94,6 +98,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful);
 
                 this.Logger.Debug("Label printer settings saved.");
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override async Task TestAsync()
+        {
+            try
+            {
+                this.Logger.Debug("Testing Label printer ...");
+
+                this.IsWaitingForResponse = true;
+
+                var bay = await this.bayManagerService.GetBayAsync();
+
+                var bayNumber = bay.Number;
+
+                await this.machineAccessoriesWebService.PrintTestPageAsync(bayNumber);
+
+                this.ShowNotification(VW.App.Resources.InstallationApp.TestSuccessful);
+
+                this.Logger.Debug("Label printer Test.");
             }
             catch (Exception ex)
             {

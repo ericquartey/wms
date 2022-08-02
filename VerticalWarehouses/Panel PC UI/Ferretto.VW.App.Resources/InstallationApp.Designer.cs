@@ -7027,6 +7027,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test successful.
+        /// </summary>
+        public static string TestSuccessful {
+            get {
+                return ResourceManager.GetString("TestSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TestToRunmust be strictly positive..
         /// </summary>
         public static string TestToRunMustBePositive {

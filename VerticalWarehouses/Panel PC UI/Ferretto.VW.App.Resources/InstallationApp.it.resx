@@ -2718,4 +2718,7 @@
   <data name="MissionActive" xml:space="preserve">
     <value>Terminare le missioni attive</value>
   </data>
+  <data name="TestSuccessful" xml:space="preserve">
+    <value>Test avvenuto con successo</value>
+  </data>
 </root>
