@@ -37,7 +37,7 @@
 - Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
 - Conferma ultima operazione: invia la conferma a cassetto fermo
 
-## Compatibile con adapter 0.4.37
+## Compatibile con adapter 0.4.38
 ***
 
 [Versione 1.0.47](#id1047)
