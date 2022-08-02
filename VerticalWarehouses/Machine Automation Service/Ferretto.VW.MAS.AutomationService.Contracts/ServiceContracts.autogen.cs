@@ -1524,11 +1524,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task ImmediateAddItemAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName);
+        System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId);

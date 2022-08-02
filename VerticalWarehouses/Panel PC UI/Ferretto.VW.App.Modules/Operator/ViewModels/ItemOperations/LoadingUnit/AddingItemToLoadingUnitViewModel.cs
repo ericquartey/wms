@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IAuthenticationService authenticationService;
+
         private readonly IDialogService dialogService;
 
         private readonly IMachineItemsWebService itemsWebService;
@@ -37,6 +39,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAddItemButtonEnabled;
 
+        private bool isFromList;
+
         private string itemDescription;
 
         private int itemId;
@@ -59,8 +63,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool serialNumberVisibility;
 
-        private bool isFromList;
-
         private string titleText;
 
         #endregion
@@ -71,7 +73,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
             INavigationService navigationService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IAuthenticationService authenticationService)
            : base(PresentationMode.Operator)
         {
             this.Logger.Info("Ctor AddingItemToLoadingUnitViewModel");
@@ -80,6 +83,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
         }
 
         #endregion
@@ -107,18 +111,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public MissionOperation MissionOperation
-        {
-            get => this.missionOperation;
-            set => this.SetProperty(ref this.missionOperation, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsFromList
-        {
-            get => this.isFromList;
-            set => this.SetProperty(ref this.isFromList, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool ExpireDateVisibility
         {
             get => this.expireDateVisibility;
@@ -138,6 +130,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAddItemButtonEnabled;
             protected set => this.SetProperty(ref this.isAddItemButtonEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsFromList
+        {
+            get => this.isFromList;
+            set => this.SetProperty(ref this.isFromList, value, this.RaiseCanExecuteChanged);
         }
 
         public string ItemDescription
@@ -177,6 +175,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.measureUnitTxt;
             set => this.SetProperty(ref this.measureUnitTxt, value, this.RaiseCanExecuteChanged);
+        }
+
+        public MissionOperation MissionOperation
+        {
+            get => this.missionOperation;
+            set => this.SetProperty(ref this.missionOperation, value, this.RaiseCanExecuteChanged);
         }
 
         public double QuantityIncrement
@@ -348,11 +352,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
                                          this.LoadingUnitId,
                                          this.missionOperation.ItemListRowCode,
+                                         this.missionOperation.ItemListCode,
                                          this.InputQuantity,
                                          this.compartmentId,
-                                         this.Lot,
-                                         this.SerialNumber,
-                                         string.Empty);
+                                         this.authenticationService.UserName);
                 }
                 else
                 {

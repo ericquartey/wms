@@ -16176,14 +16176,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName)
+        public System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName)
         {
-            return ImmediateAddItemByListAsync(id, listNum, quantity, compartmentId, lot, serialNumber, userName, System.Threading.CancellationToken.None);
+            return ImmediateAddItemByListAsync(id, listNumRow, listNum, quantity, compartmentId, userName, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -16197,11 +16197,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/{id}/immediate-additem-bylist?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(System.Uri.EscapeDataString("listNumRow") + "=").Append(System.Uri.EscapeDataString(listNumRow != null ? ConvertToString(listNumRow, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("listNum") + "=").Append(System.Uri.EscapeDataString(listNum != null ? ConvertToString(listNum, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("quantity") + "=").Append(System.Uri.EscapeDataString(ConvertToString(quantity, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("compartmentId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(compartmentId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("lot") + "=").Append(System.Uri.EscapeDataString(lot != null ? ConvertToString(lot, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("serialNumber") + "=").Append(System.Uri.EscapeDataString(serialNumber != null ? ConvertToString(serialNumber, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("userName") + "=").Append(System.Uri.EscapeDataString(userName != null ? ConvertToString(userName, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     

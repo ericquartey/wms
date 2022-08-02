@@ -311,7 +311,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/immediate-additem-bylist")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ImmediateAddItemByListAsync(int id, string listNum, double quantity, int compartmentId, string lot, string serialNumber, string userName,
+        public async Task<IActionResult> ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName,
             [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
             if (loadingUnitsWmsWebService is null)
@@ -321,7 +321,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             try
             {
-                await loadingUnitsWmsWebService.ImmediateAddByListAsync(id, listNum, quantity, compartmentId, lot, serialNumber, userName);
+                await loadingUnitsWmsWebService.ImmediateAddByListAsync(id, listNumRow, listNum, quantity, compartmentId, userName);
             }
             catch (WmsWebApiException ex)
             {
