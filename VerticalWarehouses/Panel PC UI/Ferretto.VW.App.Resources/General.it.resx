@@ -334,4 +334,7 @@
   <data name="DelayPutOperation" xml:space="preserve">
     <value>Attesa dopo versamento (ms)</value>
   </data>
+  <data name="PrinterTest" xml:space="preserve">
+    <value>Prova Stampante</value>
+  </data>
 </root>

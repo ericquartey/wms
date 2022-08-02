@@ -424,6 +424,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             return;
                         }
                         else
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
                         if (status_ == "400") 
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);

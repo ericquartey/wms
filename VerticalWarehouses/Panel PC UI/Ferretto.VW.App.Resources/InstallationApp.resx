@@ -2794,4 +2794,7 @@
   <data name="MissionActive" xml:space="preserve">
     <value>End active missions</value>
   </data>
+  <data name="TestSuccessful" xml:space="preserve">
+    <value>Test successful</value>
+  </data>
 </root>
