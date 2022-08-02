@@ -124,8 +124,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineAccessoriesWebService.PrintTestPageAsync(bayNumber);
 
                 this.ShowNotification(VW.App.Resources.InstallationApp.TestSuccessful);
-
-                this.Logger.Debug("Label printer Test.");
             }
             finally
             {
