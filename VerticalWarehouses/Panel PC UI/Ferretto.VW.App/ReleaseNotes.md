@@ -26,8 +26,9 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.48 rispetto la 1.0.47
-- Ferretto Nuget Package 0.16.45
+- Ferretto Nuget Package 0.16.46
 - Operazioni di visione e versamento: aggiunto comando (icona carrello) per aggiungere un articolo scegliendo la lista di versamento
+- Accessori - Stampante: aggiunto comando di Prova Stampante
 
 ## Bug Risolti
 - Corretto falso allarme 32 - Destinazione maggiore del limite superiore - con macchine da 1000kg

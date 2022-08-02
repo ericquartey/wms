@@ -529,6 +529,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Printer Test.
+        /// </summary>
+        public static string PrinterTest {
+            get {
+                return ResourceManager.GetString("PrinterTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {

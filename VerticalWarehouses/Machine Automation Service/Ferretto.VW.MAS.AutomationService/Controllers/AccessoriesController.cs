@@ -1,6 +1,8 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,13 +16,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IAccessoriesDataProvider accessoriesDataProvider;
 
+        private readonly IPrintersWmsWebService printersWmsWebService;
+
         #endregion
 
         #region Constructors
 
-        public AccessoriesController(IAccessoriesDataProvider accessoriesDataProvider)
+        public AccessoriesController(IAccessoriesDataProvider accessoriesDataProvider,
+            IPrintersWmsWebService printersWmsWebService)
         {
             this.accessoriesDataProvider = accessoriesDataProvider;
+            this.printersWmsWebService = printersWmsWebService;
         }
 
         #endregion
@@ -51,6 +57,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var accessories = this.accessoriesDataProvider.GetAccessories(BayNumber);
 
             return this.Ok(accessories);
+        }
+
+        [HttpPut("print-test-page")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> PrintTestPageAsync(BayNumber BayNumber)
+        {
+            var printerName = this.accessoriesDataProvider.GetAccessories(BayNumber).LabelPrinter?.Name;
+            if (string.IsNullOrEmpty(printerName))
+            {
+                return this.BadRequest();
+            }
+            await this.printersWmsWebService.PrintTestPageAsync(printerName);
+            return this.Ok();
         }
 
         [HttpPut("alpha-numeric-bar")]

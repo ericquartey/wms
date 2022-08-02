@@ -68,7 +68,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public CommandAction CommandAction { get; set; }
 
-        public DateTimeOffset CreationDate { get; set; } = DateTime.Now;
+        public DateTimeOffset CreationDate { get; set; } = DateTime.Now;        // TODO: why not use UtcNow???
 
         public LoadingUnitLocation Destination { get; set; }
 

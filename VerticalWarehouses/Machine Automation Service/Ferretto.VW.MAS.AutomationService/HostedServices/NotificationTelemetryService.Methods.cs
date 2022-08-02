@@ -162,7 +162,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 Step = (int)messageData.MissionStep,
                 Stage = string.Empty,
                 StopReason = (int)messageData.StopReason,
-                TimeStamp = DateTimeOffset.Now,
+                TimeStamp = DateTimeOffset.Now,             // TODO: why not use UtcNow???
                 WmsId = messageData.WmsId
             };
 
