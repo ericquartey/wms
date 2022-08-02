@@ -127,10 +127,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Logger.Debug("Label printer Test.");
             }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
             finally
             {
                 this.IsWaitingForResponse = false;

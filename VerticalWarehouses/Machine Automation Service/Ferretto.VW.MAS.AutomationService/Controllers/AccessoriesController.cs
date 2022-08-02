@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPut("print-test-page")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> PrintTestPageAsync(BayNumber BayNumber)

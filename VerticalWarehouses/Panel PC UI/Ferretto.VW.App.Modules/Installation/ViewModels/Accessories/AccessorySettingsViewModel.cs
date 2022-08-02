@@ -164,12 +164,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    try
                    {
                        await this.TestAsync();
-                       this.ShowNotification(VW.App.Resources.InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                       this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
                        this.AreSettingsChanged = false;
                    }
                    catch (Exception ex)
                    {
-                       this.ShowNotification(ex);
+                       this.ShowNotification(ex.Message, Services.Models.NotificationSeverity.Error);
                    }
                },
                this.CanTest));
@@ -202,8 +202,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 !this.IsWaitingForResponse
-                &&
-                this.AreSettingsChanged
                 &&
                 this.IsAccessoryEnabled;
         }
