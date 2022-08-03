@@ -1240,6 +1240,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //var compartmentId = this.SelectedItemCompartment.Id;
                 var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : -1;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId.Value);
+                this.QuantityTolerance = item.PickTolerance ?? 0;
 
                 var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {
@@ -1580,6 +1581,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var compartmentId = this.SelectedCompartmentForImmediateAdding != null ? this.SelectedCompartmentForImmediateAdding.Id : -1;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId);
+                this.QuantityTolerance = item.PickTolerance ?? 0;
 
                 var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {
