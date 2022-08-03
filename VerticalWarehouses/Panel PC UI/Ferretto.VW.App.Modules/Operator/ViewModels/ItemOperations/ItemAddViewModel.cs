@@ -176,6 +176,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //var compartmentId = this.SelectedItemCompartment.Id;
                 var compartmentId = this.MissionOperation.CompartmentId;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId ?? 0);
+                this.QuantityTolerance = item.PickTolerance ?? 0;
 
                 var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {
