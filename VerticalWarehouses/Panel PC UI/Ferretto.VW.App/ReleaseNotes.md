@@ -36,6 +36,7 @@
 - Correzione a Mostra l'immagine del barcode: si aggiorna ad ogni cambio di articolo
 - Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
 - Conferma ultima operazione: invia la conferma a cassetto fermo
+- BES - Corretto falso allarme 14 (sensori di presenza) nei ripristini
 
 ## Compatibile con adapter 0.4.38
 ***

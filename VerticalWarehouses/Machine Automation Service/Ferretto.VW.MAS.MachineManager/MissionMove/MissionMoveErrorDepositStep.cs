@@ -458,8 +458,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     bay.IsExternal &&
                     !bay.IsDouble)
                 {
-                    if (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, false)
-                        || machineResourcesProvider.IsDrawerInBayExternalPosition(this.Mission.TargetBay, false))
+                    if (machineResourcesProvider.IsDrawerInBayExternalPosition(this.Mission.TargetBay, false)
+                        || (machineResourcesProvider.IsDrawerInBayInternalPosition(this.Mission.TargetBay, false) && this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                        )
                     {
                         this.ErrorsProvider.RecordNew(MachineErrorCode.InvalidPresenceSensors, this.Mission.TargetBay);
                         throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
