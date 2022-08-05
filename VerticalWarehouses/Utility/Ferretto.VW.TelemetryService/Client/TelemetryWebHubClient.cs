@@ -138,8 +138,7 @@ namespace Ferretto.VW.TelemetryService
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            // do nothing
-            // no incoming notifications from the hub
+            // do nothing no incoming notifications from the hub
         }
 
         private IEnumerable<IIOLog> GetEntryAsync(string serialNumber, DateTimeOffset start, DateTimeOffset end)
@@ -215,7 +214,18 @@ namespace Ferretto.VW.TelemetryService
                 var errors = errorProvider.GetAllId();
                 foreach (var errorLog in errors)
                 {
-                    success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
+                    var tErrorLog = new ServiceDesk.Telemetry.ErrorLog()
+                    {
+                        AdditionalText = errorLog.AdditionalText,
+                        BayNumber = errorLog.BayNumber,
+                        Code = errorLog.Code,
+                        DetailCode = errorLog.DetailCode,
+                        InverterIndex = errorLog.InverterIndex,
+                        OccurrenceDate = errorLog.OccurrenceDate,
+                        ResolutionDate = errorLog.ResolutionDate,
+                    };
+
+                    success = await this.TrySendErrorLogAsync(machine.SerialNumber, tErrorLog, persistOnSendFailure: false);
                     if (success)
                     {
                         success = await this.SendSavedIoLog(machine, scope, errorLog.OccurrenceDate);
@@ -479,7 +489,28 @@ namespace Ferretto.VW.TelemetryService
             {
                 try
                 {
-                    await this.SendAsync(nameof(ITelemetryHub.SendMissionLog), serialNumber, missionLog);
+                    var tMissionLog = new ServiceDesk.Telemetry.MissionLog()
+                    {
+                        Bay = missionLog.Bay,
+                        CellId = missionLog.CellId,
+                        CreationDate = missionLog.CreationDate,
+                        Direction = missionLog.Direction,
+                        EjectLoadUnit = missionLog.EjectLoadUnit,
+                        LoadUnitHeight = missionLog.LoadUnitHeight,
+                        LoadUnitId = missionLog.LoadUnitId,
+                        MissionId = missionLog.MissionId,
+                        MissionType = missionLog.MissionType,
+                        NetWeight = missionLog.NetWeight,
+                        Priority = missionLog.Priority,
+                        Stage = missionLog.Stage,
+                        Status = missionLog.Status,
+                        Step = missionLog.Step,
+                        StopReason = missionLog.StopReason,
+                        TimeStamp = missionLog.TimeStamp,
+                        WmsId = missionLog.WmsId,
+                    };
+
+                    await this.SendAsync(nameof(ITelemetryHub.SendMissionLog), serialNumber, tMissionLog);
 
                     messageSent = true;
                 }
