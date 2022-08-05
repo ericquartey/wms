@@ -214,7 +214,7 @@ namespace Ferretto.VW.TelemetryService
                 var errors = errorProvider.GetAllId();
                 foreach (var errorLog in errors)
                 {
-                    var tErrorLog = new ServiceDesk.Telemetry.ErrorLog()
+                    var tErrorLog = new ErrorLog()
                     {
                         AdditionalText = errorLog.AdditionalText,
                         BayNumber = errorLog.BayNumber,
@@ -262,7 +262,15 @@ namespace Ferretto.VW.TelemetryService
                 {
                     foreach (var ioLog in ioLogsToBeRemoved)
                     {
-                        successIo = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, false);
+                        var tIoLog = new IOLog()
+                        {
+                            BayNumber = ioLog.BayNumber,
+                            Description = ioLog.Description,
+                            Input = ioLog.Input,
+                            Output = ioLog.Output,
+                            TimeStamp = ioLog.TimeStamp,
+                        };
+                        successIo = await this.TrySendIOLogAsync(machine.SerialNumber, tIoLog, false);
                         if (!successIo)
                         {
                             break;
@@ -297,7 +305,28 @@ namespace Ferretto.VW.TelemetryService
                 var success = false;
                 foreach (var missionLog in missions)
                 {
-                    success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
+                    var tMissionLog = new MissionLog()
+                    {
+                        Bay = missionLog.Bay,
+                        CellId = missionLog.CellId,
+                        CreationDate = missionLog.CreationDate,
+                        Direction = missionLog.Direction,
+                        EjectLoadUnit = missionLog.EjectLoadUnit,
+                        LoadUnitHeight = missionLog.LoadUnitHeight,
+                        LoadUnitId = missionLog.LoadUnitId,
+                        MissionId = missionLog.MissionId,
+                        MissionType = missionLog.MissionType,
+                        NetWeight = missionLog.NetWeight,
+                        Priority = missionLog.Priority,
+                        Stage = missionLog.Stage,
+                        Status = missionLog.Status,
+                        Step = missionLog.Step,
+                        StopReason = missionLog.StopReason,
+                        TimeStamp = missionLog.TimeStamp,
+                        WmsId = missionLog.WmsId,
+                    };
+
+                    success = await this.TrySendMissionLogAsync(machine.SerialNumber, tMissionLog, persistOnSendFailure: false);
                     if (!success)
                     {
                         break;
@@ -381,7 +410,18 @@ namespace Ferretto.VW.TelemetryService
                 var sInfos = servicingInfoProvider.GetAllId();
                 foreach (var sInfo in sInfos)
                 {
-                    success = await this.TrySendServicingInfoAsync(machine.SerialNumber, sInfo, persistOnSendFailure: false);
+                    var tsInfo = new ServicingInfo()
+                    {
+                        Id = sInfo.Id,
+                        InstallationDate = sInfo.InstallationDate,
+                        IsHandOver = sInfo.IsHandOver,
+                        LastServiceDate = sInfo.LastServiceDate,
+                        NextServiceDate = sInfo.NextServiceDate,
+                        ServiceStatusId = sInfo.ServiceStatusId,
+                        TimeStamp = sInfo.TimeStamp,
+                        TotalMissions = sInfo.TotalMissions
+                    };
+                    success = await this.TrySendServicingInfoAsync(machine.SerialNumber, tsInfo, persistOnSendFailure: false);
                     if (!success)
                     {
                         break;
@@ -489,28 +529,7 @@ namespace Ferretto.VW.TelemetryService
             {
                 try
                 {
-                    var tMissionLog = new ServiceDesk.Telemetry.MissionLog()
-                    {
-                        Bay = missionLog.Bay,
-                        CellId = missionLog.CellId,
-                        CreationDate = missionLog.CreationDate,
-                        Direction = missionLog.Direction,
-                        EjectLoadUnit = missionLog.EjectLoadUnit,
-                        LoadUnitHeight = missionLog.LoadUnitHeight,
-                        LoadUnitId = missionLog.LoadUnitId,
-                        MissionId = missionLog.MissionId,
-                        MissionType = missionLog.MissionType,
-                        NetWeight = missionLog.NetWeight,
-                        Priority = missionLog.Priority,
-                        Stage = missionLog.Stage,
-                        Status = missionLog.Status,
-                        Step = missionLog.Step,
-                        StopReason = missionLog.StopReason,
-                        TimeStamp = missionLog.TimeStamp,
-                        WmsId = missionLog.WmsId,
-                    };
-
-                    await this.SendAsync(nameof(ITelemetryHub.SendMissionLog), serialNumber, tMissionLog);
+                    await this.SendAsync(nameof(ITelemetryHub.SendMissionLog), serialNumber, missionLog);
 
                     messageSent = true;
                 }
