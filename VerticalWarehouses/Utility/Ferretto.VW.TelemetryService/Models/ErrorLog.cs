@@ -15,6 +15,8 @@ namespace Ferretto.VW.TelemetryService.Data
 
         public int DetailCode { get; set; }
 
+        public int ErrorId { get; set; }
+
         public int InverterIndex { get; set; }
 
         public Machine? Machine { get; set; }
