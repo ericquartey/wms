@@ -36,20 +36,28 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override bool CanStart()
         {
+
+
+            var shutterClosed = !this.HasShutter || this.SensorsService.ShutterSensors.Closed ||
+                        (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter?.Type == ShutterType.UpperHalf);
+
             switch (this.MachineService.BayNumber)
             {
                 case BayNumber.BayOne:
                 default:
                     return base.CanStart() &&
-                        this.MachineModeService.MachineMode == MachineMode.Manual;
+                        this.MachineModeService.MachineMode == MachineMode.Manual &&
+                        shutterClosed;
 
                 case BayNumber.BayTwo:
                     return base.CanStart() &&
-                        this.MachineModeService.MachineMode == MachineMode.Manual2;
+                        this.MachineModeService.MachineMode == MachineMode.Manual2 &&
+                        shutterClosed;
 
                 case BayNumber.BayThree:
                     return base.CanStart() &&
-                        this.MachineModeService.MachineMode == MachineMode.Manual3;
+                        this.MachineModeService.MachineMode == MachineMode.Manual3 &&
+                        shutterClosed;
             }
         }
 
@@ -77,6 +85,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 if (!this.IsCellIdValid)
                 {
                     this.ShowNotification(Localized.Get("InstallationApp.InvalidCellIdEntered"), Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
+                if (!this.IsCellFree)
+                {
+                    this.ShowNotification(Localized.Get("InstallationApp.CellInsertedNotFree"), Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
