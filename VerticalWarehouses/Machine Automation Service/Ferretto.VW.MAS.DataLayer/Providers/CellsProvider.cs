@@ -54,6 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
@@ -62,12 +64,14 @@ namespace Ferretto.VW.MAS.DataLayer
             IErrorsProvider errorsProvider,
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ILogger<DataLayerContext> logger)
         {
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -303,6 +307,10 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException();
             }
+            if (!machine.IsRotationClass && this.machineVolatileDataProvider.IsOptimizeRotationClass)
+            {
+                this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
+            }
             if (machineStatistics.TotalWeightFront + machineStatistics.TotalWeightBack + loadUnit.GrossWeight > machine.MaxGrossWeight)
             {
                 this.logger.LogError($"FindEmptyCell: total weight exceeded for LU {loadingUnitId}; weight {loadUnit.GrossWeight:0.00}; " +
@@ -398,7 +406,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         isFloating = false;
                     }
 
-                    if (cellsFollowing.Any() && (!isFloating || isCellTest))
+                    if (cellsFollowing.Any()
+                        && (!isFloating || isCellTest)
+                        && (!this.machineVolatileDataProvider.IsOptimizeRotationClass || cell.RotationClass == loadUnit.RotationClass))
                     {
                         // measure available space
                         var lastCellPosition = cellsFollowing.Last().Position;
@@ -482,7 +492,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     cellId = cells.First(c => c.Side == foundCell.Cell.Side && c.Position > foundCell.Cell.Position).Id;
                 }
 
-                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
+                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}{loadUnit.RotationClass}; " +
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +

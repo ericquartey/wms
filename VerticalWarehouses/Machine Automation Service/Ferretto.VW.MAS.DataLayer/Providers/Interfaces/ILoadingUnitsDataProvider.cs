@@ -46,8 +46,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Insert(int loadingUnitsId);
 
-        bool IsRotationClassDifferent(IEnumerable<LoadingUnit> loadUnits, int id);
-
         void Remove(int loadingUnitsId);
 
         void RemoveTestUnit(LoadingUnit loadingUnit);

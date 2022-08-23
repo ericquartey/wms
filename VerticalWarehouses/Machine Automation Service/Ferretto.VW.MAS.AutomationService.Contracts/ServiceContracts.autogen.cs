@@ -4630,6 +4630,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLaserOffset { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsRotationClassDifferent", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRotationClassDifferent { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsRotationClassFixed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRotationClassFixed { get; set; }
     

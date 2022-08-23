@@ -337,7 +337,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 try
                 {
                     if (loadUnit.IsIntoMachineOK
-                        && this.loadingUnitsDataProvider.IsRotationClassDifferent(loadUnits, loadUnit.Id))
+                        && loadUnit.IsRotationClassDifferent
+                        && this.machineVolatileDataProvider.IsOptimizeRotationClass)
                     {
                         cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id);
                         loadUnitOut = loadUnit;

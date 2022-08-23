@@ -391,7 +391,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineCompactingWebService.CompactingAsync();
+                await this.machineCompactingWebService.CompactingAsync(true);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

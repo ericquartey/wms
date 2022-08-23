@@ -533,7 +533,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.dataContext.ElevatorAxes.Update(posAxis);
                     this.dataContext.SaveChanges();
-                    this.logger.LogDebug($"Elevator axis {orientation} last position save {position}");
+                    this.logger.LogDebug($"Elevator axis {orientation} last position save {position:0.00}");
 
                     // reload cache
                     this.cache.Remove(GetAxisCacheKey(orientation));

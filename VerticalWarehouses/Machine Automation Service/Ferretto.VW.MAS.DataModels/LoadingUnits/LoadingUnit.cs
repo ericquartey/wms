@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Newtonsoft.Json;
 
@@ -76,6 +77,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsIntoMachineOrBlocked => this.Status == LoadingUnitStatus.InLocation || this.Status == LoadingUnitStatus.Blocked;
 
         public bool IsLaserOffset => this.LaserOffset > 0;
+
+        public bool IsRotationClassDifferent => !string.IsNullOrEmpty(this.RotationClass)
+                            && this.Cell != null
+                            && !string.IsNullOrEmpty(this.Cell.RotationClass)
+                            && this.RotationClass != this.Cell.RotationClass;
 
         /// <summary>
         /// if enabled the rotation class is not automatically calculated - only the user can change it
