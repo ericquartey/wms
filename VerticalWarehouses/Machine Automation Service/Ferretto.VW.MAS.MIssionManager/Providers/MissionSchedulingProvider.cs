@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
+        private const char ROTATION_CLASS_A = 'A';
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
@@ -327,7 +329,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (this.cellsProvider.IsTopCellAvailable(side))
                 {
-                    foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Height))
+                    foreach (var loadUnit in loadUnits.OrderByDescending(o => !string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
+                        .ThenByDescending(o => o.Height))
                     {
                         try
                         {

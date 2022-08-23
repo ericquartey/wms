@@ -132,6 +132,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     baysDataProvider.CheckBayFindZeroLimit();
                     baysDataProvider.CheckProfileConst();
 
+                    var rotationClassSchedule = scope.ServiceProvider.GetRequiredService<IRotationClassScheduleProvider>();
+                    rotationClassSchedule.CheckRotationClass();
+
                     // performance optimization
                     var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                     elevatorDataProvider.GetAxis(Orientation.Horizontal);

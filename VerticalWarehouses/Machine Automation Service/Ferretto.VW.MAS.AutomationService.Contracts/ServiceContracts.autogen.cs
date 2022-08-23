@@ -3474,6 +3474,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsOptimizeRotationClass", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOptimizeRotationClass { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -3500,6 +3503,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ChainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CheckListContinueInOtherMachine", Required = Newtonsoft.Json.Required.Always)]
+        public bool CheckListContinueInOtherMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CurrentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Mission CurrentMission { get; set; }
@@ -3573,11 +3579,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RotationClass { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ShowBarcodeImage", Required = Newtonsoft.Json.Required.Always)]
         public bool ShowBarcodeImage { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CheckListContinueInOtherMachine", Required = Newtonsoft.Json.Required.Always)]
-        public bool CheckListContinueInOtherMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Shutter Shutter { get; set; }
@@ -4555,6 +4561,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsBlocked", Required = Newtonsoft.Json.Required.Always)]
         public bool IsBlocked { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsPreferred", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsPreferred { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsUpper", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpper { get; set; }
     
@@ -4621,6 +4630,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLaserOffset { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsRotationClassFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRotationClassFixed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public double LaserOffset { get; set; }
     
@@ -4630,8 +4642,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
         public int MissionsCount { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MissionsCountRotation", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCountRotation { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("NetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double NetWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RotationClass { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         public LoadingUnitStatus Status { get; set; }
@@ -4679,6 +4697,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RotationClass { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Side", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -5211,6 +5232,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsRotationClass", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRotationClass { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsUpdatingStockByDifference", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpdatingStockByDifference { get; set; }

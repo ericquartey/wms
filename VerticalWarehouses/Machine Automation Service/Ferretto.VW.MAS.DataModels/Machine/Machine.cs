@@ -120,6 +120,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
 
         /// <summary>
+        /// enable the ABC rotation class handling
+        /// </summary>
+        public bool IsRotationClass { get; set; }
+
+        /// <summary>
         /// Get/set a value indicating if the stock value is updating by difference (IDROINOX)
         /// </summary>
         public bool IsUpdatingStockByDifference { get; set; }

@@ -1753,6 +1753,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 //    var machineModeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
                 //    machineModeProvider.RequestChange(MachineMode.Manual);
                 //}
+
+                var rotationClassScheduleProvider = scope.ServiceProvider.GetRequiredService<IRotationClassScheduleProvider>();
+                rotationClassScheduleProvider.SetRotationClass();
                 this.firstCleanupExecuted = true;
             }
 

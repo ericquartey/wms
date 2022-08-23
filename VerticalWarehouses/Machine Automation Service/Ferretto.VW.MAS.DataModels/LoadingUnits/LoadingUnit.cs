@@ -78,6 +78,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsLaserOffset => this.LaserOffset > 0;
 
         /// <summary>
+        /// if enabled the rotation class is not automatically calculated - only the user can change it
+        /// </summary>
+        public bool IsRotationClassFixed { get; set; }
+
+        /// <summary>
         /// distance to subtract to the ZOffset of the LaserPointer for all products in this LU
         /// </summary>
         public double LaserOffset
@@ -112,7 +117,7 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         /// <summary>
-        /// to be used to calculate ABC rotation class
+        /// used for statistic purpose
         /// </summary>
         public int MissionsCount
         {
@@ -129,9 +134,19 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         /// <summary>
+        /// used to calculate ABC rotation class
+        /// </summary>
+        public int MissionsCountRotation { get; set; }
+
+        /// <summary>
         /// Gets the actual net weight of the loading unit's content.
         /// </summary>
         public double NetWeight => (System.Math.Max(0, this.GrossWeight - this.Tare) < 20) ? 0 : this.GrossWeight - this.Tare;
+
+        /// <summary>
+        /// can be A, B or C
+        /// </summary>
+        public string RotationClass { get; set; }
 
         public LoadingUnitStatus Status { get; set; }
 

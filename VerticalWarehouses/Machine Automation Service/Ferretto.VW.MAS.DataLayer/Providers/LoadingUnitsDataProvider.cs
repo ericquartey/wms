@@ -19,6 +19,12 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private const double MinimumLoadOnBoard = 10.0;
 
+        private const string ROTATION_CLASS_A = "A";
+
+        private const string ROTATION_CLASS_B = "B";
+
+        private const string ROTATION_CLASS_C = "C";
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
@@ -559,6 +565,75 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException($"Load Unit ID={id}");
                 }
                 loadingUnit.LaserOffset = laserOffset;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetMissionCountRotation(int id, MissionType missionType)
+        {
+            lock (this.dataContext)
+            {
+                if (missionType == MissionType.OUT || missionType == MissionType.WMS)
+                {
+                    var loadUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == id);
+                    if (loadUnit != null)
+                    {
+                        loadUnit.MissionsCountRotation++;
+                        this.dataContext.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        public bool SetRotationClass()
+        {
+            var retval = false;
+            lock (this.dataContext)
+            {
+                var loadUnits = this.dataContext
+                    .LoadingUnits
+                    .Where(l => l.Status != LoadingUnitStatus.Blocked && !l.IsRotationClassFixed);
+
+                var totalMissionCount = loadUnits.Sum(s => s.MissionsCountRotation);
+                var missionCount = 0;
+
+                if (totalMissionCount > 1)
+                {
+                    foreach (var loadUnit in loadUnits.OrderByDescending(o => o.MissionsCountRotation))
+                    {
+                        if (missionCount <= totalMissionCount * 0.8)
+                        {
+                            loadUnit.RotationClass = ROTATION_CLASS_A;
+                        }
+                        else if (missionCount <= totalMissionCount * 0.95)
+                        {
+                            loadUnit.RotationClass = ROTATION_CLASS_B;
+                        }
+                        else
+                        {
+                            loadUnit.RotationClass = ROTATION_CLASS_C;
+                        }
+                        missionCount += loadUnit.MissionsCountRotation;
+                        loadUnit.MissionsCountRotation = 0;
+                    }
+
+                    this.dataContext.SaveChanges();
+                    retval = true;
+                }
+            }
+            return retval;
+        }
+
+        public void SetRotationClassFromUI(int id, string rotationClass)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                loadingUnit.RotationClass = rotationClass;
 
                 this.dataContext.SaveChanges();
             }

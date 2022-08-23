@@ -308,9 +308,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                foreach (var bay in this.dataContext.Bays)
+                foreach (var bay in this.dataContext.Bays.Where(b => b.Number < BayNumber.ElevatorBay))
                 {
-                    if (bay.ProfileConst1 == 0 && bay.Number < BayNumber.ElevatorBay)
+                    if (bay.ProfileConst1 == 0)
                     {
                         if (bay.Number == BayNumber.BayOne)
                         {
@@ -321,6 +321,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             bay.ProfileConst1 = this.profileConst1AGL;
                             bay.ProfileConst0 = this.profileConst0AGL;
+                        }
+                        this.dataContext.SaveChanges();
+                    }
+                    if (string.IsNullOrEmpty(bay.RotationClass))
+                    {
+                        if (bay.Number == BayNumber.BayOne)
+                        {
+                            bay.RotationClass = "A";
+                        }
+                        else
+                        {
+                            bay.RotationClass = "B";
                         }
                         this.dataContext.SaveChanges();
                     }
