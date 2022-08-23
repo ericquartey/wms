@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.ServiceDesk.Telemetry.Hubs;
@@ -22,6 +23,8 @@ namespace Ferretto.VW.TelemetryService
 
         private readonly Uri logUri;
 
+        private readonly Timer reconnectTimer;
+
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         private Uri? logProxy;
@@ -37,6 +40,7 @@ namespace Ferretto.VW.TelemetryService
             this.logUri = uri;
             this.logger.Info($"Host url {this.logUri}");
             this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
+            this.reconnectTimer = new Timer(this.ReconnectAsync);
         }
 
         public TelemetryWebHubClient(Uri uri, IServiceScopeFactory serviceScopeFactory, WebProxy webProxy)
@@ -46,6 +50,7 @@ namespace Ferretto.VW.TelemetryService
             this.logUri = uri;
             this.logger.Info($"Host url {this.logUri} WebProxy {webProxy.Address}");
             this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
+            this.reconnectTimer = new Timer(this.ReconnectAsync);
         }
 
         #endregion
@@ -152,7 +157,19 @@ namespace Ferretto.VW.TelemetryService
         private Task OnConnectionStatusChanged(ConnectionStatusChangedEventArgs e)
         {
             this.logger.Info($"Connection {e.IsConnected} to [{this.logUri}]; proxy [{this.logProxy}]");
+            if (!this.IsConnected)
+            {
+                this.reconnectTimer.Change(5000, Timeout.Infinite);
+            }
             return Task.CompletedTask;
+        }
+
+        private async void ReconnectAsync(object? state)
+        {
+            if (!this.IsConnected)
+            {
+                await this.ConnectAsync(false);
+            }
         }
 
         private void SaveEntry(byte[] rawDatabaseContent)
@@ -223,6 +240,7 @@ namespace Ferretto.VW.TelemetryService
                         InverterIndex = errorLog.InverterIndex,
                         OccurrenceDate = errorLog.OccurrenceDate,
                         ResolutionDate = errorLog.ResolutionDate,
+                        ErrorId = errorLog.ErrorId,
                     };
 
                     success = await this.TrySendErrorLogAsync(machine.SerialNumber, tErrorLog, persistOnSendFailure: false);

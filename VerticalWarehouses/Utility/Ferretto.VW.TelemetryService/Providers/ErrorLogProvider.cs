@@ -111,7 +111,8 @@ namespace Ferretto.VW.TelemetryService.Providers
                     Code = errorLog.Code,
                     DetailCode = errorLog.DetailCode,
                     OccurrenceDate = errorLog.OccurrenceDate,
-                    ResolutionDate = errorLog.ResolutionDate
+                    ResolutionDate = errorLog.ResolutionDate,
+                    ErrorId = errorLog.ErrorId,
                 };
 
                 this.dataContext.ErrorLogs.Add(logEntry);
