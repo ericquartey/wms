@@ -118,8 +118,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (this.CanCompactingStart())
                     {
-                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} :  Compacting allowed.");
+                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} : sort {activeSettings.IsOptimizeRotationClass} :  Compacting allowed.");
                         this.machineVolatileDataProvider.Mode = CommonUtils.Messages.MachineMode.Compact;
+                        this.machineVolatileDataProvider.IsOptimizeRotationClass = activeSettings.IsOptimizeRotationClass;
                     }
                     else
                     {

@@ -4808,17 +4808,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task CompactingAsync()
+        public System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass)
         {
-            return CompactingAsync(System.Threading.CancellationToken.None);
+            return CompactingAsync(optimizeRotationClass, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task CompactingAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass, System.Threading.CancellationToken cancellationToken)
         {
+            if (optimizeRotationClass == null)
+                throw new System.ArgumentNullException("optimizeRotationClass");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compacting/compacting");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/compacting/compacting?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("optimizeRotationClass") + "=").Append(System.Uri.EscapeDataString(ConvertToString(optimizeRotationClass, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try

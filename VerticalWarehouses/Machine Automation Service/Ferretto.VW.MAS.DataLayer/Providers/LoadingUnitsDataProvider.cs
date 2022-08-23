@@ -342,6 +342,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsRotationClassDifferent(IEnumerable<LoadingUnit> loadUnits, int id)
+        {
+            var retval = loadUnits.Any(l => l.Id == id
+                    && !string.IsNullOrEmpty(l.RotationClass)
+                    && l.Cell != null
+                    && !string.IsNullOrEmpty(l.Cell?.RotationClass)
+                    && l.RotationClass != l.Cell.RotationClass
+                    );
+            return retval;
+        }
+
         public void Remove(int loadingUnitsId)
         {
             var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitsId));

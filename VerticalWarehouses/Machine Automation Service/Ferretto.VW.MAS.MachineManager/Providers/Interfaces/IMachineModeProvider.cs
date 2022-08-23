@@ -10,7 +10,12 @@ namespace Ferretto.VW.MAS.MachineManager
 
         CommonUtils.Messages.MachineMode GetCurrent();
 
-        void RequestChange(MachineMode machineMode, BayNumber bayNumber = BayNumber.None, List<int> loadUnits = null, int? cycles = null, bool randomCells = false);
+        void RequestChange(MachineMode machineMode,
+                           BayNumber bayNumber = BayNumber.None,
+                           List<int> loadUnits = null,
+                           int? cycles = null,
+                           bool randomCells = false,
+                           bool optimizeRotationClass = false);
 
         void StopTest();
 

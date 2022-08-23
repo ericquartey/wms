@@ -440,11 +440,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineCompactingWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CompactingAsync();
+        System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CompactingAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
