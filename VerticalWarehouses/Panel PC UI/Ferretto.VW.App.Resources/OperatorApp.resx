@@ -2395,8 +2395,7 @@
     <value>Edit Stock by difference</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Pick and Put by barcode
-</value>
+    <value>Pick and Put by barcode</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Request confirm for last operation on load unit</value>
