@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     || cell.BlockLevel == BlockLevel.NeedsTest
                     || cell.BlockLevel == BlockLevel.SpaceOnly
                     || !cell.IsFree
-                    || (machine.IsRotationClass
+                    || (this.machineVolatileDataProvider.IsOptimizeRotationClass
                         && !string.IsNullOrEmpty(cell.RotationClass)
                         && !string.IsNullOrEmpty(loadingUnit.RotationClass)
                         && cell.RotationClass[0] < loadingUnit.RotationClass[0])
@@ -496,7 +496,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
-                    $"{compactingType} rotation {this.machineVolatileDataProvider.IsOptimizeRotationClass}; " +
+                    $"{compactingType}; rotation {this.machineVolatileDataProvider.IsOptimizeRotationClass}; " +
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +

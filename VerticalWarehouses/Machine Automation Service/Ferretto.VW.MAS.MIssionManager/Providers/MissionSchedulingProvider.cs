@@ -300,7 +300,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 return false;
             }
             this.logger.LogDebug($"Compacting empty cells {compactingType}");
-            foreach (var loadUnit in loadUnits)
+            foreach (var loadUnit in loadUnits.OrderByDescending(o => string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
+                .ThenByDescending(l => l.Cell.Position))
             {
                 try
                 {
@@ -355,7 +356,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool CompactTopCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
         {
-            this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
             loadUnitOut = null;
             cellId = null;
             if (!loadUnits.Any())
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (this.cellsProvider.IsTopCellAvailable(side))
                 {
-                    foreach (var loadUnit in loadUnits.OrderByDescending(o => !string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
+                    foreach (var loadUnit in loadUnits.OrderByDescending(o => string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
                         .ThenByDescending(o => o.Height))
                     {
                         try

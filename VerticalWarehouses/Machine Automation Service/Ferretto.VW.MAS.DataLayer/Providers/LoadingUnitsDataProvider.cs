@@ -333,7 +333,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     Id = loadingUnitsId,
                     Tare = machine.LoadUnitTare,
                     MaxNetWeight = machine.LoadUnitMaxNetWeight,
-                    Height = 0
+                    Height = 0,
+                    RotationClass = ROTATION_CLASS_A
                 };
 
                 this.dataContext.LoadingUnits.Add(loadingUnits);
@@ -470,6 +471,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.Tare = loadingUnit.Tare;
                 luDb.Height = loadingUnit.Height;
                 luDb.LaserOffset = loadingUnit.LaserOffset;
+                luDb.MissionsCountRotation = loadingUnit.MissionsCountRotation;
+                luDb.IsRotationClassFixed = loadingUnit.IsRotationClassFixed;
 
                 if (originalStatus != LoadingUnitStatus.InElevator
                     && loadingUnit.Status != LoadingUnitStatus.Undefined
