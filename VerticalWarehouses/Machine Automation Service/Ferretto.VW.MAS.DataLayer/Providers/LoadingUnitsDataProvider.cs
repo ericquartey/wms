@@ -621,6 +621,19 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.SaveChanges();
                     retval = true;
                 }
+                else
+                {
+                    foreach (var loadUnit in loadUnits)
+                    {
+                        if (string.IsNullOrEmpty(loadUnit.RotationClass))
+                        {
+                            loadUnit.RotationClass = ROTATION_CLASS_A;
+                        }
+                    }
+
+                    this.dataContext.SaveChanges();
+                    retval = true;
+                }
             }
             return retval;
         }

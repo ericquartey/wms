@@ -492,11 +492,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     cellId = cells.First(c => c.Side == foundCell.Cell.Side && c.Position > foundCell.Cell.Position).Id;
                 }
 
-                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}{loadUnit.RotationClass}; " +
+                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId} {loadUnit.RotationClass}; " +
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
-                    $"{compactingType}; " +
+                    $"{compactingType} rotation {this.machineVolatileDataProvider.IsOptimizeRotationClass}; " +
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +
@@ -993,7 +993,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .LoadingUnits
                     .Where(l => l.Status != LoadingUnitStatus.Blocked && !string.IsNullOrEmpty(l.RotationClass));
 
-                var cellsOccupied_A = loadUnits.Sum(l => (int)(l.RotationClass == ROTATION_CLASS_A ? l.Height / CellHeight + 1 : 0));
+                var cellsOccupied_A = (int)loadUnits.Sum(l => Math.Round(l.RotationClass == ROTATION_CLASS_A ? (l.Height / CellHeight) + 1 : 0));
                 var bay = this.dataContext.Bays
                     .Include(i => i.Positions)
                     .Include(i => i.Carousel)
@@ -1004,7 +1004,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     var cells = this.dataContext.Cells;
 
-                    var cellsOccupied_B = loadUnits.Sum(l => (int)(l.RotationClass == ROTATION_CLASS_B ? l.Height / CellHeight + 1 : 0));
+                    var cellsOccupied_B = (int)loadUnits.Sum(l => Math.Round(l.RotationClass == ROTATION_CLASS_B ? (l.Height / CellHeight) + 1 : 0));
                     var cellsCount = 0;
                     foreach (var cell in cells.Where(c => !c.IsNotAvailable).OrderBy(o => Math.Abs(o.Position - position.Height)))
                     {

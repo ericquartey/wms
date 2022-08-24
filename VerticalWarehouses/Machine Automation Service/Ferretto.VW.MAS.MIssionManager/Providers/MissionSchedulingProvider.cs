@@ -355,6 +355,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool CompactTopCell(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
         {
+            this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
             loadUnitOut = null;
             cellId = null;
             if (!loadUnits.Any())
