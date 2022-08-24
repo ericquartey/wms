@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 if (this.SensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
                                 {
                                     this.Mission.ErrorMovements = MissionErrorMovements.None;
-                                    this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
+                                    this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition(), tolerance: 10);
                                     this.LoadUnitEnd(restore: true);
                                 }
                                 else
@@ -272,7 +272,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     throw new StateMachineException(ErrorDescriptions.InvalidPresenceSensors, this.Mission.TargetBay, MessageActor.MachineManager);
                 }
                 this.Mission.ErrorMovements = MissionErrorMovements.None;
-                this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
+                this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition(), tolerance: 10);
                 this.LoadUnitEnd(restore: true);
             }
         }
@@ -306,7 +306,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell)
                     {
                         this.Logger.LogDebug($"{this.GetType().Name}: Load unit detected on board for mission {this.Mission.Id}, wmsId {this.Mission.WmsId}, loadUnit {this.Mission.LoadUnitId}");
-                        this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition());
+                        this.ElevatorDataProvider.UpdateLastIdealPosition(this.LoadingUnitMovementProvider.GetCurrentHorizontalPosition(), tolerance: 10);
                         this.Mission.RestoreStep = MissionStep.ToTarget;
                         this.Mission.StepTime = DateTime.UtcNow;
                         var newStep = new MissionMoveErrorStep(this.Mission, this.ServiceProvider, this.EventAggregator);
