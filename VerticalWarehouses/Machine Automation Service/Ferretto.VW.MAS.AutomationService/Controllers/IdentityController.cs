@@ -121,6 +121,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsFireAlarmActive());
         }
 
+        [HttpPost("get/is/rotation/class")]
+        public ActionResult<bool> GetIsRotationClass()
+        {
+            return this.Ok(this.machineProvider.IsRotationClassEnabled());
+        }
+
         [HttpPost("get/ItemUniqueIdLength")]
         public ActionResult<int> GetItemUniqueIdLength()
         {
@@ -144,7 +150,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             //    {
             //        var machine = this.machineProvider.Get();
 
-            //        var wmsMachine = await machinesWebService.GetByIdAsync(machine.Id);
+            // var wmsMachine = await machinesWebService.GetByIdAsync(machine.Id);
 
             //        statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
             //    }
