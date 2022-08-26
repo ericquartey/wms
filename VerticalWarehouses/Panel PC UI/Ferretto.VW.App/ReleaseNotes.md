@@ -23,23 +23,20 @@
     }
 </style>
 
-# Note di versione
+# Note di versione PRELIMINARE - NON INSTALLARE
 
-## Nuove Funzionalità 1.0.48 rispetto la 1.0.47
-- Ferretto Nuget Package 0.16.46
-- Operazioni di visione e versamento: aggiunto comando (icona carrello) per aggiungere un articolo scegliendo la lista di versamento
-- Accessori - Stampante: aggiunto comando di Prova Stampante
+## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
 
 ## Bug Risolti
-- Corretto falso allarme 32 - Destinazione maggiore del limite superiore - con macchine da 1000kg
-- BIG: il movimento si ferma se si perde il sensore di zero
-- Correzione a Mostra l'immagine del barcode: si aggiorna ad ogni cambio di articolo
-- Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
-- Conferma ultima operazione: invia la conferma a cassetto fermo
-- BES - Corretto falso allarme 14 (sensori di presenza) nei ripristini
+- Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud
+- Spostamento da cella a cella: aggiunto controllo di serranda chiusa
+- L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
+- Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
 
 ## Compatibile con adapter 0.4.38
 ***
+
+[Versione 1.0.48](#id1048)
 
 [Versione 1.0.47](#id1047)
 
@@ -137,6 +134,23 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1048"></a>
+## Nuove Funzionalità 1.0.48 rispetto la 1.0.47
+- Ferretto Nuget Package 0.16.46
+- Operazioni di visione e versamento: aggiunto comando (icona carrello) per aggiungere un articolo scegliendo la lista di versamento
+- Accessori - Stampante: aggiunto comando di Prova Stampante
+
+## Bug Risolti
+- Corretto falso allarme 32 - Destinazione maggiore del limite superiore - con macchine da 1000kg
+- BIG: il movimento si ferma se si perde il sensore di zero
+- Correzione a Mostra l'immagine del barcode: si aggiorna ad ogni cambio di articolo
+- Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
+- Conferma ultima operazione: invia la conferma a cassetto fermo
+- BES - Corretto falso allarme 14 (sensori di presenza) nei ripristini
+
+## Compatibile con adapter 0.4.38
+
 
 <a id="id1047"></a>
 ## Nuove Funzionalità 1.0.47 rispetto la 1.0.46

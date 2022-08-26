@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.ServiceDesk.Telemetry.Hubs;
@@ -22,6 +23,8 @@ namespace Ferretto.VW.TelemetryService
 
         private readonly Uri logUri;
 
+        private readonly Timer reconnectTimer;
+
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         private Uri? logProxy;
@@ -37,6 +40,7 @@ namespace Ferretto.VW.TelemetryService
             this.logUri = uri;
             this.logger.Info($"Host url {this.logUri}");
             this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
+            this.reconnectTimer = new Timer(this.ReconnectAsync);
         }
 
         public TelemetryWebHubClient(Uri uri, IServiceScopeFactory serviceScopeFactory, WebProxy webProxy)
@@ -46,6 +50,7 @@ namespace Ferretto.VW.TelemetryService
             this.logUri = uri;
             this.logger.Info($"Host url {this.logUri} WebProxy {webProxy.Address}");
             this.ConnectionStatusChanged += async (s, e) => await this.OnConnectionStatusChanged(e);
+            this.reconnectTimer = new Timer(this.ReconnectAsync);
         }
 
         #endregion
@@ -138,8 +143,7 @@ namespace Ferretto.VW.TelemetryService
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            // do nothing
-            // no incoming notifications from the hub
+            // do nothing no incoming notifications from the hub
         }
 
         private IEnumerable<IIOLog> GetEntryAsync(string serialNumber, DateTimeOffset start, DateTimeOffset end)
@@ -153,7 +157,19 @@ namespace Ferretto.VW.TelemetryService
         private Task OnConnectionStatusChanged(ConnectionStatusChangedEventArgs e)
         {
             this.logger.Info($"Connection {e.IsConnected} to [{this.logUri}]; proxy [{this.logProxy}]");
+            if (!this.IsConnected)
+            {
+                this.reconnectTimer.Change(5000, Timeout.Infinite);
+            }
             return Task.CompletedTask;
+        }
+
+        private async void ReconnectAsync(object? state)
+        {
+            if (!this.IsConnected)
+            {
+                await this.ConnectAsync(false);
+            }
         }
 
         private void SaveEntry(byte[] rawDatabaseContent)
@@ -215,7 +231,19 @@ namespace Ferretto.VW.TelemetryService
                 var errors = errorProvider.GetAllId();
                 foreach (var errorLog in errors)
                 {
-                    success = await this.TrySendErrorLogAsync(machine.SerialNumber, errorLog, persistOnSendFailure: false);
+                    var tErrorLog = new ErrorLog()
+                    {
+                        AdditionalText = errorLog.AdditionalText,
+                        BayNumber = errorLog.BayNumber,
+                        Code = errorLog.Code,
+                        DetailCode = errorLog.DetailCode,
+                        InverterIndex = errorLog.InverterIndex,
+                        OccurrenceDate = errorLog.OccurrenceDate,
+                        ResolutionDate = errorLog.ResolutionDate,
+                        ErrorId = errorLog.ErrorId,
+                    };
+
+                    success = await this.TrySendErrorLogAsync(machine.SerialNumber, tErrorLog, persistOnSendFailure: false);
                     if (success)
                     {
                         success = await this.SendSavedIoLog(machine, scope, errorLog.OccurrenceDate);
@@ -252,7 +280,15 @@ namespace Ferretto.VW.TelemetryService
                 {
                     foreach (var ioLog in ioLogsToBeRemoved)
                     {
-                        successIo = await this.TrySendIOLogAsync(machine.SerialNumber, ioLog, false);
+                        var tIoLog = new IOLog()
+                        {
+                            BayNumber = ioLog.BayNumber,
+                            Description = ioLog.Description,
+                            Input = ioLog.Input,
+                            Output = ioLog.Output,
+                            TimeStamp = ioLog.TimeStamp,
+                        };
+                        successIo = await this.TrySendIOLogAsync(machine.SerialNumber, tIoLog, false);
                         if (!successIo)
                         {
                             break;
@@ -287,7 +323,28 @@ namespace Ferretto.VW.TelemetryService
                 var success = false;
                 foreach (var missionLog in missions)
                 {
-                    success = await this.TrySendMissionLogAsync(machine.SerialNumber, missionLog, persistOnSendFailure: false);
+                    var tMissionLog = new MissionLog()
+                    {
+                        Bay = missionLog.Bay,
+                        CellId = missionLog.CellId,
+                        CreationDate = missionLog.CreationDate,
+                        Direction = missionLog.Direction,
+                        EjectLoadUnit = missionLog.EjectLoadUnit,
+                        LoadUnitHeight = missionLog.LoadUnitHeight,
+                        LoadUnitId = missionLog.LoadUnitId,
+                        MissionId = missionLog.MissionId,
+                        MissionType = missionLog.MissionType,
+                        NetWeight = missionLog.NetWeight,
+                        Priority = missionLog.Priority,
+                        Stage = missionLog.Stage,
+                        Status = missionLog.Status,
+                        Step = missionLog.Step,
+                        StopReason = missionLog.StopReason,
+                        TimeStamp = missionLog.TimeStamp,
+                        WmsId = missionLog.WmsId,
+                    };
+
+                    success = await this.TrySendMissionLogAsync(machine.SerialNumber, tMissionLog, persistOnSendFailure: false);
                     if (!success)
                     {
                         break;
@@ -371,7 +428,18 @@ namespace Ferretto.VW.TelemetryService
                 var sInfos = servicingInfoProvider.GetAllId();
                 foreach (var sInfo in sInfos)
                 {
-                    success = await this.TrySendServicingInfoAsync(machine.SerialNumber, sInfo, persistOnSendFailure: false);
+                    var tsInfo = new ServicingInfo()
+                    {
+                        Id = sInfo.Id,
+                        InstallationDate = sInfo.InstallationDate,
+                        IsHandOver = sInfo.IsHandOver,
+                        LastServiceDate = sInfo.LastServiceDate,
+                        NextServiceDate = sInfo.NextServiceDate,
+                        ServiceStatusId = sInfo.ServiceStatusId,
+                        TimeStamp = sInfo.TimeStamp,
+                        TotalMissions = sInfo.TotalMissions
+                    };
+                    success = await this.TrySendServicingInfoAsync(machine.SerialNumber, tsInfo, persistOnSendFailure: false);
                     if (!success)
                     {
                         break;

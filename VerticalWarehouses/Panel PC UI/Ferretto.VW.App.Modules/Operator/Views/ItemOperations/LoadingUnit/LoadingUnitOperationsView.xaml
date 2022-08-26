@@ -184,7 +184,7 @@
 
             <ctrls:PpcSpinEdit Width="230"
                                Height="90"
-                               Margin="0,5,0,0"
+                               Margin="0,5,0,10"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
