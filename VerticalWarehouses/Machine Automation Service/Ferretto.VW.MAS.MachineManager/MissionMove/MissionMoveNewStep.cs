@@ -879,6 +879,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (activeMissions.Any(x => x.Status == MissionStatus.Executing)
                 || activeMissions.Any(x => x.Status == MissionStatus.New
                     && x.MissionType == this.Mission.MissionType
+                    && x.TargetBay == this.Mission.TargetBay
                     && (x.Priority < this.Mission.Priority || x.CreationDate < this.Mission.CreationDate)))
             {
                 if (showErrors)
