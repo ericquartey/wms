@@ -2226,4 +2226,7 @@
   <data name="DrawerBackToStorage" xml:space="preserve">
     <value>Muovi il cassetto verso il magazzino?</value>
   </data>
+  <data name="DrawerSorting" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
 </root>

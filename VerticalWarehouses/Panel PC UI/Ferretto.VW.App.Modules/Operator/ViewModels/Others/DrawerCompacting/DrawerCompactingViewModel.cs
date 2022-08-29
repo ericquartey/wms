@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineCompactingWebService machineCompactingWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly ISessionService sessionService;
@@ -43,9 +45,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double fragmentTotalPercent;
 
-        private bool isStopPressed;
+        private bool isEnabledReorder;
 
-        private bool showAutoCompactingSettings;
+        private bool isRotationClassEnabled;
+
+        private bool isStopPressed;
 
         private double maxSolidSpaceBack;
 
@@ -55,6 +59,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand settingsButtonCommand;
 
+        private bool showAutoCompactingSettings;
+
         private int totalDrawers;
 
         #endregion
@@ -62,6 +68,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public DrawerCompactingViewModel(
+            IMachineIdentityWebService machineIdentityWebService,
             IMachineCompactingWebService machineCompactingWebService,
             IMachineCellsWebService machineCellsWebService,
             IMachineAutoCompactingSettingsWebService machineAutoCompactingSettingsWebService,
@@ -69,6 +76,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             : base(PresentationMode.Operator)
         {
             this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineAutoCompactingSettingsWebService = machineAutoCompactingSettingsWebService ?? throw new ArgumentNullException(nameof(machineAutoCompactingSettingsWebService));
@@ -79,6 +87,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public static List<string> EnumRotationClass => new List<string>() { "A", "B", "C" };
 
         public ICommand CompactingStartCommand =>
             this.compactingStartCommand
@@ -122,6 +132,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.fragmentTotalPercent;
             set => this.SetProperty(ref this.fragmentTotalPercent, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsEnabledReorder
+        {
+            get => this.isEnabledReorder;
+            set => this.SetProperty(ref this.isEnabledReorder, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsStopPressed
@@ -197,6 +219,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var list = await this.machineAutoCompactingSettingsWebService.GetAllAutoCompactingSettingsAsync();
 
             this.ShowAutoCompactingSettings = list.Any() || this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
+            this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+
 
             await base.OnAppearedAsync();
         }
@@ -247,6 +271,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.detailButtonCommand?.RaiseCanExecuteChanged();
             this.compactingStartCommand?.RaiseCanExecuteChanged();
             this.compactingStopCommand?.RaiseCanExecuteChanged();
+
+            this.IsEnabledReorder = this.CanCompactingStart();
         }
 
         private bool CanCompactingStart()

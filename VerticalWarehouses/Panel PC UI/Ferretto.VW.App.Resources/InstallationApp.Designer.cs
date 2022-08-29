@@ -6073,6 +6073,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string RotationClass {
+            get {
+                return ResourceManager.GetString("RotationClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic Rotation.
+        /// </summary>
+        public static string RotationClassAuto {
+            get {
+                return ResourceManager.GetString("RotationClassAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed Rotation.
+        /// </summary>
+        public static string RotationClassFix {
+            get {
+                return ResourceManager.GetString("RotationClassFix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run (mm).
         /// </summary>
         public static string Run {

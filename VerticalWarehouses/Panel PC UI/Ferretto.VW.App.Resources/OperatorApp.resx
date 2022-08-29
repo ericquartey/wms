@@ -2627,4 +2627,7 @@
   <data name="DrawerBackToStorage" xml:space="preserve">
     <value>Move tray back to storage?</value>
   </data>
+  <data name="DrawerSorting" xml:space="preserve">
+    <value>Reordering</value>
+  </data>
 </root>

@@ -473,6 +473,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.LaserOffset = loadingUnit.LaserOffset;
                 luDb.MissionsCountRotation = loadingUnit.MissionsCountRotation;
                 luDb.IsRotationClassFixed = loadingUnit.IsRotationClassFixed;
+                if (loadingUnit.IsRotationClassFixed)
+                {
+                    luDb.RotationClass = loadingUnit.RotationClass;
+                }
 
                 if (originalStatus != LoadingUnitStatus.InElevator
                     && loadingUnit.Status != LoadingUnitStatus.Undefined

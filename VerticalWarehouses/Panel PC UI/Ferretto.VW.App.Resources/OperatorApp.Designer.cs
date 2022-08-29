@@ -1879,6 +1879,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reordering.
+        /// </summary>
+        public static string DrawerSorting {
+            get {
+                return ResourceManager.GetString("DrawerSorting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Space analysis.
         /// </summary>
         public static string DrawerSpaceSaturazionAnalisys {
