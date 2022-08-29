@@ -228,7 +228,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.ShowAutoCompactingSettings = list.Any() || this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
             this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
-            this.isReorder = this.IsRotationClassEnabled;
+            this.IsReorder = await this.machineIdentityWebService.GetIsRotationClassAsync();
 
             await base.OnAppearedAsync();
         }
