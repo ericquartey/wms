@@ -118,14 +118,14 @@
                              LabelText="{res:Loc InstallationApp.IsIntoMachine}" />
         <!--  LabelText="IsIntoMachine" />  -->
 
-                <StackPanel Grid.Column="8"
+                    <Grid Grid.Column="8"
                             Margin="0"
                             HorizontalAlignment="Stretch"
-                            VerticalAlignment="Bottom"
+                            VerticalAlignment="Stretch"
                             Visibility="{Binding IsRotationClassEnabled, Converter={StaticResource BTVC}}">
                     <TextBlock VerticalAlignment="Top"
                                FontSize="13"
-                               Margin="0,0,0,5"
+                               Margin="0,2,0,0"
                                IsEnabled="{Binding IsEnabledEditing}"
                                TextWrapping="Wrap"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
@@ -152,7 +152,7 @@
                               SelectedValue="{Binding SelectedLU.RotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding EnumRotationClass}"
                               Margin="0,0,5,5" />
-                </StackPanel>
+                </Grid>
                 
 
                 <StackPanel Grid.Row="1"
