@@ -47,6 +47,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnabledReorder;
 
+        private bool isReorder;
+
         private bool isRotationClassEnabled;
 
         private bool isStopPressed;
@@ -140,6 +142,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isEnabledReorder, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsReorder
+        {
+            get => this.isReorder;
+            set => this.SetProperty(ref this.isReorder, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsRotationClassEnabled
         {
             get => this.isRotationClassEnabled;
@@ -220,7 +228,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.ShowAutoCompactingSettings = list.Any() || this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
             this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
-
+            this.isReorder = this.IsRotationClassEnabled;
 
             await base.OnAppearedAsync();
         }
@@ -417,7 +425,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineCompactingWebService.CompactingAsync(true);
+                await this.machineCompactingWebService.CompactingAsync(this.IsReorder);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

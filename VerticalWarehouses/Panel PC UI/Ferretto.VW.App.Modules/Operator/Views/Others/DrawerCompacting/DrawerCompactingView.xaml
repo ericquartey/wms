@@ -337,7 +337,7 @@
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
                                 IsEnabled="{Binding IsEnabledReorder}"
-                                IsChecked="{Binding IsEnabledReorder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsChecked="{Binding IsReorder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Visibility="{Binding IsRotationClassEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}"
                                 VerticalAlignment="Center"
                                 LabelText="{Resources:Loc OperatorApp.DrawerSorting}"/>
