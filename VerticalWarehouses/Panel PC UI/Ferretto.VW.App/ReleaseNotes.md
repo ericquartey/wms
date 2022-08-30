@@ -32,6 +32,7 @@
 - Spostamento da cella a cella: aggiunto controllo di serranda chiusa
 - L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
 - Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
+- Macchine con più Baie: i cassetti in attesa su una Baia non bloccano le missioni sull'altra Baia
 
 ## Compatibile con adapter 0.4.38
 ***
