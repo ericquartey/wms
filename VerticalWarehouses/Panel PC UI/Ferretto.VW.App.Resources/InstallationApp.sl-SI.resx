@@ -1956,26 +1956,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Mat. št.</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Dolga</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Premakni proti oper.</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Sr.</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Umerjanje zun nak pol</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Kratk</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Zelo dolga</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Zelo kratka</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Uvozi v pomnilnik</value>

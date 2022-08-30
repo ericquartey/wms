@@ -5,6 +5,8 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public enum AlphaNumericBarSize
     {
+        ExtraExtraSmall = 43,
+
         ExtraSmall = 51,
 
         Small = 64,

@@ -1953,26 +1953,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Serij.br.</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Dug</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Pomakni prema rukov.</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Sred.</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Kalibr. vanjske uvale</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Krat.</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Vrlo dug</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Vrlo kratak</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Uvezi u memoriju</value>

@@ -1953,26 +1953,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Výr číslo</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Dlouh</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Přesun k obsluze</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Střed</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Kalibrace vnější stan</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Krátk</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Velmi dlouh</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Velmi krátk</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Import do paměti</value>

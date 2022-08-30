@@ -1953,26 +1953,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Σειριακός αριθμός</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Μεγάλος</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Προς το χειριστή</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Μεσαίο</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Βαθμονόμηση εξωτερικής πλατφόρμας</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Μικρό</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Πολύ μεγάλο</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Πολύ μικρό</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Εισαγωγή στη μνήμη </value>

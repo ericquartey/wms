@@ -1956,26 +1956,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Numer Seryjny</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Duże</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>W stronę operatora</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Średnie</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Kalibracja zewnętrznej zatoce</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Małe</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Bardzo duże</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Bardzo małe</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Import do pamięci </value>

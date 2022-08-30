@@ -26,6 +26,7 @@
 # Note di versione PRELIMINARE - NON INSTALLARE
 
 ## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
+- Aggiunta dimensione XXS per la barra alfanumerica
 
 ## Bug Risolti
 - Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud

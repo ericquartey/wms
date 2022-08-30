@@ -3104,6 +3104,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AlphaNumericBarSize
     {
+        ExtraExtraSmall = 43,
+    
         ExtraSmall = 51,
     
         Small = 64,
