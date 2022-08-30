@@ -391,7 +391,10 @@
                     <Grid HorizontalAlignment="Stretch"
                                 Visibility="{Binding RotationClass,Converter={StaticResource RTVC}}"
                                 VerticalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Center" FontSize="18" Text="{Binding Path=RotationClass}" />
+                        <TextBlock HorizontalAlignment="Center"
+                                   Foreground="{Binding ., Converter={StaticResource CTFC}}"
+                                   FontSize="18"
+                                   Text="{Binding Path=RotationClass}" />
                         <TextBlock Text="*"
                                     HorizontalAlignment="Center"
                                     Margin="20,0,0,0"
