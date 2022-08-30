@@ -25,40 +25,42 @@ namespace Ferretto.VW.App.Controls.Converters
                 }
 
                 var res = 0;
+                if (loadingUnit.Cell != null)
+                {
+                    if (loadingUnit.RotationClass == "A")
+                    {
+                        res += 1;
+                    }
+                    else if (loadingUnit.RotationClass == "B")
+                    {
+                        res += 2;
+                    }
+                    else if (loadingUnit.RotationClass == "C")
+                    {
+                        res += 3;
+                    }
 
-                if (loadingUnit.RotationClass == "A")
-                {
-                    res += 1;
-                }
-                else if (loadingUnit.RotationClass == "B")
-                {
-                    res += 2;
-                }
-                else if (loadingUnit.RotationClass == "C")
-                {
-                    res += 3;
-                }
+                    if (loadingUnit.Cell.RotationClass == "A")
+                    {
+                        res -= 1;
+                    }
+                    else if (loadingUnit.Cell.RotationClass == "B")
+                    {
+                        res -= 2;
+                    }
+                    else if (loadingUnit.Cell.RotationClass == "C")
+                    {
+                        res -= 3;
+                    }
 
-                if (loadingUnit.Cell.RotationClass == "A")
-                {
-                    res -= 1;
-                }
-                else if (loadingUnit.Cell.RotationClass == "B")
-                {
-                    res -= 2;
-                }
-                else if (loadingUnit.Cell.RotationClass == "C")
-                {
-                    res -= 3;
-                }
+                    switch (Math.Abs(res))
+                    {
+                        case 1:
+                            return Brushes.Yellow;
 
-                switch (Math.Abs(res))
-                {
-                    case 1:
-                        return Brushes.Yellow;
-
-                    case 2:
-                        return Brushes.Orange;
+                        case 2:
+                            return Brushes.Orange;
+                    }
                 }
 
                 var converter = new BrushConverter();
