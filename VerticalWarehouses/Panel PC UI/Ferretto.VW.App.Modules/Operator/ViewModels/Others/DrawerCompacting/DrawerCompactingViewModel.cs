@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -89,8 +88,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Properties
-
-        public static List<string> EnumRotationClass => new List<string>() { "A", "B", "C" };
 
         public ICommand CompactingStartCommand =>
             this.compactingStartCommand

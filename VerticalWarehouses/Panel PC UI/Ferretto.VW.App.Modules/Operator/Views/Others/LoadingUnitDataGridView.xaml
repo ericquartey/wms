@@ -7,7 +7,10 @@
   <Border BorderBrush="{DynamicResource PpcBorderBrush}"
           BorderThickness="{DynamicResource PpcBorderThickness}"
           CornerRadius="2">
-    <DataGrid Name="DataGrid"
+        <Grid>
+            <FrameworkElement x:Name="dummyElement" Visibility="Collapsed" />
+            
+            <DataGrid Name="DataGrid"
               Width="auto"
               Height="auto"
               AutoGenerateColumns="False"
@@ -265,7 +268,6 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>-->
-
         <DataGridTemplateColumn x:Name="Column3"
                                 Width="1.2*"
                                 Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
@@ -378,7 +380,30 @@
             </Style>
           </DataGridTextColumn.ElementStyle>
         </DataGridTextColumn>
-      </DataGrid.Columns>
+
+        <DataGridTemplateColumn Width="1*"
+                                SortDirection="Ascending"
+                                Header="{Resources:Loc InstallationApp.RotationClass}"
+                                Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
+            SortMemberPath="RotationClass">
+            <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Stretch"
+                                Visibility="{Binding RotationClass,Converter={StaticResource RTVC}}"
+                                VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center" FontSize="18" Text="{Binding Path=RotationClass}" />
+                        <TextBlock Text="*"
+                                    HorizontalAlignment="Center"
+                                    Margin="20,0,0,0"
+                                    Visibility="{Binding IsRotationClassFixed ,Converter={StaticResource BTVC}}" />
+                    </Grid>
+                </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+
+        </DataGridTemplateColumn>
+    </DataGrid.Columns>
     </DataGrid>
-  </Border>
+
+        </Grid>
+    </Border>
 </UserControl>

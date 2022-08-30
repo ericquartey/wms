@@ -129,7 +129,7 @@
                                IsEnabled="{Binding IsEnabledEditing}"
                                TextWrapping="Wrap"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
-                               Text="Rotazione fissa" />
+                               Text="{res:Loc InstallationApp.RotationClassFix}" />
 
                     <controls:PpcCheckBox Grid.Column="7"
                                           IsEnabled="{Binding IsEnabledEditing}"

@@ -59,6 +59,7 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
@@ -123,13 +124,22 @@
                           Content="{Resources:Loc OperatorApp.MissionsList}" />
 
       <controls:PpcButton Grid.Row="3"
-                          Margin="15,15,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ChangLaserOffsetCommand}"
-                          Content="{Resources:Loc OperatorApp.LaserOffset}" />
+                    Margin="15,15,15,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Visibility="{Binding IsEnabledLaser, Converter={StaticResource BTVC}}"
+                    Command="{Binding ChangeLaserOffsetCommand}"
+                    Content="{Resources:Loc OperatorApp.LaserOffset}" />
 
       <controls:PpcButton Grid.Row="4"
+                    Margin="15,15,15,0"
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsRotationClassEnabled, Converter={StaticResource BTVC}}"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding ChangeRotationClassCommand}"
+                    Content="{Resources:Loc InstallationApp.ChangeRotationClass}" />
+
+      <controls:PpcButton Grid.Row="5"
                           Margin="15,15,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
