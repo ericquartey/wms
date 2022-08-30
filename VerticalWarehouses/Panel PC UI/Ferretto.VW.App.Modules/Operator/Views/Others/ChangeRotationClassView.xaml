@@ -75,7 +75,7 @@
                               FontWeight="Light"
                               Style="{StaticResource FlatComboBoxStyle}"
                               SelectedValue="{Binding SelectedLoadingUnit.RotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding EnumRotationClass}"
+                              ItemsSource="{Binding ListRotationClass}"
                               Margin="0,0,5,5" />
         </Grid>
     <controls:PpcButton Grid.Row="2"

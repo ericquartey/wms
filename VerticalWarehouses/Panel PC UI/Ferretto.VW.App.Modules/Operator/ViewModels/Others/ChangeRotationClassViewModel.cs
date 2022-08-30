@@ -44,7 +44,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.laserOffset, value, this.RaiseCanExecuteChanged);
         }
 
-        public static List<string> EnumRotationClass => new List<string>() { "A", "B", "C" };
+        public static List<string> ListRotationClass => new List<string>() { "A", "B", "C" };
 
         public int LoadUnitId
         {

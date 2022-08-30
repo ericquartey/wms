@@ -307,8 +307,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectedLoadingUnit.IsIntoMachineOK;
         }
 
-        public static List<string> EnumRotationClass => new List<string>() { "A", "B", "C" };
-
         private bool CanChangeLaserOffset()
         {
             return this.IsEnabledLaser && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0;

@@ -98,7 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public static List<string> EnumRotationClass => new List<string>() { "A", "B", "C" };
+        public static List<string> ListRotationClass => new List<string>() { "A", "B", "C" };
 
         public ICommand BlockUnlockCommand =>
                     this.blockUnlockCommand

@@ -150,7 +150,7 @@
                               Style="{StaticResource FlatComboBoxStyle}"
                               MinWidth="50"
                               SelectedValue="{Binding SelectedLU.RotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding EnumRotationClass}"
+                              ItemsSource="{Binding ListRotationClass}"
                               Margin="0,0,5,5" />
                 </Grid>
                 
