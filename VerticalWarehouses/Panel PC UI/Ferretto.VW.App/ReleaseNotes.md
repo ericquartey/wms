@@ -23,7 +23,7 @@
     }
 </style>
 
-# Note di versione PRELIMINARE - NON INSTALLARE
+# Note di versione
 
 ## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
 - Aggiunta dimensione XXS per la barra alfanumerica
