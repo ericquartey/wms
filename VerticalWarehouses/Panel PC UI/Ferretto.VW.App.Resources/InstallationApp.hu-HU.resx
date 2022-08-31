@@ -1953,26 +1953,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Gyári szám</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Hosszú</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Mozgatás a kezelő felé</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Közepes</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Külső munkaállomás kalibrálása</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Rövid</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Nagyon hosszú</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Nagyon rövid</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Importálás memóriába</value>

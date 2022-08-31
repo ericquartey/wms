@@ -1949,26 +1949,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Matricola</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Lunga</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Muovi verso operatore</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Media</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Taratura baia esterna</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Corta</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Molto lunga</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Molto corta</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Importa in memoria</value>

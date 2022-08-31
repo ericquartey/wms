@@ -196,7 +196,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Large.
+        ///   Looks up a localized string similar to L.
         /// </summary>
         public static string AlphaNumericBarSizeL {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Medium.
+        ///   Looks up a localized string similar to M.
         /// </summary>
         public static string AlphaNumericBarSizeM {
             get {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Small.
+        ///   Looks up a localized string similar to S.
         /// </summary>
         public static string AlphaNumericBarSizeS {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra large.
+        ///   Looks up a localized string similar to XL.
         /// </summary>
         public static string AlphaNumericBarSizeXL {
             get {
@@ -232,11 +232,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra small.
+        ///   Looks up a localized string similar to XS.
         /// </summary>
         public static string AlphaNumericBarSizeXS {
             get {
                 return ResourceManager.GetString("AlphaNumericBarSizeXS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XXS.
+        /// </summary>
+        public static string AlphaNumericBarSizeXXS {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeXXS", resourceCulture);
             }
         }
         

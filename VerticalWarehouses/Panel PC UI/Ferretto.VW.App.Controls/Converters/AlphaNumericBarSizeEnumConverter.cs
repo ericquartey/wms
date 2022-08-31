@@ -23,6 +23,9 @@ namespace Ferretto.VW.App.Controls.Converters
                     case AlphaNumericBarSize.ExtraSmall:
                         return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXS");
 
+                    case AlphaNumericBarSize.ExtraExtraSmall:
+                        return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeXXS");
+
                     case AlphaNumericBarSize.Large:
                         return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeL");
 
@@ -33,7 +36,7 @@ namespace Ferretto.VW.App.Controls.Converters
                         return Resources.Localized.Get("InstallationApp.AlphaNumericBarSizeS");
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return "";
             }

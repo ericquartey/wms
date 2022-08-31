@@ -2006,25 +2006,25 @@
     <value>Serial Number</value>
   </data>
   <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Large</value>
+    <value>L</value>
   </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>Toward operator</value>
   </data>
   <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Medium</value>
+    <value>M</value>
   </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>External bay calibration</value>
   </data>
   <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Small</value>
+    <value>S</value>
   </data>
   <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Extra large</value>
+    <value>XL</value>
   </data>
   <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Extra small</value>
+    <value>XS</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Import into memory </value>
@@ -2796,5 +2796,8 @@
   </data>
   <data name="TestSuccessful" xml:space="preserve">
     <value>Test successful</value>
+  </data>
+  <data name="AlphaNumericBarSizeXXS" xml:space="preserve">
+    <value>XXS</value>
   </data>
 </root>
