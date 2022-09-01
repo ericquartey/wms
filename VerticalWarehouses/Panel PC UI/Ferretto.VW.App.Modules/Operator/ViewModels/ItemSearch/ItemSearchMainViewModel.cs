@@ -88,6 +88,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGroupbyLotEnabled;
 
+        private bool isLocalMachineItems;
+
         private bool isOrderVisible;
 
         private bool isPickItemPutItemOperationsEnabled;
@@ -936,6 +938,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
+            this.isLocalMachineItems = configuration.Machine.IsLocalMachineItems;
 
             this.Appear = false;
             this.InputQuantity = 0;
@@ -1426,12 +1429,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                        for (int i = 0; i < item.Machines.Count(); i++)
+                        //for (int i = 0; i < item.Machines.Count(); i++)
+                        //{
+                        //    //if (item.Machines.ElementAt(i).Id == model.Id)
+                        //    {
+                        //        this.productsInCurrentMachine.Add(item);
+                        //    }
+                        //}
+                        foreach (var machine in item.Machines.Where(m => !this.isLocalMachineItems || m.Id == this.bayManager.Identity.Id))
                         {
-                            //if (item.Machines.ElementAt(i).Id == model.Id)
+                            var newMachine = new List<MachineItemInfo>();
+                            newMachine.Add(machine);
+                            var newItem = new ProductInMachine()
                             {
-                                this.productsInCurrentMachine.Add(item);
-                            }
+                                Machines = newMachine,
+                                Lot = item.Lot,
+                                SerialNumber = item.SerialNumber,
+                                Sscc = item.Sscc,
+                            };
+                            newItem.Item = new Item()
+                            {
+                                Code = item.Item.Code,
+                                Description = item.Item.Description,
+                                UnitWeight = item.Item.UnitWeight,
+                            };
+                            this.productsInCurrentMachine.Add(newItem);
                         }
                     }
                 }
