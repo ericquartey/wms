@@ -90,6 +90,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<LoadingUnitsMissionsView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
             containerRegistry.RegisterForNavigation<AutoCompactingSettingsView>();
+            containerRegistry.RegisterForNavigation<DaysCountView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
             containerRegistry.RegisterForNavigation<StatisticsCellsView>();

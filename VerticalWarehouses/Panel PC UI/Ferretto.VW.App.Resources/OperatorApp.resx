@@ -2630,4 +2630,13 @@
   <data name="DrawerSorting" xml:space="preserve">
     <value>Reordering</value>
   </data>
+  <data name="DaysCountSettings" xml:space="preserve">
+    <value>Rotation calculation settings</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>Days Count</value>
+  </data>
+  <data name="LastSchedule" xml:space="preserve">
+    <value>Last Schedule</value>
+  </data>
 </root>

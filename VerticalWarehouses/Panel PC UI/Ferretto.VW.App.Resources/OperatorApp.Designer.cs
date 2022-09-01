@@ -1204,6 +1204,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Days Count.
+        /// </summary>
+        public static string DaysCount {
+            get {
+                return ResourceManager.GetString("DaysCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rotation calculation settings.
+        /// </summary>
+        public static string DaysCountSettings {
+            get {
+                return ResourceManager.GetString("DaysCountSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete mission.
         /// </summary>
         public static string DeleteMission {
@@ -3271,6 +3289,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LastOperationMessage {
             get {
                 return ResourceManager.GetString("LastOperationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Schedule.
+        /// </summary>
+        public static string LastSchedule {
+            get {
+                return ResourceManager.GetString("LastSchedule", resourceCulture);
             }
         }
         

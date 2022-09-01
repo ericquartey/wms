@@ -1316,11 +1316,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineIdentityWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> AddOrModifyRotationClassScheduleAsync(RotationClassSchedule newRotationClassSchedule);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> AddOrModifyRotationClassScheduleAsync(RotationClassSchedule newRotationClassSchedule, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<RotationClassSchedule>> GetAllRotationClassScheduleAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<RotationClassSchedule>> GetAllRotationClassScheduleAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetBoxEnableAsync();
@@ -6555,6 +6569,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         TowardOperator = 0,
     
         TowardMachine = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RotationClassSchedule : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("DaysCount", Required = Newtonsoft.Json.Required.Always)]
+        public int DaysCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastSchedule", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? LastSchedule { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static RotationClassSchedule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RotationClassSchedule>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
     
     }
     

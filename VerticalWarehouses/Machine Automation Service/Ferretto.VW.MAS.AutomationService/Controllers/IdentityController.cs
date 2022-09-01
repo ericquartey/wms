@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly IRotationClassScheduleProvider rotationClassScheduleProvider;
+
         private readonly IServicingProvider servicingProvider;
 
         private readonly IWmsSettingsProvider wmsSettingsProvider;
@@ -32,6 +35,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IdentityController(
             ILoadingUnitsDataProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
+            IRotationClassScheduleProvider rotationClassScheduleProvider,
             IMachineProvider machineProvider,
             IMachineVolatileDataProvider machineVolatileDataProvider,
             IWmsSettingsProvider wmsSettingsProvider)
@@ -41,11 +45,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new System.ArgumentNullException(nameof(wmsSettingsProvider));
+            this.rotationClassScheduleProvider = rotationClassScheduleProvider ?? throw new System.ArgumentNullException(nameof(rotationClassScheduleProvider));
         }
 
         #endregion
 
         #region Methods
+
+        [HttpPost("add-or-modify-RotationClassSchedule")]
+        public async Task<IActionResult> AddOrModifyRotationClassSchedule(RotationClassSchedule newRotationClassSchedule)
+        {
+            this.rotationClassScheduleProvider.AddOrModifyRotationClassSchedule(newRotationClassSchedule);
+            return this.Ok();
+        }
 
         [HttpGet]
         public async Task<ActionResult<MachineIdentity>> Get([FromServices] IMachinesWmsWebService machinesWebService)
@@ -101,6 +113,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             };
 
             return this.Ok(machineInfo);
+        }
+
+        [HttpGet("get-all-RotationClassSchedule")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<IEnumerable<RotationClassSchedule>> GetAllRotationClassSchedule()
+        {
+            var RotationClassSchedules = this.rotationClassScheduleProvider.GetAllRotationClassSchedule();
+
+            return this.Ok(RotationClassSchedules);
         }
 
         [HttpPost("get/box/enable")]

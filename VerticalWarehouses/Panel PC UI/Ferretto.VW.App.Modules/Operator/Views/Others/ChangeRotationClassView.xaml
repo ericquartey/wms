@@ -50,7 +50,7 @@
                                Grid.Row="0"
                                Grid.ColumnSpan="2"
                                FontSize="13"
-                               Margin="0,2,0,0"
+                               Margin="10,2,0,15"
                                IsEnabled="{Binding IsEnabledEditing}"
                                TextWrapping="Wrap"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"

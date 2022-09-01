@@ -92,6 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     var autoCompactingSettings = this.dataContext.AutoCompactingSettings.Single(s => s.Id == newAutoCompactingSettings.Id);
                     autoCompactingSettings.IsActive = newAutoCompactingSettings.IsActive;
                     autoCompactingSettings.BeginTime = newAutoCompactingSettings.BeginTime;
+                    autoCompactingSettings.IsOptimizeRotationClass = newAutoCompactingSettings.IsOptimizeRotationClass;
                     this.dataContext.AutoCompactingSettings.Update(autoCompactingSettings);
                     this.dataContext.SaveChanges();
                 }

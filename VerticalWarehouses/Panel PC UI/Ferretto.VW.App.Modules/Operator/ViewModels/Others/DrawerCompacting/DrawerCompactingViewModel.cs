@@ -60,7 +60,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand settingsButtonCommand;
 
+        private DelegateCommand daysCountCommand;
+
         private bool showAutoCompactingSettings;
+
+        private bool isInstaller;
 
         private int totalDrawers;
 
@@ -177,10 +181,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     () => this.Settings(),
                     this.CanSettingsCommand));
 
+        public ICommand DaysCountCommand =>
+            this.daysCountCommand
+            ??
+            (this.daysCountCommand =
+                new DelegateCommand(
+                    () => this.DaysCount(),
+                    this.CanDaysCountCommand));
+
         public bool ShowAutoCompactingSettings
         {
             get => this.showAutoCompactingSettings;
             set => this.SetProperty(ref this.showAutoCompactingSettings, value, this.RaiseCanExecuteChanged);
+        }
+        public bool IsInstaller
+        {
+            get => this.isInstaller;
+            set => this.SetProperty(ref this.isInstaller, value, this.RaiseCanExecuteChanged);
         }
 
         public int TotalDrawers
@@ -226,6 +243,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ShowAutoCompactingSettings = list.Any() || this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
             this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
             this.IsReorder = await this.machineIdentityWebService.GetIsRotationClassAsync();
+
+            this.IsInstaller = this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
 
             await base.OnAppearedAsync();
         }
@@ -276,6 +295,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.detailButtonCommand?.RaiseCanExecuteChanged();
             this.compactingStartCommand?.RaiseCanExecuteChanged();
             this.compactingStopCommand?.RaiseCanExecuteChanged();
+            this.daysCountCommand?.RaiseCanExecuteChanged();
+            this.settingsButtonCommand?.RaiseCanExecuteChanged();
 
             this.IsEnabledReorder = this.CanCompactingStart();
         }
@@ -331,7 +352,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return !this.IsWaitingForResponse;
         }
-
+        private bool CanDaysCountCommand()
+        {
+            return !this.IsWaitingForResponse;
+        }
         private void Detail()
         {
             this.IsWaitingForResponse = true;
@@ -401,7 +425,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = false;
             }
         }
+        private void DaysCount()
+        {
+            this.IsWaitingForResponse = true;
 
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.Others.DrawerCompacting.DAYSCOUNT,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
         //private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MissionOperationCompletedMessageData> message)
         //{
         //    switch (message.Status)

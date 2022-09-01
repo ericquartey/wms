@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void AddOrModifyRotationClassSchedule(RotationClassSchedule rotationClassSchedule);
 
         bool CheckRotationClass();
+
+        IEnumerable<RotationClassSchedule> GetAllRotationClassSchedule();
 
         public void SetRotationClass();
 

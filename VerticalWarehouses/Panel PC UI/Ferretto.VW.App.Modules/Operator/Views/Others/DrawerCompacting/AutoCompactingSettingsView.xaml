@@ -87,7 +87,21 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-        </DataGrid.Columns>
+            <DataGridTemplateColumn x:Name="Column3"
+                        Width="1*"
+                        Header="{res:Loc InstallationApp.IsOptimizeRotationClass}">
+            <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                    <icon:PackIconMaterial Width="auto"
+                            Height="auto"
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Kind="{Binding Path=IsOptimizeRotationClass, Converter={StaticResource BTIKC}}" />
+                </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+    </DataGrid.Columns>
       </DataGrid>
     </Border>
 
@@ -106,21 +120,34 @@
           <ColumnDefinition />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
+          
+        <controls:PpcTextBox Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                             IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
+                                InputText="{Binding SelectedAutoCompactingSettings.BeginTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LabelText="{res:Loc InstallationApp.BeginTime}" />
+          
         <controls:PpcCheckBox Grid.Row="0"
-                              Grid.Column="0"
-                              Margin="0,0,0,10"
-                              HorizontalAlignment="Stretch"
+                              Grid.Column="1"
+                              Margin="0,18,0,0"
+                              HorizontalAlignment="Center"
                               VerticalAlignment="Stretch"
+                             IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
                               IsChecked="{Binding SelectedAutoCompactingSettings.IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               LabelText="{res:Loc InstallationApp.AutoCompactingIsActive}" />
 
-        <controls:PpcTextBox Grid.Row="1"
-                             Grid.Column="0"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch"
-                             InputText="{Binding SelectedAutoCompactingSettings.BeginTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{res:Loc InstallationApp.BeginTime}" />
+        <controls:PpcCheckBox Grid.Row="0"
+                              Margin="0,18,0,0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                             IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
+                        IsChecked="{Binding SelectedAutoCompactingSettings.IsOptimizeRotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        LabelText="{res:Loc InstallationApp.IsOptimizeRotationClass}" />
+
+        
 
       </Grid>
     </Border>

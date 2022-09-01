@@ -117,6 +117,8 @@
             {
                 #region Fields
 
+                public const string DAYSCOUNT = "DaysCountViewModel";
+
                 public const string DETAIL = "DrawerCompactingDetailViewModel";
 
                 public const string MAIN = "DrawerCompactingViewModel";

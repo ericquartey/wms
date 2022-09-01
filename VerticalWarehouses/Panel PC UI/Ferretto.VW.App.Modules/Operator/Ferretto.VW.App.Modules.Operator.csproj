@@ -64,6 +64,9 @@
     <Page Update="Views\Others\ChangeLaserOffsetView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
+    <Page Update="Views\Others\DrawerCompacting\DaysCountView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Others\DrawerCompacting\AutoCompactingSettingsView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
