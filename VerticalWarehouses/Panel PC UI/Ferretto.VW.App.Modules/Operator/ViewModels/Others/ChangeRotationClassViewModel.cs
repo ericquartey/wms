@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Resources;
@@ -8,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewModels
 {
-    public class ChangeLaserOffsetViewModel : BaseOperatorViewModel
+    public class ChangeRotationClassViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -20,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int loadUnuitId;
 
-        private DelegateCommand saveLaserOffsetCommand;
+        private DelegateCommand saveCommand;
 
         private LoadingUnit selectedUnitUnit;
 
@@ -28,7 +29,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public ChangeLaserOffsetViewModel(IMachineLoadingUnitsWebService machineWebService)
+        public ChangeRotationClassViewModel(IMachineLoadingUnitsWebService machineWebService)
                     : base(PresentationMode.Operator)
         {
             this.machineWebService = machineWebService ?? throw new ArgumentNullException(nameof(machineWebService));
@@ -44,17 +45,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.laserOffset, value, this.RaiseCanExecuteChanged);
         }
 
+        public static List<string> ListRotationClass => new List<string>() { "A", "B", "C" };
+
         public int LoadUnitId
         {
             get => this.loadUnuitId;
             set => this.SetProperty(ref this.loadUnuitId, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand SaveLaserOffsetCommand =>
-                                            this.saveLaserOffsetCommand
+        public ICommand SaveCommand =>
+                                    this.saveCommand
             ??
-            (this.saveLaserOffsetCommand = new DelegateCommand(
-                async () => await this.SaveLaserOffsetAsync(),
+            (this.saveCommand = new DelegateCommand(
+                async () => await this.SaveRotationClassAsync(),
                 this.CanSave));
 
         public LoadingUnit SelectedLoadingUnit
@@ -84,7 +87,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.saveLaserOffsetCommand?.RaiseCanExecuteChanged();
+            this.saveCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanSave()
@@ -112,14 +115,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task SaveLaserOffsetAsync()
+        private async Task SaveRotationClassAsync()
         {
             try
             {
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineWebService.SetLoadingUnitOffsetAsync(this.LoadUnitId, this.LaserOffset);
+                await this.machineWebService.SaveLoadUnitAsync(this.SelectedLoadingUnit);
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
             }

@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddScoped<IMachineProvider, MachineProvider>()
                 .AddScoped<IStatisticsDataProvider, StatisticsDataProvider>()
                 .AddScoped<IAutoCompactingSettingsProvider, AutoCompactingSettingsProvider>()
+                .AddScoped<IRotationClassScheduleProvider, RotationClassScheduleProvider>()
                 .AddScoped<ILogoutSettingsProvider, LogoutSettingsProvider>();
 
             services

@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
+        public bool IsOptimizeRotationClass { get; set; }
+
         #endregion
     }
 }

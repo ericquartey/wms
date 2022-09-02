@@ -158,6 +158,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool? IsOneTonMachine { get; set; }
 
+        public bool IsOptimizeRotationClass { get; set; }
+
         public Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
         public bool IsStandbyDbOk { get; set; }

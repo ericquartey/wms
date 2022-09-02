@@ -1204,6 +1204,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Rotation Class.
+        /// </summary>
+        public static string ChangeRotationClass {
+            get {
+                return ResourceManager.GetString("ChangeRotationClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change unit.
         /// </summary>
         public static string ChangeUnit {
@@ -6078,6 +6087,24 @@ namespace Ferretto.VW.App.Resources {
         public static string RightSideMeasurement {
             get {
                 return ResourceManager.GetString("RightSideMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string RotationClass {
+            get {
+                return ResourceManager.GetString("RotationClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed Rotation.
+        /// </summary>
+        public static string RotationClassFix {
+            get {
+                return ResourceManager.GetString("RotationClassFix", resourceCulture);
             }
         }
         

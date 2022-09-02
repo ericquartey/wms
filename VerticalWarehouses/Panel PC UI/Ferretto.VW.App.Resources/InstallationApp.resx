@@ -2797,6 +2797,15 @@
   <data name="TestSuccessful" xml:space="preserve">
     <value>Test successful</value>
   </data>
+  <data name="RotationClass" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="ChangeRotationClass" xml:space="preserve">
+    <value>Change Rotation Class</value>
+  </data>
+  <data name="RotationClassFix" xml:space="preserve">
+    <value>Fixed Rotation</value>
+  </data>
   <data name="AlphaNumericBarSizeXXS" xml:space="preserve">
     <value>XXS</value>
   </data>

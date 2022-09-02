@@ -2706,4 +2706,13 @@
   <data name="TestSuccessful" xml:space="preserve">
     <value>Test avvenuto con successo</value>
   </data>
+  <data name="RotationClass" xml:space="preserve">
+    <value>Classe</value>
+  </data>
+  <data name="ChangeRotationClass" xml:space="preserve">
+    <value>Cambia la classe di rotazione</value>
+  </data>
+  <data name="RotationClassFix" xml:space="preserve">
+    <value>Rotazione Fissa</value>
+  </data>
 </root>

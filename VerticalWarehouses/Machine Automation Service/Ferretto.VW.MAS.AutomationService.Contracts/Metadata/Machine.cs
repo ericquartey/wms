@@ -79,6 +79,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsHeartBeat { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsRotationClass))]
+            [Id(30)]
+            public bool IsRotationClass { get; set; }
+
+            [Editable(true)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadDepth))]
             [Id(4)]

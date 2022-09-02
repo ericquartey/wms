@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             const int NUMBER_OF_RETRIES = 5;
             // Retrieve the path of primary database file
-            //      example: "Database/MachineAutomationService.Simulation.Primary.db"
+            // example: "Database/MachineAutomationService.Simulation.Primary.db"
             var filePath = GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
             var exist = File.Exists(filePath);
             if (!exist)
@@ -521,6 +521,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.FirstOrDefault()?.IsRequestConfirmForLastOperationOnLoadingUnit ?? false;
+            }
+        }
+
+        public bool IsRotationClassEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.FirstOrDefault()?.IsRotationClass ?? false;
             }
         }
 
@@ -883,7 +891,9 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// Update vertical axis statistics
         /// </summary>
-        /// <param name="distance">space in millimeters</param>
+        /// <param name="distance">
+        /// space in millimeters
+        /// </param>
         public void UpdateVerticalAxisStatistics(double distance)
         {
             lock (this.dataContext)
@@ -985,9 +995,10 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// Retrieve the path of the primary database.
         /// </summary>
-        /// <param name="primaryConnectionString"></param>
+        /// <param name="primaryConnectionString">
+        /// </param>
         /// <returns>
-        ///     The path
+        /// The path
         /// </returns>
         private static string GetDBFilePath(string primaryConnectionString)
         {

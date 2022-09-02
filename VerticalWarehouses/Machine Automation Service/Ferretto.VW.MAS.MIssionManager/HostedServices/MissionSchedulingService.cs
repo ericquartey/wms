@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public static bool ScheduleCompactingMissions(IServiceProvider serviceProvider)
+        public bool ScheduleCompactingMissions(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
 
@@ -84,6 +84,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
             // no more compacting is possible. Exit from compact mode
+            this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
             return false;
         }
 
@@ -1080,7 +1081,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Compact:
                     {
-                        if (!ScheduleCompactingMissions(serviceProvider))
+                        if (!this.ScheduleCompactingMissions(serviceProvider))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                             this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
@@ -1090,7 +1091,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Compact2:
                     {
-                        if (!ScheduleCompactingMissions(serviceProvider))
+                        if (!this.ScheduleCompactingMissions(serviceProvider))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual2;
                             this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
@@ -1100,7 +1101,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MachineMode.Compact3:
                     {
-                        if (!ScheduleCompactingMissions(serviceProvider))
+                        if (!this.ScheduleCompactingMissions(serviceProvider))
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
                             this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
@@ -1753,6 +1754,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 //    var machineModeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
                 //    machineModeProvider.RequestChange(MachineMode.Manual);
                 //}
+
+                var rotationClassScheduleProvider = scope.ServiceProvider.GetRequiredService<IRotationClassScheduleProvider>();
+                rotationClassScheduleProvider.SetRotationClass();
                 this.firstCleanupExecuted = true;
             }
 
