@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private const int MinimumPasswordLength = 2;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly ISessionService sessionService;
@@ -258,18 +260,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (userAccessLevel == UserAccessLevel.Installer)
                 {
-                    await this.usersService.ChangePasswordAsync("installer", this.installerNewPassword);
-                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    if (this.installerNewPassword.Length < MinimumPasswordLength)
+                    {
+                        this.ShowNotification(LoadLogin.PasswordIsTooShort, Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        await this.usersService.ChangePasswordAsync("installer", this.installerNewPassword);
+                        this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    }
                 }
                 else if (userAccessLevel == UserAccessLevel.Operator)
                 {
-                    await this.usersService.ChangePasswordAsync("operator", this.operatorNewPassword);
-                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    if (this.operatorNewPassword.Length < MinimumPasswordLength)
+                    {
+                        this.ShowNotification(LoadLogin.PasswordIsTooShort, Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        await this.usersService.ChangePasswordAsync("operator", this.operatorNewPassword);
+                        this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    }
                 }
                 else if (userAccessLevel == UserAccessLevel.Movement)
                 {
-                    await this.usersService.ChangePasswordAsync("movement", this.movementNewPassword);
-                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    if (this.movementNewPassword.Length < MinimumPasswordLength)
+                    {
+                        this.ShowNotification(LoadLogin.PasswordIsTooShort, Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        await this.usersService.ChangePasswordAsync("movement", this.movementNewPassword);
+                        this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    }
                 }
             }
             catch (Exception ex)
