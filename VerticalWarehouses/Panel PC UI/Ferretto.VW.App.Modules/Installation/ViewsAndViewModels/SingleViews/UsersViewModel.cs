@@ -247,8 +247,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.operatorNewPasswordConfirm) &&
                 !string.IsNullOrEmpty(this.operatorNewPassword) &&
                 this.operatorNewPasswordConfirm == this.operatorNewPassword &&
-                this.sessionService.UserAccessLevel > UserAccessLevel.Movement &&
-                !this.isWmsEnabled;
+                this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
         }
 
         private async Task ChangePassword(UserAccessLevel userAccessLevel)
