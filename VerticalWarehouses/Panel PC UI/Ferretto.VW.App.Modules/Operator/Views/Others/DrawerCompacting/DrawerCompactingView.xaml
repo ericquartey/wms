@@ -336,11 +336,11 @@
                                 Grid.Column="2"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
+                                Visibility="{Binding IsInstallerAndRotationClassEnable, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}"
                                 Command="{Binding DaysCountCommand}"
-                                Content="{Resources:Loc OperatorApp.DaysCountSettings}"
-                                Visibility="{Binding IsInstaller, Converter={StaticResource BTVC}}" />
+                                Content="{Resources:Loc OperatorApp.DaysCountSettings}" />
 
-            
+
             <controls:PpcButton Margin="0,0,15,0"
                                 Grid.Row="1"
                                 Grid.Column="0"

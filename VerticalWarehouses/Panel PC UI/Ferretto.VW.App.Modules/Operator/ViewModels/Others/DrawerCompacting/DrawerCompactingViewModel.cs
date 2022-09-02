@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.showAutoCompactingSettings;
             set => this.SetProperty(ref this.showAutoCompactingSettings, value, this.RaiseCanExecuteChanged);
         }
-        public bool IsInstaller
+        public bool IsInstallerAndRotationClassEnable
         {
             get => this.isInstaller;
             set => this.SetProperty(ref this.isInstaller, value, this.RaiseCanExecuteChanged);
@@ -244,7 +244,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
             this.IsReorder = await this.machineIdentityWebService.GetIsRotationClassAsync();
 
-            this.IsInstaller = this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
+            this.IsInstallerAndRotationClassEnable = this.sessionService.UserAccessLevel > UserAccessLevel.Movement && this.IsRotationClassEnabled;
 
             await base.OnAppearedAsync();
         }
