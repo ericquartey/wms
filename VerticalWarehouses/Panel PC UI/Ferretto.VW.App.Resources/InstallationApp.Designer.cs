@@ -2869,6 +2869,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fix Support.
+        /// </summary>
+        public static string FixSupport {
+            get {
+                return ResourceManager.GetString("FixSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forwards.
         /// </summary>
         public static string Forwards {
@@ -3351,6 +3360,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IndicateMisuredPosition {
             get {
                 return ResourceManager.GetString("IndicateMisuredPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information has not been updated..
+        /// </summary>
+        public static string InformationFailedUpdated {
+            get {
+                return ResourceManager.GetString("InformationFailedUpdated", resourceCulture);
             }
         }
         

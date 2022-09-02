@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellPanelsWebService machineCellPanelsWebService;
 
+        private readonly IMachineCellsWebService machineCellsWebService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
@@ -62,6 +64,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double displacement;
 
         private DelegateCommand displacementCommand;
+
+        private DelegateCommand fixSupportCommand;
 
         private DelegateCommand goToCellHeightCommand;
 
@@ -95,6 +99,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineErrorsWebService machineErrorsWebService,
             IMachineMissionsWebService machineMissionsWebService,
             IMachineCellPanelsWebService machineCellPanelsWebService,
+            IMachineCellsWebService machineCellsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineService machineService)
             : base(PresentationMode.Installer)
@@ -103,6 +108,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
@@ -218,8 +224,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 .Distinct()
                 .Where(s => !string.IsNullOrEmpty(s)));
 
+        public ICommand FixSupportCommand =>
+           this.fixSupportCommand
+           ??
+           (this.fixSupportCommand = new DelegateCommand(
+               async () => await this.FixSupportAsync(),
+               this.CanFixSupport));
+
         public ICommand GoToCellHeightCommand =>
-           this.goToCellHeightCommand
+                   this.goToCellHeightCommand
            ??
            (this.goToCellHeightCommand = new DelegateCommand(
                async () => await this.GoToCellHeightAsync(),
@@ -407,6 +420,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.RaisePropertyChanged(nameof(this.CurrentStep));
             }
 
+            this.CurrentCellId = this.CurrentPanelMinValue;
+
             await base.OnAppearedAsync();
         }
 
@@ -434,7 +449,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            // Se mi sono posizionato sulla cella richiesta attivo l'automazione che setto il pannello come controllato
+            // Se mi sono posizionato sulla cella richiesta attivo l'automazione che setto il
+            // pannello come controllato
             if (!this.IsMoving &&
                 this.MachineStatus.MessageStatus == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd &&
                 this.CurrentPanel != null &&
@@ -475,6 +491,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToCellHeightCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
             this.goToMeasuredFront?.RaiseCanExecuteChanged();
+            this.fixSupportCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task ApplyCorrectionAsync()
@@ -543,13 +560,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     Math.Abs(this.CurrentCell.Position - (this.MachineStatus?.ElevatorVerticalPosition ?? 0D)) <= 5);
         }
 
+        private bool CanFixSupport()
+        {
+            return this.CurrentCell != null &&
+                   this.CurrentCell.SupportType == SupportType.Insert &&
+                   this.StepValue != 0;
+        }
+
         private bool CanGoToCellHeight()
         {
-            bool dbg =
-                this.CurrentCell != null &&
-                   !this.IsMoving &&
-                   (Math.Abs(this.CurrentCell.Position - (this.MachineStatus?.ElevatorVerticalPosition ?? 0D)) > 0.9 ||
-                        this.CurrentCell.Id != this.MachineStatus?.LogicalPositionId);
+            bool dbg = this.CurrentCell != null &&
+                       !this.IsMoving &&
+                       (Math.Abs(this.CurrentCell.Position - (this.MachineStatus?.ElevatorVerticalPosition ?? 0D)) > 0.9 ||
+                       this.CurrentCell.Id != this.MachineStatus?.LogicalPositionId);
             return dbg;
         }
 
@@ -573,6 +596,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue);
 
                 this.Displacement += this.StepValue;
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task FixSupportAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var cells = await this.machineCellsWebService.GetAllAsync();
+
+                var cell2 = cells.OrderBy(x => x.Side).ThenBy(x => x.Id).SkipWhile(x => x.Id != this.CurrentCell.Id).Take(2).LastOrDefault();
+
+                if (this.CurrentCell.SupportType == SupportType.Insert && cell2.SupportType == SupportType.Above && this.CurrentCell.Side == cell2.Side)
+                {
+                    await this.machineCellsWebService.UpdatesHeightAsync(this.CurrentCell.Id, cell2.Id, this.CurrentCell.Side, this.StepValue);
+
+                    this.ShowNotification(Localized.Get("InstallationApp.InformationSuccessfullyUpdated"), Services.Models.NotificationSeverity.Success);
+                }
+                else
+                {
+                    this.ShowNotification(Localized.Get("InstallationApp.InformationFailedUpdated"), Services.Models.NotificationSeverity.Error);
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

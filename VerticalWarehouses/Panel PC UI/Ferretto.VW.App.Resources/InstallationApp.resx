@@ -2797,4 +2797,10 @@
   <data name="TestSuccessful" xml:space="preserve">
     <value>Test successful</value>
   </data>
+  <data name="InformationFailedUpdated" xml:space="preserve">
+    <value>Information has not been updated.</value>
+  </data>
+  <data name="FixSupport" xml:space="preserve">
+    <value>Fix Support</value>
+  </data>
 </root>
