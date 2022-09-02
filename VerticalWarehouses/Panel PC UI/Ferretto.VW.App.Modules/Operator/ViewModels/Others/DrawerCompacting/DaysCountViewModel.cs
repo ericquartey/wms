@@ -166,7 +166,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var rotationClassSheduleList = IEnumConvert(await this.machineIdentityWebService.GetAllRotationClassScheduleAsync());
 
-            this.RotationClassSchedules.Add(rotationClassSheduleList.FirstOrDefault());
+            if (rotationClassSheduleList != null && rotationClassSheduleList.Count >= 1)
+            {
+                this.RotationClassSchedules.Add(rotationClassSheduleList.FirstOrDefault());
+            }
+            else
+            {
+                this.RotationClassSchedules.Add(new RotationClassSchedule());
+            }
+
+           
 
             this.SelectedRotationClassSchedule = null;
         }
