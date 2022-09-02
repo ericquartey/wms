@@ -4039,15 +4039,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Optimize is Active.
-        /// </summary>
-        public static string IsOptimizeRotationClass {
-            get {
-                return ResourceManager.GetString("IsOptimizeRotationClass", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Read only.
         /// </summary>
         public static string IsReadOnly {

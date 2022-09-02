@@ -2730,7 +2730,4 @@
   <data name="RotationClassFix" xml:space="preserve">
     <value>Rotazione Fissa</value>
   </data>
-  <data name="IsOptimizeRotationClass" xml:space="preserve">
-    <value>Ottimizzato Attiva</value>
-  </data>
 </root>

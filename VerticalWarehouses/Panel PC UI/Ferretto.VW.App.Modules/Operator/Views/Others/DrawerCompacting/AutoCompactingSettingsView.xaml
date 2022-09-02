@@ -89,7 +89,7 @@
           </DataGridTemplateColumn>
             <DataGridTemplateColumn x:Name="Column3"
                         Width="1*"
-                        Header="{res:Loc InstallationApp.IsOptimizeRotationClass}">
+                        Header="{res:Loc OperatorApp.DrawerSorting}">
             <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                     <icon:PackIconMaterial Width="auto"
@@ -145,7 +145,7 @@
                         VerticalAlignment="Stretch"
                              IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
                         IsChecked="{Binding SelectedAutoCompactingSettings.IsOptimizeRotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        LabelText="{res:Loc InstallationApp.IsOptimizeRotationClass}" />
+                        LabelText="{res:Loc OperatorApp.DrawerSorting}" />
 
         
 
