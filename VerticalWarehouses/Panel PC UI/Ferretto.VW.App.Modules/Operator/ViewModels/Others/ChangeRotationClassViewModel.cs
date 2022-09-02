@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
@@ -122,6 +123,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineWebService.SaveLoadUnitAsync(this.SelectedLoadingUnit);
+
+                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
