@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly ISessionService sessionService;
@@ -49,9 +51,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBusyUpdateDrawer;
 
+        private bool isRotationClassEnabled;
+
         private SubscriptionToken loadunitsToken;
 
         private DelegateCommand removeDrawerCommand;
+
+        private bool rotationClassFixed;
 
         private DelegateCommand saveDrawerCommand;
 
@@ -76,6 +82,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService machineIdentityWebService,
             ISessionService sessionService)
             : base(PresentationMode.Installer)
         {
@@ -84,14 +91,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
         }
 
         #endregion
 
         #region Properties
 
+        public static List<string> ListRotationClass => new List<string>() { "A", "B", "C" };
+
         public ICommand BlockUnlockCommand =>
-            this.blockUnlockCommand
+                    this.blockUnlockCommand
             ??
             (this.blockUnlockCommand = new DelegateCommand(
                 async () => await this.BlockUnlockAsync(),
@@ -109,7 +119,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override EnableMask EnableMask => EnableMask.Any;
 
         public string Error => string.Join(
-            this[nameof(this.SelectedId)],
+                    this[nameof(this.SelectedId)],
             this[nameof(this.SelectedCode)]);
 
         public ICommand FreeDrawerCommand =>
@@ -188,6 +198,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsEnabledEditing => !this.IsMoving;
 
+        public bool IsEnabledEditingRotationClass
+        {
+            get => this.IsEnabledEditing && this.SelectedLU.IsRotationClassFixed;
+        }
+
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value);
+        }
+
         public ObservableCollection<LoadingUnit> LoadingUnits => IEnumConvert(this.MachineService.Loadunits);
 
         public ICommand RemoveDrawerCommand =>
@@ -198,6 +219,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => !this.IsMoving &&
                       this.SelectedLU != null &&
                 !this.isBusyUpdateDrawer));
+
+        public bool RotationClassFixed
+        {
+            get => this.rotationClassFixed;
+            set => this.SetProperty(ref this.rotationClassFixed, value, () =>
+            {
+                this.SelectedLU.IsRotationClassFixed = value;
+                this.RaisePropertyChanged(nameof(this.SelectedLU));
+                this.RaisePropertyChanged(nameof(this.IsEnabledEditingRotationClass));
+            });
+        }
 
         public ICommand SaveDrawerCommand =>
             this.saveDrawerCommand
@@ -234,6 +266,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.SelectedId = this.SelectedLU?.Id;
                 this.SelectedCode = this.SelectedLU?.Code;
                 this.SelectedBayPositionId = null;
+                this.RotationClassFixed = this.selectedLU.IsRotationClassFixed;
                 if (this.selectedLU != null)
                 {
                     this.BlockUnlockText = this.selectedLU.Status == LoadingUnitStatus.Blocked ? Localized.Get("InstallationApp.UnlockLU") : Localized.Get("InstallationApp.BlockLU");
@@ -331,7 +364,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                // Select the position bay according to the bay configuration (double internal bay and other configuration types)
+                // Select the position bay according to the bay configuration (double internal bay
+                // and other configuration types)
                 var isDoubleInternalBay = this.MachineService.Bay.IsDouble &&
                     this.MachineService.Bay.Carousel == null &&
                     !this.MachineService.Bay.IsExternal;
@@ -348,6 +382,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+
             this.SubscribeToEvents();
 
             if (this.LoadingUnits.Any())
@@ -376,6 +412,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsDrawerCallVisible));
             this.RaisePropertyChanged(nameof(this.LoadingUnits));
             this.RaisePropertyChanged(nameof(this.IsEnabledEditing));
+            this.RaisePropertyChanged(nameof(this.IsEnabledEditingRotationClass));
             this.RaisePropertyChanged(nameof(this.Status));
             this.RaisePropertyChanged(nameof(this.IsEditStatus));
 
@@ -427,8 +464,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         /// <summary>
-        /// Get the bay position.
-        /// Take account of configuration bay type.
+        /// Get the bay position. Take account of configuration bay type.
         /// </summary>
         private MAS.AutomationService.Contracts.LoadingUnitLocation GetBayPosition()
         {
@@ -464,7 +500,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         /// <summary>
-        /// Check if drawer is located in the bottom bay position only if current bay is a double internal bay.
+        /// Check if drawer is located in the bottom bay position only if current bay is a double
+        /// internal bay.
         /// </summary>
         private bool IsDrawerCurrentlyInLowerPositionBay()
         {
@@ -497,7 +534,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         /// <summary>
-        /// Get the sensor value related to the existence of drawer in the lower position bay only if current bay is a double internal bay.
+        /// Get the sensor value related to the existence of drawer in the lower position bay only
+        /// if current bay is a double internal bay.
         /// </summary>
         private bool isDrawerCurrentlyNotPresentInLowerPositionBay()
         {

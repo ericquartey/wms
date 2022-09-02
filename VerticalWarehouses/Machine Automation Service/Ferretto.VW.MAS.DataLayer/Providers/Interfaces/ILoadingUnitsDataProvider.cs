@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 
@@ -56,6 +57,12 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetHeight(int loadingUnitId, double height);
 
         void SetLaserOffset(int id, double laserOffset);
+
+        void SetMissionCountRotation(int id, MissionType missionType);
+
+        bool SetRotationClass();
+
+        void SetRotationClassFromUI(int id, string rotationClass);
 
         void SetStatus(int id, LoadingUnitStatus status);
 

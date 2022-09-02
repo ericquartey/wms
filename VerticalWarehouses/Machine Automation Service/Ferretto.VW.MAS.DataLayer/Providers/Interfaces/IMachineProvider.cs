@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// Get the raw database content.
         /// </summary>
         /// <returns>
-        ///     The raw database contents (raw bytes)
+        /// The raw database contents (raw bytes)
         /// </returns>
         byte[] GetRawDatabaseContent();
 
@@ -83,6 +83,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsOneTonMachine();
 
         bool IsRequestConfirmForLastOperationOnLoadingUnit();
+
+        bool IsRotationClassEnabled();
 
         bool IsTouchHelperEnabled();
 

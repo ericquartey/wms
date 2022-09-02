@@ -37,24 +37,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Compacting()
+        public IActionResult Compacting(bool optimizeRotationClass)
         {
             switch (this.BayNumber)
             {
                 case BayNumber.BayOne:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact, optimizeRotationClass: optimizeRotationClass);
                     break;
 
                 case BayNumber.BayTwo:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact2);
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact2, optimizeRotationClass: optimizeRotationClass);
                     break;
 
                 case BayNumber.BayThree:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact3);
-                    break;
-
-                default:
-                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact);
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.Compact3, optimizeRotationClass: optimizeRotationClass);
                     break;
             }
 

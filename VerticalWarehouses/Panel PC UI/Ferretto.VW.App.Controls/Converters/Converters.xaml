@@ -7,9 +7,11 @@
   <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
   <!--<conv:AlphaNumericBarSizeListEnumConverter x:Key="ANBSLEC" />-->
 
-  <conv:LoadingUnitLocationConverter x:Key="LULC" />
+    <conv:LoadingUnitLocationConverter x:Key="LULC" />
+    
+    <conv:ClassToForegroundConverter x:Key="CTFC" />
 
-  <conv:BoolToThicknessConverter x:Key="BTTC" />
+    <conv:BoolToThicknessConverter x:Key="BTTC" />
   <conv:BoolToVisibilityConverter x:Key="BTVC" />
   <conv:BoolToVisibilityConverterHidden x:Key="BTVCH" />
   <conv:BoolToVisibilityConverter x:Key="BTVIC"

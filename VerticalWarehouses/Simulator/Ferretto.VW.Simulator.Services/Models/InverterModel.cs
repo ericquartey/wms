@@ -262,6 +262,8 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private readonly Timer homingTimer;
 
+        private readonly Timer positionErrorTimer;
+
         private readonly Timer shutterTimer;
 
         private readonly double target0_extBay = 0.0d;
@@ -314,6 +316,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.homingTimer = new Timer(this.HomingTick, null, -1, Timeout.Infinite);
             this.targetTimer = new Timer(this.TargetTick, null, -1, Timeout.Infinite);
             this.shutterTimer = new Timer(this.ShutterTick, null, -1, Timeout.Infinite);
+            this.positionErrorTimer = new Timer(this.PositionErrorTick, null, -1, Timeout.Infinite);
 
             this.digitalIO.Add(new BitModel("00", false, GetInverterSignalDescription(inverterType, 0)));
             this.digitalIO.Add(new BitModel("01", false, GetInverterSignalDescription(inverterType, 1)));
@@ -1230,6 +1233,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
+        private void PositionErrorTick(object state)
+        {
+            this.AxisPosition += 3;
+        }
+
         private void ShutterTick(object state)
         {
             if (!this.shutterTimerActive)
@@ -1532,7 +1540,12 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.OperationMode == InverterOperationMode.TableTravel)
                 {
                     // simulate positioning error
-                    //this.AxisPosition += (short)(new Random().Next(-3, 3));
+                    if (!this.IsStartedOnBoard)
+                    {
+                        //this.AxisPosition += (short)(new Random().Next(-5, 5));
+                        //this.positionErrorTimer.Change(500, -1);
+                    }
+
                     if (!this.machine.Bays.Any(s => s.IsExternal && s.Positions.Count() == 2))
                     {
                         OnHorizontalMovementComplete?.Invoke(this, new HorizontalMovementEventArgs() { IsLoading = !this.IsStartedOnBoard });

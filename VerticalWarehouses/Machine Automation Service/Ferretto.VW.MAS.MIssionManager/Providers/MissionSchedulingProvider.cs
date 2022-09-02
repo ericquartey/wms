@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
+        private const char ROTATION_CLASS_A = 'A';
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
@@ -29,7 +31,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingService> logger;
 
-        private readonly IMachineMissionsProvider machineMissionsProvider;
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
@@ -43,7 +45,7 @@ namespace Ferretto.VW.MAS.MissionManager
             ICellsProvider cellsProvider,
             IEventAggregator eventAggregator,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
-            IMachineMissionsProvider missionsProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             IMissionsDataProvider missionsDataProvider,
             IBaysDataProvider baysDataProvider,
             ILogger<MissionSchedulingService> logger)
@@ -55,7 +57,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
-            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
@@ -196,8 +198,10 @@ namespace Ferretto.VW.MAS.MissionManager
             // first we try to find a lower place for each load unit, matching exactly the height
             if (//this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnit, out cellId)
                 //||
+                // then we try to move away the load units in wrong rotation class
+                this.CompactRotationClass(loadUnits, out loadUnit, out cellId)
                 // then we try to find a lower place for each load unit
-                this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
+                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
                 // then we try to send a load unit in top cells
                 || this.CompactTopCell(loadUnits, out loadUnit, out cellId)
                 // then we try to shift down the load units
@@ -210,6 +214,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 return true;
             }
             // no more compacting is possible. Exit from compact mode
+            this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
             return false;
         }
 
@@ -295,13 +300,48 @@ namespace Ferretto.VW.MAS.MissionManager
                 return false;
             }
             this.logger.LogDebug($"Compacting empty cells {compactingType}");
-            foreach (var loadUnit in loadUnits)
+            foreach (var loadUnit in loadUnits.OrderByDescending(o => string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
+                .ThenByDescending(l => l.Cell.Position))
             {
                 try
                 {
                     if (loadUnit.IsIntoMachineOK)
                     {
                         cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
+                        loadUnitOut = loadUnit;
+                        return true;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // continue with next Load Unit
+                }
+            }
+            return false;
+        }
+
+        private bool CompactRotationClass(IEnumerable<LoadingUnit> loadUnits, out LoadingUnit loadUnitOut, out int? cellId)
+        {
+            loadUnitOut = null;
+            cellId = null;
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            if (!this.machineVolatileDataProvider.IsOptimizeRotationClass)
+            {
+                return false;
+            }
+            this.logger.LogDebug("Compacting rotation class");
+            foreach (var loadUnit in loadUnits.OrderBy(o => o.Cell.Position))
+            {
+                try
+                {
+                    if (loadUnit.IsIntoMachineOK
+                        && loadUnit.IsRotationClassDifferent
+                        && this.machineVolatileDataProvider.IsOptimizeRotationClass)
+                    {
+                        cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id);
                         loadUnitOut = loadUnit;
                         return true;
                     }
@@ -327,7 +367,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 if (this.cellsProvider.IsTopCellAvailable(side))
                 {
-                    foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Height))
+                    foreach (var loadUnit in loadUnits.OrderByDescending(o => string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
+                        .ThenByDescending(o => o.Height))
                     {
                         try
                         {

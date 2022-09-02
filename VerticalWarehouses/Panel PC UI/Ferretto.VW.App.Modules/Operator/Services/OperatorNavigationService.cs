@@ -254,6 +254,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             this.logger.Debug($"Navigate 3 wmsMission {this.missionOperationsService.ActiveWmsOperation?.MissionId}, " +
                 $"machineMission {this.missionOperationsService.ActiveMachineMission?.Id}, " +
+                $"operation {this.missionOperationsService.ActiveWmsOperation?.Id}, " +
                 $"Type {this.missionOperationsService.ActiveWmsOperation?.Type}");
 
             if (this.missionOperationsService.ActiveWmsOperation != null &&

@@ -190,6 +190,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             switch (size)
             {
+                case AlphaNumericBarSize.ExtraExtraSmall:
+                    this.loadingUnitWidth = 1650;
+                    break;
+
                 case AlphaNumericBarSize.ExtraSmall:
                     this.loadingUnitWidth = 1950;
                     break;

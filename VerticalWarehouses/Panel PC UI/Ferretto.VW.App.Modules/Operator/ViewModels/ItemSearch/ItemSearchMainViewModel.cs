@@ -88,6 +88,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGroupbyLotEnabled;
 
+        private bool isLocalMachineItems;
+
         private bool isOrderVisible;
 
         private bool isPickItemPutItemOperationsEnabled;
@@ -936,6 +938,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
+            this.isLocalMachineItems = configuration.Machine.IsLocalMachineItems;
 
             this.Appear = false;
             this.InputQuantity = 0;
@@ -1308,8 +1311,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return
                 !this.IsWaitingForResponse
-                &&
-                this.SelectedItem != null;
+                && this.SelectedItem != null
+                && this.SelectedItem.Machines != null
+                && this.SelectedItem.Machines.Any(m => m.Id == this.bayManager.Identity.Id);
         }
 
         private async Task OnAppearItem()
@@ -1426,12 +1430,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                        for (int i = 0; i < item.Machines.Count(); i++)
+                        foreach (var machine in item.Machines.Where(m => !this.isLocalMachineItems || m.Id == this.bayManager.Identity.Id))
                         {
-                            //if (item.Machines.ElementAt(i).Id == model.Id)
+                            var newMachine = new List<MachineItemInfo>();
+                            newMachine.Add(machine);
+                            var newItem = new ProductInMachine()
                             {
-                                this.productsInCurrentMachine.Add(item);
-                            }
+                                Machines = newMachine,
+                                Lot = item.Lot,
+                                SerialNumber = item.SerialNumber,
+                                Sscc = item.Sscc,
+                                Item = item.Item,
+                            };
+                            this.productsInCurrentMachine.Add(newItem);
                         }
                     }
                 }

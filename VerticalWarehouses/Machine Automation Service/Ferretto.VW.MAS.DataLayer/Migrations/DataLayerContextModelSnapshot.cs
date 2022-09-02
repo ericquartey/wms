@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<bool>("IsOptimizeRotationClass");
+
                     b.HasKey("Id");
 
                     b.ToTable("AutoCompactingSettings");
@@ -117,6 +119,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("Put");
 
                     b.Property<double>("Resolution");
+
+                    b.Property<string>("RotationClass");
 
                     b.Property<bool>("ShowBarcodeImage");
 
@@ -282,6 +286,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<double>("Position");
 
                     b.Property<int>("Priority");
+
+                    b.Property<string>("RotationClass");
 
                     b.HasKey("Id");
 
@@ -1271,11 +1277,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsIntoMachine");
 
+                    b.Property<bool>("IsRotationClassFixed");
+
                     b.Property<double>("LaserOffset");
 
                     b.Property<double>("MaxNetWeight");
 
                     b.Property<int>("MissionsCount");
+
+                    b.Property<int>("MissionsCountRotation");
+
+                    b.Property<string>("RotationClass");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1403,6 +1415,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsQuantityLimited");
 
                     b.Property<bool>("IsRequestConfirmForLastOperationOnLoadingUnit");
+
+                    b.Property<bool>("IsRotationClass");
 
                     b.Property<bool>("IsUpdatingStockByDifference");
 
@@ -1649,6 +1663,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("MovementProfiles");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RotationClassSchedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DaysCount");
+
+                    b.Property<DateTime?>("LastSchedule");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RotationClassSchedule");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>

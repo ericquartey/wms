@@ -1953,26 +1953,11 @@
   <data name="SerialNumber" xml:space="preserve">
     <value>Серийный номер</value>
   </data>
-  <data name="AlphaNumericBarSizeL" xml:space="preserve">
-    <value>Большой</value>
-  </data>
   <data name="ExtBayTowardOperator" xml:space="preserve">
     <value>К оператору</value>
   </data>
-  <data name="AlphaNumericBarSizeM" xml:space="preserve">
-    <value>Средний</value>
-  </data>
   <data name="ExtBayCalibration" xml:space="preserve">
     <value>Калибровка внешней секции</value>
-  </data>
-  <data name="AlphaNumericBarSizeS" xml:space="preserve">
-    <value>Маленький</value>
-  </data>
-  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
-    <value>Очень большой</value>
-  </data>
-  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
-    <value>Очень маленький</value>
   </data>
   <data name="LoadFile" xml:space="preserve">
     <value>Импорт в память </value>

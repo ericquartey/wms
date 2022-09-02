@@ -480,6 +480,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.MachineProvider.UpdateServiceStatistics();
                             }
+                            else if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Elevator)
+                            {
+                                this.LoadingUnitsDataProvider.SetMissionCountRotation(this.Mission.LoadUnitId, this.Mission.MissionType);
+                            }
                             this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
                         }
                         catch (Exception ex)
