@@ -1311,8 +1311,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return
                 !this.IsWaitingForResponse
-                &&
-                this.SelectedItem != null;
+                && this.SelectedItem != null
+                && this.SelectedItem.Machines != null
+                && this.SelectedItem.Machines.Any(m => m.Id == this.bayManager.Identity.Id);
         }
 
         private async Task OnAppearItem()
@@ -1429,13 +1430,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                        //for (int i = 0; i < item.Machines.Count(); i++)
-                        //{
-                        //    //if (item.Machines.ElementAt(i).Id == model.Id)
-                        //    {
-                        //        this.productsInCurrentMachine.Add(item);
-                        //    }
-                        //}
                         foreach (var machine in item.Machines.Where(m => !this.isLocalMachineItems || m.Id == this.bayManager.Identity.Id))
                         {
                             var newMachine = new List<MachineItemInfo>();
@@ -1446,12 +1440,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 Lot = item.Lot,
                                 SerialNumber = item.SerialNumber,
                                 Sscc = item.Sscc,
-                            };
-                            newItem.Item = new Item()
-                            {
-                                Code = item.Item.Code,
-                                Description = item.Item.Description,
-                                UnitWeight = item.Item.UnitWeight,
+                                Item = item.Item,
                             };
                             this.productsInCurrentMachine.Add(newItem);
                         }
