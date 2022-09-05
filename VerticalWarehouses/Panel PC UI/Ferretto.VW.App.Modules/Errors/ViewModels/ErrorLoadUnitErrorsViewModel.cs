@@ -674,21 +674,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 this.ManualMode = ((this.MachineError.Code == 27 || this.MachineError.Code == 26 || this.MachineError.Code == 29) && this.sessionService.UserAccessLevel > UserAccessLevel.Movement);
 
-                // Elevator
-                //this.LuIdOnElevator = null;
-                //if (this.SensorsService.IsLoadingUnitOnElevator)
-                //{
-                //    this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.InElevator)?.Id;
-                //    //this.LuIdOnElevator = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
-                //}
-
-                //if (this.LuIdOnElevator != null)
-                //{
-                //    this.ElevatorStepText = stepValue.ToString();
-                //    stepValue++;
-                //    this.ElevatorStepVisible = true;
-                //}
-
                 // Bay 1
                 this.LuIdOnBay1Up = null;
                 this.LuIdOnBay1Down = null;
