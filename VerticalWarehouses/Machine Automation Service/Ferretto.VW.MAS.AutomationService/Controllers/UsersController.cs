@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -8,9 +7,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using UserAccessLevel = Ferretto.VW.CommonUtils.Messages.Enumerations.UserAccessLevel;
 using UserClaims = Ferretto.VW.CommonUtils.Messages.Data.UserClaims;
@@ -104,8 +100,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                     var claims = await this.usersWmsWebService.AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
+                    if (claims != null)
+                    {
+                        claims.AccessLevel = (WMS.Data.WebAPI.Contracts.UserAccessLevel)Ferretto.VW.CommonUtils.Messages.Enumerations.UserAccessLevel.Operator;
+                    }
+
                     this.logger.LogInformation(
-                        "User '{name}': login successful on bay '{number}' trhough WMS.",
+                        "User '{name}': login successful on bay '{number}' through WMS.",
                         userName,
                         this.BayNumber);
 

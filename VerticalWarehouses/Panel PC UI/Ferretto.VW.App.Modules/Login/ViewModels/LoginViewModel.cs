@@ -511,39 +511,21 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                if (this.baseUser.Contains(this.UserLogin.UserName))
+                if (!string.IsNullOrEmpty(this.UserLogin.Error))
                 {
-                    if (!string.IsNullOrEmpty(this.UserLogin.Error))
-                    {
-                        this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
-                        return;
-                    }
-
-                    var claims = await this.authenticationService.LogInAsync(
-                       this.UserLogin.UserName,
-                       this.UserLogin.Password,
-                       this.UserLogin.SupportToken);
-
-                    await this.NavigateToMainMenuAsync(claims);
-
-                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
+                    this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
+                    return;
                 }
-                else
-                {
-                    //var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
-                    //    this.UserLogin.UserName,
-                    //    this.UserLogin.Password);
 
-                    var claims = await this.authenticationService.LogInAsync(
-                       this.UserLogin.UserName,
-                       this.UserLogin.Password,
-                       this.UserLogin.SupportToken,
-                       UserAccessLevel.Operator);
+                var z = await this.usersService.GetAllUsersAsync();
+                var claims = await this.authenticationService.LogInAsync(
+                    this.UserLogin.UserName,
+                    this.UserLogin.Password,
+                    this.UserLogin.SupportToken);
 
-                    await this.NavigateToMainMenuAsync(claims);
+                await this.NavigateToMainMenuAsync(claims);
 
-                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
-                }
+                this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
