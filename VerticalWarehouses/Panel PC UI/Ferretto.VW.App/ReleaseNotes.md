@@ -25,18 +25,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
-- Aggiunta dimensione XXS per la barra alfanumerica
+## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
+- Aggiunta classe di rotazione ABC
 
 ## Bug Risolti
-- Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud
-- Spostamento da cella a cella: aggiunto controllo di serranda chiusa
-- L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
-- Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
-- Macchine con più Baie: i cassetti in attesa su una Baia non bloccano le missioni sull'altra Baia
+- Ricerca articoli: corretta la quantità nelle altre macchine
+- Gestione operatori: corretto il cambio della password di Operator
+- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
 
-## Compatibile con adapter 0.4.38
+## Compatibile con adapter 0.4.39
 ***
+
+[Versione 1.0.49](#id1049)
 
 [Versione 1.0.48](#id1048)
 
@@ -136,6 +136,20 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1049"></a>
+## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
+- Aggiunta dimensione XXS per la barra alfanumerica
+
+## Bug Risolti
+- Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud
+- Spostamento da cella a cella: aggiunto controllo di serranda chiusa
+- L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
+- Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
+- Macchine con più Baie: i cassetti in attesa su una Baia non bloccano le missioni sull'altra Baia
+
+## Compatibile con adapter 0.4.38
+
 
 <a id="id1048"></a>
 ## Nuove Funzionalità 1.0.48 rispetto la 1.0.47

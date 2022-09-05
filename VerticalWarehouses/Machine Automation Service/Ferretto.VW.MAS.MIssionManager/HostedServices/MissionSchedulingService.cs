@@ -1366,6 +1366,22 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 foreach (var bay in bays)
                 {
+                    if (bay.Carousel != null
+                        && !machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
+                    {
+                        errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart);
+                        this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
+                        if (bay.CurrentMission != null)
+                        {
+                            moveLoadingUnitProvider.StopMove(bay.CurrentMission.Id, bay.Number, bay.Number, MessageActor.MissionManager);
+                        }
+
+                        //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                        this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
+                        this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        return true;
+                    }
+
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
                         if ((sensorProvider.IsLoadingUnitInLocation(position.Location) && !position.IsBlocked)
@@ -1395,21 +1411,6 @@ namespace Ferretto.VW.MAS.MissionManager
                             }
                         }
 
-                        if (bay.Carousel != null
-                            && !machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
-                        {
-                            errorsProvider.RecordNew(MachineErrorCode.SensorZeroBayNotActiveAtStart);
-                            this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
-                            if (bay.CurrentMission != null)
-                            {
-                                moveLoadingUnitProvider.StopMove(bay.CurrentMission.Id, bay.Number, bay.Number, MessageActor.MissionManager);
-                            }
-
-                            //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
-                            this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);
-                            this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
-                            return true;
-                        }
                     }
                 }
             }
