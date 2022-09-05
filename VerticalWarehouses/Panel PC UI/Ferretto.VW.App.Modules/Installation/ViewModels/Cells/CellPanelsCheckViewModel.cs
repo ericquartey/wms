@@ -432,6 +432,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.SensorsService.RefreshAsync(true);
 
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
+                if (this.Panels != null)
+                {
+                    this.CurrentPanel = this.Panels.ElementAtOrDefault(this.lastPanel - 1);
+                }
 
                 this.CurrentHeight = this.MachineStatus.ElevatorVerticalPosition;
             }
@@ -532,7 +536,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentCellId > 0)
             {
                 var cell = originalCells.FirstOrDefault(c => c.Id == this.CurrentCellId);
-                if (cell != null && Math.Abs(this.CurrentCell.Position + this.Displacement - cell.Position) > 6.51)
+                if (cell != null
+                    && this.CurrentCell  != null
+                    && Math.Abs(this.CurrentCell.Position + this.Displacement - cell.Position) > 6.51)
                 {
                     isOk = false;
                 }
@@ -564,7 +570,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CurrentCell != null &&
                    this.CurrentCell.SupportType == SupportType.Insert &&
-                   this.StepValue != 0;
+                   this.StepValue != 0 &&
+                   this.displacement != 0 &&
+                   !this.IsMoving;
         }
 
         private bool CanGoToCellHeight()
