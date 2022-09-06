@@ -32,6 +32,7 @@
 - Ricerca articoli: corretta la quantità nelle altre macchine
 - Gestione operatori: corretto il cambio della password di Operator
 - Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
+- Login: corretto livello degli utenti di wms con nomi uguali ai locali
 
 ## Compatibile con adapter 0.4.39
 ***
