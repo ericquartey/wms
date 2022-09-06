@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -19,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ILogger<UsersController> logger;
 
         private readonly IUsersProvider usersProvider;
@@ -32,10 +35,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public UsersController(
             IUsersProvider usersProvider,
             IUsersWmsWebService usersWmsWebService,
+            IBaysDataProvider baysDataProvider,
             ILogger<UsersController> logger)
         {
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
             this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -66,6 +71,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.logger.LogInformation($"Login success for user '{claims.Name}' by '{this.BayNumber}' through WMS.");
 
                 return this.Ok(claims);
+            }
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            if (bay?.Accessories?.CardReader?.IsLocal is true)
+            {
+                var user = this.usersProvider.Authenticate(bearerToken);
+                if (user != null)
+                {
+                    this.logger.LogInformation($"Login success for user '{user.Name}' by '{this.BayNumber}' local token.");
+                    var claims = new UserClaims() { Name = user.Name, AccessLevel = (UserAccessLevel)user.AccessLevel };
+                    return this.Ok(claims);
+                }
             }
 
             return this.BadRequest(

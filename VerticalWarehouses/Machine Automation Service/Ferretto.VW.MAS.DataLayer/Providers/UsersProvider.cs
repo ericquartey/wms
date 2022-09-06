@@ -149,7 +149,6 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         default:
-                            item.AccessLevel = ((int)UserAccessLevel.NoAccess);
                             break;
                     }
                 }
@@ -185,6 +184,28 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             throw new EntityNotFoundException(userName);
+        }
+
+        public UserParameters Authenticate(string cardToken)
+        {
+            if (string.IsNullOrWhiteSpace(cardToken))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(cardToken));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Token == cardToken);
+
+                if (user != null
+                    &&
+                    (UserAccessLevel)user.AccessLevel != UserAccessLevel.NoAccess)
+                {
+                    return user;
+                }
+            }
+
+            return null;
         }
 
         public void ChangePassword(string userName, string newPassword)
