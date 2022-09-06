@@ -1263,23 +1263,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Accessories)
-                    .ThenInclude(a => a.CardReader)
-                    .Single(b => b.Number == bayNumber);
-
-                bay.Accessories.CardReader.IsEnabledNew = isEnabled;
-                bay.Accessories.CardReader.TokenRegex = tokenRegex;
-
-                this.dataContext.Accessories.Update(bay.Accessories.CardReader);
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public void UpdateELevatorDistance(BayNumber bayNumber, double distance)
         {
             lock (this.dataContext)

@@ -9,9 +9,17 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int AccessLevel { get; set; }
 
+        /// <summary>
+        /// Movement user is normally disabled, only Admin can enable
+        /// </summary>
         public bool IsDisabled { get; set; }
 
         public bool IsDisabledWithWMS { get; set; }
+
+        /// <summary>
+        /// local user cannot call Load Units
+        /// </summary>
+        public bool IsLimited { get; set; }
 
         public bool IsService => string.CompareOrdinal(this.Name, "service") == 0;
 
@@ -19,9 +27,14 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Name { get; set; }
 
+        /// <summary>
+        /// Local users do not appear in the login list if they have empty password
+        /// </summary>
         public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }
+
+        public string Token { get; set; }
 
         public DateTimeOffset Validity { get; set; }
 

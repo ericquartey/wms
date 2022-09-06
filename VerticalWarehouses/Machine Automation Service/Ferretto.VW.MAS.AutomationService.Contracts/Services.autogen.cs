@@ -681,22 +681,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex)
+        public System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal)
         {
-            return UpdateCardReaderSettingsAsync(isEnabled, tokenRegex, System.Threading.CancellationToken.None);
+            return UpdateCardReaderSettingsAsync(isEnabled, tokenRegex, isLocal, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal, System.Threading.CancellationToken cancellationToken)
         {
             if (isEnabled == null)
                 throw new System.ArgumentNullException("isEnabled");
+    
+            if (isLocal == null)
+                throw new System.ArgumentNullException("isLocal");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/accessories/card-reader?");
             urlBuilder_.Append(System.Uri.EscapeDataString("isEnabled") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isEnabled, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("tokenRegex") + "=").Append(System.Uri.EscapeDataString(tokenRegex != null ? ConvertToString(tokenRegex, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("isLocal") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isLocal, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

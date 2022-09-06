@@ -134,11 +134,11 @@ namespace Ferretto.VW.App.Accessories
             return Task.CompletedTask;
         }
 
-        public async Task UpdateSettingsAsync(bool isEnabled, string tokenRegex)
+        public async Task UpdateSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal)
         {
             try
             {
-                await this.accessoriesWebService.UpdateCardReaderSettingsAsync(isEnabled, tokenRegex);
+                await this.accessoriesWebService.UpdateCardReaderSettingsAsync(isEnabled, tokenRegex, isLocal);
 
                 this.tokenRegex = tokenRegex is null
                     ? DefaultTokenRegex

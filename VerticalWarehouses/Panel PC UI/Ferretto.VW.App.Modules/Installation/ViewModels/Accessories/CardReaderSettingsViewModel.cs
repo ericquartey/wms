@@ -211,7 +211,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Logger.Debug("Saving card reader settings ...");
 
                 this.IsWaitingForResponse = true;
-                await this.cardReaderService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.TokenRegex);
+                await this.cardReaderService.UpdateSettingsAsync(this.IsAccessoryEnabled, this.TokenRegex, this.IsLocal);
 
                 this.Logger.Debug("Card reader settings saved.");
             }

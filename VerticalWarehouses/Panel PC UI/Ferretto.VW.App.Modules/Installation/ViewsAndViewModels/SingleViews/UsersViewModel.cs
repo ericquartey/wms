@@ -278,6 +278,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
                     else
                     {
+                        //var print = this.operatorNewPassword.ToCharArray();
                         await this.usersService.ChangePasswordAsync("operator", this.operatorNewPassword);
                         this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
                     }

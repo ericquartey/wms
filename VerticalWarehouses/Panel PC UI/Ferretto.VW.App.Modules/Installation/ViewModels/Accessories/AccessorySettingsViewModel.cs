@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isEnabled;
 
+        private bool isLocal;
+
         private DateTimeOffset? manufactureDate;
 
         private string modelNumber;
@@ -92,6 +94,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isEnabled, value))
                 {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsLocal
+        {
+            get => this.isLocal;
+            set
+            {
+                if (this.SetProperty(ref this.isLocal, value))
+                {
+                    this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
                 }
             }

@@ -74,11 +74,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task UpdateBarcodeReaderSettingsAsync(bool isEnabled, string portName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex);
+        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLabelPrinterSettingsAsync(bool isEnabled, string printerName);
@@ -3332,6 +3332,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CardReader : Accessory
     {
+        [Newtonsoft.Json.JsonProperty("IsLocal", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsLocal { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("TokenRegex", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TokenRegex { get; set; }
     
@@ -7983,6 +7986,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsDisabledWithWMS", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDisabledWithWMS { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsLimited", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLimited { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsService", Required = Newtonsoft.Json.Required.Always)]
         public bool IsService { get; set; }
     
@@ -7997,6 +8003,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("PasswordSalt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string PasswordSalt { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Token { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Validity", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]

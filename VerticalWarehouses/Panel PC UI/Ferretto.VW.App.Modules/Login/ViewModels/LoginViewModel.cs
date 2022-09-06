@@ -517,7 +517,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     return;
                 }
 
-                var z = await this.usersService.GetAllUsersAsync();
                 var claims = await this.authenticationService.LogInAsync(
                     this.UserLogin.UserName,
                     this.UserLogin.Password,
