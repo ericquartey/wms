@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
 
+        private readonly IMachineUsersWebService machineUsersWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineUsersWebService>();
+
         private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
 
         private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
@@ -179,6 +181,8 @@ namespace Ferretto.VW.App.Controls
         public IMachineService MachineService => this.machineService;
 
         public App.Services.Models.MachineStatus MachineStatus => this.machineService.MachineStatus;
+
+        public IMachineUsersWebService MachineUsersWebService => this.machineUsersWebService;
 
         public PresentationMode Mode
         {

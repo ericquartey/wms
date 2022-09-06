@@ -370,23 +370,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 switch (this.UserLogin?.UserName?.ToLower())
                 {
                     case "installer":
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                        break;
-
                     case "service":
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                        break;
-
                     case "movement":
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                        break;
-
                     case "admin":
+                    case "guest":
                         Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
                         break;
 
                     default:
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name.ToLower() == "operator").Language);
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().First().Language);
                         break;
                 }
             }

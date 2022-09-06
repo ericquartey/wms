@@ -57,6 +57,19 @@ namespace Ferretto.VW.MAS.DataModels
                 Validity = DateTime.Now,
             };
 
+            public static readonly UserParameters Guest = new UserParameters
+            {
+                Id = -5,
+                Name = "guest",
+                AccessLevel = 1,
+                PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
+                PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
+                Language = "it-IT",
+                Validity = DateTime.Now,
+                IsDisabled = true,
+                IsLimited = true,
+            };
+
             public static readonly UserParameters Installer = new UserParameters
             {
                 Id = -2,

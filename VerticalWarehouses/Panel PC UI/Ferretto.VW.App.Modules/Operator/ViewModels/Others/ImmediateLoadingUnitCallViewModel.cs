@@ -41,6 +41,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnabledLaser;
 
+        private bool isRotationClassEnabled;
+
+        private bool isUserLimited;
+
         private int? loadingUnitId;
 
         private List<LoadingUnit> loadingUnits;
@@ -48,8 +52,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand loadingUnitsMissionsCommand;
 
         private int maxLoadingUnitId;
-
-        private bool isRotationClassEnabled;
 
         private int minLoadingUnitId;
 
@@ -104,6 +106,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsOperator => this.sessionService.UserAccessLevel <= MAS.AutomationService.Contracts.UserAccessLevel.Movement;
 
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
         public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -151,12 +159,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.loadingUnits;
             set => this.SetProperty(ref this.loadingUnits, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsRotationClassEnabled
-        {
-            get => this.isRotationClassEnabled;
-            set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         //public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
@@ -261,6 +263,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
                 this.changeRotationClassCommand?.RaiseCanExecuteChanged();
+                this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
             }
 
             this.SelectedLoadingUnit = null;
@@ -304,7 +307,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             &&
             !this.IsWaitingForResponse
             &&
-            this.SelectedLoadingUnit.IsIntoMachineOK;
+            this.SelectedLoadingUnit.IsIntoMachineOK
+            &&
+            !this.isUserLimited;
         }
 
         private bool CanChangeLaserOffset()

@@ -232,10 +232,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(users);
         }
 
-        [HttpGet("get-isDisabled")]
+        [HttpGet("get-disabled")]
         public ActionResult<bool> GetIsDisabled(string userName)
         {
             var users = this.usersProvider.GetIsDisabled(userName);
+            return this.Ok(users);
+        }
+
+        [HttpGet("get-limited")]
+        public ActionResult<bool> GetIsLimited(string userName)
+        {
+            var users = this.usersProvider.GetIsLimited(userName);
             return this.Ok(users);
         }
 
@@ -258,12 +265,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(token);
         }
 
-        [HttpPost("change-isDisabled")]
+        [HttpPost("change-disabled")]
         public IActionResult SetIsDisabled(string userName, bool isDisabled)
         {
-            this.logger.LogInformation($"Change isDisabled for user '{userName}' by '{this.BayNumber}'.");
+            this.logger.LogInformation($"Change isDisabled for user '{userName}' to {isDisabled} by '{this.BayNumber}'.");
 
             this.usersProvider.SetIsDisabled(userName, isDisabled);
+            return this.Ok();
+        }
+
+        [HttpPost("change-limited")]
+        public IActionResult SetIsLimited(string userName, bool isLimited)
+        {
+            this.logger.LogInformation($"Change isLimited for user '{userName}' to {isLimited} by '{this.BayNumber}'.");
+
+            this.usersProvider.SetIsLimited(userName, isLimited);
             return this.Ok();
         }
 
