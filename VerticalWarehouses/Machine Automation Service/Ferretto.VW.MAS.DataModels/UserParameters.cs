@@ -27,13 +27,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Name { get; set; }
 
-        /// <summary>
-        /// Local users do not appear in the login list if they have empty password
-        /// </summary>
         public string PasswordHash { get; set; }
 
         public string PasswordSalt { get; set; }
 
+        /// <summary>
+        /// Local users do not appear in the login list if they have the token
+        /// </summary>
         public string Token { get; set; }
 
         public DateTimeOffset Validity { get; set; }

@@ -283,7 +283,8 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var count = this.dataContext.Users.Count();
-                var result = this.dataContext.Users.AsNoTracking().Where(u => !u.IsDisabled).OrderBy(o => o.AccessLevel).ThenByDescending(o => o.Id);
+                var result = this.dataContext.Users.AsNoTracking().Where(u => !u.IsDisabled && !u.IsDisabledWithWMS && string.IsNullOrEmpty(u.Token))
+                    .OrderBy(o => o.AccessLevel).ThenByDescending(o => o.Id);
                 return result;
             }
         }
@@ -337,14 +338,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
+                var user = this.dataContext.Users.FirstOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator && u.IsDisabledWithWMS);
 
-                if (user != null)
-                {
-                    return !user.IsDisabledWithWMS;
-                }
+                return (user is null);
             }
-            throw new EntityNotFoundException("Operator");
         }
 
         public void SetIsDisabled(string userName, bool isDisabled)

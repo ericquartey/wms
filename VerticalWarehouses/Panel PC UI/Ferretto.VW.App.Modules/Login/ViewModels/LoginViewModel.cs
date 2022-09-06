@@ -355,7 +355,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             if (this.authenticationService.IsAutoLogoutServiceUser)
             {
                 this.authenticationService.IsAutoLogoutServiceUser = false;
-                this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
+                this.ShowNotification(Localized.Get("LoadLogin.AutoLogoutServiceUser"));
             }
 
             this.SelectedUserChanged();
