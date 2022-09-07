@@ -49,6 +49,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpPost("add-user")]
+        public IActionResult AddUser(Ferretto.VW.MAS.DataModels.UserParameters user)
+        {
+            this.logger.LogInformation($"Add user '{user.Name}' by '{this.BayNumber}'.");
+
+            this.usersProvider.AddUser(user);
+            return this.Ok();
+        }
+
         [HttpPost("authenticate-bearer-token")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -184,6 +193,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.logger.LogInformation($"Change password for user '{userName}' by '{this.BayNumber}'.");
 
             this.usersProvider.ChangePassword(userName, newPassword);
+            return this.Ok();
+        }
+
+        [HttpPost("delete-user")]
+        public IActionResult DeleteUser(Ferretto.VW.MAS.DataModels.UserParameters user)
+        {
+            this.logger.LogInformation($"Delete user '{user.Name}' by '{this.BayNumber}'.");
+
+            this.usersProvider.DeleteUser(user);
             return this.Ok();
         }
 

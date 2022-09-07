@@ -2041,6 +2041,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This will delete the user, proceed?.
+        /// </summary>
+        public static string DeleteUserConfirm {
+            get {
+                return ResourceManager.GetString("DeleteUserConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The unit loading / unloading function allows you to test the correct operation of the unit movements through a series of cycles. The procedure for next steps until correct completion..
         /// </summary>
         public static string DeposiAndPickUpDescription {
@@ -4066,6 +4075,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Local.
+        /// </summary>
+        public static string IsLocal {
+            get {
+                return ResourceManager.GetString("IsLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read only.
         /// </summary>
         public static string IsReadOnly {
@@ -5043,6 +5061,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MushroomHeadButton {
             get {
                 return ResourceManager.GetString("MushroomHeadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         

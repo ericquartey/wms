@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
-using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -23,7 +25,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ICardReaderService cardReaderService;
 
+        private readonly IMachineUsersWebService machineUsersWebService;
+
+        private readonly IDialogService dialogService;
+
         private readonly ObservableCollection<InputKey> inputKeys = new ObservableCollection<InputKey>();
+
+        private ObservableCollection<UserParameters> users = new ObservableCollection<UserParameters>();
 
         private readonly EventHandler<string> keyAcquiredEventHandler;
 
@@ -33,21 +41,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isTesting;
 
+        private bool isLocal;
+
         private DelegateCommand startTestCommand;
 
         private DelegateCommand stopTestCommand;
 
+        private DelegateCommand addCommand;
+
+        private DelegateCommand deleteCommand;
+
         private string tokenRegex;
 
+        private string userName;
+
         private bool canEditTokenRegex;
+
+        private UserParameters selectedUser;
 
         #endregion
 
         #region Constructors
 
-        public CardReaderSettingsViewModel(ICardReaderService cardReaderService)
+        public CardReaderSettingsViewModel(ICardReaderService cardReaderService,
+            IMachineUsersWebService machineUsersWebService,
+            IDialogService dialogService)
         {
             this.cardReaderService = cardReaderService;
+            this.machineUsersWebService = machineUsersWebService;
+            this.dialogService = dialogService;
 
             this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(this.OnTokenAcquired);
             this.keyAcquiredEventHandler = new EventHandler<string>(this.OnKeyAcquired);
@@ -57,7 +79,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public IEnumerable<string> AcquiredTokens => this.acquiredTokens;
+        public ObservableCollection<string> AcquiredTokens => this.acquiredTokens;
 
         public IEnumerable<InputKey> InputKeys => this.inputKeys;
 
@@ -73,10 +95,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public UserParameters SelectedUser
+        {
+            get => this.selectedUser;
+            set => this.SetProperty(ref this.selectedUser, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool CanEditTokenRegex
         {
             get => this.canEditTokenRegex;
             set => this.SetProperty(ref this.canEditTokenRegex, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsLocal
+        {
+            get => this.isLocal;
+            set => this.SetProperty(ref this.isLocal, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ObservableCollection<UserParameters> Users
+        {
+            get => this.users;
+            set => this.SetProperty(ref this.users, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string UserName
+        {
+            get => this.userName;
+            set => this.SetProperty(ref this.userName, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand StartTestCommand =>
@@ -86,6 +132,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () =>
                 await this.StartTestAsync(),
                 this.CanStartTest));
+
+        public ICommand AddCommand =>
+            this.addCommand
+            ??
+            (this.addCommand = new DelegateCommand(
+                async () =>
+                await this.AddAsync(),
+                this.CanAdd));
+
+        public ICommand DeleteCommand =>
+            this.deleteCommand
+            ??
+            (this.deleteCommand = new DelegateCommand(
+                async () =>
+                await this.DeleteAsync(),
+                this.CanDelete));
 
         public ICommand StopTestCommand =>
            this.stopTestCommand
@@ -137,6 +199,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.cardReaderService.KeysAcquired += this.keyAcquiredEventHandler;
                 this.areEventsRegistered = true;
             }
+
+            //this.Users.Clear();
+
+            var allUsers = await this.machineUsersWebService.GetAllUserWithCultureAsync();
+            this.Users.AddRange(allUsers/*.Where(u => !string.IsNullOrEmpty(u.Token))*/);
         }
 
         protected override async Task TestAsync()
@@ -145,6 +212,64 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 //Do nothing
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        public bool CanAdd()
+        {
+            return this.UserName != null && this.AcquiredTokens != null;
+        }
+
+        public async Task AddAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                var userParameters = new UserParameters() { Name = this.UserName, AccessLevel = ((int)UserAccessLevel.Operator), PasswordHash = "", PasswordSalt = "", Token = this.AcquiredTokens.LastOrDefault() };
+
+                await this.machineUsersWebService.AddUserAsync(userParameters);
+
+                this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+
+                this.AcquiredTokens.Clear();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        public bool CanDelete()
+        {
+            return this.SelectedUser != null && !string.IsNullOrEmpty(this.SelectedUser.Token);
+        }
+
+        public async Task DeleteAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("InstallationApp.ConfirmationOperation"), Localized.Get("InstallationApp.DeleteUserConfirm"), DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult is DialogResult.Yes)
+                {
+                    await this.machineUsersWebService.DeleteUserAsync(this.SelectedUser);
+                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                }
             }
             catch (Exception ex)
             {
@@ -202,6 +327,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.stopTestCommand?.RaiseCanExecuteChanged();
             this.startTestCommand?.RaiseCanExecuteChanged();
+            this.addCommand?.RaiseCanExecuteChanged();
+            this.deleteCommand?.RaiseCanExecuteChanged();
         }
 
         protected override async Task SaveAsync()

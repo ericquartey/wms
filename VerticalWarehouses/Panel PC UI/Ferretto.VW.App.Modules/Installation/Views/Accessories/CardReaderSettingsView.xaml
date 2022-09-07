@@ -23,32 +23,217 @@
                                        TrueBrush="{StaticResource FerrettoGreen}" />
     </Grid.Resources>
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="auto"/>
       <ColumnDefinition />
-      <ColumnDefinition />
-      <ColumnDefinition Width="Auto" />
+            <ColumnDefinition  Width="auto"/>
     </Grid.ColumnDefinitions>
-
     <Grid.RowDefinitions>
-      <RowDefinition x:Name="Row0_Title"
-                     Height="100" />
-      <RowDefinition x:Name="Row1_Enable"
-                     Height="Auto" />
-      <RowDefinition x:Name="Row2_TokenRegex"
-                     Height="Auto" />
+      <RowDefinition x:Name="Row0_Title" Height="100" />
+      <RowDefinition x:Name="Row1_Enable" Height="Auto" />
+      <RowDefinition x:Name="Row2_TokenRegex" Height="Auto" />
       <RowDefinition x:Name="Row3_Input" />
-      <RowDefinition x:Name="Row4_Tokens_Title"
-                     Height="Auto" />
+      <RowDefinition x:Name="Row4_Tokens_Title" Height="Auto" />
       <RowDefinition x:Name="Row5_Tokens" />
-      <RowDefinition x:Name="Row6_Save"
-                     Height="Auto" />
+      <RowDefinition x:Name="Row6_Save" Height="Auto" />
     </Grid.RowDefinitions>
 
+    <Grid Background="{StaticResource GrayE}"
+              Grid.Row="1"
+              Grid.Column="2"
+              Margin="15"
+              Grid.RowSpan="5" >
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <DataGrid Width="400"
+                      Margin="2"
+                      AutoGenerateColumns="False"
+                      VerticalScrollBarVisibility="Auto"
+                      SelectedItem="{Binding SelectedUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding Users, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      CanUserReorderColumns="False"
+                      CanUserResizeColumns="False"
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="True"
+                      HeadersVisibility="Column"
+                      IsReadOnly="True"
+                      IsSynchronizedWithCurrentItem="True"
+                      RowHeight="40"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      SelectionMode="Single">
+
+                <DataGrid.Template>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border Padding="{TemplateBinding Padding}"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer"
+                          Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Button Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                            Command="{x:Static DataGrid.SelectAllCommand}"
+                            Focusable="false"
+                            Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
+                                                                          TypeInTargetAssembly={x:Type DataGrid}}}"
+                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                                    Grid.Column="1"
+                                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                            Grid.Row="1"
+                                            Grid.ColumnSpan="2"
+                                            CanContentScroll="{TemplateBinding CanContentScroll}" />
+                                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                               Grid.Row="1"
+                               Grid.Column="2"
+                               ContextMenuService.IsEnabled="False"
+                               Maximum="{TemplateBinding ScrollableHeight}"
+                               Orientation="Vertical"
+                               Style="{DynamicResource MyScrollBar}"
+                               ViewportSize="{TemplateBinding ViewportHeight}"
+                               Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                               Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Grid Grid.Row="2"
+                          Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                 Grid.Column="1"
+                                 ContextMenuService.IsEnabled="False"
+                                 Maximum="{TemplateBinding ScrollableWidth}"
+                                 Orientation="Horizontal"
+                                 Style="{DynamicResource MyScrollBar}"
+                                 ViewportSize="{TemplateBinding ViewportWidth}"
+                                 Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                 Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </DataGrid.Template>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
+                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                        </Style.Resources>
+                        <Setter Property="BorderThickness" Value="1,0,0,0" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
+                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                        </Style.Resources>
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                        <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                    </Style>
+                </DataGrid.RowStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Path=Name}"
+                            Header="{res:Loc InstallationApp.Name}"
+                            SortDirection="Ascending"
+                            SortMemberPath="Name">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn
+                            Width="*"
+                            Binding="{Binding Path=Token}"
+                            Header="{res:Loc InstallationApp.AcquiredToken}"
+                            SortDirection="Ascending"
+                            SortMemberPath="Token">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <controls:PpcButton Grid.Row="1"
+                                VerticalAlignment="Bottom"
+                                Height="40"
+                                Content="{res:Loc OperatorApp.Delete}"
+                                Command="{Binding DeleteCommand}"
+                                HorizontalAlignment="Stretch"
+                                Width="auto"
+                                Margin="2,0,2,2"/>
+        </Grid>
+      
     <TextBlock x:Name="PageTitle"
                HorizontalAlignment="Left"
                VerticalAlignment="Center"
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                Text="{res:Loc Menu.AccessoriesCardReaderMenuTitle}" />
-
 
     <controls:PpcCheckBox Grid.Row="1"
                           Margin="0,15,0,0"
@@ -56,6 +241,15 @@
                           IsChecked="{Binding IsAccessoryEnabled, Mode=TwoWay}"
                           IsEnabled="{Binding IsEnabled}"
                           LabelText="{res:Loc InstallationApp.AccessoryEnabled}" />
+
+    <controls:PpcCheckBox Grid.Row="1"
+                          Grid.Column="0"
+                          HorizontalAlignment="Right"
+                          Margin="0,15,0,0"
+                          VerticalAlignment="Center"
+                          IsChecked="{Binding IsLocal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding IsEnabled}"
+                          LabelText="{res:Loc InstallationApp.IsLocal}" />
 
     <controls:PpcTextBox Grid.Row="2"
                          Width="350"
@@ -119,6 +313,7 @@
     <ItemsControl Grid.Row="5"
                   Grid.ColumnSpan="2"
                   Background="Transparent"
+                  VerticalAlignment="Top"
                   BorderBrush="Transparent"
                   ItemsSource="{Binding AcquiredTokens}">
       <ItemsControl.ItemsPanel>
@@ -143,13 +338,29 @@
       </ItemsControl.ItemTemplate>
     </ItemsControl>
 
-    <controls:PpcButton Grid.Row="6"
-                        Grid.Column="2"
+    <controls:PpcTextBox LabelText="{res:Loc InstallationApp.Name}"
+                        Grid.Row="5"
+                         Margin="0,0,0,8"
+                        VerticalAlignment="Bottom"
+                        Width="350"
+                        InputText="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Stretch"/>
+
+    <controls:PpcButton Grid.Row="5"
+                        Grid.Column="1"
                         Margin="15,15,15,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Command="{Binding SaveCommand}"
-                        Content="{res:Loc General.Save}"
-                        IsBusy="{Binding IsWaitingForResponse}" />
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Content="{res:Loc OperatorApp.Add}"
+                        Command="{Binding AddCommand}"/>
+
+    <controls:PpcButton Grid.Row="6"
+                    Grid.Column="2"
+                    Margin="15,15,15,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Command="{Binding SaveCommand}"
+                    Content="{res:Loc General.Save}"
+                    IsBusy="{Binding IsWaitingForResponse}" />
   </Grid>
 </ctrls:View>
