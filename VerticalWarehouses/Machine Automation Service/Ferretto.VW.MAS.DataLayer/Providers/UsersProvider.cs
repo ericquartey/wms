@@ -505,6 +505,29 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void AddUser(UserParameters user)
+        {
+            lock (this.dataContext)
+            {
+                if (!this.dataContext.Users.Any(s => s.Name == user.Name))
+                {
+                    this.dataContext.Users.Add(user);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void DeleteUser(UserParameters user)
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.Users.Any(s => s.Name == user.Name))
+                {
+                    this.dataContext.Users.Remove(user);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
         #endregion
     }
 }

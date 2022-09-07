@@ -2815,6 +2815,15 @@
   <data name="AlphaNumericBarSizeXXS" xml:space="preserve">
     <value>XXS</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DeleteUserConfirm" xml:space="preserve">
+    <value>This will delete the user, proceed?</value>
+  </data>
+  <data name="IsLocal" xml:space="preserve">
+    <value>Is Local</value>
+  </data>
   <data name="GuestEnabled" xml:space="preserve">
     <value>Guest enabled</value>
   </data>

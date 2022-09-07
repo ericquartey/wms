@@ -2721,6 +2721,16 @@
   <data name="RotationClassFix" xml:space="preserve">
     <value>Rotazione Fissa</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="DeleteUserConfirm" xml:space="preserve">
+    <value>Questa operazione eliminerà l'utente, procedere?</value>
+  </data>
+  <data name="IsLocal" xml:space="preserve">
+    <value>Locale</value>
+  </data>
+</root>
   <data name="GuestEnabled" xml:space="preserve">
     <value>Guest abilitato</value>
   </data>

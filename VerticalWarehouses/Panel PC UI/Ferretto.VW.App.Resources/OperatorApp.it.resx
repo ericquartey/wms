@@ -2238,4 +2238,7 @@
   <data name="LastSchedule" xml:space="preserve">
     <value>Ultima Esecuzione</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
 </root>

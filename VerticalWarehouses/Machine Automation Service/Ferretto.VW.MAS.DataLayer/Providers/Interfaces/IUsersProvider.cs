@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -13,6 +12,10 @@ namespace Ferretto.VW.MAS.DataLayer
         UserParameters Authenticate(string cardToken);
 
         void ChangePassword(string userName, string newPassword);
+
+        void AddUser(UserParameters user);
+
+        void DeleteUser(UserParameters user);
 
         IEnumerable<UserParameters> GetAllUserWithCulture();
 
