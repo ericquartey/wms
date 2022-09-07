@@ -5083,6 +5083,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The name is already present.
+        /// </summary>
+        public static string NameIsPresent {
+            get {
+                return ResourceManager.GetString("NameIsPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Net Weight (kg).
         /// </summary>
         public static string NetWeight {
@@ -7149,6 +7158,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Timeout {
             get {
                 return ResourceManager.GetString("Timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The token is already present.
+        /// </summary>
+        public static string TokenIsPresent {
+            get {
+                return ResourceManager.GetString("TokenIsPresent", resourceCulture);
             }
         }
         

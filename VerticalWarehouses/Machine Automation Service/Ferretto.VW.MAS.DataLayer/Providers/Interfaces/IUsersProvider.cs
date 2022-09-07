@@ -7,15 +7,17 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        void AddUser(UserParameters user);
+
         int? Authenticate(string userName, string password, string supportToken);
 
         UserParameters Authenticate(string cardToken);
 
         void ChangePassword(string userName, string newPassword);
 
-        void AddUser(UserParameters user);
-
         void DeleteUser(UserParameters user);
+
+        IEnumerable<UserParameters> GetAllTokenUsers();
 
         IEnumerable<UserParameters> GetAllUserWithCulture();
 

@@ -213,12 +213,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("delete-user")]
-        public IActionResult DeleteUser(Ferretto.VW.MAS.DataModels.UserParameters user)
+        public IActionResult DeleteUser(DataModels.UserParameters user)
         {
             this.logger.LogInformation($"Delete user '{user.Name}' by '{this.BayNumber}'.");
 
             this.usersProvider.DeleteUser(user);
             return this.Ok();
+        }
+
+        [HttpGet("get-token-users")]
+        public ActionResult<IEnumerable<DataModels.UserParameters>> GetAllTokenUsers()
+        {
+            var users = this.usersProvider.GetAllTokenUsers();
+            return this.Ok(users);
         }
 
         [HttpPost("all-user")]

@@ -85,6 +85,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void AddUser(UserParameters user)
+        {
+            lock (this.dataContext)
+            {
+                if (!this.dataContext.Users.Any(s => s.Name == user.Name))
+                {
+                    this.dataContext.Users.Add(user);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public void AreSetUsers()
         {
             lock (this.dataContext)
@@ -282,6 +294,30 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 return user;
+            }
+        }
+
+        public void DeleteUser(UserParameters user)
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.Users.Any(s => s.Name == user.Name))
+                {
+                    var tmp = this.dataContext.Users.FirstOrDefault(s => s.Name == user.Name);
+                    this.dataContext.Users.Remove(tmp);
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public IEnumerable<UserParameters> GetAllTokenUsers()
+        {
+            lock (this.dataContext)
+            {
+                var count = this.dataContext.Users.Count();
+                var result = this.dataContext.Users.AsNoTracking().Where(u => !string.IsNullOrEmpty(u.Token))
+                    .OrderBy(o => o.Name);
+                return result;
             }
         }
 
@@ -505,29 +541,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void AddUser(UserParameters user)
-        {
-            lock (this.dataContext)
-            {
-                if (!this.dataContext.Users.Any(s => s.Name == user.Name))
-                {
-                    this.dataContext.Users.Add(user);
-                    this.dataContext.SaveChanges();
-                }
-            }
-        }
-
-        public void DeleteUser(UserParameters user)
-        {
-            lock (this.dataContext)
-            {
-                if (this.dataContext.Users.Any(s => s.Name == user.Name))
-                {
-                    this.dataContext.Users.Remove(user);
-                    this.dataContext.SaveChanges();
-                }
-            }
-        }
         #endregion
     }
 }
