@@ -2730,7 +2730,6 @@
   <data name="IsLocal" xml:space="preserve">
     <value>Locale</value>
   </data>
-</root>
   <data name="GuestEnabled" xml:space="preserve">
     <value>Guest abilitato</value>
   </data>
