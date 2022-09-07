@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineUsersWebService = machineUsersWebService;
             this.dialogService = dialogService;
 
-            this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(this.OnTokenAcquired);
+            this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(this.OnTokenAcquiredAsync);
             this.keyAcquiredEventHandler = new EventHandler<string>(this.OnKeyAcquired);
         }
 
@@ -110,7 +110,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsLocal
         {
             get => this.isLocal;
-            set => this.SetProperty(ref this.isLocal, value, this.RaiseCanExecuteChanged);
+            set
+            {
+                if (this.SetProperty(ref this.isLocal, value, this.RaiseCanExecuteChanged))
+                {
+                    this.AreSettingsChanged = true;
+                }
+            }
         }
 
         public ObservableCollection<UserParameters> Users
@@ -200,9 +206,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.areEventsRegistered = true;
             }
 
+            await this.RefreshTokenUsers();
+        }
+
+        private async Task RefreshTokenUsers()
+        {
             this.Users.Clear();
 
-            var allUsers = await this.machineUsersWebService.GetAllUserWithCultureAsync();
+            var allUsers = await this.machineUsersWebService.GetAllTokenUsersAsync();
             this.Users.AddRange(allUsers.Where(u => !string.IsNullOrEmpty(u.Token)));
         }
 
@@ -225,7 +236,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool CanAdd()
         {
-            return this.UserName != null && this.AcquiredTokens.Any() && !this.Users.Any(u => u.Name == this.UserName && u.Token == this.AcquiredTokens.LastOrDefault());
+            return this.UserName != null && this.AcquiredTokens.Any();
         }
 
         public async Task AddAsync()
@@ -234,14 +245,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 this.ClearNotifications();
+                if (this.Users.Any(u => u.Name == this.UserName))
+                {
+                    this.ShowNotification(InstallationApp.NameIsPresent, Services.Models.NotificationSeverity.Error);
+                }
+                else if (this.Users.Any(u => u.Token == this.AcquiredTokens.LastOrDefault()))
+                {
+                    this.ShowNotification(InstallationApp.TokenIsPresent, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    var userParameters = new UserParameters() { Name = this.UserName, AccessLevel = ((int)UserAccessLevel.Operator), PasswordHash = "", PasswordSalt = "", Token = this.AcquiredTokens.LastOrDefault() };
 
-                var userParameters = new UserParameters() { Name = this.UserName, AccessLevel = ((int)UserAccessLevel.Operator), PasswordHash = "", PasswordSalt = "", Token = this.AcquiredTokens.LastOrDefault() };
+                    await this.machineUsersWebService.AddUserAsync(userParameters);
 
-                await this.machineUsersWebService.AddUserAsync(userParameters);
+                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
 
-                this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
-
+                    await this.RefreshTokenUsers();
+                }
                 this.AcquiredTokens.Clear();
+                this.UserName = string.Empty;
             }
             catch (Exception ex)
             {
@@ -269,6 +292,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.machineUsersWebService.DeleteUserAsync(this.SelectedUser);
                     this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
+                    await this.RefreshTokenUsers();
                 }
             }
             catch (Exception ex)
@@ -302,6 +326,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.Data is BayAccessories bayAccessories)
                 {
                     this.IsAccessoryEnabled = bayAccessories.CardReader.IsEnabledNew;
+                    this.IsLocal = bayAccessories.CardReader.IsLocal is true;
                     this.TokenRegex = bayAccessories.CardReader.TokenRegex ?? "(?<Token>\\d+)";
                 }
                 else
@@ -366,7 +391,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.inputKeys.Add(new InputKey(e));
         }
 
-        private void OnTokenAcquired(object sender, RegexMatchEventArgs e)
+        private async void OnTokenAcquiredAsync(object sender, RegexMatchEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -374,6 +399,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             });
 
             this.ShowNotification(VW.App.Resources.InstallationApp.CodeRecognized, Services.Models.NotificationSeverity.Success);
+            if (this.isLocal)
+            {
+                await this.StopTestAsync();
+            }
         }
 
         private async Task StartTestAsync()

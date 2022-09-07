@@ -27,6 +27,8 @@
 
 ## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
 - Aggiunta classe di rotazione ABC
+- Aggiunta gestione lettore badge senza WMS
+- Aggiunto utente Guest
 
 ## Bug Risolti
 - Ricerca articoli: corretta la quantità nelle altre macchine

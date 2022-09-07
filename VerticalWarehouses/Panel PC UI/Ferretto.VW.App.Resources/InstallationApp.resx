@@ -2827,4 +2827,10 @@
   <data name="GuestEnabled" xml:space="preserve">
     <value>Guest enabled</value>
   </data>
+  <data name="NameIsPresent" xml:space="preserve">
+    <value>The name is already present</value>
+  </data>
+  <data name="TokenIsPresent" xml:space="preserve">
+    <value>The token is already present</value>
+  </data>
 </root>
