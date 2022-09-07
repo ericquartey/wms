@@ -3103,6 +3103,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guest enabled.
+        /// </summary>
+        public static string GuestEnabled {
+            get {
+                return ResourceManager.GetString("GuestEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string Height {

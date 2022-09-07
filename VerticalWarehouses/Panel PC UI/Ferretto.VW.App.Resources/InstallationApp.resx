@@ -2815,4 +2815,7 @@
   <data name="AlphaNumericBarSizeXXS" xml:space="preserve">
     <value>XXS</value>
   </data>
+  <data name="GuestEnabled" xml:space="preserve">
+    <value>Guest enabled</value>
+  </data>
 </root>
