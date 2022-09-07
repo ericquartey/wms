@@ -225,7 +225,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool CanAdd()
         {
-            return this.UserName != null && this.AcquiredTokens != null;
+            return this.UserName != null && this.AcquiredTokens.Any() && !this.Users.Any(u => u.Name == this.UserName && u.Token == this.AcquiredTokens.LastOrDefault());
         }
 
         public async Task AddAsync()
