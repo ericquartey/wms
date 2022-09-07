@@ -200,7 +200,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.areEventsRegistered = true;
             }
 
-            //this.Users.Clear();
+            this.Users.Clear();
 
             var allUsers = await this.machineUsersWebService.GetAllUserWithCultureAsync();
             this.Users.AddRange(allUsers.Where(u => !string.IsNullOrEmpty(u.Token)));
