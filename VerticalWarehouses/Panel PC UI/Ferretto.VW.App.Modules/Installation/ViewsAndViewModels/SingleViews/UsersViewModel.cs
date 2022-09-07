@@ -220,7 +220,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecute()
         {
-            return this.isEnabledEditing &&
+            return this.isEnabledEditing && this.isWmsEnabled &&
                 this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
         }
 

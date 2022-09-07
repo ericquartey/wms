@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.dataContext.Users.Add(UserParameters.Values.Operator);
                     this.dataContext.Users.Add(UserParameters.Values.Movement);
+                    this.dataContext.Users.Add(UserParameters.Values.Guest);
                     this.dataContext.Users.Add(UserParameters.Values.Installer);
                     this.dataContext.Users.Add(UserParameters.Values.Service);
                     this.dataContext.Users.Add(UserParameters.Values.Admin);
@@ -123,6 +124,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         this.dataContext.Users.Add(UserParameters.Values.Operator);
                     }
+
+                    if (!this.dataContext.Users.Any(s => s.Name == UserParameters.Values.Guest.Name))
+                    {
+                        this.dataContext.Users.Add(UserParameters.Values.Guest);
+                    }
                 }
                 foreach (var item in this.dataContext.Users)
                 {
@@ -145,11 +151,11 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         case "operator":
+                        case "guest":
                             item.AccessLevel = ((int)UserAccessLevel.Operator);
                             break;
 
                         default:
-                            item.AccessLevel = ((int)UserAccessLevel.NoAccess);
                             break;
                     }
                 }
@@ -185,6 +191,28 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             throw new EntityNotFoundException(userName);
+        }
+
+        public UserParameters Authenticate(string cardToken)
+        {
+            if (string.IsNullOrWhiteSpace(cardToken))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(cardToken));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Token == cardToken);
+
+                if (user != null
+                    &&
+                    (UserAccessLevel)user.AccessLevel != UserAccessLevel.NoAccess)
+                {
+                    return user;
+                }
+            }
+
+            return null;
         }
 
         public void ChangePassword(string userName, string newPassword)
@@ -262,7 +290,8 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var count = this.dataContext.Users.Count();
-                var result = this.dataContext.Users.AsNoTracking().Where(u => !u.IsDisabled).OrderBy(o => o.AccessLevel).ThenByDescending(o => o.Id);
+                var result = this.dataContext.Users.AsNoTracking().Where(u => !u.IsDisabled && !u.IsDisabledWithWMS && string.IsNullOrEmpty(u.Token))
+                    .OrderBy(o => o.AccessLevel).ThenByDescending(o => o.Id);
                 return result;
             }
         }
@@ -285,6 +314,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             throw new EntityNotFoundException(userName);
+        }
+
+        public bool GetIsLimited(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
+                return user?.IsLimited is true;
+            }
         }
 
         public string GetServiceToken()
@@ -316,14 +360,14 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
-
-                if (user != null)
+                if(!this.dataContext.WmsSettings.First().IsEnabled)
                 {
-                    return !user.IsDisabledWithWMS;
+                    return true;
                 }
+                var user = this.dataContext.Users.FirstOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator && u.IsDisabledWithWMS);
+
+                return (user is null);
             }
-            throw new EntityNotFoundException("Operator");
         }
 
         public void SetIsDisabled(string userName, bool isDisabled)
@@ -331,11 +375,6 @@ namespace Ferretto.VW.MAS.DataLayer
             if (string.IsNullOrWhiteSpace(userName))
             {
                 throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
-            }
-
-            if (isDisabled == null)
-            {
-                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(isDisabled));
             }
 
             lock (this.dataContext)
@@ -353,11 +392,33 @@ namespace Ferretto.VW.MAS.DataLayer
             throw new EntityNotFoundException(userName);
         }
 
+        public void SetIsLimited(string userName, bool isLimited)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException(Resources.General.ResourceManager.GetString("ValueCannotBeNullOrWhiteSpace", CommonUtils.Culture.Actual), nameof(userName));
+            }
+
+            lock (this.dataContext)
+            {
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
+                if (user != null)
+                {
+                    user.IsLimited = isLimited;
+                    this.dataContext.SaveChanges();
+                    return;
+                }
+            }
+
+            throw new EntityNotFoundException(userName);
+        }
+
         public void SetOperatorEnabledWithWMS(bool isEnabled)
         {
             lock (this.dataContext)
             {
-                var user = this.dataContext.Users.SingleOrDefault(u => u.AccessLevel == (int)UserAccessLevel.Operator);
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == UserParameters.Values.Operator.Name);
 
                 if (user != null)
                 {
@@ -368,7 +429,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     return;
                 }
             }
-            throw new EntityNotFoundException("Operator");
+            throw new EntityNotFoundException(UserParameters.Values.Operator.Name);
         }
 
         public void SetUserCulture(string culture, string name)

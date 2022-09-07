@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int? Authenticate(string userName, string password, string supportToken);
 
+        UserParameters Authenticate(string cardToken);
+
         void ChangePassword(string userName, string newPassword);
 
         void AddUser(UserParameters user);
@@ -19,11 +21,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool GetIsDisabled(string userName);
 
+        bool GetIsLimited(string userName);
+
         string GetServiceToken();
 
         bool IsOperatorEnabledWithWMS();
 
         void SetIsDisabled(string userName, bool isDisabled);
+
+        void SetIsLimited(string userName, bool isLimited);
 
         void SetOperatorEnabledWithWMS(bool isEnabled);
 
