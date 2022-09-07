@@ -34,101 +34,175 @@
                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                Text="{res:Loc InstallationApp.UserManagement}" />
 
-    <Grid Grid.Row="1"
+        <Grid Grid.Row="1"
           Grid.Column="1">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-        <RowDefinition Height="auto" />
-      </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-      <TextBlock Margin="0,10,0,0"
-                 Height="30"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="Installer:" />
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                
+                <controls:PpcButton Margin="15,15,15,0"
+                                BorderBrush="{DynamicResource FerrettoGreen}"
+                                Command="{Binding InstallerCommand}"
+                                IsActive="{Binding InstallerActive}"
+                                Content="Installer"
+                                IsEnabled="{Binding }"
+                                Style="{DynamicResource PpcButtonMenuStyle}"
+                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+                
+                <controls:PpcButton Margin="15,15,15,0"
+                                BorderBrush="{DynamicResource FerrettoGreen}"
+                                Command="{Binding OperatorCommand}"
+                                IsActive="{Binding OperatorActive}"
+                                Content="Operator"
+                                IsEnabled="{Binding }"
+                                Style="{DynamicResource PpcButtonMenuStyle}"
+                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+                
+                <controls:PpcButton Margin="15,15,15,0"
+                                BorderBrush="{DynamicResource FerrettoGreen}"
+                                Command="{Binding MovementCommand}"
+                                IsActive="{Binding MovementActive}"
+                                Content="Movement"
+                                IsEnabled="{Binding }"
+                                Style="{DynamicResource PpcButtonMenuStyle}"
+                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+                
+                <controls:PpcButton Margin="15,15,15,0"
+                                BorderBrush="{DynamicResource FerrettoGreen}"
+                                Command="{Binding GuestCommand}"
+                                IsActive="{Binding GuestActive}"
+                                Content="Guest"
+                                IsEnabled="{Binding }"
+                                Style="{DynamicResource PpcButtonMenuStyle}"
+                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-      <StackPanel Grid.Row="1"
-                  Margin="0,0"
-                  Orientation="Horizontal">
-        <dxe:PasswordBoxEdit x:Name="NewInstallerPassword"
-                             Width="250"
-                             Height="30"
-                             Margin="0,5"
-                             IsEnabled="{Binding IsEnabledEditing}"
-                             MouseDoubleClick="OnKeyboardOpenHandler"
-                             NullText="{res:Loc InstallationApp.NewPassword}"
-                             Password="{Binding InstallerNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                             Style="{StaticResource PpcPasswordBox}"
-                             TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButtonNewInstallerPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
+            </StackPanel>
+
+            <Grid Grid.Column="1" >
+                <Grid Visibility="{Binding InstallerActive, Converter={StaticResource BTVC}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="0,10,0,0"
+                               Height="40"
+                               Grid.Row="0"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Installer:" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+                        <dxe:PasswordBoxEdit x:Name="NewInstallerPassword"
+                                            Width="250"
+                                            Height="40"
+                                            Margin="0,5"
+                                            IsEnabled="{Binding IsEnabledEditing}"
+                                            MouseDoubleClick="OnKeyboardOpenHandler"
+                                            NullText="{res:Loc InstallationApp.NewPassword}"
+                                            Password="{Binding InstallerNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            Style="{StaticResource PpcPasswordBox}"
+                                            TouchUp="OnKeyboardOpenHandler" />
+                        <Button Name="KeyboardButtonNewInstallerPassword"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5,5,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
+                                         Height="20"
+                                         Margin="3"
+                                         HorizontalAlignment="Center"
+                                         VerticalAlignment="Center"
+                                         Kind="KeyboardSolid" />
+                        </Button>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+                        <dxe:PasswordBoxEdit x:Name="ConfirmNewInstallerPassword"
+                                             Width="250"
+                                             Height="40"
+                                             Margin="0,5"
+                                             IsEnabled="{Binding IsEnabledEditing}"
+                                             MouseDoubleClick="OnKeyboardOpenHandler"
+                                             NullText="{res:Loc InstallationApp.ConfirmNewPassword}"
+                                             Password="{Binding InstallerNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                             Style="{StaticResource PpcPasswordBox}"
+                                             TouchUp="OnKeyboardOpenHandler" />
+                        <Button Name="KeyboardButtonConfirmNewInstallerPassword"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5,5,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      Kind="KeyboardSolid" />
-        </Button>
-        <dxe:PasswordBoxEdit x:Name="ConfirmNewInstallerPassword"
-                             Width="250"
-                             Height="30"
-                             Margin="5,5,0,5"
-                             IsEnabled="{Binding IsEnabledEditing}"
-                             MouseDoubleClick="OnKeyboardOpenHandler"
-                             NullText="{res:Loc InstallationApp.ConfirmNewPassword}"
-                             Password="{Binding InstallerNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                             Style="{StaticResource PpcPasswordBox}"
-                             TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButtonConfirmNewInstallerPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
-                                     Height="20"
-                                     Margin="3"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Kind="KeyboardSolid" />
-        </Button>
-        <controls:PpcButton Margin="15,0,0,0"
-                            Height="30"
-                            VerticalAlignment="Center"
-                            Command="{Binding ChangeInstallerPasswordCommand}"
-                            Content="{res:Loc InstallationApp.Save}" />
-      </StackPanel>
+                        </Button>
+                    </StackPanel>
 
-      <TextBlock Grid.Row="2"
-                 Margin="0,10,0,0"
-                 Height="30"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="Operator:" />
+                    <controls:PpcButton Margin="0"
+                                        Grid.Column="2"
+                                        Grid.Row="1"
+                                        Height="40"
+                                        Command="{Binding ChangeInstallerPasswordCommand}"
+                                        Content="{res:Loc InstallationApp.Save}" />
+                </Grid>
 
-      <StackPanel Grid.Row="3"
-                  Margin="0,0"
-                  Orientation="Horizontal">
-        <dxe:PasswordBoxEdit x:Name="NewOperatorPassword"
+                <Grid Visibility="{Binding OperatorActive, Converter={StaticResource BTVC}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="0,10,0,0"
+                               Height="40"
+                               Grid.Row="0"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Operator:" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+
+                        <dxe:PasswordBoxEdit x:Name="NewOperatorPassword"
                              Width="250"
-                             Height="30"
+                             Height="40"
                              Margin="0,5"
                              IsEnabled="{Binding IsEnabledEditing}"
                              MouseDoubleClick="OnKeyboardOpenHandler"
@@ -136,81 +210,109 @@
                              Password="{Binding OperatorNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                              Style="{StaticResource PpcPasswordBox}"
                              TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButtonNewOperatorPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
+                        <Button Name="KeyboardButtonNewOperatorPassword"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5,5,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      Kind="KeyboardSolid" />
-        </Button>
-        <dxe:PasswordBoxEdit x:Name="ConfirmNewOperatorPassword"
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+
+                        <dxe:PasswordBoxEdit x:Name="ConfirmNewOperatorPassword"
                              Width="250"
-                             Height="30"
-                             Margin="5,5,0,5"
+                             Height="40"
+                             Margin="0,5"
                              IsEnabled="{Binding IsEnabledEditing}"
                              MouseDoubleClick="OnKeyboardOpenHandler"
                              NullText="{res:Loc InstallationApp.ConfirmNewPassword}"
                              Password="{Binding OperatorNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                              Style="{StaticResource PpcPasswordBox}"
                              TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButtonConfirmNewOperatorPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
+                        <Button Name="KeyboardButtonConfirmNewOperatorPassword"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5,5,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      Kind="KeyboardSolid" />
-        </Button>
-        <controls:PpcButton Margin="15,0,0,0"
-                 Height="30"
-                            VerticalAlignment="Center"
-                            Command="{Binding ChangeOperatorPasswordCommand}"
-                            Content="{res:Loc InstallationApp.Save}" />
-      </StackPanel>
+                        </Button>
+                    </StackPanel>
 
-      <StackPanel Grid.Row="4"
-                  Orientation="Horizontal">
+                    <StackPanel  Grid.Row="3"
+                                 Grid.ColumnSpan="2"
+                                 Orientation="Horizontal"
+                                 VerticalAlignment="Top"
+                                 Margin="0,10">
+                        <controls:PpcCheckBox Margin="0,0,10,0"
+                                              IsChecked="{Binding IsOperatorEnabledWithWMS, Mode=TwoWay}"
+                                              IsEnabled="{Binding IsEnabledEditing}"
+                                              LabelText="{res:Loc InstallationApp.EnabledWithWMS}" />
+                    
+                        <controls:PpcButton Height="40"
+                                            Command="{Binding SaveIsOperatorEnabledWithWMSCommand}"
+                                            Content="{res:Loc InstallationApp.Save}" />
+                    </StackPanel>
 
-        <controls:PpcCheckBox VerticalAlignment="Center"
-                              IsChecked="{Binding IsOperatorEnabledWithWMS, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEnabledEditing}"
-                              LabelText="{res:Loc InstallationApp.EnabledWithWMS}" />
-        <controls:PpcButton Margin="15,0,0,0"
-                 Height="30"
-                            VerticalAlignment="Center"
-                            Command="{Binding SaveIsOperatorEnabledWithWMSCommand}"
-                            Content="{res:Loc InstallationApp.Save}" />
-      </StackPanel>
+                    <controls:PpcButton Margin="0"
+                                        Grid.Column="2"
+                                        Grid.Row="1"
+                                        Height="40"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding ChangeOperatorPasswordCommand}"
+                                        Content="{res:Loc InstallationApp.Save}" />
+                </Grid>
 
-      <TextBlock Grid.Row="5"
-                 Margin="0,15,0,0"
-                 Height="30"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="Movement:" />
+                <Grid Visibility="{Binding MovementActive, Converter={StaticResource BTVC}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-      <StackPanel Grid.Row="6"
-                  Margin="0,0"
-                  Orientation="Horizontal">
-        <dxe:PasswordBoxEdit x:Name="NewMovementPassword"
+                    <TextBlock Margin="0,10,0,0"
+                               Height="40"
+                               Grid.Row="0"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Movement:" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+                        <dxe:PasswordBoxEdit x:Name="NewMovementPassword"
                              Width="250"
-                             Height="30"
+                             Height="40"
                              Margin="0,5"
                              IsEnabled="{Binding IsEnabledEditing}"
                              MouseDoubleClick="OnKeyboardOpenHandler"
@@ -218,151 +320,191 @@
                              Password="{Binding MovementNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                              Style="{StaticResource PpcPasswordBox}"
                              TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButtonNewMovementPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
+                        <Button Name="KeyboardButtonNewMovementPassword"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5,5,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
                                      Height="20"
                                      Margin="3"
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      Kind="KeyboardSolid" />
-        </Button>
-        <dxe:PasswordBoxEdit x:Name="ConfirmNewMovementPassword"
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+
+                        <dxe:PasswordBoxEdit x:Name="ConfirmNewMovementPassword"
                              Width="250"
-                             Height="30"
-                             Margin="5,5,0,5"
+                             Height="40"
+                             Margin="0,5"
                              IsEnabled="{Binding IsEnabledEditing}"
                              MouseDoubleClick="OnKeyboardOpenHandler"
                              NullText="{res:Loc InstallationApp.ConfirmNewPassword}"
                              Password="{Binding MovementNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                              Style="{StaticResource PpcPasswordBox}"
                              TouchUp="OnKeyboardOpenHandler" />
-        <Button Name="KeyboardButtonConfirmNewMovementPassword"
-                Height="30"
-                Margin="0,3,5,5"
+                        <Button Name="KeyboardButtonConfirmNewMovementPassword"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5,5,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
+                                     Height="20"
+                                     Margin="3"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     Kind="KeyboardSolid" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel  Grid.Row="3"
+                                 Grid.ColumnSpan="2"
+                                 Orientation="Horizontal"
+                                 VerticalAlignment="Top"
+                                 Margin="0,10">
+                        <controls:PpcCheckBox Margin="0,0,10,0"
+                                              IsChecked="{Binding IsMovementEnabled, Mode=TwoWay}"
+                                              IsEnabled="{Binding IsEnabledEditing}"
+                                              LabelText="{res:Loc InstallationApp.MovementEnabled}" />
+
+                        <controls:PpcButton Height="40"
+                                            Command="{Binding SaveIsMovementEnabledCommand}"
+                                            Content="{res:Loc InstallationApp.Save}" />
+                    </StackPanel>
+
+                    <controls:PpcButton Margin="0"
+                                        Grid.Column="2"
+                                        Grid.Row="1"
+                                        Height="40"
+                                        Command="{Binding ChangeMovementPasswordCommand}"
+                                        Content="{res:Loc InstallationApp.Save}" />
+                </Grid>
+
+                <Grid Visibility="{Binding GuestActive, Converter={StaticResource BTVC}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="0,10,0,0"
+                               Height="40"
+                               Grid.Row="0"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="Guest:" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+                        <dxe:PasswordBoxEdit x:Name="NewGuestPassword"
+                                Width="250"
+                                Height="40"
+                                Margin="0,5"
+                                IsEnabled="{Binding IsEnabledEditing}"
+                                MouseDoubleClick="OnKeyboardOpenHandler"
+                                NullText="{res:Loc InstallationApp.NewPassword}"
+                                Password="{Binding GuestNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                Style="{StaticResource PpcPasswordBox}"
+                                TouchUp="OnKeyboardOpenHandler" />
+                        <Button Name="KeyboardButtonNewGuestPassword"
+                                Height="40"
+                                Width="40"
+                                Margin="0,5"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Click="KeyboardButton_Click"
+                                Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                                TouchUp="KeyboardButton_TouchUp"
+                                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
+                            <icons:PackIconFontAwesome Width="20"
+                                        Height="20"
+                                        Margin="3"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Kind="KeyboardSolid" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Top">
+                        <dxe:PasswordBoxEdit x:Name="ConfirmNewGuestPassword"
+                                Width="250"
+                                Height="40"
+                                Margin="0,5"
+                                IsEnabled="{Binding IsEnabledEditing}"
+                                MouseDoubleClick="OnKeyboardOpenHandler"
+                                NullText="{res:Loc InstallationApp.ConfirmNewPassword}"
+                                Password="{Binding GuestNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                Style="{StaticResource PpcPasswordBox}"
+                                TouchUp="OnKeyboardOpenHandler" />
+                        <Button Name="KeyboardButtonConfirmNewGuestPassword"
+                Height="40"
+                                Width="40"
+                Margin="0,5"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Click="KeyboardButton_Click"
                 Style="{StaticResource TextBoxKeyboardButtonStyle}"
                 TouchUp="KeyboardButton_TouchUp"
                 Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-          <icons:PackIconFontAwesome Width="20"
-                                     Height="20"
-                                     Margin="3"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Kind="KeyboardSolid" />
-        </Button>
-        <controls:PpcButton Margin="15,0,0,0"
-                 Height="30"
-                            VerticalAlignment="Center"
-                            Command="{Binding ChangeMovementPasswordCommand}"
-                            Content="{res:Loc InstallationApp.Save}" />
-      </StackPanel>
+                            <icons:PackIconFontAwesome Width="20"
+                                        Height="20"
+                                        Margin="3"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Kind="KeyboardSolid" />
+                        </Button>
+                    </StackPanel>
 
-      <StackPanel Grid.Row="7"
-                  Orientation="Horizontal">
+                    <StackPanel  Grid.Row="3"
+                                 Grid.ColumnSpan="2"
+                                 Orientation="Horizontal"
+                                 VerticalAlignment="Top"
+                                 Margin="0,10">
+                        <controls:PpcCheckBox Margin="0,0,10,0"
+                                              IsChecked="{Binding IsGuestEnabled, Mode=TwoWay}"
+                                              IsEnabled="{Binding IsEnabledEditing}"
+                                              LabelText="{res:Loc InstallationApp.GuestEnabled}" />
 
-        <controls:PpcCheckBox VerticalAlignment="Center"
-                              IsChecked="{Binding IsMovementEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding IsEnabledEditing}"
-                              LabelText="{res:Loc InstallationApp.MovementEnabled}" />
-        <controls:PpcButton Margin="15,0,0,0"
-                 Height="30"
-                            VerticalAlignment="Center"
-                            Command="{Binding SaveIsMovementEnabledCommand}"
-                            Content="{res:Loc InstallationApp.Save}" />
-      </StackPanel>
+                        <controls:PpcButton Height="40"
+                                            Command="{Binding SaveIsGuestEnabledCommand}"
+                                            Content="{res:Loc InstallationApp.Save}" />
+                    </StackPanel>
 
-            <TextBlock Grid.Row="8"
-                 Margin="0,15,0,0"
-                 Height="30"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="Guest:" />
-
-            <StackPanel Grid.Row="9"
-                  Margin="0,0"
-                  Orientation="Horizontal">
-                <dxe:PasswordBoxEdit x:Name="NewGuestPassword"
-                             Width="250"
-                             Height="30"
-                             Margin="0,5"
-                             IsEnabled="{Binding IsEnabledEditing}"
-                             MouseDoubleClick="OnKeyboardOpenHandler"
-                             NullText="{res:Loc InstallationApp.NewPassword}"
-                             Password="{Binding MovementNewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                             Style="{StaticResource PpcPasswordBox}"
-                             TouchUp="OnKeyboardOpenHandler" />
-                <Button Name="KeyboardButtonNewGuestPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-                    <icons:PackIconFontAwesome Width="20"
-                                     Height="20"
-                                     Margin="3"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Kind="KeyboardSolid" />
-                </Button>
-                <dxe:PasswordBoxEdit x:Name="ConfirmNewGuestPassword"
-                             Width="250"
-                             Height="30"
-                             Margin="5,5,0,5"
-                             IsEnabled="{Binding IsEnabledEditing}"
-                             MouseDoubleClick="OnKeyboardOpenHandler"
-                             NullText="{res:Loc InstallationApp.ConfirmNewPassword}"
-                             Password="{Binding GuestNewPasswordConfirm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                             Style="{StaticResource PpcPasswordBox}"
-                             TouchUp="OnKeyboardOpenHandler" />
-                <Button Name="KeyboardButtonConfirmNewGuestPassword"
-                Height="30"
-                Margin="0,3,5,5"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Click="KeyboardButton_Click"
-                Style="{StaticResource TextBoxKeyboardButtonStyle}"
-                TouchUp="KeyboardButton_TouchUp"
-                Visibility="{Binding IsKeyboardButtonVisible, Converter={StaticResource BTVC}}">
-                    <icons:PackIconFontAwesome Width="20"
-                                     Height="20"
-                                     Margin="3"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                     Kind="KeyboardSolid" />
-                </Button>
-                <controls:PpcButton Margin="15,0,0,0"
-                 Height="30"
-                            VerticalAlignment="Center"
-                            Command="{Binding ChangeGuestPasswordCommand}"
-                            Content="{res:Loc InstallationApp.Save}" />
-        </StackPanel>
-
-      <StackPanel Grid.Row="10"
-            Orientation="Horizontal">
-
-        <controls:PpcCheckBox VerticalAlignment="Center"
-                        IsChecked="{Binding IsGuestEnabled, Mode=TwoWay}"
-                        IsEnabled="{Binding IsEnabledEditing}"
-                        LabelText="{res:Loc InstallationApp.GuestEnabled}" />
-        <controls:PpcButton Margin="15,0,0,0"
-                    Height="30"
-                    VerticalAlignment="Center"
-                    Command="{Binding SaveIsGuestEnabledCommand}"
-                    Content="{res:Loc InstallationApp.Save}" />
-      </StackPanel>
-
+                    <controls:PpcButton Margin="0"
+                                        Grid.Column="2"
+                                        Grid.Row="1"
+                                        Height="40"
+                                        Command="{Binding ChangeGuestPasswordCommand}"
+                                        Content="{res:Loc InstallationApp.Save}" />
+                </Grid>
+            </Grid>
+      
     </Grid>
 
   </Grid>

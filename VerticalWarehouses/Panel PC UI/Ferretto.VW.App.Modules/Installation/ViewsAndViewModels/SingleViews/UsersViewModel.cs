@@ -34,9 +34,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand changeOperatorPasswordCommand;
 
+        private bool guestActive;
+
+        private DelegateCommand guestCommand;
+
         private string guestNewPassword;
 
         private string guestNewPasswordConfirm;
+
+        private bool installerActive;
+
+        private DelegateCommand installerCommand;
 
         private string installerNewPassword;
 
@@ -52,9 +60,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWmsEnabled;
 
+        private bool movementActive;
+
+        private DelegateCommand movementCommand;
+
         private string movementNewPassword;
 
         private string movementNewPasswordConfirm;
+
+        private bool operatorActive;
+
+        private DelegateCommand operatorCommand;
 
         private string operatorNewPassword;
 
@@ -116,6 +132,62 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool GuestActive
+        {
+            get => this.guestActive;
+            set
+            {
+                this.SetProperty(ref this.guestActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.InstallerActive = false;
+                    this.MovementActive = false;
+                    this.OperatorActive = false;
+                }
+            }
+        }
+
+        public ICommand GuestCommand =>
+           this.guestCommand
+           ??
+           (this.guestCommand = new DelegateCommand(
+               () => this.GuestActive = true));
+
+        public string GuestNewPassword
+        {
+            get => this.guestNewPassword;
+            set => this.SetProperty(ref this.guestNewPassword, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string GuestNewPasswordConfirm
+        {
+            get => this.guestNewPasswordConfirm;
+            set => this.SetProperty(ref this.guestNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool InstallerActive
+        {
+            get => this.installerActive;
+            set
+            {
+                this.SetProperty(ref this.installerActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.MovementActive = false;
+                    this.OperatorActive = false;
+                    this.GuestActive = false;
+                }
+            }
+        }
+
+        public ICommand InstallerCommand =>
+           this.installerCommand
+           ??
+           (this.installerCommand = new DelegateCommand(
+               () => this.InstallerActive = true));
+
         public string InstallerNewPassword
         {
             get => this.installerNewPassword;
@@ -152,6 +224,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isOperatorEnabledWithWMS, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool MovementActive
+        {
+            get => this.movementActive;
+            set
+            {
+                this.SetProperty(ref this.movementActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.InstallerActive = false;
+                    this.OperatorActive = false;
+                    this.GuestActive = false;
+                }
+            }
+        }
+
+        public ICommand MovementCommand =>
+           this.movementCommand
+           ??
+           (this.movementCommand = new DelegateCommand(
+               () => this.MovementActive = true));
+
         public string MovementNewPassword
         {
             get => this.movementNewPassword;
@@ -163,6 +257,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.movementNewPasswordConfirm;
             set => this.SetProperty(ref this.movementNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool OperatorActive
+        {
+            get => this.operatorActive;
+            set
+            {
+                this.SetProperty(ref this.operatorActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.InstallerActive = false;
+                    this.MovementActive = false;
+                    this.GuestActive = false;
+                }
+            }
+        }
+
+        public ICommand OperatorCommand =>
+           this.operatorCommand
+           ??
+           (this.operatorCommand = new DelegateCommand(
+               () => this.OperatorActive = true));
 
         public string OperatorNewPassword
         {
@@ -211,6 +327,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InstallerNewPassword = string.Empty;
             this.MovementNewPassword = string.Empty;
             this.MovementNewPasswordConfirm = string.Empty;
+
+            this.InstallerActive = true;
+            this.OperatorActive = false;
+            this.MovementActive = false;
+            this.GuestActive = false;
         }
 
         public override async Task OnAppearedAsync()
@@ -231,6 +352,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsMovementEnabled = !await this.usersService.GetIsDisabledAsync("movement");
             this.IsGuestEnabled = !await this.usersService.GetIsDisabledAsync("guest");
+
+            this.InstallerActive = true;
+        }
+
+        public void SelectedUser(bool userActive)
+        {
+            userActive = true;
         }
 
         protected override void RaiseCanExecuteChanged()
