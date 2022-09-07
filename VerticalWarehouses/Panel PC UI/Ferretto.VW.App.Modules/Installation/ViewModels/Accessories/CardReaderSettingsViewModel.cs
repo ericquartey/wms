@@ -203,7 +203,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             //this.Users.Clear();
 
             var allUsers = await this.machineUsersWebService.GetAllUserWithCultureAsync();
-            this.Users.AddRange(allUsers/*.Where(u => !string.IsNullOrEmpty(u.Token))*/);
+            this.Users.AddRange(allUsers.Where(u => !string.IsNullOrEmpty(u.Token)));
         }
 
         protected override async Task TestAsync()
