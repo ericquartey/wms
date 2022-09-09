@@ -240,7 +240,7 @@
                     </DataGridTextColumn>
                     <DataGridTextColumn x:Name="Column2"
                             Width="1*"
-                            Binding="{Binding Path=BlockLevel, Converter={StaticResource EBLC}}"
+                            Binding="{Binding Path=BlockLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource EBLC}}"
                             Header="{resources:Loc InstallationApp.Status}"
                             SortDirection="Ascending"
                             SortMemberPath="BlockLevel">
@@ -430,7 +430,7 @@
                                      HorizontalAlignment="Center"
                                      VerticalAlignment="Center"
                                      Foreground="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}"
-                                     Kind="{Binding Path=IsFree, Converter={StaticResource BTIKC}}" />
+                                     Kind="{Binding Path=IsFree,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BTIKC}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellStyle>

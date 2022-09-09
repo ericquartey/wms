@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Windows.Controls;
 using Ferretto.VW.App.Installation.ViewModels;
@@ -27,6 +27,22 @@ namespace Ferretto.VW.App.Installation.Views
             if (grid.SelectedItems != null)
             {
                 viewModel.SelectedCells = grid.SelectedItems.OfType<CellPlus>().ToList();
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                var selectedBlockLevel = (sender as ComboBox).SelectedValue.ToString();
+
+                if (selectedBlockLevel == BlockLevel.Blocked.ToString())
+                {
+                    this.IsFreeCheckBox.IsChecked = false;
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
