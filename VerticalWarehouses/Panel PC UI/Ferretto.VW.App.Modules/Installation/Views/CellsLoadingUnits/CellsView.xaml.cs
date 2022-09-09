@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.Views
         {
             try
             {
-                var selectedBlockLevel = (sender as ComboBox).SelectedValue.ToString();
+                var selectedBlockLevel = (sender as ComboBox).SelectedValue?.ToString();
 
                 if (selectedBlockLevel == BlockLevel.Blocked.ToString())
                 {
