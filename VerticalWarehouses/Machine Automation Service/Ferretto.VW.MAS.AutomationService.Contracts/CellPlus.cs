@@ -14,7 +14,14 @@
             {
                 this.BlockLevel = from.BlockLevel;
                 this.Id = from.Id;
-                this.IsFree = from.IsFree;
+                if (this.BlockLevel == BlockLevel.Blocked)
+                {
+                    this.IsFree = false;
+                }
+                else
+                {
+                    this.IsFree = from.IsFree;
+                }
                 this.PanelId = from.PanelId;
                 this.Position = from.Position;
                 this.Priority = from.Priority;
