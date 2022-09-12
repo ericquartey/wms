@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IDialogService dialogService;
 
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+
         private readonly ObservableCollection<InputKey> inputKeys = new ObservableCollection<InputKey>();
 
         private ObservableCollection<UserParameters> users = new ObservableCollection<UserParameters>();
@@ -65,11 +67,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CardReaderSettingsViewModel(ICardReaderService cardReaderService,
             IMachineUsersWebService machineUsersWebService,
-            IDialogService dialogService)
+            IDialogService dialogService,
+            IMachineWmsStatusWebService wmsStatusWebService)
         {
             this.cardReaderService = cardReaderService;
             this.machineUsersWebService = machineUsersWebService;
             this.dialogService = dialogService;
+            this.wmsStatusWebService = wmsStatusWebService;
 
             this.tokenAcquiredEventHandler = new EventHandler<RegexMatchEventArgs>(this.OnTokenAcquiredAsync);
             this.keyAcquiredEventHandler = new EventHandler<string>(this.OnKeyAcquired);
@@ -358,6 +362,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override async Task SaveAsync()
         {
+            bool isWmsActive = await this.wmsStatusWebService.IsEnabledAsync();
+            if (isWmsActive && this.IsLocal)
+            {
+                throw new InvalidOperationException(InstallationApp.LocalAndWmsNotAllowed);
+            }
             try
             {
                 this.Logger.Debug("Saving card reader settings ...");

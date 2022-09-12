@@ -2833,4 +2833,7 @@
   <data name="TokenIsPresent" xml:space="preserve">
     <value>The token is already present</value>
   </data>
+  <data name="LocalAndWmsNotAllowed" xml:space="preserve">
+    <value>Local not available is WMS is active</value>
+  </data>
 </root>

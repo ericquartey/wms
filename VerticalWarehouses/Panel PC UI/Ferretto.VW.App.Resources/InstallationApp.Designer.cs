@@ -4489,6 +4489,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local not available is WMS is active.
+        /// </summary>
+        public static string LocalAndWmsNotAllowed {
+            get {
+                return ResourceManager.GetString("LocalAndWmsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Off.
         /// </summary>
         public static string LogOff {
