@@ -13,6 +13,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         {
             this.Sscc = product.Sscc;
             this.Lot = product.Lot;
+            this.ExpirationDate = product.ExpirationDate;
             this.SerialNumber = product.SerialNumber;
 
             if (product.Machines?.Any() == true)
@@ -22,7 +23,6 @@ namespace Ferretto.VW.App.Modules.Operator.Models
                 this.MachinesInfo = string.Join(", ", product.Machines.Select(m => m.Nickname).ToArray());
                 this.AvailableQuantity = (double?)product.Machines.Sum(m => m.ItemAvailableQuantity);
                 this.Machines = product.Machines.Select(m => new MachinePick() { AvailableQuantityItem = (double?)m.ItemAvailableQuantity, Id = m.Id, Nickname = m.Nickname });
-                this.ExpirationDate = product.ExpirationDate;
             }
         }
 
