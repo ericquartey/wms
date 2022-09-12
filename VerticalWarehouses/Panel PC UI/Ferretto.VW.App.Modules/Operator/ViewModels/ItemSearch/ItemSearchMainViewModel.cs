@@ -88,6 +88,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGroupbyLotEnabled;
 
+        private bool isExpireDate;
+
+        private bool isExpireDateEnable;
+
         private bool isLocalMachineItems;
 
         private bool isOrderVisible;
@@ -314,6 +318,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isGroupbyLotEnabled;
             private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
+        }
+
+
+        public bool IsExpireDate
+        {
+            get => this.isExpireDate;
+            set
+            {
+                if (this.SetProperty(ref this.isExpireDate, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.Appear = false;
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                        this.Appear = true;
+                    }).Start();
+                }
+            }
+        }
+
+        public bool IsExpireDateEnable
+        {
+            get => this.isExpireDateEnable;
+            private set => this.SetProperty(ref this.isExpireDateEnable, value);
         }
 
         public bool IsOrderVisible
@@ -1122,15 +1155,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsGroupbyLotEnabled = false;
                     this.IsDistinctBySerialNumberEnabled = false;
                     this.IsSsccEnabled = false;
+                    this.IsExpireDate = false;
+                    this.IsExpireDateEnable = false;
                 }
                 else if (this.items.Count == 1)
                 {
+                    this.IsExpireDateEnable = true;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
                 }
                 else
                 {
+                    this.IsExpireDateEnable = true;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;

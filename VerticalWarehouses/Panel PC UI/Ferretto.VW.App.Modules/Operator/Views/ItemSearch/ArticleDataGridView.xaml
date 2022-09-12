@@ -112,28 +112,49 @@
             <Setter Property="Margin" Value="5,0,5,0" />
           </Style>
         </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            </DataGridTextColumn>
 
-      <DataGridTextColumn x:Name="Column6"
+            <DataGridTextColumn x:Name="Column6"
                           Width="100"
                           Binding="{Binding Sscc}"
                           Header="{Resources:Loc OperatorApp.Sscc}"
                           Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsSscc, Converter={StaticResource BTVC}}">
-        <DataGridTextColumn.CellStyle>
-          <Style TargetType="DataGridCell">
-            <Setter Property="BorderThickness" Value="0" />
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0" />
 
-            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-          </Style>
-        </DataGridTextColumn.CellStyle>
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="5,0,5,0" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
-    </ctrls:PpcDataGrid.Columns>
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="Column7"
+                          Width="2*"
+                          Binding="{Binding ExpirationDate, TargetNullValue={x:Null}, StringFormat={}Target: {0:F2}}"
+                          Header="{Resources:Loc OperatorApp.ExpirationDate}"
+                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsExpireDate, Converter={StaticResource BTVC}}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0" />
+
+                        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Margin" Value="5,0,5,0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+        </ctrls:PpcDataGrid.Columns>
   </ctrls:PpcDataGrid>
 </UserControl>

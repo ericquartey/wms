@@ -224,34 +224,49 @@
           <RowDefinition Height="Auto" />
           <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-          <CheckBox Margin="15,0,0,15"
-                    Content="{Resources:Loc OperatorApp.Lot}"
-                    Foreground="{DynamicResource CheckBoxDescription}"
-                    IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
-                    IsEnabled="{Binding IsGroupbyLotEnabled}"
-                    Style="{StaticResource PpcCheckBoxStyle}" />
-          <Grid>
-            <CheckBox Margin="15,0,15,15"
-                      Content="{Resources:Loc OperatorApp.SerialNumber}"
-                      Foreground="{DynamicResource CheckBoxDescription}"
-                      IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
-                      IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
-                      Style="{StaticResource PpcCheckBoxStyle}"
-                      Visibility="{Binding IsCarrefour, Converter={StaticResource BTVIC}}" />
-            <CheckBox Margin="15,0,15,15"
-                      Content="{Resources:Loc OperatorApp.Sscc}"
-                      Foreground="{DynamicResource CheckBoxDescription}"
-                      IsChecked="{Binding IsSscc, Mode=TwoWay}"
-                      IsEnabled="{Binding IsSsccEnabled}"
-                      Style="{StaticResource PpcCheckBoxStyle}"
-                      Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Margin="15,0,0,5"
+                          Content="{Resources:Loc OperatorApp.Lot}"
+                          Foreground="{DynamicResource CheckBoxDescription}"
+                          IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
+                          VerticalAlignment="Top"
+                          Height="40"
+                          IsEnabled="{Binding IsGroupbyLotEnabled}"
+                          Style="{StaticResource PpcCheckBoxStyle}" />
+
+            <Grid>
+                <CheckBox Margin="15,0,15,5"
+                          Content="{Resources:Loc OperatorApp.SerialNumber}"
+                          Height="40"
+                          Foreground="{DynamicResource CheckBoxDescription}"
+                          IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
+                          IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
+                          Style="{StaticResource PpcCheckBoxStyle}"
+                          Visibility="{Binding IsCarrefour, Converter={StaticResource BTVIC}}" />
+                <CheckBox Margin="15,0,15,5"
+                          Content="{Resources:Loc OperatorApp.Sscc}"
+                          Foreground="{DynamicResource CheckBoxDescription}"
+                          IsChecked="{Binding IsSscc, Mode=TwoWay}"
+                          Height="40"
+                          IsEnabled="{Binding IsSsccEnabled}"
+                          Style="{StaticResource PpcCheckBoxStyle}"
+                          Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
           </Grid>
+            </StackPanel>
+            <CheckBox Margin="15,0,0,5"
+                        VerticalAlignment="Top"
+                        Content="{Resources:Loc OperatorApp.ExpirationDate}"
+                        Foreground="{DynamicResource CheckBoxDescription}"
+                        IsChecked="{Binding IsExpireDate, Mode=TwoWay}"
+                        Height="40"
+                        IsEnabled="{Binding IsExpireDateEnable}"
+                        Style="{StaticResource PpcCheckBoxStyle}" />
         </StackPanel>
 
         <Border Grid.Row="1"
-                Height="90"
-                MinHeight="90"
+                Height="80"
+                MinHeight="80"
                 Margin="15,0"
                 Background="{DynamicResource PpcBackground}">
           <Border BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -290,8 +305,8 @@
         </Border>
 
         <Border Grid.Row="2"
-                Height="90"
-                MinHeight="90"
+                Height="80"
+                MinHeight="80"
                 Margin="15,7,15,0"
                 Background="{DynamicResource PpcBackground}">
           <Border BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -332,7 +347,7 @@
         </Border>
 
         <ctrls:PpcSpinEdit Grid.Row="3"
-                           Height="90"
+                           Height="80"
                            Margin="15,7,15,0"
                            EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            Increment="{Binding QuantityIncrement}"
