@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
@@ -339,6 +340,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
+
+        public void SetRotationClass(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Where(b => b.Number < BayNumber.ElevatorBay))
+                {
+                    if (bay.Number == bayNumber)
+                    {
+                        bay.RotationClass = "A";
+                    }
+                    else
+                    {
+                        bay.RotationClass = "B";
+                    }
+                }
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
 
         public Bay ClearMission(BayNumber bayNumber)
         {
