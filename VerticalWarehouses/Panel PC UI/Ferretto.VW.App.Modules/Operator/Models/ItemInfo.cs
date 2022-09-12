@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -13,6 +13,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         {
             this.Sscc = product.Sscc;
             this.Lot = product.Lot;
+            this.ExpirationDate = product.ExpirationDate;
             this.SerialNumber = product.SerialNumber;
 
             if (product.Machines?.Any() == true)
@@ -74,6 +75,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         public string SerialNumber { get; }
 
         public string Sscc { get; }
+
+        public DateTimeOffset? ExpirationDate { get; }
 
         #endregion
     }
