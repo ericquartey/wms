@@ -4084,7 +4084,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is Local.
+        ///   Looks up a localized string similar to Local.
         /// </summary>
         public static string IsLocal {
             get {

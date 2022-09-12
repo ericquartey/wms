@@ -2822,7 +2822,7 @@
     <value>This will delete the user, proceed?</value>
   </data>
   <data name="IsLocal" xml:space="preserve">
-    <value>Is Local</value>
+    <value>Local</value>
   </data>
   <data name="GuestEnabled" xml:space="preserve">
     <value>Guest enabled</value>
