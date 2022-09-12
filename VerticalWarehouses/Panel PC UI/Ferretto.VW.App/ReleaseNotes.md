@@ -29,14 +29,16 @@
 - Aggiunta classe di rotazione ABC
 - Aggiunta gestione lettore badge senza WMS
 - Aggiunto utente Guest
+- Ricerca articoli: aggiunta visualizzazione della data di scadenza
 
 ## Bug Risolti
 - Ricerca articoli: corretta la quantità nelle altre macchine
 - Gestione operatori: corretto il cambio della password di Operator
 - Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
 - Login: corretto livello degli utenti di wms con nomi uguali ai locali
+- Gestione celle: le celle bloccate non risultano libere
 
-## Compatibile con adapter 0.4.39
+## Compatibile con adapter 0.4.40
 ***
 
 [Versione 1.0.49](#id1049)
