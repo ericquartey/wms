@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int compartmentId;
 
-        private string expireDate;
+        private DateTimeOffset? expireDate;
 
         private bool expireDateVisibility;
 
@@ -99,7 +99,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                       async () => await this.AddItemToLoadingUnitAsync(),
                       this.CanAddItemButton));
 
-        public string ExpireDate
+        public DateTimeOffset? ExpireDate
         {
             get => this.expireDate;
             set
@@ -314,6 +314,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.Lot = this.MissionOperation.Lot;
                     this.SerialNumber = this.MissionOperation.SerialNumber;
+                    this.ExpireDate = this.MissionOperation.ExpirationDate;
                 }
 
                 this.IsFromList = this.MissionOperation != null;
@@ -328,6 +329,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId);
                 this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId);
+                this.ExpireDate = DateTimeOffset.Now;
+                this.ExpireDateVisibility = true;
             }
 
             await base.OnAppearedAsync();

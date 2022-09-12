@@ -168,7 +168,7 @@
 
         <Grid Grid.Row="5"
               Margin="50,15,50,15"
-              Visibility="Collapsed">
+              Visibility="{Binding Path=ExpireDateVisibility, Converter={StaticResource BTVC}}"> 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
@@ -185,7 +185,7 @@
                      Height="32"
                      Margin="25,0,90,0"
                      FontSize="{DynamicResource FontSize_High}"
-                     Text="{Binding ItemExpireDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding ExpireDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 
