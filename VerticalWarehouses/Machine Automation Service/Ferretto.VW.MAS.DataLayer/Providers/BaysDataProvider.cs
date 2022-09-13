@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
@@ -308,9 +309,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                foreach (var bay in this.dataContext.Bays)
+                foreach (var bay in this.dataContext.Bays.Where(b => b.Number < BayNumber.ElevatorBay))
                 {
-                    if (bay.ProfileConst1 == 0 && bay.Number < BayNumber.ElevatorBay)
+                    if (bay.ProfileConst1 == 0)
                     {
                         if (bay.Number == BayNumber.BayOne)
                         {
@@ -324,9 +325,43 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                         this.dataContext.SaveChanges();
                     }
+                    if (string.IsNullOrEmpty(bay.RotationClass))
+                    {
+                        if (bay.Number == BayNumber.BayOne)
+                        {
+                            bay.RotationClass = "A";
+                        }
+                        else
+                        {
+                            bay.RotationClass = "B";
+                        }
+                        this.dataContext.SaveChanges();
+                    }
                 }
             }
         }
+
+        public void SetRotationClass(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Where(b => b.Number < BayNumber.ElevatorBay))
+                {
+                    if (bay.Number == bayNumber)
+                    {
+                        bay.RotationClass = "A";
+                    }
+                    else
+                    {
+                        bay.RotationClass = "B";
+                    }
+                }
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
 
         public Bay ClearMission(BayNumber bayNumber)
         {
@@ -1247,23 +1282,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Accessories)
-                    .ThenInclude(a => a.CardReader)
-                    .Single(b => b.Number == bayNumber);
-
-                bay.Accessories.CardReader.IsEnabledNew = isEnabled;
-                bay.Accessories.CardReader.TokenRegex = tokenRegex;
-
-                this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();
             }
         }

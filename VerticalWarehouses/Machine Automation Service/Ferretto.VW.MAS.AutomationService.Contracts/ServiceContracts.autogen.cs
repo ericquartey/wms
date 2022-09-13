@@ -74,11 +74,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task UpdateBarcodeReaderSettingsAsync(bool isEnabled, string portName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex);
+        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateCardReaderSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLabelPrinterSettingsAsync(bool isEnabled, string printerName);
@@ -229,6 +229,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetProfileConstBayAsync(double k0, double k1, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetRotationClassAsync(BayNumber baynumber);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetRotationClassAsync(BayNumber baynumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height);
@@ -440,11 +447,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineCompactingWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CompactingAsync();
+        System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task CompactingAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -1316,11 +1323,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineIdentityWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> AddOrModifyRotationClassScheduleAsync(RotationClassSchedule newRotationClassSchedule);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> AddOrModifyRotationClassScheduleAsync(RotationClassSchedule newRotationClassSchedule, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<RotationClassSchedule>> GetAllRotationClassScheduleAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<RotationClassSchedule>> GetAllRotationClassScheduleAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetBoxEnableAsync();
@@ -1342,6 +1363,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetFireAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsRotationClassAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsRotationClassAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetItemUniqueIdLengthAsync();
@@ -2430,6 +2458,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineUsersWebService
     {
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> AddUserAsync(UserParameters user);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> AddUserAsync(UserParameters user, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<UserClaims> AuthenticateWithBearerTokenAsync(string bearerToken);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2458,6 +2493,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> ChangePasswordAsync(string userName, string newPassword, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> DeleteUserAsync(UserParameters user);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> DeleteUserAsync(UserParameters user, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<UserParameters>> GetAllTokenUsersAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<UserParameters>> GetAllTokenUsersAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<User>> GetAllUsersAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2479,6 +2528,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetIsDisabledAsync(string userName, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsLimitedAsync(string userName);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsLimitedAsync(string userName, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetOperatorEnabledWithWMSAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2498,6 +2554,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetIsDisabledAsync(string userName, bool isDisabled, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetIsLimitedAsync(string userName, bool isLimited);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetIsLimitedAsync(string userName, bool isLimited, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetMASCultureAsync(string culture);
@@ -3311,6 +3374,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class CardReader : Accessory
     {
+        [Newtonsoft.Json.JsonProperty("IsLocal", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsLocal { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("TokenRegex", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string TokenRegex { get; set; }
     
@@ -3476,6 +3542,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsActive", Required = Newtonsoft.Json.Required.Always)]
         public bool IsActive { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsOptimizeRotationClass", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOptimizeRotationClass { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -3502,6 +3571,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ChainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("CheckListContinueInOtherMachine", Required = Newtonsoft.Json.Required.Always)]
+        public bool CheckListContinueInOtherMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CurrentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Mission CurrentMission { get; set; }
@@ -3575,11 +3647,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RotationClass { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ShowBarcodeImage", Required = Newtonsoft.Json.Required.Always)]
         public bool ShowBarcodeImage { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("CheckListContinueInOtherMachine", Required = Newtonsoft.Json.Required.Always)]
-        public bool CheckListContinueInOtherMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Shutter Shutter { get; set; }
@@ -4557,6 +4629,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsBlocked", Required = Newtonsoft.Json.Required.Always)]
         public bool IsBlocked { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsPreferred", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsPreferred { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsUpper", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpper { get; set; }
     
@@ -4623,6 +4698,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsLaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLaserOffset { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsRotationClassDifferent", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRotationClassDifferent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsRotationClassFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRotationClassFixed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public double LaserOffset { get; set; }
     
@@ -4632,8 +4713,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MissionsCount", Required = Newtonsoft.Json.Required.Always)]
         public int MissionsCount { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MissionsCountRotation", Required = Newtonsoft.Json.Required.Always)]
+        public int MissionsCountRotation { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("NetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double NetWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RotationClass { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Status", Required = Newtonsoft.Json.Required.Always)]
         public LoadingUnitStatus Status { get; set; }
@@ -4681,6 +4768,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("Priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RotationClass { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Side", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -5213,6 +5303,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRequestConfirmForLastOperationOnLoadingUnit", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsRotationClass", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsRotationClass { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsUpdatingStockByDifference", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpdatingStockByDifference { get; set; }
@@ -6523,6 +6616,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         TowardOperator = 0,
     
         TowardMachine = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class RotationClassSchedule : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("DaysCount", Required = Newtonsoft.Json.Required.Always)]
+        public int DaysCount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LastSchedule", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? LastSchedule { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static RotationClassSchedule FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RotationClassSchedule>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
     
     }
     
@@ -7842,6 +7956,55 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class UserParameters : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
+        public int AccessLevel { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDisabled", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDisabled { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsDisabledWithWMS", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsDisabledWithWMS { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsLimited", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLimited { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsService", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsService { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Language", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Language { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("PasswordHash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PasswordHash { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("PasswordSalt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string PasswordSalt { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Token", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Token { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Validity", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset Validity { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static UserParameters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UserClaims 
     {
         [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
@@ -7898,49 +8061,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static User FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<User>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class UserParameters : DataModel
-    {
-        [Newtonsoft.Json.JsonProperty("AccessLevel", Required = Newtonsoft.Json.Required.Always)]
-        public int AccessLevel { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsDisabled", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsDisabled { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsDisabledWithWMS", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsDisabledWithWMS { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsService", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsService { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Language", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Language { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("PasswordHash", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PasswordHash { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("PasswordSalt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string PasswordSalt { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("Validity", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTimeOffset Validity { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static UserParameters FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

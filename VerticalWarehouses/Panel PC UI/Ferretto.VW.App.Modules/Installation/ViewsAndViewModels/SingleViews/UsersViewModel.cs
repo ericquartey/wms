@@ -16,6 +16,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private const int MinimumPasswordLength = 2;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
 
         private readonly ISessionService sessionService;
@@ -24,11 +26,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
+        private DelegateCommand changeGuestPasswordCommand;
+
         private DelegateCommand changeInstallerPasswordCommand;
 
         private DelegateCommand changeMovementPasswordCommand;
 
         private DelegateCommand changeOperatorPasswordCommand;
+
+        private bool guestActive;
+
+        private DelegateCommand guestCommand;
+
+        private string guestNewPassword;
+
+        private string guestNewPasswordConfirm;
+
+        private bool installerActive;
+
+        private DelegateCommand installerCommand;
 
         private string installerNewPassword;
 
@@ -36,19 +52,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isEnabledEditing;
 
+        private bool isGuestEnabled;
+
         private bool isMovementEnabled;
 
         private bool isOperatorEnabledWithWMS;
 
         private bool isWmsEnabled;
 
+        private bool movementActive;
+
+        private DelegateCommand movementCommand;
+
         private string movementNewPassword;
 
         private string movementNewPasswordConfirm;
 
+        private bool operatorActive;
+
+        private DelegateCommand operatorCommand;
+
         private string operatorNewPassword;
 
         private string operatorNewPasswordConfirm;
+
+        private DelegateCommand saveIsGuestEnabledCommand;
 
         private DelegateCommand saveIsMovementEnabledCommand;
 
@@ -74,28 +102,91 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public ICommand ChangeGuestPasswordCommand =>
+           this.changeGuestPasswordCommand
+           ??
+           (this.changeGuestPasswordCommand = new DelegateCommand(
+               async () => await this.ChangePassword("guest"),
+               this.CanExecuteGuestCommand));
+
         public ICommand ChangeInstallerPasswordCommand =>
-           this.changeInstallerPasswordCommand
+                   this.changeInstallerPasswordCommand
            ??
            (this.changeInstallerPasswordCommand = new DelegateCommand(
-               async () => await this.ChangePassword(UserAccessLevel.Installer),
+               async () => await this.ChangePassword("installer"),
                this.CanExecuteInstallerCommand));
 
         public ICommand ChangeMovementPasswordCommand =>
            this.changeMovementPasswordCommand
            ??
            (this.changeMovementPasswordCommand = new DelegateCommand(
-               async () => await this.ChangePassword(UserAccessLevel.Movement),
+               async () => await this.ChangePassword("movement"),
                this.CanExecuteMovementCommand));
 
         public ICommand ChangeOperatorPasswordCommand =>
                    this.changeOperatorPasswordCommand
            ??
            (this.changeOperatorPasswordCommand = new DelegateCommand(
-               async () => await this.ChangePassword(UserAccessLevel.Operator),
+               async () => await this.ChangePassword("operator"),
                this.CanExecuteOperatorCommand));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool GuestActive
+        {
+            get => this.guestActive;
+            set
+            {
+                this.SetProperty(ref this.guestActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.InstallerActive = false;
+                    this.MovementActive = false;
+                    this.OperatorActive = false;
+                }
+            }
+        }
+
+        public ICommand GuestCommand =>
+           this.guestCommand
+           ??
+           (this.guestCommand = new DelegateCommand(
+               () => this.GuestActive = true));
+
+        public string GuestNewPassword
+        {
+            get => this.guestNewPassword;
+            set => this.SetProperty(ref this.guestNewPassword, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string GuestNewPasswordConfirm
+        {
+            get => this.guestNewPasswordConfirm;
+            set => this.SetProperty(ref this.guestNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool InstallerActive
+        {
+            get => this.installerActive;
+            set
+            {
+                this.SetProperty(ref this.installerActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.MovementActive = false;
+                    this.OperatorActive = false;
+                    this.GuestActive = false;
+                }
+            }
+        }
+
+        public ICommand InstallerCommand =>
+           this.installerCommand
+           ??
+           (this.installerCommand = new DelegateCommand(
+               () => this.InstallerActive = true));
 
         public string InstallerNewPassword
         {
@@ -115,6 +206,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isEnabledEditing, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsGuestEnabled
+        {
+            get => this.isGuestEnabled;
+            set => this.SetProperty(ref this.isGuestEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsMovementEnabled
         {
             get => this.isMovementEnabled;
@@ -126,6 +223,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.isOperatorEnabledWithWMS;
             set => this.SetProperty(ref this.isOperatorEnabledWithWMS, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool MovementActive
+        {
+            get => this.movementActive;
+            set
+            {
+                this.SetProperty(ref this.movementActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.InstallerActive = false;
+                    this.OperatorActive = false;
+                    this.GuestActive = false;
+                }
+            }
+        }
+
+        public ICommand MovementCommand =>
+           this.movementCommand
+           ??
+           (this.movementCommand = new DelegateCommand(
+               () => this.MovementActive = true));
 
         public string MovementNewPassword
         {
@@ -139,6 +258,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.movementNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool OperatorActive
+        {
+            get => this.operatorActive;
+            set
+            {
+                this.SetProperty(ref this.operatorActive, value, this.RaiseCanExecuteChanged);
+
+                if (value)
+                {
+                    this.InstallerActive = false;
+                    this.MovementActive = false;
+                    this.GuestActive = false;
+                }
+            }
+        }
+
+        public ICommand OperatorCommand =>
+           this.operatorCommand
+           ??
+           (this.operatorCommand = new DelegateCommand(
+               () => this.OperatorActive = true));
+
         public string OperatorNewPassword
         {
             get => this.operatorNewPassword;
@@ -151,8 +292,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.operatorNewPasswordConfirm, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand SaveIsGuestEnabledCommand =>
+          this.saveIsGuestEnabledCommand
+          ??
+          (this.saveIsGuestEnabledCommand = new DelegateCommand(
+              async () => await this.SaveIsGuestEnabled(),
+              this.CanEnableGuestCommand));
+
         public ICommand SaveIsMovementEnabledCommand =>
-          this.saveIsMovementEnabledCommand
+                  this.saveIsMovementEnabledCommand
           ??
           (this.saveIsMovementEnabledCommand = new DelegateCommand(
               async () => await this.SaveIsMovementEnabled(),
@@ -179,6 +327,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InstallerNewPassword = string.Empty;
             this.MovementNewPassword = string.Empty;
             this.MovementNewPasswordConfirm = string.Empty;
+
+            this.InstallerActive = true;
+            this.OperatorActive = false;
+            this.MovementActive = false;
+            this.GuestActive = false;
         }
 
         public override async Task OnAppearedAsync()
@@ -198,6 +351,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsKeyboardButtonVisible = await this.machineIdentityWebService.GetTouchHelperEnableAsync();
 
             this.IsMovementEnabled = !await this.usersService.GetIsDisabledAsync("movement");
+            this.IsGuestEnabled = !await this.usersService.GetIsDisabledAsync("guest");
+
+            this.InstallerActive = true;
+        }
+
+        public void SelectedUser(bool userActive)
+        {
+            userActive = true;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -206,8 +367,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.changeOperatorPasswordCommand?.RaiseCanExecuteChanged();
             this.changeInstallerPasswordCommand?.RaiseCanExecuteChanged();
             this.changeMovementPasswordCommand?.RaiseCanExecuteChanged();
+            this.changeGuestPasswordCommand?.RaiseCanExecuteChanged();
             this.saveIsOperatorEnabledWithWMSCommand?.RaiseCanExecuteChanged();
             this.saveIsMovementEnabledCommand?.RaiseCanExecuteChanged();
+            this.saveIsGuestEnabledCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanEnableGuestCommand()
+        {
+            return this.isEnabledEditing &&
+                this.sessionService.UserAccessLevel >= UserAccessLevel.Installer;
         }
 
         private bool CanEnableMovementCommand()
@@ -218,7 +387,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecute()
         {
+            return this.isEnabledEditing && this.isWmsEnabled &&
+                this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
+        }
+
+        private bool CanExecuteGuestCommand()
+        {
             return this.isEnabledEditing &&
+                !string.IsNullOrEmpty(this.guestNewPasswordConfirm) &&
+                !string.IsNullOrEmpty(this.guestNewPassword) &&
+                this.guestNewPasswordConfirm == this.guestNewPassword &&
                 this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
         }
 
@@ -247,31 +425,62 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !string.IsNullOrEmpty(this.operatorNewPasswordConfirm) &&
                 !string.IsNullOrEmpty(this.operatorNewPassword) &&
                 this.operatorNewPasswordConfirm == this.operatorNewPassword &&
-                this.sessionService.UserAccessLevel > UserAccessLevel.Movement &&
-                !this.isWmsEnabled;
+                this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
         }
 
-        private async Task ChangePassword(UserAccessLevel userAccessLevel)
+        private async Task ChangePassword(string name)
         {
             try
             {
                 this.IsEnabledEditing = false;
+                var newPassword = string.Empty;
 
-                if (userAccessLevel == UserAccessLevel.Installer)
+                switch (name)
                 {
-                    await this.usersService.ChangePasswordAsync("installer", this.installerNewPassword);
+                    case "installer":
+                        newPassword = this.installerNewPassword;
+                        break;
+
+                    case "operator":
+                        newPassword = this.operatorNewPassword;
+                        break;
+
+                    case "movement":
+                        newPassword = this.movementNewPassword;
+                        break;
+
+                    case "guest":
+                        newPassword = this.guestNewPassword;
+                        break;
+                }
+
+                if (string.IsNullOrEmpty(newPassword) || newPassword.Length < MinimumPasswordLength)
+                {
+                    this.ShowNotification(LoadLogin.PasswordIsTooShort, Services.Models.NotificationSeverity.Error);
+                }
+                else
+                {
+                    await this.usersService.ChangePasswordAsync(name, newPassword);
                     this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
                 }
-                else if (userAccessLevel == UserAccessLevel.Operator)
-                {
-                    await this.usersService.ChangePasswordAsync("operator", this.operatorNewPassword);
-                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
-                }
-                else if (userAccessLevel == UserAccessLevel.Movement)
-                {
-                    await this.usersService.ChangePasswordAsync("movement", this.movementNewPassword);
-                    this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
-                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsEnabledEditing = true;
+            }
+        }
+
+        private async Task SaveIsGuestEnabled()
+        {
+            try
+            {
+                this.IsEnabledEditing = false;
+                await this.usersService.SetIsDisabledAsync("guest", !this.IsGuestEnabled);
+                this.ShowNotification(InstallationApp.SaveSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

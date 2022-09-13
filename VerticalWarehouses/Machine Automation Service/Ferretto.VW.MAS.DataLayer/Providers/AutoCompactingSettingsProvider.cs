@@ -92,6 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     var autoCompactingSettings = this.dataContext.AutoCompactingSettings.Single(s => s.Id == newAutoCompactingSettings.Id);
                     autoCompactingSettings.IsActive = newAutoCompactingSettings.IsActive;
                     autoCompactingSettings.BeginTime = newAutoCompactingSettings.BeginTime;
+                    autoCompactingSettings.IsOptimizeRotationClass = newAutoCompactingSettings.IsOptimizeRotationClass;
                     this.dataContext.AutoCompactingSettings.Update(autoCompactingSettings);
                     this.dataContext.SaveChanges();
                 }
@@ -118,8 +119,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (this.CanCompactingStart())
                     {
-                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} :  Compacting allowed.");
+                        this.logger.LogDebug($"Auto Compacting Settings : Time {DateTime.Now.TimeOfDay.Hours}:{DateTime.Now.TimeOfDay.Minutes} : sort {activeSettings.IsOptimizeRotationClass} :  Compacting allowed.");
                         this.machineVolatileDataProvider.Mode = CommonUtils.Messages.MachineMode.Compact;
+                        this.machineVolatileDataProvider.IsOptimizeRotationClass = activeSettings.IsOptimizeRotationClass;
                     }
                     else
                     {

@@ -1,0 +1,186 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.DaysCountView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+  <Grid Margin="15,0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+
+    <TextBlock VerticalAlignment="Top"
+               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+               Text="{res:Loc OperatorApp.DaysCountSettings}" />
+
+
+        <Border Grid.Row="1"
+            Margin="0,0,0,15"
+            BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
+
+            <DataGrid Width="auto"
+                Height="auto"
+                AutoGenerateColumns="False"
+                Background="{DynamicResource VWAPP_BACKGROUND}"
+                BorderThickness="0"
+                CanUserReorderColumns="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                CanUserSortColumns="True"
+                FontSize="{StaticResource FontSize_High}"
+                HeadersVisibility="Column"
+                HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                IsReadOnly="True"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding RotationClassSchedules}"
+                RowHeight="40"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedRotationClassSchedule}"
+                SelectionMode="Single"
+                VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                VerticalScrollBarVisibility="Auto">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="Column1"
+                              Width="2*"
+                              Binding="{Binding Path=DaysCount}"
+                              Header="{res:Loc OperatorApp.DaysCount}">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column2"
+                              Width="2*"
+                              Binding="{Binding Path=LastSchedule, StringFormat=hh:mm dd/MM/yyyy}"
+                              Header="{res:Loc OperatorApp.LastSchedule}">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="1,0,0,0" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="TextWrapping" Value="Wrap" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border  Grid.Column="0"
+                     BorderBrush="{DynamicResource PpcBorderBrush}"
+                     BorderThickness="{DynamicResource PpcBorderThickness}"
+                     Margin="0,0,5,0"
+                     CornerRadius="2">   
+                <StackPanel Margin="15" Orientation="Horizontal">
+                    <ctrls:PpcSpinEdit Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                Height="85"
+                                MinWidth="250"
+                                MaxHeight="85"
+                                MinValue="-1"
+                                MaxValue="999"
+                                EditValue="{Binding SelectedRotationClassSchedule.DaysCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding SelectedRotationClassSchedule, Converter={StaticResource RTBIC}}"
+                                LabelText="{res:Loc OperatorApp.DaysCount}" />
+
+                    <controls:PpcButton Margin="15,0,0,0"
+                          HorizontalAlignment="Left"
+                          Command="{Binding SaveCommand}"
+                          Content="{res:Loc InstallationApp.Save}"
+                          IsBusy="{Binding IsBusy}" />
+                </StackPanel>
+            </Border>
+            
+            <Border Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Visibility="{Binding SingleBay, Converter={StaticResource BTVIC}}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="2">
+                <StackPanel>
+                    <TextBox Text="{res:Loc InstallationApp.PreferentialBay}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,5,0,-5" Style="{StaticResource titleStyle}"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <RadioButton HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch"
+                                     GroupName="Bays"
+                                     IsChecked="{Binding IsBay1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <RadioButton.Content>
+                                <TextBlock Grid.Row="2"
+                                   Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                                   Text="{res:Loc InstallationApp.Bay1}" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch"
+                                     Visibility="{Binding HaveBay2, Converter={StaticResource BTVC}}"
+                                     GroupName="Bays"
+                                     IsChecked="{Binding IsBay2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <RadioButton.Content>
+                                <TextBlock Grid.Row="2"
+                                   Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                                   Text="{res:Loc InstallationApp.Bay2}" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch"
+                                     Visibility="{Binding HaveBay3, Converter={StaticResource BTVC}}"
+                                     GroupName="Bays"
+                                     IsChecked="{Binding IsBay3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <RadioButton.Content>
+                                <TextBlock Grid.Row="2"
+                                   Style="{DynamicResource VWAPP_RadioButtonTextBlockStyle}"
+                                   Text="{res:Loc InstallationApp.Bay3}" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        
+                        <controls:PpcButton HorizontalAlignment="Left"
+                                            Height="40"
+                                            Margin="12,0,0,0"
+                                            Width="150"
+                                            Command="{Binding SaveRotationClassCommand}"
+                                            Content="{res:Loc InstallationApp.Save}"
+                                            IsBusy="{Binding IsBusy}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+  </Grid>
+</ctrls:View>

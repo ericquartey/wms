@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName);
 
-        void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex);
+        void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex, bool isLocal);
 
         void UpdateLabelPrinterSettings(BayNumber bayNumber, bool isEnabled, string printerName);
 

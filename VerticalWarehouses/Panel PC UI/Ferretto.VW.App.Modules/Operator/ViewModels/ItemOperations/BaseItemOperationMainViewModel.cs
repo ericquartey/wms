@@ -2216,6 +2216,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task OnMissionChangedAsync()
         {
+            this.Logger.Debug($"OnMissionChangedAsync: IsOperationConfirmed {this.IsOperationConfirmed}, IsOperationCanceled {this.IsOperationCanceled}");
             if (this.IsOperationConfirmed || this.IsOperationCanceled)
             {
                 this.IsOperationConfirmed = false;

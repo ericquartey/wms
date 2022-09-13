@@ -98,6 +98,7 @@
             <ComboBox Margin="5,0,5,5"
                       FontFamily="{DynamicResource VWAPP_TitleFont}"
                       FontSize="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}"
+                      SelectionChanged="ComboBox_SelectionChanged"
                       ItemsSource="{Binding BlockLevels}"
                       SelectedValue="{Binding SelectedCell.BlockLevel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                       Style="{DynamicResource PpcComboBoxStyle}">
@@ -133,6 +134,7 @@
                        Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
                        Text="{res:Loc InstallationApp.IsFree}" />
             <controls:PpcCheckBox Margin="5,4,0,5"
+                                  x:Name="IsFreeCheckBox"
                                   IsChecked="{Binding SelectedCell.IsFree, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                   IsEnabled="{Binding IsEnabledEditing}" />
           </StackPanel>

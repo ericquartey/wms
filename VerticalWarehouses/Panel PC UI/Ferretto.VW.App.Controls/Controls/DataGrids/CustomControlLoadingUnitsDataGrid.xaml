@@ -3,12 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
 
   <Border BorderBrush="{DynamicResource PpcBorderBrush}"
           BorderThickness="{DynamicResource PpcBorderThickness}"
           CornerRadius="2">
-    <DataGrid Name="DataGrid"
+        <Grid>
+            <FrameworkElement x:Name="dummyElement" Visibility="Collapsed" />
+            
+            <DataGrid Name="DataGrid"
               Width="auto"
               Height="auto"
               AutoGenerateColumns="False"
@@ -27,11 +31,10 @@
               RowHeight="30"
               SelectedItem="{Binding SelectedItem}"
               SelectionMode="Single"
-              Sorting="dataGridName_Sorting"
               VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
               VerticalScrollBarVisibility="Auto">
-
-      <DataGrid.Template>
+            
+            <DataGrid.Template>
         <ControlTemplate TargetType="{x:Type DataGrid}">
           <Border Padding="{TemplateBinding Padding}"
                   Background="{TemplateBinding Background}"
@@ -99,8 +102,7 @@
           </Border>
         </ControlTemplate>
       </DataGrid.Template>
-
-      <DataGrid.ColumnHeaderStyle>
+            <DataGrid.ColumnHeaderStyle>
         <Style TargetType="DataGridColumnHeader">
           <Setter Property="Template">
             <Setter.Value>
@@ -153,15 +155,13 @@
           <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
         </Style>
       </DataGrid.ColumnHeaderStyle>
-
-      <DataGrid.Style>
+            <DataGrid.Style>
         <Style TargetType="DataGrid">
           <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
           <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
         </Style>
       </DataGrid.Style>
-
-      <DataGrid.CellStyle>
+            <DataGrid.CellStyle>
         <Style TargetType="DataGridCell">
           <Style.Resources>
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
@@ -183,7 +183,7 @@
           <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
         </Style>
       </DataGrid.CellStyle>
-      <DataGrid.RowStyle>
+            <DataGrid.RowStyle>
         <Style TargetType="{x:Type DataGridRow}">
           <Style.Resources>
             <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
@@ -204,15 +204,14 @@
           <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
         </Style>
       </DataGrid.RowStyle>
-
-      <DataGrid.Columns>
-        <DataGridTextColumn x:Name="Column1"
-                            Width="0.75*"
-                            Binding="{Binding Path=Id}"
-                            Header="Id"
-                            SortDirection="Ascending"
-                            SortMemberPath="Id">
-          <!--<DataGridTextColumn.HeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="Column1"
+                                    Width="0.75*"
+                                    Binding="{Binding Path=Id}"
+                                    Header="Id"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="Id">
+                    <!--<DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
                             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
@@ -221,27 +220,31 @@
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>-->
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column2"
-                            Width="1*"
-                            Binding="{Binding Path=CellId}"
-                            Header="{Resources:Loc InstallationApp.Cell}"
-                            SortDirection="Ascending"
-                            SortMemberPath="CellId">
-          <!--  Header="CellId">  -->
-          <!--<DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness"
+                                    Value="0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column2"
+                                    Width="1*"
+                                    Binding="{Binding Path=CellId}"
+                                    Header="{Resources:Loc InstallationApp.Cell}"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="CellId">
+                    <!--  Header="CellId">  -->
+                    <!--<DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Height" Value="40" />
                             <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -251,155 +254,206 @@
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>-->
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="1,0,0,0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column3"
-                            Width="1*"
-                            Binding="{Binding Path=Code}"
-                            Header="{Resources:Loc InstallationApp.Code}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Code">
-          <!--  "Code">  -->
-          <!--<DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>-->
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column4"
-                            Width="1*"
-                            Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                            Header="{Resources:Loc InstallationApp.Weight}"
-                            SortDirection="Ascending"
-                            SortMemberPath="NetWeight">
-          <!--  Header="Weight">  -->
-          <!--<DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>-->
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column5"
-                            Width="1*"
-                            Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                            Header="{Resources:Loc InstallationApp.Height}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Height">
-          <!--  Header="Height">  -->
-          <!--<DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>-->
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column6"
-                            Width="1*"
-                            Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
-                            Header="{Resources:Loc InstallationApp.Status}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Status">
-          <!--  Header="Status">  -->
-          <!--<DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>-->
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-                <DataGridTextColumn x:Name="Column7"
-                            Width="1*"
-                            Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
-                            Header="{Resources:Loc InstallationApp.Laser}"
-                            SortDirection="Ascending"
-                            SortMemberPath="LaserOffset">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            <Setter Property="BorderThickness"
+                                    Value="1,0,0,0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column3"
+                                    Width="1*"
+                                    Binding="{Binding Path=Code}"
+                                    Header="{Resources:Loc InstallationApp.Code}"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="Code">
+                    <!--  "Code">  -->
+                    <!--<DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>-->
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness"
+                                    Value="0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column4"
+                                    Width="1*"
+                                    Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
+                                    Header="{Resources:Loc InstallationApp.Weight}"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="NetWeight">
+                    <!--  Header="Weight">  -->
+                    <!--<DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>-->
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness"
+                                    Value="0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column5"
+                                    Width="1*"
+                                    Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
+                                    Header="{Resources:Loc InstallationApp.Height}"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="Height">
+                    <!--  Header="Height">  -->
+                    <!--<DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>-->
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness"
+                                    Value="0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column6"
+                                    Width="1*"
+                                    Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
+                                    Header="{Resources:Loc InstallationApp.Status}"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="Status">
+                    <!--  Header="Status">  -->
+                    <!--<DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                            <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
+                            <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>-->
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness"
+                                    Value="0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn x:Name="Column7"
+                                    Width="1*"
+                                    Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
+                                    Header="{Resources:Loc InstallationApp.Laser}"
+                                    SortDirection="Ascending"
+                                    SortMemberPath="LaserOffset">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness"
+                                    Value="0" />
+                            <Setter Property="BorderBrush"
+                                    Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Center" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTemplateColumn Width="1*"
+                                        SortDirection="Ascending"
+                                        Header="{Resources:Loc InstallationApp.RotationClass}"
+                                        Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
+                    SortMemberPath="RotationClass">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid HorizontalAlignment="Stretch"
+                                        Visibility="{Binding RotationClass,Converter={StaticResource RTVC}}"
+                                        VerticalAlignment="Center">
+                                <TextBlock HorizontalAlignment="Center"
+                                           Foreground="{Binding ., Converter={StaticResource CTFC}}"
+                                           FontSize="18"
+                                           Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                                           Text="{Binding Path=RotationClass}" />
+                                <TextBlock Text="*"
+                                           HorizontalAlignment="Center"
+                                           Margin="20,0,0,0"
+                                           Visibility="{Binding IsRotationClassFixed ,Converter={StaticResource BTVC}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
+
             </DataGrid.Columns>
-    </DataGrid>
-  </Border>
+            </DataGrid>
+        </Grid>
+    </Border>
 </UserControl>

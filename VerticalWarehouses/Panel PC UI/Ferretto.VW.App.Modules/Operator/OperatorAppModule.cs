@@ -2,8 +2,6 @@
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Views;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Unity;
@@ -92,6 +90,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<LoadingUnitsMissionsView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
             containerRegistry.RegisterForNavigation<AutoCompactingSettingsView>();
+            containerRegistry.RegisterForNavigation<DaysCountView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
             containerRegistry.RegisterForNavigation<StatisticsCellsView>();
@@ -104,6 +103,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
             containerRegistry.RegisterForNavigation<OperationOnBayView>();
             containerRegistry.RegisterForNavigation<ChangeLaserOffsetView>();
+            containerRegistry.RegisterForNavigation<ChangeRotationClassView>();
 
             containerRegistry.RegisterForNavigation<AlarmView>();
             containerRegistry.RegisterForNavigation<AlarmsExportView>();

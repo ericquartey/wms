@@ -40,6 +40,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 
+        void SetRotationClass();
+
+        void SetRotationClassFromUI(int cellId, string rotationClass);
+
         IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);
 
         Cell UpdatePosition(int cellId, double height);

@@ -844,6 +844,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rotation Class.
+        /// </summary>
+        public static string IsRotationClass {
+            get {
+                return ResourceManager.GetString("IsRotationClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Id unique length.
         /// </summary>
         public static string ItemUniqueIdLength {

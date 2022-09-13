@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Accessories.Interfaces
 
         #region Methods
 
-        Task UpdateSettingsAsync(bool isEnabled, string tokenRegex);
+        Task UpdateSettingsAsync(bool isEnabled, string tokenRegex, bool isLocal);
 
         #endregion
     }

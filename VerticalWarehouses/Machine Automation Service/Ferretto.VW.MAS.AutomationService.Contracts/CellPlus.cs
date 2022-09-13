@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-
-namespace Ferretto.VW.MAS.AutomationService.Contracts
+﻿namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     public class CellPlus : Cell
     {
@@ -21,7 +14,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 this.BlockLevel = from.BlockLevel;
                 this.Id = from.Id;
-                this.IsFree = from.IsFree;
+                if (this.BlockLevel == BlockLevel.Blocked)
+                {
+                    this.IsFree = false;
+                }
+                else
+                {
+                    this.IsFree = from.IsFree;
+                }
                 this.PanelId = from.PanelId;
                 this.Position = from.Position;
                 this.Priority = from.Priority;
@@ -30,6 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 this.LoadingUnit = loadUnit;
                 this.LoadUnitId = null;
                 this.Description = from.Description;
+                this.RotationClass = from.RotationClass;
             }
         }
 

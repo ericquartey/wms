@@ -9,8 +9,7 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewModels"
-            d:DataContext="{d:DesignInstance Type=viewmodels:DrawerCompactingViewModel,
-                                             IsDesignTimeCreatable=False}"
+            d:DataContext="{d:DesignInstance Type=viewmodels:DrawerCompactingViewModel, IsDesignTimeCreatable=False}"
             d:DesignHeight="450"
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -122,7 +121,6 @@
                     VerticalAlignment="Stretch"
                     BorderBrush="{DynamicResource FerrettoMediumGray}"
                     BorderThickness="1" />
-
           </Grid>
 
           <Grid Grid.Column="3"
@@ -159,7 +157,6 @@
                     VerticalAlignment="Stretch"
                     BorderBrush="{DynamicResource FerrettoMediumGray}"
                     BorderThickness="1" />
-
           </Grid>
 
           <Grid Grid.Column="6"
@@ -173,7 +170,6 @@
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
 
             <TextBlock Margin="0,20,0,0"
                        HorizontalAlignment="Center"
@@ -196,7 +192,6 @@
                     VerticalAlignment="Stretch"
                     BorderBrush="{DynamicResource FerrettoMediumGray}"
                     BorderThickness="1" />
-
           </Grid>
 
           <Grid Grid.Column="9"
@@ -220,11 +215,11 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
                        Style="{DynamicResource VWAPP_CardSensor_Data}">
-              <Run Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}}" /><Run Text="%" />
+                <Run Text="{Binding FragmentTotalPercent, StringFormat={}{0:F2}}" />
+                <Run Text="%" />
             </TextBlock>
             <!--  Text="{Binding Resolution, StringFormat={}{0:F6}}"  -->
           </Grid>
-
         </Grid>
       </Border>
     </Border>
@@ -276,12 +271,10 @@
                     VerticalAlignment="Stretch"
                     BorderBrush="{DynamicResource FerrettoMediumGray}"
                     BorderThickness="1" />
-
           </Grid>
 
           <Grid Grid.Column="3"
                 Grid.ColumnSpan="3">
-
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
               <RowDefinition />
@@ -290,7 +283,6 @@
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-
 
             <TextBlock Margin="0,20,0,0"
                        HorizontalAlignment="Center"
@@ -307,38 +299,76 @@
               <Run Text="{Binding MaxSolidSpaceBack}" /><Run Text="mm" />
             </TextBlock>
           </Grid>
-
         </Grid>
       </Border>
     </Border>
-
-    <StackPanel Grid.Row="5"
+        
+        <Grid Grid.Row="5"
                 Grid.Column="1"
                 Grid.ColumnSpan="3"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Orientation="Horizontal">
+                VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-      <controls:PpcButton Margin="0,0,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          Command="{Binding SettingsButtonCommand}"
-                          Content="{Resources:Loc OperatorApp.ShowAutoCompactingSetting}"
-                          Visibility="{Binding ShowAutoCompactingSettings, Converter={StaticResource BTVC}}" />
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-      <controls:PpcButton Margin="0,0,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          Command="{Binding CompactingStartCommand}"
-                          Content="{Resources:Loc OperatorApp.DrawerCompacting}" />
+            <controls:PpcCheckBox 
+                                Grid.Row="0"
+                                Margin="0,0,0,15"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left"
+                                IsEnabled="{Binding IsEnabledReorder}"
+                                IsChecked="{Binding IsReorder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Visibility="{Binding IsRotationClassEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}"
+                                VerticalAlignment="Center"
+                                LabelText="{Resources:Loc OperatorApp.DrawerSorting}"/>
 
-      <controls:PpcButton Margin="0,0,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          Command="{Binding CompactingStopCommand}"
-                          Content="{Resources:Loc General.Stop}"
-                          IsBusy="{Binding IsStopPressed}" />
-    </StackPanel>
+            <controls:PpcButton Margin="0,0,15,15"
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsInstallerAndRotationClassEnable, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}"
+                                Command="{Binding DaysCountCommand}"
+                                Content="{Resources:Loc OperatorApp.DaysCountSettings}" />
+
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding SettingsButtonCommand }"
+                                Content="{Resources:Loc OperatorApp.ShowAutoCompactingSetting}"
+                                Visibility="{Binding ShowAutoCompactingSettings, Converter={StaticResource BTVC}}" />
+
+            
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding CompactingStartCommand}"
+                                Content="{Resources:Loc OperatorApp.DrawerCompacting}" />
+
+            <controls:PpcButton Margin="0,0,15,0"
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding CompactingStopCommand}"
+                                Content="{Resources:Loc General.Stop}"
+                                IsBusy="{Binding IsStopPressed}" />
+    </Grid>
 
   </Grid>
 </ctrls:View>

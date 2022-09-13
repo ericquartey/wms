@@ -254,7 +254,7 @@
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
-                                   Margin="0,15,15,0"
+                                   Margin="0,10,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
@@ -265,7 +265,7 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
-                                    Margin="0,15,15,0"
+                                    Margin="0,10,15,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding GoToCellHeightCommand}"
@@ -275,7 +275,7 @@
                 <Border Grid.Row="2"
                         Grid.Column="6"
                         Grid.ColumnSpan="3"
-                        Margin="35,15,0,0"
+                        Margin="35,10,0,0"
                         Background="{DynamicResource PpcBackground}">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -311,12 +311,11 @@
                     </Border>
                 </Border>
 
-
                 <ctrls:PpcSpinEdit Grid.Row="3"
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
-                                   Margin="0,15,15,0"
+                                   Margin="0,10,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValue, Mode=TwoWay}"
                                    IsEnabled="{Binding IsCanStepValue}"
@@ -327,7 +326,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
-                                    Margin="0,15,15,0"
+                                    Margin="0,10,15,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
@@ -339,11 +338,22 @@
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom">
-                    <controls:PpcButton Margin="0,15,0,0"
+                    <controls:PpcButton Margin="0,10,0,0"
                                         Command="{Binding ApplyCorrectionCommand}"
                                         Content="{res:Loc InstallationApp.ApplyCorrection}"
                                         Style="{StaticResource WizardConfirmButton}" />
                 </StackPanel>
+
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0,10,15,0"
+                                    Width="auto"
+                                    Height="auto"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Command="{Binding FixSupportCommand}"
+                                    Content="{res:Loc InstallationApp.FixSupport}"
+                                    Style="{DynamicResource WizardIntoButton}" />
 
             </Grid>
         </DataTemplate>
@@ -537,7 +547,7 @@
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
-                                   Margin="0,15,15,0"
+                                   Margin="0,10,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding CurrentCellId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                    IsEnabled="{Binding IsCanStartPosition}"
@@ -547,7 +557,7 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Grid.Column="1"
-                                    Margin="0,15,15,0"
+                                    Margin="0,10,15,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding GoToCellHeightCommand}"
@@ -557,7 +567,7 @@
                 <Border Grid.Row="2"
                         Grid.Column="6"
                         Grid.ColumnSpan="3"
-                        Margin="35,15,0,0"
+                        Margin="35,10,0,0"
                         Background="{DynamicResource PpcBackground}">
                     <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -598,7 +608,7 @@
                                    Grid.Column="0"
                                    Width="250"
                                    Height="90"
-                                   Margin="0,15,15,0"
+                                   Margin="0,10,15,0"
                                    VerticalAlignment="Center"
                                    EditValue="{Binding StepValue, Mode=TwoWay}"
                                    IsEnabled="{Binding IsCanStepValue}"
@@ -609,7 +619,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Grid.Column="1"
-                                    Margin="0,15,15,0"
+                                    Margin="0,10,15,0"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Command="{Binding DisplacementCommand}"
@@ -621,11 +631,22 @@
                             Grid.Column="2"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom">
-                    <controls:PpcButton Margin="0,15,0,0"
+                    <controls:PpcButton Margin="0,10,0,0"
                                         Command="{Binding ApplyCorrectionCommand}"
                                         Content="{res:Loc InstallationApp.ApplyCorrection}"
                                         Style="{StaticResource WizardConfirmButton}" />
                 </StackPanel>
+
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="0"
+                                    Margin="0,10,15,0"
+                                    Width="auto"
+                                    Height="auto"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Command="{Binding FixSupportCommand}"
+                                    Content="{res:Loc InstallationApp.FixSupport}"
+                                    Style="{DynamicResource WizardIntoButton}" />
 
             </Grid>
         </DataTemplate>
@@ -685,24 +706,24 @@
                                          Width="230"
                                          Height="90"
                                          MinHeight="90"
-                                         Margin="0,15,15,0" />
+                                         Margin="0,10,15,0" />
         <controls:CardSensorAxisHorizontal Grid.Row="3"
                                            Grid.Column="3"
                                            Width="230"
                                            Height="90"
                                            MinHeight="90"
-                                           Margin="0,15,15,0" />
+                                           Margin="0,10,15,0" />
         <controls:CardSensorDrawer Grid.Row="4"
                                    Grid.Column="3"
                                    Width="230"
                                    Height="90"
                                    MinHeight="90"
-                                   Margin="0,15,15,0" />
+                                   Margin="0,10,15,0" />
 
         <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="90"
-                Margin="0,15,15,0"
+                Margin="0,10,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">

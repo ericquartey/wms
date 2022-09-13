@@ -111,9 +111,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult UpdateCardReaderSettings(bool isEnabled, string tokenRegex)
+        public IActionResult UpdateCardReaderSettings(bool isEnabled, string tokenRegex, bool isLocal)
         {
-            this.accessoriesDataProvider.UpdateCardReaderSettings(this.BayNumber, isEnabled, tokenRegex);
+            this.accessoriesDataProvider.UpdateCardReaderSettings(this.BayNumber, isEnabled, tokenRegex, isLocal);
 
             return this.Ok();
         }

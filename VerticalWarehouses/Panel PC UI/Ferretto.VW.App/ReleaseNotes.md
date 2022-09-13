@@ -25,18 +25,24 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
-- Aggiunta dimensione XXS per la barra alfanumerica
+## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
+- Aggiunta classe di rotazione ABC
+- Aggiunta gestione lettore badge senza WMS
+- Aggiunto utente Guest
+- Ricerca articoli: aggiunta visualizzazione della data di scadenza
 
 ## Bug Risolti
-- Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud
-- Spostamento da cella a cella: aggiunto controllo di serranda chiusa
-- L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
-- Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
-- Macchine con più Baie: i cassetti in attesa su una Baia non bloccano le missioni sull'altra Baia
+- Ricerca articoli: corretta la quantità nelle altre macchine
+- Gestione operatori: corretto il cambio della password di Operator
+- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
+- Login: corretto livello degli utenti di wms con nomi uguali ai locali
+- Gestione celle: le celle bloccate non risultano libere
+- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
 
-## Compatibile con adapter 0.4.38
+## Compatibile con adapter 0.4.40
 ***
+
+[Versione 1.0.49](#id1049)
 
 [Versione 1.0.48](#id1048)
 
@@ -136,6 +142,20 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1049"></a>
+## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
+- Aggiunta dimensione XXS per la barra alfanumerica
+
+## Bug Risolti
+- Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud
+- Spostamento da cella a cella: aggiunto controllo di serranda chiusa
+- L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
+- Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
+- Macchine con più Baie: i cassetti in attesa su una Baia non bloccano le missioni sull'altra Baia
+
+## Compatibile con adapter 0.4.38
+
 
 <a id="id1048"></a>
 ## Nuove Funzionalità 1.0.48 rispetto la 1.0.47
