@@ -18,11 +18,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManagerService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
-
-        private readonly IBayManager bayManagerService;
 
         private readonly ISessionService sessionService;
 
@@ -203,18 +203,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var allBays = await this.machineBaysWebService.GetAllAsync();
 
-            var bay = await this.bayManagerService.GetBayAsync();
-
-            this.selectedBayNumber = bay.Number;
+            this.selectedBayNumber = allBays.First(b => b.RotationClass == "A").Number;
 
             switch (this.selectedBayNumber)
             {
                 case BayNumber.BayOne:
                     this.IsBay1 = true;
                     break;
+
                 case BayNumber.BayTwo:
                     this.IsBay2 = true;
                     break;
+
                 case BayNumber.BayThree:
                     this.IsBay3 = true;
                     break;
