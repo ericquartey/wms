@@ -2822,7 +2822,7 @@
     <value>This will delete the user, proceed?</value>
   </data>
   <data name="IsLocal" xml:space="preserve">
-    <value>Is Local</value>
+    <value>Local</value>
   </data>
   <data name="GuestEnabled" xml:space="preserve">
     <value>Guest enabled</value>
@@ -2835,5 +2835,8 @@
   </data>
   <data name="PreferentialBay" xml:space="preserve">
     <value>Preferential Bay</value>
+  </data>
+  <data name="LocalAndWmsNotAllowed" xml:space="preserve">
+    <value>Local not available is WMS is active</value>
   </data>
 </root>

@@ -146,7 +146,7 @@
         <controls:PpcCheckBox Grid.Row="0"
                               Margin="0,18,0,0"
                               Grid.Column="2"
-                              Visibility="{Binding IsRotationClassEnabled, Converter={StaticResource BTVC}}"
+                              Visibility="{Binding IsRotationClassEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Stretch"
                               IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"

@@ -4084,7 +4084,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is Local.
+        ///   Looks up a localized string similar to Local.
         /// </summary>
         public static string IsLocal {
             get {
@@ -4485,6 +4485,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingUnitStatus_Undefined {
             get {
                 return ResourceManager.GetString("LoadingUnitStatus_Undefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local not available is WMS is active.
+        /// </summary>
+        public static string LocalAndWmsNotAllowed {
+            get {
+                return ResourceManager.GetString("LocalAndWmsNotAllowed", resourceCulture);
             }
         }
         

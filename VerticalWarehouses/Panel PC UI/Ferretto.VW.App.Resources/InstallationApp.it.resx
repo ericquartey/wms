@@ -2742,4 +2742,7 @@
   <data name="PreferentialBay" xml:space="preserve">
     <value>Baia Preferenziale</value>
   </data>
+  <data name="LocalAndWmsNotAllowed" xml:space="preserve">
+    <value>Locale non disponibile con WMS attivo</value>
+  </data>
 </root>

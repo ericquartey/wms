@@ -37,6 +37,7 @@
 - Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
 - Login: corretto livello degli utenti di wms con nomi uguali ai locali
 - Gestione celle: le celle bloccate non risultano libere
+- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
 
 ## Compatibile con adapter 0.4.40
 ***
