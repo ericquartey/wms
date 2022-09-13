@@ -14,9 +14,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsBlocked { get; set; }
 
-        public bool? IsPreferred => !this.Bay.IsDouble           // single bays: always preferred
-            || (this.Bay.Carousel != null && this.IsUpper)      // carousel: upper position
-            || (this.Bay.Carousel is null && !this.IsUpper);    // double bays external or internal: lower position
+        public bool? IsPreferred => this.Bay?.IsDouble is false // single bays: always preferred
+            || (this.Bay?.Carousel != null && this.IsUpper)      // carousel: upper position
+            || (this.Bay?.Carousel is null && !this.IsUpper);    // double bays external or internal: lower position
 
         public bool IsUpper => this.Location is LoadingUnitLocation.CarouselBay1Up
             || this.Location is LoadingUnitLocation.CarouselBay2Up
