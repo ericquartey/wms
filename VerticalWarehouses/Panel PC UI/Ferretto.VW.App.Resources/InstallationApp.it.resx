@@ -2739,4 +2739,7 @@
   <data name="TokenIsPresent" xml:space="preserve">
     <value>Il codice letto è già presente</value>
   </data>
+  <data name="PreferentialBay" xml:space="preserve">
+    <value>Baia Preferenziale</value>
+  </data>
 </root>

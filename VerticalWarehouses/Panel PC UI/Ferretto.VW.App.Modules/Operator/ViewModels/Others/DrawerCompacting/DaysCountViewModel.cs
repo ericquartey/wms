@@ -18,11 +18,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private readonly IBayManager bayManagerService;
 
         private readonly ISessionService sessionService;
 
         private DelegateCommand deleteCommand;
+
+        private bool haveBay2;
+
+        private bool haveBay3;
+
+        private bool isBay1;
+
+        private bool isBay2;
+
+        private bool isBay3;
 
         private bool isBusy;
 
@@ -32,16 +46,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand saveCommand;
 
+        private DelegateCommand saveRotationClassCommand;
+
+        private BayNumber selectedBayNumber;
+
         private RotationClassSchedule selectedRotationClassSchedule;
+
+        private bool singleBay;
 
         #endregion
 
         #region Constructors
 
-        public DaysCountViewModel(IMachineIdentityWebService machineIdentityWebService)
+        public DaysCountViewModel(IMachineIdentityWebService machineIdentityWebService,
+            IBayManager bayManagerService,
+            IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Operator)
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
 
             this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
         }
@@ -55,6 +79,57 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
            ??
            (this.deleteCommand = new DelegateCommand(
                async () => await this.DeleteAsync(), this.CanDelete));
+
+        public bool HaveBay2
+        {
+            get => this.haveBay2;
+            set => this.SetProperty(ref this.haveBay2, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool HaveBay3
+        {
+            get => this.haveBay3;
+            set => this.SetProperty(ref this.haveBay3, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBay1
+        {
+            get => this.isBay1;
+            set
+            {
+                this.SetProperty(ref this.isBay1, value, this.RaiseCanExecuteChanged);
+                if (value)
+                {
+                    this.selectedBayNumber = BayNumber.BayOne;
+                }
+            }
+        }
+
+        public bool IsBay2
+        {
+            get => this.isBay2;
+            set
+            {
+                this.SetProperty(ref this.isBay2, value, this.RaiseCanExecuteChanged);
+                if (value)
+                {
+                    this.selectedBayNumber = BayNumber.BayTwo;
+                }
+            }
+        }
+
+        public bool IsBay3
+        {
+            get => this.isBay3;
+            set
+            {
+                this.SetProperty(ref this.isBay3, value, this.RaiseCanExecuteChanged);
+                if (value)
+                {
+                    this.selectedBayNumber = BayNumber.BayThree;
+                }
+            }
+        }
 
         public bool IsBusy
         {
@@ -75,15 +150,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public ICommand SaveCommand =>
-                                           this.saveCommand
+            this.saveCommand
            ??
            (this.saveCommand = new DelegateCommand(
                async () => await this.SaveAsync(), this.CanSave));
+
+        public ICommand SaveRotationClassCommand =>
+            this.saveRotationClassCommand
+           ??
+           (this.saveRotationClassCommand = new DelegateCommand(
+               async () => await this.SaveRotationClassAsync(), this.CanSaveRotationClass));
 
         public RotationClassSchedule SelectedRotationClassSchedule
         {
             get => this.selectedRotationClassSchedule;
             set => this.SetProperty(ref this.selectedRotationClassSchedule, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool SingleBay
+        {
+            get => this.singleBay;
+            set => this.SetProperty(ref this.singleBay, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -111,6 +198,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.LoadSettings();
 
             this.IsBusy = false;
+
+            this.selectedBayNumber = BayNumber.None;
+
+            var allBays = await this.machineBaysWebService.GetAllAsync();
+
+            var bay = await this.bayManagerService.GetBayAsync();
+
+            this.selectedBayNumber = bay.Number;
+
+            switch (this.selectedBayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.IsBay1 = true;
+                    break;
+                case BayNumber.BayTwo:
+                    this.IsBay2 = true;
+                    break;
+                case BayNumber.BayThree:
+                    this.IsBay3 = true;
+                    break;
+            }
+
+            this.HaveBay2 = allBays.Any(b => b.Number == BayNumber.BayTwo);
+            this.HaveBay3 = allBays.Any(b => b.Number == BayNumber.BayThree);
+            this.SingleBay = !this.HaveBay2 && !this.HaveBay3;
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -121,6 +233,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.saveCommand?.RaiseCanExecuteChanged();
             this.deleteCommand?.RaiseCanExecuteChanged();
+            this.saveRotationClassCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanDelete()
@@ -136,15 +249,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SelectedRotationClassSchedule != null;
         }
 
+        private bool CanSaveRotationClass()
+        {
+            return !this.IsBusy && this.selectedBayNumber != BayNumber.None;
+        }
+
         private async Task DeleteAsync()
         {
             //try
             //{
             //    this.IsBusy = true;
 
-            //    this.ClearNotifications();
+            // this.ClearNotifications();
 
-            //    //not implemented
+            // //not implemented
 
             //    this.ShowNotification(Localized.Get("InstallationApp.RemoveSuccessful"));
             //}
@@ -194,6 +312,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
                 //}
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                await this.LoadSettings();
+
+                this.IsBusy = false;
+            }
+        }
+
+        private async Task SaveRotationClassAsync()
+        {
+            try
+            {
+                this.IsBusy = true;
+
+                this.ClearNotifications();
+
+                await this.machineBaysWebService.SetRotationClassAsync(this.selectedBayNumber);
+
+                this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"));
             }
             catch (Exception ex)
             {

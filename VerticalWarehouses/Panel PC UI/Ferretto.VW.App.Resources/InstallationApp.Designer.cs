@@ -5506,6 +5506,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Preferential Bay.
+        /// </summary>
+        public static string PreferentialBay {
+            get {
+                return ResourceManager.GetString("PreferentialBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pre fire alarm.
         /// </summary>
         public static string PreFireAlarm {
