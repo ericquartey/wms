@@ -82,7 +82,7 @@ namespace Ferretto.VW.Installer.Core
             {
                 var fileContents = JsonConvert.SerializeObject(this.Configuration, serializerSettings);
 
-                this.logger.Debug($"Serialize successfully.");
+                this.logger.Debug($"Serialize ok.");
 
                 await File.WriteAllTextAsync(configurationFilePath, fileContents);
 
@@ -90,9 +90,9 @@ namespace Ferretto.VW.Installer.Core
             }
             catch (Exception ex)
             {
-                this.logger.Error($"Error while saving file.");
+                this.logger.Error(ex, $"Error while saving file.");
 
-                var msg = $"Error wrting configuration file '{configurationFilePath}'.";
+                var msg = $"Error writing configuration file '{configurationFilePath}'.";
                 throw new InvalidOperationException(msg, ex);
             }
         }
