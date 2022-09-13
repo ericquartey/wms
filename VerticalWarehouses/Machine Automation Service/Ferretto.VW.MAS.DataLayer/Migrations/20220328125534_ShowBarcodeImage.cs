@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "ShowBarcodeImage",
                 table: "Bays",
-                nullable: false,
+                nullable: true,
                 defaultValue: false);
         }
 

@@ -998,7 +998,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(i => i.Positions)
                     .Include(i => i.Carousel)
                     .FirstOrDefault(b => b.RotationClass == ROTATION_CLASS_A);
-                var position = bay?.Positions.FirstOrDefault(p => p.IsPreferred);
+                var position = bay?.Positions.FirstOrDefault(p => p.IsPreferred is true);
 
                 if (cellsOccupied_A > 0 && position != null)
                 {

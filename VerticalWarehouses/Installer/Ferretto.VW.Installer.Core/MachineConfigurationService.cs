@@ -82,6 +82,8 @@ namespace Ferretto.VW.Installer.Core
             {
                 var fileContents = JsonConvert.SerializeObject(this.Configuration, serializerSettings);
 
+                this.logger.Debug($"Serialize successfully.");
+
                 await File.WriteAllTextAsync(configurationFilePath, fileContents);
 
                 this.logger.Debug($"Vertimag configuration saved successfully.");

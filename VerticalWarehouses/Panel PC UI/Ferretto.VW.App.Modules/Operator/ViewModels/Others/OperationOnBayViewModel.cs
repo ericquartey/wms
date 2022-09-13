@@ -300,8 +300,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
                 this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
-                this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage;
-                this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine;
+                this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage is true;
+                this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine is true;
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
                 this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;

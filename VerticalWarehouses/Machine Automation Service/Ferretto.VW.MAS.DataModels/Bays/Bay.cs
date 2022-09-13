@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double ChainOffset { get; set; }
 
-        public bool CheckListContinueInOtherMachine { get; set; }
+        public bool? CheckListContinueInOtherMachine { get; set; }
 
         public Mission CurrentMission { get; set; }
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public string RotationClass { get; set; }
 
-        public bool ShowBarcodeImage { get; set; }
+        public bool? ShowBarcodeImage { get; set; }
 
         public Shutter Shutter { get; set; }
 

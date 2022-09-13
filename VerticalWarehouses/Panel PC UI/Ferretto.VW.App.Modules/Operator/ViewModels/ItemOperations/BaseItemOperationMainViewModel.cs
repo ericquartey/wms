@@ -1341,7 +1341,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 if (!string.IsNullOrEmpty(barcodeString)
-                    && this.bay.ShowBarcodeImage
+                    && (this.bay.ShowBarcodeImage is true)
                     && (this.MissionOperation.Type == MissionOperationType.Inventory
                         || this.MissionOperation.Type == MissionOperationType.Put
                         || this.MissionOperation.Type == MissionOperationType.Pick))
