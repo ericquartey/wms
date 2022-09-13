@@ -198,6 +198,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         new Newtonsoft.Json.Converters.StringEnumConverter(),
                     },
                 };
+                // BEGIN TEST
+                //var fileContents = File.ReadAllText("c:/software/automation_service/configuration/vertimag-configuration.MV22-0063.json");
+
+                //output = JsonConvert.DeserializeObject<VertimagConfiguration>(fileContents, settings);
+                // END TEST
+
                 var json = JsonConvert.SerializeObject(output, settings);
 
                 var fullPath = configuration.Filename(this.SelectedDrive, !this.OverwriteTargetFile);

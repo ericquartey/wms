@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machine = await this.identityService.GetAsync();
                 var bay = await this.bayManager.GetBayAsync();
 
-                if (!bay.CheckListContinueInOtherMachine)
+                if (bay.CheckListContinueInOtherMachine is false)
                 {
                     return false;
                 }
