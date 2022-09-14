@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int compartmentId;
 
-        private DateTimeOffset? expireDate;
+        private DateTime? expireDate;
 
         private bool expireDateVisibility;
 
@@ -99,16 +99,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                       async () => await this.AddItemToLoadingUnitAsync(),
                       this.CanAddItemButton));
 
-        public DateTimeOffset? ExpireDate
+        public DateTime? ExpireDate
         {
             get => this.expireDate;
-            set
-            {
-                if (this.SetProperty(ref this.expireDate, value))
-                {
-                    // this.TriggerSearchAsync().GetAwaiter(); // Do not perform the searching routine
-                }
-            }
+            set => this.SetProperty(ref this.expireDate, value, this.RaiseCanExecuteChanged);
         }
 
         public bool ExpireDateVisibility
@@ -314,7 +308,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.Lot = this.MissionOperation.Lot;
                     this.SerialNumber = this.MissionOperation.SerialNumber;
-                    this.ExpireDate = this.MissionOperation.ExpirationDate;
+                    this.ExpireDate = this.MissionOperation.ExpirationDate.Value.DateTime;
                 }
 
                 this.IsFromList = this.MissionOperation != null;
@@ -329,9 +323,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId);
                 this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId);
-
-                this.ExpireDateVisibility = true;
             }
+
+            //this.ExpireDate = DateTime.Now;
 
             await base.OnAppearedAsync();
         }
@@ -372,7 +366,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                          this.SerialNumber);
                 }
 
-                this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded") + this.ExpireDate.ToString(), Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
             }

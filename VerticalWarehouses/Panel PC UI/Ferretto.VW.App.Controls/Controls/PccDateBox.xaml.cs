@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty InputDateProperty = DependencyProperty.Register(
             nameof(InputDate),
-            typeof(DateTimeOffset?),
+            typeof(DateTime?),
             typeof(PccDateBox),
             new PropertyMetadata(null));
 
@@ -89,9 +89,9 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(DateFormatProperty, value);
         }
 
-        public DateTimeOffset? InputDate
+        public DateTime? InputDate
         {
-            get => (DateTimeOffset?)this.GetValue(InputDateProperty);
+            get => (DateTime?)this.GetValue(InputDateProperty);
             set => this.SetValue(InputDateProperty, value);
         }
 
@@ -149,6 +149,7 @@ namespace Ferretto.VW.App.Controls.Controls
             if (e.Key == Key.Return)
             {
                 var b = this.GetBindingExpression(InputDateProperty);
+
                 b?.UpdateSource();
             }
         }

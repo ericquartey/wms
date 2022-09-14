@@ -173,8 +173,7 @@
         </Grid>
 
         <Grid Grid.Row="5"
-              Margin="50,15,50,15"
-              Visibility="{Binding Path=ExpireDateVisibility, Converter={StaticResource BTVC}}"> 
+              Margin="50,15,50,15"> 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="*" />
