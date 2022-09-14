@@ -99,15 +99,12 @@
 
             <dxe:DateEdit Grid.Column="0"
                           x:Name="InputDateBox"
-                          
-                          DateTime="{Binding InputDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                          
+                          EditValue="{Binding InputDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           DisplayFormatString="{Binding DateFormat, UpdateSourceTrigger=PropertyChanged}"
                           IsReadOnly="{Binding IsReadOnly}"
-
                           AllowNullInput="True"
                           NullValue=""
-
+                          NullText=""
                           HorizontalContentAlignment="Left"
                           VerticalContentAlignment="Center"
                           KeyDown="OnKeyDownHandler"

@@ -325,8 +325,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId);
             }
 
-            //this.ExpireDate = DateTime.Now;
-
             await base.OnAppearedAsync();
         }
 
@@ -366,7 +364,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                          this.SerialNumber);
                 }
 
-                this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded") + this.ExpireDate.ToString(), Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);
 
                 this.NavigationService.GoBack();
             }
