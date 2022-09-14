@@ -329,7 +329,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.LotVisibility = await this.itemsWebService.IsItemHandledByLotAsync(this.itemId);
                 this.SerialNumberVisibility = await this.itemsWebService.IsItemHandledBySerialNumberAsync(this.itemId);
-                this.ExpireDate = DateTimeOffset.Now;
+
                 this.ExpireDateVisibility = true;
             }
 

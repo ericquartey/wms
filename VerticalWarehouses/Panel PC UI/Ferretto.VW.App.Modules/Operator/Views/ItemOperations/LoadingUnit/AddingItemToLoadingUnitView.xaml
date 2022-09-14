@@ -4,7 +4,13 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:keyboardBehaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
+            xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+            xmlns:behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviors;assembly=Ferretto.VW.App.Controls"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+            xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+            xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="450"
@@ -131,15 +137,15 @@
             <TextBlock Grid.Column="0"
                        HorizontalAlignment="Center"
                        FontSize="{DynamicResource FontSize_High}"
-                       Foreground="{DynamicResource FerrettoPureWhite}">
+                       Foreground="{DynamicResource Foreground}">
                 <Run Text="{resources:Loc OperatorApp.Lot}" />
             </TextBlock>
 
-            <TextBox Grid.Column="1"
-                     Height="32"
+            <controls:PpcTextBox Grid.Column="1"
                      Margin="25,0,90,0"
+                     HorizontalAlignment="Stretch"
                      FontSize="{DynamicResource FontSize_High}"
-                     Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     InputText="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 
@@ -154,15 +160,15 @@
             <TextBlock Grid.Column="0"
                        HorizontalAlignment="Center"
                        FontSize="{DynamicResource FontSize_High}"
-                       Foreground="{DynamicResource FerrettoPureWhite}">
+                       Foreground="{DynamicResource Foreground}">
                 <Run Text="{resources:Loc OperatorApp.GeneralInfoSerial}" />
             </TextBlock>
 
-            <TextBox Grid.Column="1"
-                     Height="32"
-                     Margin="25,0,90,0"
-                     FontSize="{DynamicResource FontSize_High}"
-                     Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <controls:PpcTextBox Grid.Column="1"
+                                 HorizontalAlignment="Stretch"
+                                 Margin="25,0,90,0"
+                                 FontSize="{DynamicResource FontSize_High}"
+                                 InputText="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         </Grid>
 
@@ -177,15 +183,13 @@
             <TextBlock Grid.Column="0"
                        HorizontalAlignment="Center"
                        FontSize="{DynamicResource FontSize_High}"
-                       Foreground="{DynamicResource FerrettoPureWhite}">
+                       Foreground="{DynamicResource Foreground}">
                 <Run Text="Expire date :" />
             </TextBlock>
 
-            <TextBox Grid.Column="1"
-                     Height="32"
-                     Margin="25,0,90,0"
-                     FontSize="{DynamicResource FontSize_High}"
-                     Text="{Binding ExpireDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <controls:PccDateBox Grid.Column="1"
+                                 InputDate="{Binding ExpireDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="25,0,95,0" />
 
         </Grid>
 

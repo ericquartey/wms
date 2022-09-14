@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.PccDateBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="DatePickerTemplate"
+                     TargetType="{x:Type dxe:ButtonEdit}">
+            <ContentControl x:Name="PART_Root"
+                        Background="Transparent">
+                <Border x:Name="BorderDatePicker"
+                        Background="{DynamicResource VWAPP_PpcTextBox_Background_Normal}"
+                        BorderThickness="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}"
+                        BorderBrush="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}">
+                    <dxe:EditorControl x:Name="PART_Content"
+                                   Grid.Column="0"
+                                   VerticalAlignment="Stretch"
+                                   HorizontalContentAlignment="Center"
+                                   Template="{TemplateBinding ActualEditorControlTemplate}" />
+                </Border>
+            </ContentControl>
+            <ControlTemplate.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsTextEditable" Value="true" />
+                        <Condition Property="EditMode" Value="Standalone" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter TargetName="PART_Content" Property="Template" Value="{Binding Path=EditTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsTextEditable" Value="false" />
+                        <Condition Property="EditMode" Value="Standalone" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter TargetName="PART_Content" Property="Template" Value="{Binding Path=EditNonEditableTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <Style x:Key="VWAPP_PpcDateBox_DateBoxStyle"
+           TargetType="{x:Type dxe:DateEdit}">
+            <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
+            <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}" />
+            <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="false"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsReadOnly" Value="true">
+                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_Foreground_TextBox_Readonly}" />
+                    <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_TextBox_Readonly}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Readonly}" />
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Disabled}" />
+                    <Setter Property="Background" Value="{DynamicResource PpcBackgroundDisabled}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <StackPanel x:Name="Root"
+                VerticalAlignment="Center">
+        <TextBlock Name="TextBlock_LabelText"
+                   Margin="0,1,5,1"
+                   Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                   Text="{Binding LabelText}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+
+            <dxe:DateEdit Grid.Column="0"
+                          x:Name="InputDateBox"
+                          EditValue="{Binding InputDate, UpdateSourceTrigger=PropertyChanged}"
+                          DisplayFormatString="{Binding DateFormat, UpdateSourceTrigger=PropertyChanged}"
+                          IsReadOnly="{Binding IsReadOnly}"
+
+                          HorizontalContentAlignment="Left"
+                          VerticalContentAlignment="Center"
+                          KeyDown="OnKeyDownHandler"
+                          TouchUp="OnKeyboardOpenHandler"
+                          MouseDoubleClick="OnKeyboardOpenHandler"
+                          Background="{DynamicResource VWAPP_PpcTextBox_Background_Normal}"
+                          Foreground="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}"
+                          BorderThickness="1"
+                          Template="{StaticResource DatePickerTemplate}"
+                          Style="{StaticResource VWAPP_PpcDateBox_DateBoxStyle}"
+                          Margin="0" />
+
+            <Button Name="KeyboardButton"
+                    Grid.Column="1"
+                    Margin="0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Click="KeyboardButton_Click"
+                    Visibility="{Binding IsReadOnly, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVIC}}"
+                    Style="{StaticResource TextBoxKeyboardButtonStyle}"
+                    TouchUp="KeyboardButton_TouchUp">
+                <icons:PackIconFontAwesome Width="20"
+                                           Height="20"
+                                           Margin="3"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Kind="KeyboardSolid" />
+            </Button>
+        </Grid>
+    </StackPanel>
+</UserControl>
