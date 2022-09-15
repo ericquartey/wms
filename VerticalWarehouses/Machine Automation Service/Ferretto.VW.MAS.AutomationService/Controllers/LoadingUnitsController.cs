@@ -194,8 +194,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
                 catch (Exception)
                 {
-                    // do nothing:
-                    // data from WMS will remain to its default values
+                    // do nothing: data from WMS will remain to its default values
                 }
             }
 
@@ -237,8 +236,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 }
                 catch (Exception)
                 {
-                    // do nothing:
-                    // data from WMS will remain to its default values
+                    // do nothing: data from WMS will remain to its default values
                 }
             }
 
@@ -287,7 +285,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/immediate-additem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ImmediateAddItemAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        public async Task<IActionResult> ImmediateAddItemAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber, DateTimeOffset? ExpireDate, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
             //public async Task<IActionResult> ImmediateAddItemAsync(int id, int itemId, int quantity, int compartmentId, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
             if (loadingUnitsWmsWebService is null)
@@ -311,7 +309,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/immediate-additem-bylist")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName,
+        public async Task<IActionResult> ImmediateAddItemByListAsync(int id, string listNumRow, string listNum, double quantity, int compartmentId, string userName, DateTimeOffset? ExpireDate,
             [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
         {
             if (loadingUnitsWmsWebService is null)
@@ -602,11 +600,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         /// <summary>
-        ///  Instantly stops the current operation leaving machine in a potentially unsafe condition.
+        /// Instantly stops the current operation leaving machine in a potentially unsafe condition.
         /// </summary>
-        /// <param name="missionId"></param>
-        /// <param name="targetBay"></param>
-        /// <returns></returns>
+        /// <param name="missionId">
+        /// </param>
+        /// <param name="targetBay">
+        /// </param>
+        /// <returns>
+        /// </returns>
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

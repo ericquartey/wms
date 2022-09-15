@@ -350,7 +350,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                          this.missionOperation.ItemListCode,
                                          this.InputQuantity,
                                          this.compartmentId,
-                                         this.authenticationService.UserName);
+                                         this.authenticationService.UserName,
+                                         this.ExpireDate);
                 }
                 else
                 {
@@ -361,7 +362,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                          this.InputQuantity,
                                          this.compartmentId,
                                          this.Lot,
-                                         this.SerialNumber);
+                                         this.SerialNumber,
+                                         this.ExpireDate);
                 }
 
                 this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);
