@@ -1,11 +1,14 @@
 
 steps:
 
-  - task: gitversion/setup@0
+- task: UseDotNet@2
             inputs:
-              versionSpec: '5.x'
+              packageType: 'sdk'
+              version: '2.1.x'
 
- - task: gitversion/execute@0
+- task: GitVersion@5
+  inputs:
+    runtime: 'core'
 
 - task: Assembly-Info-NetCore@2
   displayName: 'Set Assembly Manifest Data'
