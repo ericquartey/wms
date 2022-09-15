@@ -1,17 +1,10 @@
 parameters:
   BuildConfiguration: 'debug'
-  TargetFramework: 'netcoreapp2.2'
+  TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
 
 steps:
 - checkout: self
-
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 2.2'
-  inputs:
-    packageType: sdk
-    version: 2.2.207
-    installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - task: UseDotNet@2
   displayName: 'Use .NET Core sdk 3.1'
