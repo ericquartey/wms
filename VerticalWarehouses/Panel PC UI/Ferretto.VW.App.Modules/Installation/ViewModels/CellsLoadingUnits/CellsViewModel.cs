@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -23,6 +22,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
+        private bool anyCellSelected;
+
         private BlockLevel cellsBlockLevels;
 
         private SubscriptionToken cellsToken;
@@ -37,17 +40,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private List<CellPlus> selectedCells = new List<CellPlus>();
 
-        private bool anyCellSelected;
+        private bool isRotationClassEnabled;
 
         #endregion
 
         #region Constructors
 
         public CellsViewModel(
-            IMachineCellsWebService machineCellsWebService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Installer)
         {
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
         }
 
         #endregion
@@ -84,6 +89,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isBusy, value);
         }
 
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value);
+        }
         public bool IsEnabledEditing => !this.IsMoving;
 
         public ICommand SaveCommand =>
@@ -144,6 +154,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+
             this.SubscribeToEvents();
 
             this.RaisePropertyChanged(nameof(this.Cells));

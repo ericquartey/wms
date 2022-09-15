@@ -159,6 +159,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("set-rotation-class")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetRotationClass(BayNumber baynumber)
+        {
+            this.baysDataProvider.SetRotationClass(baynumber);
+
+            return this.Accepted();
+        }
+
         [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

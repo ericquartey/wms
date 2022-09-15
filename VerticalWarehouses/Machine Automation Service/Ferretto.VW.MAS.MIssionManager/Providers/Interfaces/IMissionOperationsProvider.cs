@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task<IEnumerable<OperationReason>> GetOrdersAsync();
 
+        Task<IEnumerable<MissionOperation>> GetPutListsAsync(int machineId);
+
         Task<IEnumerable<OperationReason>> GetReasonsAsync(MissionOperationType type);
 
         int GetUnitId(int missionId, BayNumber bayNumber);

@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex)
+        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex, bool isLocal)
         {
             lock (this.dataContext)
             {
@@ -140,6 +140,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 bay.Accessories.CardReader.IsEnabledNew = isEnabled;
                 bay.Accessories.CardReader.TokenRegex = tokenRegex;
+                bay.Accessories.CardReader.IsLocal = isLocal;
 
                 this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();

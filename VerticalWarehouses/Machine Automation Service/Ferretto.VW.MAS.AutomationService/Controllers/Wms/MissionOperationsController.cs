@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -11,7 +9,6 @@ using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -115,6 +112,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             // custom siderpol
             var orders = await this.missionOperationsProvider.GetOrdersAsync();
             return this.Ok(orders.OrderBy(o => o.Name));
+        }
+
+        [HttpGet("{id}/get-put-list")]
+        public async Task<ActionResult<IEnumerable<MissionOperation>>> GetPutListsAsync(int id)
+        {
+            return this.Ok(await this.missionOperationsWmsWebService.GetPutListsAsync(id));
         }
 
         [HttpGet("socket-link-operation")]

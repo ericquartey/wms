@@ -258,6 +258,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override async Task TestAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                //Do nothing
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private bool CanCheckConnection()
         {
             return !this.IsWaitingForResponse;

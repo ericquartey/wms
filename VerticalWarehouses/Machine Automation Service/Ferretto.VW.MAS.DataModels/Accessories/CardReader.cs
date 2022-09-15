@@ -4,6 +4,8 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public bool? IsLocal { get; set; }
+
         public string TokenRegex { get; set; }
 
         #endregion

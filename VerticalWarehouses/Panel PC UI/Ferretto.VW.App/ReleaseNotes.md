@@ -25,17 +25,28 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.47 rispetto la 1.0.46
-- 
+## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
+- Aggiunta classe di rotazione ABC
+- Aggiunta gestione lettore badge senza WMS
+- Aggiunto utente Guest
+- Ricerca articoli: aggiunta visualizzazione della data di scadenza
 
 ## Bug Risolti
-- L'utente Installer può modificare Offset catena e Numero macchina
-- La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
-- Corretto un caso di missione duplicata di rientro cassetto
-- 
+- Ricerca articoli: corretta la quantità nelle altre macchine
+- Gestione operatori: corretto il cambio della password di Operator
+- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
+- Login: corretto livello degli utenti di wms con nomi uguali ai locali
+- Gestione celle: le celle bloccate non risultano libere
+- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
 
-## Compatibile con adapter 0.4.35 e 0.4.36
+## Compatibile con adapter 0.4.40
 ***
+
+[Versione 1.0.49](#id1049)
+
+[Versione 1.0.48](#id1048)
+
+[Versione 1.0.47](#id1047)
 
 [Versione 1.0.46](#id1046)
 
@@ -131,6 +142,52 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1049"></a>
+## Nuove Funzionalità 1.0.49 rispetto la 1.0.48
+- Aggiunta dimensione XXS per la barra alfanumerica
+
+## Bug Risolti
+- Telemetria: corretto invio dei dati memorizzati al ripristino del collegamento con il cloud
+- Spostamento da cella a cella: aggiunto controllo di serranda chiusa
+- L'Installer può cambiare i parametri dei cicli di calibrazione e della tastiera touch
+- Errore di centraggio: corretta compensazione in caso di effetto elastico della catena
+- Macchine con più Baie: i cassetti in attesa su una Baia non bloccano le missioni sull'altra Baia
+
+## Compatibile con adapter 0.4.38
+
+
+<a id="id1048"></a>
+## Nuove Funzionalità 1.0.48 rispetto la 1.0.47
+- Ferretto Nuget Package 0.16.46
+- Operazioni di visione e versamento: aggiunto comando (icona carrello) per aggiungere un articolo scegliendo la lista di versamento
+- Accessori - Stampante: aggiunto comando di Prova Stampante
+
+## Bug Risolti
+- Corretto falso allarme 32 - Destinazione maggiore del limite superiore - con macchine da 1000kg
+- BIG: il movimento si ferma se si perde il sensore di zero
+- Correzione a Mostra l'immagine del barcode: si aggiorna ad ogni cambio di articolo
+- Ricerca articolo - corretta selezione con il lettore barcode in caso di prelievi ripetuti
+- Conferma ultima operazione: invia la conferma a cassetto fermo
+- BES - Corretto falso allarme 14 (sensori di presenza) nei ripristini
+
+## Compatibile con adapter 0.4.38
+
+
+<a id="id1047"></a>
+## Nuove Funzionalità 1.0.47 rispetto la 1.0.46
+- Lista articoli: aggiunto ordinamento delle colonne
+- 
+
+## Bug Risolti
+- L'utente Installer può modificare Offset catena e Numero macchina
+- La descrizione dei cassetti da WMS si aggiorna nella Chiamata cassetto
+- Corretto un caso di missione duplicata di rientro cassetto
+- Movimenti: corretto errore in assenza della serranda
+- Barra alfanumerica: corretto mancato spegnimento a fine operazione
+- Errore ricerca di zero: la finestra non è più bloccante
+
+## Compatibile con adapter 0.4.35 e 0.4.36
 
 <a id="id1046"></a>
 

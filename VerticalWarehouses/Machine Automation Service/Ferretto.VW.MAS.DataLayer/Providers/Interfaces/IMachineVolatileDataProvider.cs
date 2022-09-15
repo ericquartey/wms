@@ -63,6 +63,7 @@ namespace Ferretto.VW.MAS.DataLayer
         bool StopTest { get; set; }
 
         MachineMode UiFilteredMode { get; }
+        bool IsOptimizeRotationClass { get; set; }
 
         #endregion
 

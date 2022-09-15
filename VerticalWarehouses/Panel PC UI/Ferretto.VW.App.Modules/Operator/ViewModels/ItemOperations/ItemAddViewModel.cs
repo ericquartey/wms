@@ -52,7 +52,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IDialogService dialogService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineAccessoriesWebService accessoriesWebService)
+            IMachineAccessoriesWebService accessoriesWebService,
+            IMachineBaysWebService machineBaysWebService)
             : base(
                   areasWebService,
                   machineIdentityWebService,
@@ -69,7 +70,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   dialogService,
                   wmsDataProvider,
                   authenticationService,
-                  accessoriesWebService)
+                  accessoriesWebService,
+                  machineBaysWebService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -174,6 +176,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //var compartmentId = this.SelectedItemCompartment.Id;
                 var compartmentId = this.MissionOperation.CompartmentId;
                 var item = await this.itemsWebService.GetByIdAsync(selectedItemId ?? 0);
+                this.QuantityTolerance = item.PickTolerance ?? 0;
 
                 var itemAddedToLoadingUnitInfo = new ItemAddedToLoadingUnitDetail
                 {

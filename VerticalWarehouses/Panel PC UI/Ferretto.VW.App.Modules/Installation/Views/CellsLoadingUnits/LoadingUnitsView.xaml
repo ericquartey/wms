@@ -70,13 +70,13 @@
         <Grid.ColumnDefinitions>
           <ColumnDefinition />
           <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
         <controls:PpcTextBox Grid.Column="0"
                              HorizontalAlignment="Stretch"
@@ -118,7 +118,44 @@
                              LabelText="{res:Loc InstallationApp.IsIntoMachine}" />
         <!--  LabelText="IsIntoMachine" />  -->
 
-        <StackPanel Grid.Row="1"
+                    <Grid Grid.Column="8"
+                            Margin="0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Visibility="{Binding IsRotationClassEnabled, Converter={StaticResource BTVC}}">
+                    <TextBlock VerticalAlignment="Top"
+                               FontSize="13"
+                               Margin="0,2,0,0"
+                               IsEnabled="{Binding IsEnabledEditing}"
+                               TextWrapping="Wrap"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="{res:Loc InstallationApp.RotationClassFix}" />
+
+                    <controls:PpcCheckBox Grid.Column="7"
+                                          IsEnabled="{Binding IsEnabledEditing}"
+                                          HorizontalAlignment="Stretch"
+                                          IsChecked="{Binding SelectedLU.IsRotationClassFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          VerticalAlignment="Bottom"
+                                          Margin="0,0,0,4" />
+
+                    <ComboBox Grid.Column="7"
+                              VerticalAlignment="Bottom"
+                              HorizontalAlignment="Right"
+                              IsEnabled="{Binding IsEnabledEditing}"
+                              Visibility="{Binding SelectedLU.IsRotationClassFixed, Converter={StaticResource BTVC}}"
+                              FontFamily="{DynamicResource VWAPP_TitleFont}"
+                              FontSize="24"
+                              FontWeight="Light"
+                              MaxWidth="50"
+                              Style="{StaticResource FlatComboBoxStyle}"
+                              MinWidth="50"
+                              SelectedValue="{Binding SelectedLU.RotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding ListRotationClass}"
+                              Margin="0,0,5,5" />
+                </Grid>
+                
+
+                <StackPanel Grid.Row="1"
                     Grid.Column="0"
                     Margin="0,1,0,0"
                     HorizontalAlignment="Stretch"

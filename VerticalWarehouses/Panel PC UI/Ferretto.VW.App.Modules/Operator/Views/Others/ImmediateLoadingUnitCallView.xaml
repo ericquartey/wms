@@ -59,11 +59,13 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
       <Border Grid.Row="0"
-              Height="90"
+              Height="auto"
+              MaxHeight="150"
               MinHeight="90"
               Margin="15,0,15,0"
               Background="{DynamicResource PpcBackground}">
@@ -71,29 +73,31 @@
                 BorderThickness="{DynamicResource PpcBorderThickness}">
 
           <Grid Grid.Column="8"
-                Grid.ColumnSpan="4">
+                          Grid.ColumnSpan="4">
 
             <Grid.RowDefinitions>
               <RowDefinition Height="Auto" />
-              <RowDefinition Height="*" />
+              <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Margin="8,4"
+            <TextBlock Margin="4"
                        HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
+                       VerticalAlignment="Stretch"
                        Style="{DynamicResource VWAPP_CardSensor}"
                        Text="{Resources:Loc OperatorApp.CommonNote}" />
 
-            <TextBlock Grid.Row="1"
-                       Margin="4,0,4,4"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Style="{DynamicResource VWAPP_CardSensor_Data}"
-                       Text="{Binding SelectedLoadingUnit.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}" />
+                        <TextBlock Grid.Row="1"
+                                   Margin="4,0,4,4"
+                                   MaxWidth="350"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{DynamicResource VWAPP_CardSensor_Data}"
+                                   Text="{Binding SelectedLoadingUnit.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}" />
 
           </Grid>
         </Border>
@@ -101,8 +105,9 @@
 
       <ctrls:PpcSpinEdit Grid.Row="1"
                          Width="230"
-                         Height="90"
-                         Margin="15,15,15,0"
+                         Height="80"
+                         HorizontalAlignment="Right"
+                         Margin="15,10,15,0"
                          EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
                          KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                          KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
@@ -112,21 +117,33 @@
                          MinValue="{Binding MinLoadingUnitId}" />
 
       <controls:PpcButton Grid.Row="2"
-                          Margin="15,15,15,0"
+                          Margin="15,10,15,0"
+                          Height="50"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding LoadingUnitsMissionsCommand}"
                           Content="{Resources:Loc OperatorApp.MissionsList}" />
 
       <controls:PpcButton Grid.Row="3"
-                          Margin="15,15,15,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Bottom"
-                          Command="{Binding ChangLaserOffsetCommand}"
-                          Content="{Resources:Loc OperatorApp.LaserOffset}" />
+                    Margin="15,10,15,0"
+                    Height="50"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Visibility="{Binding IsEnabledLaser, Converter={StaticResource BTVC}}"
+                    Command="{Binding ChangeLaserOffsetCommand}"
+                    Content="{Resources:Loc OperatorApp.LaserOffset}" />
 
       <controls:PpcButton Grid.Row="4"
-                          Margin="15,15,15,0"
+                    Margin="15,10,15,0"
+                    Height="50"
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding IsRotationClassEnabled, Converter={StaticResource BTVC}}"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding ChangeRotationClassCommand}"
+                    Content="{Resources:Loc InstallationApp.ChangeRotationClass}" />
+
+      <controls:PpcButton Grid.Row="5"
+                          Margin="15,10,15,0"
                           HorizontalAlignment="Right"
                           VerticalAlignment="Bottom"
                           Command="{Binding LoadingUnitCallCommand}"

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Ferretto.VW.CommonUtils.Messages;
@@ -25,6 +26,10 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Fields
 
         private const int ProfileStep = 25;
+
+        private const string ROTATION_CLASS_A = "A";
+
+        private const string ROTATION_CLASS_B = "B";
 
         private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
             EF.CompileQuery((DataLayerContext context) =>
@@ -309,9 +314,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                foreach (var bay in this.dataContext.Bays)
+                foreach (var bay in this.dataContext.Bays.Where(b => b.Number < BayNumber.ElevatorBay))
                 {
-                    if (bay.ProfileConst1 == 0 && bay.Number < BayNumber.ElevatorBay)
+                    if (bay.ProfileConst1 == 0)
                     {
                         if (bay.Number == BayNumber.BayOne)
                         {
@@ -322,6 +327,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             bay.ProfileConst1 = this.profileConst1AGL;
                             bay.ProfileConst0 = this.profileConst0AGL;
+                        }
+                        this.dataContext.SaveChanges();
+                    }
+                    if (string.IsNullOrEmpty(bay.RotationClass))
+                    {
+                        if (bay.Number == BayNumber.BayOne)
+                        {
+                            bay.RotationClass = ROTATION_CLASS_A;
+                        }
+                        else
+                        {
+                            bay.RotationClass = ROTATION_CLASS_B;
                         }
                         this.dataContext.SaveChanges();
                     }
@@ -1241,6 +1258,27 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetRotationClass(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Where(b => b.Number < BayNumber.ElevatorBay))
+                {
+                    if (bay.Number == bayNumber)
+                    {
+                        bay.RotationClass = ROTATION_CLASS_A;
+                    }
+                    else
+                    {
+                        bay.RotationClass = ROTATION_CLASS_B;
+                    }
+                }
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
         {
             if (portName is null)
@@ -1259,23 +1297,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.Accessories.BarcodeReader.PortName = portName;
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void UpdateCardReaderSettings(BayNumber bayNumber, bool isEnabled, string tokenRegex)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Accessories)
-                    .ThenInclude(a => a.CardReader)
-                    .Single(b => b.Number == bayNumber);
-
-                bay.Accessories.CardReader.IsEnabledNew = isEnabled;
-                bay.Accessories.CardReader.TokenRegex = tokenRegex;
-
-                this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();
             }
         }

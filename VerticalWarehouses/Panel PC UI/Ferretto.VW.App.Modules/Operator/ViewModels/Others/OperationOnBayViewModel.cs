@@ -45,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnableAddItem;
 
+        private bool isEnableAddItemByList;
+
         private bool isEnableHandlingItemOperations;
 
         private bool isEnableNoteRules;
@@ -170,6 +172,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isEnableAddItem, value, this.CanExecute);
         }
 
+        public bool IsEnableAddItemByList
+        {
+            get => this.isEnableAddItemByList;
+            set => this.SetProperty(ref this.isEnableAddItemByList, value, this.CanExecute);
+        }
+
         public bool IsEnableHandlingItemOperations
         {
             get => this.isEnableHandlingItemOperations;
@@ -292,14 +300,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.View = this.Bay.View;
                 this.Inventory = this.Bay.Inventory;
                 this.BarcodeAutomaticPut = this.Bay.BarcodeAutomaticPut;
-                this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage;
-                this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine;
+                this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage is true;
+                this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine is true;
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
                 this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
                 this.IsUpdatingStockByDifference = configuration.Machine.IsUpdatingStockByDifference;
                 this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
                 this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
+                this.IsEnableAddItemByList = configuration.Machine.IsAddItemByList;
                 this.IsCarrefour = configuration.Machine.IsCarrefour;
                 this.IsDrapery = configuration.Machine.IsDrapery;
                 this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
@@ -338,6 +347,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsUpdatingStockByDifference = this.IsUpdatingStockByDifference;
                 machine.IsRequestConfirmForLastOperationOnLoadingUnit = this.IsRequestConfirmForLastOperationOnLoadingUnit;
                 machine.IsEnableAddItem = this.IsEnableAddItem;
+                machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
                 machine.IsDisableQtyItemEditingPick = this.IsDisableQtyItemEditingPick;
                 machine.IsDoubleConfirmBarcodeInventory = this.IsDoubleConfirmBarcodeInventory;
@@ -358,6 +368,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     $"IsUpdatingStockByDifference = {this.IsUpdatingStockByDifference}; " +
                     $"IsRequestConfirmForLastOperationOnLoadingUnit = {this.IsRequestConfirmForLastOperationOnLoadingUnit};" +
                     $"IsEnableAddItem = {this.IsEnableAddItem};" +
+                    $"IsEnableAddItem = {this.IsEnableAddItemByList};" +
                     $"IsDisableQtyItemEditingPick = {this.IsDisableQtyItemEditingPick} ");
             }
             catch (Exception ex)

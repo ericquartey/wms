@@ -714,7 +714,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return this.CanBaseExecute() &&
                 (this.SensorsService.ShutterSensors.Closed || !this.HasShutter ||
-                (this.SensorsService.ShutterSensors.MidWay &&  this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf));
+                (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter?.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf));
         }
 
         private bool CanMoveToStartCalibration()
@@ -729,7 +729,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    !this.SensorsService.IsHorizontalInconsistentBothLow &&
                    !this.SensorsService.IsHorizontalInconsistentBothHigh &&
                    (this.SensorsService.ShutterSensors.Closed || !this.HasShutter ||
-                   (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf)) &&
+                   (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter?.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf)) &&
                    (this.SensorsService.BayZeroChain || !this.MachineService.HasCarousel);
         }
 
@@ -758,7 +758,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanTuningChain()
         {
             return (this.HasBayExternal || this.SensorsService.ShutterSensors.Closed || !this.MachineService.HasShutter ||
-                   (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf))
+                   (this.SensorsService.ShutterSensors.MidWay && this.MachineService.Bay.Shutter?.Type == MAS.AutomationService.Contracts.ShutterType.UpperHalf))
                 &&
                 this.CanBaseExecute()
                 &&

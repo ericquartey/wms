@@ -88,6 +88,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isGroupbyLotEnabled;
 
+        private bool isExpireDate;
+
+        private bool isExpireDateEnable;
+
+        private bool isLocalMachineItems;
+
         private bool isOrderVisible;
 
         private bool isPickItemPutItemOperationsEnabled;
@@ -312,6 +318,35 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isGroupbyLotEnabled;
             private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
+        }
+
+
+        public bool IsExpireDate
+        {
+            get => this.isExpireDate;
+            set
+            {
+                if (this.SetProperty(ref this.isExpireDate, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.Appear = false;
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                        this.Appear = true;
+                    }).Start();
+                }
+            }
+        }
+
+        public bool IsExpireDateEnable
+        {
+            get => this.isExpireDateEnable;
+            private set => this.SetProperty(ref this.isExpireDateEnable, value);
         }
 
         public bool IsOrderVisible
@@ -800,6 +835,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     this.Reasons = null;
                     this.Orders = null;
+                    this.IsOrderVisible = false;
+                    this.IsReasonVisible = false;
+                    this.IsWaitingForReason = false;
 
                     this.ShowNotification(
                     string.Format(
@@ -933,6 +971,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetAsync();
             this.IsCarrefour = configuration.Machine.IsCarrefour;
+            this.isLocalMachineItems = configuration.Machine.IsLocalMachineItems;
 
             this.Appear = false;
             this.InputQuantity = 0;
@@ -1116,15 +1155,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.IsGroupbyLotEnabled = false;
                     this.IsDistinctBySerialNumberEnabled = false;
                     this.IsSsccEnabled = false;
+                    this.IsExpireDate = false;
+                    this.IsExpireDateEnable = false;
                 }
                 else if (this.items.Count == 1)
                 {
+                    this.IsExpireDateEnable = true;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
                 }
                 else
                 {
+                    this.IsExpireDateEnable = true;
                     this.IsGroupbyLotEnabled = true;
                     this.IsDistinctBySerialNumberEnabled = true;
                     this.IsSsccEnabled = true;
@@ -1305,8 +1348,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return
                 !this.IsWaitingForResponse
-                &&
-                this.SelectedItem != null;
+                && this.SelectedItem != null
+                && this.SelectedItem.Machines != null
+                && this.SelectedItem.Machines.Any(m => m.Id == this.bayManager.Identity.Id);
         }
 
         private async Task OnAppearItem()
@@ -1423,12 +1467,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                        for (int i = 0; i < item.Machines.Count(); i++)
+                        foreach (var machine in item.Machines.Where(m => !this.isLocalMachineItems || m.Id == this.bayManager.Identity.Id))
                         {
-                            //if (item.Machines.ElementAt(i).Id == model.Id)
+                            var newMachine = new List<MachineItemInfo>();
+                            newMachine.Add(machine);
+                            var newItem = new ProductInMachine()
                             {
-                                this.productsInCurrentMachine.Add(item);
-                            }
+                                Machines = newMachine,
+                                Lot = item.Lot,
+                                SerialNumber = item.SerialNumber,
+                                Sscc = item.Sscc,
+                                Item = item.Item,
+                            };
+                            this.productsInCurrentMachine.Add(newItem);
                         }
                     }
                 }

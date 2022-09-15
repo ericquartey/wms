@@ -355,7 +355,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             if (this.authenticationService.IsAutoLogoutServiceUser)
             {
                 this.authenticationService.IsAutoLogoutServiceUser = false;
-                this.ShowNotification(Resources.Localized.Get("LoadLogin.AutoLogoutServiceUser"));
+                this.ShowNotification(Localized.Get("LoadLogin.AutoLogoutServiceUser"));
             }
 
             this.SelectedUserChanged();
@@ -370,23 +370,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 switch (this.UserLogin?.UserName?.ToLower())
                 {
                     case "installer":
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                        break;
-
                     case "service":
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                        break;
-
                     case "movement":
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
-                        break;
-
                     case "admin":
+                    case "guest":
                         Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name == this.UserLogin.UserName).Language);
                         break;
 
                     default:
-                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().Find(x => x.Name.ToLower() == "operator").Language);
+                        Localized.Instance.CurrentCulture = Localized.Instance.CurrentKeyboardCulture = new System.Globalization.CultureInfo(this.userList.ToList().First().Language);
                         break;
                 }
             }
@@ -511,39 +503,20 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                if (this.baseUser.Contains(this.UserLogin.UserName))
+                if (!string.IsNullOrEmpty(this.UserLogin.Error))
                 {
-                    if (!string.IsNullOrEmpty(this.UserLogin.Error))
-                    {
-                        this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
-                        return;
-                    }
-
-                    var claims = await this.authenticationService.LogInAsync(
-                       this.UserLogin.UserName,
-                       this.UserLogin.Password,
-                       this.UserLogin.SupportToken);
-
-                    await this.NavigateToMainMenuAsync(claims);
-
-                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
+                    this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
+                    return;
                 }
-                else
-                {
-                    //var claimWms = await this.usersService.AuthenticateWithResourceOwnerPasswordAsync(
-                    //    this.UserLogin.UserName,
-                    //    this.UserLogin.Password);
 
-                    var claims = await this.authenticationService.LogInAsync(
-                       this.UserLogin.UserName,
-                       this.UserLogin.Password,
-                       this.UserLogin.SupportToken,
-                       UserAccessLevel.Operator);
+                var claims = await this.authenticationService.LogInAsync(
+                    this.UserLogin.UserName,
+                    this.UserLogin.Password,
+                    this.UserLogin.SupportToken);
 
-                    await this.NavigateToMainMenuAsync(claims);
+                await this.NavigateToMainMenuAsync(claims);
 
-                    this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
-                }
+                this.Logger.Info($"Login user {claims.Name} level {claims.AccessLevel}");
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

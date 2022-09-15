@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isEnabled;
 
+        private bool isLocal;
+
         private DateTimeOffset? manufactureDate;
 
         private string modelNumber;
@@ -26,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand saveCommand;
 
         private string serialNumber;
+
+        private DelegateCommand testCommand;
 
         #endregion
 
@@ -95,6 +99,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsLocal
+        {
+            get => this.isLocal;
+            set
+            {
+                if (this.SetProperty(ref this.isLocal, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public DateTimeOffset? ManufactureDate
         {
             get => this.manufactureDate;
@@ -153,6 +170,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public System.Windows.Input.ICommand TestCommand =>
+                   this.testCommand
+           ??
+           (this.testCommand = new DelegateCommand(
+               async () =>
+               {
+                   try
+                   {
+                       await this.TestAsync();
+                       this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                       this.AreSettingsChanged = false;
+                   }
+                   catch (Exception ex)
+                   {
+                       this.ShowNotification(ex.Message, Services.Models.NotificationSeverity.Error);
+                   }
+               },
+               this.CanTest));
+
         #endregion
 
         #region Methods
@@ -177,11 +213,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.AreSettingsChanged;
         }
 
+        protected virtual bool CanTest()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.IsAccessoryEnabled;
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
             this.saveCommand?.RaiseCanExecuteChanged();
+            this.testCommand?.RaiseCanExecuteChanged();
         }
 
         protected abstract Task SaveAsync();
@@ -198,6 +243,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ManufactureDate = deviceInformation.ManufactureDate;
             this.ModelNumber = deviceInformation.ModelNumber;
         }
+
+        protected abstract Task TestAsync();
 
         #endregion
     }

@@ -2395,8 +2395,7 @@
     <value>Edit Stock by difference</value>
   </data>
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
-    <value>Pick and Put by barcode
-</value>
+    <value>Pick and Put by barcode</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Request confirm for last operation on load unit</value>
@@ -2617,5 +2616,29 @@
   </data>
   <data name="CarClosed" xml:space="preserve">
     <value>The car {0} has been closed</value>
+  </data>
+  <data name="AddList" xml:space="preserve">
+    <value>Add List</value>
+  </data>
+  <data name="isEnableAddItemByList" xml:space="preserve">
+    <value>Enable Add Item By List</value>
+  </data>
+  <data name="DrawerBackToStorage" xml:space="preserve">
+    <value>Move tray back to storage?</value>
+  </data>
+  <data name="DrawerSorting" xml:space="preserve">
+    <value>Reordering</value>
+  </data>
+  <data name="DaysCountSettings" xml:space="preserve">
+    <value>Rotation calculation settings</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>Days Count</value>
+  </data>
+  <data name="LastSchedule" xml:space="preserve">
+    <value>Last Schedule</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
   </data>
 </root>

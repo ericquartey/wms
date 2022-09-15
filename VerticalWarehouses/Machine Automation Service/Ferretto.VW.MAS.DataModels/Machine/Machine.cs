@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -25,6 +24,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool Box { get; set; }
 
+        public bool CanUserEnableWms { get; set; }
+
         /// <summary>
         /// Gets or sets the machine's elevator.
         /// </summary>
@@ -46,9 +47,14 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double Height { get; set; }
 
-        public int HorizontalCyclesToCalibrate { get; set; } = 50;
+        public int HorizontalCyclesToCalibrate { get; set; } = 10;
 
         public int HorizontalPositionToCalibrate { get; set; } = 10000;
+
+        /// <summary>
+        /// Get a value indicating if add item by list operation is enabled.
+        /// </summary>
+        public bool IsAddItemByList { get; set; }
 
         public bool IsAxisChanged { get; set; }
 
@@ -84,12 +90,13 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsDrapery { get; set; }
 
         /// <summary>
-        /// Get a value indicating if add item operation is enabled.
+        /// Get/set a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }
 
         /// <summary>
-        /// Get/set a value indicating if the pick operation and put operation for a given item can be performed in the loading unit view (IDROINOX)
+        /// Get/set a value indicating if the pick operation and put operation for a given item can
+        /// be performed in the loading unit view (IDROINOX)
         /// </summary>
         public bool IsEnableHandlingItemOperations { get; set; }
 
@@ -107,12 +114,16 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsQuantityLimited { get; set; }
 
-        public bool CanUserEnableWms { get; set; }
-
         /// <summary>
-        /// Get/set a value indicating if it is requested a confirm on last operation to be performed in a loading unit.
+        /// Get/set a value indicating if it is requested a confirm on last operation to be
+        /// performed in a loading unit.
         /// </summary>
         public bool IsRequestConfirmForLastOperationOnLoadingUnit { get; set; }
+
+        /// <summary>
+        /// enable the ABC rotation class handling
+        /// </summary>
+        public bool IsRotationClass { get; set; }
 
         /// <summary>
         /// Get/set a value indicating if the stock value is updating by difference (IDROINOX)
@@ -120,7 +131,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsUpdatingStockByDifference { get; set; }
 
         /// <summary>
-        /// When this value is greater than zero it is used to separate item barcode from serial number barcode (DEIMA)
+        /// When this value is greater than zero it is used to separate item barcode from serial
+        /// number barcode (DEIMA)
         /// </summary>
         public int ItemUniqueIdLength { get; set; }
 
@@ -147,7 +159,8 @@ namespace Ferretto.VW.MAS.DataModels
         public double LoadUnitTare { get; set; }
 
         /// <summary>
-        /// Gets or sets the percent of net weight to be considered very heavy in FindEmptyCell. To disable heavy bin management use 0. suggested value is 85.
+        /// Gets or sets the percent of net weight to be considered very heavy in FindEmptyCell. To
+        /// disable heavy bin management use 0. suggested value is 85.
         /// </summary>
         public double LoadUnitVeryHeavyPercent { get; set; }
 

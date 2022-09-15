@@ -630,4 +630,7 @@
   <data name="CanUserEnableWms" xml:space="preserve">
     <value>Can User Enable Wms</value>
   </data>
+  <data name="IsRotationClass" xml:space="preserve">
+    <value>Rotation Class</value>
+  </data>
 </root>

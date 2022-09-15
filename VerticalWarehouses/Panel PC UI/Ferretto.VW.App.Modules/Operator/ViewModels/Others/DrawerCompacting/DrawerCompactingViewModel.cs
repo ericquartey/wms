@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,6 +26,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineCompactingWebService machineCompactingWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly ISessionService sessionService;
@@ -43,9 +44,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double fragmentTotalPercent;
 
-        private bool isStopPressed;
+        private bool isEnabledReorder;
 
-        private bool showAutoCompactingSettings;
+        private bool isReorder;
+
+        private bool isRotationClassEnabled;
+
+        private bool isStopPressed;
 
         private double maxSolidSpaceBack;
 
@@ -55,6 +60,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand settingsButtonCommand;
 
+        private DelegateCommand daysCountCommand;
+
+        private bool showAutoCompactingSettings;
+
+        private bool isInstaller;
+
         private int totalDrawers;
 
         #endregion
@@ -62,6 +73,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Constructors
 
         public DrawerCompactingViewModel(
+            IMachineIdentityWebService machineIdentityWebService,
             IMachineCompactingWebService machineCompactingWebService,
             IMachineCellsWebService machineCellsWebService,
             IMachineAutoCompactingSettingsWebService machineAutoCompactingSettingsWebService,
@@ -69,6 +81,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             : base(PresentationMode.Operator)
         {
             this.machineCompactingWebService = machineCompactingWebService ?? throw new ArgumentNullException(nameof(machineCompactingWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineAutoCompactingSettingsWebService = machineAutoCompactingSettingsWebService ?? throw new ArgumentNullException(nameof(machineAutoCompactingSettingsWebService));
@@ -124,6 +137,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.fragmentTotalPercent, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsEnabledReorder
+        {
+            get => this.isEnabledReorder;
+            set => this.SetProperty(ref this.isEnabledReorder, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsReorder
+        {
+            get => this.isReorder;
+            set => this.SetProperty(ref this.isReorder, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsStopPressed
         {
             get => this.isStopPressed;
@@ -150,10 +181,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     () => this.Settings(),
                     this.CanSettingsCommand));
 
+        public ICommand DaysCountCommand =>
+            this.daysCountCommand
+            ??
+            (this.daysCountCommand =
+                new DelegateCommand(
+                    () => this.DaysCount(),
+                    this.CanDaysCountCommand));
+
         public bool ShowAutoCompactingSettings
         {
             get => this.showAutoCompactingSettings;
             set => this.SetProperty(ref this.showAutoCompactingSettings, value, this.RaiseCanExecuteChanged);
+        }
+        public bool IsInstallerAndRotationClassEnable
+        {
+            get => this.isInstaller;
+            set => this.SetProperty(ref this.isInstaller, value, this.RaiseCanExecuteChanged);
         }
 
         public int TotalDrawers
@@ -197,6 +241,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var list = await this.machineAutoCompactingSettingsWebService.GetAllAutoCompactingSettingsAsync();
 
             this.ShowAutoCompactingSettings = list.Any() || this.sessionService.UserAccessLevel > UserAccessLevel.Movement;
+            this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+            this.IsReorder = await this.machineIdentityWebService.GetIsRotationClassAsync();
+
+            this.IsInstallerAndRotationClassEnable = this.sessionService.UserAccessLevel > UserAccessLevel.Movement && this.IsRotationClassEnabled;
 
             await base.OnAppearedAsync();
         }
@@ -247,6 +295,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.detailButtonCommand?.RaiseCanExecuteChanged();
             this.compactingStartCommand?.RaiseCanExecuteChanged();
             this.compactingStopCommand?.RaiseCanExecuteChanged();
+            this.daysCountCommand?.RaiseCanExecuteChanged();
+            this.settingsButtonCommand?.RaiseCanExecuteChanged();
+
+            this.IsEnabledReorder = this.CanCompactingStart();
         }
 
         private bool CanCompactingStart()
@@ -300,7 +352,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return !this.IsWaitingForResponse;
         }
-
+        private bool CanDaysCountCommand()
+        {
+            return !this.IsWaitingForResponse;
+        }
         private void Detail()
         {
             this.IsWaitingForResponse = true;
@@ -370,7 +425,27 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = false;
             }
         }
+        private void DaysCount()
+        {
+            this.IsWaitingForResponse = true;
 
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.Others.DrawerCompacting.DAYSCOUNT,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
         //private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MissionOperationCompletedMessageData> message)
         //{
         //    switch (message.Status)
@@ -391,7 +466,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineCompactingWebService.CompactingAsync();
+                await this.machineCompactingWebService.CompactingAsync(this.IsReorder);
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

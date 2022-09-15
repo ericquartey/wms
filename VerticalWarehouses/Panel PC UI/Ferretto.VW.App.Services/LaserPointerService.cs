@@ -230,7 +230,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                this.logger.Debug($"OnMissionChangeAsync");
+                this.logger.Trace($"OnMissionChangeAsync");
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
                     await this.LaserPointerConfigureAsync();

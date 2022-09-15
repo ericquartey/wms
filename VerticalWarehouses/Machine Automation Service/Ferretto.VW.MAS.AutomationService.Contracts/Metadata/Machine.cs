@@ -22,6 +22,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [PullToRoot, Unfold]
             public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
 
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.CanUserEnableWms))]
+            [Id(29)]
+            public bool CanUserEnableWms { get; set; }
+
             [Category(Category = nameof(Vertimag.Elevator), ResourceType = typeof(Vertimag))]
             [CategoryDescription(ResourceType = typeof(Vertimag), Description = nameof(Vertimag.Elevator_CategoryDescription))]
             [Offset(500)]
@@ -42,11 +47,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FireAlarm))]
             [Id(28)]
             public bool FireAlarm { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.CanUserEnableWms))]
-            [Id(29)]
-            public bool CanUserEnableWms { get; set; }
 
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Height))]
@@ -77,6 +77,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
             [Id(20)]
             public bool IsHeartBeat { get; set; }
+
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsRotationClass))]
+            [Id(30)]
+            public bool IsRotationClass { get; set; }
 
             [Editable(true)]
             [Unit("mm")]
@@ -124,7 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(8)]
             public double MaxGrossWeight { get; set; }
 
-            [Editable(false)]
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ModelName))]
             [Id(1)]
             public string ModelName { get; set; }

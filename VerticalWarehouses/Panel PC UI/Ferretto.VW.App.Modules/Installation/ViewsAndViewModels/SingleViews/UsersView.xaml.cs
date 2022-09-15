@@ -64,6 +64,14 @@ namespace Ferretto.VW.App.Installation.Views
             {
                 this.OpenKeyboard(this.ConfirmNewOperatorPassword, Localized.Get("InstallationApp.ConfirmNewPassword"));
             }
+            else if (passwordBoxEdit == this.NewMovementPassword)
+            {
+                this.OpenKeyboard(this.NewMovementPassword, Localized.Get("InstallationApp.NewPassword"));
+            }
+            else if (passwordBoxEdit == this.ConfirmNewMovementPassword)
+            {
+                this.OpenKeyboard(this.ConfirmNewMovementPassword, Localized.Get("InstallationApp.ConfirmNewPassword"));
+            }
         }
 
         private void SelectPasswordBoxEditFromButton(Button button)
@@ -83,6 +91,14 @@ namespace Ferretto.VW.App.Installation.Views
             else if (button == this.KeyboardButtonConfirmNewOperatorPassword)
             {
                 this.OpenKeyboard(this.ConfirmNewOperatorPassword, Localized.Get("InstallationApp.ConfirmNewPassword"));
+            }
+            else if (button == this.KeyboardButtonNewMovementPassword)
+            {
+                this.OpenKeyboard(this.NewMovementPassword, Localized.Get("InstallationApp.NewPassword"));
+            }
+            else if (button == this.KeyboardButtonConfirmNewMovementPassword)
+            {
+                this.OpenKeyboard(this.ConfirmNewMovementPassword, Localized.Get("InstallationApp.ConfirmNewPassword"));
             }
         }
 

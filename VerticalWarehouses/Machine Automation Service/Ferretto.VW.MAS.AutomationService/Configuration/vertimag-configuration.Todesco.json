@@ -1015,6 +1015,7 @@
           }
         },
         "ChainOffset": -8.0,
+        "CyclesToCalibrate": 50,
         "EmptyLoadMovement": {
           "Acceleration": 200.0,
           "Deceleration": 150.0,
@@ -1128,6 +1129,7 @@
           "HomingAcceleration": 100.0,
           "HomingCreepSpeed": 10.0,
           "HomingFastSpeed": 100.0,
+          "HorizontalCalibrateSpeed": 0.0,
           "Id": 1,
           "Inverter": {
             "Id": 3,
@@ -1187,6 +1189,7 @@
             "Id": 1,
             "Speed": 400.0
           },
+          "HomingAcceleration": 0.0,
           "HomingCreepSpeed": 6.0,
           "HomingFastSpeed": 25.0,
           "HorizontalCalibrateSpeed": 1.5,

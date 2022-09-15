@@ -124,6 +124,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add List.
+        /// </summary>
+        public static string AddList {
+            get {
+                return ResourceManager.GetString("AddList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjustment.
         /// </summary>
         public static string Adjustment {
@@ -1195,6 +1204,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Days Count.
+        /// </summary>
+        public static string DaysCount {
+            get {
+                return ResourceManager.GetString("DaysCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rotation calculation settings.
+        /// </summary>
+        public static string DaysCountSettings {
+            get {
+                return ResourceManager.GetString("DaysCountSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete mission.
         /// </summary>
         public static string DeleteMission {
@@ -1618,6 +1654,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move tray back to storage?.
+        /// </summary>
+        public static string DrawerBackToStorage {
+            get {
+                return ResourceManager.GetString("DrawerBackToStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compacting.
         /// </summary>
         public static string DrawerCompacting {
@@ -1857,6 +1902,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DrawerSaturationDataGridHeaderMissions {
             get {
                 return ResourceManager.GetString("DrawerSaturationDataGridHeaderMissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reordering.
+        /// </summary>
+        public static string DrawerSorting {
+            get {
+                return ResourceManager.GetString("DrawerSorting", resourceCulture);
             }
         }
         
@@ -2806,8 +2860,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick and Put by barcode
-        ///.
+        ///   Looks up a localized string similar to Enable Add Item By List.
+        /// </summary>
+        public static string isEnableAddItemByList {
+            get {
+                return ResourceManager.GetString("isEnableAddItemByList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick and Put by barcode.
         /// </summary>
         public static string IsEnableHandlingItemOperations {
             get {
@@ -3235,6 +3297,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LastOperationMessage {
             get {
                 return ResourceManager.GetString("LastOperationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Schedule.
+        /// </summary>
+        public static string LastSchedule {
+            get {
+                return ResourceManager.GetString("LastSchedule", resourceCulture);
             }
         }
         

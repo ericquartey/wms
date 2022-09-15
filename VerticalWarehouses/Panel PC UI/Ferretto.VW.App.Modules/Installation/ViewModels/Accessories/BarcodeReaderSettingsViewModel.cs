@@ -182,7 +182,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         width = 300;
                     }
-                    if(!this.TryBarcodeImage.All(char.IsDigit))
+                    if (!this.TryBarcodeImage.All(char.IsDigit))
                     {
                         width += 150;
                     }
@@ -297,6 +297,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch
             {
                 throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        protected override async Task TestAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                //Do nothing
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
             finally
             {

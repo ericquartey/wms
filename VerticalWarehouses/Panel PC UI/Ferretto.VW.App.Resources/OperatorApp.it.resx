@@ -2217,4 +2217,28 @@
   <data name="CarClosed" xml:space="preserve">
     <value>Il carrello {0} è stato chiuso</value>
   </data>
+  <data name="AddList" xml:space="preserve">
+    <value>Aggiungi lista</value>
+  </data>
+  <data name="isEnableAddItemByList" xml:space="preserve">
+    <value>Abilita aggiungi articolo da una lista</value>
+  </data>
+  <data name="DrawerBackToStorage" xml:space="preserve">
+    <value>Muovi il cassetto verso il magazzino?</value>
+  </data>
+  <data name="DrawerSorting" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
+  <data name="DaysCountSettings" xml:space="preserve">
+    <value>Impostazioni calcolo rotazione</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>Giorni</value>
+  </data>
+  <data name="LastSchedule" xml:space="preserve">
+    <value>Ultima Esecuzione</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
 </root>

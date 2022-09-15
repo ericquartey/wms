@@ -30,6 +30,12 @@ namespace Ferretto.VW.TelemetryService.Providers
             lock (this.dataContext)
             {
                 var proxy = this.dataContext.Proxys.SingleOrDefault();
+
+                if (proxy is null)
+                {
+                    return null;
+                }
+
                 var telemetryProxy = new ServiceDesk.Telemetry.Proxy()
                 {
                     Url = proxy.Url,

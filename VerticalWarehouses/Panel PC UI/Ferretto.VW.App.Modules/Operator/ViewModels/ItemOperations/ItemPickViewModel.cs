@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemsWebService itemsWebService;
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMissionOperationsService missionOperationsService;
@@ -90,7 +92,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
             IMachineAccessoriesWebService accessoriesWebService,
-            IAlphaNumericBarService alphaNumericBarService)
+            IAlphaNumericBarService alphaNumericBarService,
+            IMachineBaysWebService machineBaysWebService)
             : base(
                   areasWebService,
                   machineIdentityWebService,
@@ -107,10 +110,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   dialogService,
                   wmsDataProvider,
                   authenticationService,
-                  accessoriesWebService)
+                  accessoriesWebService,
+                  machineBaysWebService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
             this.barcodeReaderService = barcodeReaderService;
             this.missionOperationsService = missionOperationsService;
@@ -411,6 +416,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
+            this.IsAddItemLists = false;
 
             this.IsBarcodeActive = this.barcodeReaderService.IsActive;
             this.IsVisibleBarcodeReader = false;
@@ -477,6 +483,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = this.MissionRequestedQuantity;
                 base.InitializeInputQuantity();
                 //this.AvailableQuantity = this.MissionRequestedQuantity;
+                this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
                 this.RaisePropertyChanged(nameof(this.InputQuantity));
                 this.RaisePropertyChanged(nameof(this.AvailableQuantity));
@@ -621,21 +628,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var type = this.MissionOperation.Type;
                 var quantity = this.InputQuantity.Value;
 
+                var isLastMissionOnCurrentLoadingUnit = false;
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {
-                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
                     if (isLastMissionOnCurrentLoadingUnit)
                     {
-                        var messageBoxResult = this.DialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
-                        {
-                            // go away...
-                        }
+                        this.Logger.Debug($"Deactivate Bay");
+                        await this.machineBaysWebService.DeactivateAsync();
                     }
                 }
 
@@ -651,6 +652,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     await this.UpdateWeight(loadingUnitId, quantity, item.AverageWeight, type);
+                }
+
+                if (isLastMissionOnCurrentLoadingUnit)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.DrawerBackToStorage"),
+                        DialogType.Question,
+                        DialogButtons.OK);
+                    if (messageBoxResult is DialogResult.OK)
+                    {
+                        // go away...
+                    }
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
@@ -682,6 +698,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = false;
                 this.lastItemQuantityMessage = null;
+                this.Logger.Debug($"Activate Bay");
+                await this.machineBaysWebService.ActivateAsync();
             }
         }
 
@@ -774,25 +792,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 bool canComplete = false;
 
+                var quantity = this.InputQuantity;
+                var isLastMissionOnCurrentLoadingUnit = false;
                 var isRequestConfirm = await this.MachineIdentityWebService.IsRequestConfirmForLastOperationOnLoadingUnitAsync();
                 if (isRequestConfirm)
                 {
-                    var isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
+                    isLastMissionOnCurrentLoadingUnit = await this.MissionOperationsService.IsLastWmsMissionForCurrentLoadingUnitAsync(this.MissionOperation.Id);
                     if (isLastMissionOnCurrentLoadingUnit)
                     {
-                        var messageBoxResult = this.DialogService.ShowMessage(
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            Localized.Get("InstallationApp.ConfirmationOperation"),
-                            DialogType.Question,
-                            DialogButtons.OK);
-                        if (messageBoxResult is DialogResult.OK)
-                        {
-                            // go away...
-                        }
+                        this.Logger.Debug($"Deactivate Bay");
+                        await this.machineBaysWebService.DeactivateAsync();
                     }
                 }
 
-                var quantity = this.InputQuantity;
                 if (barcode != null)
                 {
                     var isToteBarcodeManaged = this.ToteBarcodeLength > 0;
@@ -903,6 +915,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
+                if (isLastMissionOnCurrentLoadingUnit)
+                {
+                    var messageBoxResult = this.DialogService.ShowMessage(
+                        Localized.Get("InstallationApp.ConfirmationOperation"),
+                        Localized.Get("OperatorApp.DrawerBackToStorage"),
+                        DialogType.Question,
+                        DialogButtons.OK);
+                    if (messageBoxResult is DialogResult.OK)
+                    {
+                        // go away...
+                    }
+                    this.Logger.Debug($"Activate Bay");
+                    await this.machineBaysWebService.ActivateAsync();
+                }
+
                 //if (canComplete)
                 //{
                 //    this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
@@ -962,6 +989,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 // Do not enable the interface. Wait for a new notification to arrive.
                 this.IsWaitingForResponse = false;
                 this.lastItemQuantityMessage = null;
+                this.Logger.Debug($"Activate Bay");
+                await this.machineBaysWebService.ActivateAsync();
 
                 //this.lastMissionOperation = null;
                 //this.lastMissionOperation = null;

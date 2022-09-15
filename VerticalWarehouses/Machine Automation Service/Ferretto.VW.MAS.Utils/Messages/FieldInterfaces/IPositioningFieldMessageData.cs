@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool IsBayCalibrate { get; set; }
 
+        bool IsExternal { get; set; }
+
         bool IsHorizontalCalibrate { get; set; }
 
         bool IsPickupMission { get; }

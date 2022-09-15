@@ -4,14 +4,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     public partial class CheckListContinueInOtherMachine : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<bool>(
-                name: "CheckListContinueInOtherMachine",
-                table: "Bays",
-                nullable: false,
-                defaultValue: false);
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -19,5 +12,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "CheckListContinueInOtherMachine",
                 table: "Bays");
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<bool>(
+                name: "CheckListContinueInOtherMachine",
+                table: "Bays",
+                nullable: true,
+                defaultValue: false);
+        }
+
+        #endregion
     }
 }

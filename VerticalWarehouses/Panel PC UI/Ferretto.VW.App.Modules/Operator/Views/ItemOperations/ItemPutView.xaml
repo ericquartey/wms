@@ -8,6 +8,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:localControls="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Modules.Operator.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:modules="clr-namespace:Ferretto.VW.Utils.Modules;assembly=Ferretto.VW.Utils"
             xmlns:prism="http://prismlibrary.com/"
@@ -85,7 +86,7 @@
         <WmsControls:TrayControl Name="TrayControl"
                                  Grid.Row="0"
                                  Grid.Column="0"
-                                 Margin="0,0,0,0"
+                                 Margin="0,0,10,0"
                                  HorizontalAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  Compartments="{Binding Compartments}"
@@ -103,6 +104,11 @@
         <localControls:ItemInfoView Grid.Row="1"
                                     Margin="0,0,0,0"
                                     VerticalAlignment="Top" />
+
+        <views:LoadingUnitOperationsView
+                                Grid.Row="1"
+                                Margin="0,-20,0,0"
+                                Visibility="{Binding IsWmsEnabledAndHealthy, Converter={StaticResource BTVC}}" />
 
       </Grid>
 
@@ -272,6 +278,7 @@
 
 
       <StackPanel Grid.Row="4"
+                  HorizontalAlignment="Right"
                   Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
 
         <TextBlock Grid.Row="4"
@@ -305,14 +312,23 @@
                               VerticalAlignment="Bottom"
                               IsChecked="{Binding FullCompartment, Mode=TwoWay}" />
       </StackPanel>
+        
+            <controls:PpcButton Margin="15,0,15,15"
+                                HorizontalAlignment="Left"
+                                Grid.Row="4"
+                                VerticalAlignment="Center"
+                                Width="auto"
+                                Command="{Binding ShowPutListsCommand}"
+                                KindFontAwesome="CartPlusSolid"
+                                Visibility="{Binding IsAddItemLists, Converter={StaticResource BTVC}}" />
+                                <!--CommandParameter="{x:Static res:OperatorApp.AddList}"-->
 
-      <controls:PpcButton Grid.Row="5"
+            <controls:PpcButton Grid.Row="5"
                           Width="110"
                           Margin="15,8,15,0"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Bottom"
                           Command="{Binding FullOperationCommand}"
-                          Content="{resources:Loc OperatorApp.ConfirmPartial}"
                           IsBusy="{Binding IsBusyConfirmingOperation}"
                           Style="{StaticResource ConfirmButton}"
                           Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}" />
@@ -357,7 +373,7 @@
 
         <controls:PpcButton Width="54"
                             Height="50"
-                            Margin="5,8,0,0"
+                            Margin="5,8,15,0"
                             HorizontalAlignment="right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SuspendCommand}"

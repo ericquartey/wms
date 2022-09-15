@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineAutoCompactingSettingsWebService machineAutoCompactingSettingsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly ISessionService sessionService;
 
         private ObservableCollection<AutoCompactingSettings> autoCompactingSettings = new ObservableCollection<AutoCompactingSettings>();
@@ -30,6 +32,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isInstaller;
 
+        private bool isRotationClassEnabled;
+
         private DelegateCommand saveCommand;
 
         private AutoCompactingSettings selectedAutoCompactingSettings;
@@ -38,10 +42,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public AutoCompactingSettingsViewModel(IMachineAutoCompactingSettingsWebService machineAutoCompactingSettingsWebService)
+        public AutoCompactingSettingsViewModel(IMachineAutoCompactingSettingsWebService machineAutoCompactingSettingsWebService,
+                                                IMachineIdentityWebService machineIdentityWebService)
             : base(PresentationMode.Operator)
         {
             this.machineAutoCompactingSettingsWebService = machineAutoCompactingSettingsWebService ?? throw new ArgumentNullException(nameof(machineAutoCompactingSettingsWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.AutoCompactingSettings = new ObservableCollection<AutoCompactingSettings>();
 
             this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
@@ -73,6 +79,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isInstaller;
             set => this.SetProperty(ref this.isInstaller, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand SaveCommand =>
@@ -112,6 +124,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await this.LoadSettings();
 
             this.IsBusy = false;
+
+            this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
         }
 
         protected override void RaiseCanExecuteChanged()

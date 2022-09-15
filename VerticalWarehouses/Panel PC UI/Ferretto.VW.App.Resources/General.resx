@@ -358,4 +358,7 @@
     <value>Delay after put (ms)</value>
     
   </data>
+  <data name="PrinterTest" xml:space="preserve">
+    <value>Printer Test</value>
+  </data>
 </root>

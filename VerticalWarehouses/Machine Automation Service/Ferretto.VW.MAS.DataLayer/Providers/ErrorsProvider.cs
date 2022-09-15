@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var newError = new MachineError
             {
                 Code = (int)code,
-                OccurrenceDate = DateTime.Now,
+                OccurrenceDate = DateTime.Now,              // TODO: why not use UtcNow???
                 InverterIndex = 0,
                 DetailCode = 0,
                 BayNumber = bayNumber,
@@ -291,7 +291,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var newError = new MachineError
             {
                 Code = (int)MachineErrorCode.InverterFaultStateDetected,
-                OccurrenceDate = DateTime.Now,
+                OccurrenceDate = DateTime.Now,              // TODO: why not use UtcNow???
                 InverterIndex = inverterIndex,
                 BayNumber = bayNumber,
                 DetailCode = detailCode,
@@ -362,7 +362,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (force || !this.IsErrorStillActive(error.Code, error.BayNumber))
                 {
-                    error.ResolutionDate = DateTime.Now;
+                    error.ResolutionDate = DateTime.Now;            // TODO: why not use UtcNow???
                     this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
 
                     this.dataContext.Errors.Update(error);

@@ -14,24 +14,19 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsBlocked { get; set; }
 
-        public bool IsUpper =>
-            this.Location is LoadingUnitLocation.CarouselBay1Up
-            ||
-            this.Location is LoadingUnitLocation.CarouselBay2Up
-            ||
-            this.Location is LoadingUnitLocation.CarouselBay3Up
-            ||
-            this.Location is LoadingUnitLocation.ExternalBay1Up
-            ||
-            this.Location is LoadingUnitLocation.ExternalBay2Up
-            ||
-            this.Location is LoadingUnitLocation.ExternalBay3Up
-            ||
-            this.Location is LoadingUnitLocation.InternalBay1Up
-            ||
-            this.Location is LoadingUnitLocation.InternalBay2Up
-            ||
-            this.Location is LoadingUnitLocation.InternalBay3Up;
+        public bool? IsPreferred => this.Bay?.IsDouble is false // single bays: always preferred
+            || (this.Bay?.Carousel != null && this.IsUpper)      // carousel: upper position
+            || (this.Bay?.Carousel is null && !this.IsUpper);    // double bays external or internal: lower position
+
+        public bool IsUpper => this.Location is LoadingUnitLocation.CarouselBay1Up
+            || this.Location is LoadingUnitLocation.CarouselBay2Up
+            || this.Location is LoadingUnitLocation.CarouselBay3Up
+            || this.Location is LoadingUnitLocation.ExternalBay1Up
+            || this.Location is LoadingUnitLocation.ExternalBay2Up
+            || this.Location is LoadingUnitLocation.ExternalBay3Up
+            || this.Location is LoadingUnitLocation.InternalBay1Up
+            || this.Location is LoadingUnitLocation.InternalBay2Up
+            || this.Location is LoadingUnitLocation.InternalBay3Up;
 
         public LoadingUnit LoadingUnit { get; set; }
 
@@ -39,22 +34,14 @@ namespace Ferretto.VW.MAS.DataModels
 
         public LoadingUnitLocation LocationUpDown =>
             (this.Location is LoadingUnitLocation.CarouselBay1Up
-             ||
-             this.Location is LoadingUnitLocation.CarouselBay2Up
-             ||
-             this.Location is LoadingUnitLocation.CarouselBay3Up
-             ||
-             this.Location is LoadingUnitLocation.ExternalBay1Up
-             ||
-             this.Location is LoadingUnitLocation.ExternalBay2Up
-             ||
-             this.Location is LoadingUnitLocation.ExternalBay3Up
-             ||
-             this.Location is LoadingUnitLocation.InternalBay1Up
-             ||
-             this.Location is LoadingUnitLocation.InternalBay2Up
-             ||
-             this.Location is LoadingUnitLocation.InternalBay3Up) ?
+             || this.Location is LoadingUnitLocation.CarouselBay2Up
+             || this.Location is LoadingUnitLocation.CarouselBay3Up
+             || this.Location is LoadingUnitLocation.ExternalBay1Up
+             || this.Location is LoadingUnitLocation.ExternalBay2Up
+             || this.Location is LoadingUnitLocation.ExternalBay3Up
+             || this.Location is LoadingUnitLocation.InternalBay1Up
+             || this.Location is LoadingUnitLocation.InternalBay2Up
+             || this.Location is LoadingUnitLocation.InternalBay3Up) ?
             LoadingUnitLocation.Up :
             LoadingUnitLocation.Down;
 

@@ -196,7 +196,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Large.
+        ///   Looks up a localized string similar to L.
         /// </summary>
         public static string AlphaNumericBarSizeL {
             get {
@@ -205,7 +205,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Medium.
+        ///   Looks up a localized string similar to M.
         /// </summary>
         public static string AlphaNumericBarSizeM {
             get {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Small.
+        ///   Looks up a localized string similar to S.
         /// </summary>
         public static string AlphaNumericBarSizeS {
             get {
@@ -223,7 +223,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra large.
+        ///   Looks up a localized string similar to XL.
         /// </summary>
         public static string AlphaNumericBarSizeXL {
             get {
@@ -232,11 +232,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extra small.
+        ///   Looks up a localized string similar to XS.
         /// </summary>
         public static string AlphaNumericBarSizeXS {
             get {
                 return ResourceManager.GetString("AlphaNumericBarSizeXS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XXS.
+        /// </summary>
+        public static string AlphaNumericBarSizeXXS {
+            get {
+                return ResourceManager.GetString("AlphaNumericBarSizeXXS", resourceCulture);
             }
         }
         
@@ -1195,6 +1204,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Rotation Class.
+        /// </summary>
+        public static string ChangeRotationClass {
+            get {
+                return ResourceManager.GetString("ChangeRotationClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change unit.
         /// </summary>
         public static string ChangeUnit {
@@ -2019,6 +2037,15 @@ namespace Ferretto.VW.App.Resources {
         public static string DeleteUnitDialog {
             get {
                 return ResourceManager.GetString("DeleteUnitDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will delete the user, proceed?.
+        /// </summary>
+        public static string DeleteUserConfirm {
+            get {
+                return ResourceManager.GetString("DeleteUserConfirm", resourceCulture);
             }
         }
         
@@ -2869,6 +2896,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fix Support.
+        /// </summary>
+        public static string FixSupport {
+            get {
+                return ResourceManager.GetString("FixSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forwards.
         /// </summary>
         public static string Forwards {
@@ -3072,6 +3108,15 @@ namespace Ferretto.VW.App.Resources {
         public static string GrossWeight {
             get {
                 return ResourceManager.GetString("GrossWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guest enabled.
+        /// </summary>
+        public static string GuestEnabled {
+            get {
+                return ResourceManager.GetString("GuestEnabled", resourceCulture);
             }
         }
         
@@ -3351,6 +3396,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IndicateMisuredPosition {
             get {
                 return ResourceManager.GetString("IndicateMisuredPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information has not been updated..
+        /// </summary>
+        public static string InformationFailedUpdated {
+            get {
+                return ResourceManager.GetString("InformationFailedUpdated", resourceCulture);
             }
         }
         
@@ -4030,6 +4084,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local.
+        /// </summary>
+        public static string IsLocal {
+            get {
+                return ResourceManager.GetString("IsLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read only.
         /// </summary>
         public static string IsReadOnly {
@@ -4426,6 +4489,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local not available is WMS is active.
+        /// </summary>
+        public static string LocalAndWmsNotAllowed {
+            get {
+                return ResourceManager.GetString("LocalAndWmsNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log Off.
         /// </summary>
         public static string LogOff {
@@ -4674,6 +4746,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Minutes {
             get {
                 return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End active missions.
+        /// </summary>
+        public static string MissionActive {
+            get {
+                return ResourceManager.GetString("MissionActive", resourceCulture);
             }
         }
         
@@ -4998,6 +5079,24 @@ namespace Ferretto.VW.App.Resources {
         public static string MushroomHeadButton {
             get {
                 return ResourceManager.GetString("MushroomHeadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The name is already present.
+        /// </summary>
+        public static string NameIsPresent {
+            get {
+                return ResourceManager.GetString("NameIsPresent", resourceCulture);
             }
         }
         
@@ -5412,6 +5511,15 @@ namespace Ferretto.VW.App.Resources {
         public static string PositionOnTop {
             get {
                 return ResourceManager.GetString("PositionOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preferential Bay.
+        /// </summary>
+        public static string PreferentialBay {
+            get {
+                return ResourceManager.GetString("PreferentialBay", resourceCulture);
             }
         }
         
@@ -6060,6 +6168,24 @@ namespace Ferretto.VW.App.Resources {
         public static string RightSideMeasurement {
             get {
                 return ResourceManager.GetString("RightSideMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string RotationClass {
+            get {
+                return ResourceManager.GetString("RotationClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed Rotation.
+        /// </summary>
+        public static string RotationClassFix {
+            get {
+                return ResourceManager.GetString("RotationClassFix", resourceCulture);
             }
         }
         
@@ -7018,6 +7144,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test successful.
+        /// </summary>
+        public static string TestSuccessful {
+            get {
+                return ResourceManager.GetString("TestSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TestToRunmust be strictly positive..
         /// </summary>
         public static string TestToRunMustBePositive {
@@ -7041,6 +7176,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Timeout {
             get {
                 return ResourceManager.GetString("Timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The token is already present.
+        /// </summary>
+        public static string TokenIsPresent {
+            get {
+                return ResourceManager.GetString("TokenIsPresent", resourceCulture);
             }
         }
         

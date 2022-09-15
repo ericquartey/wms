@@ -31,9 +31,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
+        private readonly IMachineMissionsWebService missionsWebService;
+
+        private readonly IBayManager bayManager;
+
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
         private readonly ISessionService sessionService;
+
+        private readonly IMachineIdentityWebService identityService;
 
         private readonly IUsbWatcherService usbWatcher;
 
@@ -70,6 +76,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ParameterInverterViewModel(
             IMachineIdentityWebService identityService,
             ISessionService sessionService,
+            IMachineMissionsWebService missionsWebService,
+            IBayManager bayManager,
             IMachineDevicesWebService machineDevicesWebService,
             IMachineConfigurationWebService machineConfigurationWebService,
             IUsbWatcherService usbWatcher) : base(identityService)
@@ -77,6 +85,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.usbWatcher = usbWatcher;
         }
 
@@ -214,6 +225,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBusy = false;
+
+            var missions = await this.missionsWebService.GetAllAsync();
+
+            if (missions.Any())
+            {
+                this.ShowNotification(Localized.Get("InstallationApp.MissionActive"), Services.Models.NotificationSeverity.Warning);
+            }
+
+
         }
 
         protected override async Task OnDataRefreshAsync()

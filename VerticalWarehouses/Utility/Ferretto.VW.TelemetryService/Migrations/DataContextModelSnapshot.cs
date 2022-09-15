@@ -34,6 +34,9 @@ namespace Ferretto.VW.TelemetryService.Migrations
                     b.Property<int>("DetailCode")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ErrorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("InverterIndex")
                         .HasColumnType("INTEGER");
 

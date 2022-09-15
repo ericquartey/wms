@@ -99,6 +99,8 @@
 
             public const string CHANGELASEROFFSET = "ChangeLaserOffsetViewModel";
 
+            public const string CHANGEROTATIONCLASS = "ChangeRotationClassViewModel";
+
             public const string IMMEDIATELOADINGUNITCALL = "ImmediateLoadingUnitCallViewModel";
 
             public const string LOADINGUNITSMISSIONS = "LoadingUnitsMissionsViewModel";
@@ -114,6 +116,8 @@
             public static class DrawerCompacting
             {
                 #region Fields
+
+                public const string DAYSCOUNT = "DaysCountViewModel";
 
                 public const string DETAIL = "DrawerCompactingDetailViewModel";
 

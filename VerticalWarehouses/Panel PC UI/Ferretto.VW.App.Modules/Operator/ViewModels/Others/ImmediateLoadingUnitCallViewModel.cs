@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -26,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineService machineService;
@@ -36,7 +37,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand changeLaserOffsetCommand;
 
+        private DelegateCommand changeRotationClassCommand;
+
         private bool isEnabledLaser;
+
+        private bool isRotationClassEnabled;
+
+        private bool isUserLimited;
 
         private int? loadingUnitId;
 
@@ -63,6 +70,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ImmediateLoadingUnitCallViewModel(
             ISessionService sessionService,
             IMachineService machineService,
+            IMachineIdentityWebService machineIdentityWebService,
             IEventAggregator eventAggregator,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IAuthenticationService authenticationService)
@@ -73,16 +81,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand ChangLaserOffsetCommand =>
+        public ICommand ChangeLaserOffsetCommand =>
             this.changeLaserOffsetCommand
             ??
             (this.changeLaserOffsetCommand = new DelegateCommand(this.ChangeLaserOffsetAppear, this.CanChangeLaserOffset));
+
+        public ICommand ChangeRotationClassCommand =>
+           this.changeRotationClassCommand
+           ??
+           (this.changeRotationClassCommand = new DelegateCommand(this.ChangeRotationClassAppear, this.CanChangeRotationClass));
 
         public bool IsEnabledLaser
         {
@@ -91,6 +105,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public bool IsOperator => this.sessionService.UserAccessLevel <= MAS.AutomationService.Contracts.UserAccessLevel.Movement;
+
+        public bool IsRotationClassEnabled
+        {
+            get => this.isRotationClassEnabled;
+            set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
+        }
 
         public override bool IsWaitingForResponse
         {
@@ -199,7 +219,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 await this.machineLoadingUnitsWebService.MoveToBayAsync(this.selectedLoadingUnit.Id, this.authenticationService.UserName);
 
-                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit.Id), Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(string.Format(Resources.Localized.Get("ServiceMachine.LoadingUnitSuccessfullyRequested"), this.selectedLoadingUnit?.Id), Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex) // when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -228,6 +248,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+
             await this.MachineService.GetLoadUnits(details: true);
             this.loadingUnits = this.MachineService.Loadunits.ToList();
             this.RaisePropertyChanged(nameof(this.LoadingUnits));
@@ -240,6 +262,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
+                this.changeRotationClassCommand?.RaiseCanExecuteChanged();
+                this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
             }
 
             this.SelectedLoadingUnit = null;
@@ -251,6 +275,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
             this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
+            this.changeRotationClassCommand?.RaiseCanExecuteChanged();
 
             if (this.selectedLoadingUnit == null)
             {
@@ -282,12 +307,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             &&
             !this.IsWaitingForResponse
             &&
-            this.SelectedLoadingUnit.IsIntoMachineOK;
+            this.SelectedLoadingUnit.IsIntoMachineOK
+            &&
+            !this.isUserLimited;
         }
 
         private bool CanChangeLaserOffset()
         {
-            return this.IsEnabledLaser && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0;
+            return this.IsEnabledLaser && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
+        }
+
+        private bool CanChangeRotationClass()
+        {
+            return this.isRotationClassEnabled && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
         }
 
         private void ChangeLaserOffsetAppear()
@@ -295,6 +327,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.Others.CHANGELASEROFFSET,
+                this.SelectedLoadingUnit,
+                trackCurrentView: true);
+        }
+
+        private void ChangeRotationClassAppear()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.CHANGEROTATIONCLASS,
                 this.SelectedLoadingUnit,
                 trackCurrentView: true);
         }

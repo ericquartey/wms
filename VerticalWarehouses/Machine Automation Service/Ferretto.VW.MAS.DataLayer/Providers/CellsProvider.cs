@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         // TODO - remove this parameter when all versions are > 0.27.24
         private const double OldVerticalPositionTolerance = 27;
+
+        private const string ROTATION_CLASS_A = "A";
+
+        private const string ROTATION_CLASS_B = "B";
+
+        private const string ROTATION_CLASS_C = "C";
 
         private const double VerticalPositionTolerance = 12.5;
 
@@ -47,6 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
@@ -55,12 +64,14 @@ namespace Ferretto.VW.MAS.DataLayer
             IErrorsProvider errorsProvider,
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ILogger<DataLayerContext> logger)
         {
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new System.ArgumentNullException(nameof(machineVolatileDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -223,6 +234,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     || cell.BlockLevel == BlockLevel.NeedsTest
                     || cell.BlockLevel == BlockLevel.SpaceOnly
                     || !cell.IsFree
+                    || (this.machineVolatileDataProvider.IsOptimizeRotationClass
+                        && !string.IsNullOrEmpty(cell.RotationClass)
+                        && !string.IsNullOrEmpty(loadingUnit.RotationClass)
+                        && cell.RotationClass[0] < loadingUnit.RotationClass[0])
                     )
                 {
                     break;
@@ -292,6 +307,10 @@ namespace Ferretto.VW.MAS.DataLayer
             if (machine is null)
             {
                 throw new EntityNotFoundException();
+            }
+            if (!machine.IsRotationClass && this.machineVolatileDataProvider.IsOptimizeRotationClass)
+            {
+                this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
             }
             if (machineStatistics.TotalWeightFront + machineStatistics.TotalWeightBack + loadUnit.GrossWeight > machine.MaxGrossWeight)
             {
@@ -388,7 +407,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         isFloating = false;
                     }
 
-                    if (cellsFollowing.Any() && (!isFloating || isCellTest))
+                    if (cellsFollowing.Any()
+                        && (!isFloating || isCellTest)
+                        && (!this.machineVolatileDataProvider.IsOptimizeRotationClass || cell.RotationClass == loadUnit.RotationClass))
                     {
                         // measure available space
                         var lastCellPosition = cellsFollowing.Last().Position;
@@ -454,6 +475,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     // sort cells from bottom to top, optimizing free space
                     foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
+                        .ThenBy(t => (machine.IsRotationClass && !string.IsNullOrEmpty(t.Cell.RotationClass) && !string.IsNullOrEmpty(loadUnit.RotationClass)) ? Math.Abs(t.Cell.RotationClass[0] - loadUnit.RotationClass[0]) : 0)
                         .ThenBy(t => (isCellTest) ? 0 : t.Height)          // minimize free space
                         .ThenBy(t => t.Cell.Priority)   // start from bottom to top
                         .First();
@@ -471,11 +493,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     cellId = cells.First(c => c.Side == foundCell.Cell.Side && c.Position > foundCell.Cell.Position).Id;
                 }
 
-                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
+                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId} {loadUnit.RotationClass}; " +
                     $"Height {loadUnitHeight:0.00}; " +
                     $"Weight {loadUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
-                    $"{compactingType}; " +
+                    $"{compactingType}; rotation {this.machineVolatileDataProvider.IsOptimizeRotationClass}; " +
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
                     $"available space {foundCell.Height}; " +
@@ -518,26 +540,32 @@ namespace Ferretto.VW.MAS.DataLayer
             foreach (var cell in cells.Where(c => c.BlockLevel == BlockLevel.None
                     && c.IsFree))
             {
-                if (cells.Any(c => c.Position > cell.Position
-                    && c.Position < cell.Position + loadingUnit.Height + CellHeight
-                    && c.BlockLevel == BlockLevel.SpaceOnly)
-                    )
+                if (!machine.IsRotationClass
+                    || !string.IsNullOrEmpty(cell.RotationClass)
+                    || !string.IsNullOrEmpty(loadingUnit.RotationClass)
+                    || cell.RotationClass[0] >= loadingUnit.RotationClass[0])
                 {
-                    // measure available space
-                    var cellsFollowing = cells.Where(c => c.Position >= cell.Position).OrderBy(o => o.Position);
-                    if (cellsFollowing.Any())
+                    if (cells.Any(c => c.Position > cell.Position
+                        && c.Position < cell.Position + loadingUnit.Height + CellHeight
+                        && c.BlockLevel == BlockLevel.SpaceOnly)
+                        )
                     {
-                        var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.IsNotAvailable || (c.BlockLevel == BlockLevel.NeedsTest && c.Position > cell.Position));
-                        if (firstUnavailable != null)
+                        // measure available space
+                        var cellsFollowing = cells.Where(c => c.Position >= cell.Position).OrderBy(o => o.Position);
+                        if (cellsFollowing.Any())
                         {
-                            lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
+                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => !c.IsFree || c.IsNotAvailable || (c.BlockLevel == BlockLevel.NeedsTest && c.Position > cell.Position));
+                            if (firstUnavailable != null)
+                            {
+                                lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
+                            }
                         }
-                    }
-                    var availableSpace = lastCellPosition - cell.Position + CellHeight;
-                    if (availableSpace >= loadingUnit.Height + VerticalPositionTolerance)
-                    {
-                        this.logger.LogInformation($"FindTopCell: found Cell {cell.Id} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
-                        return cell.Id;
+                        var availableSpace = lastCellPosition - cell.Position + CellHeight;
+                        if (availableSpace >= loadingUnit.Height + VerticalPositionTolerance)
+                        {
+                            this.logger.LogInformation($"FindTopCell: found Cell {cell.Id} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
+                            return cell.Id;
+                        }
                     }
                 }
             }
@@ -660,7 +688,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.Cells.UpdateRange(cells);
-                this.logger.LogDebug($"Change back drawers position. {cells.Count()} cells updated" );
+                this.logger.LogDebug($"Change back drawers position. {cells.Count()} cells updated");
                 this.dataContext.SaveChanges();
             }
         }
@@ -954,6 +982,63 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 // TODO - THIS IS A GOOD POINT TO MAKE A DATABASE BACKUP
+            }
+        }
+
+        public void SetRotationClass()
+        {
+            lock (this.dataContext)
+            {
+                var loadUnits = this.dataContext
+                    .LoadingUnits
+                    .Where(l => l.Status != LoadingUnitStatus.Blocked && !string.IsNullOrEmpty(l.RotationClass));
+
+                var cellsOccupied_A = (int)loadUnits.Sum(l => Math.Round(l.RotationClass == ROTATION_CLASS_A ? (l.Height / CellHeight) + 1 : 0));
+                var bay = this.dataContext.Bays
+                    .Include(i => i.Positions)
+                    .Include(i => i.Carousel)
+                    .FirstOrDefault(b => b.RotationClass == ROTATION_CLASS_A);
+                var position = bay?.Positions.FirstOrDefault(p => p.IsPreferred is true);
+
+                if (cellsOccupied_A > 0 && position != null)
+                {
+                    var cells = this.dataContext.Cells;
+
+                    var cellsOccupied_B = (int)loadUnits.Sum(l => Math.Round(l.RotationClass == ROTATION_CLASS_B ? (l.Height / CellHeight) + 1 : 0));
+                    var cellsCount = 0;
+                    foreach (var cell in cells.Where(c => !c.IsNotAvailable).OrderBy(o => Math.Abs(o.Position - position.Height)))
+                    {
+                        if (cellsCount <= cellsOccupied_A)
+                        {
+                            cell.RotationClass = ROTATION_CLASS_A;
+                        }
+                        else if (cellsCount <= cellsOccupied_A + cellsOccupied_B)
+                        {
+                            cell.RotationClass = ROTATION_CLASS_B;
+                        }
+                        else
+                        {
+                            cell.RotationClass = ROTATION_CLASS_C;
+                        }
+                        cellsCount++;
+                    }
+
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        public void SetRotationClassFromUI(int cellId, string rotationClass)
+        {
+            lock (this.dataContext)
+            {
+                var cell = this.dataContext
+                    .Cells
+                    .SingleOrDefault(l => l.Id == cellId);
+
+                cell.RotationClass = rotationClass;
+
+                this.dataContext.SaveChanges();
             }
         }
 

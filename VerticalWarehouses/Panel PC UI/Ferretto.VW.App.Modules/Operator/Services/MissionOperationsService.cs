@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 var machine = await this.identityService.GetAsync();
                 var bay = await this.bayManager.GetBayAsync();
 
-                if (!bay.CheckListContinueInOtherMachine)
+                if (bay.CheckListContinueInOtherMachine is false)
                 {
                     return false;
                 }
@@ -545,7 +545,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     }
                     else
                     {
-                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo}.");
+                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}.");
                         newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
                         try
                         {

@@ -99,6 +99,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<MovementProfile> MovementProfiles { get; set; }
 
+        public DbSet<RotationClassSchedule> RotationClassSchedule { get; set; }
+
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
 
         public DbSet<SetupProcedure> SetupProcedures { get; set; }

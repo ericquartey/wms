@@ -32,7 +32,10 @@
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="2">
 
-      <DataGrid Width="auto"
+            <Grid>
+                <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
+
+                <DataGrid Width="auto"
                 Height="auto"
                 AutoGenerateColumns="False"
                 Background="{DynamicResource VWAPP_BACKGROUND}"
@@ -87,9 +90,25 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-        </DataGrid.Columns>
+            <DataGridTemplateColumn x:Name="Column3"
+                                    Width="1*"
+                                    Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
+                                    Header="{res:Loc OperatorApp.DrawerSorting}">
+            <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                    <icon:PackIconMaterial Width="auto"
+                            Height="auto"
+                            Margin="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Kind="{Binding Path=IsOptimizeRotationClass, Converter={StaticResource BTIKC}}" />
+                </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+    </DataGrid.Columns>
       </DataGrid>
-    </Border>
+            </Grid>
+        </Border>
 
     <Border Grid.Row="2"
             BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -106,21 +125,35 @@
           <ColumnDefinition />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
+          
+        <controls:PpcTextBox Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                             IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
+                                InputText="{Binding SelectedAutoCompactingSettings.BeginTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                LabelText="{res:Loc InstallationApp.BeginTime}" />
+          
         <controls:PpcCheckBox Grid.Row="0"
-                              Grid.Column="0"
-                              Margin="0,0,0,10"
-                              HorizontalAlignment="Stretch"
+                              Grid.Column="1"
+                              Margin="0,18,0,0"
+                              HorizontalAlignment="Center"
                               VerticalAlignment="Stretch"
+                             IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
                               IsChecked="{Binding SelectedAutoCompactingSettings.IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               LabelText="{res:Loc InstallationApp.AutoCompactingIsActive}" />
 
-        <controls:PpcTextBox Grid.Row="1"
-                             Grid.Column="0"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch"
-                             InputText="{Binding SelectedAutoCompactingSettings.BeginTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{res:Loc InstallationApp.BeginTime}" />
+        <controls:PpcCheckBox Grid.Row="0"
+                              Margin="0,18,0,0"
+                              Grid.Column="2"
+                              Visibility="{Binding IsRotationClassEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BTVC}}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Stretch"
+                              IsEnabled="{Binding SelectedAutoCompactingSettings, Converter={StaticResource RTBIC}}"
+                              IsChecked="{Binding SelectedAutoCompactingSettings.IsOptimizeRotationClass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              LabelText="{res:Loc OperatorApp.DrawerSorting}" />
+
+        
 
       </Grid>
     </Border>

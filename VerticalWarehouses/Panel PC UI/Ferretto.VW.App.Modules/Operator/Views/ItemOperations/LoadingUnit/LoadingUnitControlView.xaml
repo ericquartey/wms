@@ -63,6 +63,8 @@
                                Text="{res:Loc OperatorApp.NoItemOnSelectedCompartment}"
                                Visibility="{Binding SelectedItemCompartment, Converter={StaticResource RTVIC}}" />
 
+
+                    
                     <views:LoadingUnitOperationsView Visibility="{Binding IsOperationVisible, Converter={StaticResource BTVC}}" />
 
                 </Grid>

@@ -34,6 +34,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int Priority { get; set; }
 
+        /// <summary>
+        /// can be A, B or C
+        /// </summary>
+        public string RotationClass { get; set; }
+
         public WarehouseSide Side => this.Panel?.Side ?? WarehouseSide.NotSpecified;
 
         public SupportType SupportType => this.Support();

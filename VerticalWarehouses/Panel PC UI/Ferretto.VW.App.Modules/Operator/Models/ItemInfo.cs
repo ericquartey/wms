@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.Models
@@ -12,6 +13,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         {
             this.Sscc = product.Sscc;
             this.Lot = product.Lot;
+            this.ExpirationDate = product.ExpirationDate;
             this.SerialNumber = product.SerialNumber;
 
             if (product.Machines?.Any() == true)
@@ -19,7 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
                 this.IsQtyOnMachine = product?.Machines.Any(m => m.Id == machineId && m.ItemAvailableQuantity > 0) == true;
 
                 this.MachinesInfo = string.Join(", ", product.Machines.Select(m => m.Nickname).ToArray());
-                this.AvailableQuantity = (double?)product.Machines.Where(w => w.Id == machineId).Sum(m => m.ItemAvailableQuantity);
+                this.AvailableQuantity = (double?)product.Machines.Sum(m => m.ItemAvailableQuantity);
+                this.Machines = product.Machines.Select(m => new MachinePick() { AvailableQuantityItem = (double?)m.ItemAvailableQuantity, Id = m.Id, Nickname = m.Nickname });
             }
         }
 
@@ -49,7 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             if (item.Machines?.Any() == true)
             {
                 this.MachinesInfo = string.Join(", ", item.Machines.Select(m => m.Nickname).ToArray());
-                this.AvailableQuantity = item.Machines.Where(w => w.Id == machineId).Sum(m => m.AvailableQuantityItem);
+                this.AvailableQuantity = item.Machines.Sum(m => m.AvailableQuantityItem);
             }
         }
 
@@ -72,6 +75,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
         public string SerialNumber { get; }
 
         public string Sscc { get; }
+
+        public DateTimeOffset? ExpirationDate { get; }
 
         #endregion
     }

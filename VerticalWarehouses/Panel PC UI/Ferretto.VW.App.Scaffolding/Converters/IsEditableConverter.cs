@@ -14,8 +14,9 @@ namespace Ferretto.VW.App.Scaffolding.Converters
     {
         #region Fields
 
-        private readonly ISessionService sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
         private readonly IMachineService machineService = ServiceLocator.Current.GetInstance<IMachineService>();
+
+        private readonly ISessionService sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
 
         #endregion
 
@@ -36,7 +37,12 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 {
                     return true;
                 }
-                if ((entity.Property.Name == "Center" || entity.Property.Name == "Race") && this.sessionService.UserAccessLevel == UserAccessLevel.Installer)
+                if ((entity.Property.Name == "Center"
+                    || entity.Property.Name == "Race"
+                    || entity.Property.Name == "HorizontalCyclesToCalibrate"
+                    || entity.Property.Name == "VerticalCyclesToCalibrate"
+                    || entity.Property.Name == "TouchHelper")
+                    && this.sessionService.UserAccessLevel == UserAccessLevel.Installer)
                 {
                     return true;
                 }
