@@ -75,6 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var isOverlapping = this.dataContext.Cells
                     .Include(c => c.Panel)
+                    .ToList()
                     .Any(c =>
                         c.Position < highestPanelHeight
                         &&

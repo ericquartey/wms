@@ -47,16 +47,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpGet]
+        [HttpGet("deviceinfo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public ActionResult<(IEnumerable<InverterDeviceInfo>, IEnumerable<IoDeviceInfo>)> GetAll()
+        public ActionResult<IEnumerable<IoDeviceInfo>> GetDeviceInfo()
+        {
+            var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
+            return this.Ok(ioDevicesStatuses);
+        }
+
+        [HttpGet("Inverterinfo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        public ActionResult<IEnumerable<InverterDeviceInfo>> GetInverterInfo()
         {
             var invertersStatuses = this.inverterProvider.GetStatuses;
-            var ioDevicesStatuses = this.ioDeviceProvider.GetStatuses;
-            var result = (InvertersStatuses: invertersStatuses, IoStatuses: ioDevicesStatuses);
-            return this.Ok(result);
+            return this.Ok(invertersStatuses);
         }
 
         [HttpGet("inverters")]
