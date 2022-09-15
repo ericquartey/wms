@@ -128,8 +128,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var cellsInRange = this.dataContext.Cells.Where(c => c.Panel.Side == cell.Side
                     && (c.Position >= cell.Position - (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
-                    && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance
-                    );
+                    && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance)
+                .ToList();
             if (!cellsInRange.Any())
             {
                 return false;
@@ -146,7 +146,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 // in cell-to-cell movements we check only the cells not presently occupied by this load unit
                 var cellsFrom = this.dataContext.Cells.Where(c => c.Panel.Side == loadUnit.Cell.Side
                     && c.Position >= loadUnit.Cell.Position
-                    && c.Position <= loadUnit.Cell.Position + loadUnitHeight + VerticalPositionTolerance);
+                    && c.Position <= loadUnit.Cell.Position + loadUnitHeight + VerticalPositionTolerance)
+                    .ToList();
                 var lastPosition = cellsFrom.LastOrDefault().Position;
                 return !cellsInRange.Any(c => (!c.IsFree && c.Position < loadUnit.Cell.Position - (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
                     || (!c.IsFree && c.Position > lastPosition)
@@ -624,8 +625,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             RatioBackCells = g.Count(c => c.Side == WarehouseSide.Back) / (double)totalCells,
                         });
 
-                var occupiedOrUnusableCellsCount = this.dataContext.Cells
-                    .Count(c => !c.IsFree || c.IsNotAvailable);
+                var occupiedOrUnusableCellsCount = cellsWithSide.Count(c => !c.IsFree || c.IsNotAvailable);
 
                 var cellStatistics = new CellStatisticsSummary()
                 {
@@ -821,7 +821,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException();
                 }
 
-                var statistics = this.dataContext.MachineStatistics.LastOrDefault();
+                var statistics = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
 
                 if (loadingUnitId is null)
                 {
@@ -1002,7 +1002,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (cellsOccupied_A > 0 && position != null)
                 {
-                    var cells = this.dataContext.Cells;
+                    var cells = this.dataContext.Cells.ToArray();
 
                     var cellsOccupied_B = (int)loadUnits.Sum(l => Math.Round(l.RotationClass == ROTATION_CLASS_B ? (l.Height / CellHeight) + 1 : 0));
                     var cellsCount = 0;

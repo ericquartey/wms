@@ -49,13 +49,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.ServicingInfo.LastOrDefault() == null)
+                if (!this.dataContext.ServicingInfo.Any())
                 {
                     var s = new ServicingInfo();
 
                     s.ServiceStatus = MachineServiceStatus.Valid;
 
-                    var machineId = this.dataContext.MachineStatistics.LastOrDefault()?.Id;
+                    var machineId = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.Id;
                     if (machineId.HasValue)
                     {
                         s.MachineStatisticsId = machineId.Value;
@@ -74,7 +74,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    var instruction = this.dataContext.LastOrNull(this.dataContext.Instructions,
+                        o => o.Id,
+                        s => s.Id == instructionId)?.Entity;
                     instruction.InstructionStatus = MachineServiceStatus.Completed;
                     //instruction.MaintenanceDate = DateTime.UtcNow;
                     instruction.IsDone = true;
@@ -100,10 +102,10 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 // Confirm setup date in actual record
-                var lastService = this.dataContext.ServicingInfo.Include(i => i.Instructions).Last();
+                var lastService = this.dataContext.LastOrNull(this.dataContext.ServicingInfo.Include(i => i.Instructions), o => o.Id)?.Entity;
                 lastService.ServiceStatus = MachineServiceStatus.Completed;
                 lastService.NextServiceDate = DateTime.Now;
-                this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.Last());
+                this.dataContext.ServicingInfo.Update(lastService);
 
                 // Add new record
                 var s = new ServicingInfo();
@@ -129,9 +131,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (this.dataContext.ServicingInfo.Count() == 1)
                 {
                     // Confirm setup date in actual record
-                    this.dataContext.ServicingInfo.FirstOrDefault().ServiceStatus = MachineServiceStatus.Completed;
-                    this.dataContext.ServicingInfo.FirstOrDefault().InstallationDate = DateTime.Now;
-                    this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.FirstOrDefault());
+                    var service = this.dataContext.ServicingInfo.ToArray().First();
+                    service.ServiceStatus = MachineServiceStatus.Completed;
+                    service.InstallationDate = DateTime.Now;
+                    this.dataContext.ServicingInfo.Update(service);
 
                     // Add new record
                     var s = new ServicingInfo();
@@ -464,10 +467,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                 //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
-                ServicingInfo si = this.dataContext.ServicingInfo
+                ServicingInfo si = this.dataContext
+                   .LastOrNull(this.dataContext.ServicingInfo
                    .Include(s => s.Instructions)
                    .ThenInclude(e => e.Definition)
-                   .Include(s => s.MachineStatistics).LastOrDefault();
+                        .Include(s => s.MachineStatistics)
+                        , o => o.Id)?.Entity;
                 return si;
             }
         }
@@ -497,11 +502,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo
+                ServicingInfo si = this.dataContext.FirstOrNull(this.dataContext.ServicingInfo
                     .Include(s => s.Instructions)
                     .ThenInclude(e => e.Definition)
                     .Include(s => s.MachineStatistics)
-                    .Where(s => s.Id == id).FirstOrDefault();
+                    , o => o.Id
+                    , s => s.Id == id)?.Entity;
                 //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                 //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
                 return si;
@@ -512,11 +518,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                ServicingInfo si = this.dataContext.ServicingInfo
+                ServicingInfo si = this.dataContext.FirstOrNull(this.dataContext.ServicingInfo
                     .Include(s => s.Instructions)
                     .ThenInclude(e => e.Definition)
                     .Include(s => s.MachineStatistics)
-                    .Where(s => s.InstallationDate != null).FirstOrDefault();
+                    , o => o.Id
+                    , s => s.InstallationDate != null)?.Entity;
 
                 if (si != null && si.MachineStatisticsId.HasValue)
                 {
@@ -527,11 +534,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 else
                 {
-                    ServicingInfo siTot = this.dataContext.ServicingInfo
+                    ServicingInfo siTot = this.dataContext.FirstOrNull(this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
                         .Include(s => s.MachineStatistics)
-                        .FirstOrDefault();
+                        , o => o.Id)?.Entity;
 
                     if (siTot == null)
                     {
@@ -564,11 +571,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    ServicingInfo si = this.dataContext.ServicingInfo
+                    ServicingInfo si = this.dataContext.LastOrNull(this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
                         .Include(s => s.MachineStatistics)
-                        .Where(S => S.ServiceStatus == MachineServiceStatus.Completed).LastOrDefault();
+                        , o => o.Id
+                        , s => s.ServiceStatus == MachineServiceStatus.Completed)?.Entity;
                     si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
@@ -589,10 +597,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (dim > 1)
                 {
-                    ServicingInfo si = this.dataContext.ServicingInfo
+                    ServicingInfo si = this.dataContext.LastOrNull(this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
                         .ThenInclude(e => e.Definition)
-                        .Include(s => s.MachineStatistics).LastOrDefault();
+                        .Include(s => s.MachineStatistics)
+                        , o => o.Id)?.Entity;
                     //si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     //si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
 
@@ -624,7 +633,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             bool expired = false;
 
-            var service = this.dataContext.ServicingInfo.Last();
+            var service = this.dataContext.LastOrNull(this.dataContext.ServicingInfo, o => o.Id)?.Entity;
 
             var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
             foreach (var ins in instructions)
@@ -642,7 +651,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             bool expiring = false;
 
-            var service = this.dataContext.ServicingInfo.Last();
+            var service = this.dataContext.LastOrNull(this.dataContext.ServicingInfo, o => o.Id)?.Entity;
 
             var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
             foreach (var ins in instructions)
@@ -702,7 +711,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var service = this.dataContext.ServicingInfo.Last();
+                    var service = this.dataContext.LastOrNull(this.dataContext.ServicingInfo, o => o.Id)?.Entity;
                     if (service.ServiceStatus == MachineServiceStatus.Expired)
                     {
                         this.logger.LogWarning(Resources.General.MaintenanceStateExpired);
@@ -737,11 +746,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.ScheduleNotification(service, 0, MachineServiceStatus.Undefined);
 
                     var instructions = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == service.Id).ToList();
-                    var machine = this.dataContext.Machines.LastOrDefault();
+                    var machine = this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity;
                     this.allStat = this.dataContext.ServicingInfo
                             .Include(i => i.Instructions)
                             .Include(i => i.MachineStatistics)
-                            .ToArray()
+                            .ToList()
                             .OrderBy(o => o.Id)
                             .ToList();
 

@@ -506,7 +506,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().EnabeNoteRules;
+                return this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity?.EnabeNoteRules ?? false;
             }
         }
 
@@ -514,7 +514,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().IsLocalMachineItems;
+                return this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity?.IsLocalMachineItems ?? false;
             }
         }
 
@@ -532,7 +532,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().IsOrderList;
+                return this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity?.IsOrderList ?? false;
             }
         }
 
@@ -542,13 +542,12 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var count = 0;
-                foreach (var mission in this.dataContext.Missions
-                    .Where(x => DateTime.UtcNow.Subtract(x.CreationDate).Days > 1
-                        && (x.Status == MissionStatus.Completed
-                            || x.Status == MissionStatus.Aborted)
+                var missions = this.dataContext.Missions
+                    .Where(x => x.Status == MissionStatus.Completed
+                            || x.Status == MissionStatus.Aborted
                         )
-                    .ToList()
-                    )
+                    .ToList();
+                foreach (var mission in missions.Where(x => DateTime.UtcNow.Subtract(x.CreationDate).Days > 1))
                 {
                     this.dataContext.Missions.Remove(mission);
 

@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                                 System.Environment.NewLine +
                                 ((!(webApiException.Result is null)
                                  &&
-                                 webApiException.Result.AdditionalProperties.Any()) ? webApiException.Result.AdditionalProperties.First().Value : string.Empty);
+                                 webApiException.Result.Extensions.Any()) ? webApiException.Result.Extensions.First().Value : string.Empty);
                             }
                             else
                             {
