@@ -11,6 +11,16 @@ namespace Ferretto.VW.App.Controls.Converters
 {
     public class ClassToForegroundConverter : DependencyObject, IValueConverter
     {
+        #region Fields
+
+        private const string ROTATION_CLASS_A = "A";
+
+        private const string ROTATION_CLASS_B = "B";
+
+        private const string ROTATION_CLASS_C = "C";
+
+        #endregion
+
         #region Methods
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -27,28 +37,28 @@ namespace Ferretto.VW.App.Controls.Converters
                 var res = 0;
                 if (loadingUnit.Cell != null)
                 {
-                    if (loadingUnit.RotationClass == "A")
+                    if (loadingUnit.RotationClass == ROTATION_CLASS_A)
                     {
                         res += 1;
                     }
-                    else if (loadingUnit.RotationClass == "B")
+                    else if (loadingUnit.RotationClass == ROTATION_CLASS_B)
                     {
                         res += 2;
                     }
-                    else if (loadingUnit.RotationClass == "C")
+                    else if (loadingUnit.RotationClass == ROTATION_CLASS_C)
                     {
                         res += 3;
                     }
 
-                    if (loadingUnit.Cell.RotationClass == "A")
+                    if (loadingUnit.Cell.RotationClass == ROTATION_CLASS_A)
                     {
                         res -= 1;
                     }
-                    else if (loadingUnit.Cell.RotationClass == "B")
+                    else if (loadingUnit.Cell.RotationClass == ROTATION_CLASS_B)
                     {
                         res -= 2;
                     }
-                    else if (loadingUnit.Cell.RotationClass == "C")
+                    else if (loadingUnit.Cell.RotationClass == ROTATION_CLASS_C)
                     {
                         res -= 3;
                     }

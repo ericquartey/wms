@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var ioDevices = this.dataContext.IoDevices.ToArray();
-                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                if (this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity?.Simulation ?? false)
                 {
                     foreach (var io in ioDevices)
                     {
@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException((int)index);
                 }
 
-                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                if (this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity?.Simulation ?? false)
                 {
                     inverter.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
                 }
@@ -197,7 +197,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException((int)index);
                 }
 
-                if (this.dataContext.Machines?.FirstOrDefault()?.Simulation ?? false)
+                if (this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity?.Simulation ?? false)
                 {
                     inverter.IpAddress = System.Net.IPAddress.Parse("127.0.0.1");
                 }

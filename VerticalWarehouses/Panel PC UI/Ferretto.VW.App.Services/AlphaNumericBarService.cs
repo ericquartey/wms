@@ -186,6 +186,7 @@ namespace Ferretto.VW.App.Services
                     do
                     {
                         await this.PollingAlphaNumericBar(cancellationToken);
+                        await this.alphaNumericBarDriver.TryResendWriteAsync();
                         await Task.Delay(this.pollingDelay, cancellationToken);
                     }
                     while (!cancellationToken.IsCancellationRequested);

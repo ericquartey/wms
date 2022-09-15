@@ -28,8 +28,6 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         int CalculateOffsetArrowMiddlePosition(int delta = 1);
 
-        Task<bool> ClearAsync();
-
         void ClearCommands();
 
         void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125, bool clearOnClose = false);
@@ -73,6 +71,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         Task<bool> TestAsync(bool value);
 
         Task<bool> TestScrollAsync(bool value);
+
+        Task<bool> TryResendWriteAsync();
 
         #endregion
     }

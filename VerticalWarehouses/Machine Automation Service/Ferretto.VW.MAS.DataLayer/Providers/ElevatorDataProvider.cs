@@ -32,19 +32,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 EF.CompileQuery((DataLayerContext context) =>
                 context.Elevators
                     .AsNoTracking()
+                    .Include(p => p.BayPosition).ThenInclude(p => p.LoadingUnit)
+                    .Include(p => p.BayPosition).ThenInclude(p => p.Bay)
                     .Select(e => e.BayPosition)
-                        .Include(p => p.LoadingUnit)
-                        .Include(p => p.Bay)
-                    .SingleOrDefault());
+                    .Single());
 
         private static readonly Func<DataLayerContext, Cell> GetCurrentCellCompile =
                 EF.CompileQuery((DataLayerContext context) =>
                 context.Elevators
                     .AsNoTracking()
+                    .Include(p => p.Cell).ThenInclude(p => p.Panel)
+                    .Include(p => p.Cell).ThenInclude(p => p.LoadingUnit)
                    .Select(e => e.Cell)
-                   .Include(c => c.Panel)
-                   .Include(c => c.LoadingUnit)
-                   .SingleOrDefault());
+                   .Single());
 
         private static readonly Func<DataLayerContext, Elevator> GetLoadingUnitOnBoardCompile =
                 EF.CompileQuery((DataLayerContext context) =>
@@ -210,9 +210,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                try
+                {
                 var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
 
                 return currentBayPosition;
+            }
+                catch (EntityNotFoundException)
+                {
+                    return null;
+                }
             }
         }
 
@@ -220,9 +227,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                try
+                {
                 var currentCell = GetCurrentCellCompile(this.dataContext);
 
                 return currentCell;
+            }
+                catch (EntityNotFoundException)
+                {
+                    return null;
+                }
             }
         }
 
@@ -235,7 +249,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(Orientation.Horizontal.ToString());
                 }
-                var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
+                var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalHorizontalAxisCycles ?? 0;
                 return Math.Abs(cycles - axis.LastCalibrationCycles);
             }
         }
@@ -249,7 +263,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(Orientation.Vertical.ToString());
                 }
-                var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalVerticalAxisCycles ?? 0;
+                var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalVerticalAxisCycles ?? 0;
                 return Math.Abs(cycles - axis.LastCalibrationCycles);
             }
         }
@@ -507,12 +521,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (orientation == Orientation.Vertical)
                 {
-                    var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalVerticalAxisCycles ?? 0;
+                    var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalVerticalAxisCycles ?? 0;
                     axis.LastCalibrationCycles = cycles;
                 }
                 else if (orientation == Orientation.Horizontal)
                 {
-                    var cycles = this.dataContext.MachineStatistics.LastOrDefault()?.TotalHorizontalAxisCycles ?? 0;
+                    var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalHorizontalAxisCycles ?? 0;
                     axis.LastCalibrationCycles = cycles;
                 }
 

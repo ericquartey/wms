@@ -1,6 +1,6 @@
 parameters:
   BuildConfiguration: 'debug'
-  TargetFramework: 'netcoreapp2.2'
+  TargetFramework: 'netcoreapp3.1'
   RuntimeIdentifier: 'win10-x64'
 
 steps:
