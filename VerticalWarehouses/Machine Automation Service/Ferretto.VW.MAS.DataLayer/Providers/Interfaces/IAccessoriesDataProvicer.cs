@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        public bool CheckAccessories();
+
         BayAccessories GetAccessories(BayNumber bayNumber);
 
         void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose);

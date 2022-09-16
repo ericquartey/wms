@@ -439,7 +439,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
             if (this.IsQuantityLimited && this.MissionOperation != null)
             {
-                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+                this.MaxInputQuantity = (decimal)this.MissionOperation.RequestedQuantity;
             }
 
             this.BarcodeImageExist = false;

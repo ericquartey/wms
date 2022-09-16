@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -30,7 +31,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         void ClearCommands();
 
-        void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125, bool clearOnClose = false);
+        void Configure(
+            IPAddress ipAddress,
+            int port,
+            AlphaNumericBarSize size,
+            bool bayIsExternal = false,
+            int maxMessageLength = 125,
+            bool clearOnClose = false,
+            List<string> messageFields = null);
 
         Task ConnectAsync();
 
@@ -43,6 +51,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         Task<bool> EnabledAsync(bool value, bool force = true);
 
         Task<bool> ExecuteCommandsAsync(CancellationToken? cancellationToken);
+
+        string GetMessageFromWmsOperation(MissionOperation operation);
 
         bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage, out int scrollEnd);
 

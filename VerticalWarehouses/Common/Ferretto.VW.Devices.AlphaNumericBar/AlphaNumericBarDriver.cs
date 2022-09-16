@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using System.Linq;
 using System.ServiceModel.Channels;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
@@ -51,6 +52,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         private double loadingUnitWidth;
 
         private int maxMessageLength;
+
+        private List<string> messageFields;
 
         private int savedOffset;
 
@@ -183,7 +186,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.savedScrollMsg = null;
         }
 
-        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125, bool clearOnClose = false)
+        public void Configure(
+            IPAddress ipAddress,
+            int port,
+            AlphaNumericBarSize size,
+            bool bayIsExternal = false,
+            int maxMessageLength = 125,
+            bool clearOnClose = false,
+            List<string> messageFields = null)
         {
             this.ipAddress = ipAddress;
             this.Port = port;
@@ -191,6 +201,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.maxMessageLength = maxMessageLength;
             this.clearOnClose = clearOnClose;
             this.useGet = false;
+            this.messageFields = messageFields;
 
             switch (size)
             {
@@ -439,6 +450,77 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             return result;
+        }
+
+        public string GetMessageFromWmsOperation(MissionOperation operation)
+        {
+            var message = "?";
+
+            switch (operation.Type)
+            {
+                case MissionOperationType.Pick:
+                    message = "-";
+                    break;
+
+                case MissionOperationType.Put:
+                    message = "+";
+                    break;
+            }
+            message += (operation.RequestedQuantity - operation.DispatchedQuantity);
+
+            if (this.messageFields != null && this.messageFields.Any())
+            {
+                foreach (var field in this.messageFields)
+                {
+                    if (!string.IsNullOrEmpty(field))
+                    {
+                        switch (field)
+                        {
+                            case "ItemCode":
+                                message += " " + operation.ItemCode;
+                                break;
+
+                            case "ItemDescription":
+                                message += " " + operation.ItemDescription;
+                                break;
+
+                            case "Destination":
+                                message += " " + operation.Destination;
+                                break;
+
+                            case "ItemListCode":
+                                message += " " + operation.ItemListCode;
+                                break;
+
+                            case "ItemListDescription":
+                                message += " " + operation.ItemListDescription;
+                                break;
+
+                            case "ItemListRowCode":
+                                message += " " + operation.ItemListRowCode;
+                                break;
+
+                            case "ItemNotes":
+                                message += " " + operation.ItemNotes;
+                                break;
+
+                            case "Lot":
+                                message += " " + operation.Lot;
+                                break;
+
+                            case "SerialNumber":
+                                message += " " + operation.SerialNumber;
+                                break;
+
+                            case "Sscc":
+                                message += " " + operation.Sscc;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return message;
         }
 
         public bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage, out int scrollEnd)

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,36 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
+
+        public bool CheckAccessories()
+        {
+            lock (this.dataContext)
+            {
+                var bars = this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar);
+                if (bars != null)
+                {
+                    foreach (var bar in bars)
+                    {
+                        if (bar.Accessories != null
+                            && bar.Accessories.AlphaNumericBar != null)
+                        {
+                            if (bar.Accessories.AlphaNumericBar.Field1 is null)
+                            {
+                                bar.Accessories.AlphaNumericBar.Field1 = "ItemCode";
+                                this.dataContext.SaveChanges();
+                            }
+                            if (bar.Accessories.AlphaNumericBar.Field2 is null)
+                            {
+                                bar.Accessories.AlphaNumericBar.Field2 = "ItemDescription";
+                                this.dataContext.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
 
         public BayAccessories GetAccessories(BayNumber bayNumber)
         {

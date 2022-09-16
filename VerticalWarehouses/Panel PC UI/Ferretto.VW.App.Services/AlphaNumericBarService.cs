@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.AlphaNumericBar;
@@ -116,10 +118,25 @@ namespace Ferretto.VW.App.Services
                     var port = alphaNumericBar.TcpPort;
                     var size = alphaNumericBar.Size;
                     this.clearOnClose = alphaNumericBar.ClearAlphaBarOnCloseView is true;
+                    var messageFields = new List<string>()
+                    {
+                        alphaNumericBar.Field1,
+                        alphaNumericBar.Field2,
+                        alphaNumericBar.Field3,
+                        alphaNumericBar.Field4,
+                        alphaNumericBar.Field5,
+                    };
 
                     var bay = await this.bayManager.GetBayAsync();
 
-                    this.alphaNumericBarDriver.Configure(ipAddress, port, size, bay.IsExternal, alphaNumericBar.MaxMessageLength, alphaNumericBar.ClearAlphaBarOnCloseView is true);
+                    this.alphaNumericBarDriver.Configure(
+                        ipAddress,
+                        port,
+                        size,
+                        bay.IsExternal,
+                        alphaNumericBar.MaxMessageLength,
+                        alphaNumericBar.ClearAlphaBarOnCloseView is true,
+                        messageFields);
                     this.isEnabled = true;
                 }
                 else
@@ -282,7 +299,7 @@ namespace Ferretto.VW.App.Services
 
                         var offsetArrow = 0;
                         var offsetMessage = 0;
-                        var message = this.GetMessageFromMissionChangedEventArg(e);
+                        var message = this.alphaNumericBarDriver.GetMessageFromWmsOperation(e.WmsOperation);
 
                         if (this.alphaNumericBarDriver.SelectedMessage != message
                             || this.alphaNumericBarDriver.SelectedPosition != compartmentSelected.XPosition
