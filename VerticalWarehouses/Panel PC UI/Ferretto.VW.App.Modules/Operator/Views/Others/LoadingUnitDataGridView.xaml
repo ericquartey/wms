@@ -363,6 +363,7 @@
         </DataGridTextColumn>
         <DataGridTextColumn x:Name="Column7"
                             Width="0.8*"
+                            Visibility="{Binding DataContext.IsEnabledLaser, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
                             Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
                             Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
                             SortDirection="Ascending"
