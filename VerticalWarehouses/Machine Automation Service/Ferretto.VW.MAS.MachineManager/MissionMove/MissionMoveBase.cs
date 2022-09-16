@@ -12,6 +12,7 @@ using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -22,7 +23,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
     {
         #region Constructors
 
-        protected MissionMoveBase(Mission mission,
+        protected MissionMoveBase(DataModels.Mission mission,
              IServiceProvider serviceProvider,
              IEventAggregator eventAggregator)
         {
@@ -54,7 +55,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public IMachineVolatileDataProvider MachineVolatileDataProvider { get; }
 
-        public Mission Mission { get; set; }
+        public DataModels.Mission Mission { get; set; }
 
         public IServiceProvider ServiceProvider { get; }
 
@@ -87,7 +88,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="bayLocation"></param>
         /// <param name="mission"></param>
         /// <returns></returns>
-        public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry, out MachineErrorCode errorCode)
+        public bool CheckBayHeight(DataModels.Bay locationBay, LoadingUnitLocation bayLocation, DataModels.Mission mission, out bool canRetry, out MachineErrorCode errorCode)
         {
             var returnValue = false;
             canRetry = false;
@@ -185,7 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             return false;
         }
 
-        public bool CheckMissionShowError(Mission mission)
+        public bool CheckMissionShowError(DataModels.Mission mission)
         {
             if (mission.ErrorCode != MachineErrorCode.NoError)
             {
@@ -228,7 +229,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
                                 this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Cell id {destinationCellId}");
-                                this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
+                                this.EventAggregator.GetEvent<NotificationEvent>().Publish(
+                                        new NotificationMessage
+                                        {
+                                            Description = $"{this.Mission.LoadUnitId}",
+                                            Destination = MessageActor.MissionManager,
+                                            Source = MessageActor.WebApi,
+                                            Type = MessageType.SaveToWms,
+                                            RequestingBay = BayNumber.None,
+                                        });
                             }
                             catch (Exception ex)
                             {
@@ -273,7 +282,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public void DepositUnitEnd(bool restore = false)
         {
             var bayShutter = false;
-            Bay bay = null;
+            DataModels.Bay bay = null;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
             {
                 bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
@@ -484,7 +493,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.LoadingUnitsDataProvider.SetMissionCountRotation(this.Mission.LoadUnitId, this.Mission.MissionType);
                             }
-                            this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
+                            this.EventAggregator.GetEvent<NotificationEvent>().Publish(
+                                    new NotificationMessage
+                                    {
+                                        Description = $"{this.Mission.LoadUnitId}",
+                                        Destination = MessageActor.MissionManager,
+                                        Source = MessageActor.WebApi,
+                                        Type = MessageType.SaveToWms,
+                                        RequestingBay = BayNumber.None,
+                                    });
                         }
                         catch (Exception ex)
                         {
@@ -809,7 +826,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             return update;
         }
 
-        private bool isWaitingMissionOnThisBay(Bay bay)
+        private bool isWaitingMissionOnThisBay(DataModels.Bay bay)
         {
             var retValue = false;
 
@@ -822,7 +839,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         .Where(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            (m.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
                         );
 
                     retValue = waitMissions.Any();
@@ -855,8 +872,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         .Where(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                            || (m.Status == MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
+                            ((m.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            || (m.Status == CommonUtils.Messages.Enumerations.MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
                         );
 
                     retValue = waitMissions.Any();

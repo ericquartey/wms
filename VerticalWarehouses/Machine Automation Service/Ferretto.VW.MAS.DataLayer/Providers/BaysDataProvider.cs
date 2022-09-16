@@ -379,7 +379,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)
                     + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
+                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset:0.00}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
                 return heightClass + offset;
             }
         }
