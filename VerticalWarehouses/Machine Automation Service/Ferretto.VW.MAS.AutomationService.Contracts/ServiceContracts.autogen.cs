@@ -3595,8 +3595,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ChainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("CheckListContinueInOtherMachine", Required = Newtonsoft.Json.Required.Always)]
-        public bool CheckListContinueInOtherMachine { get; set; }
+        [Newtonsoft.Json.JsonProperty("CheckListContinueInOtherMachine", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckListContinueInOtherMachine { get; set; }
     
         [Newtonsoft.Json.JsonProperty("CurrentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Mission CurrentMission { get; set; }
@@ -3673,8 +3673,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("RotationClass", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string RotationClass { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("ShowBarcodeImage", Required = Newtonsoft.Json.Required.Always)]
-        public bool ShowBarcodeImage { get; set; }
+        [Newtonsoft.Json.JsonProperty("ShowBarcodeImage", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ShowBarcodeImage { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Shutter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Shutter Shutter { get; set; }
