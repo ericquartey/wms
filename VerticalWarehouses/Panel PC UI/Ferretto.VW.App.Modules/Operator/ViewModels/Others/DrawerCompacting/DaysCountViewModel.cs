@@ -203,23 +203,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var allBays = await this.machineBaysWebService.GetAllAsync();
 
-            this.selectedBayNumber = allBays.First(b => b.RotationClass == "A").Number;
-
-            switch (this.selectedBayNumber)
-            {
-                case BayNumber.BayOne:
-                    this.IsBay1 = true;
-                    break;
-
-                case BayNumber.BayTwo:
-                    this.IsBay2 = true;
-                    break;
-
-                case BayNumber.BayThree:
-                    this.IsBay3 = true;
-                    break;
-            }
-
             this.HaveBay2 = allBays.Any(b => b.Number == BayNumber.BayTwo);
             this.HaveBay3 = allBays.Any(b => b.Number == BayNumber.BayThree);
             this.SingleBay = !this.HaveBay2 && !this.HaveBay3;
