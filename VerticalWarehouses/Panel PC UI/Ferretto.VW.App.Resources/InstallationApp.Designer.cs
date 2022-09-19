@@ -7513,6 +7513,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GET Message.
+        /// </summary>
+        public static string UseGetMessage {
+            get {
+                return ResourceManager.GetString("UseGetMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to help yourself with the use of a laser level to create repeatable reading feedback .
         /// </summary>
         public static string UseLaserLevelToGetValue {

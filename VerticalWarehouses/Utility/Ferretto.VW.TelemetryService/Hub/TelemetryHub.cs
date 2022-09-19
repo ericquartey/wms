@@ -102,7 +102,6 @@ namespace Ferretto.VW.TelemetryService
                 return;
             }
 
-            this.logger.LogDebug($"Received error log from client.");
             using var scope = this.serviceScopeFactory.CreateScope();
             var machine = scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
             if (machine is null)
@@ -110,6 +109,7 @@ namespace Ferretto.VW.TelemetryService
                 this.logger.LogWarning("Trying to send an error log with no machine defined in the local database.");
                 return;
             }
+            this.logger.LogDebug($"Received error log from client. serialNumber {machine.SerialNumber}. code {errorLog.Code}. detailCode {errorLog.DetailCode}. errorId {errorLog.ErrorId}");
 
             await this.telemetryWebHubClient.SendErrorLogAsync(machine.SerialNumber, errorLog);
         }

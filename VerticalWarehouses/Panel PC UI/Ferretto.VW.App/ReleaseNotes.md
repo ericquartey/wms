@@ -25,22 +25,17 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
-- Aggiunta classe di rotazione ABC
-- Aggiunta gestione lettore badge senza WMS
-- Aggiunto utente Guest
-- Ricerca articoli: aggiunta visualizzazione della data di scadenza
+## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
+- Il servizio MAS usa ora il netcore 3.1
+- Barra Alfanumerica - aggiunto Messaggio GET
 
 ## Bug Risolti
-- Ricerca articoli: corretta la quantità nelle altre macchine
-- Gestione operatori: corretto il cambio della password di Operator
-- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
-- Login: corretto livello degli utenti di wms con nomi uguali ai locali
-- Gestione celle: le celle bloccate non risultano libere
-- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
+- Gli utenti di WMS possono avere password vuote
 
 ## Compatibile con adapter 0.4.40
 ***
+
+[Versione 1.0.50](#id1050)
 
 [Versione 1.0.49](#id1049)
 
@@ -142,6 +137,23 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1050"></a>
+## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
+- Aggiunta classe di rotazione ABC
+- Aggiunta gestione lettore badge senza WMS
+- Aggiunto utente Guest
+- Ricerca articoli: aggiunta visualizzazione della data di scadenza
+
+## Bug Risolti
+- Ricerca articoli: corretta la quantità nelle altre macchine
+- Gestione operatori: corretto il cambio della password di Operator
+- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
+- Login: corretto livello degli utenti di wms con nomi uguali ai locali
+- Gestione celle: le celle bloccate non risultano libere
+- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
+
+## Compatibile con adapter 0.4.40
 
 <a id="id1049"></a>
 ## Nuove Funzionalità 1.0.49 rispetto la 1.0.48

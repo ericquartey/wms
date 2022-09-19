@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -78,9 +79,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPut("alpha-numeric-bar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public IActionResult UpdateAlphaNumericBar(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose)
+        public IActionResult UpdateAlphaNumericBar(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, bool useGet, List<string> messageFields)
         {
-            this.accessoriesDataProvider.UpdateAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port, size, maxMessageLength, clearOnClose);
+            this.accessoriesDataProvider.UpdateAlphaNumericBar(this.BayNumber, isEnabled, ipAddress, port, size, maxMessageLength, clearOnClose, useGet, messageFields);
 
             return this.Ok();
         }

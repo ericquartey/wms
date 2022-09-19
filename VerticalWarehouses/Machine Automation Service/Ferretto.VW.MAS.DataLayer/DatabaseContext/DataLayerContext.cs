@@ -154,7 +154,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             optionsBuilder
                 .UseSqlite(connectionString)
-                .EnableSensitiveDataLogging();
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

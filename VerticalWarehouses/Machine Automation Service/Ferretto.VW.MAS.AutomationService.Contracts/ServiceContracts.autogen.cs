@@ -53,11 +53,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task PrintTestPageAsync(BayNumber bayNumber, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose);
+        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, bool useGet, System.Collections.Generic.IEnumerable<string> messageFields);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateAlphaNumericBarAsync(bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, bool useGet, System.Collections.Generic.IEnumerable<string> messageFields, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateBarcodeReaderDeviceInfoAsync(DeviceInformation deviceInformation);
@@ -3153,11 +3153,29 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ClearAlphaBarOnCloseView", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? ClearAlphaBarOnCloseView { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("Field1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Field1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Field2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Field2 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Field3", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Field3 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Field4", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Field4 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Field5", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Field5 { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("MaxMessageLength", Required = Newtonsoft.Json.Required.Always)]
         public int MaxMessageLength { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Size", Required = Newtonsoft.Json.Required.Always)]
         public AlphaNumericBarSize Size { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("UseGet", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UseGet { get; set; }
     
         public string ToJson() 
         {

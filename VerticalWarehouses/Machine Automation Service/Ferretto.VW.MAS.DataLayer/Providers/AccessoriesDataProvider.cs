@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +27,36 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
+
+        public bool CheckAccessories()
+        {
+            lock (this.dataContext)
+            {
+                var bars = this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar);
+                if (bars != null)
+                {
+                    foreach (var bar in bars)
+                    {
+                        if (bar.Accessories != null
+                            && bar.Accessories.AlphaNumericBar != null)
+                        {
+                            if (bar.Accessories.AlphaNumericBar.Field1 is null)
+                            {
+                                bar.Accessories.AlphaNumericBar.Field1 = "ItemCode";
+                                this.dataContext.SaveChanges();
+                            }
+                            if (bar.Accessories.AlphaNumericBar.Field2 is null)
+                            {
+                                bar.Accessories.AlphaNumericBar.Field2 = "ItemDescription";
+                                this.dataContext.SaveChanges();
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+        }
 
         public BayAccessories GetAccessories(BayNumber bayNumber)
         {
@@ -59,7 +91,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose)
+        public void UpdateAlphaNumericBar(
+            BayNumber bayNumber,
+            bool isEnabled,
+            string ipAddress,
+            int port,
+            AlphaNumericBarSize size,
+            int maxMessageLength,
+            bool clearOnClose,
+            bool? useGet = false,
+            List<string> messageFields = null)
+
         {
             lock (this.dataContext)
             {
@@ -73,6 +115,37 @@ namespace Ferretto.VW.MAS.DataLayer
                 barBay.Accessories.AlphaNumericBar.Size = size;
                 barBay.Accessories.AlphaNumericBar.MaxMessageLength = maxMessageLength;
                 barBay.Accessories.AlphaNumericBar.ClearAlphaBarOnCloseView = clearOnClose;
+                barBay.Accessories.AlphaNumericBar.UseGet = useGet;
+                if (messageFields != null && messageFields.Count > 0)
+                {
+                    int iField = 1;
+                    foreach (var messageField in messageFields)
+                    {
+                        switch (iField)
+                        {
+                            case 1:
+                                barBay.Accessories.AlphaNumericBar.Field1 = messageField;
+                                break;
+
+                            case 2:
+                                barBay.Accessories.AlphaNumericBar.Field2 = messageField;
+                                break;
+
+                            case 3:
+                                barBay.Accessories.AlphaNumericBar.Field3 = messageField;
+                                break;
+
+                            case 4:
+                                barBay.Accessories.AlphaNumericBar.Field4 = messageField;
+                                break;
+
+                            case 5:
+                                barBay.Accessories.AlphaNumericBar.Field5 = messageField;
+                                break;
+                        }
+                        iField++;
+                    }
+                }
 
                 this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
                 this.dataContext.SaveChanges();

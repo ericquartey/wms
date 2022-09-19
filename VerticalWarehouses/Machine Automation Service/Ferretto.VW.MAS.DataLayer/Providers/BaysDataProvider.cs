@@ -379,7 +379,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)
                     + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
+                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset:0.00}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
                 return heightClass + offset;
             }
         }
@@ -1111,23 +1111,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.ShowBarcodeImage = showBarcodeImage;
                 bay.CheckListContinueInOtherMachine = checkListContinueInOtherMachine;
 
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
-        {
-            lock (this.dataContext)
-            {
-                var barBay = this.dataContext.Bays.Include(b => b.Accessories)
-                        .ThenInclude(a => a.AlphaNumericBar)
-                        .Single(b => b.Number == bayNumber);
-
-                barBay.Accessories.AlphaNumericBar.IsEnabledNew = isEnabled;
-                barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
-                barBay.Accessories.AlphaNumericBar.TcpPort = port;
-
-                this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
                 this.dataContext.SaveChanges();
             }
         }

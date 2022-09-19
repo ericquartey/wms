@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -232,7 +233,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
                                     this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Cell id {destinationCellId}");
-                                    this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
+                                    this.EventAggregator.GetEvent<NotificationEvent>().Publish(
+                                            new NotificationMessage
+                                            {
+                                                Description = $"{this.Mission.LoadUnitId}",
+                                                Destination = MessageActor.MissionManager,
+                                                Source = MessageActor.WebApi,
+                                                Type = MessageType.SaveToWms,
+                                                RequestingBay = BayNumber.None,
+                                            });
                                 }
                                 catch (Exception ex)
                                 {

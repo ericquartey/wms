@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -27,7 +28,15 @@ namespace Ferretto.VW.App.Services
         Task InitializeAsync();
 
         /// <exception cref="MasWebApiException"></exception>
-        Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose);
+        Task SetAlphaNumericBarAsync(
+            bool isEnabled,
+            IPAddress ipAddress,
+            int port,
+            AlphaNumericBarSize size,
+            int maxMessageLength,
+            bool clearOnClose,
+            bool useGet,
+            List<string> messageFields);
 
         /// <exception cref="MasWebApiException"></exception>
         Task SetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition);

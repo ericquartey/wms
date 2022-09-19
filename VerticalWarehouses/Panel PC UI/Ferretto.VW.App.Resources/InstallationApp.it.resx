@@ -2745,4 +2745,7 @@
   <data name="LocalAndWmsNotAllowed" xml:space="preserve">
     <value>Locale non disponibile con WMS attivo</value>
   </data>
+  <data name="UseGetMessage" xml:space="preserve">
+    <value>Messaggio GET</value>
+  </data>
 </root>

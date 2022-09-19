@@ -2839,4 +2839,7 @@
   <data name="LocalAndWmsNotAllowed" xml:space="preserve">
     <value>Local not available is WMS is active</value>
   </data>
+  <data name="UseGetMessage" xml:space="preserve">
+    <value>GET Message</value>
+  </data>
 </root>
