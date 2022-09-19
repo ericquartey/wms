@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
 - Il servizio MAS usa ora il netcore 3.1
+- Barra Alfanumerica - aggiunto Messaggio GET
 
 ## Bug Risolti
 - Gli utenti di WMS possono avere password vuote

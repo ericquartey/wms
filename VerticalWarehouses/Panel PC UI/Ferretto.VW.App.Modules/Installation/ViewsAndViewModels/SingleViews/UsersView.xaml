@@ -48,7 +48,7 @@
                                 Command="{Binding InstallerCommand}"
                                 IsActive="{Binding InstallerActive}"
                                 Content="Installer"
-                                IsEnabled="{Binding }"
+                                IsEnabled="{Binding IsEnabledEditing}"
                                 Style="{DynamicResource PpcButtonMenuStyle}"
                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
                 
@@ -57,7 +57,7 @@
                                 Command="{Binding OperatorCommand}"
                                 IsActive="{Binding OperatorActive}"
                                 Content="Operator"
-                                IsEnabled="{Binding }"
+                                IsEnabled="{Binding IsEnabledEditing}"
                                 Style="{DynamicResource PpcButtonMenuStyle}"
                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
                 
@@ -66,7 +66,7 @@
                                 Command="{Binding MovementCommand}"
                                 IsActive="{Binding MovementActive}"
                                 Content="Movement"
-                                IsEnabled="{Binding }"
+                                IsEnabled="{Binding IsEnabledEditing}"
                                 Style="{DynamicResource PpcButtonMenuStyle}"
                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
                 
@@ -75,7 +75,7 @@
                                 Command="{Binding GuestCommand}"
                                 IsActive="{Binding GuestActive}"
                                 Content="Guest"
-                                IsEnabled="{Binding }"
+                                IsEnabled="{Binding IsEnabledEditing}"
                                 Style="{DynamicResource PpcButtonMenuStyle}"
                                 Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 

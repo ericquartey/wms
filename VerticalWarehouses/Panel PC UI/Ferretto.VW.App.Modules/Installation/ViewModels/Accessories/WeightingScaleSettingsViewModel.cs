@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool IsEnabledEditing => true;
+
         public ICommand ConfigureDeviceCommand =>
             this.configureDeviceCommand
             ??

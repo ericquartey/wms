@@ -1115,23 +1115,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port)
-        {
-            lock (this.dataContext)
-            {
-                var barBay = this.dataContext.Bays.Include(b => b.Accessories)
-                        .ThenInclude(a => a.AlphaNumericBar)
-                        .Single(b => b.Number == bayNumber);
-
-                barBay.Accessories.AlphaNumericBar.IsEnabledNew = isEnabled;
-                barBay.Accessories.AlphaNumericBar.IpAddress = IPAddress.Parse(ipAddress);
-                barBay.Accessories.AlphaNumericBar.TcpPort = port;
-
-                this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public Bay SetBayActive(BayNumber bayNumber, bool active)
         {
             // TODO: Check bay activation logic
