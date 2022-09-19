@@ -133,6 +133,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override bool CanSave()
+        {
+            var res = base.CanSave() && this.MessageFields.Any();
+
+            if (!this.MessageFields.Any())
+            {
+                this.ShowNotification(App.Resources.Localized.Get("InstallationApp.EmptyFields"), Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.ClearNotifications();
+            }
+
+            return res;
+        }
+
         public List<string> MessageFields
         {
             get => this.messageFields;
@@ -472,6 +488,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.MessageFields));
 
+                this.RaiseCanExecuteChanged();
+
                 this.AreSettingsChanged = true;
             }
             catch (System.Exception ex)
@@ -587,6 +605,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.AllTypeFields = new ObservableCollection<string>() { "ItemCode", "ItemDescription", "Destination", "ItemListCode", "ItemListDescription", "ItemListRowCode", "ItemNotes", "Lot", "SerialNumber", "Sscc", };
 
                 this.RaisePropertyChanged(nameof(this.MessageFields));
+
+                this.RaiseCanExecuteChanged();
 
                 this.AreSettingsChanged = true;
             }
