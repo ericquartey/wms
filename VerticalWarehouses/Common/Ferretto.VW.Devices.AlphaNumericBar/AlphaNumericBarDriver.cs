@@ -193,6 +193,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             bool bayIsExternal = false,
             int maxMessageLength = 125,
             bool clearOnClose = false,
+            bool useGet = false,
             List<string> messageFields = null)
         {
             this.ipAddress = ipAddress;
@@ -200,7 +201,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.size = size;
             this.maxMessageLength = maxMessageLength;
             this.clearOnClose = clearOnClose;
-            this.useGet = false;
+            this.useGet = useGet;
             this.messageFields = messageFields;
 
             switch (size)

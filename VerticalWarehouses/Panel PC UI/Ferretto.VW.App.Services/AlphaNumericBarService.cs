@@ -136,6 +136,7 @@ namespace Ferretto.VW.App.Services
                         bay.IsExternal,
                         alphaNumericBar.MaxMessageLength,
                         alphaNumericBar.ClearAlphaBarOnCloseView is true,
+                        alphaNumericBar.UseGet is true,
                         messageFields);
                     this.isEnabled = true;
                 }

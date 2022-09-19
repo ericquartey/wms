@@ -38,6 +38,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             bool bayIsExternal = false,
             int maxMessageLength = 125,
             bool clearOnClose = false,
+            bool useGet = false,
             List<string> messageFields = null);
 
         Task ConnectAsync();
