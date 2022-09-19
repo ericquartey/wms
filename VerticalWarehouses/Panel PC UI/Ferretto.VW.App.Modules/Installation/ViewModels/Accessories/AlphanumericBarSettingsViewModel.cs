@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool testMessageIsChecked;
 
+        private bool useGet;
+
         private int testMessageOffset;
 
         private string testMessageText;
@@ -248,6 +250,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool UseGet
+        {
+            get => this.useGet;
+            set
+            {
+                if (this.SetProperty(ref this.useGet, value))
+                {
+                    {
+                        this.AreSettingsChanged = true;
+                        this.RaiseCanExecuteChanged();
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -325,6 +342,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.bayManager.SetAlphaNumericBarAsync(this.IsAccessoryEnabled, this.ipAddress, this.port, this.size, this.maxMessageLength, this.clearOnClose);
+                var bay = await this.bayManager.GetBayAsync();
+
+                this.deviceDriver.Configure(this.IpAddress, this.Port, this.Size, bay.IsExternal, this.MaxMessageLength, this.ClearOnClose, this.UseGet);
+
                 await this.deviceService.AlphaNumericBarConfigureAsync();
             }
             catch (Exception ex)
