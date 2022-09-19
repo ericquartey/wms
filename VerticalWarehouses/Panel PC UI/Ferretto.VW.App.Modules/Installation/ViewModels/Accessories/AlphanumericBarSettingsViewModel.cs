@@ -439,7 +439,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.clearOnClose,
                     this.UseGet,
                     messageFields);
-                var bay = await this.bayManager.GetBayAsync();
 
                 this.deviceDriver.Disconnect();
 
