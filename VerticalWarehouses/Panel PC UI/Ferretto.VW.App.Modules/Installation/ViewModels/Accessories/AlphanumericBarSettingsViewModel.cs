@@ -483,6 +483,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.AllTypeFields.Remove(this.SelectedField);
 
                 this.RaisePropertyChanged(nameof(this.MessageFields));
+
+                this.AreSettingsChanged = true;
             }
             catch (System.Exception ex)
             {
@@ -597,6 +599,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.AllTypeFields = new ObservableCollection<string>() { "ItemCode", "ItemDescription", "Destination", "ItemListCode", "ItemListDescription", "ItemListRowCode", "ItemNotes", "Lot", "SerialNumber", "Sscc", };
 
                 this.RaisePropertyChanged(nameof(this.MessageFields));
+
+                this.AreSettingsChanged = true;
             }
             catch (System.Exception ex)
             {
