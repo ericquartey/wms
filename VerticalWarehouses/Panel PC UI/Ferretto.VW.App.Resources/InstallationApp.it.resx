@@ -2748,4 +2748,7 @@
   <data name="UseGetMessage" xml:space="preserve">
     <value>Messaggio GET</value>
   </data>
+  <data name="Field" xml:space="preserve">
+    <value>Campo</value>
+  </data>
 </root>
