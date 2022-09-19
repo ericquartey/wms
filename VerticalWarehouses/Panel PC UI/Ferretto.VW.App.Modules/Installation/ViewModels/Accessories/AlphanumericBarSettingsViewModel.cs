@@ -5,6 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Mvvm;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.Devices.AlphaNumericBar;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
