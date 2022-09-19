@@ -478,6 +478,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.SubscribeToEvents();
 
             this.UpdateStatusButtonFooter();
+            this.AxisUpperBound = 120000;
+            this.AxisLowerBound = 0;
 
             await base.OnAppearedAsync();
         }
@@ -496,11 +498,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     var procedureParameters = await this.verticalOriginProcedureWebService.GetParametersAsync();
                     this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
 
+                    this.AxisUpperBound = procedureParameters.UpperBound;
+                    this.AxisLowerBound = procedureParameters.LowerBound;
                     this.StartPosition = this.ProcedureParameters.StartPosition;
                     this.DestinationPosition1 = this.ProcedureParameters.InitialPosition;
                     this.DestinationPosition2 = this.ProcedureParameters.FinalPosition;
-                    this.AxisUpperBound = procedureParameters.UpperBound;
-                    this.AxisLowerBound = procedureParameters.LowerBound;
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
