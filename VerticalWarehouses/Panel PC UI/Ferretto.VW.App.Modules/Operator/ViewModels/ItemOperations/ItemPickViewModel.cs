@@ -480,6 +480,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.CanPickBox = false;
                 }
 
+                if (this.IsQuantityLimited && this.MissionOperation != null)
+                {
+                    this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
+                }
                 this.InputQuantity = this.MissionRequestedQuantity;
                 base.InitializeInputQuantity();
                 //this.AvailableQuantity = this.MissionRequestedQuantity;

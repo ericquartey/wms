@@ -747,6 +747,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.CanPutBox = false;
             }
+            if (this.IsQuantityLimited && this.MissionOperation != null)
+            {
+                this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
+            }
             this.InputQuantity = this.MissionRequestedQuantity;
             base.InitializeInputQuantity();
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);

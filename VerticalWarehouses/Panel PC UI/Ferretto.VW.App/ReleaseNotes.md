@@ -31,6 +31,7 @@
 
 ## Bug Risolti
 - Gli utenti di WMS possono avere password vuote
+- Pagina di prelievo - corretto aggiornamento della quantità da prelevare
 
 ## Compatibile con adapter 0.4.40
 ***
