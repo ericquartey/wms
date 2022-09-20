@@ -11,7 +11,7 @@
 
   <local:CardSensor x:Name="CardSensor"
                     Grid.Row="1"
-                    Background="{StaticResource PpcBackground}"
+                    Background="{DynamicResource PpcBackground}"
                     CardBadge1="{Binding NetWeight, StringFormat={}{0:F2}}"
                     CardBadge2="{Binding Height, StringFormat={}{0:F2}}"
                     CardBadgeLabel1="{res:Loc SensorCard.NetWeight}"
