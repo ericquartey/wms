@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
 
@@ -59,17 +58,6 @@ namespace Ferretto.VW.App.Controls.Controls
             this.DataContext = this.sensorsService.ShutterSensors;
 
             this.Visibility = this.machineService.HasShutter ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-
-            var converter = new BrushConverter();
-
-            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
-            {
-                this.CardSensor.Background = (Brush)converter.ConvertFromString("#3C3C3C");
-            }
-            else
-            {
-                this.CardSensor.Background = (Brush)converter.ConvertFromString("#CCCCCC");
-            }
         }
 
         protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)

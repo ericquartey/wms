@@ -7,6 +7,11 @@
   <conv:AlphaNumericBarSizeEnumConverter x:Key="ANBSEC" />
   <!--<conv:AlphaNumericBarSizeListEnumConverter x:Key="ANBSLEC" />-->
 
+    <conv:CardSensorToBackgroundConverter x:Key="CSTBC"
+                                          PpcBackground="{DynamicResource PpcBackground}"
+                                          SecondColor="{DynamicResource FerrettoRed}"/>
+
+
     <conv:LoadingUnitLocationConverter x:Key="LULC" />
     
     <conv:ClassToForegroundConverter x:Key="CTFC" />

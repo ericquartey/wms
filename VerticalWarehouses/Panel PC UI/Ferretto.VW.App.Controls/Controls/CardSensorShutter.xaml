@@ -12,7 +12,7 @@
              mc:Ignorable="d">
 
   <local:CardSensor x:Name="CardSensor"
-                    Background="{StaticResource PpcBackground}"
+                    Background="{DynamicResource PpcBackground}"
                     CardText="{res:Loc InstallationApp.Shutter}"
                     CardValue="{Binding Status}"
                     Type="Shutter" />

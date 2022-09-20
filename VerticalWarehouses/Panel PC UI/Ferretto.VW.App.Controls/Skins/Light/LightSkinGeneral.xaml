@@ -56,7 +56,7 @@
 
 
     <SolidColorBrush x:Key="LogIn_Background"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource EDBGrayE}" />
 
     <SolidColorBrush x:Key="ComboBox_Background"
                      Color="{DynamicResource EDBGrayA}" />
