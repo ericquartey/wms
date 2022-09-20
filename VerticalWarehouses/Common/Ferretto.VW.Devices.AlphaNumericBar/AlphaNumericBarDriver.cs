@@ -1240,7 +1240,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             {
                 var receivedArray = this.messagesReceivedQueue.ToArray();
                 var encoded = this.Encode(message, this.maxMessageLength - message.Length);
-                var isOk = receivedArray.Any(r => r.Contains(encoded.Substring(0, Math.Min(encoded.Length, 20))));
+                var isOk = receivedArray.Any(r => r.Contains(encoded.Substring(0, Math.Min(encoded.Length, 100))));
                 if (isOk)
                 {
                     this.logger.Debug($"Received GET message OK");

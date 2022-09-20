@@ -118,6 +118,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 barBay.Accessories.AlphaNumericBar.UseGet = useGet;
                 if (messageFields != null && messageFields.Count > 0)
                 {
+                    barBay.Accessories.AlphaNumericBar.Field1 = string.Empty;
+                    barBay.Accessories.AlphaNumericBar.Field2 = string.Empty;
+                    barBay.Accessories.AlphaNumericBar.Field3 = string.Empty;
+                    barBay.Accessories.AlphaNumericBar.Field4 = string.Empty;
+                    barBay.Accessories.AlphaNumericBar.Field5 = string.Empty;
                     int iField = 1;
                     foreach (var messageField in messageFields)
                     {

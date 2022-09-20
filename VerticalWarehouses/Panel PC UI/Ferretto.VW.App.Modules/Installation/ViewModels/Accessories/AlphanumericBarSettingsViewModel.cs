@@ -389,16 +389,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.RaisePropertyChanged(nameof(this.MessageFields));
 
-                    //this.MessageFields.Add(bayAccessories.AlphaNumericBar.Field5);
-                    //this.deviceDriver.Configure(this.ipAddress, this.port, (MAS.DataModels.AlphaNumericBarSize)this.size);
-                    //if (this.IsAccessoryEnabled)
-                    //{
-                    //    await this.deviceDriver.ConnectAsync();
-                    //}
-                    //else
-                    //{
-                    //    this.deviceDriver.Disconnect();
-                    //}
                     this.UseGet = bayAccessories.AlphaNumericBar.UseGet is true;
 
                     this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
@@ -445,7 +435,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                var messageFields = new List<string>();
                 await this.bayManager.SetAlphaNumericBarAsync(
                     this.IsAccessoryEnabled,
                     this.ipAddress,
@@ -454,7 +443,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.maxMessageLength,
                     this.clearOnClose,
                     this.UseGet,
-                    messageFields);
+                    this.MessageFields);
 
                 this.deviceDriver.Disconnect();
 
