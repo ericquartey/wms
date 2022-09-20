@@ -32,6 +32,8 @@
 ## Bug Risolti
 - Gli utenti di WMS possono avere password vuote
 - Pagina di prelievo - corretto aggiornamento della quantità da prelevare
+- Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
+- Gli accessori si possono modificare prima di accendere la macchina
 
 ## Compatibile con adapter 0.4.40
 ***
