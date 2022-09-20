@@ -35,6 +35,8 @@
 - Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
 - Gli accessori si possono modificare prima di accendere la macchina
 - Serranda UpperHalf - corretto ciclo di sollevamento giostra
+- Chiamata cassetto - non perde più la selezione
+- BID - corretta gestione cassetti alti
 
 ## Compatibile con adapter 0.4.40
 ***
