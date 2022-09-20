@@ -34,6 +34,7 @@
 - Pagina di prelievo - corretto aggiornamento della quantità da prelevare
 - Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
 - Gli accessori si possono modificare prima di accendere la macchina
+- Serranda UpperHalf - corretto ciclo di sollevamento giostra
 
 ## Compatibile con adapter 0.4.40
 ***
