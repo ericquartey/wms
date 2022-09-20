@@ -2842,4 +2842,10 @@
   <data name="UseGetMessage" xml:space="preserve">
     <value>GET Message</value>
   </data>
+  <data name="Field" xml:space="preserve">
+    <value>Field</value>
+  </data>
+  <data name="EmptyFields" xml:space="preserve">
+    <value>Empty Fields, enter at least 1 field.</value>
+  </data>
 </root>

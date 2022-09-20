@@ -11,7 +11,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-  <local:CardSensor x:Name="CardSensor"
+    <local:CardSensor x:Name="CardSensorh"
                     CardDescription="{Binding HorizontalTargetPosition, TargetNullValue={x:Null}, StringFormat={}Target: {0:F2}}"
                     CardSensorLabel1="{res:Loc SensorCard.Zero}"
                     CardSensorLabel2="{res:Loc SensorCard.Front}"
@@ -21,6 +21,35 @@
                     Sensor1="{Binding SensorsService.IsZeroChain}"
                     Sensor2="{Binding SensorsService.Sensors.LuPresentInOperatorSide}"
                     Sensor3="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
-                    Type="Axis" />
+                    Type="Axis">
+        <local:CardSensor.Style>
+            <Style TargetType="{x:Type local:CardSensor}">
+                <Style.Triggers>
+                    <DataTrigger Value="True">
+                        <DataTrigger.Binding>
+                            <MultiBinding Converter="{StaticResource CSTBC}" >
+                                <Binding Path="SensorsService.IsZeroChain" UpdateSourceTrigger="PropertyChanged"/>
+                                <Binding Path="SensorsService.Sensors.LuPresentInOperatorSide" UpdateSourceTrigger="PropertyChanged"/>
+                                <Binding Path="SensorsService.Sensors.LuPresentInMachineSide" UpdateSourceTrigger="PropertyChanged"/>
+                                <Binding Path="SensorsService.IsBypass" UpdateSourceTrigger="PropertyChanged"/>
+                            </MultiBinding>
+                        </DataTrigger.Binding>
+                        <Setter Property="Background" Value="{DynamicResource FerrettoRed}" />
+                    </DataTrigger>
+                    <DataTrigger Value="False">
+                        <DataTrigger.Binding>
+                            <MultiBinding Converter="{StaticResource CSTBC}" >
+                                <Binding Path="SensorsService.IsZeroChain" UpdateSourceTrigger="PropertyChanged"/>
+                                <Binding Path="SensorsService.Sensors.LuPresentInOperatorSide" UpdateSourceTrigger="PropertyChanged"/>
+                                <Binding Path="SensorsService.Sensors.LuPresentInMachineSide" UpdateSourceTrigger="PropertyChanged"/>
+                                <Binding Path="SensorsService.IsBypass" UpdateSourceTrigger="PropertyChanged"/>
+                            </MultiBinding>
+                        </DataTrigger.Binding>
+                        <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </local:CardSensor.Style>
+    </local:CardSensor>
 
 </UserControl>

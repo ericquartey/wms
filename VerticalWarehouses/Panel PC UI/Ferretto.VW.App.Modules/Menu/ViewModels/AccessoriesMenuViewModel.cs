@@ -49,8 +49,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public async override Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
-
             try
             {
                 this.accessories = await this.accessoriesWebService.GetAllAsync();
@@ -59,6 +57,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.ShowNotification(ex);
             }
+
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -83,7 +83,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 &&
                 (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
                 ||
-                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded)
+                &&
+                this.accessories != null;
         }
 
         private void OpenSettings(string viewModel)

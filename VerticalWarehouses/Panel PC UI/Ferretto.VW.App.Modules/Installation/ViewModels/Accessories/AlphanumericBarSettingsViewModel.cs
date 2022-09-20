@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using DevExpress.Mvvm;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -22,13 +25,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IAlphaNumericBarService deviceService;
 
+        private DelegateCommand addFieldsCommand;
+
+        private ObservableCollection<string> allTypeFields = new ObservableCollection<string>() { "ItemCode", "ItemDescription", "Destination", "ItemListCode", "ItemListDescription", "ItemListRowCode", "ItemNotes", "Lot", "SerialNumber", "Sscc", };
+
         private bool clearOnClose;
 
         private IPAddress ipAddress;
 
         private int maxMessageLength;
 
+        private List<string> messageFields = new List<string>();
+
         private int port;
+
+        private DelegateCommand resetFieldsCommand;
+
+        private string selectedField;
 
         private AlphaNumericBarSize size;
 
@@ -65,6 +78,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand AddFieldsCommand => this.addFieldsCommand
+           ??
+           (this.addFieldsCommand =
+               new DelegateCommand(
+                   () => this.AddFields(),
+                   this.CanAddFields));
+
+        public ObservableCollection<string> AllTypeFields
+        {
+            get => this.allTypeFields;
+            set => this.SetProperty(ref this.allTypeFields, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool ClearOnClose
         {
@@ -107,6 +133,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public List<string> MessageFields
+        {
+            get => this.messageFields;
+            set
+            {
+                if (this.SetProperty(ref this.messageFields, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public int Port
         {
             get => this.port;
@@ -124,6 +163,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public ICommand ResetFieldsCommand => this.resetFieldsCommand
+           ??
+           (this.resetFieldsCommand =
+               new DelegateCommand(
+                   () => this.ResetFields(),
+                   this.CanResetFields));
+
+        public string SelectedField
+        {
+            get => this.selectedField;
+            set => this.SetProperty(ref this.selectedField, value, this.RaiseCanExecuteChanged);
         }
 
         public AlphaNumericBarSize Size
@@ -269,6 +321,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        protected override bool CanSave()
+        {
+            var res = base.CanSave() && this.MessageFields.Any();
+
+            if (!this.MessageFields.Any())
+            {
+                this.ShowNotification(App.Resources.Localized.Get("InstallationApp.EmptyFields"), Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.ClearNotifications();
+            }
+
+            return res;
+        }
+
         protected override async Task OnDataRefreshAsync()
         {
             try
@@ -286,6 +354,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.Size = bayAccessories.AlphaNumericBar.Size;
                     this.MaxMessageLength = bayAccessories.AlphaNumericBar.MaxMessageLength;
                     this.ClearOnClose = bayAccessories.AlphaNumericBar.ClearAlphaBarOnCloseView is true;
+
+                    this.AllTypeFields = new ObservableCollection<string>() { "ItemCode", "ItemDescription", "Destination", "ItemListCode", "ItemListDescription", "ItemListRowCode", "ItemNotes", "Lot", "SerialNumber", "Sscc", };
+                    this.MessageFields.Clear();
+                    if (!string.IsNullOrEmpty(bayAccessories.AlphaNumericBar.Field1))
+                    {
+                        this.MessageFields.Add(bayAccessories.AlphaNumericBar.Field1);
+                        this.AllTypeFields.Remove(bayAccessories.AlphaNumericBar.Field1);
+                    }
+
+                    if (!string.IsNullOrEmpty(bayAccessories.AlphaNumericBar.Field2))
+                    {
+                        this.MessageFields.Add(bayAccessories.AlphaNumericBar.Field2);
+                        this.AllTypeFields.Remove(bayAccessories.AlphaNumericBar.Field2);
+                    }
+
+                    if (!string.IsNullOrEmpty(bayAccessories.AlphaNumericBar.Field3))
+                    {
+                        this.MessageFields.Add(bayAccessories.AlphaNumericBar.Field3);
+                        this.AllTypeFields.Remove(bayAccessories.AlphaNumericBar.Field3);
+                    }
+
+                    if (!string.IsNullOrEmpty(bayAccessories.AlphaNumericBar.Field4))
+                    {
+                        this.MessageFields.Add(bayAccessories.AlphaNumericBar.Field4);
+                        this.AllTypeFields.Remove(bayAccessories.AlphaNumericBar.Field4);
+                    }
+
+                    if (!string.IsNullOrEmpty(bayAccessories.AlphaNumericBar.Field5))
+                    {
+                        this.MessageFields.Add(bayAccessories.AlphaNumericBar.Field5);
+                        this.AllTypeFields.Remove(bayAccessories.AlphaNumericBar.Field5);
+                    }
+
+                    this.RaisePropertyChanged(nameof(this.MessageFields));
+
                     this.UseGet = bayAccessories.AlphaNumericBar.UseGet is true;
 
                     this.SetDeviceInformation(bayAccessories.AlphaNumericBar.DeviceInformation);
@@ -332,7 +435,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                var messageFields = new List<string>();
                 await this.bayManager.SetAlphaNumericBarAsync(
                     this.IsAccessoryEnabled,
                     this.ipAddress,
@@ -341,8 +443,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.maxMessageLength,
                     this.clearOnClose,
                     this.UseGet,
-                    messageFields);
-                var bay = await this.bayManager.GetBayAsync();
+                    this.MessageFields);
 
                 this.deviceDriver.Disconnect();
 
@@ -373,6 +474,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void AddFields()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.MessageFields.Add(this.SelectedField);
+
+                this.AllTypeFields.Remove(this.SelectedField);
+
+                this.RaisePropertyChanged(nameof(this.MessageFields));
+
+                this.RaiseCanExecuteChanged();
+
+                this.AreSettingsChanged = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private bool CanAddFields()
+        {
+            return this.IsEnabled && !string.IsNullOrEmpty(this.SelectedField) && this.MessageFields.Count < 5;
+        }
+
+        private bool CanResetFields()
+        {
+            return this.IsEnabled && this.MessageFields.Any();
         }
 
         private async Task<bool> DoTestArrowOnAsync(int offset)
@@ -455,6 +592,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             return false;
+        }
+
+        private void ResetFields()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.MessageFields.Clear();
+
+                this.AllTypeFields = new ObservableCollection<string>() { "ItemCode", "ItemDescription", "Destination", "ItemListCode", "ItemListDescription", "ItemListRowCode", "ItemNotes", "Lot", "SerialNumber", "Sscc", };
+
+                this.RaisePropertyChanged(nameof(this.MessageFields));
+
+                this.RaiseCanExecuteChanged();
+
+                this.AreSettingsChanged = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion

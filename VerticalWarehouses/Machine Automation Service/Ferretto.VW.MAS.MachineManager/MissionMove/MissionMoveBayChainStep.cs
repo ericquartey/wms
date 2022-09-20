@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                 if (bay.Shutter != null
-                    && bay.Shutter.Type == ShutterType.ThreeSensors
+                    && (bay.Shutter.Type == ShutterType.ThreeSensors || bay.Shutter.Type == ShutterType.UpperHalf)
                     && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half)
                 {
                     this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");
@@ -422,7 +422,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     var shutterInverter = (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified) ? bay.Shutter.Inverter.Index : InverterDriver.Contracts.InverterIndex.None;
                     if (bay.Shutter != null
-                        && bay.Shutter.Type == ShutterType.ThreeSensors
+                        && (bay.Shutter.Type == ShutterType.ThreeSensors || bay.Shutter.Type == ShutterType.UpperHalf)
                         && this.SensorsProvider.GetShutterPosition(shutterInverter) != ShutterPosition.Half)
                     {
                         this.Logger.LogInformation($"Half Shutter Mission:Id={this.Mission.Id}");

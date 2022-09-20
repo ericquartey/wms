@@ -2748,4 +2748,10 @@
   <data name="UseGetMessage" xml:space="preserve">
     <value>Messaggio GET</value>
   </data>
+  <data name="Field" xml:space="preserve">
+    <value>Campo</value>
+  </data>
+  <data name="EmptyFields" xml:space="preserve">
+    <value>Campi Vuoti, inserire almeno 1 campo.</value>
+  </data>
 </root>

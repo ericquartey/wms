@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
     internal class ShutterPositioningStartState : StateBase
     {
-        #region Private Fields
+        #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #endregion
 
-        #region Public Constructors
+        #region Constructors
 
         public ShutterPositioningStartState(IShutterPositioningStateData stateData, ILogger logger)
             : base(stateData.ParentMachine, logger)
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
@@ -103,7 +103,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                                     shutterPositionTarget = ShutterPosition.Closed;
 
-                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors || this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
+                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+                                        || this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
                                     {
                                         shutterPositionTarget = ShutterPosition.Half;
                                     }

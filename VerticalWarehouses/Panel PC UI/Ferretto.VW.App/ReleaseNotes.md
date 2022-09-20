@@ -27,10 +27,14 @@
 
 ## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
 - Il servizio MAS usa ora il netcore 3.1
-- Barra Alfanumerica - aggiunto Messaggio GET
+- Barra Alfanumerica - aggiunto Messaggio GET e messaggi configurabili
 
 ## Bug Risolti
 - Gli utenti di WMS possono avere password vuote
+- Pagina di prelievo - corretto aggiornamento della quantità da prelevare
+- Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
+- Gli accessori si possono modificare prima di accendere la macchina
+- Serranda UpperHalf - corretto ciclo di sollevamento giostra
 
 ## Compatibile con adapter 0.4.40
 ***

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using CommonServiceLocator;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -119,17 +118,6 @@ namespace Ferretto.VW.App.Controls.Controls
             this.SubscribeToEvents();
 
             this.OnDataRefresh();
-
-            var converter = new BrushConverter();
-
-            if (this.themeService.ActiveTheme == App.Services.Models.ApplicationTheme.Dark)
-            {
-                this.CardSensor.Background = (Brush)converter.ConvertFromString("#3C3C3C");
-            }
-            else
-            {
-                this.CardSensor.Background = (Brush)converter.ConvertFromString("#CCCCCC");
-            }
         }
 
         protected void OnDataRefresh()
