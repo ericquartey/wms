@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -195,14 +194,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool CanEnable()
         {
-            return
-                (this.MachineModeService.MachinePower == MachinePowerState.Powered
-                ||
-                this.MachineModeService.MachinePower == MachinePowerState.Unpowered)
-                &&
-                (this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
-                ||
-                this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded);
+            return this.HealthProbeService.HealthMasStatus == HealthStatus.Healthy
+                    ||
+                    this.HealthProbeService.HealthMasStatus == HealthStatus.Degraded;
         }
 
         protected virtual bool CanSave()

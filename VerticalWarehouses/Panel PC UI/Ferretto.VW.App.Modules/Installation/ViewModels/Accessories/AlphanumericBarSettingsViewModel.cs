@@ -133,22 +133,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override bool CanSave()
-        {
-            var res = base.CanSave() && this.MessageFields.Any();
-
-            if (!this.MessageFields.Any())
-            {
-                this.ShowNotification(App.Resources.Localized.Get("InstallationApp.EmptyFields"), Services.Models.NotificationSeverity.Warning);
-            }
-            else
-            {
-                this.ClearNotifications();
-            }
-
-            return res;
-        }
-
         public List<string> MessageFields
         {
             get => this.messageFields;
@@ -336,6 +320,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        protected override bool CanSave()
+        {
+            var res = base.CanSave() && this.MessageFields.Any();
+
+            if (!this.MessageFields.Any())
+            {
+                this.ShowNotification(App.Resources.Localized.Get("InstallationApp.EmptyFields"), Services.Models.NotificationSeverity.Warning);
+            }
+            else
+            {
+                this.ClearNotifications();
+            }
+
+            return res;
+        }
 
         protected override async Task OnDataRefreshAsync()
         {
