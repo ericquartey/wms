@@ -19,6 +19,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     [Warning(WarningsArea.User)]
     public class ImmediateLoadingUnitCallViewModel : BaseOperatorViewModel
     {
+
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
@@ -201,8 +202,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
-        #region Methods
-
         public async Task CallLoadingUnitAsync()
         {
             if (this.selectedLoadingUnit == null)
@@ -242,7 +241,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.LoadingUnitId = null;
 
             this.SubscribeToEvents();
 
@@ -258,6 +257,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
                 this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
+                this.LoadingUnitId = null;
 
                 var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
@@ -266,7 +266,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
             }
 
-            this.SelectedLoadingUnit = null;
+            await base.OnAppearedAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -394,6 +394,5 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         false);
         }
 
-        #endregion
     }
 }
