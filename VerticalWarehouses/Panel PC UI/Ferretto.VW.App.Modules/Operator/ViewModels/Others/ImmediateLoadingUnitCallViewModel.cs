@@ -263,7 +263,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
                 this.changeRotationClassCommand?.RaiseCanExecuteChanged();
-                this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
+                if (!string.IsNullOrEmpty(this.authenticationService.UserName))
+                {
+                    this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
+                }
             }
 
             this.SelectedLoadingUnit = null;

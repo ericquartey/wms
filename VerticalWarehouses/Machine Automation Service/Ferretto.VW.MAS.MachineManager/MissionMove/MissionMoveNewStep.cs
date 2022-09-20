@@ -622,7 +622,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             // If bay is double and bay is not carousel
                             returnValue = true;
                             // Always check upper position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
+                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
                             if (bValue)
                             {
                                 // Upper position is empty.
@@ -656,8 +656,26 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        // We choose definitely the upper position
-                                        mission.LoadUnitDestination = upper;
+                                        // check if bottom position has a high LU
+                                        var lu = this.BaysDataProvider.GetLoadingUnitByDestination(bottom);
+                                        var maxHeight = bay.Positions.First(p => !p.IsUpper).MaxSingleHeight;
+                                        if (lu != null && lu.Height > maxHeight)
+                                        {
+                                            if (showErrors)
+                                            {
+                                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                            }
+                                            else
+                                            {
+                                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                            }
+                                            returnValue = false;
+                                        }
+                                        else
+                                        {
+                                            // We choose definitely the upper position
+                                            mission.LoadUnitDestination = upper;
+                                        }
                                     }
                                 }
                             }
