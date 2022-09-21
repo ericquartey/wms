@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         if (machineDataProvider.IsDbSaveOnServer())
                         {
                             var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                            var machine = machineDataProvider.Get();
+                            var machine = machineDataProvider.GetMinMaxHeight();
                             // save the database to server
                             try
                             {
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
         {
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             var machineDto = new Machine
             {
                 ModelName = machine.ModelName,

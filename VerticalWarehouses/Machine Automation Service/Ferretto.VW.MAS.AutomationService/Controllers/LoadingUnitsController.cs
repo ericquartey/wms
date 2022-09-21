@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("get-LU-tare")]
         public ActionResult<double> GetMachineLoadingUnitTare()
         {
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
             return this.Ok(machine.LoadUnitTare);
         }
 
