@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
             this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-            this.machineConfiguration = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
+            this.machineConfiguration = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>().GetMinMaxHeight();
             this.profileTimer = new Timer(this.RequestMeasureProfile, null, Timeout.Infinite, Timeout.Infinite);
         }
 
