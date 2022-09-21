@@ -37,6 +37,7 @@
 - Serranda UpperHalf - corretto ciclo di sollevamento giostra
 - Chiamata cassetto - non perde più la selezione
 - BID - corretta gestione cassetti alti
+- Servizio MAS - non legge più i parametri inverter
 
 ## Compatibile con adapter 0.4.40
 ***
