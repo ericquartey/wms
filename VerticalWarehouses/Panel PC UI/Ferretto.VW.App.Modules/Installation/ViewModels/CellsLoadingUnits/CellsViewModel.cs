@@ -34,13 +34,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isBusy;
 
+        private bool isRotationClassEnabled;
+
         private DelegateCommand saveCommand;
 
         private CellPlus selectedCell;
 
         private List<CellPlus> selectedCells = new List<CellPlus>();
-
-        private bool isRotationClassEnabled;
 
         #endregion
 
@@ -89,12 +89,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isBusy, value);
         }
 
+        public bool IsEnabledEditing => !this.IsMoving;
+
         public bool IsRotationClassEnabled
         {
             get => this.isRotationClassEnabled;
             set => this.SetProperty(ref this.isRotationClassEnabled, value);
         }
-        public bool IsEnabledEditing => !this.IsMoving;
 
         public ICommand SaveCommand =>
             this.saveCommand
@@ -198,6 +199,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         cell.BlockLevel = this.cellsBlockLevels;
                         cell.Description = this.description;
+                        // multiselection do not change free state
+                        var backup = this.MachineService.Cells.FirstOrDefault(c => c.Id == cell.Id);
+                        if (backup != null)
+                        {
+                            cell.IsFree = backup.IsFree;
+                        }
                         await this.machineCellsWebService.SaveCellAsync(cell);
                     }
                 }
