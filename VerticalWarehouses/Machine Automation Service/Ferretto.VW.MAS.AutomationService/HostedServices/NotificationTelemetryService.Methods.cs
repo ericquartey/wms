@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         if (machineDataProvider.IsDbSaveOnServer())
                         {
                             var dataLayer = this.ServiceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IDataLayerService>();
-                            var machine = machineDataProvider.Get();
+                            var machine = machineDataProvider.GetMinMaxHeight();
 
                             try
                             {
