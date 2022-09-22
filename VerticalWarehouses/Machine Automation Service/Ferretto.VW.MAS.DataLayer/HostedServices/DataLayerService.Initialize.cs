@@ -151,7 +151,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                     machineProvider.CheckBackupServer();
                     baysDataProvider.AddElevatorPseudoBay();
-                    machineProvider.Get();
                     var bays = baysDataProvider.GetAll();
                     var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
 

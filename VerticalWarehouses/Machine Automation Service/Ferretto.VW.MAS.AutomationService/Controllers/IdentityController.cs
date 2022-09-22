@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
 
             int? areaId = null;
             if (this.wmsSettingsProvider.IsEnabled && this.wmsSettingsProvider.IsConnected)

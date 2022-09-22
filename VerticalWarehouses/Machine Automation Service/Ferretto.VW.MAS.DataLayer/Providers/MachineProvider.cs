@@ -43,10 +43,10 @@ namespace Ferretto.VW.MAS.DataLayer
                        .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
-                    .Include(m => m.Elevator)
-                               .ThenInclude(e => e.Axes)
-                                   .ThenInclude(a => a.Inverter)
-                                        .ThenInclude(a => a.Parameters)
+                    //.Include(m => m.Elevator)
+                    //           .ThenInclude(e => e.Axes)
+                    //               .ThenInclude(a => a.Inverter)
+                    //                    .ThenInclude(a => a.Parameters)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Inverter)
@@ -75,9 +75,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(b => b.EmptyLoadMovement)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.FullLoadMovement)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Inverter)
-                            .ThenInclude(a => a.Parameters)
+                    //.Include(m => m.Bays)
+                    //    .ThenInclude(b => b.Inverter)
+                    //        .ThenInclude(a => a.Parameters)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.AssistedMovements)
@@ -87,10 +87,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.Inverter)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Shutter)
-                            .ThenInclude(b => b.Inverter)
-                                .ThenInclude(b => b.Parameters)
+                    //.Include(m => m.Bays)
+                    //    .ThenInclude(b => b.Shutter)
+                    //        .ThenInclude(b => b.Inverter)
+                    //            .ThenInclude(b => b.Parameters)
                     .Include(m => m.Panels)
                         .ThenInclude(p => p.Cells)
                     .Single());
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
-            this.redundancyService = redundancyService ?? throw new System.ArgumentNullException(nameof(redundancyService));
+            this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
         }
 
         #endregion
@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (machine is null)
             {
-                throw new System.ArgumentNullException(nameof(machine));
+                throw new ArgumentNullException(nameof(machine));
             }
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
