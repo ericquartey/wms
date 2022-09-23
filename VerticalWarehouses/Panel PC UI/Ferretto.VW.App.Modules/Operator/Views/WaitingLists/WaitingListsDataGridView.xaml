@@ -196,7 +196,7 @@
       </DataGridTextColumn>
 
       <DataGridTextColumn x:Name="Column3"
-                          Width="120"
+                          Width="*"
                           Binding="{Binding Description}"
                           Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
 
