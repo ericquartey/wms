@@ -135,11 +135,13 @@
                 <Run Text="{resources:Loc OperatorApp.Lot}" />
             </TextBlock>
 
-            <TextBox Grid.Column="1"
-                     Height="32"
+            <controls:PpcTextBox Grid.Column="1"
                      Margin="25,0,90,0"
+                     HorizontalAlignment="Stretch"
+                     Width="auto"
+                     IsReadOnly="{Binding IsFromList}"
                      FontSize="{DynamicResource FontSize_High}"
-                     Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     InputText="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 
@@ -158,11 +160,13 @@
                 <Run Text="{resources:Loc OperatorApp.GeneralInfoSerial}" />
             </TextBlock>
 
-            <TextBox Grid.Column="1"
-                     Height="32"
+            <controls:PpcTextBox Grid.Column="1"
                      Margin="25,0,90,0"
+                     HorizontalAlignment="Stretch"
+                     Width="auto"
+                     IsReadOnly="{Binding IsFromList}"
                      FontSize="{DynamicResource FontSize_High}"
-                     Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     InputText="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 
