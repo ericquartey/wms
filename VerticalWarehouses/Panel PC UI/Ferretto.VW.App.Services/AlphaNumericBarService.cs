@@ -162,7 +162,7 @@ namespace Ferretto.VW.App.Services
                 var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
                 if (!socketLink)
                 {
-                    this.logger.Debug("OnMissionChangeAsync;Switch off alpha numeric bar");
+                    this.logger.Debug("OnMissionChangedAsync;Switch off alpha numeric bar");
                     await this.alphaNumericBarDriver.EnabledAsync(false);
                     //await this.alphaNumericBarDriver.EnabledAsync(false);
 
@@ -179,7 +179,7 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
                 .Subscribe(
-                    async e => await this.OnMissionChangeAsync(e),
+                    async e => await this.OnMissionChangedAsync(e),
                     ThreadOption.BackgroundThread,
                     false);
 
@@ -261,7 +261,7 @@ namespace Ferretto.VW.App.Services
                 .Publish(new PresentationNotificationMessage(ex));
         }
 
-        private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
+        private async Task OnMissionChangedAsync(MissionChangedEventArgs e)
         {
             try
             {
@@ -308,7 +308,7 @@ namespace Ferretto.VW.App.Services
                         {
                             this.alphaNumericBarDriver.SelectedPosition = compartmentSelected.XPosition;
                             this.alphaNumericBarDriver.SelectedMessage = message;
-                            this.logger.Debug($"OnMissionChangeAsync; Compartment {e.WmsOperation.CompartmentId}; SelectedPosition {compartmentSelected.XPosition}; message {message}");
+                            this.logger.Debug($"OnMissionChangedAsync; Compartment {e.WmsOperation.CompartmentId}; SelectedPosition {compartmentSelected.XPosition}; message {message}");
 
                             await this.alphaNumericBarDriver.EnabledAsync(false);
 

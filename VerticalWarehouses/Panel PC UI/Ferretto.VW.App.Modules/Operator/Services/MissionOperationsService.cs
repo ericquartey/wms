@@ -449,7 +449,10 @@ namespace Ferretto.VW.App.Modules.Operator
             if (e.BayNumber == this.bayNumber)
             {
                 this.logger.Debug($"Mission assigned to bay has changed to id '{e.MissionId}'.");
-                this.ActiveWmsMission = null;
+                if (this.ActiveMachineMission?.Id != e?.MissionId)
+                {
+                    this.ActiveWmsMission = null;
+                }
                 await this.RefreshActiveMissionAsync(e.MissionId);
             }
         }
@@ -522,7 +525,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
                     newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
 
-                    var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Priority)
+                    var sortedOperations = newWmsMission.Operations.OrderBy(o => o.Type is MissionOperationType.Pick || o.Type is MissionOperationType.Put ? 0 : 1)
+                        .ThenBy(o => (this.ActiveWmsOperation?.Id == 0 || o.Id == this.ActiveWmsOperation?.Id) ? 0 : 1)
+                        .ThenBy(o => o.Priority)
                         .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition)
                         .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition);
 
@@ -545,7 +550,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     }
                     else
                     {
-                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}.");
+                        this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");
                         newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
                         try
                         {
@@ -577,8 +582,8 @@ namespace Ferretto.VW.App.Modules.Operator
                    ||
                    newWmsOperation?.DispatchedQuantity != this.ActiveWmsOperation?.DispatchedQuantity
                    ||
-                   (newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true)
-                   ||
+                   //(newWmsMission != null && this.ActiveWmsMission?.Operations.Any(mo => newWmsMission.Operations.Any(nOp => nOp.Id != mo.Id)) == true)
+                   //||
                    missionId.HasValue
                    ||
                    force)
