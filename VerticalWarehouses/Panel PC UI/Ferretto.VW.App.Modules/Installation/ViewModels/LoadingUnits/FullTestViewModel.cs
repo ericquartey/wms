@@ -278,6 +278,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 var procedureParameters = await this.machineFullTestWebService.GetParametersAsync();
                 this.RequiredCycles = procedureParameters.RequiredCycles;
+                if(this.RequiredCycles is null || this.RequiredCycles == 0)
+                {
+                    this.RequiredCycles = 1;
+                }
                 this.PerformedCyclesThisSession = 0;
                 this.TotalCycles = procedureParameters.PerformedCycles;
             }

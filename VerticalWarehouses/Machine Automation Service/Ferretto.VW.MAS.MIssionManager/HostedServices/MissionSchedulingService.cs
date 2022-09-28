@@ -245,6 +245,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 this.Logger.LogError($"Full Test error: Load Units not defined!");
                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machineProvider.BayTestNumber);
+                this.machineVolatileDataProvider.RandomCells = false;
                 return false;
             }
 
@@ -378,6 +379,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
                 }
                 setupProceduresDataProvider.MarkAsCompleted(setupRecord);
+                this.machineVolatileDataProvider.RandomCells = false;
             }
             else
             {
