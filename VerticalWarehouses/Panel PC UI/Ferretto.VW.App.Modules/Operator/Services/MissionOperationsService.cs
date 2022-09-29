@@ -290,8 +290,6 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var configuration = await this.machineConfigurationWebService.GetAsync();
-
                 var machine = await this.identityService.GetAsync();
                 var bay = await this.bayManager.GetBayAsync();
 

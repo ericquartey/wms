@@ -684,21 +684,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBoxOperationVisible = false;
             this.IsAdjustmentVisible = false;
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
-            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
+            this.IsQuantityLimited = configuration.IsQuantityLimited;
 
             this.IsAddListItemVisible = !this.IsAddEnabled;
 
             this.IsAddItem = false;
-            this.IsAddItemLists = configuration.Machine.IsAddItemByList;
+            this.IsAddItemLists = configuration.IsAddItemByList;
 
             this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
             this.ProductsDataGridViewVisibility = false;
-            this.IsKeyboardButtonVisible = configuration.Machine.TouchHelper;
+            this.IsKeyboardButtonVisible = configuration.TouchHelper;
 
             await base.OnAppearedAsync();
 

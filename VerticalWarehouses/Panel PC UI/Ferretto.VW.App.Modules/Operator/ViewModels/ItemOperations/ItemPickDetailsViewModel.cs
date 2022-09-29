@@ -87,8 +87,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
             this.IsPackingListCodeAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListCode);
             this.IsPackingListDescriptionAvailable = !string.IsNullOrEmpty(this.MissionOperation.PackingListDescription);
 

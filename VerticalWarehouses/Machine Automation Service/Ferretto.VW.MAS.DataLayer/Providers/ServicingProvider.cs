@@ -746,7 +746,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.ScheduleNotification(service, 0, MachineServiceStatus.Undefined);
 
                     var instructions = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == service.Id).ToList();
-                    var machine = this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity;
+                    var machine = this.dataContext.LastOrNull(this.dataContext.Machines.AsNoTracking(), o => o.Id)?.Entity;
                     this.allStat = this.dataContext.ServicingInfo
                             .Include(i => i.Instructions)
                             .Include(i => i.MachineStatistics)
