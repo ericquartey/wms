@@ -12,25 +12,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MachineErrorCode CanElevatorDepositExternal(BayNumber bayNumber, bool isPositionUpper);
 
-        MachineErrorCode CanElevatorPickup(BayNumber bayNumber, bool isPositionUpper);
+        MachineErrorCode CanElevatorPickup(Bay bay, bool isPositionUpper);
 
-        ActionPolicy CanMove(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory);
+        ActionPolicy CanMove(ExternalBayMovementDirection direction, Bay bay, MovementCategory movementCategory);
 
-        ActionPolicy CanMoveExtDouble(ExternalBayMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory, bool isPositionUp);
+        ActionPolicy CanMoveExtDouble(ExternalBayMovementDirection direction, Bay bay, MovementCategory movementCategory, bool isPositionUp);
 
         double GetPosition(BayNumber bayNumber);
 
         void Homing(Calibration calibration, int? loadingUnitId, bool showErrors, bool turnBack, BayNumber bayNumber, MessageActor sender);
 
-        bool IsExternalPositionOccupied(BayNumber bayNumber);
+        bool IsExternalPositionOccupied(Bay bay);
 
         bool IsExternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation);
 
-        bool IsInternalPositionOccupied(BayNumber bayNumber);
+        bool IsInternalPositionOccupied(Bay bay);
 
         bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation);
 
-        void Move(ExternalBayMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
+        void Move(ExternalBayMovementDirection direction, int? loadUnitId, Bay bay, MessageActor sender);
 
         void MoveAssisted(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveExtDouble(ExternalBayMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender, bool isUpper);
 
-        void MoveManual(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
+        void MoveManual(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, Bay bay, MessageActor sender);
 
         void MoveManualExtDouble(ExternalBayMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
 

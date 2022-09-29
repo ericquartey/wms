@@ -71,9 +71,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysDataProvider.GetAll())
+                foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
                 {
-                    var description = $"Requesting inverter fault reset from bay {requestingBay} to bay {bay.Number}";
+                    var description = $"Requesting inverter fault reset from bay {requestingBay} to bay {bayNumber}";
                     this.PublishCommand(
                         null,
                         description,
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         sender,
                         MessageType.InverterFaultReset,
                         requestingBay,
-                        bay.Number);
+                        bayNumber);
                 }
             }
             else
@@ -149,16 +149,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysDataProvider.GetAll())
+                foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
                 {
                     this.PublishCommand(
                         messageData,
-                        $"Requesting Inverter Change power status to {messageData.Enable} from bay {requestingBay} to bay {bay.Number}",
+                        $"Requesting Inverter Change power status to {messageData.Enable} from bay {requestingBay} to bay {bayNumber}",
                         MessageActor.DeviceManager,
                         sender,
                         MessageType.InverterPowerEnable,
                         requestingBay,
-                        bay.Number);
+                        bayNumber);
                 }
             }
             else
@@ -178,16 +178,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysDataProvider.GetAll())
+                foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
                 {
                     this.PublishCommand(
                         messageData,
-                        $"Requesting operation machine stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
+                        $"Requesting operation machine stop from bay {requestingBay} to bay {bayNumber} for reason {messageData.StopReason}",
                         MessageActor.DeviceManager,
                         sender,
                         MessageType.Stop,
                         requestingBay,
-                        bay.Number);
+                        bayNumber);
                 }
             }
             else

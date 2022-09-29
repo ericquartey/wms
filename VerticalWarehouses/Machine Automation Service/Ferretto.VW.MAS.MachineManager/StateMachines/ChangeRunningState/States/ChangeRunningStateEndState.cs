@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     }
                 }
             }
-            if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
+            if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetBayNumbers().Count())
             {
                 this.IsCompleted = true;
                 this.Logger.LogInformation($"ChangeRunningStateEndState: Completed; Running state {this.sensorsProvider.IsMachineSecurityRunning}");

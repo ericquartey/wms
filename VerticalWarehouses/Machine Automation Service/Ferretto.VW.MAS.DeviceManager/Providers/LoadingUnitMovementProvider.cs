@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     }
                     else
                     {
-                        return this.externalBayProvider.CanElevatorPickup(bay.Number, isUpper);
+                        return this.externalBayProvider.CanElevatorPickup(bay, isUpper);
                     }
                 }
                 else
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     }
                     else
                     {
-                        return this.externalBayProvider.CanElevatorPickup(bay.Number, false);
+                        return this.externalBayProvider.CanElevatorPickup(bay, false);
                     }
                 }
             }
@@ -508,9 +508,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public bool IsExternalPositionOccupied(BayNumber bayNumber)
+        public bool IsExternalPositionOccupied(Bay bay)
         {
-            return this.externalBayProvider.IsExternalPositionOccupied(bayNumber);
+            return this.externalBayProvider.IsExternalPositionOccupied(bay);
         }
 
         public bool IsExternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)
@@ -518,9 +518,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.externalBayProvider.IsExternalPositionOccupied(bayNumber, loadingUnitLocation);
         }
 
-        public bool IsInternalPositionOccupied(BayNumber bayNumber)
+        public bool IsInternalPositionOccupied(Bay bay)
         {
-            return this.externalBayProvider.IsInternalPositionOccupied(bayNumber);
+            return this.externalBayProvider.IsInternalPositionOccupied(bay);
         }
 
         public bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation)
@@ -554,32 +554,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return Math.Abs(position + displacement - this.elevatorProvider.VerticalPosition) > 4;
         }
 
-        public void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
+        public void MoveCarousel(int? loadUnitId, MessageActor sender, Bay bay, bool restore)
         {
             if (restore)
             {
-                var bay = this.baysDataProvider.GetByNumber(requestingBay);
-                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);
+                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(bay.Number) - bay.Carousel.LastIdealPosition);
                 try
                 {
-                    this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, false, requestingBay, sender);
+                    this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, loadUnitId, false, bay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
                     // we don't want to show errors here. It is managed by MissionMoveBayChainStep
-                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                    throw new StateMachineException(ex.Message, bay.Number, sender);
                 }
             }
             else
             {
                 try
                 {
-                    this.carouselProvider.Move(VerticalMovementDirection.Up, loadUnitId, requestingBay, sender);
+                    this.carouselProvider.Move(VerticalMovementDirection.Up, loadUnitId, bay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
                     // we don't want to show errors here. It is managed by MissionMoveBayChainStep
-                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                    throw new StateMachineException(ex.Message, bay.Number, sender);
                 }
             }
         }
@@ -630,20 +629,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return true;
         }
 
-        public bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore)
+        public bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, Bay bay, bool restore)
         {
             if (restore)
             {
-                var bay = this.baysDataProvider.GetByNumber(requestingBay);
                 var distance = bay.External.Race;
                 switch (direction)
                 {
                     case ExternalBayMovementDirection.TowardMachine:
-                        distance = this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
+                        distance = this.baysDataProvider.GetChainPosition(bay.Number) - bay.ChainOffset;
                         break;
 
                     case ExternalBayMovementDirection.TowardOperator:
-                        distance -= this.baysDataProvider.GetChainPosition(requestingBay) - bay.ChainOffset;
+                        distance -= this.baysDataProvider.GetChainPosition(bay.Number) - bay.ChainOffset;
                         break;
                 }
                 if (distance < Math.Abs(bay.ChainOffset / 4))
@@ -653,24 +651,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 try
                 {
-                    this.externalBayProvider.MoveManual(direction, distance, loadUnitId, bypassConditions: false, requestingBay, sender);
+                    this.externalBayProvider.MoveManual(direction, distance, loadUnitId, bypassConditions: false, bay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, requestingBay, ex.Message);
-                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, bay.Number, ex.Message);
+                    throw new StateMachineException(ex.Message, bay.Number, sender);
                 }
             }
             else
             {
                 try
                 {
-                    this.externalBayProvider.Move(direction, loadUnitId, requestingBay, sender);
+                    this.externalBayProvider.Move(direction, loadUnitId, bay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, requestingBay, ex.Message);
-                    throw new StateMachineException(ex.Message, requestingBay, sender);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, bay.Number, ex.Message);
+                    throw new StateMachineException(ex.Message, bay.Number, sender);
                 }
             }
             return true;
@@ -1077,16 +1075,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysDataProvider.GetAll())
+                foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
                 {
                     this.PublishCommand(
                         messageData,
-                        $"Requesting operation LU stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
+                        $"Requesting operation LU stop from bay {requestingBay} to bay {bayNumber} for reason {messageData.StopReason}",
                         MessageActor.DeviceManager,
                         sender,
                         MessageType.Stop,
                         requestingBay,
-                        bay.Number);
+                        bayNumber);
                 }
             }
             else

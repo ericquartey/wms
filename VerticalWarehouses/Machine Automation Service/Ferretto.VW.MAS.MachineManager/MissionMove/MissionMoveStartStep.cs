@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.MachineVolatileDataProvider.IsHomingExecuted = this.MachineVolatileDataProvider.IsBayHomingExecuted[BayNumber.ElevatorBay];
                 if (!this.MachineVolatileDataProvider.IsHomingExecuted)
                 {
-                    this.Mission.NeedHomingAxis =  Axis.HorizontalAndVertical;
+                    this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                 }
             }
             this.Mission.Status = MissionStatus.Executing;
@@ -442,17 +442,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 {
                                     // Handle the external bay with a proper step
                                     var isExternalBayMovementRequested = bay.IsExternal &&
-                                        this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                                        this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay);
 
-                                    if ((this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                        this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                    if ((this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay) &&
+                                        this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)))
                                     {
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayOccupied, notification.RequestingBay);
                                         throw new StateMachineException(ErrorDescriptions.ExternalBayOccupied, this.Mission.TargetBay, MessageActor.MachineManager);
                                     }
-                                    if ((!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) &&
-                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)))
+                                    if ((!this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay) &&
+                                        !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)))
                                     {
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.ExternalBayEmpty, notification.RequestingBay);
                                         throw new StateMachineException(ErrorDescriptions.ExternalBayEmpty, this.Mission.TargetBay, MessageActor.MachineManager);

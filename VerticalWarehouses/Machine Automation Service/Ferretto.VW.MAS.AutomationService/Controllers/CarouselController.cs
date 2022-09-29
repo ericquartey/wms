@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -47,7 +48,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("can-move")]
         public ActionResult<ActionPolicy> CanMove(VerticalMovementDirection direction, MovementCategory movementCategory)
         {
-            return this.Ok(this.carouselProvider.CanMove(direction, this.BayNumber, movementCategory));
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            return this.Ok(this.carouselProvider.CanMove(direction, bay, movementCategory));
         }
 
         [HttpPost("bay/find-lost-zero")]
@@ -97,7 +99,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(VerticalMovementDirection direction)
         {
-            this.carouselProvider.Move(direction, null, this.BayNumber, MessageActor.AutomationService);
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            this.carouselProvider.Move(direction, null, bay, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -115,7 +118,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(VerticalMovementDirection direction)
         {
-            this.carouselProvider.MoveManual(direction, -1, null, true, this.BayNumber, MessageActor.AutomationService);
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            this.carouselProvider.MoveManual(direction, -1, null, true, bay, MessageActor.AutomationService);
 
             return this.Accepted();
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -293,21 +294,27 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool CheckIntrusion(BayNumber bayNumber, bool enable)
         {
-            var bay = this.GetByNumber(bayNumber);
-            if (bay.IsCheckIntrusion
-                && (bay.Shutter is null || bay.Shutter.Type == ShutterType.NotSpecified)
-                )
+            lock (this.dataContext)
             {
-                this.PublishCommand(
-                    new CheckIntrusionMessageData(enable),
-                    "Execute Check Intrusion Command",
-                    MessageActor.DeviceManager,
-                    MessageType.CheckIntrusion,
-                    bayNumber,
-                    bayNumber);
-                return true;
+                var bay = this.dataContext.Bays
+                    .AsNoTracking()
+                    .Include(b => b.Shutter)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay.IsCheckIntrusion
+                    && (bay.Shutter is null || bay.Shutter.Type == ShutterType.NotSpecified)
+                    )
+                {
+                    this.PublishCommand(
+                        new CheckIntrusionMessageData(enable),
+                        "Execute Check Intrusion Command",
+                        MessageActor.DeviceManager,
+                        MessageType.CheckIntrusion,
+                        bayNumber,
+                        bayNumber);
+                    return true;
+                }
+                return false;
             }
-            return false;
         }
 
         public void CheckProfileConst()
@@ -395,32 +402,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
-        public BayAccessories GetAccessories(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.AlphaNumericBar)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.BarcodeReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.CardReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.LabelPrinter)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.LaserPointer)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.TokenReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.WeightingScale)
-                    .AsNoTracking()
-                    .SingleOrDefault(b => b.Number == bayNumber);
-
-                return bay.Accessories ?? new BayAccessories();
-            }
-        }
-
         public IEnumerable<Bay> GetAll()
         {
             lock (this.dataContext)
@@ -437,11 +418,27 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
+        public IEnumerable<BayNumber> GetBayNumbers()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => b.Number);
+            }
+        }
 
-        public ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.AssistedMovements;
-
-        public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;
+        public WarehouseSide GetBaySide(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => new { b.Number, b.Side })
+                    .First(b => b.Number == bayNumber)
+                    .Side;
+            }
+        }
 
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public BayNumber GetByAxis(IHomingMessageData data)
@@ -500,7 +497,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == id);
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .SingleOrDefault(b => b.Id == id);
             }
         }
 
@@ -559,7 +558,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bay = this.dataContext.Bays
                     .AsNoTracking()
-                    .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
+                    .Select(b => new { b.Number, b.IoDevice.Index })
+                    .SingleOrDefault(b => b.Index == ioIndex);
 
                 if (bay is null)
                 {
@@ -650,7 +650,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public int GetCarouselBayFindZeroLimit(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.BayFindZeroLimit;
+        public int GetCarouselBayFindZeroLimit(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => new { b.Number, b.Carousel.BayFindZeroLimit })
+                    .First(b => b.Number == bayNumber)
+                    .BayFindZeroLimit;
+            }
+        }
 
         public double GetChainOffset(InverterIndex inverterIndex)
         {
@@ -690,7 +700,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case BayNumber.BayOne:
                 case BayNumber.BayTwo:
                 case BayNumber.BayThree:
-                    returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                    returnValue = this.GetInverterIndexByNumber(bayNumber);
                     break;
 
                 default:
@@ -756,7 +766,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         case MovementMode.ShutterTest:
                         case MovementMode.ShutterPosition:
-                            returnValue = this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+                            returnValue = this.GetShutterInverterIndex(bayNumber);
                             break;
 
                         case MovementMode.BayChain:
@@ -764,13 +774,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.BayTest:
                         case MovementMode.BayChainFindZero:
                         case MovementMode.DoubleExtBayTest:
-                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            returnValue = this.GetInverterIndexByNumber(bayNumber);
                             break;
 
                         case MovementMode.ExtBayChain:
                         case MovementMode.ExtBayChainManual:
                         case MovementMode.ExtBayTest:
-                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            returnValue = this.GetInverterIndexByNumber(bayNumber);
                             break;
 
                         default:
@@ -799,7 +809,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 case BayNumber.BayTwo:
                 case BayNumber.BayThree:
-                    returnValue = this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+                    returnValue = this.GetShutterInverterIndex(bayNumber);
                     break;
 
                 default:
@@ -831,6 +841,18 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return returnValue;
+        }
+
+        public bool GetIsExternal(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => new { b.Number, b.IsExternal })
+                    .First(b => b.Number == bayNumber)
+                    .IsExternal;
+            }
         }
 
         public bool GetLightOn(BayNumber bayNumber)
@@ -871,12 +893,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
             }
         }
-
-        public CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.ManualMovements;
-
-        public ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.ManualMovements;
-
-        public ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.ManualMovements;
 
         public BayPosition GetPositionById(int bayPositionId)
         {
@@ -924,21 +940,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        //public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
         public InverterIndex GetShutterInverterIndex(BayNumber bayNumber)
         {
-            var shutter = this.GetByNumber(bayNumber).Shutter;
-            if (shutter == null)
+            lock (this.dataContext)
             {
-                return InverterIndex.None;
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => new { b.Number, b.Shutter.Inverter.Index })
+                    .First(b => b.Number == bayNumber)
+                    .Index;
             }
-
-            return shutter.Inverter.Index;
         }
-
-        public double GetShutterMaxSpeed(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.MaxSpeed;
-
-        public double GetShutterMinSpeed(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.MinSpeed;
 
         public void IncrementCycles(BayNumber bayNumber)
         {
@@ -1157,7 +1169,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(targetBay);
+                var bay = this.dataContext.Bays.FirstOrDefault(b => b.Number == targetBay);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(targetBay.ToString());
@@ -1165,7 +1177,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 bay.Operation = newOperation;
 
-                this.Update(bay);
+                this.dataContext.SaveChanges();
 
                 return bay;
             }
@@ -1332,46 +1344,25 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                //var bay = this.dataContext.Bays
-                //    .Include(b => b.Carousel)
-                //    .SingleOrDefault(b => b.Number == bayNumber);
-                //if (bay is null)
-                //{
-                //    throw new EntityNotFoundException(bayNumber.ToString());
-                //}
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .Include(b => b.External)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
 
-                //bay.Carousel.LastIdealPosition = position;
-                //this.dataContext.SaveChanges();
-
-                // Retrieve type of bay
-                var currBay = this.GetByNumber(bayNumber);
-
-                if (currBay.Carousel != null)
+                if (bay.Carousel != null)
                 {
                     // Handle the carousel
-                    var bay = this.dataContext.Bays
-                        .Include(b => b.Carousel)
-                        .SingleOrDefault(b => b.Number == bayNumber);
-                    if (bay is null)
-                    {
-                        throw new EntityNotFoundException(bayNumber.ToString());
-                    }
-
                     bay.Carousel.LastIdealPosition = position;
                     this.dataContext.SaveChanges();
                 }
 
-                if (currBay.External != null)
+                if (bay.External != null)
                 {
                     // Handle the external bay
-                    var bay = this.dataContext.Bays
-                        .Include(b => b.External)
-                        .SingleOrDefault(b => b.Number == bayNumber);
-                    if (bay is null)
-                    {
-                        throw new EntityNotFoundException(bayNumber.ToString());
-                    }
-
                     bay.External.LastIdealPosition = position;
                     this.dataContext.SaveChanges();
                 }
@@ -1449,6 +1440,18 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
+
+        private InverterIndex GetInverterIndexByNumber(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => new { b.Number, b.Inverter.Index })
+                    .First(b => b.Number == bayNumber)
+                    .Index;
+            }
+        }
 
         /// <summary>
         /// TODO, this method it's dublicated because the insert in LoadUnitDataProvider generate a circural ref error

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -47,13 +48,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("can-move")]
         public ActionResult<ActionPolicy> CanMove(ExternalBayMovementDirection direction, MovementCategory movementCategory)
         {
-            return this.Ok(this.externalBayProvider.CanMove(direction, this.BayNumber, movementCategory));
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            return this.Ok(this.externalBayProvider.CanMove(direction, bay, movementCategory));
         }
 
         [HttpPost("can-move-ext-double")]
         public ActionResult<ActionPolicy> CanMoveExternalDouble(ExternalBayMovementDirection direction, MovementCategory movementCategory, bool isPositionUpper)
         {
-            return this.Ok(this.externalBayProvider.CanMoveExtDouble(direction, this.BayNumber, movementCategory, isPositionUpper));
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            return this.Ok(this.externalBayProvider.CanMoveExtDouble(direction, bay, movementCategory, isPositionUpper));
         }
 
         [HttpPost("find-zero")]
@@ -94,7 +97,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(ExternalBayMovementDirection direction)
         {
-            this.externalBayProvider.Move(direction, null, this.BayNumber, MessageActor.AutomationService);
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            this.externalBayProvider.Move(direction, null, bay, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -121,7 +125,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(ExternalBayMovementDirection direction, bool bypass)
         {
-            this.externalBayProvider.MoveManual(direction, -1, null, bypass, this.BayNumber, MessageActor.AutomationService);
+            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            this.externalBayProvider.MoveManual(direction, -1, null, bypass, bay, MessageActor.AutomationService);
 
             return this.Accepted();
         }

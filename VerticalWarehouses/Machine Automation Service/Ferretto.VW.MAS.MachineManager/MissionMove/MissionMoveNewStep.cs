@@ -275,8 +275,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 (bay = this.BaysDataProvider.GetByLoadingUnitLocation(destination)) != null &&
                 bay.IsExternal)
             {
-                if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) ||
-                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) ||
+                if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay) ||
+                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) ||
                     !this.machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
                 {
                     if (showErrors)
@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         foreach (var position in bay.Positions.Where(p => p.LoadingUnit is null && !p.IsBlocked))
                         {
                             if (this.SensorsProvider.IsLoadingUnitInLocation(position.Location)
-                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay))
                                 || (bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
                             {
                                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
@@ -989,16 +989,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
                     if (bay != null && bay.IsExternal && bay.IsDouble)
                     {
-                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay);
 
                         if (!returnValue)
                         {
-                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number);
+                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay);
                         }
                     }
                     else if (bay != null && bay.IsExternal)
                     {
-                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay);
                     }
                 }
             }
@@ -1228,7 +1228,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
 #if CHECK_BAY_SENSOR
                         if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
-                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)))
+                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)))
                             && !(bay != null && bay.IsExternal && bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source))))
                         {
                             unitToMove = null;

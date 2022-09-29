@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.AsNoTracking().Single().IsConnected;
+                        return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.IsConnected).Single();
                     }
                 }
 
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().IsEnabled;
+                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.IsEnabled).Single();
                 }
             }
             set
@@ -220,7 +220,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 if (this.dataLayerService.IsReady)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().ServiceUrl ?? DefaultUri;
+                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.ServiceUrl).Single() ?? DefaultUri;
                 }
 
                 return DefaultUri;
@@ -287,7 +287,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkIsEnabled;
+                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.SocketLinkIsEnabled).Single();
                 }
             }
             set
