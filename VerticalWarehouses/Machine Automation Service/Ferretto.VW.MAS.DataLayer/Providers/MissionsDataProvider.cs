@@ -21,9 +21,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        internal const string AllAcitveMissionsCacheKey = "AllAcitveMissionsCacheKey";
+        internal const string AllActiveMissionsCacheKey = "AllActiveMissionsCacheKey";
 
         internal const string AllMissionsCacheKey = "AllMissionsDataCacheKey";
+
+        //private static int cacheHits;
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -77,7 +79,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 // no duplicate of LU
-                returnValue = !this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
+                returnValue = !this.GetAllActiveMissions().Any(m => m.LoadUnitId == loadingUnitId
                     && (m.Status == MissionStatus.Executing
                         || (m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
                         )
@@ -89,7 +91,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 else
                 {
                     // no duplicate of targetBay
-                    returnValue = !this.dataContext.Missions.Any(m => m.TargetBay == targetBay
+                    returnValue = !this.GetAllActiveMissions().Any(m => m.TargetBay == targetBay
                         && m.Status == MissionStatus.Executing
                         );
                     if (!returnValue)
@@ -169,7 +171,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.Missions.Any(m => m.LoadUnitId == loadingUnitId
+                if (this.GetAllActiveMissions().Any(m => m.LoadUnitId == loadingUnitId
                          && m.TargetBay == bayNumber
                          && ((m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
                             || m.Status == MissionStatus.Executing
@@ -208,11 +210,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var transaction = this.dataContext.Database.BeginTransaction();
 
-                if (this.dataContext.Missions.Any(m =>
-                    m.Status != MissionStatus.Completed
-                    && m.Status != MissionStatus.Aborted
-                    && m.WmsId == wmsId)
-                    )
+                if (this.GetAllActiveMissions().Any(m => m.WmsId == wmsId))
                 {
                     transaction.Rollback();
                     throw new InvalidOperationException(string.Format(Resources.Missions.ResourceManager.GetString("ActiveMissionForWMS", CommonUtils.Culture.Actual), wmsId));
@@ -248,13 +246,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var existingMission = this.dataContext.Missions
-                    .AsNoTracking()
+                var existingMission = this.GetAllActiveMissions()
                     .SingleOrDefault(m =>
                         m.LoadUnitId == loadingUnitId
                         && m.MissionType == missionType
-                        && m.Status != MissionStatus.Completed
-                        && m.Status != MissionStatus.Aborted
                         );
 
                 if (existingMission != null)
@@ -313,7 +308,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 //    .ThenBy(o => o.CreationDate)
                 //    .ToList();
 
-                var cachedAllMissions = this.GetCachedMissions(AllAcitveMissionsCacheKey);
+                var cachedAllMissions = this.GetCachedMissions(AllActiveMissionsCacheKey);
 
                 if (cachedAllMissions is null)
                 {
@@ -326,10 +321,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     if (cacheEntry != null)
                     {
-                        this.cache.Set(AllAcitveMissionsCacheKey, cacheEntry, this.cacheOptions);
+                        this.cache.Set(AllActiveMissionsCacheKey, cacheEntry, this.cacheOptions);
                         return cacheEntry;
                     }
                 }
+                //else
+                //{
+                //    cacheHits++;
+                //}
 
                 return cachedAllMissions;
             }
@@ -337,46 +336,28 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Missions
-                    .Where(x => x.TargetBay == bayNumber
-                        && x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted)
-                    .OrderBy(o => o.Priority)
-                    .ThenBy(o => o.CreationDate)
-                    .ToList();
-            }
+            return this.GetAllActiveMissions().Where(x => x.TargetBay == bayNumber);
         }
 
         public List<int> GetAllActiveUnitGoBay()
         {
             var UnitGoBay = new List<int>();
 
-            lock (this.dataContext)
+            //var missions = this.dataContext.Missions
+            //.AsNoTracking()
+            //.Where(x => x.Status != MissionStatus.Completed
+            //        && x.Status != MissionStatus.Aborted
+            //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+            //.OrderBy(o => o.Priority)
+            //.ThenBy(o => o.CreationDate)
+            //.ToList();
+
+            var missions = this.GetAllActiveMissions()
+                .Where(x => (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS));
+
+            foreach (var unit in missions)
             {
-                //var missions = this.dataContext.Missions
-                //.AsNoTracking()
-                //.Where(x => x.Status != MissionStatus.Completed
-                //        && x.Status != MissionStatus.Aborted
-                //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
-                //.OrderBy(o => o.Priority)
-                //.ThenBy(o => o.CreationDate)
-                //.ToList();
-
-                var missions = this.dataContext.Missions
-                .AsNoTracking()
-                .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted
-                        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
-                .OrderBy(o => o.Priority)
-                .ThenBy(o => o.CreationDate)
-                .ToList();
-
-                foreach (var unit in missions)
-                {
-                    UnitGoBay.Add(unit.LoadUnitId);
-                }
+                UnitGoBay.Add(unit.LoadUnitId);
             }
 
             return UnitGoBay;
@@ -386,31 +367,22 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var UnitGoBay = new List<int>();
 
-            lock (this.dataContext)
+            //var missions = this.dataContext.Missions
+            //.AsNoTracking()
+            //.Where(x => x.Status != MissionStatus.Completed
+            //        && x.Status != MissionStatus.Aborted
+            //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
+            //.OrderBy(o => o.Priority)
+            //.ThenBy(o => o.CreationDate)
+            //.ToList();
+
+            var missions = this.GetAllActiveMissions()
+                .Where(x => x.TargetBay == bayNumber
+                        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS));
+
+            foreach (var unit in missions)
             {
-                //var missions = this.dataContext.Missions
-                //.AsNoTracking()
-                //.Where(x => x.Status != MissionStatus.Completed
-                //        && x.Status != MissionStatus.Aborted
-                //        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
-                //.OrderBy(o => o.Priority)
-                //.ThenBy(o => o.CreationDate)
-                //.ToList();
-
-                var missions = this.dataContext.Missions
-                .AsNoTracking()
-                .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted
-                        && x.TargetBay == bayNumber
-                        && (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS))
-                .OrderBy(o => o.Priority)
-                .ThenBy(o => o.CreationDate)
-                .ToList();
-
-                foreach (var unit in missions)
-                {
-                    UnitGoBay.Add(unit.LoadUnitId);
-                }
+                UnitGoBay.Add(unit.LoadUnitId);
             }
 
             return UnitGoBay;
@@ -420,29 +392,20 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var unitGoCell = new List<int>();
 
-            lock (this.dataContext)
+            //var missions = this.dataContext.Missions
+            //.AsNoTracking()
+            //.Where(x => x.Status != MissionStatus.Completed
+            //        && x.Status != MissionStatus.Aborted)
+            //.OrderBy(o => o.Priority)
+            //.ThenBy(o => o.CreationDate)
+            //.ToList();
+
+            var missions = this.GetAllActiveMissions()
+                .Where(x => (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS));
+
+            foreach (var unit in missions)
             {
-                //var missions = this.dataContext.Missions
-                //.AsNoTracking()
-                //.Where(x => x.Status != MissionStatus.Completed
-                //        && x.Status != MissionStatus.Aborted)
-                //.OrderBy(o => o.Priority)
-                //.ThenBy(o => o.CreationDate)
-                //.ToList();
-
-                var missions = this.dataContext.Missions
-                .AsNoTracking()
-                .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted
-                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
-                .OrderBy(o => o.Priority)
-                .ThenBy(o => o.CreationDate)
-                .ToList();
-
-                foreach (var unit in missions)
-                {
-                    unitGoCell.Add(unit.LoadUnitId);
-                }
+                unitGoCell.Add(unit.LoadUnitId);
             }
 
             return unitGoCell;
@@ -452,22 +415,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var unitGoCell = new List<int>();
 
-            lock (this.dataContext)
-            {
-                var missions = this.dataContext.Missions
-                .AsNoTracking()
-                .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted
-                        && x.TargetBay == bayNumber
-                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS))
-                .OrderBy(o => o.Priority)
-                .ThenBy(o => o.CreationDate)
-                .ToList();
+            var missions = this.GetAllActiveMissions()
+                .Where(x => x.TargetBay == bayNumber
+                        && (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS));
 
-                foreach (var unit in missions)
-                {
-                    unitGoCell.Add(unit.LoadUnitId);
-                }
+            foreach (var unit in missions)
+            {
+                unitGoCell.Add(unit.LoadUnitId);
             }
 
             return unitGoCell;
@@ -475,13 +429,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllExecutingMissions()
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Missions
-                    .Where(x => x.Status == MissionStatus.Executing
-                        || x.Status == MissionStatus.Waiting)
-                    .ToList();
-            }
+            return this.GetAllActiveMissions()
+                .Where(x => x.Status == MissionStatus.Executing
+                    || x.Status == MissionStatus.Waiting);
         }
 
         public IEnumerable<Mission> GetAllMissions()
@@ -504,6 +454,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         return cacheEntry;
                     }
                 }
+                //else
+                //{
+                //    cacheHits++;
+                //}
 
                 return cachedAllMissions;
             }
@@ -511,14 +465,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Mission> GetAllWmsMissions()
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Missions
-                    .Where(x => x.WmsId != null
-                        && x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted)
-                    .ToList();
-            }
+            return this.GetAllActiveMissions().Where(x => x.WmsId != null);
         }
 
         public Mission GetById(int id)
@@ -538,9 +485,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var mission = this.dataContext.Missions.SingleOrDefault(m => m.WmsId == id
-                    && m.Status != MissionStatus.Completed
-                    && m.Status != MissionStatus.Aborted);
+                var mission = this.GetAllActiveMissions().SingleOrDefault(m => m.WmsId == id);
                 if (mission is null)
                 {
                     throw new EntityNotFoundException(nameof(mission));
@@ -639,7 +584,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void RemoveCachedAllActiveMissions()
         {
-            this.cache.Remove(AllAcitveMissionsCacheKey);
+            this.cache.Remove(AllActiveMissionsCacheKey);
             this.cache.Remove(AllMissionsCacheKey);
         }
 

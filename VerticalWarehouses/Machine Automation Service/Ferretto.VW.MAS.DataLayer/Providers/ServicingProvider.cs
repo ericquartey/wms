@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var instruction = this.dataContext.Instructions.LastOrDefault(s => s.Id == instructionId);
+                    var instruction = this.dataContext.Instructions.ToArray().LastOrDefault(s => s.Id == instructionId);
                     if (instruction != null)
                     {
                         instruction.InstructionStatus = MachineServiceStatus.Completed;
@@ -573,8 +573,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     ServicingInfo si = this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
-                        .ThenInclude(e => e.Definition)
+                            .ThenInclude(e => e.Definition)
                         .Include(s => s.MachineStatistics)
+                        .ToArray()
                         .LastOrDefault(s => s.ServiceStatus == MachineServiceStatus.Completed);
                     si.MachineStatistics = this.machineStatistics.GetById((int)si.MachineStatisticsId);
                     si.Instructions = this.dataContext.Instructions.Where(s => si.Id == s.ServicingInfo.Id).ToList();
@@ -598,7 +599,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     ServicingInfo si = this.dataContext.ServicingInfo
                         .Include(s => s.Instructions)
-                        .ThenInclude(e => e.Definition)
+                            .ThenInclude(e => e.Definition)
                         .Include(s => s.MachineStatistics)
                         .ToArray()
                         .LastOrDefault();
