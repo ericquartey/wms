@@ -2,6 +2,7 @@
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -94,6 +95,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             this.Logger.LogInformation($"Waiting for resume of lower bay Mission:Id={lowerMission.Id}");
                         }
                         return true;
+                    }
+                }
+                else if (this.Mission.NeedHomingAxis == Axis.None
+                    && this.MachineVolatileDataProvider.RandomCells
+                    && this.MachineVolatileDataProvider.LoadUnitsToTest?.Count == 1
+                    && bay.IsDouble
+                    && bay.IsExternal)
+                {
+                    if (this.Mission.LoadUnitSource == LoadingUnitLocation.InternalBay1Down || this.Mission.LoadUnitSource == LoadingUnitLocation.InternalBay2Down || this.Mission.LoadUnitSource == LoadingUnitLocation.InternalBay3Down)
+                    {
+                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(null, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, false);
+                    }
+                    else
+                    {
+                        this.LoadingUnitMovementProvider.MoveDoubleExternalBay(null, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions, false);
                     }
                 }
                 else

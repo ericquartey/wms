@@ -628,6 +628,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 messageData.LoadingUnitId = loadUnitId;
             }
+            else
+            {
+                messageData.BypassConditions = true;
+            }
 
             if (direction == ExternalBayMovementDirection.TowardMachine)
             {
@@ -795,6 +799,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 messageData.TargetBayPositionId = bay.Positions.SingleOrDefault(s => s.IsUpper == isUpper).Id;
             }
+            messageData.BypassConditions = bay.Positions.All(p => p.LoadingUnit is null);
 
             this.logger.LogDebug(
             $"Move Double External Bay Assisted " +
