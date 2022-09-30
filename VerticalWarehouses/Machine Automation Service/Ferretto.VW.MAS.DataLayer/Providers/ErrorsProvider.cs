@@ -107,7 +107,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (this.dataContext.MachineStatistics.Any())
                 {
-                    var statistics = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                    var statistics = this.dataContext.MachineStatistics.AsNoTracking().ToArray().LastOrDefault();
                     summary.TotalLoadingUnits = statistics.TotalLoadUnitsInBay1 + statistics.TotalLoadUnitsInBay2 + statistics.TotalLoadUnitsInBay3;
                     if (summary.TotalLoadingUnits > 0)
                     {

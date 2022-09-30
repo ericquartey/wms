@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machine = this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity;
+                var machine = this.dataContext.Machines.First();
                 if (machine.BackupServerUsername == null)
                 {
                     machine.BackupServerUsername = "wmsadmin";
@@ -278,7 +278,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LastOrNull(this.dataContext.MachineStatistics.AsNoTracking(), o => o.Id)?.Entity;
+                return this.dataContext.MachineStatistics.AsNoTracking().ToArray().LastOrDefault();
             }
         }
 
@@ -552,7 +552,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineDB = this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity;
+                var machineDB = this.dataContext.Machines.First();
                 machineDB.IsEnableHandlingItemOperations = machine.IsEnableHandlingItemOperations;
                 machineDB.IsUpdatingStockByDifference = machine.IsUpdatingStockByDifference;
                 machineDB.IsRequestConfirmForLastOperationOnLoadingUnit = machine.IsRequestConfirmForLastOperationOnLoadingUnit;
@@ -652,7 +652,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     switch (bayNumber)
@@ -681,7 +681,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     switch (bayNumber)
@@ -715,7 +715,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machine = this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity;
+                var machine = this.dataContext.Machines.FirstOrDefault();
                 var passwordEncrypt = EncryptString(PASSWORDKEY, password);
                 if (machine != null)
                 {
@@ -732,7 +732,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machine = this.dataContext.LastOrNull(this.dataContext.Machines, o => o.Id)?.Entity;
+                var machine = this.dataContext.Machines.FirstOrDefault();
                 if (machine != null)
                 {
                     machine.IsDbSaveOnTelemetry = enable;
@@ -745,7 +745,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalHorizontalAxisCycles++;
@@ -781,7 +781,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
@@ -794,7 +794,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var servicingInfo = this.dataContext.LastOrNull(this.dataContext.ServicingInfo, o => o.Id)?.Entity;
+                var servicingInfo = this.dataContext.ServicingInfo.ToArray().LastOrDefault();
                 if (servicingInfo != null)
                 {
                     servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
@@ -866,7 +866,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalAutomaticTime += duration;
@@ -879,7 +879,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalPowerOnTime += duration;
@@ -898,7 +898,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalVerticalAxisCycles++;
@@ -910,7 +910,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateWeightStatistics(DataLayerContext dataContext)
         {
-            var machineStat = dataContext.LastOrNull(dataContext.MachineStatistics, o => o.Id)?.Entity;
+            var machineStat = dataContext.MachineStatistics.ToArray().LastOrDefault();
             machineStat.TotalWeightFront = 0;
             machineStat.TotalWeightBack = 0;
             var loadingUnits = dataContext.LoadingUnits
