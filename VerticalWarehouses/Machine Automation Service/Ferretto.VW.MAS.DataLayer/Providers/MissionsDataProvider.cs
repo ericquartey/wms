@@ -10,6 +10,8 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -19,7 +21,15 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        internal const string AllAcitveMissionsCacheKey = "AllAcitveMissionsCacheKey";
+
+        internal const string AllMissionsCacheKey = "AllMissionsDataCacheKey";
+
         private readonly IBaysDataProvider baysDataProvider;
+
+        private readonly IMemoryCache cache;
+
+        private readonly MemoryCacheEntryOptions cacheOptions;
 
         private readonly DataLayerContext dataContext;
 
@@ -38,6 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public MissionsDataProvider(
             DataLayerContext dataContext,
             IErrorsProvider errorProvider,
+            IMemoryCache memoryCache,
+            IConfiguration configuration,
             IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator,
             ILogger<DataLayerService> logger,
@@ -50,6 +62,9 @@ namespace Ferretto.VW.MAS.DataLayer
             this.errorProvider = errorProvider ?? throw new ArgumentNullException(nameof(errorProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+
+            this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
@@ -145,6 +160,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.Update(mission);
                 }
 
+                this.RemoveCachedAllActiveMissions();
                 return mission;
             }
         }
@@ -178,6 +194,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     });
 
                 this.dataContext.SaveChanges();
+                this.RemoveCachedAllActiveMissions();
 
                 this.logger.LogInformation($"Created internal MAS bay mission for load unit {loadingUnitId}.");
 
@@ -217,6 +234,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     });
 
                 this.dataContext.SaveChanges();
+                this.RemoveCachedAllActiveMissions();
 
                 transaction.Commit();
 
@@ -257,6 +275,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     });
 
                 this.dataContext.SaveChanges();
+                this.RemoveCachedAllActiveMissions();
 
                 this.logger.LogInformation($"Created internal MAS recall mission for load unit {loadingUnitId}.");
 
@@ -277,6 +296,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.Missions.Remove(mission);
 
                 this.dataContext.SaveChanges();
+                this.RemoveCachedAllActiveMissions();
 
                 this.logger.LogInformation($"Deleted MAS mission {mission.Id}.");
             }
@@ -286,13 +306,32 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Missions
+                //return this.dataContext.Missions
+                //    .AsNoTracking()
+                //    .Where(x => x.Status != MissionStatus.Completed && x.Status != MissionStatus.Aborted)
+                //    .OrderBy(o => o.Priority)
+                //    .ThenBy(o => o.CreationDate)
+                //    .ToList();
+
+                var cachedAllMissions = this.GetCachedMissions(AllAcitveMissionsCacheKey);
+
+                if (cachedAllMissions is null)
+                {
+                    var cacheEntry = this.dataContext.Missions
                     .AsNoTracking()
-                    .Where(x => x.Status != MissionStatus.Completed
-                        && x.Status != MissionStatus.Aborted)
+                    .Where(x => x.Status != MissionStatus.Completed && x.Status != MissionStatus.Aborted)
                     .OrderBy(o => o.Priority)
                     .ThenBy(o => o.CreationDate)
                     .ToList();
+
+                    if (cacheEntry != null)
+                    {
+                        this.cache.Set(AllAcitveMissionsCacheKey, cacheEntry, this.cacheOptions);
+                        return cacheEntry;
+                    }
+                }
+
+                return cachedAllMissions;
             }
         }
 
@@ -449,11 +488,24 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Missions
+                var cachedAllMissions = this.GetCachedMissions(AllMissionsCacheKey);
+
+                if (cachedAllMissions is null)
+                {
+                    var cacheEntry = this.dataContext.Missions
                     .AsNoTracking()
                     .OrderBy(o => o.Priority)
                     .ThenBy(o => o.CreationDate)
                     .ToList();
+
+                    if (cacheEntry != null)
+                    {
+                        this.cache.Set(AllMissionsCacheKey, cacheEntry, this.cacheOptions);
+                        return cacheEntry;
+                    }
+                }
+
+                return cachedAllMissions;
             }
         }
 
@@ -495,6 +547,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
                 return mission;
             }
+        }
+
+        public IEnumerable<Mission> GetCachedMissions(string cachedKey)
+        {
+            this.cache.TryGetValue(cachedKey, out IEnumerable<Mission> cacheEntry);
+            return cacheEntry;
         }
 
         public IDbContextTransaction GetContextTransaction()
@@ -568,6 +626,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (count > 0)
                 {
                     this.dataContext.SaveChanges();
+                    this.RemoveCachedAllActiveMissions();
                 }
                 return count;
             }
@@ -576,6 +635,12 @@ namespace Ferretto.VW.MAS.DataLayer
         public void Reload(Mission mission)
         {
             this.dataContext.Entry(mission).Reload();
+        }
+
+        public void RemoveCachedAllActiveMissions()
+        {
+            this.cache.Remove(AllAcitveMissionsCacheKey);
+            this.cache.Remove(AllMissionsCacheKey);
         }
 
         public void ResetMachine(MessageActor sender)
@@ -618,6 +683,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.AddOrUpdate(mission, (e) => e.Id);
 
                 this.dataContext.SaveChanges();
+
+                this.RemoveCachedAllActiveMissions();
 
                 this.CheckPendingChanges();
             }
