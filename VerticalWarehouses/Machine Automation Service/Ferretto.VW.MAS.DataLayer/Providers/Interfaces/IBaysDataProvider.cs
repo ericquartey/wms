@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
         void NotifyRemoveLoadUnit(int loadingUnitId, LoadingUnitLocation location);
 
         void PerformHoming(BayNumber bayNumber);
-
+        void RemoveCache(BayNumber bayNumber);
         void RemoveLoadingUnit(int loadingUnitId);
 
         void ResetMachine();

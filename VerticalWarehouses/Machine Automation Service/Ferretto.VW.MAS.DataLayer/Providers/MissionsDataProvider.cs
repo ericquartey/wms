@@ -562,6 +562,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             bay.CurrentMission = null;
                             this.dataContext.Bays.Update(bay);
                             this.logger.LogDebug($"Cleared bay mission {mission.Id}, Bay {bay.Number}.");
+                            this.baysDataProvider.RemoveCache(bay.Number);
                         }
                     }
 

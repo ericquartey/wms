@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -13,15 +14,20 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly DataLayerContext dataContext;
 
         #endregion
 
         #region Constructors
 
-        public AccessoriesDataProvider(DataLayerContext dataContext)
+        public AccessoriesDataProvider(
+            IBaysDataProvider baysDataProvider,
+            DataLayerContext dataContext)
         {
             this.dataContext = dataContext;
+            this.baysDataProvider = baysDataProvider;
         }
 
         #endregion
@@ -45,11 +51,13 @@ namespace Ferretto.VW.MAS.DataLayer
                             {
                                 bar.Accessories.AlphaNumericBar.Field1 = "ItemCode";
                                 this.dataContext.SaveChanges();
+                                this.baysDataProvider.RemoveCache(bar.Number);
                             }
                             if (bar.Accessories.AlphaNumericBar.Field2 is null)
                             {
                                 bar.Accessories.AlphaNumericBar.Field2 = "ItemDescription";
                                 this.dataContext.SaveChanges();
+                                this.baysDataProvider.RemoveCache(bar.Number);
                             }
                         }
                     }
@@ -154,6 +162,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(barBay.Number);
             }
         }
 
@@ -182,6 +191,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.DeviceInformation.Update(deviceInfo);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -204,6 +214,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -222,6 +233,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -239,6 +251,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.LabelPrinter);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -262,6 +275,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(laserPointer);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bayNumber);
             }
         }
 
@@ -295,6 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
                 }
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -323,6 +338,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.DeviceInformation.Update(deviceInfo);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -359,6 +375,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.WeightingScale);
                 this.dataContext.SaveChanges();
+                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
