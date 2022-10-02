@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Fields
 
+        internal static string GetBayCellCacheKey = "BayCellKey";
+
         private const int ProfileStep = 25;
 
         private const string ROTATION_CLASS_A = "A";
@@ -496,13 +498,24 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetByBayPositionIdCompile(this.dataContext, bayPositionId);
-                if (bay is null)
+                this.cache.TryGetValue(GetBayPositionCacheKey(bayPositionId), out Bay cacheEntry);
+                if (cacheEntry is null)
                 {
-                    throw new EntityNotFoundException(bayPositionId);
+                    var bay = GetByBayPositionIdCompile(this.dataContext, bayPositionId);
+
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayPositionId.ToString());
+                    }
+                    this.cache.Set(GetBayPositionCacheKey(bayPositionId), bay, this.cacheOptions);
+                    cacheEntry = bay;
+                }
+                else
+                {
+                    cacheHit++;
                 }
 
-                return bay;
+                return cacheEntry;
             }
         }
 
@@ -510,18 +523,30 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                //return GetByCellCompile(this.dataContext, cell);
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Carousel)
-                    .Include(b => b.External)
-                    .Include(b => b.Positions)
-                    .AsEnumerable()
-                    .Where(b => b.Side == cell.Side && b.Positions.All(p => p.Height < cell.Position))
-                    .OrderBy(o => cell.Position - o.Positions.First().Height)
-                    .FirstOrDefault();
+                var cacheKey = this.cache.TryGetValue(GetBayCellCacheKey, out Bay cacheEntry);
+                if (cacheEntry is null)
+                {
+                    var bay = this.dataContext.Bays
+                        .AsNoTracking()
+                        .Include(b => b.Shutter)
+                            .ThenInclude(s => s.Inverter)
+                        .Include(b => b.Carousel)
+                        .Include(b => b.External)
+                        .Include(b => b.Positions)
+                        .AsEnumerable()
+                        .Where(b => b.Side == cell.Side && b.Positions.All(p => p.Height < cell.Position))
+                        .OrderBy(o => cell.Position - o.Positions.First().Height)
+                        .FirstOrDefault();
+
+                    this.cache.Set(GetBayCellCacheKey, bay, this.cacheOptions);
+                    cacheEntry = bay;
+                }
+                else
+                {
+                    cacheHit++;
+                }
+
+                return cacheEntry;
             }
         }
 
@@ -621,7 +646,23 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return GetByLoadingUnitLocationCompile(this.dataContext, location);
+                this.cache.TryGetValue(GetBayLocationCacheKey(location), out Bay cacheEntry);
+                if (cacheEntry is null)
+                {
+                    var bay = GetByLoadingUnitLocationCompile(this.dataContext, location);
+
+                    if (bay is null)
+                    {
+                        return null;
+                    }
+                    this.cache.Set(GetBayLocationCacheKey(location), bay, this.cacheOptions);
+                    cacheEntry = bay;
+                }
+                else
+                {
+                    cacheHit++;
+                }
+                return cacheEntry;
             }
         }
 
@@ -889,11 +930,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Select(b => new { b.Number, b.IsExternal })
-                    .First(b => b.Number == bayNumber)
-                    .IsExternal;
+                return this.GetByNumber(bayNumber).IsExternal;
             }
         }
 
@@ -956,13 +993,24 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayPosition GetPositionByLocation(LoadingUnitLocation location)
         {
-            var bayPosition = GetPositionByLocationCompile(this.dataContext, location);
-            if (bayPosition is null)
+            this.cache.TryGetValue(GetBayPositionLocationCacheKey(location), out BayPosition cacheEntry);
+            if (cacheEntry is null)
             {
-                throw new EntityNotFoundException(location.ToString());
+                var bayPosition = GetPositionByLocationCompile(this.dataContext, location);
+
+                if (bayPosition is null)
+                {
+                    throw new EntityNotFoundException(location.ToString());
+                }
+                this.cache.Set(GetBayPositionLocationCacheKey(location), bayPosition, this.cacheOptions);
+                cacheEntry = bayPosition;
+            }
+            else
+            {
+                cacheHit++;
             }
 
-            return bayPosition;
+            return cacheEntry;
         }
 
         public double GetResolution(InverterIndex inverterIndex)
@@ -1104,7 +1152,110 @@ namespace Ferretto.VW.MAS.DataLayer
         public void RemoveCache(BayNumber bayNumber)
         {
             this.cache.Remove(GetBayAllCacheKey);
+            this.cache.Remove(GetBayCellCacheKey);
             this.cache.Remove(GetBayNumberCacheKey(bayNumber));
+            switch (bayNumber)
+            {
+                case BayNumber.BayOne:
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.CarouselBay1Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.CarouselBay1Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.ExternalBay1Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.ExternalBay1Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.InternalBay1Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.InternalBay1Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.LoadUnit));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay1Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay1Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.LoadUnit));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay1Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay1Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.LoadUnit));
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.CarouselBay2Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.CarouselBay2Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.ExternalBay2Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.ExternalBay2Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.InternalBay2Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.InternalBay2Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.LoadUnit));
+
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay2Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay2Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay2Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay2Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay2Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay2Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.LoadUnit));
+
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.CarouselBay2Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.CarouselBay2Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.ExternalBay2Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.ExternalBay2Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.InternalBay2Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.InternalBay2Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.LoadUnit));
+                    break;
+
+                case BayNumber.BayThree:
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.CarouselBay3Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.CarouselBay3Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.ExternalBay3Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.ExternalBay3Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.InternalBay3Down));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.InternalBay3Up));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.LoadUnit));
+
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay3Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay3Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay3Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay3Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay3Down));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay3Up));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.LoadUnit));
+
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.CarouselBay3Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.CarouselBay3Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.ExternalBay3Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.ExternalBay3Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.InternalBay3Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.InternalBay3Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.LoadUnit));
+                    break;
+
+                case BayNumber.ElevatorBay:
+                    this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.Elevator));
+                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Elevator));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.Elevator));
+                    break;
+            }
         }
 
         public void RemoveLoadingUnit(int loadingUnitId)
@@ -1510,7 +1661,13 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        internal static string GetBayLocationCacheKey(LoadingUnitLocation location) => $"BayLocationKey{location}";
+
         internal static string GetBayNumberCacheKey(BayNumber bayNumber) => $"BayNumberKey{bayNumber}";
+
+        internal static string GetBayPositionCacheKey(int bayPosition) => $"BayPositionKey{bayPosition}";
+
+        internal static string GetBayPositionLocationCacheKey(LoadingUnitLocation location) => $"BayPositionLocationKey{location}";
 
         internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
 
