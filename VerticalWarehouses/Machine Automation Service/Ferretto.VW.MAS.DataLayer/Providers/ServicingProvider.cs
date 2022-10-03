@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.ServicingInfo.Count() == 1)
+                if (this.dataContext.ServicingInfo.ToArray().Count() == 1)
                 {
                     // Confirm setup date in actual record
                     var service = this.dataContext.ServicingInfo.ToArray().First();
@@ -567,7 +567,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                int dim = this.dataContext.ServicingInfo.Count();
+                int dim = this.dataContext.ServicingInfo.ToArray().Count();
 
                 if (dim > 1)
                 {
@@ -593,7 +593,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                int dim = this.dataContext.ServicingInfo.Count();
+                int dim = this.dataContext.ServicingInfo.ToArray().Count();
 
                 if (dim > 1)
                 {

@@ -7917,7 +7917,6 @@
   "SetupProcedures": {
     "Bay1CarouselCalibration": {
       "FeedRate": 0.9,
-      "Id": 26,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -7926,7 +7925,6 @@
     },
     "Bay1ExternalCalibration": {
       "FeedRate": 1.0,
-      "Id": 27,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -7935,7 +7933,6 @@
     },
     "Bay1FullTest": {
       "FeedRate": 1.0,
-      "Id": 28,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -7944,19 +7941,16 @@
     },
     "Bay1HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 29,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay1Laser": {
       "FeedRate": 1.0,
-      "Id": 30,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay1ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 32,
       "IsBypassed": false,
       "IsCompleted": false,
       "ProfileCorrectDistance": 150.0,
@@ -7965,7 +7959,6 @@
     },
     "Bay1ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 39,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -7974,7 +7967,6 @@
     },
     "Bay2CarouselCalibration": {
       "FeedRate": 1.0,
-      "Id": 24,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -7983,7 +7975,6 @@
     },
     "Bay2ExternalCalibration": {
       "FeedRate": 1.0,
-      "Id": 34,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -7992,7 +7983,6 @@
     },
     "Bay2FullTest": {
       "FeedRate": 1.0,
-      "Id": 35,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8001,19 +7991,16 @@
     },
     "Bay2HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 36,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay2Laser": {
       "FeedRate": 1.0,
-      "Id": 37,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay2ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 38,
       "IsBypassed": false,
       "IsCompleted": false,
       "ProfileCorrectDistance": 150.0,
@@ -8022,7 +8009,6 @@
     },
     "Bay2ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 25,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8031,7 +8017,6 @@
     },
     "Bay3CarouselCalibration": {
       "FeedRate": 1.0,
-      "Id": 31,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8040,7 +8025,6 @@
     },
     "Bay3ExternalCalibration": {
       "FeedRate": 1.0,
-      "Id": 23,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8049,7 +8033,6 @@
     },
     "Bay3FullTest": {
       "FeedRate": 1.0,
-      "Id": 21,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8058,19 +8041,16 @@
     },
     "Bay3HeightCheck": {
       "FeedRate": 0.1,
-      "Id": 8,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay3Laser": {
       "FeedRate": 1.0,
-      "Id": 9,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Bay3ProfileCheck": {
       "FeedRate": 1.0,
-      "Id": 10,
       "IsBypassed": false,
       "IsCompleted": false,
       "ProfileCorrectDistance": 150.0,
@@ -8079,7 +8059,6 @@
     },
     "Bay3ShutterTest": {
       "FeedRate": 1.0,
-      "Id": 11,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8088,7 +8067,6 @@
     },
     "BeltBurnishingTest": {
       "FeedRate": 1.0,
-      "Id": 12,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8097,7 +8075,6 @@
     },
     "CellPanelsCheck": {
       "FeedRate": 0.2,
-      "Id": 13,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8105,7 +8082,6 @@
     },
     "CellsHeightCheck": {
       "FeedRate": 0.2,
-      "Id": 14,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8113,7 +8089,6 @@
     },
     "DepositAndPickUpTest": {
       "FeedRate": 1.0,
-      "Id": 15,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8122,14 +8097,12 @@
     },
     "HorizontalChainCalibration": {
       "FeedRate": 1.0,
-      "Id": 16,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "Id": 1,
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2,
-      "Id": 17,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8137,13 +8110,11 @@
     },
     "ShutterHeightCheck": {
       "FeedRate": 1.0,
-      "Id": 18,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "VerticalOffsetCalibration": {
       "FeedRate": 0.2,
-      "Id": 19,
       "InProgress": false,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8152,14 +8123,12 @@
     },
     "VerticalOriginCalibration": {
       "FeedRate": 1.0,
-      "Id": 20,
       "IsBypassed": false,
       "IsCompleted": false
     },
     "VerticalResolutionCalibration": {
       "FeedRate": 0.2,
       "FinalPosition": 5500.0,
-      "Id": 22,
       "InitialPosition": 1000.0,
       "IsBypassed": false,
       "IsCompleted": false,
@@ -8167,7 +8136,6 @@
     },
     "WeightMeasurement": {
       "FeedRate": 1.0,
-      "Id": 33,
       "IsBypassed": false,
       "IsCompleted": false
     }
