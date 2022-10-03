@@ -239,11 +239,11 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn x:Name="Column2"
-                            Width="1*"
-                            Binding="{Binding Path=BlockLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource EBLC}}"
-                            Header="{resources:Loc InstallationApp.Status}"
-                            SortDirection="Ascending"
-                            SortMemberPath="BlockLevel">
+                                        Width="1*"
+                                        Binding="{Binding Path=BlockLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource EBLC}}"
+                                        Header="{resources:Loc InstallationApp.Status}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="BlockLevel">
                         <!--  Header="Status">  -->
                         <!--<DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -257,14 +257,25 @@
                     </DataGridTextColumn.HeaderStyle>-->
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
-                                <Setter Property="BorderThickness" Value="1,0,0,0" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                                <Setter Property="BorderThickness"
+                                        Value="1,0,0,0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding BlockLevel, Converter={StaticResource BLTCC}}"
+                                                 Value="True">
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource FerrettoRed}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </DataGridTextColumn.CellStyle>
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
