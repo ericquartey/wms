@@ -25,22 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
-- Il servizio MAS usa ora il netcore 3.1
-- Barra Alfanumerica - aggiunto Messaggio GET e messaggi configurabili
+## Nuove Funzionalità 1.0.52 rispetto la 1.0.51
+- Test completo: con un solo cassetto l'opzione Random cambia anche la posizione in baia
 
 ## Bug Risolti
-- Gli utenti di WMS possono avere password vuote
-- Pagina di prelievo - corretto aggiornamento della quantità da prelevare
-- Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
-- Gli accessori si possono modificare prima di accendere la macchina
-- Serranda UpperHalf - corretto ciclo di sollevamento giostra
-- Chiamata cassetto - non perde più la selezione
-- BID - corretta gestione cassetti alti
-- Servizio MAS - non legge più i parametri inverter
+- Viste di prelievo e versamento: corretto aggiornamento della barra led
+- Aggiungi articolo: corretta mancanza di tastiera a video
+- Liste in attesa: corretta dimensione della descrizione
+- Eliminati rallentamenti evidenziati nella versione precedente
+- Le celle bloccate sono evidenziate in rosso
 
-## Compatibile con adapter 0.4.40
+## Compatibile con adapter 0.4.41
 ***
+
+[Versione 1.0.51](#id1051)
 
 [Versione 1.0.50](#id1050)
 
@@ -144,6 +142,22 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1051"></a>
+## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
+- Il servizio MAS usa ora il netcore 3.1
+- Barra Alfanumerica - aggiunto Messaggio GET e messaggi configurabili
+
+## Bug Risolti
+- Gli utenti di WMS possono avere password vuote
+- Pagina di prelievo - corretto aggiornamento della quantità da prelevare
+- Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
+- Gli accessori si possono modificare prima di accendere la macchina
+- Serranda UpperHalf - corretto ciclo di sollevamento giostra
+- Chiamata cassetto - non perde più la selezione
+- BID - corretta gestione cassetti alti
+
+## Compatibile con adapter 0.4.40
 
 <a id="id1050"></a>
 ## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
