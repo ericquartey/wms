@@ -296,8 +296,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
 
             await this.LoadListsAsync();
 

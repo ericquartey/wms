@@ -61,14 +61,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
             }
 
-            return this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id).Entity.Id;
+            return this.dataContext.MachineStatistics.AsNoTracking().Select(m => m.Id).ToArray().LastOrDefault();
         }
 
         public MachineStatistics GetActual()
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity;
+                return this.dataContext.MachineStatistics.AsNoTracking().ToArray().LastOrDefault();
             }
         }
 
@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.ToList();
+                return this.dataContext.MachineStatistics.AsNoTracking().ToList();
             }
         }
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.FirstOrNull(this.dataContext.MachineStatistics, o => o.Id, s => s.Id == id)?.Entity;
+                return this.dataContext.MachineStatistics.FirstOrDefault(s => s.Id == id);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LastOrNull(this.dataContext.ServicingInfo, o => o.Id)?.Entity?.TotalMissions ?? 0;
+                return this.dataContext.ServicingInfo.AsNoTracking().Select(s => s.TotalMissions).ToArray().LastOrDefault() ?? 0;
             }
         }
 
@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalVerticalAxisKilometers ?? 0;
+                return this.dataContext.MachineStatistics.AsNoTracking().Select(s => s.TotalVerticalAxisKilometers).ToArray().LastOrDefault();
             }
         }
 

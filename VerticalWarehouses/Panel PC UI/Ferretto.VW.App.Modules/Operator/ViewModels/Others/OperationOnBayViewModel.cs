@@ -303,25 +303,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsShowBarcodeImage = this.Bay.ShowBarcodeImage is true;
                 this.IsCheckListContinueInOtherMachine = this.Bay.CheckListContinueInOtherMachine is true;
 
-                var configuration = await this.machineConfigurationWebService.GetAsync();
-                this.IsEnableHandlingItemOperations = configuration.Machine.IsEnableHandlingItemOperations;
-                this.IsUpdatingStockByDifference = configuration.Machine.IsUpdatingStockByDifference;
-                this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.Machine.IsRequestConfirmForLastOperationOnLoadingUnit;
-                this.IsEnableAddItem = configuration.Machine.IsEnableAddItem;
-                this.IsEnableAddItemByList = configuration.Machine.IsAddItemByList;
-                this.IsCarrefour = configuration.Machine.IsCarrefour;
-                this.IsDrapery = configuration.Machine.IsDrapery;
-                this.IsDisableQtyItemEditingPick = configuration.Machine.IsDisableQtyItemEditingPick;
-                this.IsDoubleConfirmBarcodeInventory = configuration.Machine.IsDoubleConfirmBarcodeInventory;
-                this.IsDoubleConfirmBarcodePick = configuration.Machine.IsDoubleConfirmBarcodePick;
-                this.IsDoubleConfirmBarcodePut = configuration.Machine.IsDoubleConfirmBarcodePut;
-                this.IsBox = configuration.Machine.Box;
-                this.IsEnabeNoteRules = configuration.Machine.EnabeNoteRules;
-                this.IsLocalMachineItems = configuration.Machine.IsLocalMachineItems;
-                this.IsOrderList = configuration.Machine.IsOrderList;
-                this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
-                this.ItemUniqueIdLength = configuration.Machine.ItemUniqueIdLength;
-                this.ToteBarcodeLength = configuration.Machine.ToteBarcodeLength;
+                var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+                this.IsEnableHandlingItemOperations = configuration.IsEnableHandlingItemOperations;
+                this.IsUpdatingStockByDifference = configuration.IsUpdatingStockByDifference;
+                this.IsRequestConfirmForLastOperationOnLoadingUnit = configuration.IsRequestConfirmForLastOperationOnLoadingUnit;
+                this.IsEnableAddItem = configuration.IsEnableAddItem;
+                this.IsEnableAddItemByList = configuration.IsAddItemByList;
+                this.IsCarrefour = configuration.IsCarrefour;
+                this.IsDrapery = configuration.IsDrapery;
+                this.IsDisableQtyItemEditingPick = configuration.IsDisableQtyItemEditingPick;
+                this.IsDoubleConfirmBarcodeInventory = configuration.IsDoubleConfirmBarcodeInventory;
+                this.IsDoubleConfirmBarcodePick = configuration.IsDoubleConfirmBarcodePick;
+                this.IsDoubleConfirmBarcodePut = configuration.IsDoubleConfirmBarcodePut;
+                this.IsBox = configuration.Box;
+                this.IsEnabeNoteRules = configuration.EnabeNoteRules;
+                this.IsLocalMachineItems = configuration.IsLocalMachineItems;
+                this.IsOrderList = configuration.IsOrderList;
+                this.IsQuantityLimited = configuration.IsQuantityLimited;
+                this.ItemUniqueIdLength = configuration.ItemUniqueIdLength;
+                this.ToteBarcodeLength = configuration.ToteBarcodeLength;
             }
             catch (Exception ex)
             {

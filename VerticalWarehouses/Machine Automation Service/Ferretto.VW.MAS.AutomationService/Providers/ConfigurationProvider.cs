@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IMachineProvider machineProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-
+        private readonly IBaysDataProvider baysDataProvider;
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
@@ -32,6 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IWmsSettingsProvider wmsSettingsProvider,
+            IBaysDataProvider baysDataProvider,
             DataLayerContext dataContext,
             ILogger<ConfigurationProvider> logger)
         {
@@ -39,6 +40,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.baysDataProvider = baysDataProvider;
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -136,6 +138,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");
+                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.BayOne);
+                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.BayTwo);
+                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.BayThree);
+                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.ElevatorBay);
                     }
                     catch (Exception e)
                     {

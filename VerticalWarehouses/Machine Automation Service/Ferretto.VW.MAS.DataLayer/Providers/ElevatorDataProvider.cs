@@ -212,10 +212,10 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 try
                 {
-                var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
+                    var currentBayPosition = GetCurrentBayPositionCompile(this.dataContext);
 
-                return currentBayPosition;
-            }
+                    return currentBayPosition;
+                }
                 catch (EntityNotFoundException)
                 {
                     return null;
@@ -229,10 +229,10 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 try
                 {
-                var currentCell = GetCurrentCellCompile(this.dataContext);
+                    var currentCell = GetCurrentCellCompile(this.dataContext);
 
-                return currentCell;
-            }
+                    return currentCell;
+                }
                 catch (EntityNotFoundException)
                 {
                     return null;
@@ -249,7 +249,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(Orientation.Horizontal.ToString());
                 }
-                var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalHorizontalAxisCycles ?? 0;
+                var cycles = this.dataContext.MachineStatistics.AsNoTracking().Select(s => s.TotalHorizontalAxisCycles).ToArray().LastOrDefault();
                 return Math.Abs(cycles - axis.LastCalibrationCycles);
             }
         }
@@ -263,7 +263,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(Orientation.Vertical.ToString());
                 }
-                var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalVerticalAxisCycles ?? 0;
+                var cycles = this.dataContext.MachineStatistics.AsNoTracking().Select(s => s.TotalVerticalAxisCycles).ToArray().LastOrDefault();
                 return Math.Abs(cycles - axis.LastCalibrationCycles);
             }
         }
@@ -521,12 +521,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (orientation == Orientation.Vertical)
                 {
-                    var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalVerticalAxisCycles ?? 0;
+                    var cycles = this.dataContext.MachineStatistics.AsNoTracking().Select(s => s.TotalVerticalAxisCycles).ToArray().LastOrDefault();
                     axis.LastCalibrationCycles = cycles;
                 }
                 else if (orientation == Orientation.Horizontal)
                 {
-                    var cycles = this.dataContext.LastOrNull(this.dataContext.MachineStatistics, o => o.Id)?.Entity?.TotalHorizontalAxisCycles ?? 0;
+                    var cycles = this.dataContext.MachineStatistics.AsNoTracking().Select(s => s.TotalHorizontalAxisCycles).ToArray().LastOrDefault();
                     axis.LastCalibrationCycles = cycles;
                 }
 

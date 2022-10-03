@@ -84,13 +84,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isDistinctBySerialNumberEnabled;
 
-        private bool isGroupbyLot;
-
-        private bool isGroupbyLotEnabled;
-
         private bool isExpireDate;
 
         private bool isExpireDateEnable;
+
+        private bool isGroupbyLot;
+
+        private bool isGroupbyLotEnabled;
 
         private bool isLocalMachineItems;
 
@@ -292,35 +292,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             private set => this.SetProperty(ref this.isDistinctBySerialNumberEnabled, value);
         }
 
-        public bool IsGroupbyLot
-        {
-            get => this.isGroupbyLot;
-            set
-            {
-                if (this.SetProperty(ref this.isGroupbyLot, value))
-                {
-                    new Task(async () =>
-                    {
-                        this.Appear = false;
-                        this.IsSearching = true;
-                        this.SelectedItem = null;
-                        this.currentItemIndex = 0;
-                        this.tokenSource = new CancellationTokenSource();
-                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
-                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
-                        this.Appear = true;
-                    }).Start();
-                }
-            }
-        }
-
-        public bool IsGroupbyLotEnabled
-        {
-            get => this.isGroupbyLotEnabled;
-            private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
-        }
-
-
         public bool IsExpireDate
         {
             get => this.isExpireDate;
@@ -347,6 +318,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isExpireDateEnable;
             private set => this.SetProperty(ref this.isExpireDateEnable, value);
+        }
+
+        public bool IsGroupbyLot
+        {
+            get => this.isGroupbyLot;
+            set
+            {
+                if (this.SetProperty(ref this.isGroupbyLot, value))
+                {
+                    new Task(async () =>
+                    {
+                        this.Appear = false;
+                        this.IsSearching = true;
+                        this.SelectedItem = null;
+                        this.currentItemIndex = 0;
+                        this.tokenSource = new CancellationTokenSource();
+                        await this.ReloadAllItems(this.searchItem, this.tokenSource.Token);
+                        await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+                        this.Appear = true;
+                    }).Start();
+                }
+            }
+        }
+
+        public bool IsGroupbyLotEnabled
+        {
+            get => this.isGroupbyLotEnabled;
+            private set => this.SetProperty(ref this.isGroupbyLotEnabled, value);
         }
 
         public bool IsOrderVisible
@@ -969,9 +968,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
-            this.isLocalMachineItems = configuration.Machine.IsLocalMachineItems;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
+            this.isLocalMachineItems = configuration.IsLocalMachineItems;
 
             this.Appear = false;
             this.InputQuantity = 0;

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
     internal class ShutterProvider : BaseProvider, IShutterProvider
     {
-        #region Private Fields
+        #region Fields
 
         private readonly IBaysDataProvider baysDataProvider;
 
@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #endregion
 
-        #region Public Constructors
+        #region Constructors
 
         public ShutterProvider(
             IBaysDataProvider baysDataProvider,
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #endregion
 
-        #region Public Methods
+        #region Methods
 
         public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
         {
@@ -64,9 +64,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="sender"></param>
         public void Move(ShutterMovementDirection direction, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
         {
-            var parameters = this.baysDataProvider.GetManualMovementsShutter(bayNumber);
-            var maxSpeed = this.baysDataProvider.GetShutterMaxSpeed(bayNumber);
-            var minSpeed = this.baysDataProvider.GetShutterMinSpeed(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var parameters = bay.Shutter.ManualMovements;
+            var maxSpeed = bay.Shutter.MaxSpeed;
+            var minSpeed = bay.Shutter.MinSpeed;
 
             var speedRate = parameters.FeedRate * minSpeed;
 
@@ -76,8 +77,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var targetPosition = direction == ShutterMovementDirection.Up
                 ? ShutterPosition.Opened
                 : ShutterPosition.Closed;
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             if (targetPosition == ShutterPosition.Closed && bay.Shutter.Type == ShutterType.UpperHalf)
             {
@@ -173,9 +172,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("ThePositionIsNotValid", CommonUtils.Culture.Actual));
             }
 
-            var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
-            var maxSpeed = this.baysDataProvider.GetShutterMaxSpeed(bayNumber);
-            var minSpeed = this.baysDataProvider.GetShutterMinSpeed(bayNumber);
+            var parameters = bay.Shutter.AssistedMovements;
+            var maxSpeed = bay.Shutter.MaxSpeed;
+            var minSpeed = bay.Shutter.MinSpeed;
 
             var speedRate = parameters.FeedRate * maxSpeed;
             var lowSpeed = parameters.FeedRate * minSpeed;
@@ -252,15 +251,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheNumberOfTestCyclesMustBeStrictlyPositive", CommonUtils.Culture.Actual));
             }
 
-            var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
-            var maxSpeed = this.baysDataProvider.GetShutterMaxSpeed(bayNumber);
-            var minSpeed = this.baysDataProvider.GetShutterMinSpeed(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var parameters = bay.Shutter.AssistedMovements;
+            var maxSpeed = bay.Shutter.MaxSpeed;
+            var minSpeed = bay.Shutter.MinSpeed;
 
             var speedRate = parameters.FeedRate * maxSpeed;
 
             var lowSpeed = parameters.FeedRate * minSpeed;
-
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var delayInMilliseconds = delayInSeconds * 1000;
 

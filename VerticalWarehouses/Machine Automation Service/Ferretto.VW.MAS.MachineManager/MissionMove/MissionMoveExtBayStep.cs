@@ -69,25 +69,25 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var isLoadUnitDestinationInBay = (destination.Location == this.Mission.LoadUnitDestination);
 
-            if (this.Mission.RestoreConditions && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+            if (this.Mission.RestoreConditions && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay))
             {
                 this.Mission.ErrorCode = MachineErrorCode.NoError;
                 //this.Logger.LogInformation($"Homing axis BayChain Start Mission:Id={this.Mission.Id}");
                 //this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
 
                 this.Logger.LogInformation($"Restore mission axis BayChain move TowardOperator:Id={this.Mission.Id}");
-                this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay, this.Mission.RestoreConditions);
             }
             else
             {
-                this.Logger.LogDebug($"Move into external bay => LoadUnitDestination: {this.Mission.LoadUnitDestination}, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+                this.Logger.LogDebug($"Move into external bay => LoadUnitDestination: {this.Mission.LoadUnitDestination}, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)}");
 
                 // Move during normal positioning
                 if (isLoadUnitDestinationInBay)
                 {
-                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay))
                     {
-                        if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
+                        if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay, this.Mission.RestoreConditions))
                         {
                             this.ExternalBayChainEnd();
                             return true;
@@ -116,9 +116,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay))
                     {
-                        if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions))
+                        if (!this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay, this.Mission.RestoreConditions))
                         {
                             this.ExternalBayChainEnd();
                             return true;
@@ -244,9 +244,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                                 this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 
-                                if (isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                if (isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay))
                                 {
-                                    this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                                    this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay, this.Mission.RestoreConditions);
                                     this.Mission.LoadUnitDestination = destination.Location;
 
                                     this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
@@ -330,20 +330,20 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    if (isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                    if (isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay))
                     {
                         this.Logger.LogDebug($"4a. Move external bay toward Operator, mainly to handle the drawer after a restore conditions movement");
 
-                        this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                        this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardOperator, MessageActor.MachineManager, bay, this.Mission.RestoreConditions);
                         //this.Mission.LoadUnitDestination = destination.Location;
 
                         this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
                     }
-                    else if (!isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number))
+                    else if (!isLoadUnitDestinationInBay && this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay))
                     {
                         this.Logger.LogDebug($"5a. Move external bay toward Machine, mainly to handle the drawer after a restore conditions movement");
 
-                        this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                        this.LoadingUnitMovementProvider.MoveExternalBay(this.Mission.LoadUnitId, ExternalBayMovementDirection.TowardMachine, MessageActor.MachineManager, bay, this.Mission.RestoreConditions);
                         //this.Mission.LoadUnitDestination = destination.Location;
 
                         this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
@@ -387,11 +387,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 if (isLoadUnitDestinationInBay)
                 {
-                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
-                        && !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
+                    if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)
+                        && !this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)
                         )
                     {
-                        this.Logger.LogDebug($"1. Go to MissionMoveEndStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+                        this.Logger.LogDebug($"1. Go to MissionMoveEndStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)}");
                         if (this.Mission.MissionType == MissionType.OUT ||
                             this.Mission.MissionType == MissionType.WMS ||
                             this.Mission.MissionType == MissionType.FullTestOUT)
@@ -406,7 +406,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         // Detect an error condition
-                        this.Logger.LogDebug($"2. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+                        this.Logger.LogDebug($"2. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)}");
 
                         this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
                         this.Mission.RestoreStep = this.Mission.Step;
@@ -416,12 +416,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 else
                 {
                     var machineResourcesProvider = this.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)
-                        && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)
+                    if (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)
+                        && !this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)
                         && machineResourcesProvider.IsSensorZeroOnBay(bay.Number)
                         )
                     {
-                        this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+                        this.Logger.LogDebug($"3. Go to MissionMoveLoadElevatorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)}");
                         this.BaysDataProvider.IncrementCycles(bay.Number);
                         if (this.Mission.NeedHomingAxis == Axis.None
                             && bay.TotalCycles - bay.LastCalibrationCycles >= bay.CyclesToCalibrate
@@ -435,7 +435,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     else
                     {
                         // Detect an error condition
-                        this.Logger.LogDebug($"4. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)}");
+                        this.Logger.LogDebug($"4. Go to MissionMoveErrorStep, IsInternalPositionOccupied: {this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay)}, IsExternalPositionOccupied: {this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)}");
 
                         this.ErrorsProvider.RecordNew(MachineErrorCode.MoveExtBayNotAllowed, this.Mission.TargetBay);
                         throw new StateMachineException(ErrorDescriptions.MoveExtBayNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);

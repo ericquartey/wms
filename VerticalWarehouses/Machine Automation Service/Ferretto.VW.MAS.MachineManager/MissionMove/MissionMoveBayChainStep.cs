@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
                 {
-                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay, this.Mission.RestoreConditions);
                     this.Mission.LoadUnitDestination = destination.Location;
                 }
 
@@ -416,7 +416,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
                     {
-                        this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
+                        this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay, false);
                         this.Mission.LoadUnitDestination = destination.Location;
                         this.Mission.StepTime = DateTime.UtcNow;
                     }

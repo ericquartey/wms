@@ -42,54 +42,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public EntityEntry<TSource> FirstOrNull<TSource, TKey>(IEnumerable<TSource> entity, Func<TSource, TKey> order, Func<TSource, bool> selector = null)
-            where TSource : class
-        {
-            if (entity == null
-                || !entity.Any())
-            {
-                return null;
-            }
-            TSource ret;
-            if (selector != null)
-            {
-                ret = entity.OrderBy(order).FirstOrDefault(selector);
-            }
-            else
-            {
-                ret = entity.OrderBy(order).FirstOrDefault();
-            }
-            if (ret != null)
-            {
-                return this.Entry(ret);
-            }
-            return null;
-        }
-
-        public EntityEntry<TSource> LastOrNull<TSource, TKey>(IEnumerable<TSource> entity, Func<TSource, TKey> order, Func<TSource, bool> selector = null)
-            where TSource : class
-        {
-            if (entity == null
-                || !entity.Any())
-            {
-                return null;
-            }
-            TSource ret;
-            if (selector != null)
-            {
-                ret = entity.OrderByDescending(order).FirstOrDefault(selector);
-            }
-            else
-            {
-                ret = entity.OrderByDescending(order).FirstOrDefault();
-            }
-            if (ret != null)
-            {
-                return this.Entry(ret);
-            }
-            return null;
-        }
-
         #endregion
     }
 }

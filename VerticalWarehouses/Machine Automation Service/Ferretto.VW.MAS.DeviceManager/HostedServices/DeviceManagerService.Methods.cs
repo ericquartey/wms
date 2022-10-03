@@ -707,7 +707,7 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             this.Logger.LogTrace("1:Method Start");
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var shutterIndex = baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index;
+            var shutterIndex = baysDataProvider.GetShutterInverterIndex(message.RequestingBay);
 
             if (this.currentStateMachines.Any(x => x.BayNumber == message.RequestingBay
                     && !(x is PositioningStateMachine)

@@ -38,6 +38,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.configurationProvider.ConfigurationGet());
         }
 
+        [HttpPost("get/config")]
+        public ActionResult<Machine> GetConfig()
+        {
+            return this.Ok(this.machineProvider.GetMinMaxHeight());
+        }
+
         [HttpPost("get/machine")]
         public ActionResult<Machine> GetMachine()
         {

@@ -1451,7 +1451,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
-            var machine = await this.machineConfigurationWebService.GetMachineAsync();
+            var machine = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsBoxEnabled = machine.Box;
 
             this.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;

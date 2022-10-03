@@ -472,9 +472,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             using (var scope = this.serviceScopeFactory.CreateScope())
             {
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                foreach (var bay in baysDataProvider.GetAll())
+                foreach (var baysNumber in baysDataProvider.GetBayNumbers())
                 {
-                    switch (bay.Number)
+                    switch (baysNumber)
                     {
                         case BayNumber.BayOne:
                             if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
@@ -482,7 +482,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 isMarchPossible = false;
                                 reason.Append("Emergency Active Bay1; ");
                                 errorCode = MachineErrorCode.SecurityButtonWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
                             {
@@ -494,14 +494,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 isMarchPossible = false;
                                 reason.Append("Micro Carter Active Bay1 Left; ");
                                 errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1])
                             {
                                 isMarchPossible = false;
                                 reason.Append("Micro Carter Active Bay1 Right; ");
                                 errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
 
                             break;
@@ -512,7 +512,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 isMarchPossible = false;
                                 reason.Append("Emergency Active Bay2; ");
                                 errorCode = MachineErrorCode.SecurityButtonWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
                             {
@@ -524,14 +524,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 isMarchPossible = false;
                                 reason.Append("Micro Carter Active Bay2 Left; ");
                                 errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2])
                             {
                                 isMarchPossible = false;
                                 reason.Append("Micro Carter Active Bay2 Right; ");
                                 errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
 
                             break;
@@ -542,7 +542,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 isMarchPossible = false;
                                 reason.Append("Emergency Active Bay3; ");
                                 errorCode = MachineErrorCode.SecurityButtonWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
                             {
@@ -554,14 +554,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 isMarchPossible = false;
                                 reason.Append("Micro Carter Active Bay3 Left; ");
                                 errorCode = MachineErrorCode.SecurityLeftSensorWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
                             else if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3])
                             {
                                 isMarchPossible = false;
                                 reason.Append("Micro Carter Active Bay3 Right; ");
                                 errorCode = MachineErrorCode.SecurityRightSensorWasTriggered;
-                                bayNumber = bay.Number;
+                                bayNumber = baysNumber;
                             }
 
                             break;
