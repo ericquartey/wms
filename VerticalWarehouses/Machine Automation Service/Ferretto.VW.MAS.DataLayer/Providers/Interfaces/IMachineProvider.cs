@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void CheckBackupServer();
 
-        void ClearAll();
-
         Machine Get();
 
         string GetBackupServer();
