@@ -35,8 +35,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Bay> GetAll();
 
-        int GetAllCount();
-
         IEnumerable<BayNumber> GetBayNumbers();
 
         WarehouseSide GetBaySide(BayNumber bayNumber);
@@ -117,8 +115,12 @@ namespace Ferretto.VW.MAS.DataLayer
         void NotifyRemoveLoadUnit(int loadingUnitId, LoadingUnitLocation location);
 
         void PerformHoming(BayNumber bayNumber);
+
         void RemoveCache(BayNumber bayNumber);
+
         void RemoveLoadingUnit(int loadingUnitId);
+
+        void RemovePositionCache(LoadingUnitLocation location);
 
         void ResetMachine();
 

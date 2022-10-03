@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Include(b => b.LoadingUnit)
                 .SingleOrDefault(p => p.Location == location));
 
-        private static int cacheHit;
+        //private static int cacheHit;
 
         private readonly IMemoryCache cache;
 
@@ -435,20 +435,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Set(GetBayAllCacheKey, bays, this.cacheOptions);
                     cacheEntry = bays;
                 }
-                else
-                {
-                    cacheHit++;
-                }
+                //else
+                //{
+                //    cacheHit++;
+                //}
 
                 return cacheEntry;
-            }
-        }
-
-        public int GetAllCount()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Bays.AsNoTracking().Count();
             }
         }
 
@@ -510,10 +502,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Set(GetBayPositionCacheKey(bayPositionId), bay, this.cacheOptions);
                     cacheEntry = bay;
                 }
-                else
-                {
-                    cacheHit++;
-                }
+                //else
+                //{
+                //    cacheHit++;
+                //}
 
                 return cacheEntry;
             }
@@ -541,10 +533,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Set(GetBayCellCacheKey, bay, this.cacheOptions);
                     cacheEntry = bay;
                 }
-                else
-                {
-                    cacheHit++;
-                }
+                //else
+                //{
+                //    cacheHit++;
+                //}
 
                 return cacheEntry;
             }
@@ -658,10 +650,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Set(GetBayLocationCacheKey(location), bay, this.cacheOptions);
                     cacheEntry = bay;
                 }
-                else
-                {
-                    cacheHit++;
-                }
+                //else
+                //{
+                //    cacheHit++;
+                //}
                 return cacheEntry;
             }
         }
@@ -724,10 +716,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Set(GetBayNumberCacheKey(bayNumber), bay, this.cacheOptions);
                     cacheEntry = bay;
                 }
-                else
-                {
-                    cacheHit++;
-                }
+                //else
+                //{
+                //    cacheHit++;
+                //}
 
                 return cacheEntry;
             }
@@ -1005,10 +997,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.cache.Set(GetBayPositionLocationCacheKey(location), bayPosition, this.cacheOptions);
                 cacheEntry = bayPosition;
             }
-            else
-            {
-                cacheHit++;
-            }
+            //else
+            //{
+            //    cacheHit++;
+            //}
 
             return cacheEntry;
         }
@@ -1166,6 +1158,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.Cell));
                     this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.NoLocation));
                     this.cache.Remove(GetBayPositionCacheKey((int)LoadingUnitLocation.LoadUnit));
+
                     this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Down));
                     this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Up));
                     this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Down));
@@ -1175,15 +1168,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Cell));
                     this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.NoLocation));
                     this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.LoadUnit));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Down));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.CarouselBay1Up));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Down));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.ExternalBay1Up));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay1Down));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.InternalBay1Up));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.Cell));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.NoLocation));
-                    this.cache.Remove(GetBayLocationCacheKey(LoadingUnitLocation.LoadUnit));
+
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.CarouselBay1Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.CarouselBay1Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.ExternalBay1Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.ExternalBay1Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.InternalBay1Down));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.InternalBay1Up));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.Cell));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.NoLocation));
+                    this.cache.Remove(GetBayPositionLocationCacheKey(LoadingUnitLocation.LoadUnit));
                     break;
 
                 case BayNumber.BayTwo:
@@ -1271,7 +1265,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var position = this.GetPositionByLocation(sourceBay);
                 this.SetLoadingUnit(position.Id, null);
-                this.RemoveCache(position.Bay.Number);
+                this.RemovePositionCache(position.Location);
             }
 
             lock (this.dataContext)
@@ -1283,11 +1277,61 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void RemovePositionCache(LoadingUnitLocation location)
+        {
+            this.cache.Remove(GetBayAllCacheKey);
+            this.cache.Remove(GetBayCellCacheKey);
+            this.cache.Remove(GetBayPositionCacheKey((int)location));
+            this.cache.Remove(GetBayLocationCacheKey(location));
+            this.cache.Remove(GetBayPositionLocationCacheKey(location));
+            switch (location)
+            {
+                case LoadingUnitLocation.CarouselBay1Down:
+                case LoadingUnitLocation.CarouselBay1Up:
+                case LoadingUnitLocation.ExternalBay1Down:
+                case LoadingUnitLocation.ExternalBay1Up:
+                case LoadingUnitLocation.InternalBay1Down:
+                case LoadingUnitLocation.InternalBay1Up:
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.BayOne));
+                    break;
+
+                case LoadingUnitLocation.CarouselBay2Down:
+                case LoadingUnitLocation.CarouselBay2Up:
+                case LoadingUnitLocation.ExternalBay2Down:
+                case LoadingUnitLocation.ExternalBay2Up:
+                case LoadingUnitLocation.InternalBay2Down:
+                case LoadingUnitLocation.InternalBay2Up:
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.BayTwo));
+                    break;
+
+                case LoadingUnitLocation.CarouselBay3Down:
+                case LoadingUnitLocation.CarouselBay3Up:
+                case LoadingUnitLocation.ExternalBay3Down:
+                case LoadingUnitLocation.ExternalBay3Up:
+                case LoadingUnitLocation.InternalBay3Down:
+                case LoadingUnitLocation.InternalBay3Up:
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.BayThree));
+                    break;
+
+                case LoadingUnitLocation.LoadUnit:
+                case LoadingUnitLocation.Cell:
+                case LoadingUnitLocation.NoLocation:
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.BayOne));
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.BayTwo));
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.BayThree));
+                    break;
+
+                case LoadingUnitLocation.Elevator:
+                    this.cache.Remove(GetBayNumberCacheKey(BayNumber.ElevatorBay));
+                    break;
+            }
+        }
+
         public void ResetMachine()
         {
             lock (this.dataContext)
             {
-                foreach (var bayPosition in this.dataContext.BayPositions.Include(i => i.LoadingUnit).Include(b => b.Bay)
+                foreach (var bayPosition in this.dataContext.BayPositions.Include(i => i.LoadingUnit)
 )
                 {
                     if (bayPosition.LoadingUnit != null)
@@ -1301,7 +1345,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                         bayPosition.LoadingUnit = null;
                         this.dataContext.BayPositions.Update(bayPosition);
-                        this.RemoveCache(bayPosition.Bay.Number);
+                        this.RemovePositionCache(bayPosition.Location);
                     }
                 }
 
@@ -1418,7 +1462,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null)
         {
-            var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).Include(i => i.Bay).SingleOrDefault(p => p.Id == bayPositionId);
+            var position = this.dataContext.BayPositions.Include(i => i.LoadingUnit).SingleOrDefault(p => p.Id == bayPositionId);
             if (position is null)
             {
                 throw new EntityNotFoundException($"BayPosition ID={bayPositionId}");
@@ -1449,7 +1493,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
-            this.RemoveCache(position.Bay.Number);
+            this.RemovePositionCache(position.Location);
         }
 
         public void SetProfileConstBay(BayNumber bayNumber, double k0, double k1)
