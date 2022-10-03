@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.anyCellSelected, value);
         }
 
-        public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest).ToList();
+        public IEnumerable<BlockLevel> BlockLevels => Enum.GetValues(typeof(BlockLevel)).OfType<BlockLevel>().Where(block => block != BlockLevel.NeedsTest && block != BlockLevel.Undefined).ToList();
 
         public ObservableCollection<CellPlus> Cells => IEnumConvert(this.MachineService.CellsPlus.OrderBy(s => s.Side).ThenBy(s => s.Id));
 
