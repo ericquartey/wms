@@ -34,6 +34,7 @@
 - Liste in attesa: corretta dimensione della descrizione
 - Eliminati rallentamenti evidenziati nella versione precedente
 - Le celle bloccate sono evidenziate in rosso
+- BIG: corretto ripristino se si blocca l'homing
 
 ## Compatibile con adapter 0.4.41
 ***

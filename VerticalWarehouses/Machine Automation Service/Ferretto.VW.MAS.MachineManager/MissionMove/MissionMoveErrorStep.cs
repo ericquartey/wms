@@ -62,6 +62,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             )
                         {
                             this.OnHomingNotification(messageData);
+                            if (this.Mission.ErrorMovements.HasFlag(MissionErrorMovements.HomeMovement)
+                                && messageData.AxisToCalibrate == Axis.BayChain
+                                && this.Mission.RestoreStep == MissionStep.BayChain)
+                            {
+                                this.RestoreOriginalStep();
+                            }
                         }
                         else if (notification.Type == MessageType.ShutterPositioning)
                         {
@@ -358,21 +364,31 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 var notificationText = $"Load Unit {this.Mission.LoadUnitId} placed on bay {bay.Number}";
                 this.SendMoveNotification(bay.Number, notificationText, MessageStatus.OperationWaitResume);
 
-                this.Mission.RestoreStep = MissionStep.NotDefined;
-                this.Mission.RestoreConditions = false;
-                this.Mission.NeedMovingBackward = false;
-                if (this.Mission.MissionType == MissionType.OUT
-                    || this.Mission.MissionType == MissionType.WMS
-                    || this.Mission.MissionType == MissionType.FullTestOUT
-                    )
+                if (this.Mission.NeedHomingAxis == Axis.BayChain)
                 {
-                    var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    this.Mission.ErrorMovements = MissionErrorMovements.HomeMovement;
+                    this.MissionsDataProvider.Update(this.Mission);
+                    this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
+                    this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, bay.Number, MessageActor.MachineManager);
                 }
                 else
                 {
-                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
+                    this.Mission.RestoreConditions = false;
+                    this.Mission.NeedMovingBackward = false;
+                    if (this.Mission.MissionType == MissionType.OUT
+                        || this.Mission.MissionType == MissionType.WMS
+                        || this.Mission.MissionType == MissionType.FullTestOUT
+                        )
+                    {
+                        var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
+                    }
+                    else
+                    {
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
+                    }
                 }
             }
             else if ((destination.LoadingUnit is null || destination.LoadingUnit.Id == this.Mission.LoadUnitId)
