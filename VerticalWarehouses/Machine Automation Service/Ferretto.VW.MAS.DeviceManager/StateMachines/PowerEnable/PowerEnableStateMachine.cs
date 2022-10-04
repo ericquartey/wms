@@ -134,9 +134,9 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 reason.Append("Fire alarm active; ");
             }
 
-            foreach (var bay in this.baysDataProvider.GetAll())
+            foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
             {
-                switch (bay.Number)
+                switch (bayNumber)
                 {
                     case BayNumber.BayOne:
                         if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MushroomEmergencyButtonBay1])

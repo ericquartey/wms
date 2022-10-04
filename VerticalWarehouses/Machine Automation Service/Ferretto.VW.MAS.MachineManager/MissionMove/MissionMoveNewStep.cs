@@ -54,9 +54,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 if (bay.IsDouble && bay.Carousel == null && !(bay.IsExternal))
                 {
                     // List of completed mission on the bay with properties:
-                    //  status = Completed
-                    //  step   = End
-                    //  error code = MachineErrorCode.LoadUnitWeightExceeded
+                    // status = Completed
+                    // step = End
+                    // error code = MachineErrorCode.LoadUnitWeightExceeded
                     var errorMissions = this.MissionsDataProvider.GetAllMissions()
                         .Where(
                             m => m.LoadUnitId == this.Mission.LoadUnitId &&
@@ -275,8 +275,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 (bay = this.BaysDataProvider.GetByLoadingUnitLocation(destination)) != null &&
                 bay.IsExternal)
             {
-                if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number) ||
-                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) ||
+                if (this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay) ||
+                    this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) ||
                     !this.machineResourcesProvider.IsSensorZeroOnBay(bay.Number))
                 {
                     if (showErrors)
@@ -442,19 +442,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     // destination is bay, but first we must decide which position to use
                     var bay = this.BaysDataProvider.GetByNumber(requestingBay);
                     var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
-                    if (destinationBay != null
-                        && destinationBay.Number != bay.Number
-                        )
+
+                    if (destinationBay != null && destinationBay.Number != bay.Number)
                     {
                         // bay to bay movement
                         bay = destinationBay;
                     }
+
                     if (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic)
                     {
                         foreach (var position in bay.Positions.Where(p => p.LoadingUnit is null && !p.IsBlocked))
                         {
                             if (this.SensorsProvider.IsLoadingUnitInLocation(position.Location)
-                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay))
                                 || (bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
                             {
                                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
@@ -494,8 +494,74 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             mission.LoadUnitDestination = bay.Positions.First(b => !b.IsBlocked).Location;
                         }
                     }
+                    else if (this.MachineVolatileDataProvider.RandomCells
+                        && this.MachineVolatileDataProvider.LoadUnitsToTest?.Count == 1
+                        && bay.IsDouble)
+                    {
+                        // Random DestinationBay (BIG, BID, BED)
+                        var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (upper is LoadingUnitLocation.NoLocation)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper);
+                            }
+                            return false;
+                        }
+                        var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (bottom is LoadingUnitLocation.NoLocation)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
+                            }
+                            return false;
+                        }
+
+                        var randIdex = new Random().Next(2);
+
+                        var destinationBay1 = randIdex == 0 ? upper : bottom;
+                        var destinationBay2 = randIdex == 0 ? bottom : upper;
+
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay1, mission, false);
+
+                        if (returnValue)
+                        {
+                            mission.LoadUnitDestination = destinationBay1;
+                        }
+                        else
+                        {
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay2, mission, false);
+
+                            if (returnValue)
+                            {
+                                mission.LoadUnitDestination = destinationBay2;
+                            }
+                            else
+                            {
+                                if (showErrors || !bay.Positions.Any(p => p.LoadingUnit is null))
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                }
+                                return false;
+                            }
+                        }
+                    }
                     else
                     {
+                        // Standard DestinationBay
                         var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (upper is LoadingUnitLocation.NoLocation)
                         {
@@ -526,7 +592,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (!bay.IsDouble ||
                             bay.Carousel != null)
                         {
-                            // If bay is not double or bay is carousel
+                            // If bay is not double or bay is carousel (BIS, BES, BIG)
                             // always check upper position first
                             returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false /*|| messageData.Destination == upper*/);
                             if (returnValue)
@@ -588,7 +654,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (bay.IsDouble &&
                             bay.IsExternal)
                         {
-                            // If bay is double and bay is external we choose automatically the destination
+                            // If bay is double and bay is external we choose automatically the destination (BED)
                             returnValue = true;
                             // Always check bottom position first
                             var bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
@@ -619,7 +685,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             !bay.IsExternal &&
                             bay.Carousel == null)
                         {
-                            // If bay is double and bay is not carousel
+                            // If bay is double and bay is not carousel (BID)
                             returnValue = true;
                             // Always check upper position first
                             var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
@@ -722,6 +788,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                         }
                     }
+
                     break;
             }
 
@@ -922,16 +989,16 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     var bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
                     if (bay != null && bay.IsExternal && bay.IsDouble)
                     {
-                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay);
 
                         if (!returnValue)
                         {
-                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number);
+                            returnValue = this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay);
                         }
                     }
                     else if (bay != null && bay.IsExternal)
                     {
-                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number);
+                        returnValue = this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay);
                     }
                 }
             }
@@ -1161,7 +1228,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
 #if CHECK_BAY_SENSOR
                         if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
-                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number)))
+                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)))
                             && !(bay != null && bay.IsExternal && bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source))))
                         {
                             unitToMove = null;

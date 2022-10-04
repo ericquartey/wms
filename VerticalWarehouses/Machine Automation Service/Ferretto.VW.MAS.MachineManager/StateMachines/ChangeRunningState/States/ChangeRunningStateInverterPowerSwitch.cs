@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
-
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
 {
     internal class ChangeRunningStateInverterPowerSwitch : StateBase, IChangeRunningStateInverterPowerSwitch
@@ -57,7 +56,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             this.Logger.LogDebug($"ChangeRunningStateInverterPowerSwitch: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
-                this.currentBay = this.baysDataProvider.GetAll().OrderBy(b => b.Number).First().Number;
+                this.currentBay = this.baysDataProvider.GetBayNumbers().ToArray().First();
                 this.enable = messageData.Enable;
                 var inverterMessageData = new InverterPowerEnableMessageData(this.enable);
                 this.machineControlProvider.StartInverterPowerChange(inverterMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
@@ -81,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     case MessageStatus.OperationEnd:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
-                        var bays = this.baysDataProvider.GetAll().OrderBy(b => b.Number).ToList();
+                        var bays = this.baysDataProvider.GetAll().ToList();
 
                         if (this.stateMachineResponses.Values.Count == bays.Count)
                         {

@@ -130,8 +130,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemDetail = itemDetail;
             }
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
             this.Batch = this.ItemDetail.Batch;
             this.ItemCode = this.ItemDetail.ItemCode;
             this.ItemDescription = this.ItemDetail.ItemDescription;

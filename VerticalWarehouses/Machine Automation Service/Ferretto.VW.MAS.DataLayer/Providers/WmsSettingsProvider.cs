@@ -5,6 +5,8 @@ using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
@@ -17,6 +19,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private static readonly Uri DefaultUri = new Uri("http://localhost:80");
 
+        private readonly IMemoryCache cache;
+
+        private readonly MemoryCacheEntryOptions cacheOptions;
+
         private readonly DataLayerContext dataContext;
 
         private readonly IDataLayerService dataLayerService;
@@ -27,11 +33,18 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public WmsSettingsProvider(DataLayerContext dataContext, IDataLayerService dataLayerService, IEventAggregator eventAggregator)
+        public WmsSettingsProvider(
+            IMemoryCache memoryCache,
+            IConfiguration configuration,
+            DataLayerContext dataContext,
+            IDataLayerService dataLayerService,
+            IEventAggregator eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataContext));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
@@ -49,7 +62,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().ConnectionTimeout;
+                    return this.GetAll().ConnectionTimeout;
                 }
             }
             set
@@ -63,6 +76,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().ConnectionTimeout = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                 }
             }
         }
@@ -73,12 +87,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 lock (this.dataContext)
                 {
-                    if (this.dataContext.WmsSettings.AsNoTracking().Single().DelayTimeout == 0)
+                    if (this.GetAll().DelayTimeout == 0)
                     {
                         this.dataContext.WmsSettings.Single().DelayTimeout = 3000;
                         this.dataContext.SaveChanges();
+                        this.RemoveCache();
                     }
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().DelayTimeout;
+                    return this.GetAll().DelayTimeout;
                 }
             }
             set
@@ -87,6 +102,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().DelayTimeout = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                 }
             }
         }
@@ -99,7 +115,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.AsNoTracking().Single().IsConnected;
+                        return this.GetAll().IsConnected;
                     }
                 }
 
@@ -113,6 +129,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         this.dataContext.WmsSettings.Single().IsConnected = value;
                         this.dataContext.SaveChanges();
+                        this.RemoveCache();
                     }
                 }
             }
@@ -129,7 +146,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().IsEnabled;
+                    return this.GetAll().IsEnabled;
                 }
             }
             set
@@ -146,6 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     settings.IsEnabled = value;
                     if (this.dataContext.SaveChanges() > 0)
                     {
+                        this.RemoveCache();
                         this.eventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
@@ -168,7 +186,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.AsNoTracking().Single().IsTimeSyncEnabled;
+                        return this.GetAll().IsTimeSyncEnabled;
                     }
                 }
 
@@ -182,6 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         this.dataContext.WmsSettings.Single().IsTimeSyncEnabled = value;
                         this.dataContext.SaveChanges();
+                        this.RemoveCache();
                     }
                 }
             }
@@ -195,7 +214,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.AsNoTracking().Single().LastWmsTimeSync;
+                        return this.GetAll().LastWmsTimeSync;
                     }
                 }
 
@@ -209,6 +228,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         this.dataContext.WmsSettings.Single().LastWmsTimeSync = value;
                         this.dataContext.SaveChanges();
+                        this.RemoveCache();
                     }
                 }
             }
@@ -220,7 +240,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 if (this.dataLayerService.IsReady)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().ServiceUrl ?? DefaultUri;
+                    return this.GetAll().ServiceUrl ?? DefaultUri;
                 }
 
                 return DefaultUri;
@@ -233,6 +253,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     {
                         this.dataContext.WmsSettings.Single().ServiceUrl = value;
                         this.dataContext.SaveChanges();
+                        this.RemoveCache();
                         this.eventAggregator
                             .GetEvent<NotificationEvent>()
                             .Publish(
@@ -258,7 +279,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkEndOfLine;
+                    return this.GetAll().SocketLinkEndOfLine;
                 }
             }
             set
@@ -272,6 +293,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().SocketLinkEndOfLine = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                 }
             }
         }
@@ -287,7 +309,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkIsEnabled;
+                    return this.GetAll().SocketLinkIsEnabled;
                 }
             }
             set
@@ -301,6 +323,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().SocketLinkIsEnabled = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                     this.eventAggregator
                         .GetEvent<NotificationEvent>()
                         .Publish(
@@ -325,7 +348,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkPolling;
+                    return this.GetAll().SocketLinkPolling;
                 }
             }
             set
@@ -339,6 +362,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().SocketLinkPolling = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                 }
             }
         }
@@ -354,7 +378,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkPort;
+                    return this.GetAll().SocketLinkPort;
                 }
             }
             set
@@ -368,6 +392,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().SocketLinkPort = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                 }
             }
         }
@@ -383,7 +408,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkTimeout;
+                    return this.GetAll().SocketLinkTimeout;
                 }
             }
             set
@@ -397,6 +422,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.dataContext.WmsSettings.Single().SocketLinkTimeout = value;
                     this.dataContext.SaveChanges();
+                    this.RemoveCache();
                 }
             }
         }
@@ -409,13 +435,15 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.AsNoTracking().Single().TimeSyncIntervalMilliseconds;
+                        return this.GetAll().TimeSyncIntervalMilliseconds;
                     }
                 }
 
                 return DefaultTimeSyncIntervalMilliseconds;
             }
         }
+
+        private static string GetWmsCacheKey => "WmsCacheKey";
 
         #endregion
 
@@ -425,7 +453,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             lock (this.dataContext)
             {
-                return this.dataContext.WmsSettings.AsNoTracking().Single();
+                this.cache.TryGetValue(GetWmsCacheKey, out WmsSettings cacheEntry);
+                if (cacheEntry is null)
+                {
+                    cacheEntry = this.dataContext.WmsSettings.AsNoTracking().Single();
+                    this.cache.Set(GetWmsCacheKey, cacheEntry, this.cacheOptions);
+                }
+                return cacheEntry;
             }
         }
 
@@ -437,7 +471,13 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 wms.TimeSyncIntervalMilliseconds = seconds;
                 this.dataContext.WmsSettings.Update(wms);
                 this.dataContext.SaveChanges();
+                this.RemoveCache();
             }
+        }
+
+        private void RemoveCache()
+        {
+            this.cache.Remove(GetWmsCacheKey);
         }
 
         #endregion

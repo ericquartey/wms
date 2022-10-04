@@ -107,9 +107,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         break;
                 }
 
-                var bays = this.BaysDataProvider.GetAll();
+                var bayNumbers = this.BaysDataProvider.GetBayNumbers();
                 if (this.Mission != null
-                    && this.AllStopped(bays)
+                    && this.AllStopped(bayNumbers)
                     )
                 {
                     this.Mission.BayNotifications = MissionBayNotifications.None;
@@ -136,12 +136,12 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
         }
 
-        private bool AllStopped(IEnumerable<Bay> bays)
+        private bool AllStopped(IEnumerable<BayNumber> bayNumbers)
         {
             var stopped = MissionBayNotifications.None;
-            foreach (var bay in bays)
+            foreach (var bayNumber in bayNumbers)
             {
-                switch (bay.Number)
+                switch (bayNumber)
                 {
                     case BayNumber.BayOne:
                         stopped |= MissionBayNotifications.BayOne;

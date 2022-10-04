@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
                 {
-                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, this.Mission.RestoreConditions);
+                    this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay, this.Mission.RestoreConditions);
                     this.Mission.LoadUnitDestination = destination.Location;
                 }
 
@@ -244,7 +244,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
                         this.MoveUpLoadUnit(bay);
 
-                        this.Logger.LogInformation($"Homing Bay occupied start Mission:Id={this.Mission.Id}");
+                        this.Logger.LogInformation($"Homing Bay occupied start after abort Mission:Id={this.Mission.Id}");
                         this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, notification.RequestingBay, MessageActor.MachineManager);
                     }
                     else
@@ -284,6 +284,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     )
                 {
                     this.Logger.LogDebug($"Waiting for homing Mission:Id={this.Mission.Id}");
+                    if (!this.MissionsDataProvider.GetAllActiveMissionsByBay(this.Mission.TargetBay).Any(m => m.Id != this.Mission.Id))
+                    {
+                        this.Logger.LogInformation($"Homing Bay occupied start after waiting Mission:Id={this.Mission.Id}");
+                        this.LoadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.Mission.LoadUnitId, true, false, notification.RequestingBay, MessageActor.MachineManager);
+                    }
                 }
                 else if (this.Mission.ErrorCode == MachineErrorCode.MoveBayChainNotAllowed)
                 {
@@ -416,7 +421,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                     if (this.Mission.ErrorCode != MachineErrorCode.MoveBayChainNotAllowed)
                     {
-                        this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay.Number, false);
+                        this.LoadingUnitMovementProvider.MoveCarousel(this.Mission.LoadUnitId, MessageActor.MachineManager, bay, false);
                         this.Mission.LoadUnitDestination = destination.Location;
                         this.Mission.StepTime = DateTime.UtcNow;
                     }

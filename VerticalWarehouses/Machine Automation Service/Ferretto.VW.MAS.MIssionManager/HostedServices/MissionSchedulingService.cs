@@ -245,6 +245,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 this.Logger.LogError($"Full Test error: Load Units not defined!");
                 errorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, machineProvider.BayTestNumber);
+                this.machineVolatileDataProvider.RandomCells = false;
                 return false;
             }
 
@@ -378,6 +379,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     setupProceduresDataProvider.IncreasePerformedCycles(setupRecord, machineProvider.RequiredCycles.Value);
                 }
                 setupProceduresDataProvider.MarkAsCompleted(setupRecord);
+                this.machineVolatileDataProvider.RandomCells = false;
             }
             else
             {
@@ -1321,7 +1323,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             if (!sensorProvider.IsLoadingUnitInLocation(position.Location)
                                 && !position.IsBlocked
                                 && (!bay.IsExternal
-                                    || (!bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                                    || (!bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay))
                                     || (bay.IsDouble && !loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location))
                                     )
                                 )
@@ -1385,7 +1387,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     foreach (var position in bay.Positions.OrderBy(b => b.Location))
                     {
                         if ((sensorProvider.IsLoadingUnitInLocation(position.Location) && !position.IsBlocked)
-                            || (!bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number))
+                            || (!bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay))
                             || (bay.IsDouble && bay.IsExternal && loadUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
                         {
                             if (position.LoadingUnit is null)
@@ -1410,7 +1412,6 @@ namespace Ferretto.VW.MAS.MissionManager
                                 return true;
                             }
                         }
-
                     }
                 }
             }

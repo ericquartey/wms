@@ -352,7 +352,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IInverterStatusBase GetShutterInverter(BayNumber bayNumber)
         {
-            var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
+            var index = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
             var inverter = inverters.SingleOrDefault(i => i.SystemIndex == index);
 
             if (inverter is null)

@@ -658,9 +658,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var side = this.baysDataProvider.GetBaySide(bayNumber);
 
-            var direction = bay.Side is WarehouseSide.Front
+            var direction = side is WarehouseSide.Front
                 ? HorizontalMovementDirection.Backwards
                 : HorizontalMovementDirection.Forwards;
 
@@ -772,13 +772,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveHorizontalCalibration(BayNumber requestingBay, MessageActor sender)
         {
-            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var side = this.baysDataProvider.GetBaySide(requestingBay);
             var policy = this.CanCalibrateZeroPlate();
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-            var direction = (bay.Side == WarehouseSide.Back) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+            var direction = (side == WarehouseSide.Back) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             if (axis.HorizontalCalibrateSpeed == 0)
             {
@@ -821,7 +821,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 if (otherBay.Shutter != null
                     && otherBay.Shutter.Type != ShutterType.NotSpecified
-                    && otherBay.Number != bay.Number
+                    && otherBay.Number != requestingBay
                     )
                 {
                     var shutterInverter = otherBay.Shutter.Inverter.Index;
@@ -943,9 +943,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var targetPosition = axis.Profiles.FirstOrDefault().TotalDistance;
 
-            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var side = this.baysDataProvider.GetBaySide(requestingBay);
 
-            var direction = (bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
+            var direction = (side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards);
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
@@ -980,7 +980,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveHorizontalResolution(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
         {
-            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var side = this.baysDataProvider.GetBaySide(requestingBay);
             var policy = this.CanCalibrateZeroPlate();
             if (!policy.IsAllowed)
             {
@@ -988,7 +988,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             var verticalPosition = this.elevatorDataProvider.VerticalPosition;
             var otherBay = this.baysDataProvider.GetAll().FirstOrDefault(b => b.Number != requestingBay
-                        && b.Side != bay.Side
+                        && b.Side != side
                         && b.Positions.Any(p => Math.Abs(p.Height - verticalPosition) < 700));
             if (otherBay != null && otherBay.Shutter != null && otherBay.Shutter.Type != ShutterType.NotSpecified)
             {
@@ -1556,8 +1556,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
-            var direction = bay.Side is WarehouseSide.Front
+            var side = this.baysDataProvider.GetBaySide(bayNumber);
+            var direction = side is WarehouseSide.Front
                 ? HorizontalMovementDirection.Forwards
                 : HorizontalMovementDirection.Backwards;
             this.MoveHorizontalAuto(

@@ -35,13 +35,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Bay> GetAll();
 
-        int GetAllCount();
+        IEnumerable<BayNumber> GetBayNumbers();
 
-        CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
-
-        ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber);
-
-        ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber);
+        WarehouseSide GetBaySide(BayNumber bayNumber);
 
         BayNumber GetByAxis(IHomingMessageData data);
 
@@ -87,6 +83,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IoIndex GetIoDevice(BayNumber bayNumber);
 
+        bool GetIsExternal(BayNumber bayNumber);
+
         bool GetLightOn(BayNumber bayNumber);
 
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
@@ -94,12 +92,6 @@ namespace Ferretto.VW.MAS.DataLayer
         double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
-
-        CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber);
-
-        ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber);
-
-        ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
 
         /// <summary>
         /// Gets the bay containing the specified bay position.
@@ -114,10 +106,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
 
-        double GetShutterMaxSpeed(BayNumber bayNumber);
-
-        double GetShutterMinSpeed(BayNumber bayNumber);
-
         void IncrementCycles(BayNumber bayNumber);
 
         bool IsMissionInBay(Mission mission);
@@ -128,7 +116,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void PerformHoming(BayNumber bayNumber);
 
+        void RemoveCache(BayNumber bayNumber);
+
         void RemoveLoadingUnit(int loadingUnitId);
+
+        void RemovePositionCache(LoadingUnitLocation location);
 
         void ResetMachine();
 
@@ -150,7 +142,9 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId, double? height = null);
 
         void SetProfileConstBay(BayNumber bayNumber, double k0, double k1);
+
         void SetRotationClass(BayNumber bayNumber);
+
         void UpdateELevatorDistance(BayNumber bayNumber, double distance);
 
         void UpdateExtraRace(BayNumber bayNumber, double extraRace);

@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LoadingUnits
+                return this.dataContext.LoadingUnits.AsNoTracking().ToArray()
                     .Count(l => l.IsIntoMachineOrBlocked);
             }
         }
@@ -279,7 +279,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var loadUnitMaxHeight = this.dataContext.Machines.Select(s => s.LoadUnitMaxHeight).Single();
+                var loadUnitMaxHeight = this.dataContext.Machines.AsNoTracking().Select(s => s.LoadUnitMaxHeight).Single();
 
                 return loadUnitMaxHeight;
             }

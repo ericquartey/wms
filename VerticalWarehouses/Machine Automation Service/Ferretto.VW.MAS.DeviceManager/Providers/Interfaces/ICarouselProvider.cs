@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MachineErrorCode CanElevatorPickup(BayPosition bayPosition);
 
-        ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory);
+        ActionPolicy CanMove(VerticalMovementDirection direction, Bay bay, MovementCategory movementCategory);
 
         double GetPosition(BayNumber bayNumber);
 
@@ -22,13 +22,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsOnlyTopPositionOccupied(BayNumber bayNumber);
 
-        void Move(VerticalMovementDirection direction, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
+        void Move(VerticalMovementDirection direction, int? loadUnitId, Bay bay, MessageActor sender);
 
         void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
         void MoveFindZero(BayNumber requestingBay, MessageActor sender);
 
-        void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, BayNumber bayNumber, MessageActor sender);
+        void MoveManual(VerticalMovementDirection direction, double distance, int? loadUnitId, bool bypassConditions, Bay bay, MessageActor sender);
 
         void StartTest(BayNumber bayNumber, MessageActor sender);
 

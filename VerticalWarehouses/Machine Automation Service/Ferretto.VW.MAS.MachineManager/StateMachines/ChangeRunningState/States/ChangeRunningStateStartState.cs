@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     this.requestedState = false;
 
-                    this.currentBay = this.baysDataProvider.GetAll().OrderBy(b => b.Number).First().Number;
+                    this.currentBay = this.baysDataProvider.GetBayNumbers().First();
                     this.stopReason = messageData.StopReason;
                     var newMessageData = new StopMessageData(this.stopReason);
                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);

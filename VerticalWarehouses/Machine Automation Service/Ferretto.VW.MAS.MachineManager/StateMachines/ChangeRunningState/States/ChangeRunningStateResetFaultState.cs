@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
@@ -58,7 +56,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             {
                 if (messageData.Enable)
                 {
-                    this.currentBay = this.baysDataProvider.GetAll().OrderBy(b => b.Number).First().Number;
+                    this.currentBay = this.baysDataProvider.GetBayNumbers().First();
                     this.machineControlProvider.ResetBayFault(this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
                 }
                 else

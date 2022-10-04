@@ -46,11 +46,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Homing(Axis axis, Calibration calibration, int loadingUnitId, bool showErrors, bool turnBack, BayNumber requestingBay, MessageActor sender);
 
-        bool IsExternalPositionOccupied(BayNumber bayNumber);
+        bool IsExternalPositionOccupied(Bay bay);
 
         bool IsExternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation);
 
-        bool IsInternalPositionOccupied(BayNumber bayNumber);
+        bool IsInternalPositionOccupied(Bay bay);
 
         bool IsInternalPositionOccupied(BayNumber bayNumber, LoadingUnitLocation loadingUnitLocation);
 
@@ -60,11 +60,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsVerticalPositionChanged(double position, bool isEmpty, int? loadUnitId);
 
-        void MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore);
+        void MoveCarousel(int? loadUnitId, MessageActor sender, Bay bay, bool restore);
 
         bool MoveDoubleExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore, bool isPositionUpper);
 
-        bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, BayNumber requestingBay, bool restore);
+        bool MoveExternalBay(int? loadUnitId, ExternalBayMovementDirection direction, MessageActor sender, Bay bay, bool restore);
 
         void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId, int? targetCellId, int? targetBayPositionId, int? sourceCellId, int? sourceBayPositionId, bool fastDeposit = true);
 
