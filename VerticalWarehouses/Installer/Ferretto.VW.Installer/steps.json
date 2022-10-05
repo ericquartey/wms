@@ -24,7 +24,7 @@
       "title": "Riavvia il sistema",
       "description": "Riavvia il sistema operativo per completare la disabilitazione della protezione.",
       "script": "scripts/restart_windows.ps1",
-      "setupMode": "UpdateAndRestore",
+      "setupMode": "Bypass",
       "skipOnResume": "true"
     },
     {
