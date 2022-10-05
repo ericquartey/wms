@@ -11,5 +11,7 @@
         Restore,
 
         UpdateAndRestore,
+
+        Bypass
     }
 }
