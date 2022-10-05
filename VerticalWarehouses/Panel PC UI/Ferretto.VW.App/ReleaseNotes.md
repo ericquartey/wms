@@ -35,6 +35,8 @@
 - Eliminati rallentamenti evidenziati nella versione precedente
 - Le celle bloccate sono evidenziate in rosso
 - BIG: corretto ripristino se si blocca l'homing
+- Manutenzione: corretta visualizzazione di Baia2
+- Installer: eliminato il primo riavvio
 
 ## Compatibile con adapter 0.4.41
 ***

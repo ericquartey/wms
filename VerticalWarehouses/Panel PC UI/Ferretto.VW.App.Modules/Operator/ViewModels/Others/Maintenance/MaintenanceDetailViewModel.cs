@@ -458,10 +458,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var can = !this.allInstructions.Any(s => (s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring) && s.Definition.BayNumber != BayNumber.ElevatorBay)
+                var can = !this.allInstructions.Any(s => (s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring)
+                        && s.Definition.BayNumber != BayNumber.ElevatorBay)
                     && (this.Service?.ServiceStatus == MachineServiceStatus.Expired
                         || this.Service?.ServiceStatus == MachineServiceStatus.Expiring
                         || (this.Service?.ServiceStatus == MachineServiceStatus.Valid && this.IsAdmin));
+                if (!can)
+                {
+                    var expired = this.allInstructions.Where(s => (s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring)
+                        && s.Definition.BayNumber != BayNumber.ElevatorBay)
+                        .ToList();
+                }
                 return can;
             }
             catch (Exception)
@@ -605,7 +612,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     break;
 
                 case Senders.Bay2:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay2:
