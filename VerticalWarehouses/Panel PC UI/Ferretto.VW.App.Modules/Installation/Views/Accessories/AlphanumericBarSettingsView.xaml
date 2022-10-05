@@ -370,11 +370,13 @@
                                Text="{res:Loc InstallationApp.StartLoop}" />
               </RadioButton.Content>
         </RadioButton>
-                <Border Background="Red" Visibility="{Binding HasGetErrors,Converter={StaticResource BTVC}}"
+                <Border Background="Brown" Visibility="{Binding HasGetErrors,Converter={StaticResource BTVC}}"
+                        
                         CornerRadius="5" Margin="0" Padding="10" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                     <TextBlock VerticalAlignment="Center" Margin="0"
                             Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                            Foreground="White"
                             Text="{res:Loc InstallationApp.LoopError}" />
                 </Border>
                 </StackPanel>

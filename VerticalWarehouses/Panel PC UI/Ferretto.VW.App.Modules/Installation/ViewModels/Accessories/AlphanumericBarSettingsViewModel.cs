@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool clearOnClose;
 
+        private bool hasGetErrors;
+
         private int incrementTimeLoop = 0;
 
         private IPAddress ipAddress;
@@ -71,8 +73,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool useGet;
 
-        private bool hasGetErrors;
-
         #endregion
 
         #region Constructors
@@ -103,11 +103,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.allTypeFields;
             set => this.SetProperty(ref this.allTypeFields, value, this.RaiseCanExecuteChanged);
         }
-        public bool HasGetErrors
-        {
-            get => this.hasGetErrors;
-            set => this.SetProperty(ref this.hasGetErrors, value, this.RaiseCanExecuteChanged);
-        }
 
         public bool ClearOnClose
         {
@@ -120,6 +115,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool HasGetErrors
+        {
+            get => this.hasGetErrors;
+            set => this.SetProperty(ref this.hasGetErrors, value, this.RaiseCanExecuteChanged);
         }
 
         public IPAddress IpAddress
@@ -244,6 +245,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestArrowOnAsync(this.testArrowOffset);
                     }
                 }
@@ -277,6 +281,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestLedAsync(value);
                     }
                 }
@@ -292,6 +299,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestMessageOnAsync(this.TestMessageText, this.testMessageOffset);
                     }
                 }
@@ -338,6 +347,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestLedAsync(false);
                     }
                 }
@@ -563,7 +575,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 else
                 {
                     this.loopTestIsChecked = false;
-                    this.TestMessageText = this.loopTextMessage;
                     this.HasGetErrors = true;
                     this.loopTimer.Change(-1, -1);
                 }
