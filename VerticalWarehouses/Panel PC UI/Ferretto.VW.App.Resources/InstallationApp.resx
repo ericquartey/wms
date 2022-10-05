@@ -2848,4 +2848,10 @@
   <data name="EmptyFields" xml:space="preserve">
     <value>Empty Fields, enter at least 1 field.</value>
   </data>
+  <data name="StartLoop" xml:space="preserve">
+    <value>Start Loop</value>
+  </data>
+  <data name="StopLoop" xml:space="preserve">
+    <value>Stop Loop</value>
+  </data>
 </root>

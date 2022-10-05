@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using System.Linq;
-using System.ServiceModel.Channels;
-using System.Data.SqlClient;
-using System.Collections.Generic;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
@@ -76,6 +74,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         #endregion
 
         #region Properties
+
+        public bool HasGetErrors { get; set; }
 
         public IPAddress IpAddress => this.ipAddress;
 
@@ -1003,7 +1003,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private static bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueue)
         {
-            while (concurrentQueue.TryDequeue(out _)) { }
+            while (concurrentQueue.TryDequeue(out _))
+            { }
             return true;
         }
 
@@ -1250,6 +1251,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 {
                     this.logger.Debug($"Received GET message error: retry sending WRITE");
                     await this.SetAndWriteMessageAsync(message, this.savedOffset, false);
+                    this.HasGetErrors = true;
                     // only one retry
                     ret = true;
                 }

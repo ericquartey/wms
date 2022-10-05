@@ -2754,4 +2754,10 @@
   <data name="EmptyFields" xml:space="preserve">
     <value>Campi Vuoti, inserire almeno 1 campo.</value>
   </data>
+  <data name="StartLoop" xml:space="preserve">
+    <value>Avvia Ciclo</value>
+  </data>
+  <data name="StopLoop" xml:space="preserve">
+    <value>Ferma Ciclo</value>
+  </data>
 </root>

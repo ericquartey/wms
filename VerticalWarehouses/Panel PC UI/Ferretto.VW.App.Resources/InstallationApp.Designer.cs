@@ -6739,6 +6739,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Loop.
+        /// </summary>
+        public static string StartLoop {
+            get {
+                return ResourceManager.GetString("StartLoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start recall from cell to bay.
         /// </summary>
         public static string StartManualDrawerRecall {
@@ -6897,6 +6906,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StopInProgress {
             get {
                 return ResourceManager.GetString("StopInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Loop.
+        /// </summary>
+        public static string StopLoop {
+            get {
+                return ResourceManager.GetString("StopLoop", resourceCulture);
             }
         }
         
