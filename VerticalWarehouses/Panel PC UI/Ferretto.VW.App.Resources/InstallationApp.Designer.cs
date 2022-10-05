@@ -6910,7 +6910,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop Loop.
+        ///   Looks up a localized string similar to Stop Loop Test.
         /// </summary>
         public static string StopLoop {
             get {
