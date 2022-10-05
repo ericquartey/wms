@@ -4534,6 +4534,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message not sent - GET Error.
+        /// </summary>
+        public static string LoopError {
+            get {
+                return ResourceManager.GetString("LoopError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lower bound [mm].
         /// </summary>
         public static string LowerBound {
