@@ -2854,4 +2854,7 @@
   <data name="StopLoop" xml:space="preserve">
     <value>Stop Loop Test</value>
   </data>
+  <data name="LoopError" xml:space="preserve">
+    <value>Message not sent - GET Error</value>
+  </data>
 </root>
