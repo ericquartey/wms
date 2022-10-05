@@ -558,7 +558,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.loopTestIsChecked = false;
                     this.TestMessageText = this.loopTextMessage;
                     this.ShowNotification(InstallationApp.LoopError, Services.Models.NotificationSeverity.Error);
-
+                    this.loopTimer.Change(-1, -1);
                 }
             }
             catch (Exception ex)
