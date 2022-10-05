@@ -71,6 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool useGet;
 
+        private bool hasGetErrors;
+
         #endregion
 
         #region Constructors
@@ -100,6 +102,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.allTypeFields;
             set => this.SetProperty(ref this.allTypeFields, value, this.RaiseCanExecuteChanged);
+        }
+        public bool HasGetErrors
+        {
+            get => this.hasGetErrors;
+            set => this.SetProperty(ref this.hasGetErrors, value, this.RaiseCanExecuteChanged);
         }
 
         public bool ClearOnClose
@@ -140,9 +147,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     if (value)
                     {
                         this.deviceDriver.HasGetErrors = false;
+                        this.HasGetErrors = false;
                         this.incrementTimeLoop = 1;
                         this.loopTextMessage = this.TestMessageText;
-
                         this.loopTimer = new Timer(this.CallBackLoop, null, 0, 10000);
                     }
                     else
@@ -557,7 +564,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.loopTestIsChecked = false;
                     this.TestMessageText = this.loopTextMessage;
-                    this.ShowNotification(InstallationApp.LoopError, Services.Models.NotificationSeverity.Error);
+                    this.HasGetErrors = true;
                     this.loopTimer.Change(-1, -1);
                 }
             }
@@ -566,7 +573,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.loopTestIsChecked = false;
                 this.TestMessageText = this.loopTextMessage;
                 this.ShowNotification(ex);
-
             }
         }
 
