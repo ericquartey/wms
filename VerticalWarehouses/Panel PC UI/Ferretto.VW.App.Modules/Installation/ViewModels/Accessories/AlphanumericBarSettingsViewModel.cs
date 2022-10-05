@@ -610,10 +610,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.deviceDriver.EnabledAsync(false);
 
-                if (this.deviceDriver.TestEnabled)
-                {
-                    await this.deviceDriver.TestAsync(false);
-                }
+                //if (this.deviceDriver.TestEnabled)
+                //{
+                //    await this.deviceDriver.TestAsync(false);
+                //}
 
                 this.deviceDriver.GetOffsetArrowAndMessage(offset, message, out var offsetArrow, out var offsetMessage, out var scrollEnd);
                 await this.deviceDriver.SetAndWriteArrowAsync(offsetArrow, true);
