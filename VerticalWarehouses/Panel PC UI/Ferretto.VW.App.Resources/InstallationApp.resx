@@ -2852,6 +2852,6 @@
     <value>Start Loop</value>
   </data>
   <data name="StopLoop" xml:space="preserve">
-    <value>Stop Loop</value>
+    <value>Stop Loop Test</value>
   </data>
 </root>

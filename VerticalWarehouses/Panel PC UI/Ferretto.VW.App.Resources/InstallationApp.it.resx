@@ -2758,6 +2758,6 @@
     <value>Avvia Ciclo</value>
   </data>
   <data name="StopLoop" xml:space="preserve">
-    <value>Ferma Ciclo</value>
+    <value>Ciclo Test Fermata</value>
   </data>
 </root>
