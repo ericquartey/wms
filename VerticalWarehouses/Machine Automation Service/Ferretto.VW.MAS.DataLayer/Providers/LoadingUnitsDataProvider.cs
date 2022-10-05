@@ -150,7 +150,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LoadingUnits
+                return this.dataContext.LoadingUnits.AsNoTracking().ToArray()
                     .Count(l => l.IsIntoMachineOrBlocked);
             }
         }

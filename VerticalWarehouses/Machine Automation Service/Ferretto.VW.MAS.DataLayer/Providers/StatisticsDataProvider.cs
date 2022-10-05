@@ -92,11 +92,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                int dim = this.dataContext.MachineStatistics.Count();
+                int dim = this.dataContext.MachineStatistics.ToArray().Count();
 
                 if (dim > 1)
                 {
-                    return this.dataContext.MachineStatistics.ElementAt(dim - 1);
+                    return this.dataContext.MachineStatistics.ToArray().ElementAt(dim - 1);
                 }
                 else
                 {

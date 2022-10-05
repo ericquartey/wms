@@ -4216,6 +4216,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"AbortMovement")]
         AbortMovement = 32,
     
+        [System.Runtime.Serialization.EnumMember(Value = @"HomeMovement")]
+        HomeMovement = 64,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v12.0.0.0)")]
