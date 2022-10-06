@@ -938,15 +938,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             Debug.WriteLine($"Command Release fired");
 
-            if (this.IsWaitingForResponse)
-            {
-                Debug.WriteLine($"-- Command rejected");
-                return;
-            }
-
             try
             {
-                this.IsWaitingForResponse = true;
+                await this.MachineService.StopMovingByAllAsync();
                 await this.MachineService.StopMovingByAllAsync();
 
                 Debug.WriteLine($"-- Command Release executed");
@@ -959,7 +953,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.StopMoving();
-                this.IsWaitingForResponse = false;
             }
         }
 
