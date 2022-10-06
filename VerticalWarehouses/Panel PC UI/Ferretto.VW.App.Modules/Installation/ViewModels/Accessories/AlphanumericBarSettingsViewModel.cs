@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.Mvvm;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.AlphaNumericBar;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -31,7 +33,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool clearOnClose;
 
+        private bool hasGetErrors;
+
+        private int incrementTimeLoop = 0;
+
         private IPAddress ipAddress;
+
+        private bool loopTestIsChecked;
+
+        private string loopTextMessage;
+
+        private Timer loopTimer;
 
         private int maxMessageLength;
 
@@ -105,6 +117,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool HasGetErrors
+        {
+            get => this.hasGetErrors;
+            set => this.SetProperty(ref this.hasGetErrors, value, this.RaiseCanExecuteChanged);
+        }
+
         public IPAddress IpAddress
         {
             get => this.ipAddress;
@@ -119,6 +137,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public bool IsEnabledEditing => true;
+
+        public bool LoopTestIsChecked
+        {
+            get => this.loopTestIsChecked;
+            set
+            {
+                if (this.SetProperty(ref this.loopTestIsChecked, value))
+                {
+                    if (value)
+                    {
+                        this.deviceDriver.HasGetErrors = false;
+                        this.HasGetErrors = false;
+                        this.incrementTimeLoop = 1;
+                        this.loopTextMessage = this.TestMessageText;
+                        this.loopTimer = new Timer(this.CallBackLoop, null, 0, 10000);
+                    }
+                    else
+                    {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.ShowNotification(InstallationApp.StopLoop, Services.Models.NotificationSeverity.Success);
+                        this.loopTimer.Dispose();
+                    }
+                }
+            }
+        }
 
         public int MaxMessageLength
         {
@@ -202,6 +245,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestArrowOnAsync(this.testArrowOffset);
                     }
                 }
@@ -235,6 +281,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestLedAsync(value);
                     }
                 }
@@ -250,6 +299,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestMessageOnAsync(this.TestMessageText, this.testMessageOffset);
                     }
                 }
@@ -296,6 +347,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
+                        this.TestMessageText = this.loopTextMessage;
+                        this.HasGetErrors = false;
+                        this.loopTimer.Change(-1, -1);
                         _ = this.DoTestLedAsync(false);
                     }
                 }
@@ -320,6 +374,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+            this.LoopTestIsChecked = false;
+        }
 
         protected override bool CanSave()
         {
@@ -502,6 +562,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void CallBackLoop(object sender)
+        {
+            try
+            {
+                this.TestMessageText = this.incrementTimeLoop++ + ") " + this.loopTextMessage;
+
+                if (!this.deviceDriver.HasGetErrors)
+                {
+                    _ = this.DoTestMessageOnAsync(this.TestMessageText, this.testMessageOffset);
+                }
+                else
+                {
+                    this.loopTestIsChecked = false;
+                    this.HasGetErrors = true;
+                    this.loopTimer.Change(-1, -1);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.loopTestIsChecked = false;
+                this.TestMessageText = this.loopTextMessage;
+                this.ShowNotification(ex);
+            }
+        }
+
         private bool CanAddFields()
         {
             return this.IsEnabled && !string.IsNullOrEmpty(this.SelectedField) && this.MessageFields.Count < 5;
@@ -566,10 +651,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.deviceDriver.EnabledAsync(false);
 
-                if (this.deviceDriver.TestEnabled)
-                {
-                    await this.deviceDriver.TestAsync(false);
-                }
+                //if (this.deviceDriver.TestEnabled)
+                //{
+                //    await this.deviceDriver.TestAsync(false);
+                //}
 
                 this.deviceDriver.GetOffsetArrowAndMessage(offset, message, out var offsetArrow, out var offsetMessage, out var scrollEnd);
                 await this.deviceDriver.SetAndWriteArrowAsync(offsetArrow, true);

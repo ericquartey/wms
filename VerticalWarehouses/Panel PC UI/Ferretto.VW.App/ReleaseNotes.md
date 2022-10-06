@@ -27,6 +27,7 @@
 
 ## Nuove Funzionalità 1.0.52 rispetto la 1.0.51
 - Test completo: con un solo cassetto l'opzione Random cambia anche la posizione in baia
+- Barra Alfanumerica: aggiunto test ciclico dei messaggi
 
 ## Bug Risolti
 - Viste di prelievo e versamento: corretto aggiornamento della barra led
@@ -35,6 +36,8 @@
 - Eliminati rallentamenti evidenziati nella versione precedente
 - Le celle bloccate sono evidenziate in rosso
 - BIG: corretto ripristino se si blocca l'homing
+- Manutenzione: corretta chiusura collaudo con Baia2
+- Installer: eliminato il primo riavvio
 
 ## Compatibile con adapter 0.4.41
 ***

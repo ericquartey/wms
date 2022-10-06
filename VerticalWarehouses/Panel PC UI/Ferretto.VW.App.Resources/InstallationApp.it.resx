@@ -2754,4 +2754,13 @@
   <data name="EmptyFields" xml:space="preserve">
     <value>Campi Vuoti, inserire almeno 1 campo.</value>
   </data>
+  <data name="StartLoop" xml:space="preserve">
+    <value>Avvia Ciclo</value>
+  </data>
+  <data name="StopLoop" xml:space="preserve">
+    <value>Ciclo Test Fermata</value>
+  </data>
+  <data name="LoopError" xml:space="preserve">
+    <value>Messaggio non inviato - Errore GET</value>
+  </data>
 </root>

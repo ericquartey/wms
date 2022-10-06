@@ -340,18 +340,14 @@
           </RadioButton.Content>
         </RadioButton>
 
-        <RadioButton Grid.Row="0"
-                     Grid.Column="2"
-                     Margin="5"
-                     GroupName="RadioBoxGroupTestMode"
-                     IsChecked="{Binding TestLedIsChecked, Mode=TwoWay}">
-          <RadioButton.Content>
-            <TextBlock Margin="0,5,0,0"
-                       Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
-                       Text="{res:Loc Menu.AccessoriesAlphaNumBarTestLed}" />
-          </RadioButton.Content>
+        <RadioButton Grid.Row="0" Grid.Column="2" Margin="5" GroupName="RadioBoxGroupTestMode"
+                IsChecked="{Binding TestLedIsChecked, Mode=TwoWay}">
+            <RadioButton.Content>
+                <TextBlock Margin="0,5,0,0" Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                        Text="{res:Loc Menu.AccessoriesAlphaNumBarTestLed}" />
+            </RadioButton.Content>
         </RadioButton>
-
+          
         <RadioButton Grid.Row="2"
                      Grid.Column="1"
                      Margin="5,5,0,0"
@@ -362,8 +358,31 @@
                        Text="{res:Loc Menu.AccessoriesAlphaNumBarTestMessage}" />
           </RadioButton.Content>
         </RadioButton>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.Column="3">
+                <RadioButton 
+                    Margin="5"
+                    HorizontalAlignment="Left"
+                    GroupName="RadioBoxGroupTestMode"
+                    IsChecked="{Binding LoopTestIsChecked, Mode=TwoWay}">
+            <RadioButton.Content>
+                    <TextBlock Margin="0,5,0,0"
+                               Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="{res:Loc InstallationApp.StartLoop}" />
+              </RadioButton.Content>
+        </RadioButton>
+                <Border Background="Brown" Visibility="{Binding HasGetErrors,Converter={StaticResource BTVC}}"
+                        
+                        CornerRadius="5" Margin="0" Padding="10" HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <TextBlock VerticalAlignment="Center" Margin="0"
+                            Style="{DynamicResource VWAPP_PpcTextBox_TextBlockStyle}"
+                            Foreground="White"
+                            Text="{res:Loc InstallationApp.LoopError}" />
+                </Border>
+                </StackPanel>
+        
 
-        <controls:PpcTextBox Grid.Row="2"
+                <controls:PpcTextBox Grid.Row="2"
                              Grid.Column="2"
                              MaxWidth="80"
                              Margin="0,5,0,0"
