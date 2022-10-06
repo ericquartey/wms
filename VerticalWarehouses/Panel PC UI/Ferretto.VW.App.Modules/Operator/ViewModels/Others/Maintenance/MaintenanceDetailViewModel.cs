@@ -463,12 +463,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     && (this.Service?.ServiceStatus == MachineServiceStatus.Expired
                         || this.Service?.ServiceStatus == MachineServiceStatus.Expiring
                         || (this.Service?.ServiceStatus == MachineServiceStatus.Valid && this.IsAdmin));
-                if (!can)
-                {
-                    var expired = this.allInstructions.Where(s => (s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring)
-                        && s.Definition.BayNumber != BayNumber.ElevatorBay)
-                        .ToList();
-                }
                 return can;
             }
             catch (Exception)
