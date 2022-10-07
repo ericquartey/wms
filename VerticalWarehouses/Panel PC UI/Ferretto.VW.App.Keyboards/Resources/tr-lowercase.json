@@ -156,8 +156,7 @@
         {
           "Key": {
             "Command": {
-              "Caption": "EN",
-              "CommandText": "{layout:lowercase.en-EN}"
+              "CommandText": "q"
             }
           }
         },
