@@ -81,6 +81,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         public bool IsConnected => this.client?.Connected ?? false;
 
+        public bool IsTestLoop { get; set; }
+
         public int MaxMessageLength => this.maxMessageLength;
 
         public ConcurrentQueue<string> MessagesReceived => this.messagesReceivedQueue;
@@ -1249,10 +1251,14 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 }
                 else if (receivedArray.Any(r => r.StartsWith("GET", StringComparison.Ordinal)))
                 {
-                    this.logger.Debug($"Received GET message error: retry sending WRITE");
-                    await this.SetAndWriteMessageAsync(message, this.savedOffset, false);
                     this.HasGetErrors = true;
-                    // only one retry
+                    this.logger.Debug($"Received GET message Error");
+                    if (!this.IsTestLoop)
+                    {
+                        this.logger.Debug($"Retry sending WRITE");
+                        await this.SetAndWriteMessageAsync(message, this.savedOffset, false);
+                        // only one retry
+                    }
                     ret = true;
                 }
                 else

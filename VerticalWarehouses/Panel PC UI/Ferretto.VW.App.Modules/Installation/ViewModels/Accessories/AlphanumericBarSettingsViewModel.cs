@@ -148,6 +148,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     if (value)
                     {
                         this.deviceDriver.HasGetErrors = false;
+                        this.deviceDriver.IsTestLoop = true;
                         this.HasGetErrors = false;
                         this.incrementTimeLoop = 1;
                         this.loopTextMessage = this.TestMessageText;
@@ -156,6 +157,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     else
                     {
                         this.TestMessageText = this.loopTextMessage;
+                        this.deviceDriver.IsTestLoop = false;
                         this.ShowNotification(InstallationApp.StopLoop, Services.Models.NotificationSeverity.Success);
                         this.loopTimer.Dispose();
                     }
@@ -245,9 +247,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
-                        this.TestMessageText = this.loopTextMessage;
-                        this.HasGetErrors = false;
-                        this.loopTimer.Change(-1, -1);
+                        this.StopTestLoop();
                         _ = this.DoTestArrowOnAsync(this.testArrowOffset);
                     }
                 }
@@ -281,9 +281,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
-                        this.TestMessageText = this.loopTextMessage;
-                        this.HasGetErrors = false;
-                        this.loopTimer.Change(-1, -1);
+                        this.StopTestLoop();
                         _ = this.DoTestLedAsync(value);
                     }
                 }
@@ -299,8 +297,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
-                        this.HasGetErrors = false;
-                        this.loopTimer.Change(-1, -1);
+                        this.StopTestLoop();
                         _ = this.DoTestMessageOnAsync(this.TestMessageText, this.testMessageOffset);
                     }
                 }
@@ -347,9 +344,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (value)
                     {
-                        this.TestMessageText = this.loopTextMessage;
-                        this.HasGetErrors = false;
-                        this.loopTimer.Change(-1, -1);
+                        this.StopTestLoop();
                         _ = this.DoTestLedAsync(false);
                     }
                 }
@@ -582,6 +577,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.loopTestIsChecked = false;
+                this.deviceDriver.IsTestLoop = false;
                 this.TestMessageText = this.loopTextMessage;
                 this.ShowNotification(ex);
             }
@@ -603,10 +599,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
                 await this.deviceDriver.EnabledAsync(false);
-                if (this.deviceDriver.TestEnabled)
-                {
-                    await this.deviceDriver.TestAsync(false);
-                }
 
                 return await this.deviceDriver.SetCustomCharacterAsync(0, offset, true);
             }
@@ -703,6 +695,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void StopTestLoop()
+        {
+            this.TestMessageText = this.loopTextMessage;
+            this.HasGetErrors = false;
+            this.deviceDriver.IsTestLoop = false;
+            this.loopTimer.Change(-1, -1);
         }
 
         #endregion
