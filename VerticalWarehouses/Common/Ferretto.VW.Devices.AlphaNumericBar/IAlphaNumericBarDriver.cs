@@ -13,6 +13,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         bool HasGetErrors { get; set; }
 
+        bool IsTestLoop { get; set; }
+
         int NumberOfLeds { get; }
 
         string SelectedMessage { get; set; }

@@ -492,6 +492,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload((int)SocketLinkCommand.AlarmResetResponseResult.errorInParameters);
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                     cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
@@ -499,6 +500,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload((int)SocketLinkCommand.AlarmResetResponseResult.errorInParameters);
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload(ex.Message);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -525,11 +527,13 @@ namespace Ferretto.VW.MAS.SocketLink
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -580,28 +584,33 @@ namespace Ferretto.VW.MAS.SocketLink
                         {
                             cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.errorInParameters);
                             cmdResponse.AddPayload($"errors in parameters");
+                            this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                         }
                     }
                     else
                     {
                         cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.deviceNotEnable);
                         cmdResponse.AddPayload($"device not enabled ({cmdReceived.GetPayloadByPosition(0)})");
+                        this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                     }
                 }
                 else
                 {
                     cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.warehouseNotFound);
                     cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (BayNumberException ex)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.AlphaNumericBarCommandResponseResult.bayNotFound);
                 cmdResponse.AddPayload($"invalid bay number {ex.BayNumber}");
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -629,6 +638,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayAlreadyRequested);
                         cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                         cmdResponse.AddPayload("tray already requested");
+                        this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                     }
                     else
                     {
@@ -658,12 +668,14 @@ namespace Ferretto.VW.MAS.SocketLink
                             cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayContainedInABlockedShelfPosition);
                             cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                             cmdResponse.AddPayload($"incorrect tray status ({trayStatus})");
+                            this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                         }
                     }
                 }
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(1)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (TrayNumberException)
@@ -671,30 +683,35 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayNumberNotCorrect);
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload("incorrect tray number");
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (InvalidOperationException)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayAlreadyRequested);
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload("tray already requested");
+                this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (EntityNotFoundException)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.exitBayNotCorrect);
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload("bay not correct");
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (BayNumberException ex)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayNumberNotCorrect);
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload(ex.Message);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (Exception ex)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayNumberNotCorrect);
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload(ex.Message);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -736,6 +753,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                     cmdResponse.AddPayload((int)SocketLinkCommand.InfoErrorCode.warehouseNotFound);
                     cmdResponse.AddPayload($"warehouse not found {cmdReceived.GetPayloadByPosition(0)}");
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (BayNumberException ex)
@@ -744,10 +762,12 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                 cmdResponse.AddPayload((int)SocketLinkCommand.InfoErrorCode.bayNotFoundForSpecifiedWarehouse);
                 cmdResponse.AddPayload($"bay not found for specified warehouse {ex.Message}");
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -802,28 +822,33 @@ namespace Ferretto.VW.MAS.SocketLink
                         {
                             cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.errorInParameters);
                             cmdResponse.AddPayload($"errors in parameters");
+                            this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                         }
                     }
                     else
                     {
                         cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.deviceNotEnable);
                         cmdResponse.AddPayload($"device not enabled ({cmdReceived.GetPayloadByPosition(0)})");
+                        this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                     }
                 }
                 else
                 {
                     cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.warehouseNotFound);
                     cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (BayNumberException ex)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.LaserCommandResponseResult.bayNotFound);
                 cmdResponse.AddPayload($"invalid bay number {ex.BayNumber}");
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -848,11 +873,13 @@ namespace Ferretto.VW.MAS.SocketLink
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -900,22 +927,26 @@ namespace Ferretto.VW.MAS.SocketLink
                             {
                                 cmdResponse.AddPayload((int)PickingCommandResponse.machineNotReady);
                                 cmdResponse.AddPayload("Machine not ready (no automatic mode)");
+                                this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                             }
                         }
                     }
                     else
                     {
                         cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid quantity number ({quantityString})", isLineFeed);
+                        this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                     }
                 }
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -987,11 +1018,13 @@ namespace Ferretto.VW.MAS.SocketLink
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -1029,15 +1062,18 @@ namespace Ferretto.VW.MAS.SocketLink
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (BayNumberException ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid bay number {ex.BayNumber}", isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -1096,6 +1132,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                     cmdResponse.AddPayload($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
@@ -1104,6 +1141,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(0));
                 cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                 cmdResponse.AddPayload(ex.Message);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -1131,11 +1169,13 @@ namespace Ferretto.VW.MAS.SocketLink
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -1181,11 +1221,13 @@ namespace Ferretto.VW.MAS.SocketLink
                 else
                 {
                     cmdResponse = SocketLinkProvider.GetInvalidFormatResponse($"invalid warehouse number ({cmdReceived.GetPayloadByPosition(0)})", isLineFeed);
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -1223,6 +1265,7 @@ namespace Ferretto.VW.MAS.SocketLink
                             cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
                             cmdResponse.AddPayload(trayNumber);
                             cmdResponse.AddPayload($"incorrect tray status ({trayStatus})");
+                            this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                         }
                     }
                     else
@@ -1230,6 +1273,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.noTrayCurrentlyPresentInTheSpecifiedBay);
                         cmdResponse.AddPayload(trayNumber);
                         cmdResponse.AddPayload($"no tray currently present in the specific bay ({trayNumber})");
+                        this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                     }
                 }
                 else
@@ -1237,6 +1281,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload((int)SocketLinkCommand.ExtractCommandResponseResult.trayNumberNotCorrect);
                     cmdResponse.AddPayload(trayNumber);
                     cmdResponse.AddPayload($"incorrect warehouse number ({cmdReceived.GetPayloadByPosition(0)})");
+                    this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                 }
             }
             catch (InvalidOperationException)
@@ -1244,22 +1289,26 @@ namespace Ferretto.VW.MAS.SocketLink
                 cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.trayAlreadyRequested);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload("tray already requested");
+                this.logger.LogInformation($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (EntityNotFoundException)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.bayNotCorrect);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload("incorrect bay number");
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (BayNumberException ex)
             {
                 cmdResponse.AddPayload((int)SocketLinkCommand.StoreCommandResponseResult.bayNotCorrect);
                 cmdResponse.AddPayload(trayNumber);
                 cmdResponse.AddPayload(ex.Message);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
@@ -1287,6 +1336,7 @@ namespace Ferretto.VW.MAS.SocketLink
                         else
                         {
                             cmdResponse = SocketLinkProvider.GetInvalidFormatResponse("incorrect date time format", isLineFeed);
+                            this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                             return cmdResponse;
                         }
                         break;
@@ -1297,6 +1347,7 @@ namespace Ferretto.VW.MAS.SocketLink
             catch (Exception ex)
             {
                 cmdResponse = SocketLinkProvider.GetInvalidFormatResponse(ex.Message, isLineFeed);
+                this.logger.LogError($"{cmdResponse.ToString().Replace("\r", "<CR>").Replace("\n", "<LF>")}");
             }
 
             return cmdResponse;
