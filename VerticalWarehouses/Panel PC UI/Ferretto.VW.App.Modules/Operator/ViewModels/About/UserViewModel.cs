@@ -326,6 +326,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             "cs-CZ",
                             "Čeština");
 
+                case "tr-TR":
+                    return new Culture(
+                        $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/TR.png",
+                        "tr-TR",
+                        "Turco");
+
+
                 default:
                     return new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
@@ -421,6 +428,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/SI.png",
                             "sl-SI",
                             "Slovenščina"));
+
+            res.Add(new Culture(
+                        $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/TR.png",
+                        "tr-TR",
+                        "Turco"));
+
 
             return res;
         }
