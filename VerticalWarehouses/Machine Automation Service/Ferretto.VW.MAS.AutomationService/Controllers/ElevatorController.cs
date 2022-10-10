@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NJsonSchema.Annotations;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -174,6 +175,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("loading-unit-on-board")]
+        [ProducesResponseType(typeof(LoadingUnit), 200)]
+        [ProducesResponseType(typeof(LoadingUnit), 204)]
+        [return: CanBeNull]
         public ActionResult<LoadingUnit> GetLoadingUnitOnBoard()
         {
             return this.Ok(this.elevatorDataProvider.GetLoadingUnitOnBoard());

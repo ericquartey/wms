@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
+    <TargetFrameworks>net6.0;net471</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.5" />    
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.5" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="6.0.9" />    
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net6.0'">
      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="1.1.5" />    
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />

@@ -51,17 +51,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(missions);
         }
 
-        [HttpGet("active/unit")]
-        public ActionResult<List<int>> GetAllUnitGoBay()
-        {
-            var missions = this.missionsDataProvider.GetAllActiveUnitGoBay();
-            return this.Ok(missions);
-        }
-
         [HttpGet("active/unit/by/bay")]
         public ActionResult<List<int>> GetAllUnitGoBay(BayNumber bayNumber)
         {
             var missions = this.missionsDataProvider.GetAllActiveUnitGoBay(bayNumber);
+            return this.Ok(missions);
+        }
+
+        [HttpGet("active/unit")]
+        public ActionResult<List<int>> GetAllUnitGoBayAll()
+        {
+            var missions = this.missionsDataProvider.GetAllActiveUnitGoBay();
             return this.Ok(missions);
         }
 
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("active/unit/cell/by/bay")]
-        public ActionResult<List<int>> GetAllUnitGoCell(BayNumber bayNumber)
+        public ActionResult<List<int>> GetAllUnitGoCellBay(BayNumber bayNumber)
         {
             var missions = this.missionsDataProvider.GetAllActiveUnitGoCell(bayNumber);
             return this.Ok(missions);

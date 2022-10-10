@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <ContentSQLiteInteropFiles>true</ContentSQLiteInteropFiles>
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
@@ -18,18 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="3.1.25" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="3.1.25" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.25">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.9">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.25" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.25" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.25" />
-    <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="3.1.25" />
-    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.13" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
+    <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="3.1.29" />
+    <PackageReference Include="Newtonsoft.Json.Schema" Version="3.0.14" />
     <PackageReference Include="Otp.NET" Version="1.2.2" />
   </ItemGroup>
 

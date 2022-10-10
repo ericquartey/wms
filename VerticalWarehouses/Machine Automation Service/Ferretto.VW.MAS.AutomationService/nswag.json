@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "NetCore31",
+  "runtime": "Net60",
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
@@ -7,7 +7,7 @@
       "msBuildProjectExtensionsPath": null,
       "configuration": "debug",
       "runtime": null,
-      "targetFramework": "netcoreapp3.1",
+      "targetFramework": "net6.0",
       "noBuild": true,
       "verbose": true,
       "workingDirectory": null,
@@ -100,7 +100,7 @@
       "namespace": "Ferretto.VW.MAS.AutomationService.Contracts",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTime",
-      "jsonConverters": [ "Ferretto.VW.CommonUtils.Converters.IPAddressConverter" ],
+      "jsonConverters": [ "Ferretto.VW.CommonUtils.Converters.IPAddressConverter", "Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter" ],
       "anyType": "object",
       "dateTimeType": "System.DateTimeOffset",
       "timeType": "System.TimeSpan",

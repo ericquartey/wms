@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.moveUnits.Clear();
-                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync(this.machineService.BayNumber);
+                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellBayAsync(this.machineService.BayNumber);
 
                 if (this.moveUnitIdToCell != null)
                 {

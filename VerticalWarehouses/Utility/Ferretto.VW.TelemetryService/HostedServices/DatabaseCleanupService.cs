@@ -15,7 +15,7 @@ namespace Ferretto.VW.TelemetryService
 
         private static readonly TimeSpan DefaultExecutionTimespan = TimeSpan.FromHours(12);
 
-        private static readonly TimeSpan DefaultMaximumLogTimespan = TimeSpan.FromDays(7);
+        private static readonly TimeSpan DefaultMaximumLogTimespan = TimeSpan.FromDays(15);
 
         private readonly IConfiguration configuration;
 

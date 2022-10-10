@@ -1070,7 +1070,7 @@ namespace Ferretto.VW.App.Services
                             this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
                             await this.GetCells();
 
-                            var embarkedLoadingUnit = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
+                            var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
 
                             lock (this.MachineStatus)
                             {

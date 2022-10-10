@@ -970,6 +970,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 index = tmp.IndexOf("'", StringComparison.CurrentCulture);
 
                 var retValue = tmp.Remove(index, 1);
+                index = tmp.IndexOf(";", StringComparison.CurrentCulture);
+                if (index > 1)
+                {
+                    retValue = retValue.Substring(0, index - 1);
+                }
                 return retValue;
             }
             catch (Exception)

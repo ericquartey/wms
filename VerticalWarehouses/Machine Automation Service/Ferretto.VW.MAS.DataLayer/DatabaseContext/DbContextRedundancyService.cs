@@ -54,11 +54,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbContextOptions<TDbContext> ActiveDbContextOptions { get; private set; }
 
-        public bool IsActiveDbInhibited => this.isInhibited[this.ActiveDbContextOptions];
+        public bool IsActiveDbInhibited { get; private set; }
 
         public bool IsEnabled { get; set; }
 
-        public bool IsStandbyDbInhibited => this.isInhibited[this.StandbyDbContextOptions];
+        public bool IsStandbyDbInhibited { get; private set; }
 
         public DbContextOptions<TDbContext> StandbyDbContextOptions { get; private set; }
 
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return;
             }
 
-            this.isInhibited[this.StandbyDbContextOptions] = true;
+            this.IsStandbyDbInhibited = true;
         }
 
         private void Initialize()
@@ -133,11 +133,11 @@ namespace Ferretto.VW.MAS.DataLayer
             this.ActiveDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
               .UseSqlite(this.activeDbConnectionString)
               .Options;
-            this.isInhibited.Add(this.ActiveDbContextOptions, false);
+            this.IsActiveDbInhibited = false;
 
             if (string.IsNullOrWhiteSpace(this.standbyDbConnectionString))
             {
-                this.isInhibited.Add(this.StandbyDbContextOptions, true);
+                this.IsStandbyDbInhibited = true;
                 this.logger.LogWarning("No connection string specified for standby database. Database redundancy disabled.");
             }
             else
@@ -146,15 +146,15 @@ namespace Ferretto.VW.MAS.DataLayer
                     .UseSqlite(this.standbyDbConnectionString)
                     .Options;
 
-                this.isInhibited.Add(this.StandbyDbContextOptions, false);
+                this.IsStandbyDbInhibited = false;
             }
         }
 
         private void SwapContexts(Exception exception)
         {
-            this.isInhibited[this.ActiveDbContextOptions] = true;
+            this.IsActiveDbInhibited = true;
 
-            if (this.isInhibited[this.StandbyDbContextOptions])
+            if (this.IsStandbyDbInhibited)
             {
                 this.logger.LogCritical(exception, "Unable to swap active with standby, because standby is inhibited (not usable).");
                 return;

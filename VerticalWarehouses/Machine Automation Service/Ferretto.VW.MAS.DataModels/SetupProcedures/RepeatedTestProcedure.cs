@@ -4,8 +4,6 @@
     {
         #region Fields
 
-        private bool inProgress;
-
         private int performedCycles;
 
         private int requiredCycles;
@@ -13,12 +11,6 @@
         #endregion
 
         #region Properties
-
-        public bool InProgress
-        {
-            get => this.inProgress;
-            set => this.inProgress = value;
-        }
 
         public int PerformedCycles
         {

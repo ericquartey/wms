@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -71,11 +72,11 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 }
                 else if (context.Exception is ArgumentException)
                 {
-                    context.Result = new BadRequestObjectResult(new ProblemDetails
-                    {
-                        Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual),
-                        Detail = context.Exception.Message,
-                    });
+                    var problems = new ProblemDetails();
+                    problems.Title = Resources.General.ResourceManager.GetString("BadRequestTitle", CommonUtils.Culture.Actual);
+                    problems.Detail = context.Exception.Message;
+                    problems.Extensions.Add("", "");
+                    context.Result = new BadRequestObjectResult(problems);
                 }
                 else if (context.Exception is InvalidOperationException)
                 {

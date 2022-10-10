@@ -24,8 +24,8 @@ using Newtonsoft.Json.Serialization;
 using Prism.Events;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Ferretto.VW.CommonUtils.Converters;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -114,6 +114,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(new IPAddressConverter());
+                options.SerializerSettings.Converters.Add(new CommonUtils.Converters.ProblemDetailsConverter());
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 

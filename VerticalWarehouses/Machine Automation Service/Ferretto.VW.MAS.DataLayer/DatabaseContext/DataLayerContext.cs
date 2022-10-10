@@ -25,6 +25,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
         }
 
+        public DataLayerContext(DbContextOptions<DataLayerContext> options)
+            : base(options)
+        {
+        }
+
         public DataLayerContext(DbContextOptions<DataLayerContext> options, IDbContextRedundancyService<DataLayerContext> dbContextRedundancy)
             : base(options)
         {

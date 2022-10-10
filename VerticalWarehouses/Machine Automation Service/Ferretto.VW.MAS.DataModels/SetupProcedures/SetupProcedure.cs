@@ -24,6 +24,8 @@
             }
         }
 
+        public bool? InProgress { get; set; }
+
         public bool IsBypassed { get; set; }
 
         public bool IsCompleted { get; set; }

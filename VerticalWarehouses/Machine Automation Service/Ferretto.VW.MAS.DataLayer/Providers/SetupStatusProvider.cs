@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         IsCompleted = setup.Bay1ShutterTest.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
-                        InProgress = setup.Bay1ShutterTest.InProgress,
+                        InProgress = setup.Bay1ShutterTest.InProgress is true,
                         IsBypassed = setup.Bay1ShutterTest.IsBypassed,
                     },
                     CarouselCalibration = new SetupStepStatus
@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         IsCompleted = setup.Bay2ShutterTest.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
-                        InProgress = setup.Bay2ShutterTest.InProgress,
+                        InProgress = setup.Bay2ShutterTest.InProgress is true,
                         IsBypassed = setup.Bay2ShutterTest.IsBypassed,
                     },
                     CarouselCalibration = new SetupStepStatus
@@ -235,7 +235,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         IsCompleted = setup.Bay3ShutterTest.IsCompleted,
                         CanBePerformed = setup.VerticalOriginCalibration.IsCompleted,
-                        InProgress = setup.Bay3ShutterTest.InProgress,
+                        InProgress = setup.Bay3ShutterTest.InProgress is true,
                         IsBypassed = setup.Bay3ShutterTest.IsBypassed,
                     },
                     CarouselCalibration = new SetupStepStatus
@@ -264,7 +264,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     IsCompleted = setup.BeltBurnishingTest.IsCompleted,
                     CanBePerformed = setup.VerticalOriginCalibration.IsCompleted && setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
-                    InProgress = setup.BeltBurnishingTest.InProgress,
+                    InProgress = setup.BeltBurnishingTest.InProgress is true,
                     IsBypassed = setup.BeltBurnishingTest.IsBypassed,
                 },
                 CellsHeightCheck = new SetupStepStatus
@@ -276,7 +276,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 CellPanelsCheck = new SetupStepStatus
                 {
                     IsCompleted = setup.CellPanelsCheck.IsCompleted,
-                    InProgress = setup.CellPanelsCheck.InProgress,
+                    InProgress = setup.CellPanelsCheck.InProgress is true,
                     CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && setup.VerticalOriginCalibration.IsCompleted,
                     IsBypassed = setup.CellPanelsCheck.IsBypassed,
                 },

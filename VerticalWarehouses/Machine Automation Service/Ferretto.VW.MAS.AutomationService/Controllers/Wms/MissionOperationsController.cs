@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using NJsonSchema.Annotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -121,6 +123,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("socket-link-operation")]
+        [ProducesResponseType(typeof(SocketLinkOperation), 200)]
+        [ProducesResponseType(typeof(SocketLinkOperation), 204)]
+        [return: CanBeNull]
         public async Task<ActionResult<SocketLinkOperation>> GetSocketLinkOperationAsync()
         {
             return this.Ok(this.machineVolatileDataProvider.SocketLinkOperation[this.BayNumber]);

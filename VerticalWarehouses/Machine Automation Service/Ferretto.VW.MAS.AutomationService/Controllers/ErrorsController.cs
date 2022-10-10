@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NJsonSchema.Annotations;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -42,6 +43,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("current")]
+        [ProducesResponseType(typeof(MachineError), 200)]
+        [ProducesResponseType(typeof(MachineError), 204)]
+        [return: CanBeNull]
         public ActionResult<MachineError> GetCurrent()
         {
             var currentError = this.errorsProvider.GetCurrent();
