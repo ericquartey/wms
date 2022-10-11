@@ -1374,6 +1374,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 try
                 {
+                    var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     using (var streamReader = new System.IO.StreamReader(responseStream))
                     using (var jsonTextReader = new Newtonsoft.Json.JsonTextReader(streamReader))
