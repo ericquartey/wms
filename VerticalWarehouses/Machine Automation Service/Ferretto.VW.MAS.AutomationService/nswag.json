@@ -100,7 +100,7 @@
       "namespace": "Ferretto.VW.MAS.AutomationService.Contracts",
       "requiredPropertiesMustBeDefined": true,
       "dateType": "System.DateTime",
-      "jsonConverters": [ "Ferretto.VW.CommonUtils.Converters.IPAddressConverter", "Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter" ],
+      "jsonConverters": [ "Ferretto.VW.CommonUtils.Converters.IPAddressConverter", "Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter" ],
       "anyType": "object",
       "dateTimeType": "System.DateTimeOffset",
       "timeType": "System.TimeSpan",

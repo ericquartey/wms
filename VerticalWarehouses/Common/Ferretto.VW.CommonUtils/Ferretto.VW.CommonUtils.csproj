@@ -22,5 +22,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.InverterDriver.Contracts\Ferretto.VW.MAS.InverterDriver.Contracts.csproj" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson">
+      <Version>6.0.9</Version>
+    </PackageReference>
+  </ItemGroup>
   
 </Project>

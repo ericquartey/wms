@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -246,7 +246,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -1453,7 +1453,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -1820,7 +1820,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -3124,7 +3124,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -4353,7 +4353,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -4822,7 +4822,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -5570,7 +5570,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -5865,7 +5865,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -6482,7 +6482,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -7283,7 +7283,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -8358,7 +8358,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -12587,7 +12587,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -13028,7 +13028,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -13654,7 +13654,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -15507,7 +15507,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -15802,7 +15802,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -16179,7 +16179,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -17716,7 +17716,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -20517,7 +20517,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -20884,7 +20884,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -21330,7 +21330,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -21615,7 +21615,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -22961,7 +22961,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -23536,7 +23536,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -23888,7 +23888,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -24193,7 +24193,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -24570,7 +24570,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -25517,7 +25517,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -26035,7 +26035,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -26562,7 +26562,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -27096,7 +27096,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -27450,7 +27450,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -28689,7 +28689,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -29425,7 +29425,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -29929,7 +29929,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -31476,7 +31476,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -31982,7 +31982,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -32460,7 +32460,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -32670,7 +32670,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -33239,7 +33239,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -33449,7 +33449,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -33995,7 +33995,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -35069,7 +35069,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -36243,7 +36243,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }
@@ -36871,7 +36871,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
         private Newtonsoft.Json.JsonSerializerSettings CreateSerializerSettings()
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.ProblemDetailsConverter() } };
+            var settings = new Newtonsoft.Json.JsonSerializerSettings { Converters = new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter(), new Ferretto.VW.CommonUtils.Converters.MyProblemDetailsConverter() } };
             UpdateJsonSerializerSettings(settings);
             return settings;
         }

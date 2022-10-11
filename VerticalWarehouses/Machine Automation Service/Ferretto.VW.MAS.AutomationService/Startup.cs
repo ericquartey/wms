@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(new IPAddressConverter());
-                options.SerializerSettings.Converters.Add(new CommonUtils.Converters.ProblemDetailsConverter());
+                options.SerializerSettings.Converters.Add(new MyProblemDetailsConverter());
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
 
