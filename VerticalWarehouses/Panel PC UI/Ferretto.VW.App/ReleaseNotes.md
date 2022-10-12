@@ -28,9 +28,12 @@
 ## Nuove Funzionalità 1.0.53 rispetto la 1.0.52
 - Il servizio MAS usa di nuovo il netcore 2.2
 - Aggiunta lingua turca
+- Aggiunto parametro per evidenziare la lista in attesa
+- Aggiunti parametri per confermare la fine lista
 
 ## Bug Risolti
 - Eliminati rallentamenti evidenziati nella versione precedente
+- Correzione ai comandi manuali
 
 ## Compatibile con adapter 0.4.41
 ***
