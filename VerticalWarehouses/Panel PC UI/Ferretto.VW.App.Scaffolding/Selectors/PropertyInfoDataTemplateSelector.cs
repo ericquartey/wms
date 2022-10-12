@@ -62,7 +62,7 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                     }
                     else if (this.IsNumeric(type))
                     {
-                        if (type.FullName == "System.Int32")
+                        if (type.FullName == "System.Int32" || type == typeof(int?))
                         {
                             resourceKey = "NumericIntDataTemplate";
                         }

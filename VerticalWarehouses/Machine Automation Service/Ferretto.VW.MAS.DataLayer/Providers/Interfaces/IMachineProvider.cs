@@ -52,6 +52,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetToteBarcodeLength();
 
+        int? GetWaitingListPriorityHighlighted();
+        bool GetListPutConfirm();
+        bool GetListPickConfirm();
+
         void Import(Machine machine, DataLayerContext context);
 
         void ImportMachineServicingInfo(IEnumerable<ServicingInfo> servicingInfo, DataLayerContext context);
