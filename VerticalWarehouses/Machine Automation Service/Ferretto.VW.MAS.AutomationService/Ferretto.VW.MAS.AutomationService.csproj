@@ -55,6 +55,7 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Remove="Database\MachineAutomationService.Todesco.Secondary.db-journal" />
     <None Remove="Properties\register_as_service.ps1" />
     <Content Include="register_as_service.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
