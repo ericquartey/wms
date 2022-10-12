@@ -1,0 +1,2715 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Auto" xml:space="preserve">
+    <value>Otomatik</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Bant Parlatma</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Aşağı</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Forvet</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Oturumu Kapat</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>deklanşör</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Dikey eksen</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manuel</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Yukarı</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Dikey eksen orijini</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Dikey eksen orijini ayarlanmadı.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Alt sınır [mm]</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Ofset [mm]</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Çıktı</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Çözünürlük</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Başlama</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Durmak</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Üst sınır [mm]</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Bölmeler ve yükseklik kontrolü</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>beşik</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>İzinsiz giriş önleme kapısı</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Beşik Motoru Seçildi</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Asansör Motoru Seçildi</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Acil Son Çalıştırma</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Makine Kızağı Tarafında LU Varlığı</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Operatör Yuvası Tarafında LU Varlığı</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Mikro karter sol taraf</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Mikro carter sağ taraf</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Acil Durum Kırmızı Düğmesi</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Güvenlik Fonksiyonu Aktif</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Sıfır Tırnak Sensörü</value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Sıfır Dikey Sensör</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Deklanşör testi</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Hareket</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>hücreye git</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Başlangıç ​​konumu [mm]</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Yeni çözünürlük (im/mm)</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Mevcut çözünürlük (imp/mm)</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Ölçülen hareket [mm]</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Dikey Çözünürlük Kalibrasyonu</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Gerçekleştirilen döngüler (oturum)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Mevcut konum [mm]</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Döngüler arasındaki gecikme [sn]</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Gerekli döngüler</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Kapı Kontrolü 1</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Mevcut yükseklik [mm]</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Kapı düzeltmesi [mm]</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Kapı 1 Yükseklik Kontrolü</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Hız [mm/sn]</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Sistem hatası [mm]</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolerans (+/-) [mm]</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Dikey Ofset Kalibrasyonu</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Ağırlık kontrolü</value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Kabul edilebilir ağırlık toleransı (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Takılan ağırlık (kg)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Ölçülen ağırlık (kg)</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Test sürüşü</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Ayarlanmış ofset [mm]</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Akım ofset [mm]</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Kapat prosedürü</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Referansın hücre konumu [mm]</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Adım değeri [mm]</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Hücre Yüksekliği [mm]</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Geçerli hücre</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Geçerli panel</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Panel düzeltme [mm]</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Toplam paneller</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Ön</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Kurulum Durumu</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Bant parlatma</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Dikey Menşe Kalibrasyonu</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Dikey çözünürlük</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Hücre konum kontrolü</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Ölçülen başlangıç ​​konumu [mm]</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>konuma taşı</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Hücre Yüksekliği Düzeltme [mm]</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Dikey Ofset Doğrulandı</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Deklanşör Sensörü A</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Deklanşör Sensörü B</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Son konum</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Prosedürü başlat</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Kapat prosedürü</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Sonraki panel</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Paneller kontrol prosedürü</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>FinalPozisyonunu Oku</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Ulaşılan Yükseklik</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Asansör</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Hücre grubu konumunu değiştir</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>İlk hücre</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Son hücre</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>İstenen düzeltme [mm]</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Seçilen taraf</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Yük Çekmeceleri</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Toplam çekmece</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Maksimum ağırlık oranı (kg)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Gömülü çekmeceler</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Eklemek için çekmece</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Sonraki çekmece</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Eklemeyi başlat</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>İlk Çekmeceyi Yükle ve Test Hücreleri</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Test edilecek toplam hücre</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Toplam test edilen hücreler</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>test hücresi</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Eklemek için çekmece</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Maksimum ağırlık çekmece bağlantı noktası (kg)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Çekmece Ekle</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Çağrı Çekmecesi</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Bölmeler Konum Yükseklik Kontrolü</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Körfezdeki pozisyon</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Yuva yüksekliği [mm]</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Mevcut konum [mm]</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>Düzeltme değeri [mm]</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Sonraki pozisyon</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Bay testinde Para Yatırma / Alma</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>İlerleme hızı %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>İstenen döngüler</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Mevcut zincir konumu</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Tamamlanan döngüler</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Döngüyü durdur</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Döngüyü başlat</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>Uyarı</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>Engellenmeyen düşük hızlı hareketler için şu anda mevcut olan manuel komutlar</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Yapılandırma dosyalarını kaydet</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Yapılandırma dosyalarını geri yükle</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Seçilen klasör</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Yapılandırmayı kaydet</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Kaydetmeyi Onayla</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Kaydetmeyi İptal Et</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Yapılandırma Yükle</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>Yüklemeyi onayla</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Yüklemeyi iptal et</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>Yatay Hedef Arama Tamamlandı</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>Yatay Hedef Arama Yürütme ({0} / {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Yatay Hedef Arama Başlatıldı</value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Anahtar Motoru Tamamlandı</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Anahtar Motoru Çalıştırıldı</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>Dikey Hedef Arama Yürütme ({0} / {1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Dikey Hedef Arama Başlatıldı</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Dikey Hedef Arama Hatası ({0} / {1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Yatay Hedef Arama Hatası ({0} / {1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Motor Hatasını Değiştir</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Hücreden bölmeye geri çağırmaya başlayın</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Depodan hücreye mağazaya başlayın</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Çekmece deposu ve çekmece geri çağırma</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Başlatılıyor...</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>1. bölme</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>2. bölme</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>3. bölme</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Bay için Deklanşör Dayanıklılık Testi</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>orta yol</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Aşama 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Adım 2</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Hücre Tarafı</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Aşağı pozisyon</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>yukarı konumlandır</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Deplasman [mm]</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Dış Körfez</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Düzeltmeyi Uygula</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>İstenen yükleme birimi kimliğini girin</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Doğrulayın</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Yan</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Koy</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Körfez Konumu</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Dikey Konum [mm]</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Bay'de Tepsi</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Körfeze git</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>hücreler</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Asansör</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Yüklü Tepsi</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Tepsi Ağırlığı (kg)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>Yatay Konum [mm]</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>Prosedür durduruldu.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Sıfırla</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Gerçekleştirilen döngülü (kümülatif)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Sonraki</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Ağırlık Analizi</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Tepsi Darası (kg)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Net ağırlık / kilogram)</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Bu terminalde güvenlik duvarı etkindir.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Prosedür tamamlandı.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>pozisyona git</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Onay işlemi?</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Birim kimliği yükleniyor</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Bay kalibrasyonu</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>atlıkarınca aşağı</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>yukarı atlıkarınca</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Zincir kalibrasyonu</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Çekmece Numarası</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Deklanşörü kapat</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Deklanşörü aç</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>çekmeceye git</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Makine Tarafında LU Varlığı</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Operatör Tarafında LU Varlığı</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Bilgiler güncellendi.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Başarılı kaydet</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>hedef hücre kimliği</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Yükleme birimini bölmeden hücreye yerleştirin</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>sıfır zincir</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Yükleme birimini hücreden hücreye taşı</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Yükleme birimini hücreden bölmeye taşı</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Yükleme birimini çıkarmayı onaylayın</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Deklanşör Testi</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Aşağı bölme yüksekliği [mm]</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Yuva yüksekliğini yukarıya konumlandırın [mm]</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Tepsi aşağı konumda</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Tepsi yukarı konumda</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Ünite kodu konumu yukarı yükleniyor</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Ünite kodu konumu aşağı yükleniyor</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Birim kodu yükleniyor</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Hücre</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Geri yükleme başarılı</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Eski haline getirmek</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>İhracat</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Cihaz dosyası bulundu</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Dosya yapılandırmalı cihazı ekle - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Dosya okuma hatası</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Dışa aktarma başarılı</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Dosyanın üzerine yazmayı onayla?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>Cihazda zaten bir dosya var.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Geri yüklemeyi onayla</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Yapılandırmayı geri yükle</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Yapılandırmayı uyguladığınızdan emin misiniz?</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Bilinmeyen</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Test başarıyla tamamlandı</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Arka</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>tartım yapmak</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Ölçümü Yürüt</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Yük</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Boşalt</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>{0} hücresi</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>Körfez'de {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Ölçek</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Güdümlü hareketler</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Manuel hareketler</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>kalibrasyon</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Ulaşılan yükseklik</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Makineyi sıfırla</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Makine sıfırlama başarılı.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Kapat</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>kapa çeneni</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Aşağı</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Yukarı</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Bariyer kalibrasyonu</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Güvenlik</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Güvenlik sensörleri</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Saat</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Yıl</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Ay</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Gün</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>dakika</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 Sistem tarih saati</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>WMS otomatik senkronizasyon</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Manuel sistem tarih saatini ayarla</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Girilen tarih e/o saati geçersiz.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>{0} '{1}' güncellemesi onaylansın mı?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Güncellemeyi onayla</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Güncelleme başarıyla tamamlandı.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>İlk güncelleme aşamasında hata.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>İçe aktarılabilir "{0}" yapılandırması algılandı.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Yapılandırma dışa aktarımı için algılanan cihaz.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>İçe aktarmak</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>{0} içe aktarılabilir yapılandırma algılandı.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Cihaz artık mevcut değil.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>{0} dosyasından geri yükleme mümkün DEĞİLDİR.</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>{0} dosyasından geri yükleme mümkündür.</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Kaynak</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Yükleyici uygulaması başarıyla başlatıldı.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Yükleyici uygulaması yürütülürken hata oluştu.</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Hücre geçerli değil</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId pozitif olmalıdır.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>InputFormCellId gerekli.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId pozitif olmalıdır.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>InputToCellId gerekli.</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Adım pozitif olmalıdır.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Adım gerekli.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Başarılı değişiklik</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Eksen Dikey Ofseti Güncellendi</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Kemer Alıştırma</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>Yerleştirilen hücre ücretsiz değil</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>Seçilen hücre mevcut değil.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Seçilen hücre gerekli.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Sağlama toplamı dosyaları denetimi başarıyla tamamlandı.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>'{0}' geçici klasörünü temizle.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Hedef konumu kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Hedef konumu, aralık ekseni ({0}) dışında.</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>Hedef Konumu gerekli.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>{0} çekmece kimliği çıkarıldı</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>{0} dosyası kontrol edilirken hata oluştu</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Dosya sağlama toplamı kontrol edilirken hata oluştu:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>'{0}' dosyası kontrol edilirken hata oluştu. Sağlama toplamı bulunamadı.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Temiz geçici klasörde hata:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Dosyalar çıkarılırken hata oluştu:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Başlatma hatası:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Çıkarma başarıyla tamamlandı.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Ücretsiz hücreye git</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Yatay eksen hareketi devam ediyor...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>InputDelayBetweenCycles gerekli.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>InputDisplacement gereklidir.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>InputNetWeight kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>InputNetWeight gerekli.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>InputWeightRequired belirtilmelidir.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Geçersiz hücre kimliği girildi</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Eklenen çekmecede geçersiz hücre kimliği</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Geçersiz hedef seçim türü</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Bölmede geçersiz çekmece kimliği</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Geçersiz çekmece seçildi</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Geçersiz girilen çekmece kimliği</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Geçersiz kaynak seçimi türü</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>LoadingUnitId gerekli.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Ölçülen konum, aralık ekseni ({0}) dışında.</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>İşlem iptal edildi.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Gerekli sayıda döngü tamamlandı.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Dosya sağlama toplamını '{0}' kontrol etmeye başlayın.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Dosyaları '{0}' içinden çıkarmaya başlayın.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>'{0}' uygulaması başlatılıyor.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Başlangıç ​​pozisyonu kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Aralık ekseni ({0}) dışında başlangıç ​​konumu.</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>TestToRunkesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Dikey eksen hareketi devam ediyor...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>Ağırlık Toleransı kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Yük Birimi İşlemleri</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Kompakt</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Karusel kalibrasyonu</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay kesinlikle pozitif olmalıdır</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound, InputUpperBound'dan büyük olmalıdır.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound, {0} değerinden büyük olmalıdır.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>InputLowerBound gerekli.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>InputRequiredCycles kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>InputRequiredCycles gerekli.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound, InputLowerBound'dan büyük olmalıdır.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound, {0} değerinden büyük olmalıdır.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperrBound kesinlikle pozitif olmalıdır.</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>InputUpperBound gerekli.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Yüksek konum kontrolü</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Asansörü bölme yüksekliğinde hareket ettirin ve panjuru açın.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Yuvayı aşağıya yerleştirin yeni yükseklik [mm]</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Yuvayı yukarı konumlandırın yeni yükseklik [mm]</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Bölme ile asansör arasındaki hizalamayı kontrol edin. Hizalanmamışlarsa, asansörün konumunu düzeltmeye devam edin.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Değişikliklerinizi onaylayın.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Düşük konum kontrolü</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Asansörü hareket ettir</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Değişiklik yok.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Yeni boyutları kontrol edin ve değişiklikleri etkili kılmak için Kaydet'e basın.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Ara aks [mm]</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Sonraki</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>İlk test</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>Seçilen hücre engellendi</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Başlamadan önce</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>Kalibrasyon Sürüyor...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Rafı sensöre taşımak için bölme kalibrasyon prosedürünü gerçekleştirin.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Başlamadan önce bölmede çekmece olmadığını kontrol edin. Prosedürü başlatmak için BAŞLAT'a basın</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Tamamlamak</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Ayarlamayı Onayla</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Hata (mm)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Kalan süre</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Tekrar et</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Prosedürü yeniden çalıştırmak için Tekrarla'ya basın.</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Sensörün üzerindeyseniz + veya altındaysanız - öğesini seçin ve Düzeltmeyi uygula düğmesine basarak düzeltmeyi uygulayın.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Durdurma devam ediyor</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Durdurma Prosedürü</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Yapılan Artırmalar</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Kurulumu onaylayın</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>Prosedür, bir tepsiyi kaynak hücreden hedef hücreye taşır. Prosedürü başlatmak için çekmece kimliğini, hedef hücrenin kimliğini girin ve ardından Başlat'a basın.</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>Prosedür, bir çekmeceyi kaynak bölmeden hedef hücreye taşımanıza izin verir. Prosedürü başlatmak için çekmece kimliğini girin ve ardından Başlat'a basın.</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Çekmece alma konumunu seçin</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Körfezden bölmeye çekmece hareketi</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>Prosedür, bir çekmeceyi kaynak bölmeden hedef bölmeye taşımanıza izin verir. Prosedürü başlatmak için çekmece kimliğini girin ve ardından Başlat'a basın.</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Çekmecenin hedef konumunu seçin</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>Prosedür bir çekmeceyi çıkarmanıza izin verir. Prosedürü başlatmak için çekmece kimliğini girin ve ardından Başlat'a basın.</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>çekmece yönetimi</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Çekmecenin hedef konumunu seçin</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Yeni ofseti onayla</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Asansörün konumunu mükemmel bir şekilde hizalanana kadar düzeltin ve İleri'ye basın.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Mevcut [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>Bir hücre ölçümü gerçekleştirin</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Asansörü bir hücrenin önüne yerleştirin.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Menşe Kalibrasyonunu Yürüt</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Asansörü, sayacı takmanıza izin verecek bir yükseklikte hareket ettirin.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Asansör konumuna hareket</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Alıntı yapmak için taşı</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Yeni ofset (mm)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>sayacı yerleştirin</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Arabacılardan birini çıkarmaya ve sayacı yerleştirmeye devam edin. Karteri yeniden konumlandırarak ve Machine PowerOn durumunu geri yükleyerek tamamlayın.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>Az önce gerçekleştirilen ofset değişikliği nedeniyle, dikey eksen orijininin yeniden kalibrasyonu gereklidir. Başlamak için Başlat'a basın.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Seçili hücre</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Teklifi başlat</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Zamanlar]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Yeni hesaplanan ofset değerini kontrol edin ve değişikliği etkili kılmak için Kaydet'e basın. Sonraki tüm yerleşimler düzeltmeden etkilenecektir.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Tam test</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>Prosedür, makinede bulunan tüm çekmecelerin tam olarak test edilmesini sağlar. Prosedürü başlatmak için döngü sayısını girin ve ardından Başlat'a basın.</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Oturum döngüleri</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Düzeltmeyi gerçekten uygulamak istiyor musunuz?</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Metreyi takın:</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Kalibrasyon prosedürünü onaylamak istiyor musunuz?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Yeni çözünürlüğü onaylayın:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>hedef hedef</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Asansörü, sayacı takmanıza izin verecek bir yüksekliğe yerleştirin.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>İlk ölçümü yapın (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>İlk ölçümü (2/2) yapın:</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Metre ile ölçülen yüksekliği belirtin ve İleri'ye basın</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Ölçülen yükseklik</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Aşağıdaki sonuç makinenin LowerBound değerini değiştirecektir, devam edilsin mi?</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Toplam tamamlanmış döngü sayısını gerçekten sıfırlamak istiyor musunuz?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Kaydetmek</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Prosedürü başlatmak istiyorsunuz</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Aşamada durdurulan test</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Yeni hesaplanan çözünürlük değerini kontrol edin ve değişikliği etkili kılmak için Kaydet'e basın.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Yeni çözünürlük</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Önceki sürüme geri yüklemeyi onayla?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Geri yükleme devam ediyor...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Geri yükleme hatalarla sona erdi</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>'{0}' yükleyici anlık görüntü dosyasını silin.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Anlık görüntü dosyası silinirken hata oluştu.</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>çekmece yönetimi</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Ortalama Akım [A]</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Çağrı birimi</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Prosedürün bitmesini bekleyin, gerekirse fazda bir durdurma için 'DURDUR' düğmesine ve bir durdurma için 'DURDURMA PROSEDÜRÜ'ne basın.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Hücre düzenleme</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Hücre Yönetimi</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Çekmece varlık fotosellerini mutlaka ayarlayın, ayarlanmazsa asansör makinenin üst kısmında bloke olabilir.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>Panel kontrolü:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Fotosel kontrolü:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Birimi sil</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Asansör geri</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Asansör aşağı</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Asansör ileri</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Asansör yukarı</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Düşme çekmecesi</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>hücreye git</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Ünite ekle</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Prosedür tamamlanmadı</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Doğru şekilde bitmediği için prosedürü tekrarlayın</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Birimi kaydet</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Test edilmiş paneller</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Tamamlanan toplam döngü</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Birim</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Ünitenin düzenlenmesi</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>Bariyer kalibrasyonu</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Bay ölçümü</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>Sol taraf kalibrasyonu (mm)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Kalibrasyon sonucu:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>Sağ taraf kalibrasyonu (mm)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Veriler pozitif olmalıdır.</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Asansör konumunda:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Kapı düzeltme</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} yükleme dosyası bulundu</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>ayrıldı</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Sol taraf ölçümü</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>İzin verilen maksimum değer 9'dur.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>değer eksik</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Kurulum dosyası bulunamadı</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Bir kurulum dosyası bulundu</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>İşlemin sonunda sayfa otomatik olarak değişecektir.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>PanelPc güncel sürüm</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Paneller</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>parametreler</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Asansörü bölme yüksekliğine yerleştirin.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Şablonu konumlandırın a</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>Kalibrasyon sonucuna göre, sonucu 1 mm'den az olan işlemi tamamlayıp tamamlamamaya karar verebilirsiniz.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Kalibrasyon sonucu 1 mm'yi aşarsa, önerilen değişiklikler uygulanmalı ve ölçüm tekrarlanmalıdır.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Bir bölme birimi yükleyin veya bölme kalibrasyon sihirbazını başlatmak için birini geri çağırın.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Ayar şablonunu bölmedeki çekmecenin sağ üst köşesine yerleştirin, mıknatısları çekmecede sıkıca duracak şekilde konumlandırdığınızdan emin olun. Ardından deklanşörü açın.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Ayar şablonunu bölmedeki çekmecenin sol üst köşesine yerleştirin, mıknatısları çekmecede sıkıca duracak şekilde konumlandırdığınızdan emin olun.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Kalibrasyon tekrarlayın</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>restorasyon</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Sağ</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Sağ taraf ölçümü</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Depo Yolu</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>İstatistik</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Sistem hatası</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>Şablon yerleştirildikten sonra kapağı açın ve işlemi başlatacak olan ÖLÇÜM tuşuna basın.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Test verisi</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Tolerans gerekli</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Körfezdeki birim:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Ünite yüksek konumda</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Ünite düşük konumda</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Yazılım güncellemesi.</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Kullanıcı yönetimi</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Beklemek...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Otomatik prosedürün bitmesini bekleyin.</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Ağırlık alımı için mevcut değerleri örnekler</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Ağırlık profili analizi</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Çekmece yüksekliği algılama bariyerinin ayarlanmasına izin verir</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>Bariyer kalibrasyonu</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Koylardaki çeşitli konumların yüksekliğini kontrol etmenizi ve düzeltmenizi sağlar.</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Körfez kontrolü</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Dikey eksende bir dizi hareket döngüsü gerçekleştirir.</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Kemer Alıştırma</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Bu testi atlamak istediğinizden emin misiniz?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>Karuseli kalibre edin</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>Karusel kalibrasyonu</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Hücre yönetimi</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>İlk çekmeceyi yükleyin ve hücreleri test edin</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Sınır hücreleri testi</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Bir hücre grubuna düzeltme uygulama</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Hücre bloğunu değiştir (eski)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Kontrol edilen her paneli işaretleyerek, her panel için bir tane olacak şekilde hücrelerin dikey konumunu kontrol edin</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Hücre dikey konumlarını kontrol edin</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Bir veya daha fazla hücrenin kotasını kontrol edin</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Hücre kotalarını kontrol edin (eski)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Diğer bölmelerdeki testleri tamamlayın</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Testi Tamamla</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Testin tamamlandığını onaylamak istiyor musunuz?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Sistem Tarih ve Saat ayarı</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Tarih ve saat</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Biniş / Gemiden Ayrılma</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Kapı için bir dizi tekrarlayan test yapılmasına izin verir.</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Deklanşör testi</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Yeni birim yerleştirme prosedürü</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>ekleme</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>İnverter parametrelendirmesinin standart parametrelerle yüklenmesi</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>İnverter parametreleştirme</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Yerel kullanıcı yönetimi</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Kullanıcı yönetimi</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Üniteyi bölmeden bölmeye taşıma prosedürü</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Körfezden körfeze hareket</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Üniteyi hücreden hücreye taşıma prosedürü</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Hücreden hücreye geçiş</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Dikey eksen ofsetini kalibre edin</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Dikey eksen ofseti</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Makine parametrelerinin değiştirilmesi, içe ve dışa aktarılması</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>parametreler</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Ünite kaldırma prosedürü</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>kaldırma</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Dikey eksenin çözünürlüğünü kalibre edin</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Dikey eksen çözünürlüğü</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Birim Yönetimi</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>Dikey eksenin orijinini kalibre edin</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Dikey eksen orijini</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>WMS ile iletişim parametrelerinin ayarlanması</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>WMS iletişimi</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Kapalı</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Lütfen kemeri 56 hz'ye sıkın</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Durumu kontrol et</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Kurulum durumu tamamlandı.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Eksik yükleme durumu. {0} / {1} prosedürlerini gerçekleştirin.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Doğru mesafe</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Şablon eğimi</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Şablon uzunluğu</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Parametreleri kaydet</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Kurulum</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>WMS Ayarı</value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Host adresi</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>Yatay zincir kalibrasyonu</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>Zincirin yatay kalibrasyonunu gerçekleştirir</value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Zincir kalibrasyon prosedürünü gerçekleştirin. Yatay sıfır sensörü aktif olmalıdır.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>Zincir yatay kalibrasyon işlevi, kendi özel prosedürü aracılığıyla doğru değeri kalibre etmenize olanak tanır. Prosedür, doğru şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Yatay kalibrasyon</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Prosedürü onaylayın</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Ölçüm yapıldı</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Makineye aşağıdaki ölçümü uygulayın</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Yeniden deneme prosedürü</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Oturumu sıfırla</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Toplamı sıfırla</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Testi durdur</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Körfezde aranacak birimi seçin</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>Deklanşörü kapatmak için komutu çalıştırın</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>Deklanşörü açmak için komutu çalıştırın</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>Ünite yükleme / boşaltma işlevi, bir dizi döngü aracılığıyla ünite hareketlerinin doğru çalışmasını test etmenize olanak tanır. Doğru tamamlamaya kadar sonraki adımlar için prosedür.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Test yapıldı</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>İşte gerçekleştirilen döngü sayısı</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>döngüler</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Gerçekleştirmek istediğiniz döngü sayısını girin</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>WMS çevrimdışı</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Kontrol devam ediyor</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Çevrimdışı</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Çevrimiçi</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Testi tamamla</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>İD</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>veri kümesi</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Değer</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Test etmek için tüm birimleri ekleyin</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Test etmek için birim ekleyin</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Tüm test birimini kaldır</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Test ünitesini kaldır</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>İnverter programlama başladı</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>İnverter programlama başarıyla sona erdi</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>İnverter programlama durduruldu</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>İnverter programlaması hatalarla sona erdi</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Sonraki invertörü programlamaya başlayın</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Sadece oku</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>makineye doğru</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Etkinleştirilmiş</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Cihazı Yapılandır</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Sistem Bağlantı Noktaları</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Seri bağlantı noktası algılanmadı. Cihazın panele bağlı olduğundan emin olun.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Barkod okuyucunuzun USB COM bağlantı noktası öykünmesi olarak ayarlandığından emin olmak için bu barkodları sırayla çekin.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Barkod okuyucunun seri portunu bulamıyor musunuz? Cihazı yapılandırın.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>COM Öykünmesini Etkinleştir</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Kuruluma gir</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Kurulumdan çık</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Bellenim Sürümü</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Üretim tarihi</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Model numarası</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Seri numarası</value>
+  </data>
+  <data name="AlphaNumericBarSizeL" xml:space="preserve">
+    <value>Büyük</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Operatöre doğru</value>
+  </data>
+  <data name="AlphaNumericBarSizeM" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Harici bölme kalibrasyonu</value>
+  </data>
+  <data name="AlphaNumericBarSizeS" xml:space="preserve">
+    <value>Küçük</value>
+  </data>
+  <data name="AlphaNumericBarSizeXL" xml:space="preserve">
+    <value>Ekstra büyük</value>
+  </data>
+  <data name="AlphaNumericBarSizeXS" xml:space="preserve">
+    <value>Çok küçük</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Belleğe içe aktar</value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>İçe aktarma başarılı</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Yapılandırma dosyasını içe aktar</value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Varsayılan yapılandırma yüklendi</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Bay zincir arama başladı</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Ünite dış konumda</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Ünite iç konumda</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>Harici bölmeyi kalibre edin</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>Harici bölme kalibrasyonu</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>Sensöre uygun olarak konumlandırma için bölme kalibrasyon prosedürünü gerçekleştirin</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Yapılan hareketler</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Çalıştır (mm)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Prosedürü başlatmak için BAŞLAT'a basın</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>'{0}' sistem yolu bulunamadı</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Eşleşen Model (normal ifade)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Testi Başlat</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Edinilen jeton</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Kod tanındı.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Teste başlamadan önce değişiklikleri kaydedin.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Kart okuyucudaki kartı kullanın.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Alınan Barkod</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Seri bağlantı noktalarını kontrol edin</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Şebeke</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Yazıcı adı</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>kod</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Ağırlık</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>Körfez'de</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>Asansörde</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>Konumda</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Körfeze Hareket</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Aktar</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Tanımsız</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Brüt Ağırlık (kg)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>makineye</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Maksimum net ağırlık (kg)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Görevler</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Dara (kg)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Blok seviyesi</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Sensör aktif</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Sensör devre dışı</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Efsane</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Özgür</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Panel</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Öncelik</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>BayChain</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Yatay</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Yatay ve dikey</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Hiçbiri</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Dikey</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Asansör bölmesi</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>1. bölmedeki toplam yük birimleri</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>2. bölmedeki toplam yük birimleri</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>3. bölmedeki toplam yük birimleri</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>döngüler</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Kamerayı monte et</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Kamerayı doğru konuma getirin</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Ekran görüntüsü gönder</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Günlükleri gönder</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Ekran dökümü</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Hücreyi kaydet</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Saat yenileme</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Çıkarılabilir cihaz sayısı</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Mevcut paketler</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Günlükleri kaydet</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Günlükleri kaydet</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Telemetri hizmetinden günlükler yükleniyor...</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Telemetri hizmetinden günlükler yüklendi</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Aksesuarlar</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Dara</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Hiçbir sürücü seçilmedi.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Sıfır zincir atlıkarınca</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>uzaktan destek</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Bu, çekmeceyi depo haritasından kaldıracak</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Operatöre doğru ekstra hareket</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Asansöre doğru ekstra hareket</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>İnverter arızası</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Video yansıtmanın süresi doldu</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Tamamlanmış</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Enerji tasarrufu</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Dahili</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Int</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Jeton Seri Numarası</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>modeli seçin</value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Blok Ünitesi</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Ünitenin Kilidini Aç</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Engellendi</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Darayı güncelle</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Çekmece dara güncelleme prosedürü</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Seçilen çekmecenin boş olduğunu onaylıyor musunuz?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Ağırlık kalibrasyonu</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Ağırlık kalibrasyon işlevi, numune ağırlıklarını kullanarak ağırlık okumasını değiştirmenize olanak tanır</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Bölmeye bir çekmece yükleyin veya ağırlık kalibrasyon sihirbazını başlatmak için birini arayın</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Boş ünite ile tartım</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Çekmeceyi hareket ettirerek güncel verileri elde etmek için düğmeye basın ve net ağırlığını girin. Bittiğinde, işlemi onaylamak için İleri'ye basın</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>emilen akım</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Ara ağırlık ile ilk tartım</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Tam ünite ile tartım</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Birimi değiştir</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Makine numarasını değiştir</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Yeni makine kimliği</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Kimliği Değiştir</value>
+  </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Kalibrasyona başlamak için başlat'a basın</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Boşalt</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Yük</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Asansör kalibrasyonu</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Lütfen USB çubuğunu takın</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>İnverter okuması başarıyla tamamlandı</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>İnverter okuması hatalarla sona erdi</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>İnverter okuması durduruldu</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Bir sonraki invertör okumasının başlangıcı</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Kod yaz</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Kodu oku</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>ondalık sayı</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>İnverter okuması başladı</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Hepsini oku</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Hedef dosyanın üzerine yaz</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>İnverter konfigürasyonunu kaydet</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>tek yaz</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>hepsini yaz</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Komut gönderildi</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Hatalar ve Gerçek değerler</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Hatalar</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Gerçek değerler</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>İçe aktar ve kaydet</value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>bitmeden</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Makine veritabanı yedeklemesi</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Dahili kopya</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>sunucuda</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>telemetri hakkında</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Veritabanı yedekleme ayarları</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Aktif hatalar var</value>
+  </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>manuel2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>manuel3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Test2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Test3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Kompakt2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Kompakt3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Yük Birimi İşlemleri2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Yük Birimi İşlemleri3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>İlgili bölmenin üzerindeki ilk 30 hücreyi devre dışı bırakın</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Rastgele hücre ataması</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Ünite yüksek iç konumda</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Ünite düşük dahili konumda</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Çift harici bölme 1</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Çift harici bölme 2</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Çift harici bölme 3</value>
+  </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Hareketli makine</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Lazer ofset (mm)</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Lazer</value>
+  </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Geçersiz akım değerleri - üçü de farklı olmalı!</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Geçersiz ağırlık değerleri - üçü de farklı olmalıdır!</value>
+  </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Sıfır zincir poz. yüksek</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Sıfır zincir poz. düşük</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Tekrar yükle</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Tarayıcıyı kapat</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Tarayıcı aç</value>
+  </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>WMS tarafından bu çekmece için aktif görevler var</value>
+  </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>defne teleskopik</value>
+  </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Maksimum mesaj uzunluğu</value>
+  </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>İzinsiz giriş önleme kapısı dahili</value>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Destek</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>kapatma prosedürü</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Asansör kalibrasyonu yapın ve paneli kapatın</value>
+  </data>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Paneli kapatın (asansör kalibrasyonu şu anda mevcut değil)</value>
+  </data>
+  <data name="HorizontalZeroOffset" xml:space="preserve">
+    <value>Yatay sıfır ofset</value>
+  </data>
+  <data name="HorizontalZeroOffsetDescription" xml:space="preserve">
+    <value>Zincirin sıfır ofset ölçümünü gerçekleştirir</value>
+  </data>
+  <data name="HorizontalZeroOffsetHelp" xml:space="preserve">
+    <value>Yatay sıfır ofset işlevi, kendi özel prosedürü aracılığıyla doğru değeri ölçmenizi sağlar. Prosedür, doğru şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
+    <value>Zincirin sıfır ofset ölçümünü gerçekleştirin. Yatay sıfır sensörü aktif olmalıdır.</value>
+  </data>
+  <data name="HorizontalResolutionCalibration" xml:space="preserve">
+    <value>Yatay zincir ekseni çözünürlüğü</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
+    <value>Yatay zincir ekseninin çözünürlüklerini gerçekleştirir</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
+    <value>Yatay zincir ekseni çözünürlüğünün kalibrasyonu, bu prosedürle doğru değer ayarını sağlar. Prosedür, doğru şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="CheckEmptyBayAndCell" xml:space="preserve">
+    <value>Bölme konumunu seçin. Deklanşörü (varsa) açın ve bölmede ve bölmenin karşısındaki hücrede tepsi olmadığını kontrol edin. Zincir kalibrasyonunu gerçekleştirin. Prosedürü başlatmak için BAŞLAT'a basın</value>
+  </data>
+  <data name="SuspendOperation" xml:space="preserve">
+    <value>Mevcut işlemi askıya al</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Yangın alarmı</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Ön yangın alarmı</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Silmek</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Başlangıç ​​zamanı</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Bitiş zamanı</value>
+  </data>
+  <data name="AutoLogoutIsActive" xml:space="preserve">
+    <value>Çıkış etkin</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Zaman aşımı (dk)</value>
+  </data>
+  <data name="AutoLogoutSetings" xml:space="preserve">
+    <value>Otomatik çıkış</value>
+  </data>
+  <data name="WrongDataSave" xml:space="preserve">
+    <value>Yanlış veriler kaydedilemez</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Yeni şifreyi onayla</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Yeni Şifre</value>
+  </data>
+  <data name="EnabledWithWMS" xml:space="preserve">
+    <value>WMS etkinken etkinleştirildi</value>
+  </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>çoklu seçim</value>
+  </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>sunucu yolu</value>
+  </data>
+  <data name="ResultOutOfStandard" xml:space="preserve">
+    <value>Standart sonucun dışında. İşte bazı ipuçları:</value>
+  </data>
+  <data name="UseMachineFullStroke" xml:space="preserve">
+    <value>makinenin tam vuruşunu kullanmaya çalışın</value>
+  </data>
+  <data name="AttachMeterToElevator" xml:space="preserve">
+    <value>sayaç ölçüsünü asansöre güvenli bir şekilde takın</value>
+  </data>
+  <data name="MetricCordPerpendicular" xml:space="preserve">
+    <value>metrik kordon, asansöre tam olarak dik ve kayışa paralel olmalıdır</value>
+  </data>
+  <data name="UseLaserLevelToGetValue" xml:space="preserve">
+    <value>tekrarlanabilir okuma geri bildirimi oluşturmak için bir lazer seviyesi kullanımında kendinize yardımcı olun</value>
+  </data>
+  <data name="WantRepeatProcedure" xml:space="preserve">
+    <value>İşleme uygun mu?</value>
+  </data>
+  <data name="TestBarcode" xml:space="preserve">
+    <value>Barkod Oluştur</value>
+  </data>
+  <data name="ProxySaved" xml:space="preserve">
+    <value>Proxy kaydedildi</value>
+  </data>
+  <data name="ProxyNotSaved" xml:space="preserve">
+    <value>Proxy kaydedilmedi</value>
+  </data>
+  <data name="ProxyMissing" xml:space="preserve">
+    <value>Kayıp veri</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Kayıt başarısız</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Şifre</value>
+  </data>
+  <data name="ProxyPasswordConfirm" xml:space="preserve">
+    <value>Şifreyi Onayla</value>
+  </data>
+  <data name="ProxyUser" xml:space="preserve">
+    <value>Proxy Kullanıcı Adı</value>
+  </data>
+  <data name="ProxyUrl" xml:space="preserve">
+    <value>Proxy URL'si</value>
+  </data>
+  <data name="PasswordFailConfirm" xml:space="preserve">
+    <value>Yanlış şifreler</value>
+  </data>
+  <data name="ProfileResolutionCalibration" xml:space="preserve">
+    <value>Yükseklik ölçü testi</value>
+  </data>
+  <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
+    <value>Yükseklik ölçüm cihazının testi, bu prosedürle doğru değer ayarının yapılmasını sağlar. Prosedür, doğru şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="VerticalCalibrationProcedureRequired" xml:space="preserve">
+    <value>Asansör kalibrasyonunu gerçekleştirin.</value>
+  </data>
+  <data name="CurrentExit" xml:space="preserve">
+    <value>Mevcut Çıkış</value>
+  </data>
+  <data name="ExitError" xml:space="preserve">
+    <value>Çıkış Hatası</value>
+  </data>
+  <data name="CurrentExit1" xml:space="preserve">
+    <value>Mevcut Çıkış 1:</value>
+  </data>
+  <data name="CurrentExit2" xml:space="preserve">
+    <value>Geçerli Çıkış 2:</value>
+  </data>
+  <data name="CurrentExit3" xml:space="preserve">
+    <value>Mevcut Çıkış 3:</value>
+  </data>
+  <data name="CurrentExit4" xml:space="preserve">
+    <value>Mevcut Çıkış 4:</value>
+  </data>
+  <data name="CurrentExit5" xml:space="preserve">
+    <value>Mevcut Çıkış 5:</value>
+  </data>
+  <data name="CurrentExit6" xml:space="preserve">
+    <value>Mevcut Çıkış 6:</value>
+  </data>
+  <data name="CurrentExit7" xml:space="preserve">
+    <value>Mevcut Çıkış 7:</value>
+  </data>
+  <data name="CurrentExit8" xml:space="preserve">
+    <value>Mevcut Çıkış 8:</value>
+  </data>
+  <data name="ExitError1" xml:space="preserve">
+    <value>Çıkış Hatası1</value>
+  </data>
+  <data name="ExitError2" xml:space="preserve">
+    <value>Çıkış Hatası 2</value>
+  </data>
+  <data name="ExitError3" xml:space="preserve">
+    <value>Çıkış Hatası 3</value>
+  </data>
+  <data name="ExitError4" xml:space="preserve">
+    <value>Çıkış Hatası 4</value>
+  </data>
+  <data name="ExitError5" xml:space="preserve">
+    <value>Çıkış Hatası 5</value>
+  </data>
+  <data name="ExitError6" xml:space="preserve">
+    <value>Çıkış Hatası 6</value>
+  </data>
+  <data name="ExitError7" xml:space="preserve">
+    <value>Çıkış Hatası 7</value>
+  </data>
+  <data name="ExitError8" xml:space="preserve">
+    <value>Çıkış Hatası 8</value>
+  </data>
+  <data name="DeviceIO1" xml:space="preserve">
+    <value>IO Cihazı (Bay 1)</value>
+  </data>
+  <data name="DeviceIO2" xml:space="preserve">
+    <value>IO Cihazı (2. Yuva)</value>
+  </data>
+  <data name="DeviceIO3" xml:space="preserve">
+    <value>IO Cihazı (Bay 3)</value>
+  </data>
+  <data name="ProfileConst" xml:space="preserve">
+    <value>Profil sabitleri</value>
+  </data>
+  <data name="ProfileConst0" xml:space="preserve">
+    <value>Profil K0 sabiti</value>
+  </data>
+  <data name="ProfileConst1" xml:space="preserve">
+    <value>Profil K1 sabiti</value>
+  </data>
+  <data name="ProfileSamples" xml:space="preserve">
+    <value>Profil okuma %'si</value>
+  </data>
+  <data name="ProfileSample" xml:space="preserve">
+    <value>Okumak</value>
+  </data>
+  <data name="ProfileCalibrationDescription" xml:space="preserve">
+    <value>Asansör ve bölme boş olmalıdır. Lütfen bu prosedürden önce profil ölçüm cihazının manuel kalibrasyonunu gerçekleştirin.</value>
+  </data>
+  <data name="ConfirmDifferentValue" xml:space="preserve">
+    <value>Değerler aralık dışında, yine de onaylayın</value>
+  </data>
+  <data name="MovementEnabled" xml:space="preserve">
+    <value>Hareket Etkinleştirildi</value>
+  </data>
+  <data name="AutoCompactingIsActive" xml:space="preserve">
+    <value>Sıkıştırma Etkin</value>
+  </data>
+  <data name="RemoveSuccessful" xml:space="preserve">
+    <value>Başarılı Kaldır</value>
+  </data>
+  <data name="FixBackDrawers" xml:space="preserve">
+    <value>Geri Ofset</value>
+  </data>
+  <data name="FixBackDrawersDescription" xml:space="preserve">
+    <value>Tüm arka hücre konumlarını düzeltin</value>
+  </data>
+  <data name="FixBackDrawersAsk" xml:space="preserve">
+    <value>Tüm arka hücre konumu {0}mm değiştirilsin mi?</value>
+  </data>
+  <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
+    <value>Yakın görünümde temizle</value>
+  </data>
+</root>

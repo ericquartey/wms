@@ -197,7 +197,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateBarcodeReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
         {
-            if (portName is null)
+            if (portName is null && isEnabled)
             {
                 throw new ArgumentNullException(nameof(portName));
             }
@@ -281,7 +281,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateTokenReaderSettings(BayNumber bayNumber, bool isEnabled, string portName)
         {
-            if (portName is null)
+            if (portName is null && isEnabled)
             {
                 throw new ArgumentNullException(nameof(portName));
             }

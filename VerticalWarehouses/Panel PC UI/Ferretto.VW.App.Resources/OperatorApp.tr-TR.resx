@@ -1,0 +1,2215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Confirm" xml:space="preserve">
+    <value>Onaylamak</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detaylar</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>makineler</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Ambalaj türü</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Üretim tarihi</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>İstenen miktar [{0}]</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Tepsi işlemleri</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>bekleme listeleri</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Öğe ara</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Ayarlar</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Toplama işlemleri</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>İstenen miktar</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Alınan miktar</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>Yeni Tepsi bekleniyor</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Planlanmış işlemler:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Öğe detayını seçme</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Üretim tarihi</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Grup</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Malzeme durumu</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Ambalaj türü</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Yürütme listeleri bekleniyor</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Liste ayrıntıları</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Yürütme listesi</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Öğeyi koda veya açıklamaya göre arayın</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Arama</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Mevcut miktar [{0}]</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Çağrı Öğesi</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Ürün detayı</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Yönetim türü</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>FIFO zaman aralığı</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Anında Tepsi çağrısı</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Çağrı Tepsisi</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>İstenen tepsi</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Genel bilgi</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>modeli</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Seri numarası</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Tepsi miktarı</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Yazılım versiyonu</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>Kabul tarihi</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Son hizmet</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Sonraki hizmet</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Çalışan makinenin durumu</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Sıkıştırma Tepsisi prosedürü</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>ÇekmeceSıkıştırmaÖn</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Parça miktarı</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Maksimum kurtarılabilir alan</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Kurtarma alanı</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Kompakt ön taraf</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Kompakt arka taraf</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Sıkıştırma</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>İstatistik</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Bakım onarım</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>İstatistiklerGenelVeriÜstbilgisi</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Taşınan birim</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Zamanında toplam güç</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Alan dolgusu</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Ağırlık kapasitesi</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Otomatik zaman</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Kullanım süresi</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>İstatistikler: Tepsi alanı doygunluğu.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Tüm birimler</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Tepsi ölçüsü (mm)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Dolum makinesi</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Uzay analizi</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>İstatistikler: birim ağırlık analizi.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Tüm birimler</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>İstatistikler: birim ağırlık analizi.</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Net akış maks. (kilogram)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Yüklenen net ağırlık (%)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Yüklenen net ağırlık (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Yüklenen net ağırlık (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Yürütülebilir liste satırları</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>İstatistikler: hücreler.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Toplam hücre</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Toplam ön hücreler</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Toplam arka hücreler</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Toplam kullanılan hücreler</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Başka</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>İstatistikler: hata analizi.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Taşınan toplam birim sayısı</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Toplam hata</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Birimler hatasız taşındı</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Güvenilirlik endeksi</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Hata tanımlaması</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Bakım: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>modeli</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Seri</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Kurulum tarihi</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Son bakım tarihi</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Sonraki bakım tarihi</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>durum makinesi</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Bakım detayı</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Toplam döngü</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>İki bakım arasındaki döngüler</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Son bakımdan itibaren döngüler</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Öğe durumu</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Gerekli makine kesintisi [saat]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>platformu</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>İletişim isteği gönder</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Tepsi Çağrısı</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>İstatistik birimleri</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>İstatistik hücreleri</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>İstatistik hataları</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Yeniden doldurma işlemi</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>İstenen miktar [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Yeniden doldurulan miktar [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Maksimum kapasiteyi güncelle</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Listenin satırı</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>İstenen miktar</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Yeniden doldurma işlemi detayı</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Malzeme durumu</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Ambalaj türü</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Üretim tarihi</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>İstenen miktar</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Listenin satırı</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Ürün Kodu</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Ürün Açıklaması</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Liste kodu</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Liste açıklaması</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Paketleme listesi kodu</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Paketleme listesi açıklaması</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Not:</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>Yukarı</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>Aşağı</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Envanter işlemi</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Depolanan miktar</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Durum:</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>Onaylamak</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Detay</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Envanter işlemi detayı</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Kategori</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>Sınıf</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Ölçüm birliği</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Ortalama ağırlık [gr]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Geri Dön</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>Geri Yüzde</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Tot Ön</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>Toplam Ön %</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>bölmeler</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Tepsi Kimliği</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>dolgu</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Dolgu %</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Görevler</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Hücre</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Tepsi</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Yan</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Ağırlık</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Hata</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Toplam</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>Toplam %</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>makineler</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Kit</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Rica etmek</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Mevcut ağırlık</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Tepsi</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>Maksimum %</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>maksimum ağırlık</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Dara</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>eleman</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Tanım</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Öğe</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>makine</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Miktar</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Sıra</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>İstatistik makinesi</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Makine istatistikleri</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Dikey eksen verileri.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Toplam dikey eksen kilometre</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Toplam dikey eksen çevrimleri</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Panjur verileri.</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>Toplam deklanşör 1 döngü</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>Toplam deklanşör 2 döngü</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>Toplam deklanşör 3 döngü</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Zincir ekseni verileri.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Yatay toplam döngü</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>İstatistik bölmeleri</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>1. bölmede tepsiler taşındı</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>2. bölmede tepsiler taşındı</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>3. bölmede tepsiler taşındı</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Öğe</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Ürün Açıklaması</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>makineler</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>ÇekmeceSıkıştırmaÖn</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Liste türü</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>WMS durumu</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Sıkıştırma ayrıntılarını görüntüleyin.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Tepsi hareket ediyor</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Kaynak hücre</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>hedef hücre</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Gerçek adım</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Dikey eksen konumu</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Orizzontal eksen konumu</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>kalan parça</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Kurtarılan alan mm.</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Kurtarma alanı mm.</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Sıkıştırmayı bitir</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>Çekmece SıkıştırmaProsedür Durumu</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Hiçbiri</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Tanımsız</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Yalnızca boşluk</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Engellendi</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>WMS Hizmetleri çevrimdışı</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>WMS Hizmetleri çevrimiçi</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>Süresi doldu</value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>süresi doluyor</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Bilinmeyen</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Geçerli</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Birimleri hücreye yükleyin</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Uzay analizi</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Ses</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Belirtilmemiş</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Envanter</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Seçmek</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Koy</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Belirtilmemiş</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Seçilecek miktar</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Alınan miktar [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Malzeme durumu</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Envanter İşlemi.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Tespit edilen miktar [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>{0} öğesi (q.ty {1}) için çekme isteği kabul edildi.</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Mevcut</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Liste satırı</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Yükleme birimi kimliği</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Yükleme birimi</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Boşta onaylayın</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Makine kullanılabilirliği</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>İşlem iptal edildi.</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>İşlem onaylandı.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>{0} bölmesinde taşınacak yükleme birimi yok</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>{1} bölmesine gönderilen {0} yükleme birimi var</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>{0} bölmesine gönderilen 1 yükleme birimi var</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Bölmedeki tüm dökülen maddeleri çıkarın.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Eşyaları aldıysanız, orijinal bölmeye geri koyun.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>İptal etme</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Seçimi iptal et</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>İşlem iptali onaylandı.</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Envanter işlemi iptal edildi.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Görevler</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Görev listesi</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Tarih</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Adım</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Koy</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Herşey</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Asansör bölmesi</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>3. bölme</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>2. bölme</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>koy yok</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>Yürütme</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Yeni</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>Beklemek</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Tamamlanmış</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>iptal edildi</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>Tamamlanıyor</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>Bay bir</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Görev türü</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>Koy</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1.Yeni</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2.Başlat</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3. Yük asansörü</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4. Hedeflemek</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5. Mevduat birimi</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6. Operatör eylemini bekleyin</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7. Bay zinciri</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8.Kapat deklanşör</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13.Bitiş</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101.Hata</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>tip yok</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Manuel</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>wms</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>İçinde</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Dışarı</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Kompakt</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Tanımlanmamış</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>koyda</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Geri Çağırma Tepsisi</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>adet</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Seçmek</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Koy</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Ayarlama</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Stoklamak</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Ürün Açıklaması</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Ürün Kodu</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Bölme</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Stok miktarı [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Miktarı [{0}] koyun</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Toplama miktarı [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Yeni operasyonlar mevcut</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Onaylayın ve yeni işlemler mevcut</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Stoklamak</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Yükleme ünitesi mevcut</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Bölme seçin</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>SEÇMEK</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Toplama</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ÖĞE</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Makaleleri arayın ve isteyin</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>LİSTE</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>Listelerin yürütülmesi / askıya alınması</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>BERABERE</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Tepsi işlemleri</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Sıkıştırma</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>İhtiyaç testi</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>kod</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>'{0}' kodlu öğe yok</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Güncellemeyi Başlat</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Alarmlar</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Sıkıştırma devam ediyor</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>teşhis</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Genel</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Genel bilgi</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Makine numarası</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Seri</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>İstatistik</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Toplam kat edilen km</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Toplam makine ağırlığı</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>döngüler</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Tüm birimler</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>Beklemek</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Sayaçlar</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>Seçilen bölmede öğe yok.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>İlk test</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Tam Test İÇİ</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Tam Test Çıkışı</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Yük Ünitesi Çalışması</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Makine alarmlarının listesi</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>bölme numarası</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Detay kodu</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>İD</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>invertör indeksi</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>gerçekleşme tarihi</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Çözüm tarihi</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Seri</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Parça geri</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Parça ön</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Parça toplamı</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Liste yürütülemiyor.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Geçersiz işlem {0}</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Kullanıcılar</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>körfezin dışında</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Birim</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Ek Bilgiler</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Birim</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Ağırlık</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Parçalanma çok yüksek: lütfen bir Kompakt prosedür çalıştırın</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>Karusel kalibrasyonu devam ediyor</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>Yatay kalibrasyon devam ediyor</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Mevcut Miktarı</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Öğeler koda göre filtrelendi.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>'{0}' barkodu ürün kodunu içermiyor.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>'{0}' barkodu ürün miktarını içermiyor.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>'{0}' barkodu liste tanımlayıcısını içermiyor.</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>'{0}' tanımlayıcısına sahip liste bulunamadı.</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>'{0}' listesinin yürütülmesi kabul edildi.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>meşgul hücreler</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>serbest hücreler</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Destek için ücretsiz hücreler</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Hücreler yalnızca boş alan</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Kilitli hücreler</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Toplam hücre</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Körfezdeki birimler</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Hücredeki birimler</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Asansördeki üniteler</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>Hizmeti onayla</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Kurulum tarihi</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Son servis tarihi</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Sonraki servis tarihi</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Servis durumu</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>Yapıldı</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>Yapılacaklar</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>Maksimum Gün</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>Maksimum Döngü</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxTotalCount</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Toplam aktif görev süresi</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Km Körfezi 1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Km Körfezi 2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Km Körfezi 3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Km yatay eksen asansörü</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Km dikey eksen kaldırma</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Bay 1'deki Birimler</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>2. bölmedeki birimler</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Bay 3'teki Birimler</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Veriler, toplam değere kıyasla son bakımdan hesaplanmıştır)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Bakım onarım:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Zaman aktif görevler</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>1. bölme</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>2. bölme</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>3. bölme</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Yatay akslı asansör</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Dikey akslı asansör</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Son bakımdan bu yana Km alanları / toplam</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Son bakımdan bu yana Km kaldırılabilir aks sayısı / toplam</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Son bakımdan bu yana aktif görevlerin toplam süresi / toplam</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Son bakımdan bu yana bölmelerdeki birimler / toplam</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>İstenen miktar</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>Grubu onayla</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>eksen</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>KarşıAdı</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Satır durumu</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Satırı yürüt</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Bu hizmeti onaylamak istediğinizden emin misiniz?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Son bakımdan bu yana asansör çevrimleri / toplam</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Yatay eksen</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Dikey eksen</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Değiştirmek</value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>Hediyeyi Onayla</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Mevcut miktar</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Madde:</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Birimler</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Birim</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Tamamlanmış</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Ağırlık Altında</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>döngüler</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Çizgiyi kapat</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Güncellenen değer</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Görevi sil</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>LoadUnit hedefi</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>LoadUnit kaynağı</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Kimlik Wms</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Carousel bölmesi1 aşağı</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Carousel bölmesi 1 yukarı</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Carousel bölmesi 2 aşağı</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Carousel bölmesi 2 yukarı</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Carousel bölmesi 3 aşağı</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>Carousel bölmesi 3 yukarı</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Hücre</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Aşağı</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Asansör</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>Harici bölme 1 aşağı</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>Harici bölme 1 yukarı</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>Harici bölme 2 aşağı</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>Harici bölme 2 yukarı</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>Harici bölme 3 aşağı</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>Harici bölme 3 yukarı</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>Dahili bölme 1 aşağı</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>Dahili bölme 1 yukarı</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>Dahili bölme 2 aşağı</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>Dahili bölme 2 yukarı</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>Dahili bölme 3 aşağı</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>Dahili bölme 3 yukarı</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Yük birimi</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Konum yok</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Bilinmeyen</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Yukarı</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>körfeze geri dön</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Hata yatırma</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Hata yükü</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>Harici bölme</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>zincir bekle</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Bölme sıkıştırmada bulunan birime izin verilmiyor</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Ortalama üniter ağırlığı güncelle</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Gerçek Ortalama Üniter Ağırlık [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Orijinal Ortalama Birim Ağırlık [g]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Ağırlığı ölçün ve parçaları sayın</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Sıfırla</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Ölçülen miktar</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Birim ağırlığı güncelle</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>Ölçülen miktarı onaylayın</value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>İstenen miktarı onaylayın</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Birim ağırlık [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Barkod Okuyucu tarafından onaylanan işlem</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>'{0}' barkodunun bazı kısımları makaleyle eşleşmiyor.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>'{0}' barkodunun bazı kısımları makaleyle eşleşmiyor. Tekrar başlat.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Onaylamadan önce eksik miktar.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Barkod '{0}' tanınmadı.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>{0} maddesi (q.ty {1}) için satış talebi kabul edildi.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Birim n üzerinde toplama işlemleri.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Ünite n'de yeniden doldurma işlemi.</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Makale seç</value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Makale koy</value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Makaleler yükleniyor...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Körfez operasyonları</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>görüş</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Maksimum ardışık boş alan arka taraf</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Maksimum ardışık boş alan ön tarafı</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Çözüldü olarak işaretle ve sıkıştırmaya git</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Kutu kodu</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>seçim kutusu</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>kutu koy</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Kutu (WMS özel)</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Kutu ekle</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Kutuyu kaldır</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Not</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Sebep seçin</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Hücrede mevduat bekle</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Depozito bölmesini bekleyin</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Geçersiz sebep veya notlar, işlem onaylanmadı</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Uyarı</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Bu, bu Tepsideki makaleyi yerleştirdiğiniz son işlemdir ve Tamam'a basın</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Ağ kartları</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>IP ek</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>Alt Ağ Maskesi ek</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Ekle</value>
+  </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>perde kusuru</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Lazer</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>LazerOfset</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Toplam miktar</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Kusurdan önce iyi miktar</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>boşa giden miktar</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>sinyal hatası</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>Perdelik toplamayı onaylayın</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Sinyal hatası başarısız</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Öğe silindi</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Sinyal hatası başarılı</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Barkod</value>
+  </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Çift dış bölme</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>Dış bölmede mevduat bekleyin</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>İç bölmede mevduat bekleyin</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Uwf filtresini etkinleştir</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Uwf filtresini devre dışı bırak</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Tam dolu</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Boş</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Ürünü kontrol et</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>Kontrol işlemi iptal edildi</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Kontrol</value>
+  </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>{0} öğesi (Yük Birimi {1}) için kontrol isteği kabul edildi.</value>
+  </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Perdelik ürün yükleme</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Makale kodu</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>perdelik</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Perdelik eşyası yüklendi</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>perdelik yok</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Eylem</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Bay bildirimleri</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Deklanşör bölmesini kapat</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>Deklanşör konumunu kapat</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Cihaz bildirimleri</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Yön</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Yük birimini çıkar</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Hata hareketleri</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Görev süresi</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Hedef arama eksenine ihtiyaç var</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Açık deklanşör konumu</value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Koşulları geri yükle</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Adımı geri yükle</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Nedeni durdur</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Adım süresi</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Hücre kaynağı kimliği</value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Geri hareket gerekiyor</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>etkinleştir</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Duraklat</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Sürdürmek</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Orta düzey</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>konumlandırma</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>hedef arama</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Kombine hareketler</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>İzinsiz girişi kontrol et</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Geriye doğru</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>Sebep yok</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Çalışma durumu değişti</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Arıza durumu değişti</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Servisi yeniden başlat</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>IP adresine başarıyla ulaşıldı</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>IP adresine ulaşılamıyor</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>UWF filtresi aktif DEĞİL</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Aktif UWF filtresi</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Hedef</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>sevkiyat günü</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Gün</value>
+  </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>Asansör bölmesinde</value>
+  </data>
+  <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
+    <value>Perdelik zaten '{0}' koduyla mevcut.</value>
+  </data>
+  <data name="DraperyAvailable" xml:space="preserve">
+    <value>perde mevcuttur.</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Geçersiz argüman</value>
+  </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>Öğe yüklendi</value>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Sokmak</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Üstünde</value>
+  </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>#NAME?</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>#NAME?</value>
+  </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Tote alındı. Barkod:</value>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>Eşya alınır. Barkod:</value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Geçersiz işlem. Ürün ve çanta satın alınmalıdır.</value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Yuva sensöründe LoadUnit eksik</value>
+  </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Perdelik tamamen talep edildi.</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Günler</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Hatalı işlem sinyali verme hatası.</value>
+  </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Çanta al...</value>
+  </data>
+  <data name="BarcodeServiceError" xml:space="preserve">
+    <value>Barkod hizmeti hatası</value>
+  </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>geçersiz değer</value>
+  </data>
+  <data name="SignallingDefectOnProcess" xml:space="preserve">
+    <value>İşlemde sinyal hatası...</value>
+  </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Öğe eklenemedi</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Öğe ekleniyor...</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Yükleme birimine öğe ekleme</value>
+  </data>
+  <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
+    <value>Liste için kaçınılabilirlik modu seçimi</value>
+  </data>
+  <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
+    <value>Kısmen yürüt ve bekle</value>
+  </data>
+  <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
+    <value>Kısmen yürüt ve tamamla</value>
+  </data>
+  <data name="PartiallyExecuteLabel" xml:space="preserve">
+    <value>Kısmen yürütmek</value>
+  </data>
+  <data name="SocketLink" xml:space="preserve">
+    <value>Soket Bağlantısı</value>
+  </data>
+  <data name="Suspending" xml:space="preserve">
+    <value>Askıya alınıyor...</value>
+  </data>
+  <data name="SuspendOperationFailed" xml:space="preserve">
+    <value>Askıya alma işlemi başarısız oldu</value>
+  </data>
+  <data name="SuspendOperationError" xml:space="preserve">
+    <value>Askıya alma işleminde hata</value>
+  </data>
+  <data name="SuspendOperationSuccess" xml:space="preserve">
+    <value>Başarı</value>
+  </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Sipariş seç</value>
+  </data>
+  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
+    <value>Sipariş seç</value>
+  </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Askıya almak</value>
+  </data>
+  <data name="InsufficientSpaceAvailable" xml:space="preserve">
+    <value>Depoda yetersiz alan</value>
+  </data>
+  <data name="ScaleNotResponding" xml:space="preserve">
+    <value>Terazi yanıt vermiyor.</value>
+  </data>
+  <data name="AverageHeight" xml:space="preserve">
+    <value>Ortalama yükseklik</value>
+  </data>
+  <data name="AverageOccupiedSpace" xml:space="preserve">
+    <value>Ortalama işgal edilen alan</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operasyon</value>
+  </data>
+  <data name="OperationCheck" xml:space="preserve">
+    <value>Kontrol</value>
+  </data>
+  <data name="OperationAdjust" xml:space="preserve">
+    <value>Ayarlamak</value>
+  </data>
+  <data name="OperationSubstitute" xml:space="preserve">
+    <value>Vekil</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Stok değişimi</value>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Öğe alınamadı</value>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>madde mevcut değil</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>İşlem başarıyla tamamlandı</value>
+  </data>
+  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Stoku farka göre düzenle</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Barkod ile Seç ve Koy
+</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>Yük ünitesinde son işlem için onay isteme</value>
+  </data>
+  <data name="MaintenerName" xml:space="preserve">
+    <value>Bakımcı Adı</value>
+  </data>
+  <data name="ShutterBay1" xml:space="preserve">
+    <value>Deklanşör Bölmesi 1</value>
+  </data>
+  <data name="ShutterBay2" xml:space="preserve">
+    <value>Deklanşör Bölmesi 2</value>
+  </data>
+  <data name="ShutterBay3" xml:space="preserve">
+    <value>Deklanşör Bölmesi 3</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>makine</value>
+  </data>
+  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
+    <value>Stok değişimi</value>
+  </data>
+  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
+    <value>Öğe alınamadı</value>
+  </data>
+  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
+    <value>madde mevcut değil</value>
+  </data>
+  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
+    <value>İşlem başarıyla tamamlandı</value>
+  </data>
+  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
+    <value>Stoku farka göre düzenle</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
+    <value>Değişim tablosunda barkodla öğe ara (WMS özel)</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
+    <value>Yük ünitesinde son işlem için onay isteme</value>
+  </data>
+  <data name="ItemsFilteredByTable" xml:space="preserve">
+    <value>Takas tablosunda bulunan öğeler</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Barkod otomatik koymak</value>
+  </data>
+  <data name="IsEnableAddItem" xml:space="preserve">
+    <value>Öğe eklemeyi etkinleştir</value>
+  </data>
+  <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Toplamadaki mevcut öğe miktarını düzenlemiyor</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePick" xml:space="preserve">
+    <value>Barkod seçimini iki kez onaylayın</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePut" xml:space="preserve">
+    <value>Barkod yerleştirmeyi iki kez onaylayın</value>
+  </data>
+  <data name="IsEnabeNoteRules" xml:space="preserve">
+    <value>Notlar doldurulmalıdır</value>
+  </data>
+  <data name="IsLocalMachineItems" xml:space="preserve">
+    <value>Bu alandaki öğeleri ara</value>
+  </data>
+  <data name="IsOrderList" xml:space="preserve">
+    <value>Sipariş Listesi (WMS özel)</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Öğe Kimliği benzersiz uzunluğu (WMS özel)</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barkod uzunluğu (WMS özel)</value>
+  </data>
+  <data name="EnterBarcode" xml:space="preserve">
+    <value>Barkodu girin</value>
+  </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>Perdelik işleme (WMS özel)</value>
+  </data>
+  <data name="OperationMultiMachineInfo" xml:space="preserve">
+    <value>İşlem başka bir makinede devam ediyor</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Öncelik</value>
+  </data>
+  <data name="ShipmentUnitCode" xml:space="preserve">
+    <value>sevkiyat birimi kodu</value>
+  </data>
+  <data name="ShipmentUnitDescription" xml:space="preserve">
+    <value>sevkiyat birimi açıklaması</value>
+  </data>
+  <data name="SetPoint" xml:space="preserve">
+    <value>Ayar Noktası</value>
+  </data>
+  <data name="NoMaintenerNameError" xml:space="preserve">
+    <value>Hizmeti onaylamak için Bakım Görevlisi Adı gerekli</value>
+  </data>
+  <data name="ExpirationDate" xml:space="preserve">
+    <value>Son kullanma tarihi</value>
+  </data>
+  <data name="Sscc" xml:space="preserve">
+    <value>Sscc</value>
+  </data>
+  <data name="BoxId" xml:space="preserve">
+    <value>Kutu Kimliği</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Müşteri kodu</value>
+  </data>
+  <data name="CustomerDescription" xml:space="preserve">
+    <value>Müşteri Açıklaması</value>
+  </data>
+  <data name="Dock" xml:space="preserve">
+    <value>Rıhtım</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Misyon</value>
+  </data>
+  <data name="BoxType" xml:space="preserve">
+    <value>Kutu Tipi</value>
+  </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>telesk.</value>
+  </data>
+  <data name="IsCarrefour" xml:space="preserve">
+    <value>Carrefour (WMS özel)</value>
+  </data>
+  <data name="InventoryGap" xml:space="preserve">
+    <value>Teyit edilen miktar stoktan çok farklı</value>
+  </data>
+  <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
+    <value>Birim n'deki envanter işlemleri.</value>
+  </data>
+  <data name="IdMachineNotDefined" xml:space="preserve">
+    <value>Kimlik makinesi tanımlanmadı</value>
+  </data>
+  <data name="BoxAssociateShelf" xml:space="preserve">
+    <value>{0} kutusu {1} rafıyla ilişkilendirildi</value>
+  </data>
+  <data name="BoxClosed" xml:space="preserve">
+    <value>{0} kutusu kapatıldı</value>
+  </data>
+  <data name="StartAssociateBoxToShelf" xml:space="preserve">
+    <value>Kutuyu bir rafla ilişkilendirmenin başlangıcı. Rafı tarayın.</value>
+  </data>
+  <data name="StartMarkingFullBox" xml:space="preserve">
+    <value>Dolu kutuyu işaretlemeye başlayın. Rafı tarayın.</value>
+  </data>
+  <data name="StartClosingBox" xml:space="preserve">
+    <value>Kutuyu kapatmaya başlayın. Rafı tarayın.</value>
+  </data>
+  <data name="BoxIsFull" xml:space="preserve">
+    <value>{0} kutusu dolu olarak işaretlendi</value>
+  </data>
+  <data name="ScanActionCodeFirst" xml:space="preserve">
+    <value>Önce yapılacak işlemin barkodunu tarayın.</value>
+  </data>
+  <data name="ScanShelfFirst" xml:space="preserve">
+    <value>Önce raf barkodunu tarayın.</value>
+  </data>
+  <data name="SelectedBox" xml:space="preserve">
+    <value>Seçili Kutu {0}.</value>
+  </data>
+  <data name="NoBoxCode" xml:space="preserve">
+    <value>Barkodda kutu kodu bulunamadı</value>
+  </data>
+  <data name="SelectedShelf" xml:space="preserve">
+    <value>Seçilen raf {0}. Kutuyu tarayın.</value>
+  </data>
+  <data name="NoShelfCode" xml:space="preserve">
+    <value>Barkodda raf kodu bulunamadı.</value>
+  </data>
+  <data name="ShowBarcodeImage" xml:space="preserve">
+    <value>Barkod resmini göster</value>
+  </data>
+  <data name="DialogGroupByLot" xml:space="preserve">
+    <value>Dikkat, öğe lotta yönetildi, hala onaylıyor musunuz?</value>
+  </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Listenin başka bir makinede devam edip etmediğini kontrol edin</value>
+  </data>
+  <data name="ShowAutoCompactingSetting" xml:space="preserve">
+    <value>Otomatik sıkıştırma ayarları</value>
+  </data>
+  <data name="IsQuantityLimited" xml:space="preserve">
+    <value>Al ve koydaki miktarı sınırla</value>
+  </data>
+  <data name="StartCarToMachine" xml:space="preserve">
+    <value>Arabayı makineyle eşleştirmeye başlayın</value>
+  </data>
+  <data name="EndCarToMachine" xml:space="preserve">
+    <value>{0} arabası {1} makinesiyle eşleştirildi</value>
+  </data>
+  <data name="SelectedCar" xml:space="preserve">
+    <value>Seçilen Araba {0}.</value>
+  </data>
+  <data name="SelectedMachine" xml:space="preserve">
+    <value>Seçilen Makine {0}.</value>
+  </data>
+  <data name="NoCarCode" xml:space="preserve">
+    <value>Barkodda Araç kodu bulunamadı</value>
+  </data>
+  <data name="NoMachineCode" xml:space="preserve">
+    <value>Barkodda makine kodu bulunamadı</value>
+  </data>
+  <data name="ScanCarFirst" xml:space="preserve">
+    <value>Önce Araba barkodunu tarayın</value>
+  </data>
+  <data name="StartClosingCar" xml:space="preserve">
+    <value>Arabayı kapatmaya başlayın. Araba kimliğini tarayın</value>
+  </data>
+  <data name="CarToMachine" xml:space="preserve">
+    <value>{0} arabası {1} makinesine bağlı</value>
+  </data>
+  <data name="CarClosed" xml:space="preserve">
+    <value>{0} arabası kapatıldı</value>
+  </data>
+</root>

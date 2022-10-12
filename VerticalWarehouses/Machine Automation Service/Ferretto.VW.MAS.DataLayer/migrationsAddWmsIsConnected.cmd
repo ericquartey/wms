@@ -1,2 +1,2 @@
-dotnet ef migrations add WmsIsConnected --verbose
+dotnet ef migrations add WaitingListPriorityHighlightedAndListConfirm --verbose
 pause

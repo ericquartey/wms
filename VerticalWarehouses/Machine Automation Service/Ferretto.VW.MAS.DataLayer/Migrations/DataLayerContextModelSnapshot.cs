@@ -1682,6 +1682,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("ItemUniqueIdLength")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("ListPickConfirm")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("ListPutConfirm")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("LoadUnitDepth")
                         .HasColumnType("REAL");
 
@@ -1722,6 +1728,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("VerticalCyclesToCalibrate")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("WaitingListPriorityHighlighted")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

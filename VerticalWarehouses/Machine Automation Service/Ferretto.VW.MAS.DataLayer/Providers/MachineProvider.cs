@@ -150,6 +150,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     machine.BackupServerPassword = EncryptString(PASSWORDKEY, "fergrp_2012");
                 }
+                if (machine.WaitingListPriorityHighlighted == null)
+                {
+                    machine.WaitingListPriorityHighlighted = -1;
+                }
                 this.dataContext.SaveChanges();
             }
         }
@@ -337,6 +341,29 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.ToteBarcodeLength).First();
+            }
+        }
+
+        public int? GetWaitingListPriorityHighlighted()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.WaitingListPriorityHighlighted).First();
+            }
+        }
+
+        public bool GetListPutConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPutConfirm).First();
+            }
+        }
+        public bool GetListPickConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPickConfirm).First();
             }
         }
 
@@ -542,11 +569,11 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 dataContext = this.dataContext;
             }
-            int count = await dataContext.Database.ExecuteSqlRawAsync("update cellpanels set MachineId = null;");
-            int count1 = await dataContext.Database.ExecuteSqlRawAsync("update bays set MachineId = null;");
-            int count2 = await dataContext.Database.ExecuteSqlRawAsync($"update machines set Id = {newMachineId};");
-            int count3 = await dataContext.Database.ExecuteSqlRawAsync($"update cellpanels set MachineId = {newMachineId};");
-            int count4 = await dataContext.Database.ExecuteSqlRawAsync($"update bays set MachineId = {newMachineId};");
+            int count = await dataContext.Database.ExecuteSqlCommandAsync("update cellpanels set MachineId = null;");
+            int count1 = await dataContext.Database.ExecuteSqlCommandAsync("update bays set MachineId = null;");
+            int count2 = await dataContext.Database.ExecuteSqlCommandAsync($"update machines set Id = {newMachineId};");
+            int count3 = await dataContext.Database.ExecuteSqlCommandAsync($"update cellpanels set MachineId = {newMachineId};");
+            int count4 = await dataContext.Database.ExecuteSqlCommandAsync($"update bays set MachineId = {newMachineId};");
         }
 
         public void Update(Machine machine, DataLayerContext dataContext)

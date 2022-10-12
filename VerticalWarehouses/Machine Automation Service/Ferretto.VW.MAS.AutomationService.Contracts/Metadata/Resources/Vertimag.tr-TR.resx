@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Acceleration" xml:space="preserve">
+    <value>Hızlanma</value>
+  </data>
+  <data name="AssistedMovements" xml:space="preserve">
+    <value>Yardımlı Hareketler</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Körfez {0}</value>
+  </data>
+  <data name="BayCarousel" xml:space="preserve">
+    <value>Bay {0} Atlıkarınca</value>
+  </data>
+  <data name="BayCarousel_Description" xml:space="preserve">
+    <value>Döner Parametre</value>
+  </data>
+  <data name="BayInverter" xml:space="preserve">
+    <value>Alım Yeri {0} İnvertör</value>
+  </data>
+  <data name="BayIoDevice" xml:space="preserve">
+    <value>Alım Yeri {0} IoDevice</value>
+  </data>
+  <data name="BayLaser" xml:space="preserve">
+    <value>Alım Yeri {0} Lazer</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Bölme Numarası</value>
+  </data>
+  <data name="BayNumber.BayOne" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BayNumber.BayThree" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BayNumber.BayTwo" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BayNumber.ElevatorBay" xml:space="preserve">
+    <value>Kızak</value>
+  </data>
+  <data name="BayPosition_Height" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="BayPosition_IsBlocked" xml:space="preserve">
+    <value>Engellendi</value>
+  </data>
+  <data name="BayPosition_MaxDoubleHeight" xml:space="preserve">
+    <value>Maksimum Çift Yükseklik</value>
+  </data>
+  <data name="BayPosition_MaxSingleHeight" xml:space="preserve">
+    <value>Maksimum Standart Yükseklik</value>
+  </data>
+  <data name="BayPosition_ProfileOffset" xml:space="preserve">
+    <value>Profil Kontrol Ofseti</value>
+  </data>
+  <data name="BayShutter" xml:space="preserve">
+    <value>Alım Yeri {0} Kapak</value>
+  </data>
+  <data name="Bay_CategoryDescription" xml:space="preserve">
+    <value>Bölmenin parametrelerini ve cihazlarını değiştirmeye izin verir.</value>
+  </data>
+  <data name="Bay_ChainOffset" xml:space="preserve">
+    <value>Sıfır Zincir Ofseti</value>
+  </data>
+  <data name="Bay_IsActive" xml:space="preserve">
+    <value>Aktif</value>
+  </data>
+  <data name="Bay_IsAdjustByWeight" xml:space="preserve">
+    <value>Ağır yük üniteleri koydayken toplama yüksekliğini azaltın</value>
+  </data>
+  <data name="Bay_IsCheckIntrusion" xml:space="preserve">
+    <value>Işık perdesi ile İzinsiz Girişi kontrol edin</value>
+  </data>
+  <data name="Bay_IsDouble" xml:space="preserve">
+    <value>Çift</value>
+  </data>
+  <data name="Bay_IsExternal" xml:space="preserve">
+    <value>Harici</value>
+  </data>
+  <data name="Bay_IsFastDepositToBay" xml:space="preserve">
+    <value>Aım yerine ürün yükleme</value>
+  </data>
+  <data name="Bay_Resolution" xml:space="preserve">
+    <value>Çözünürlük</value>
+  </data>
+  <data name="Bay_Side" xml:space="preserve">
+    <value>Yan</value>
+  </data>
+  <data name="BeltRigidity" xml:space="preserve">
+    <value>Kayış Sertliği</value>
+  </data>
+  <data name="BeltSpacing" xml:space="preserve">
+    <value>Kayış gerginlik blok mesafesi</value>
+  </data>
+  <data name="Carousel" xml:space="preserve">
+    <value>Carousel</value>
+  </data>
+  <data name="Carousel_ElevatorDistance" xml:space="preserve">
+    <value>Asansör Mesafesi</value>
+  </data>
+  <data name="Carousel_HomingCreepSpeed" xml:space="preserve">
+    <value>Hedef Arama Sürünme Hızı</value>
+  </data>
+  <data name="Carousel_HomingFastSpeed" xml:space="preserve">
+    <value>Hızlı Arama</value>
+  </data>
+  <data name="CyclesToCalibrate" xml:space="preserve">
+    <value>Kalibre edilecek döngüler</value>
+  </data>
+  <data name="Deceleration" xml:space="preserve">
+    <value>Yavaşlama</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Asansör</value>
+  </data>
+  <data name="ElevatorAxis" xml:space="preserve">
+    <value>Asansör Ekseni {0}</value>
+  </data>
+  <data name="ElevatorAxis_BrakeActivatePercent" xml:space="preserve">
+    <value>Fren Aktivasyon yüzdesi</value>
+  </data>
+  <data name="ElevatorAxis_BrakeReleaseTime" xml:space="preserve">
+    <value>Fren bırakma süresi</value>
+  </data>
+  <data name="ElevatorAxis_ChainOffset" xml:space="preserve">
+    <value>Sıfır Zincir Ofseti</value>
+  </data>
+  <data name="ElevatorAxis_HomingCreepSpeed" xml:space="preserve">
+    <value>Hedef Arama Sürünme Hızı</value>
+  </data>
+  <data name="ElevatorAxis_HomingFastSpeed" xml:space="preserve">
+    <value>Hızlı Arama</value>
+  </data>
+  <data name="ElevatorAxis_HorizontalCalibrateSpeed" xml:space="preserve">
+    <value>Yatay Kalibrasyon Hızı</value>
+  </data>
+  <data name="ElevatorAxis_LowerBound" xml:space="preserve">
+    <value>Eksen Alt Sınırı</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateLength" xml:space="preserve">
+    <value>Profil kalibrasyonu maksimum mesafe</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibratePosition" xml:space="preserve">
+    <value>Profil mesafesi okuma 6. ışın</value>
+  </data>
+  <data name="ElevatorAxis_ProfileCalibrateSpeed" xml:space="preserve">
+    <value>Profil Kalibrasyon Hızı</value>
+  </data>
+  <data name="ElevatorAxis_Profiles" xml:space="preserve">
+    <value>profiller</value>
+  </data>
+  <data name="ElevatorAxis_Resolution" xml:space="preserve">
+    <value>Çözünürlük</value>
+  </data>
+  <data name="ElevatorAxis_UpperBound" xml:space="preserve">
+    <value>Eksen Üst Sınırı</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositOffset" xml:space="preserve">
+    <value>Dikey Mevduat Ofseti</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupOffset" xml:space="preserve">
+    <value>Dikey Alma Ofseti</value>
+  </data>
+  <data name="ElevatorWeight" xml:space="preserve">
+    <value>Asansör Ağırlığı</value>
+  </data>
+  <data name="Elevator_CategoryDescription" xml:space="preserve">
+    <value>Asansörün parametrelerini ve ilişkili iki ekseni değiştirmenizi sağlar.</value>
+  </data>
+  <data name="EmptyLoadMovement" xml:space="preserve">
+    <value>Boş Yük Hareketi</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>Bay {0} Harici</value>
+  </data>
+  <data name="ExternalBay_Description" xml:space="preserve">
+    <value>Harici Bay Parametreleri</value>
+  </data>
+  <data name="ExtraRace" xml:space="preserve">
+    <value>Ekleme/çıkarma için ekstra yarış</value>
+  </data>
+  <data name="FeedRate" xml:space="preserve">
+    <value>İlerleme hızı</value>
+  </data>
+  <data name="FeedRateAfterZero" xml:space="preserve">
+    <value>Eksen sıfırından sonra ilerleme hızı</value>
+  </data>
+  <data name="FullLoadMovement" xml:space="preserve">
+    <value>Tam Yük Hareketi</value>
+  </data>
+  <data name="HalfShaftLength" xml:space="preserve">
+    <value>Yarım Mil uzunluğu</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Envanter</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Çevirici</value>
+  </data>
+  <data name="Inverter_Index" xml:space="preserve">
+    <value>dizin</value>
+  </data>
+  <data name="Inverter_IpAddress" xml:space="preserve">
+    <value>IP Çevirici</value>
+  </data>
+  <data name="Inverter_TcpPort" xml:space="preserve">
+    <value>İnvertör Bağlantı Noktası</value>
+  </data>
+  <data name="Inverter_Type" xml:space="preserve">
+    <value>İnvertör Tipi</value>
+  </data>
+  <data name="IoDevice" xml:space="preserve">
+    <value>IoDevice</value>
+  </data>
+  <data name="IoDevice_Index" xml:space="preserve">
+    <value>IoDevice Dizini</value>
+  </data>
+  <data name="IoDevice_IpAddress" xml:space="preserve">
+    <value>IP IoCihazı</value>
+  </data>
+  <data name="IoDevice_TcpPort" xml:space="preserve">
+    <value>IoDevice Bağlantı Noktası</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Lazer</value>
+  </data>
+  <data name="Laser_IpAddress" xml:space="preserve">
+    <value>IP Lazer</value>
+  </data>
+  <data name="Laser_TcpPort" xml:space="preserve">
+    <value>Lazer Bağlantı Noktası</value>
+  </data>
+  <data name="LastCalibrationCycles" xml:space="preserve">
+    <value>Son kalibrasyon döngüleri</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>makine</value>
+  </data>
+  <data name="Machine_CategoryDescription" xml:space="preserve">
+    <value>Makinenin yapısal parametrelerini değiştirmenizi sağlar.</value>
+  </data>
+  <data name="Machine_ExpireCountPrecent" xml:space="preserve">
+    <value>Süre Sonu Sayısı Yüzdesi</value>
+  </data>
+  <data name="Machine_ExpireDays" xml:space="preserve">
+    <value>Bitiş Günleri</value>
+  </data>
+  <data name="Machine_Height" xml:space="preserve">
+    <value>Yükseklik</value>
+  </data>
+  <data name="Machine_HorizontalCyclesToCalibrate" xml:space="preserve">
+    <value>Kalibre Edilecek Yatay Döngüler</value>
+  </data>
+  <data name="Machine_HorizontalPositionToCalibrate" xml:space="preserve">
+    <value>Kalibre Edilecek Yatay Konum</value>
+  </data>
+  <data name="Machine_Id" xml:space="preserve">
+    <value>Makine kimliği</value>
+  </data>
+  <data name="Machine_LoadDepth" xml:space="preserve">
+    <value>Makine Yük Derinliği</value>
+  </data>
+  <data name="Machine_LoadUnitMaxHeight" xml:space="preserve">
+    <value>Maksimum Tepsi Yüksekliği</value>
+  </data>
+  <data name="Machine_LoadUnitMaxNetWeight" xml:space="preserve">
+    <value>Maks. Tepsi Net Ağırlığı</value>
+  </data>
+  <data name="Machine_LoadUnitMinHeight" xml:space="preserve">
+    <value>Min Tepsi Yüksekliği</value>
+  </data>
+  <data name="Machine_LoadUnitTare" xml:space="preserve">
+    <value>Yük birimi Dara</value>
+  </data>
+  <data name="Machine_LoadUnitVeryHeavyPercent" xml:space="preserve">
+    <value>Çok ağır Tepsi için net ağırlık, 0 devre dışı bırakma</value>
+  </data>
+  <data name="Machine_LoadUnitWidth" xml:space="preserve">
+    <value>Yük Birimi Genişliği</value>
+  </data>
+  <data name="Machine_MaxGrossWeight" xml:space="preserve">
+    <value>Makine Maks. Brüt Ağırlık</value>
+  </data>
+  <data name="Machine_ModelName" xml:space="preserve">
+    <value>modeli</value>
+  </data>
+  <data name="Machine_SerialNumber" xml:space="preserve">
+    <value>Seri numarası</value>
+  </data>
+  <data name="Machine_Simulation" xml:space="preserve">
+    <value>simülasyon</value>
+  </data>
+  <data name="ManualMovements" xml:space="preserve">
+    <value>Manuel Hareketler</value>
+  </data>
+  <data name="MeasureConst0" xml:space="preserve">
+    <value>K0 sabiti tartımı</value>
+  </data>
+  <data name="MeasureConst1" xml:space="preserve">
+    <value>Tartım K1 sabiti</value>
+  </data>
+  <data name="MeasureConst2" xml:space="preserve">
+    <value>Tartım K2 sabiti</value>
+  </data>
+  <data name="MeasureSpeed" xml:space="preserve">
+    <value>Hızı Ölçün</value>
+  </data>
+  <data name="MeasureTime" xml:space="preserve">
+    <value>Zamanı Ölçün</value>
+  </data>
+  <data name="MovementParameters" xml:space="preserve">
+    <value>HareketParametreleri</value>
+  </data>
+  <data name="MovementProfileType.LongDeposit" xml:space="preserve">
+    <value>Uzun Mevduat</value>
+  </data>
+  <data name="MovementProfileType.LongPickup" xml:space="preserve">
+    <value>Uzun Alım</value>
+  </data>
+  <data name="MovementProfileType.ShortDeposit" xml:space="preserve">
+    <value>Kısa Mevduat</value>
+  </data>
+  <data name="MovementProfileType.ShortPickup" xml:space="preserve">
+    <value>Kısa Alım</value>
+  </data>
+  <data name="MovementProfileType.Undefined" xml:space="preserve">
+    <value>Tanımsız</value>
+  </data>
+  <data name="NetworkConfiguration" xml:space="preserve">
+    <value>Ağ Yapılandırması</value>
+  </data>
+  <data name="Orientation.Horizontal" xml:space="preserve">
+    <value>Yatay</value>
+  </data>
+  <data name="Orientation.Vertical" xml:space="preserve">
+    <value>Dikey</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Seçmek</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>{0} konumu</value>
+  </data>
+  <data name="PulleyDiameter" xml:space="preserve">
+    <value>kasnak Çapı</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Koy</value>
+  </data>
+  <data name="Race" xml:space="preserve">
+    <value>Yarış</value>
+  </data>
+  <data name="SecondTermMultiplier" xml:space="preserve">
+    <value>SecondTermÇarpan</value>
+  </data>
+  <data name="ShaftDiameter" xml:space="preserve">
+    <value>Mil Çapı</value>
+  </data>
+  <data name="ShaftElasticity" xml:space="preserve">
+    <value>Mil Esnekliği</value>
+  </data>
+  <data name="ShutterManualParameters_FeedRate" xml:space="preserve">
+    <value>Deklanşör Besleme Hızı</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationClose" xml:space="preserve">
+    <value>Deklanşör kapanma süresi</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedDurationOpen" xml:space="preserve">
+    <value>Deklanşör açık kalma süresi</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationClose" xml:space="preserve">
+    <value>Deklanşör yarı kapanma süresi</value>
+  </data>
+  <data name="ShutterManualParameters_HighSpeedHalfDurationOpen" xml:space="preserve">
+    <value>Deklanşör yarı açık süre</value>
+  </data>
+  <data name="ShutterManualParameters_MaxSpeed" xml:space="preserve">
+    <value>Deklanşör Maksimum hız</value>
+  </data>
+  <data name="ShutterManualParameters_MinSpeed" xml:space="preserve">
+    <value>Deklanşör Min hızı</value>
+  </data>
+  <data name="ShutterType.NotSpecified" xml:space="preserve">
+    <value>Belirtilmemiş</value>
+  </data>
+  <data name="ShutterType.ThreeSensors" xml:space="preserve">
+    <value>Üç Sensör</value>
+  </data>
+  <data name="ShutterType.TwoSensors" xml:space="preserve">
+    <value>İki Sensör</value>
+  </data>
+  <data name="Shutter_AssistedMovements" xml:space="preserve">
+    <value>Deklanşör Destekli Hareketler</value>
+  </data>
+  <data name="Shutter_ManualMovements" xml:space="preserve">
+    <value>Deklanşör Manuel Hareketler</value>
+  </data>
+  <data name="Shutter_Type" xml:space="preserve">
+    <value>Deklanşör Tipi</value>
+  </data>
+  <data name="Speed" xml:space="preserve">
+    <value>Hız</value>
+  </data>
+  <data name="StepMovementParameters_AdjustAccelerationByWeight" xml:space="preserve">
+    <value>Hızlanmayı yüksekliğe göre ayarlayın</value>
+  </data>
+  <data name="StepMovementParameters_AdjustSpeedByWeight" xml:space="preserve">
+    <value>Ağırlığa göre hızı ayarlayın</value>
+  </data>
+  <data name="StepMovementParameters_Number" xml:space="preserve">
+    <value>Sayı</value>
+  </data>
+  <data name="StepMovementParameters_Position" xml:space="preserve">
+    <value>Durum</value>
+  </data>
+  <data name="TargetDistance" xml:space="preserve">
+    <value>Manuel hareket ile maksimum mesafe</value>
+  </data>
+  <data name="TargetDistanceAfterZero" xml:space="preserve">
+    <value>Eksen sıfır ayarında manuel hareket ile maksimum mesafe</value>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>Toplam mesafe</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>görüş</value>
+  </data>
+  <data name="Center" xml:space="preserve">
+    <value>Merkez</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Öğe Kimliği benzersiz uzunluk</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Kutu</value>
+  </data>
+  <data name="Machine_IsAxisChanged" xml:space="preserve">
+    <value>İnverter iletişiminde Eksen Değiştirildi</value>
+  </data>
+  <data name="Machine_IsHeartBeat" xml:space="preserve">
+    <value>İnverter iletişiminde HeartBeat</value>
+  </data>
+  <data name="EnabeNoteRules" xml:space="preserve">
+    <value>Not kurallarını etkinleştir</value>
+  </data>
+  <data name="Machine_IsDbSaveOnTelemetry" xml:space="preserve">
+    <value>Telemetride DB Tasarrufu</value>
+  </data>
+  <data name="ShutterMaxSpeed" xml:space="preserve">
+    <value>Max hız</value>
+  </data>
+  <data name="ShutterMinSpeed" xml:space="preserve">
+    <value>Minimum hız</value>
+  </data>
+  <data name="ElevatorAxis_HomingAcceleration" xml:space="preserve">
+    <value>Hedef Arama Hızlandırma</value>
+  </data>
+  <data name="Machine_VerticalCyclesToCalibrate" xml:space="preserve">
+    <value>Kalibre Edilecek Dikey Döngüler</value>
+  </data>
+  <data name="Bay_IsTelescopic" xml:space="preserve">
+    <value>Teleskopik</value>
+  </data>
+  <data name="Machine_IsEnableAddItem" xml:space="preserve">
+    <value>Öğe eklemeyi etkinleştir</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Barkod otomatik koymak</value>
+  </data>
+  <data name="Machine_IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>LU'da son işlem için istek onayı</value>
+  </data>
+  <data name="ElevatorAxis_VerticalDepositCompensationDelay" xml:space="preserve">
+    <value>Dikey Mevduat Tazminat Gecikmesi</value>
+  </data>
+  <data name="ElevatorAxis_VerticalPickupCompensationDelay" xml:space="preserve">
+    <value>Dikey Alma Dengeleme Gecikmesi</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Tote barkod uzunluğu</value>
+  </data>
+  <data name="Machine_IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Toplamadaki mevcut öğe miktarını düzenlemiyor</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Yangın alarmı</value>
+  </data>
+  <data name="Machine_IsOrderList" xml:space="preserve">
+    <value>Sipariş listesi</value>
+  </data>
+  <data name="Machine_IsLocalMachineItems" xml:space="preserve">
+    <value>Bu makinedeki öğeleri ara</value>
+  </data>
+  <data name="Carousel_BayFindZeroLimit" xml:space="preserve">
+    <value>sıfır limit bul</value>
+  </data>
+  <data name="Machine_TouchHelper" xml:space="preserve">
+    <value>Dokunmatik yardımcı</value>
+  </data>
+  <data name="Machine_IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Stoku farka göre güncelleyin</value>
+  </data>
+  <data name="Machine_IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Değişim tablosunda barkodla öğe ara (Idroinox)</value>
+  </data>
+  <data name="Bay_ProfileConst0" xml:space="preserve">
+    <value>Profil K0 sabiti</value>
+  </data>
+  <data name="Bay_ProfileConst1" xml:space="preserve">
+    <value>Profil K1 sabiti</value>
+  </data>
+</root>

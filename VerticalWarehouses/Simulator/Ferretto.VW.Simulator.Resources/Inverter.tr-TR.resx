@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbsoluteRelative" xml:space="preserve">
+    <value>abs/rel</value>
+  </data>
+  <data name="ChangeOnSetPoint" xml:space="preserve">
+    <value>Ayar noktasında değişiklik</value>
+  </data>
+  <data name="ChangeSetImmediately" xml:space="preserve">
+    <value>Seti hemen değiştir</value>
+  </data>
+  <data name="ElevatorExtraStroke" xml:space="preserve">
+    <value>Asansör Ekstra İnme</value>
+  </data>
+  <data name="ElevatorZeroPosition" xml:space="preserve">
+    <value>Asansör sıfır konumu</value>
+  </data>
+  <data name="EnableOperation" xml:space="preserve">
+    <value>İşlemi Etkinleştir</value>
+  </data>
+  <data name="EnableVoltage" xml:space="preserve">
+    <value>Voltajı Etkinleştir</value>
+  </data>
+  <data name="EncoderChannelA" xml:space="preserve">
+    <value>Enkoder Kanal A</value>
+  </data>
+  <data name="EncoderChannelAElevatorChain" xml:space="preserve">
+    <value>Enkoder Kanalı A --- Asansör Zinciri</value>
+  </data>
+  <data name="EncoderChannelB" xml:space="preserve">
+    <value>Enkoder Kanalı le B</value>
+  </data>
+  <data name="EncoderChannelBElevatorChain" xml:space="preserve">
+    <value>Enkoder Kanalı B --- Asansör Zinciri</value>
+  </data>
+  <data name="EncoderChannelZ" xml:space="preserve">
+    <value>Enkoder Kanalı Z</value>
+  </data>
+  <data name="EncoderChannelZElevatorChain" xml:space="preserve">
+    <value>Enkoder Kanalı Z --- Asansör Zinciri</value>
+  </data>
+  <data name="Fault" xml:space="preserve">
+    <value>Arıza</value>
+  </data>
+  <data name="FollowingError" xml:space="preserve">
+    <value>Aşağıdaki hata</value>
+  </data>
+  <data name="Free" xml:space="preserve">
+    <value>Özgür</value>
+  </data>
+  <data name="Halt" xml:space="preserve">
+    <value>Dur</value>
+  </data>
+  <data name="HeartBeat" xml:space="preserve">
+    <value>kalp atışı</value>
+  </data>
+  <data name="HomingAttained" xml:space="preserve">
+    <value>Hedef arama elde edildi</value>
+  </data>
+  <data name="HomingError" xml:space="preserve">
+    <value>Hedef arama hatası</value>
+  </data>
+  <data name="HomingStarted" xml:space="preserve">
+    <value>Hedef arama operasyonu başladı</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Yatay eksen</value>
+  </data>
+  <data name="InGear" xml:space="preserve">
+    <value>Viteste</value>
+  </data>
+  <data name="InternalLimitActive" xml:space="preserve">
+    <value>İç Limit Aktif</value>
+  </data>
+  <data name="InternalLimitActive_bis" xml:space="preserve">
+    <value>DahiliLimitAktif</value>
+  </data>
+  <data name="ManufacturerSpecific" xml:space="preserve">
+    <value>Üreticiye özel</value>
+  </data>
+  <data name="ManufacturerSpecificWarning2" xml:space="preserve">
+    <value>Üreticiye özel Uyarı 2</value>
+  </data>
+  <data name="MaxSlippage" xml:space="preserve">
+    <value>Maksimum kayma</value>
+  </data>
+  <data name="MotionBlockInProgress" xml:space="preserve">
+    <value>MotionBlockInProgress</value>
+  </data>
+  <data name="MotionBlockSelect0" xml:space="preserve">
+    <value>MotionBlockSelect0</value>
+  </data>
+  <data name="MotionBlockSelect1" xml:space="preserve">
+    <value>MotionBlockSelect1</value>
+  </data>
+  <data name="MotionBlockSelect2" xml:space="preserve">
+    <value>MotionBlockSelect2</value>
+  </data>
+  <data name="MotionBlockSelect3" xml:space="preserve">
+    <value>MotionBlockSelect3</value>
+  </data>
+  <data name="NewSetPoint" xml:space="preserve">
+    <value>Yeni ayar noktası</value>
+  </data>
+  <data name="NormalFunction" xml:space="preserve">
+    <value>Normal İşlev</value>
+  </data>
+  <data name="OperationEnabled" xml:space="preserve">
+    <value>İşlem Etkin</value>
+  </data>
+  <data name="OperationMode" xml:space="preserve">
+    <value>Operasyon modu</value>
+  </data>
+  <data name="OperationModeSpecific" xml:space="preserve">
+    <value>Çalışma moduna özel</value>
+  </data>
+  <data name="PowerOn" xml:space="preserve">
+    <value>Açık</value>
+  </data>
+  <data name="QuickStop" xml:space="preserve">
+    <value>Hızlı Durdurma (Düşük Aktif)</value>
+  </data>
+  <data name="ReadyToSwitchOn" xml:space="preserve">
+    <value>Açmaya hazır</value>
+  </data>
+  <data name="Remote" xml:space="preserve">
+    <value>Uzak</value>
+  </data>
+  <data name="ResetFault" xml:space="preserve">
+    <value>Arızayı Sıfırla</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Sürdürmek</value>
+  </data>
+  <data name="RfgEnable" xml:space="preserve">
+    <value>Rfg etkinleştir</value>
+  </data>
+  <data name="RfgUnlock" xml:space="preserve">
+    <value>Rfg kilidini aç</value>
+  </data>
+  <data name="RfgUseRef" xml:space="preserve">
+    <value>Rfg kullanım referansı</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>İnvertör Rolü</value>
+  </data>
+  <data name="RoleByID" xml:space="preserve">
+    <value>İNVERTÖR {0}</value>
+  </data>
+  <data name="SensorElevatorChainZero" xml:space="preserve">
+    <value>Asansör zinciri sıfır sensörü</value>
+  </data>
+  <data name="SequenceMode" xml:space="preserve">
+    <value>Sıra Modu</value>
+  </data>
+  <data name="SetPointAck" xml:space="preserve">
+    <value>Ayar noktası onayı</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Deklanşör Sensörü (A)</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Deklanşör Sensörü (B)</value>
+  </data>
+  <data name="StartMotionBlock" xml:space="preserve">
+    <value>Hareket Bloğu Başlat</value>
+  </data>
+  <data name="SwitchedOn" xml:space="preserve">
+    <value>açıldı</value>
+  </data>
+  <data name="SwitchOn" xml:space="preserve">
+    <value>Açmak</value>
+  </data>
+  <data name="SwitchOnDisabled" xml:space="preserve">
+    <value>Devre dışı bırak</value>
+  </data>
+  <data name="TargetReached" xml:space="preserve">
+    <value>Hedefe ulaşıldı</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>İnvertör Tipi</value>
+  </data>
+  <data name="Velocity" xml:space="preserve">
+    <value>Hız</value>
+  </data>
+  <data name="VoltageEnabled" xml:space="preserve">
+    <value>Voltaj Etkin</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Uyarı</value>
+  </data>
+  <data name="XPosition" xml:space="preserve">
+    <value>Yatay pozisyon</value>
+  </data>
+  <data name="YPosition" xml:space="preserve">
+    <value>Dikey pozisyon</value>
+  </data>
+  <data name="ZeroPosition" xml:space="preserve">
+    <value>Sıfır Konum</value>
+  </data>
+  <data name="ZeroPositionUp" xml:space="preserve">
+    <value>Sıfır Konum Yukarı</value>
+  </data>
+</root>

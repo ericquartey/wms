@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     try
                     {
-                        dbContext.Database.ExecuteSqlRaw(command.CommandText, parametersArray);
+                        dbContext.Database.ExecuteSqlCommand(command.CommandText, parametersArray);
                         //this.machineVolatile.IsStandbyDbOk = true;
                     }
                     catch (Exception ex)

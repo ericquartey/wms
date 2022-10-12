@@ -59,6 +59,10 @@
     <None Remove="Resources\sl-numeric.json" />
     <None Remove="Resources\sl-numpad.json" />
     <None Remove="Resources\sl-uppercase.json" />
+    <None Remove="Resources\tr-lowercase.json" />
+    <None Remove="Resources\tr-numeric.json" />
+    <None Remove="Resources\tr-numpad.json" />
+    <None Remove="Resources\tr-uppercase.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +102,10 @@
     <Resource Include="Resources\fr-numeric.json" />
     <Resource Include="Resources\fr-uppercase.json" />
     <Resource Include="Resources\fr-lowercase.json" />
+    <Resource Include="Resources\tr-lowercase.json" />
+    <Resource Include="Resources\tr-numeric.json" />
+    <Resource Include="Resources\tr-numpad.json" />
+    <Resource Include="Resources\tr-uppercase.json" />
     <Resource Include="Resources\pl-lowercase.json" />
     <Resource Include="Resources\pl-numeric.json" />
     <Resource Include="Resources\pl-numpad.json" />
@@ -118,7 +126,7 @@
 
   <ItemGroup>
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

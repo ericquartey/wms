@@ -25,22 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.52 rispetto la 1.0.51
-- Test completo: con un solo cassetto l'opzione Random cambia anche la posizione in baia
-- Barra Alfanumerica: aggiunto test ciclico dei messaggi
+## Nuove Funzionalità 1.0.53 rispetto la 1.0.52
+- Il servizio MAS usa di nuovo il netcore 2.2
+- Aggiunta lingua turca
+- Aggiunto parametro per evidenziare la lista in attesa
+- Aggiunti parametri per confermare la fine lista
 
 ## Bug Risolti
-- Viste di prelievo e versamento: corretto aggiornamento della barra led
-- Aggiungi articolo: corretta mancanza di tastiera a video
-- Liste in attesa: corretta dimensione della descrizione
 - Eliminati rallentamenti evidenziati nella versione precedente
-- Le celle bloccate sono evidenziate in rosso
-- BIG: corretto ripristino se si blocca l'homing
-- Manutenzione: corretta chiusura collaudo con Baia2
-- Installer: eliminato il primo riavvio
+- Correzione ai comandi manuali
 
 ## Compatibile con adapter 0.4.41
 ***
+
+[Versione 1.0.52](#id1052)
 
 [Versione 1.0.51](#id1051)
 
@@ -146,6 +144,22 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1052"></a>
+## Nuove Funzionalità 1.0.52 rispetto la 1.0.51
+- Test completo: con un solo cassetto l'opzione Random cambia anche la posizione in baia
+- Barra Alfanumerica: aggiunto test ciclico dei messaggi
+
+## Bug Risolti
+- Viste di prelievo e versamento: corretto aggiornamento della barra led
+- Aggiungi articolo: corretta mancanza di tastiera a video
+- Liste in attesa: corretta dimensione della descrizione
+- Le celle bloccate sono evidenziate in rosso
+- BIG: corretto ripristino se si blocca l'homing
+- Manutenzione: corretta chiusura collaudo con Baia2
+- Installer: eliminato il primo riavvio
+
+## Compatibile con adapter 0.4.41
 
 <a id="id1051"></a>
 ## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
