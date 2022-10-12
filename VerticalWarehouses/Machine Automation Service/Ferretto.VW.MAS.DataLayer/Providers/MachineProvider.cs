@@ -150,6 +150,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     machine.BackupServerPassword = EncryptString(PASSWORDKEY, "fergrp_2012");
                 }
+                if (machine.WaitingListPriorityHighlighted == null)
+                {
+                    machine.WaitingListPriorityHighlighted = -1;
+                }
                 this.dataContext.SaveChanges();
             }
         }
@@ -337,6 +341,29 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.ToteBarcodeLength).First();
+            }
+        }
+
+        public int? GetWaitingListPriorityHighlighted()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.WaitingListPriorityHighlighted).First();
+            }
+        }
+
+        public bool GetListPutConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPutConfirm).First();
+            }
+        }
+        public bool GetListPickConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPickConfirm).First();
             }
         }
 
