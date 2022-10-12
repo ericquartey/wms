@@ -312,10 +312,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .AsNoTracking()
-                    .Include(b => b.Shutter)
-                    .SingleOrDefault(b => b.Number == bayNumber);
+                var bay = this.GetByNumber(bayNumber);
                 if (bay.IsCheckIntrusion
                     && (bay.Shutter is null || bay.Shutter.Type == ShutterType.NotSpecified)
                     )
@@ -725,17 +722,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public int GetCarouselBayFindZeroLimit(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Select(b => new { b.Number, b.Carousel.BayFindZeroLimit })
-                    .First(b => b.Number == bayNumber)
-                    .BayFindZeroLimit;
-            }
-        }
+        public int GetCarouselBayFindZeroLimit(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.BayFindZeroLimit;
 
         public double GetChainOffset(InverterIndex inverterIndex)
         {
@@ -1024,14 +1011,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public InverterIndex GetShutterInverterIndex(BayNumber bayNumber)
         {
-            lock (this.dataContext)
+            var shutter = this.GetByNumber(bayNumber).Shutter;
+            if (shutter == null)
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Select(b => new { b.Number, b.Shutter.Inverter.Index })
-                    .First(b => b.Number == bayNumber)
-                    .Index;
+                return InverterIndex.None;
             }
+
+            return shutter.Inverter.Index;
         }
 
         public void IncrementCycles(BayNumber bayNumber)
@@ -1717,14 +1703,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private InverterIndex GetInverterIndexByNumber(BayNumber bayNumber)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Select(b => new { b.Number, b.Inverter.Index })
-                    .First(b => b.Number == bayNumber)
-                    .Index;
-            }
+            return this.GetByNumber(bayNumber).Inverter.Index;
         }
 
         /// <summary>
