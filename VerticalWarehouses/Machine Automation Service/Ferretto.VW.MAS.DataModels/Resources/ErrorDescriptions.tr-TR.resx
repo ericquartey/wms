@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Konumlandırma koşulları karşılanmadı.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Başlatma koşulları karşılanmadı.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Yükleme ünitesi tam olarak yüklenmedi.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Asansör, teslim alındıktan sonra yüklenmedi</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Asansör depozitodan sonra boş değil</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Asansör Sensörleri uyuşmazlığı</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Asansör sensörleri uyuşmazlığı</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>İnverter genel hatası</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Yürütme sırasında sürücü parametresi yazılamadı.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>İnverter veri setinin verileri eşleşmiyor.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>İnverter EEPROM sağlama toplamı hatası.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>İnverter EEPROM okuma hatası.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>İnverter EEPROM yazma hatası.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Geçersiz inverter veri seti.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Geçersiz inverter parametresi.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Belirtilen düğüm mevcut değil.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Evirici parametresi salt okunurdur.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Evirici parametresi salt okunurdur.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Eviriciye gönderilen mesajın sözdizimi hatası.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Sürücüye bilinmeyen parametre iletildi.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>İnvertere gönderilen mesajın uzunluğu ile mesajın veri tipi arasında tutarsızlık.!</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Eviricilerden birinde bir hata algılandı.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Güvenlik işlevi tetiklendi.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Geçerli hedef hücre değil</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Asansör beşiği işgal edildi</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Veritabanı kaynak konumu tutarsızlığı</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Belirtilen bölmede yükleme ünitesi yok</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Tahliye bölmesinde yükleme birimi tespit edildi</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Tepsi hedef bölmesi işgal edildi</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Yükleme birimi mevcut değil</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Seçilen yükleme birimi depoya yüklenmedi</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Boş yükleme ünitesinin kaynak bölmesi</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Geçerli kaynak hücre değil</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Geçersiz sensörler</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Geçersiz asansör varlığı sensörleri.</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Tutarsızlık stato sensori</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Tutarsızlık stato sensori</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Bay sensörleri uyuşmazlığı</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Üst düzey körfez işgal edildi</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Asansör sensörleri uyuşmazlığı</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Yükleme ünitesine yüklenen maksimum ağırlık aşırı.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>Deklanşör kapalı</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>Deklanşör açık</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Alt sınırın altındaki hedef</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>Evirici başka bir komut yürütüyor</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Üst sınırın üzerindeki hedef</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>G/Ç aygıtı hatası.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Yük birimi deponun içindedir.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Makine modu geçerli değil</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Güvenlik bariyeri işgal edildi</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Lütfen tüm güvenlik düğmelerini kontrol edin.</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Sol yan panel açıktır.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Yük birimi başka bir bölmede</value>
+  </data>
+  <data name="LoadUnitSourceElevator" xml:space="preserve">
+    <value>Asansörde çekmece yok</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Geçersiz sensörler</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Üst seviye bölme boş</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>Görev yürütme hatası</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>Görev yürütme hatası</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Görev yürütme hatası</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Hata yok</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Ağırlık çok düşük</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Toplam makine ağırlığı aşıldı</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Depo dolu</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Körfez bilinmeyen yükleme birimi ile işgal edildi</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Asansör bilinmeyen yükleme birimiyle dolu</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Bağlantı hatası</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>G/Ç cihazı bağlantı hatası</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Bağlantı hatası</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Hareketin otomatik olarak geri yüklenmesine izin verilmiyor</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Hedef türü geçerli değil</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>Tanımsız bölme alt konumu</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Tanımlanmamış bölme üst konumu</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Görev türü geçerli değil</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Bay zincirine izin verilmiyor: yük birimi çok ağır.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Toplama onayı komutu geçerli değil</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Veritabanı güncellenemedi. Bir veya daha fazla hedef hücre mantıksal olarak işgal edildi</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Ev koşulları karşılanmadı.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Yükseklik hatası</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Deklanşör konumu geçerli değil</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>Hedef bölmesinin kalibrasyona ihtiyacı var</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Test tamamlanmadı</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Boş depo değil.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Konumlandırma hatası</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Sağ yan panel açık.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>Makine çalıştırıldıktan sonra dikey konum değişti</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>{0} ekseni hareketinin ivmesinin konfigürasyonu doğru değil: boş yük ivmesi, tam yük ivmesinden daha az</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>{0} ekseni hareketinin hızının konfigürasyonu doğru değil: boş yük hızı tam yük hızından düşük</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Test tamamlanmadı</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Geçersiz bölme</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Geçersiz bölme konumu</value>
+  </data>
+  <data name="AxisMovementAccelerationConfigurationInvalid" xml:space="preserve">
+    <value>Geçersiz {0} Eksen hareketi Hızlandırma yapılandırması</value>
+  </data>
+  <data name="AxisMovementDecelerationConfigurationInvalid" xml:space="preserve">
+    <value>Geçersiz {0} Eksen hareketi Yavaşlama yapılandırması</value>
+  </data>
+  <data name="AxisMovementSpeedConfigurationInvalid" xml:space="preserve">
+    <value>Geçersiz {0} Eksen hareketi Hız yapılandırması</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Üst tarafta konumlandırma hatası</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>Dış bölme işgal edildi</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>Dış bölme boş</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS hatası</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Geçersiz hareket</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Alt tarafta konumlandırma hatası</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>Yük birimi mevcut değil</value>
+  </data>
+  <data name="LoadUnitNumber" xml:space="preserve">
+    <value>Yük birimi numarası</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Geçersiz bölme sensörleri</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Konumlandırma hatası</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>İnverter komut zaman aşımı</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>G/Ç cihazı komut zaman aşımı</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Eviriciye gönderilen mesajın sözdizimi hatası.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>Teleskopik bölme düzgün takılmamış</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Yükleme Ünitesinin darası 0</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Dikey konumlandırma hatası</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Dikey konumlandırma hatası</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Yükseklik çok düşük</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Ön yangın alarmı</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Yangın alarmı</value>
+  </data>
+  <data name="BackupDatabaseOnServer" xml:space="preserve">
+    <value>Veritabanını sunucuda yedekle</value>
+  </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Asansör yatay eksen homing hatası</value>
+  </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Güç açık hatası</value>
+  </data>
+  <data name="ProfileResolutionFail" xml:space="preserve">
+    <value>Profil çözünürlüğü tamamlanmadı</value>
+  </data>
+</root>
