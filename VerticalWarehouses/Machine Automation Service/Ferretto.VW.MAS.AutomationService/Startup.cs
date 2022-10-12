@@ -11,21 +11,21 @@ using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.SocketLink;
 using Ferretto.VW.MAS.TimeManagement;
+using Ferretto.VW.MAS.InternalTiming;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Prism.Events;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Ferretto.VW.CommonUtils.Converters;
-using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService
         #region Methods
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime appLifetime)
         {
             appLifetime?.ApplicationStopped.Register(this.OnStopped);
 
@@ -69,6 +69,12 @@ namespace Ferretto.VW.MAS.AutomationService
                 SupportedUICultures = supportedCultures,
             });
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<InstallationHub>("/installation-endpoint");
+                routes.MapHub<OperatorHub>("/operator-endpoint");
+            });
+
             app.UseMessageLogging();
 
             if (!env.IsProduction())
@@ -82,19 +88,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
             app.UseMasHealthChecks();
 
+            app.UseCors("AllowAll");
             app.UseDataLayer();
 
-            app.UseRouting();
-            app.UseCors("AllowAll");
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<InstallationHub>("/installation-endpoint");
-                endpoints.MapHub<OperatorHub>("/operator-endpoint");
-            });
+            app.UseMvc();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -103,7 +100,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-            services.AddControllers(options =>
+            services
+              .AddMvc(options =>
             {
                 options.Filters.Add(typeof(ReadinessFilter));
                 options.Filters.Add(typeof(BayNumberActionFilter));
@@ -111,11 +109,15 @@ namespace Ferretto.VW.MAS.AutomationService
                 options.Conventions.Add(
                     new RouteTokenTransformerConvention(
                       new SlugifyParameterTransformer()));
-            }).AddNewtonsoftJson(options =>
+              })
+              .AddJsonOptions(options =>
             {
                 options.SerializerSettings.Converters.Add(new IPAddressConverter());
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            });
+              })
+              .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSignalR();
 
             services.AddMasHealthChecks();
 
@@ -123,7 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 config.SwaggerDoc(
                     "v1",
-                    new OpenApiInfo
+                    new Swashbuckle.AspNetCore.Swagger.Info
                     {
                         Title = "Machine Automation Web API",
                         Version = "v1",
@@ -139,7 +141,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 options.AddPolicy("AllowAll", builder =>
                 {
                     builder
-                        .SetIsOriginAllowed(x => true)
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -166,8 +168,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
             var telemetryUrl = this.Configuration.GetValue<string>("Telemetry:Url");
             services.AddTelemetryHub(new Uri(telemetryUrl));
-            services.AddSignalR()
-                .AddNewtonsoftJsonProtocol();
         }
 
         private static void AddWmsServices(IServiceCollection services)

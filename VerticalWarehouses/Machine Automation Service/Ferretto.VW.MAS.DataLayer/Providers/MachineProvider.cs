@@ -542,11 +542,11 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 dataContext = this.dataContext;
             }
-            int count = await dataContext.Database.ExecuteSqlRawAsync("update cellpanels set MachineId = null;");
-            int count1 = await dataContext.Database.ExecuteSqlRawAsync("update bays set MachineId = null;");
-            int count2 = await dataContext.Database.ExecuteSqlRawAsync($"update machines set Id = {newMachineId};");
-            int count3 = await dataContext.Database.ExecuteSqlRawAsync($"update cellpanels set MachineId = {newMachineId};");
-            int count4 = await dataContext.Database.ExecuteSqlRawAsync($"update bays set MachineId = {newMachineId};");
+            int count = await dataContext.Database.ExecuteSqlCommandAsync("update cellpanels set MachineId = null;");
+            int count1 = await dataContext.Database.ExecuteSqlCommandAsync("update bays set MachineId = null;");
+            int count2 = await dataContext.Database.ExecuteSqlCommandAsync($"update machines set Id = {newMachineId};");
+            int count3 = await dataContext.Database.ExecuteSqlCommandAsync($"update cellpanels set MachineId = {newMachineId};");
+            int count4 = await dataContext.Database.ExecuteSqlCommandAsync($"update bays set MachineId = {newMachineId};");
         }
 
         public void Update(Machine machine, DataLayerContext dataContext)

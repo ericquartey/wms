@@ -19,7 +19,7 @@
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.2.4" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.2.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="3.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
