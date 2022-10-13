@@ -84,7 +84,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
             }
             // no more compacting is possible. Exit from compact mode
-            this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            this.machineVolatileDataProvider.IsOptimizeRotationClass = machineProvider.GetMinMaxHeight().IsRotationClass;
             return false;
         }
 

@@ -53,7 +53,6 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             bool optimizeRotationClass = false)
         {
             this.machineVolatileDataProvider.RandomCells = randomCells;
-            this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
 
             if (machineMode == this.machineVolatileDataProvider.Mode)
             {
@@ -80,14 +79,17 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
                 case MachineMode.Compact:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
                     break;
 
                 case MachineMode.Compact2:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact2;
+                    this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
                     break;
 
                 case MachineMode.Compact3:
                     this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact3;
+                    this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
                     break;
 
                 case MachineMode.FullTest:
