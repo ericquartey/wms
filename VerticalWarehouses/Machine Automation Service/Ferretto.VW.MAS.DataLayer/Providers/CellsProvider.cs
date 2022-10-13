@@ -409,7 +409,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     if (cellsFollowing.Any()
                         && (!isFloating || isCellTest)
-                        && (!this.machineVolatileDataProvider.IsOptimizeRotationClass || cell.RotationClass == loadUnit.RotationClass))
+                        && (!this.machineVolatileDataProvider.IsOptimizeRotationClass
+                            || compactingType == CompactingType.NoCompacting
+                            || cell.RotationClass == loadUnit.RotationClass))
                     {
                         // measure available space
                         var lastCellPosition = cellsFollowing.Last().Position;
