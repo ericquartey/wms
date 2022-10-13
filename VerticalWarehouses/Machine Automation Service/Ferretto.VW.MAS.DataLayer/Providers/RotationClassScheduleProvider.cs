@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
@@ -35,6 +37,7 @@ namespace Ferretto.VW.MAS.DataLayer
             ICellsProvider cellsProvider,
             IMachineProvider machineProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
             ILogger<DataLayerService> logger) : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
@@ -42,6 +45,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -129,13 +133,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         if (this.loadingUnitsDataProvider.SetRotationClass())
                         {
-                            this.cellsProvider.SetRotationClass();
                             activeSettings.LastSchedule = DateTime.Now;
                             this.ModifyRotationClassSchedule(activeSettings);
                             this.logger.LogInformation($"SetRotationClass : OK");
                         }
                     }
+                    this.cellsProvider.SetRotationClass();
                 }
+                this.machineVolatileDataProvider.IsOptimizeRotationClass = machine.IsRotationClass;
             }
             catch (Exception ex)
             {
