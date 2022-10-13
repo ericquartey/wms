@@ -503,7 +503,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
-                if (!string.IsNullOrEmpty(this.UserLogin.Error))
+                if (this.baseUser.Contains(this.UserLogin.UserName) && !string.IsNullOrEmpty(this.UserLogin.Error))
                 {
                     this.ShowNotification(this.UserLogin.Error, Services.Models.NotificationSeverity.Error);
                     return;

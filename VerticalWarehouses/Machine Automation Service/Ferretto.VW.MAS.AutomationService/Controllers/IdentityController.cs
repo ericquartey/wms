@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
-            var machine = this.machineProvider.Get();
+            var machine = this.machineProvider.GetMinMaxHeight();
 
             int? areaId = null;
             if (this.wmsSettingsProvider.IsEnabled && this.wmsSettingsProvider.IsConnected)
@@ -196,6 +196,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetTouchHelperEnable()
         {
             return this.Ok(this.machineProvider.IsTouchHelperEnabled());
+        }
+
+        [HttpPost("get/Waiting/List/Priority/Highlighted")]
+        public ActionResult<int?> GetWaitingListPriorityHighlighted()
+        {
+            return this.Ok(this.machineProvider.GetWaitingListPriorityHighlighted());
+        }
+
+        [HttpPost("get/List/Put/Confirm")]
+        public ActionResult<bool> GetListPutConfirm()
+        {
+            return this.Ok(this.machineProvider.GetListPutConfirm());
+        }
+
+        [HttpPost("get/List/Pick/Confirm")]
+        public ActionResult<bool> GetListPickConfirm()
+        {
+            return this.Ok(this.machineProvider.GetListPickConfirm());
         }
 
         [HttpPost("get/IsDisableQtyItemEditingPick")]

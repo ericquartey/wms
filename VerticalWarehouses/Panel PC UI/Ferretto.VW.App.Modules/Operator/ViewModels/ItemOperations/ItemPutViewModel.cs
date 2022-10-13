@@ -684,21 +684,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBoxOperationVisible = false;
             this.IsAdjustmentVisible = false;
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
-            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
+            this.IsQuantityLimited = configuration.IsQuantityLimited;
 
             this.IsAddListItemVisible = !this.IsAddEnabled;
 
             this.IsAddItem = false;
-            this.IsAddItemLists = configuration.Machine.IsAddItemByList;
+            this.IsAddItemLists = configuration.IsAddItemByList;
 
             this.CloseLine = false;
             this.FullCompartment = false;
             this.EmptyCompartment = false;
             this.ProductsDataGridViewVisibility = false;
-            this.IsKeyboardButtonVisible = configuration.Machine.TouchHelper;
+            this.IsKeyboardButtonVisible = configuration.TouchHelper;
 
             await base.OnAppearedAsync();
 
@@ -707,7 +707,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.IsQuantityLimited && this.MissionOperation != null)
             {
-                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+                this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
             }
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
@@ -746,6 +746,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             else
             {
                 this.CanPutBox = false;
+            }
+            if (this.IsQuantityLimited && this.MissionOperation != null)
+            {
+                this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
             }
             this.InputQuantity = this.MissionRequestedQuantity;
             base.InitializeInputQuantity();

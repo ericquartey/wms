@@ -136,6 +136,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public int ItemUniqueIdLength { get; set; }
 
+        public bool ListPickConfirm { get; set; }
+
+        public bool ListPutConfirm { get; set; }
+
         /// <summary>
         /// Load Unit depth, in millimeters
         /// </summary>
@@ -199,6 +203,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool TouchHelper { get; set; }
 
         public int VerticalCyclesToCalibrate { get; set; } = 50;
+
+        public int? WaitingListPriorityHighlighted { get; set; }
 
         #endregion
 

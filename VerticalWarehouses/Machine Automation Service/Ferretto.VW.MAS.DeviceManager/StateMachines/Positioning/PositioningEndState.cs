@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -517,7 +518,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                     elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
                                     cellsProvider.SetLoadingUnit(cell.Id, null);
                                     this.Logger.LogDebug($"SetLoadingUnit: Load Unit {cell.LoadingUnit.Id}; in elevator from Cell id {cell.Id}");
-                                    loadingUnitProvider.SaveToWmsAsync(cell.LoadingUnit.Id);
+                                    this.ParentStateMachine.PublishNotificationMessage(
+                                            new NotificationMessage
+                                            {
+                                                Description = $"{cell.LoadingUnit.Id}",
+                                                Destination = MessageActor.MissionManager,
+                                                Source = MessageActor.WebApi,
+                                                Type = MessageType.SaveToWms,
+                                                RequestingBay = BayNumber.None,
+                                            });
                                     isChanged = true;
                                 }
                             }

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -39,6 +42,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly NotificationEvent notificationEvent;
+
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
@@ -53,7 +58,8 @@ namespace Ferretto.VW.MAS.DataLayer
             IErrorsProvider errorsProvider,
             IWmsSettingsProvider wmsSettingsProvider,
             WMS.Data.WebAPI.Contracts.ILoadingUnitsWmsWebService loadingUnitsWmsWebService,
-            ILogger<LoadingUnitsDataProvider> logger)
+            ILogger<LoadingUnitsDataProvider> logger,
+            IEventAggregator eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -63,6 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.loadingUnitsWmsWebService = loadingUnitsWmsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
         }
 
         #endregion
@@ -498,7 +505,16 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id);
             }
-            await this.SaveToWmsAsync(loadingUnit.Id);
+
+            this.notificationEvent.Publish(
+                    new NotificationMessage
+                    {
+                        Description = $"{loadingUnit.Id}",
+                        Destination = MessageActor.MissionManager,
+                        Source = MessageActor.WebApi,
+                        Type = MessageType.SaveToWms,
+                        RequestingBay = BayNumber.None,
+                    });
         }
 
         public async Task SaveToWmsAsync(int loadingUnitId)
@@ -525,8 +541,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    await this.loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail);
                     this.logger.LogInformation($"Save load unit {loadingUnit.Id} to wms ");
+                    await this.loadingUnitsWmsWebService.SaveAsync(loadingUnit.Id, loadUnitDetail);
                 }
                 catch (Exception ex)
                 {

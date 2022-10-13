@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -46,10 +47,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Elevator)
                                .ThenInclude(e => e.Axes)
                                    .ThenInclude(a => a.Inverter)
-                                        .ThenInclude(a => a.Parameters)
-                    .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.Inverter)
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.StructuralProperties)
                     .Include(m => m.Bays)
@@ -76,9 +73,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.FullLoadMovement)
                     .Include(m => m.Bays)
-                        .ThenInclude(b => b.Inverter)
-                            .ThenInclude(a => a.Parameters)
-                    .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
@@ -87,10 +81,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.Inverter)
-                    .Include(m => m.Bays)
-                        .ThenInclude(b => b.Shutter)
-                            .ThenInclude(b => b.Inverter)
-                                .ThenInclude(b => b.Parameters)
                     .Include(m => m.Panels)
                         .ThenInclude(p => p.Cells)
                     .Single());
@@ -124,7 +114,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.machineVolatile = machineVolatile ?? throw new ArgumentNullException(nameof(machineVolatile));
-            this.redundancyService = redundancyService ?? throw new System.ArgumentNullException(nameof(redundancyService));
+            this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
         }
 
         #endregion
@@ -135,7 +125,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             if (machine is null)
             {
-                throw new System.ArgumentNullException(nameof(machine));
+                throw new ArgumentNullException(nameof(machine));
             }
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
@@ -151,7 +141,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machine = this.dataContext.Machines.FirstOrDefault();
+                var machine = this.dataContext.Machines.First();
                 if (machine.BackupServerUsername == null)
                 {
                     machine.BackupServerUsername = "wmsadmin";
@@ -160,35 +150,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     machine.BackupServerPassword = EncryptString(PASSWORDKEY, "fergrp_2012");
                 }
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void ClearAll()
-        {
-            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
-            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
-
-            lock (this.dataContext)
-            {
-                this.dataContext.Shutters.RemoveRange(this.dataContext.Shutters);
-                this.dataContext.WeightMeasurements.RemoveRange(this.dataContext.WeightMeasurements);
-                this.dataContext.Inverters.RemoveRange(this.dataContext.Inverters);
-                this.dataContext.ElevatorStructuralProperties.RemoveRange(this.dataContext.ElevatorStructuralProperties);
-                this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
-                this.dataContext.BayPositions.RemoveRange(this.dataContext.BayPositions);
-                this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
-                this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
-                this.dataContext.IoDevices.RemoveRange(this.dataContext.IoDevices);
-                this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
-                this.dataContext.MovementParameters.RemoveRange(this.dataContext.MovementParameters);
-                this.dataContext.MovementProfiles.RemoveRange(this.dataContext.MovementProfiles);
-                this.dataContext.ElevatorAxes.RemoveRange(this.dataContext.ElevatorAxes);
-                this.dataContext.Elevators.RemoveRange(this.dataContext.Elevators);
-                this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
-                this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
-                this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
+                if (machine.WaitingListPriorityHighlighted == null)
+                {
+                    machine.WaitingListPriorityHighlighted = -1;
+                }
                 this.dataContext.SaveChanges();
             }
         }
@@ -212,7 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().BackupServer;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.BackupServer).First();
             }
         }
 
@@ -220,7 +185,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var password = this.dataContext.Machines.FirstOrDefault().BackupServerPassword;
+                var password = this.dataContext.Machines.AsNoTracking().Select(m => m.BackupServerPassword).First();
                 return DecryptString(PASSWORDKEY, password);
             }
         }
@@ -229,7 +194,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().BackupServerUsername;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.BackupServerUsername).First();
             }
         }
 
@@ -237,7 +202,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().Box;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.Box).First();
             }
         }
 
@@ -245,7 +210,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.Select(m => m.Height).Single();
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.Height).First();
             }
         }
 
@@ -253,7 +218,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.Select(m => m.Id).Single();
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.Id).First();
             }
         }
 
@@ -261,7 +226,23 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().ItemUniqueIdLength;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ItemUniqueIdLength).First();
+            }
+        }
+
+        public bool GetListPickConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPickConfirm).First();
+            }
+        }
+
+        public bool GetListPutConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPutConfirm).First();
             }
         }
 
@@ -269,7 +250,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault();
+                return this.dataContext.Machines.AsNoTracking().First();
             }
         }
 
@@ -277,7 +258,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.AsNoTracking().LastOrDefault();
+                return this.dataContext.MachineStatistics.AsNoTracking().ToArray().LastOrDefault();
             }
         }
 
@@ -351,7 +332,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().SerialNumber;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.SerialNumber).First();
             }
         }
 
@@ -375,7 +356,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().ToteBarcodeLength;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ToteBarcodeLength).First();
+            }
+        }
+
+        public int? GetWaitingListPriorityHighlighted()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.WaitingListPriorityHighlighted).First();
             }
         }
 
@@ -426,7 +415,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsAxisChanged ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsAxisChanged).First();
             }
         }
 
@@ -434,7 +423,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().CanUserEnableWms;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.CanUserEnableWms).First();
             }
         }
 
@@ -442,7 +431,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsDbSaveOnServer ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsDbSaveOnServer).First();
             }
         }
 
@@ -450,7 +439,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsDbSaveOnTelemetry ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsDbSaveOnTelemetry).First();
             }
         }
 
@@ -458,7 +447,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsDisableQtyItemEditingPick ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsDisableQtyItemEditingPick).First();
             }
         }
 
@@ -466,7 +455,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsEnableAddItem ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsEnableAddItem).First();
             }
         }
 
@@ -474,8 +463,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machine = this.dataContext.Machines.FirstOrDefault();
-                return machine != null && machine.IsEnableAddItem && machine.IsDrapery;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsEnableAddItem && m.IsDrapery).First();
             }
         }
 
@@ -483,7 +471,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsEnableHandlingItemOperations ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsEnableHandlingItemOperations).First();
             }
         }
 
@@ -491,7 +479,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.FireAlarm ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.FireAlarm).First();
             }
         }
 
@@ -499,7 +487,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsHeartBeat ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsHeartBeat).First();
             }
         }
 
@@ -520,7 +508,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsRequestConfirmForLastOperationOnLoadingUnit ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsRequestConfirmForLastOperationOnLoadingUnit).First();
             }
         }
 
@@ -528,7 +516,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsRotationClass ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsRotationClass).First();
             }
         }
 
@@ -536,7 +524,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().TouchHelper;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.TouchHelper).First();
             }
         }
 
@@ -544,7 +532,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault()?.IsUpdatingStockByDifference ?? false;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsUpdatingStockByDifference).First();
             }
         }
 
@@ -552,7 +540,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineDB = this.dataContext.Machines.LastOrDefault();
+                var machineDB = this.dataContext.Machines.First();
                 machineDB.IsEnableHandlingItemOperations = machine.IsEnableHandlingItemOperations;
                 machineDB.IsUpdatingStockByDifference = machine.IsUpdatingStockByDifference;
                 machineDB.IsRequestConfirmForLastOperationOnLoadingUnit = machine.IsRequestConfirmForLastOperationOnLoadingUnit;
@@ -652,7 +640,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     switch (bayNumber)
@@ -681,7 +669,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     switch (bayNumber)
@@ -745,7 +733,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalHorizontalAxisCycles++;
@@ -781,7 +769,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalMissionTime = machineStat.TotalMissionTime + duration;
@@ -794,7 +782,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var servicingInfo = this.dataContext.ServicingInfo.LastOrDefault();
+                var servicingInfo = this.dataContext.ServicingInfo.ToArray().LastOrDefault();
                 if (servicingInfo != null)
                 {
                     servicingInfo.TotalMissions = (servicingInfo.TotalMissions.HasValue ? servicingInfo.TotalMissions + 1 : 1);
@@ -805,7 +793,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateSolo(Machine machine, DataLayerContext dataContext)
         {
-            _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+            _ = machine ?? throw new ArgumentNullException(nameof(machine));
             if (dataContext is null)
             {
                 dataContext = this.dataContext;
@@ -866,7 +854,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalAutomaticTime += duration;
@@ -879,7 +867,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalPowerOnTime += duration;
@@ -898,7 +886,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var machineStat = this.dataContext.MachineStatistics.LastOrDefault();
+                var machineStat = this.dataContext.MachineStatistics.ToArray().LastOrDefault();
                 if (machineStat != null)
                 {
                     machineStat.TotalVerticalAxisCycles++;
@@ -910,7 +898,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateWeightStatistics(DataLayerContext dataContext)
         {
-            var machineStat = dataContext.MachineStatistics.LastOrDefault();
+            var machineStat = dataContext.MachineStatistics.ToArray().LastOrDefault();
             machineStat.TotalWeightFront = 0;
             machineStat.TotalWeightBack = 0;
             var loadingUnits = dataContext.LoadingUnits

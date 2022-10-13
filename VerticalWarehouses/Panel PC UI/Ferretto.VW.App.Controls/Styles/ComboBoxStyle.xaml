@@ -20,13 +20,13 @@
             </Grid.ColumnDefinitions>
             <Border x:Name="Border"
                     Grid.ColumnSpan="2"
-                    Background="{DynamicResource ComboBox_Background}"
+                    Background="{DynamicResource LogIn_Background}"
                     BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="0,0,0,1" />
             <Border x:Name="Border2"
                     Grid.Column="0"
                     Margin="1"
-                    Background="{DynamicResource ComboBox_Background}"
+                    Background="{DynamicResource LogIn_Background}"
                     BorderBrush="{x:Null}"
                     BorderThickness="0,0,0,0" />
             <Path x:Name="Arrow"

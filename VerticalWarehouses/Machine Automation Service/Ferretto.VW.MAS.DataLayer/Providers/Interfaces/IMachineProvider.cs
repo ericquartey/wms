@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void CheckBackupServer();
 
-        void ClearAll();
-
         Machine Get();
 
         string GetBackupServer();
@@ -31,6 +29,10 @@ namespace Ferretto.VW.MAS.DataLayer
         int GetIdentity();
 
         int GetItemUniqueIdLength();
+
+        bool GetListPickConfirm();
+
+        bool GetListPutConfirm();
 
         Machine GetMinMaxHeight();
 
@@ -53,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<MachineStatistics> GetStatistics();
 
         int GetToteBarcodeLength();
+
+        int? GetWaitingListPriorityHighlighted();
 
         void Import(Machine machine, DataLayerContext context);
 

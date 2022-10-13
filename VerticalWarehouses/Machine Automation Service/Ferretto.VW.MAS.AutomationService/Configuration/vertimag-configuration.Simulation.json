@@ -611,7 +611,7 @@
     },
     "ExpireCountPrecent": 10,
     "ExpireDays": 14,
-    "Height": 4563.0,
+    "Height": 4561.0,
     "HorizontalCyclesToCalibrate": 50,
     "HorizontalPositionToCalibrate": 10000,
     "IsAxisChanged": true,
@@ -620,7 +620,7 @@
     "LoadUnitMaxNetWeight": 800.0,
     "LoadUnitTare": 120.0,
     "MaxGrossWeight": 50000.0,
-    "ModelName": "Vertimag 800kg",
+    "ModelName": "VERTIMAG 84XL800-BIG-BES H4561",
     "Panels": [
       {
         "Cells": [

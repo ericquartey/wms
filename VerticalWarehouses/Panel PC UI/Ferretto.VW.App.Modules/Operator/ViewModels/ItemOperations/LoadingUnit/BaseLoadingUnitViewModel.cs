@@ -517,10 +517,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ItemSerialNumberVisibility = false;
             this.ItemLotVisibility = false;
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsAddEnabled = configuration.Machine.IsEnableAddItem;
-            this.IsAddItemLists = configuration.Machine.IsAddItemByList;
-            this.IsBoxEnabled = configuration.Machine.Box;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsAddEnabled = configuration.IsEnableAddItem;
+            this.IsAddItemLists = configuration.IsAddItemByList;
+            this.IsBoxEnabled = configuration.Box;
 
             var accessories = await this.bayManager.GetBayAccessoriesAsync();
             this.isLaserEnabled = accessories?.LaserPointer?.IsEnabledNew ?? false;

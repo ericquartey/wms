@@ -633,4 +633,13 @@
   <data name="IsRotationClass" xml:space="preserve">
     <value>Rotation Class</value>
   </data>
+  <data name="WaitingListPriorityHighlighted" xml:space="preserve">
+    <value>Waiting List Priority Highlighted</value>
+  </data>
+  <data name="ListPutConfirm" xml:space="preserve">
+    <value>List Put Confirm</value>
+  </data>
+  <data name="ListPickConfirm" xml:space="preserve">
+    <value>List Pick Confirm</value>
+  </data>
 </root>

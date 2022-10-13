@@ -14,25 +14,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+                .HasAnnotation("ProductVersion", "3.1.25");
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Accessory", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DeviceInformationId");
+                    b.Property<int?>("DeviceInformationId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Discriminator")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("IsConfigured");
+                    b.Property<string>("IsConfigured")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsConfiguredNew");
+                    b.Property<bool>("IsConfiguredNew")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("IsEnabled");
+                    b.Property<string>("IsEnabled")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsEnabledNew");
+                    b.Property<bool>("IsEnabledNew")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -46,13 +53,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.AutoCompactingSettings", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<TimeSpan>("BeginTime");
+                    b.Property<TimeSpan>("BeginTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsOptimizeRotationClass");
+                    b.Property<bool>("IsOptimizeRotationClass")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -62,75 +73,110 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Bay", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AccessoriesId");
+                    b.Property<int?>("AccessoriesId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("BarcodeAutomaticPut");
+                    b.Property<bool>("BarcodeAutomaticPut")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CarouselId");
+                    b.Property<int?>("CarouselId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ChainOffset");
+                    b.Property<double>("ChainOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<bool>("CheckListContinueInOtherMachine");
+                    b.Property<bool?>("CheckListContinueInOtherMachine")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CurrentMissionId");
+                    b.Property<int?>("CurrentMissionId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("CyclesToCalibrate");
+                    b.Property<int>("CyclesToCalibrate")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("EmptyLoadMovementId");
+                    b.Property<int?>("EmptyLoadMovementId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ExternalId");
+                    b.Property<int?>("ExternalId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("FullLoadMovementId");
+                    b.Property<int?>("FullLoadMovementId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Inventory");
+                    b.Property<bool>("Inventory")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("InverterId");
+                    b.Property<int?>("InverterId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("IoDeviceId");
+                    b.Property<int?>("IoDeviceId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsAdjustByWeight");
+                    b.Property<bool>("IsAdjustByWeight")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsCheckIntrusion");
+                    b.Property<bool>("IsCheckIntrusion")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsExternal");
+                    b.Property<bool>("IsExternal")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsFastDepositToBay");
+                    b.Property<bool>("IsFastDepositToBay")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsTelescopic");
+                    b.Property<bool>("IsTelescopic")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("LastCalibrationCycles");
+                    b.Property<int>("LastCalibrationCycles")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MachineId");
+                    b.Property<int?>("MachineId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Number");
+                    b.Property<int>("Number")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Operation");
+                    b.Property<int>("Operation")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("Pick");
+                    b.Property<bool>("Pick")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ProfileConst0");
+                    b.Property<double>("ProfileConst0")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ProfileConst1");
+                    b.Property<double>("ProfileConst1")
+                        .HasColumnType("REAL");
 
-                    b.Property<bool>("Put");
+                    b.Property<bool>("Put")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Resolution");
+                    b.Property<double>("Resolution")
+                        .HasColumnType("REAL");
 
-                    b.Property<string>("RotationClass");
+                    b.Property<string>("RotationClass")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("ShowBarcodeImage");
+                    b.Property<bool?>("ShowBarcodeImage")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ShutterId");
+                    b.Property<int?>("ShutterId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Side");
+                    b.Property<int>("Side")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalCycles");
+                    b.Property<int>("TotalCycles")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("View");
+                    b.Property<bool>("View")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -163,21 +209,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayAccessories", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AlphaNumericBarId");
+                    b.Property<int?>("AlphaNumericBarId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BarcodeReaderId");
+                    b.Property<int?>("BarcodeReaderId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CardReaderId");
+                    b.Property<int?>("CardReaderId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LabelPrinterId");
+                    b.Property<int?>("LabelPrinterId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LaserPointerId");
+                    b.Property<int?>("LaserPointerId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("TokenReaderId");
+                    b.Property<int?>("TokenReaderId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("WeightingScaleId");
+                    b.Property<int?>("WeightingScaleId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -201,25 +255,33 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BayId");
+                    b.Property<int?>("BayId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Height");
+                    b.Property<double>("Height")
+                        .HasColumnType("REAL");
 
-                    b.Property<bool>("IsBlocked");
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LoadingUnitId");
+                    b.Property<int?>("LoadingUnitId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("MaxDoubleHeight");
+                    b.Property<double>("MaxDoubleHeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MaxSingleHeight");
+                    b.Property<double>("MaxSingleHeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ProfileOffset");
+                    b.Property<double>("ProfileOffset")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -233,21 +295,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AssistedMovementsId");
+                    b.Property<int?>("AssistedMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BayFindZeroLimit");
+                    b.Property<int>("BayFindZeroLimit")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ElevatorDistance");
+                    b.Property<double>("ElevatorDistance")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HomingCreepSpeed");
+                    b.Property<double>("HomingCreepSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HomingFastSpeed");
+                    b.Property<double>("HomingFastSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LastIdealPosition");
+                    b.Property<double>("LastIdealPosition")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("ManualMovementsId");
+                    b.Property<int?>("ManualMovementsId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -261,9 +331,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CarouselManualParameters", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("FeedRate");
+                    b.Property<double>("FeedRate")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -273,21 +345,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BlockLevel");
+                    b.Property<int>("BlockLevel")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsFree");
+                    b.Property<bool>("IsFree")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("PanelId");
+                    b.Property<int>("PanelId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Position");
+                    b.Property<double>("Position")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Priority");
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("RotationClass");
+                    b.Property<string>("RotationClass")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -299,13 +379,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CellPanel", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsChecked");
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MachineId");
+                    b.Property<int?>("MachineId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Side");
+                    b.Property<int>("Side")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -317,15 +401,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.DeviceInformation", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("FirmwareVersion");
+                    b.Property<string>("FirmwareVersion")
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("ManufactureDate");
+                    b.Property<DateTime?>("ManufactureDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("ModelNumber");
+                    b.Property<string>("ModelNumber")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("SerialNumber");
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -335,15 +424,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BayPositionId");
+                    b.Property<int?>("BayPositionId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CellId");
+                    b.Property<int?>("CellId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LoadingUnitId");
+                    b.Property<int?>("LoadingUnitId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("StructuralPropertiesId");
+                    b.Property<int?>("StructuralPropertiesId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -361,65 +455,95 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorAxis", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AssistedMovementsId");
+                    b.Property<int?>("AssistedMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("BrakeActivatePercent");
+                    b.Property<double>("BrakeActivatePercent")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("BrakeReleaseTime");
+                    b.Property<double>("BrakeReleaseTime")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Center");
+                    b.Property<int>("Center")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ChainOffset");
+                    b.Property<double>("ChainOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("ElevatorId");
+                    b.Property<int?>("ElevatorId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("EmptyLoadMovementId");
+                    b.Property<int?>("EmptyLoadMovementId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("FullLoadMovementId");
+                    b.Property<int?>("FullLoadMovementId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("HomingAcceleration");
+                    b.Property<double>("HomingAcceleration")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HomingCreepSpeed");
+                    b.Property<double>("HomingCreepSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HomingFastSpeed");
+                    b.Property<double>("HomingFastSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HorizontalCalibrateSpeed");
+                    b.Property<double>("HorizontalCalibrateSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("InverterId");
+                    b.Property<int?>("InverterId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("LastCalibrationCycles");
+                    b.Property<int>("LastCalibrationCycles")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("LastIdealPosition");
+                    b.Property<double>("LastIdealPosition")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LowerBound");
+                    b.Property<double>("LowerBound")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("ManualMovementsId");
+                    b.Property<int?>("ManualMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Offset");
+                    b.Property<double>("Offset")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Orientation");
+                    b.Property<int>("Orientation")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ProfileCalibrateLength");
+                    b.Property<double>("ProfileCalibrateLength")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("ProfileCalibratePosition");
+                    b.Property<int>("ProfileCalibratePosition")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ProfileCalibrateSpeed");
+                    b.Property<double>("ProfileCalibrateSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("Resolution");
+                    b.Property<double>("Resolution")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("UpperBound");
+                    b.Property<double>("UpperBound")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("VerticalDepositCompensationDelay");
+                    b.Property<int?>("VerticalDepositCompensationDelay")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double?>("VerticalDepositOffset");
+                    b.Property<double?>("VerticalDepositOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("VerticalPickupCompensationDelay");
+                    b.Property<int?>("VerticalPickupCompensationDelay")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double?>("VerticalPickupOffset");
+                    b.Property<double?>("VerticalPickupOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("WeightMeasurementId");
+                    b.Property<int?>("WeightMeasurementId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -443,15 +567,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorAxisManualParameters", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("FeedRate");
+                    b.Property<double>("FeedRate")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("FeedRateAfterZero");
+                    b.Property<double>("FeedRateAfterZero")
+                        .HasColumnType("REAL");
 
-                    b.Property<double?>("TargetDistance");
+                    b.Property<double?>("TargetDistance")
+                        .HasColumnType("REAL");
 
-                    b.Property<double?>("TargetDistanceAfterZero");
+                    b.Property<double?>("TargetDistanceAfterZero")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -461,23 +590,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ElevatorStructuralProperties", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BeltRigidity");
+                    b.Property<int>("BeltRigidity")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("BeltSpacing");
+                    b.Property<double>("BeltSpacing")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ElevatorWeight");
+                    b.Property<double>("ElevatorWeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HalfShaftLength");
+                    b.Property<double>("HalfShaftLength")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("PulleyDiameter");
+                    b.Property<double>("PulleyDiameter")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("SecondTermMultiplier");
+                    b.Property<int>("SecondTermMultiplier")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ShaftDiameter");
+                    b.Property<double>("ShaftDiameter")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ShaftElasticity");
+                    b.Property<double>("ShaftElasticity")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -487,9 +625,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
                 {
                     b.Property<int>("Code")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalErrors");
+                    b.Property<int>("TotalErrors")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Code");
 
@@ -1056,21 +1196,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.External", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AssistedMovementsId");
+                    b.Property<int?>("AssistedMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("ExtraRace");
+                    b.Property<double>("ExtraRace")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HomingCreepSpeed");
+                    b.Property<double>("HomingCreepSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HomingFastSpeed");
+                    b.Property<double>("HomingFastSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LastIdealPosition");
+                    b.Property<double>("LastIdealPosition")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("ManualMovementsId");
+                    b.Property<int?>("ManualMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Race");
+                    b.Property<double>("Race")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1084,9 +1232,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ExternalBayManualParameters", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("FeedRate");
+                    b.Property<double>("FeedRate")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1096,23 +1246,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Instruction", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DefinitionId");
+                    b.Property<int?>("DefinitionId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double?>("DoubleCounter");
+                    b.Property<double?>("DoubleCounter")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("InstructionStatus");
+                    b.Property<int>("InstructionStatus")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("IntCounter");
+                    b.Property<int?>("IntCounter")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDone");
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsToDo");
+                    b.Property<bool>("IsToDo")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("MaintenanceDate");
+                    b.Property<DateTime?>("MaintenanceDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("ServicingInfoId");
+                    b.Property<int?>("ServicingInfoId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1126,35 +1285,50 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InstructionDefinition", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Axis");
+                    b.Property<int>("Axis")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BayNumber");
+                    b.Property<int>("BayNumber")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("CounterName");
+                    b.Property<string>("CounterName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Device");
+                    b.Property<int>("Device")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("InstructionType");
+                    b.Property<int>("InstructionType")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsCarousel");
+                    b.Property<bool>("IsCarousel")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsShutter");
+                    b.Property<bool>("IsShutter")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsSystem");
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MaxDays");
+                    b.Property<int?>("MaxDays")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MaxRelativeCount");
+                    b.Property<int?>("MaxRelativeCount")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MaxTotalCount");
+                    b.Property<int?>("MaxTotalCount")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Operation");
+                    b.Property<int>("Operation")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SetPoint");
+                    b.Property<int>("SetPoint")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1164,14 +1338,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Inverter", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<byte>("Index");
+                    b.Property<byte>("Index")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
 
-                    b.Property<int>("TcpPort");
+                    b.Property<int>("TcpPort")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -1188,31 +1365,44 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.InverterParameter", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<short>("Code");
+                    b.Property<short>("Code")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("DataSet");
+                    b.Property<int>("DataSet")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("DecimalCount");
+                    b.Property<int>("DecimalCount")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("Error");
+                    b.Property<bool>("Error")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("InverterId");
+                    b.Property<int?>("InverterId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsReadOnly");
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<short>("ReadCode");
+                    b.Property<short>("ReadCode")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("StringValue");
+                    b.Property<string>("StringValue")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("Type")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Um");
+                    b.Property<string>("Um")
+                        .HasColumnType("TEXT");
 
-                    b.Property<short>("WriteCode");
+                    b.Property<short>("WriteCode")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1224,14 +1414,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.IoDevice", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<byte>("Index");
+                    b.Property<byte>("Index")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
 
-                    b.Property<int>("TcpPort");
+                    b.Property<int>("TcpPort")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1244,14 +1437,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BayId");
+                    b.Property<int>("BayId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
 
-                    b.Property<int>("TcpPort");
+                    b.Property<int>("TcpPort")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1263,37 +1459,51 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CellId");
+                    b.Property<int?>("CellId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<double>("GrossWeight");
+                    b.Property<double>("GrossWeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("Height");
+                    b.Property<double>("Height")
+                        .HasColumnType("REAL");
 
-                    b.Property<bool>("IsInFullTest");
+                    b.Property<bool>("IsInFullTest")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsIntoMachine");
+                    b.Property<bool>("IsIntoMachine")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRotationClassFixed");
+                    b.Property<bool>("IsRotationClassFixed")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("LaserOffset");
+                    b.Property<double>("LaserOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MaxNetWeight");
+                    b.Property<double>("MaxNetWeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("MissionsCount");
+                    b.Property<int>("MissionsCount")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("MissionsCountRotation");
+                    b.Property<int>("MissionsCountRotation")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("RotationClass");
+                    b.Property<string>("RotationClass")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("Tare");
+                    b.Property<double>("Tare")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1306,25 +1516,35 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogEntry", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BayNumber");
+                    b.Property<int>("BayNumber")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Data");
+                    b.Property<string>("Data")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Destination");
+                    b.Property<int>("Destination")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ErrorLevel");
+                    b.Property<int>("ErrorLevel")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Source");
+                    b.Property<int>("Source")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Status");
+                    b.Property<int>("Status")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("TimeStamp");
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1334,17 +1554,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogoutSettings", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<TimeSpan>("BeginTime");
+                    b.Property<TimeSpan>("BeginTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<TimeSpan>("EndTime");
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsActive");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("RemainingTime");
+                    b.Property<double>("RemainingTime")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Timeout");
+                    b.Property<int>("Timeout")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1354,101 +1580,158 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Machine", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("BackupServer");
+                    b.Property<string>("BackupServer")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("BackupServerPassword");
+                    b.Property<string>("BackupServerPassword")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("BackupServerUsername");
+                    b.Property<string>("BackupServerUsername")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("Box");
+                    b.Property<bool>("Box")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("CanUserEnableWms");
+                    b.Property<bool>("CanUserEnableWms")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ElevatorId");
+                    b.Property<int?>("ElevatorId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EnabeNoteRules");
+                    b.Property<bool>("EnabeNoteRules")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ExpireCountPrecent");
+                    b.Property<int>("ExpireCountPrecent")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ExpireDays");
+                    b.Property<int>("ExpireDays")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("FireAlarm");
+                    b.Property<bool>("FireAlarm")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Height");
+                    b.Property<double>("Height")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("HorizontalCyclesToCalibrate");
+                    b.Property<int>("HorizontalCyclesToCalibrate")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("HorizontalPositionToCalibrate");
+                    b.Property<int>("HorizontalPositionToCalibrate")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsAddItemByList");
+                    b.Property<bool>("IsAddItemByList")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsAxisChanged");
+                    b.Property<bool>("IsAxisChanged")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsCarrefour");
+                    b.Property<bool>("IsCarrefour")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDbSaveOnServer");
+                    b.Property<bool>("IsDbSaveOnServer")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDbSaveOnTelemetry");
+                    b.Property<bool>("IsDbSaveOnTelemetry")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDisableQtyItemEditingPick");
+                    b.Property<bool>("IsDisableQtyItemEditingPick")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDoubleConfirmBarcodeInventory");
+                    b.Property<bool>("IsDoubleConfirmBarcodeInventory")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDoubleConfirmBarcodePick");
+                    b.Property<bool>("IsDoubleConfirmBarcodePick")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDoubleConfirmBarcodePut");
+                    b.Property<bool>("IsDoubleConfirmBarcodePut")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDrapery");
+                    b.Property<bool>("IsDrapery")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsEnableAddItem");
+                    b.Property<bool>("IsEnableAddItem")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsEnableHandlingItemOperations");
+                    b.Property<bool>("IsEnableHandlingItemOperations")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsHeartBeat");
+                    b.Property<bool>("IsHeartBeat")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsLocalMachineItems");
+                    b.Property<bool>("IsLocalMachineItems")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsOrderList");
+                    b.Property<bool>("IsOrderList")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsQuantityLimited");
+                    b.Property<bool>("IsQuantityLimited")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRequestConfirmForLastOperationOnLoadingUnit");
+                    b.Property<bool>("IsRequestConfirmForLastOperationOnLoadingUnit")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsRotationClass");
+                    b.Property<bool>("IsRotationClass")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsUpdatingStockByDifference");
+                    b.Property<bool>("IsUpdatingStockByDifference")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ItemUniqueIdLength");
+                    b.Property<int>("ItemUniqueIdLength")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("LoadUnitDepth");
+                    b.Property<bool>("ListPickConfirm")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("LoadUnitMaxHeight");
+                    b.Property<bool>("ListPutConfirm")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("LoadUnitMaxNetWeight");
+                    b.Property<double>("LoadUnitDepth")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LoadUnitMinHeight");
+                    b.Property<double>("LoadUnitMaxHeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LoadUnitTare");
+                    b.Property<double>("LoadUnitMaxNetWeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LoadUnitVeryHeavyPercent");
+                    b.Property<double>("LoadUnitMinHeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("LoadUnitWidth");
+                    b.Property<double>("LoadUnitTare")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MaxGrossWeight");
+                    b.Property<double>("LoadUnitVeryHeavyPercent")
+                        .HasColumnType("REAL");
 
-                    b.Property<string>("ModelName");
+                    b.Property<double>("LoadUnitWidth")
+                        .HasColumnType("REAL");
 
-                    b.Property<string>("SerialNumber");
+                    b.Property<double>("MaxGrossWeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<bool>("Simulation");
+                    b.Property<string>("ModelName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ToteBarcodeLength");
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("TEXT");
 
-                    b.Property<bool>("TouchHelper");
+                    b.Property<bool>("Simulation")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("VerticalCyclesToCalibrate");
+                    b.Property<int>("ToteBarcodeLength")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("TouchHelper")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VerticalCyclesToCalibrate")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("WaitingListPriorityHighlighted")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1460,21 +1743,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("AdditionalText");
+                    b.Property<string>("AdditionalText")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("BayNumber");
+                    b.Property<int>("BayNumber")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Code");
+                    b.Property<int>("Code")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("DetailCode");
+                    b.Property<int>("DetailCode")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("InverterIndex");
+                    b.Property<int>("InverterIndex")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("OccurrenceDate");
+                    b.Property<DateTime>("OccurrenceDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("ResolutionDate");
+                    b.Property<DateTime?>("ResolutionDate")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -1484,39 +1775,56 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineStatistics", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<TimeSpan>("TotalAutomaticTime");
+                    b.Property<TimeSpan>("TotalAutomaticTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<double>("TotalBayChainKilometers1");
+                    b.Property<double>("TotalBayChainKilometers1")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("TotalBayChainKilometers2");
+                    b.Property<double>("TotalBayChainKilometers2")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("TotalBayChainKilometers3");
+                    b.Property<double>("TotalBayChainKilometers3")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("TotalHorizontalAxisCycles");
+                    b.Property<int>("TotalHorizontalAxisCycles")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("TotalHorizontalAxisKilometers");
+                    b.Property<double>("TotalHorizontalAxisKilometers")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("TotalLoadUnitsInBay1");
+                    b.Property<int>("TotalLoadUnitsInBay1")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalLoadUnitsInBay2");
+                    b.Property<int>("TotalLoadUnitsInBay2")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("TotalLoadUnitsInBay3");
+                    b.Property<int>("TotalLoadUnitsInBay3")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<TimeSpan>("TotalMissionTime");
+                    b.Property<TimeSpan>("TotalMissionTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<TimeSpan>("TotalPowerOnTime");
+                    b.Property<TimeSpan>("TotalPowerOnTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("TotalVerticalAxisCycles");
+                    b.Property<int>("TotalVerticalAxisCycles")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("TotalVerticalAxisKilometers");
+                    b.Property<double>("TotalVerticalAxisKilometers")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("TotalWeightBack");
+                    b.Property<double>("TotalWeightBack")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("TotalWeightFront");
+                    b.Property<double>("TotalWeightFront")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("WeightCapacityPercentage");
+                    b.Property<double>("WeightCapacityPercentage")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1548,73 +1856,99 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Mission", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Action");
+                    b.Property<int>("Action")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("BayNotifications");
+                    b.Property<int>("BayNotifications")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("CloseShutterBayNumber");
+                    b.Property<int>("CloseShutterBayNumber")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("CloseShutterPosition");
+                    b.Property<int>("CloseShutterPosition")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CreationDate");
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("DestinationCellId");
+                    b.Property<int?>("DestinationCellId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("DeviceNotifications");
+                    b.Property<int>("DeviceNotifications")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Direction");
+                    b.Property<int>("Direction")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("EjectLoadUnit");
+                    b.Property<bool>("EjectLoadUnit")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ErrorCode");
+                    b.Property<int>("ErrorCode")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ErrorMovements");
+                    b.Property<int>("ErrorMovements")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LoadUnitCellSourceId");
+                    b.Property<int?>("LoadUnitCellSourceId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("LoadUnitDestination");
+                    b.Property<int>("LoadUnitDestination")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("LoadUnitId");
+                    b.Property<int>("LoadUnitId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LoadUnitSource")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<TimeSpan>("MissionTime");
+                    b.Property<TimeSpan>("MissionTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("MissionType")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("NeedHomingAxis");
+                    b.Property<int>("NeedHomingAxis")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("NeedMovingBackward");
+                    b.Property<bool>("NeedMovingBackward")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("OpenShutterPosition");
+                    b.Property<int>("OpenShutterPosition")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Priority");
+                    b.Property<int>("Priority")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("RestoreConditions");
+                    b.Property<bool>("RestoreConditions")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("RestoreStep");
+                    b.Property<int>("RestoreStep")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Step");
+                    b.Property<int>("Step")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("StepTime");
+                    b.Property<DateTime>("StepTime")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("StopReason");
+                    b.Property<int>("StopReason")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("TargetBay")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("WmsId");
+                    b.Property<int?>("WmsId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1624,16 +1958,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementParameters", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Acceleration");
+                    b.Property<double>("Acceleration")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("Deceleration");
+                    b.Property<double>("Deceleration")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Discriminator")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<double>("Speed");
+                    b.Property<double>("Speed")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1645,15 +1984,18 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ElevatorAxisId");
+                    b.Property<int?>("ElevatorAxisId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("TotalDistance");
+                    b.Property<double>("TotalDistance")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1668,11 +2010,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.RotationClassSchedule", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("DaysCount");
+                    b.Property<int>("DaysCount")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("LastSchedule");
+                    b.Property<DateTime?>("LastSchedule")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -1682,23 +2027,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ServicingInfo", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("InstallationDate");
+                    b.Property<DateTime?>("InstallationDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("LastServiceDate");
+                    b.Property<DateTime?>("LastServiceDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("MachineStatisticsId");
+                    b.Property<int?>("MachineStatisticsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("MaintainerName");
+                    b.Property<string>("MaintainerName")
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("NextServiceDate");
+                    b.Property<DateTime?>("NextServiceDate")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Note");
+                    b.Property<string>("Note")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ServiceStatus");
+                    b.Property<int>("ServiceStatus")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("TotalMissions");
+                    b.Property<int?>("TotalMissions")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1710,16 +2064,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProcedure", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Discriminator")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<double>("FeedRate");
+                    b.Property<double>("FeedRate")
+                        .HasColumnType("REAL");
 
-                    b.Property<bool>("IsBypassed");
+                    b.Property<bool>("IsBypassed")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsCompleted");
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1731,79 +2090,116 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.SetupProceduresSet", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1CarouselCalibrationId");
+                    b.Property<int?>("Bay1CarouselCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1ExternalCalibrationId");
+                    b.Property<int?>("Bay1ExternalCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1FirstLoadingUnitId");
+                    b.Property<int?>("Bay1FirstLoadingUnitId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1FullTestId");
+                    b.Property<int?>("Bay1FullTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1HeightCheckId");
+                    b.Property<int?>("Bay1HeightCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1LaserId");
+                    b.Property<int?>("Bay1LaserId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1ProfileCheckId");
+                    b.Property<int?>("Bay1ProfileCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay1ShutterTestId");
+                    b.Property<int?>("Bay1ShutterTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2CarouselCalibrationId");
+                    b.Property<int?>("Bay2CarouselCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2ExternalCalibrationId");
+                    b.Property<int?>("Bay2ExternalCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2FirstLoadingUnitId");
+                    b.Property<int?>("Bay2FirstLoadingUnitId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2FullTestId");
+                    b.Property<int?>("Bay2FullTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2HeightCheckId");
+                    b.Property<int?>("Bay2HeightCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2LaserId");
+                    b.Property<int?>("Bay2LaserId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2ProfileCheckId");
+                    b.Property<int?>("Bay2ProfileCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay2ShutterTestId");
+                    b.Property<int?>("Bay2ShutterTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3CarouselCalibrationId");
+                    b.Property<int?>("Bay3CarouselCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3ExternalCalibrationId");
+                    b.Property<int?>("Bay3ExternalCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3FirstLoadingUnitId");
+                    b.Property<int?>("Bay3FirstLoadingUnitId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3FullTestId");
+                    b.Property<int?>("Bay3FullTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3HeightCheckId");
+                    b.Property<int?>("Bay3HeightCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3LaserId");
+                    b.Property<int?>("Bay3LaserId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3ProfileCheckId");
+                    b.Property<int?>("Bay3ProfileCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Bay3ShutterTestId");
+                    b.Property<int?>("Bay3ShutterTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BeltBurnishingTestId");
+                    b.Property<int?>("BeltBurnishingTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CellPanelsCheckId");
+                    b.Property<int?>("CellPanelsCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CellsHeightCheckId");
+                    b.Property<int?>("CellsHeightCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DepositAndPickUpTestId");
+                    b.Property<int?>("DepositAndPickUpTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("HorizontalChainCalibrationId");
+                    b.Property<int?>("HorizontalChainCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("HorizontalResolutionCalibrationId");
+                    b.Property<int?>("HorizontalResolutionCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LoadFirstDrawerTestId");
+                    b.Property<int?>("LoadFirstDrawerTestId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ShutterHeightCheckId");
+                    b.Property<int?>("ShutterHeightCheckId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("VerticalOffsetCalibrationId");
+                    b.Property<int?>("VerticalOffsetCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("VerticalOriginCalibrationId");
+                    b.Property<int?>("VerticalOriginCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("VerticalResolutionCalibrationId");
+                    b.Property<int?>("VerticalResolutionCalibrationId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("WeightMeasurementId");
+                    b.Property<int?>("WeightMeasurementId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1885,17 +2281,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Shutter", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AssistedMovementsId");
+                    b.Property<int?>("AssistedMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("InverterId");
+                    b.Property<int?>("InverterId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ManualMovementsId");
+                    b.Property<int?>("ManualMovementsId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("MaxSpeed");
+                    b.Property<double>("MaxSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MinSpeed");
+                    b.Property<double>("MinSpeed")
+                        .HasColumnType("REAL");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -1915,21 +2317,29 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ShutterManualParameters", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("FeedRate");
+                    b.Property<double>("FeedRate")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HighSpeedDurationClose");
+                    b.Property<double>("HighSpeedDurationClose")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("HighSpeedDurationOpen");
+                    b.Property<double>("HighSpeedDurationOpen")
+                        .HasColumnType("REAL");
 
-                    b.Property<double?>("HighSpeedHalfDurationClose");
+                    b.Property<double?>("HighSpeedHalfDurationClose")
+                        .HasColumnType("REAL");
 
-                    b.Property<double?>("HighSpeedHalfDurationOpen");
+                    b.Property<double?>("HighSpeedHalfDurationOpen")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MaxSpeed");
+                    b.Property<double>("MaxSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MinSpeed");
+                    b.Property<double>("MinSpeed")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1939,11 +2349,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("LoadedNetWeight");
+                    b.Property<double>("LoadedNetWeight")
+                        .HasColumnType("REAL");
 
-                    b.Property<int?>("LoadingUnitId");
+                    b.Property<int?>("LoadingUnitId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -1953,15 +2366,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentSample", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("MeasurementSessionId");
+                    b.Property<int>("MeasurementSessionId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("RequestTimeStamp");
+                    b.Property<DateTime>("RequestTimeStamp")
+                        .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("TimeStamp");
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("TEXT");
 
-                    b.Property<double>("Value");
+                    b.Property<double>("Value")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -1973,27 +2391,37 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.UserParameters", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("AccessLevel");
+                    b.Property<int>("AccessLevel")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDisabled");
+                    b.Property<bool>("IsDisabled")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsDisabledWithWMS");
+                    b.Property<bool>("IsDisabledWithWMS")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsLimited");
+                    b.Property<bool>("IsLimited")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Language");
+                    b.Property<string>("Language")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordSalt")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Token");
+                    b.Property<string>("Token")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -2006,17 +2434,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightMeasurement", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("MeasureConst0");
+                    b.Property<double>("MeasureConst0")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MeasureConst1");
+                    b.Property<double>("MeasureConst1")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MeasureConst2");
+                    b.Property<double>("MeasureConst2")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("MeasureSpeed");
+                    b.Property<double>("MeasureSpeed")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("MeasureTime");
+                    b.Property<int>("MeasureTime")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2026,34 +2460,47 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WmsSettings", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("ConnectionTimeout");
+                    b.Property<int>("ConnectionTimeout")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("DelayTimeout");
+                    b.Property<int>("DelayTimeout")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsConnected");
+                    b.Property<bool>("IsConnected")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsEnabled");
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsTimeSyncEnabled");
+                    b.Property<bool>("IsTimeSyncEnabled")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTimeOffset>("LastWmsTimeSync");
+                    b.Property<DateTimeOffset>("LastWmsTimeSync")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ServiceUrl")
                         .HasColumnType("text");
 
-                    b.Property<bool>("SocketLinkEndOfLine");
+                    b.Property<bool>("SocketLinkEndOfLine")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("SocketLinkIsEnabled");
+                    b.Property<bool>("SocketLinkIsEnabled")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SocketLinkPolling");
+                    b.Property<int>("SocketLinkPolling")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SocketLinkPort");
+                    b.Property<int>("SocketLinkPort")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("SocketLinkTimeout");
+                    b.Property<int>("SocketLinkTimeout")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("TimeSyncIntervalMilliseconds");
+                    b.Property<int>("TimeSyncIntervalMilliseconds")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -2083,7 +2530,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
 
-                    b.Property<string>("PortName");
+                    b.Property<string>("PortName")
+                        .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("BarcodeReader");
                 });
@@ -2092,9 +2540,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
 
-                    b.Property<bool?>("IsLocal");
+                    b.Property<bool?>("IsLocal")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("TokenRegex");
+                    b.Property<string>("TokenRegex")
+                        .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("CardReader");
                 });
@@ -2103,7 +2553,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("LabelPrinter");
                 });
@@ -2115,7 +2566,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
 
-                    b.Property<int>("TcpPort");
+                    b.Property<int>("TcpPort")
+                        .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("TcpIpAccessory");
                 });
@@ -2125,7 +2577,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.Accessory");
 
                     b.Property<string>("PortName")
-                        .HasColumnName("TokenReader_PortName");
+                        .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("TokenReader");
                 });
@@ -2134,15 +2586,20 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
-                    b.Property<bool>("AdjustAccelerationByWeight");
+                    b.Property<bool>("AdjustAccelerationByWeight")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<bool>("AdjustSpeedByWeight");
+                    b.Property<bool>("AdjustSpeedByWeight")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int?>("MovementProfileId");
+                    b.Property<int?>("MovementProfileId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("Number");
+                    b.Property<int>("Number")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Position");
+                    b.Property<double>("Position")
+                        .HasColumnType("REAL");
 
                     b.HasIndex("MovementProfileId");
 
@@ -2153,11 +2610,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<double>("ProfileCorrectDistance");
+                    b.Property<double>("ProfileCorrectDistance")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ProfileDegrees");
+                    b.Property<double>("ProfileDegrees")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ProfileTotalDistance");
+                    b.Property<double>("ProfileTotalDistance")
+                        .HasColumnType("REAL");
 
                     b.HasDiscriminator().HasValue("BayProfileCheckProcedure");
                 });
@@ -2166,9 +2626,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<bool>("InProgress");
+                    b.Property<bool>("InProgress")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<double>("Step");
+                    b.Property<double>("Step")
+                        .HasColumnType("REAL");
 
                     b.HasDiscriminator().HasValue("PositioningProcedure");
                 });
@@ -2178,11 +2640,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
                     b.Property<bool>("InProgress")
-                        .HasColumnName("RepeatedTestProcedure_InProgress");
+                        .HasColumnName("RepeatedTestProcedure_InProgress")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("PerformedCycles");
+                    b.Property<int>("PerformedCycles")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("RequiredCycles");
+                    b.Property<int>("RequiredCycles")
+                        .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("RepeatedTestProcedure");
                 });
@@ -2191,11 +2656,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<double>("FinalPosition");
+                    b.Property<double>("FinalPosition")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("InitialPosition");
+                    b.Property<double>("InitialPosition")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("StartPosition");
+                    b.Property<double>("StartPosition")
+                        .HasColumnType("REAL");
 
                     b.HasDiscriminator().HasValue("VerticalResolutionCalibrationProcedure");
                 });
@@ -2204,11 +2672,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
 
-                    b.Property<bool?>("ClearAlphaBarOnCloseView");
+                    b.Property<bool?>("ClearAlphaBarOnCloseView")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<int>("MaxMessageLength");
+                    b.Property<string>("Field1")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("Size");
+                    b.Property<string>("Field2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Field3")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Field4")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Field5")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("MaxMessageLength")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool?>("UseGet")
+                        .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("AlphaNumericBar");
                 });
@@ -2217,13 +2706,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
 
-                    b.Property<double>("XOffset");
+                    b.Property<double>("XOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("YOffset");
+                    b.Property<double>("YOffset")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ZOffsetLowerPosition");
+                    b.Property<double>("ZOffsetLowerPosition")
+                        .HasColumnType("REAL");
 
-                    b.Property<double>("ZOffsetUpperPosition");
+                    b.Property<double>("ZOffsetUpperPosition")
+                        .HasColumnType("REAL");
 
                     b.HasDiscriminator().HasValue("LaserPointer");
                 });
@@ -2233,7 +2726,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.TcpIpAccessory");
 
                     b.Property<string>("PortName")
-                        .HasColumnName("WeightingScale_PortName");
+                        .HasColumnName("WeightingScale_PortName")
+                        .HasColumnType("TEXT");
 
                     b.HasDiscriminator().HasValue("WeightingScale");
                 });
@@ -2242,7 +2736,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.PositioningProcedure");
 
-                    b.Property<int>("ReferenceCellId");
+                    b.Property<int>("ReferenceCellId")
+                        .HasColumnType("INTEGER");
 
                     b.HasDiscriminator().HasValue("OffsetCalibrationProcedure");
                 });
@@ -2288,7 +2783,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("IoDeviceId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Machine", null)
                         .WithMany("Bays")
                         .HasForeignKey("MachineId");
 
@@ -2355,12 +2850,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.CellPanel", "Panel")
                         .WithMany("Cells")
                         .HasForeignKey("PanelId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CellPanel", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Machine", null)
                         .WithMany("Panels")
                         .HasForeignKey("MachineId");
                 });
@@ -2390,7 +2886,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("AssistedMovementsId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Elevator")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Elevator", null)
                         .WithMany("Axes")
                         .HasForeignKey("ElevatorId");
 
@@ -2450,7 +2946,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
                         .WithMany()
                         .HasForeignKey("BayId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
@@ -2469,7 +2966,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorAxis")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ElevatorAxis", null)
                         .WithMany("Profiles")
                         .HasForeignKey("ElevatorAxisId");
                 });
@@ -2648,12 +3145,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", "MeasurementSession")
                         .WithMany("DataSamples")
                         .HasForeignKey("MeasurementSessionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementProfile")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementProfile", null)
                         .WithMany("Steps")
                         .HasForeignKey("MovementProfileId");
                 });

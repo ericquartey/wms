@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double loadingUnitWidth;
 
-        private double maxInputQuantity;
+        private decimal maxInputQuantity;
 
         private int maxKnownIndexSelection;
 
@@ -409,7 +409,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set
             {
                 if (value >= 0
-                    && value <= this.MaxInputQuantity)
+                    && value <= (double)this.MaxInputQuantity)
                 {
                     this.SetProperty(ref this.inputQuantity, value);
                     this.CanInputAvailableQuantity = false;
@@ -574,7 +574,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public IMachineIdentityWebService MachineIdentityWebService => this.machineIdentityWebService;
 
-        public double MaxInputQuantity
+        public decimal MaxInputQuantity
         {
             get => this.maxInputQuantity;
             set => this.SetProperty(ref this.maxInputQuantity, value, this.RaiseCanExecuteChanged);
@@ -1451,7 +1451,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             //this.IsBoxEnabled = value.ToLower() == "true" ? true : false;
 
-            var machine = await this.machineConfigurationWebService.GetMachineAsync();
+            var machine = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsBoxEnabled = machine.Box;
 
             this.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
@@ -1460,7 +1460,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var disableQtyItemEditingPick = machine.IsDisableQtyItemEditingPick;
             this.IsEnableAvailableQtyItemEditingPick = !disableQtyItemEditingPick;
-            this.MaxInputQuantity = double.MaxValue;
+            this.MaxInputQuantity = decimal.MaxValue;
 
             //value = System.Configuration.ConfigurationManager.AppSettings["ItemUniqueIdLength"];
 

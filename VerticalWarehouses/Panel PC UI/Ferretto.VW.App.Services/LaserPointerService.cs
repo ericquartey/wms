@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<PubSubEvent<MissionChangedEventArgs>>()
                     .Subscribe(
-                        async e => await this.OnMissionChangeAsync(e),
+                        async e => await this.OnMissionChangedAsync(e),
                         ThreadOption.BackgroundThread,
                         false);
 
@@ -226,11 +226,11 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private async Task OnMissionChangeAsync(MissionChangedEventArgs e)
+        private async Task OnMissionChangedAsync(MissionChangedEventArgs e)
         {
             try
             {
-                this.logger.Trace($"OnMissionChangeAsync");
+                this.logger.Trace($"OnMissionChangedAsync");
                 if (e.MachineMission is null || e.WmsOperation is null)
                 {
                     await this.LaserPointerConfigureAsync();
@@ -240,7 +240,7 @@ namespace Ferretto.VW.App.Services
                         var socketLink = await this.machineWmsStatusWebService.SocketLinkIsEnabledAsync();
                         if (!socketLink)
                         {
-                            this.logger.Debug("OnMissionChangeAsync;Switch off laser pointer");
+                            this.logger.Debug("OnMissionChangedAsync;Switch off laser pointer");
                             await this.laserPointerDriver.EnabledAsync(false, false);
                         }
                     }
@@ -252,7 +252,7 @@ namespace Ferretto.VW.App.Services
                     return;
                 }
 
-                this.logger.Debug($"OnMissionChangeAsync:Id {e.MachineMission.Id}; " +
+                this.logger.Debug($"OnMissionChangedAsync:Id {e.MachineMission.Id}; " +
                     $"Operation {e.WmsOperation.Id}; " +
                     $"Compartment {e.WmsOperation.CompartmentId}; " +
                     $"MissionType {e.MachineMission.MissionType}; " +

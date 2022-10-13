@@ -27,6 +27,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const int ProfileStep = 25;
 
+        private const string ROTATION_CLASS_A = "A";
+
+        private const string ROTATION_CLASS_B = "B";
+
         private static readonly Func<DataLayerContext, IEnumerable<Bay>> GetAllCompile =
             EF.CompileQuery((DataLayerContext context) =>
             context.Bays
@@ -329,39 +333,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         if (bay.Number == BayNumber.BayOne)
                         {
-                            bay.RotationClass = "A";
+                            bay.RotationClass = ROTATION_CLASS_A;
                         }
                         else
                         {
-                            bay.RotationClass = "B";
+                            bay.RotationClass = ROTATION_CLASS_B;
                         }
                         this.dataContext.SaveChanges();
                     }
                 }
             }
         }
-
-        public void SetRotationClass(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                foreach (var bay in this.dataContext.Bays
-                    .Where(b => b.Number < BayNumber.ElevatorBay))
-                {
-                    if (bay.Number == bayNumber)
-                    {
-                        bay.RotationClass = "A";
-                    }
-                    else
-                    {
-                        bay.RotationClass = "B";
-                    }
-                }
-
-                this.dataContext.SaveChanges();
-            }
-        }
-
 
         public Bay ClearMission(BayNumber bayNumber)
         {
@@ -396,7 +378,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     + (((heightClass % ProfileStep) > 12) ? ProfileStep : 0)
                     + 24;
                 var offset = bay.Positions.FirstOrDefault(x => x.Id == positionId)?.ProfileOffset ?? 0;
-                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
+                this.logger.LogDebug($"positionId {positionId}; profile {profile}; height {heightMm + offset:0.00}; heightClass {heightClass}; k1 {bay.ProfileConst1}; k0 {bay.ProfileConst0}");
                 return heightClass + offset;
             }
         }
@@ -1098,8 +1080,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 foreach (var bay in this.dataContext.Bays.Include(i => i.CurrentMission))
                 {
-                    bay.CurrentMission = null;
-                    this.Update(bay);
+                    if (bay.CurrentMission != null)
+                    {
+                        bay.CurrentMission = null;
+                        this.Update(bay);
+                    }
                 }
             }
         }
@@ -1259,6 +1244,27 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
                 bay.ProfileConst0 = k0;
                 bay.ProfileConst1 = k1;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetRotationClass(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Where(b => b.Number < BayNumber.ElevatorBay))
+                {
+                    if (bay.Number == bayNumber)
+                    {
+                        bay.RotationClass = ROTATION_CLASS_A;
+                    }
+                    else
+                    {
+                        bay.RotationClass = ROTATION_CLASS_B;
+                    }
+                }
 
                 this.dataContext.SaveChanges();
             }

@@ -143,6 +143,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                    canRetry = locationBay.IsDouble && locationBay.Positions.Any(p => p.MaxDoubleHeight > 0);
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
                 else
@@ -228,7 +229,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.CellsProvider.SetLoadingUnit(destinationCellId.Value, this.Mission.LoadUnitId);
                                 this.Logger.LogDebug($"SetLoadingUnit: Load Unit {this.Mission.LoadUnitId}; Cell id {destinationCellId}");
-                                this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
+                                this.EventAggregator.GetEvent<NotificationEvent>().Publish(
+                                        new NotificationMessage
+                                        {
+                                            Description = $"{this.Mission.LoadUnitId}",
+                                            Destination = MessageActor.MissionManager,
+                                            Source = MessageActor.WebApi,
+                                            Type = MessageType.SaveToWms,
+                                            RequestingBay = BayNumber.None,
+                                        });
                             }
                             catch (Exception ex)
                             {
@@ -484,7 +493,15 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.LoadingUnitsDataProvider.SetMissionCountRotation(this.Mission.LoadUnitId, this.Mission.MissionType);
                             }
-                            this.LoadingUnitsDataProvider.SaveToWmsAsync(this.Mission.LoadUnitId);
+                            this.EventAggregator.GetEvent<NotificationEvent>().Publish(
+                                    new NotificationMessage
+                                    {
+                                        Description = $"{this.Mission.LoadUnitId}",
+                                        Destination = MessageActor.MissionManager,
+                                        Source = MessageActor.WebApi,
+                                        Type = MessageType.SaveToWms,
+                                        RequestingBay = BayNumber.None,
+                                    });
                         }
                         catch (Exception ex)
                         {

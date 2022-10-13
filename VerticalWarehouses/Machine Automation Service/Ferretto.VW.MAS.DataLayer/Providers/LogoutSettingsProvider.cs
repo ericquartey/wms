@@ -18,11 +18,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly IMissionsDataProvider missionsDataProvider;
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger;
+
+        private readonly IMissionsDataProvider missionsDataProvider;
 
         #endregion
 
@@ -44,30 +44,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        private void CheckLogoutSettings()
+        public void AddLogoutSettings(LogoutSettings logoutSettings)
         {
             lock (this.dataContext)
             {
-                if (this.dataContext.LogoutSettings != null &&
-                        this.dataContext.LogoutSettings.Count() != 3)
-                {
-                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
-                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
-                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
-
+                logoutSettings.RemainingTime = logoutSettings.Timeout;
+                this.dataContext.LogoutSettings.Add(logoutSettings);
                     this.dataContext.SaveChanges();
                 }
             }
-        }
-
-        public IEnumerable<LogoutSettings> GetAllLogoutSettings()
-        {
-            lock (this.dataContext)
-            {
-                var result = this.dataContext.LogoutSettings.AsNoTracking();
-                return result;
-            }
-        }
 
         public void AddOrModifyLogoutSettings(LogoutSettings logoutSettings)
         {
@@ -84,23 +69,12 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void AddLogoutSettings(LogoutSettings logoutSettings)
+        public IEnumerable<LogoutSettings> GetAllLogoutSettings()
         {
             lock (this.dataContext)
             {
-                logoutSettings.RemainingTime = logoutSettings.Timeout;
-                this.dataContext.LogoutSettings.Add(logoutSettings);
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void RemoveLogoutSettingsById(int id)
-        {
-            lock (this.dataContext)
-            {
-                var removeElement = this.dataContext.LogoutSettings.Single(s => s.Id == id);
-                this.dataContext.LogoutSettings.Remove(removeElement);
-                this.dataContext.SaveChanges();
+                var result = this.dataContext.LogoutSettings.AsNoTracking();
+                return result;
             }
         }
 
@@ -122,23 +96,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void RemoveLogoutSettingsById(int id)
+        {
+            lock (this.dataContext)
+            {
+                var removeElement = this.dataContext.LogoutSettings.Single(s => s.Id == id);
+                this.dataContext.LogoutSettings.Remove(removeElement);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void ResetRemainingTime(int id)
         {
             lock (this.dataContext)
             {
                 var logoutSettings = this.dataContext.LogoutSettings.Single(s => s.Id == id);
                 logoutSettings.RemainingTime = logoutSettings.Timeout;
-                this.dataContext.LogoutSettings.Update(logoutSettings);
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        private void UpdateRemainingTime(int id, double time)
-        {
-            lock (this.dataContext)
-            {
-                var logoutSettings = this.dataContext.LogoutSettings.Single(s => s.Id == id);
-                logoutSettings.RemainingTime = time;
                 this.dataContext.LogoutSettings.Update(logoutSettings);
                 this.dataContext.SaveChanges();
             }
@@ -159,7 +132,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     foreach (var logout in active)
                     {
-                        if(resetElements.Any(s => s.Id == logout.Id))
+                        if (resetElements.Any(s => s.Id == logout.Id))
                         {
                             var itemToRemove = resetElements.Single(s => s.Id == logout.Id);
                             resetElements.Remove(itemToRemove);
@@ -213,6 +186,33 @@ namespace Ferretto.VW.MAS.DataLayer
             else
             {
                 this.CheckLogoutSettings();
+            }
+        }
+
+        private void CheckLogoutSettings()
+        {
+            lock (this.dataContext)
+            {
+                if (this.dataContext.LogoutSettings != null &&
+                        this.dataContext.LogoutSettings.ToArray().Count() != 3)
+                {
+                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
+                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
+                    this.dataContext.LogoutSettings.Add(new LogoutSettings() { EndTime = new TimeSpan(23, 59, 59) });
+
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
+        private void UpdateRemainingTime(int id, double time)
+        {
+            lock (this.dataContext)
+            {
+                var logoutSettings = this.dataContext.LogoutSettings.Single(s => s.Id == id);
+                logoutSettings.RemainingTime = time;
+                this.dataContext.LogoutSettings.Update(logoutSettings);
+                this.dataContext.SaveChanges();
             }
         }
 

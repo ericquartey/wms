@@ -237,15 +237,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.OnMissionOperationItemCodeFontSize = this.SelectFontSize(this.MissionOperation.ItemCode);
 
-            if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck
-                && string.IsNullOrEmpty(this.missionOperation.ItemCode))
-            {
-                this.NavigationService.GoBackTo(
-                   nameof(Utils.Modules.Operator),
-                   Utils.Modules.Operator.ItemOperations.WAIT,
-                   "RetrieveMissionOperationAsync 2");
-                return;
-            }
+            //if (this.missionOperation.Type == MissionOperationType.LoadingUnitCheck
+            //    && string.IsNullOrEmpty(this.missionOperation.ItemCode))
+            //{
+            //    this.NavigationService.GoBackTo(
+            //       nameof(Utils.Modules.Operator),
+            //       Utils.Modules.Operator.ItemOperations.WAIT,
+            //       "RetrieveMissionOperationAsync 2");
+            //    return;
+            //}
 
             try
             {

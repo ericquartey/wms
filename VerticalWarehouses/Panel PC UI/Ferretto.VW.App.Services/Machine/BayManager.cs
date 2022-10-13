@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
@@ -129,9 +130,17 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task SetAlphaNumericBarAsync(bool isEnabled, IPAddress ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose)
+        public async Task SetAlphaNumericBarAsync(
+            bool isEnabled,
+            IPAddress ipAddress,
+            int port,
+            AlphaNumericBarSize size,
+            int maxMessageLength,
+            bool clearOnClose,
+            bool useGet,
+            List<string> messageFields)
         {
-            await this.accessoriesWebService.UpdateAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port, size, maxMessageLength, clearOnClose);
+            await this.accessoriesWebService.UpdateAlphaNumericBarAsync(isEnabled, ipAddress.ToString(), port, size, maxMessageLength, clearOnClose, useGet, messageFields);
         }
 
         public async Task SetLaserPointerAsync(bool isEnabled, IPAddress ipAddress, int port, double xOffset, double yOffset, double zOffsetLowerPosition, double zOffsetUpperPosition)

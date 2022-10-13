@@ -506,7 +506,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().EnabeNoteRules;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.EnabeNoteRules).First();
             }
         }
 
@@ -514,7 +514,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().IsLocalMachineItems;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsLocalMachineItems).First();
             }
         }
 
@@ -532,7 +532,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines.FirstOrDefault().IsOrderList;
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsOrderList).First();
             }
         }
 

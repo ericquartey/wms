@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Otomatik eksik</value>
+  </data>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>Bay kalibrasyonu yapılmadı.</value>
+  </data>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Karusel kalibrasyonu başarısız oldu. \r\n Bay zinciri sıfır konumunda değil.</value>
+  </data>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Meşgul</value>
+  </data>
+  <data name="CellFree" xml:space="preserve">
+    <value>Özgür</value>
+  </data>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Hedef arama yapılmadı.</value>
+  </data>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Bölmedeki deklanşör varlığı sensörlerinin tutarsızlığı.</value>
+  </data>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Yük durumu ve sensörler tutarsızlığı.</value>
+  </data>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Sıfır pençe sensörü tutarsızlığı ve yükleme ünitesinin varlığı.</value>
+  </data>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Asansörde yükleme ünitesinin varlığı.</value>
+  </data>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Yükleme ünitesi çalışmaya hazır.</value>
+  </data>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>{0} birimi başarıyla istendi.</value>
+  </data>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Gemideki LoadUnit geçersiz yüksekliğe sahip</value>
+  </data>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Makine manuel değil...</value>
+  </data>
+  <data name="MachineOff" xml:space="preserve">
+    <value>makine kapalı</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Görevler hatalı...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Wms görevleri mevcut ancak wms aktif değil</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Bay zincir hareketi devam ediyor...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Asansör hareketi devam ediyor...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>Yatay hareket devam ediyor...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Hareket devam ediyor... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Hareket devam ediyor... Görev: {0}, Birim yükleniyor: {1}, Durum: {2}, Hareket: {3} {4}'den {5} {6}'ya)</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Yük birimi hareketi devam ediyor...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Deklanşör hareketi devam ediyor...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>Dikey hareket devam ediyor...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Körfezde yükleme ünitesi yok.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Sıfır kilit sensörü veya yükleme ünitesi yok.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>{0} konumu</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>Deklanşör açık veya bilinmeyen konumda.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>Test devam ediyor...</value>
+  </data>
+  <data name="ShutdownInProgress" xml:space="preserve">
+    <value>Panel kapatma işlemi devam ediyor</value>
+  </data>
+  <data name="BayPositionsDisabled" xml:space="preserve">
+    <value>Tüm bölme konumları devre dışı</value>
+  </data>
+  <data name="InconsistencyStateAndSensorsBay" xml:space="preserve">
+    <value>Yükleme durumu ve sensör tutarsızlığı Bay {0}</value>
+  </data>
+</root>

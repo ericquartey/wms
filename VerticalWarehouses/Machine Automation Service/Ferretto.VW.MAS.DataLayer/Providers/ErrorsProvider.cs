@@ -192,6 +192,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
+                try
+                {
                 var existingUnresolvedError = this.dataContext.Errors.Where(
                     e => e.ResolutionDate == null
                         &&
@@ -252,6 +254,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 this.dataContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, "RecordNew");
+                }
             }
 
             this.NotifyErrorCreation(newError, bayNumber);

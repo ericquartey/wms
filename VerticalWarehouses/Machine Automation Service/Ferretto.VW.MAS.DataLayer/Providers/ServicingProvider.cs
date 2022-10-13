@@ -129,9 +129,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (this.dataContext.ServicingInfo.Count() == 1)
                 {
                     // Confirm setup date in actual record
-                    this.dataContext.ServicingInfo.FirstOrDefault().ServiceStatus = MachineServiceStatus.Completed;
-                    this.dataContext.ServicingInfo.FirstOrDefault().InstallationDate = DateTime.Now;
-                    this.dataContext.ServicingInfo.Update(this.dataContext.ServicingInfo.FirstOrDefault());
+                    var service = this.dataContext.ServicingInfo.ToArray().First();
+                    service.ServiceStatus = MachineServiceStatus.Completed;
+                    service.InstallationDate = DateTime.Now;
+                    this.dataContext.ServicingInfo.Update(service);
 
                     // Add new record
                     var s = new ServicingInfo();
@@ -624,16 +625,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             bool expired = false;
 
-            var service = this.dataContext.ServicingInfo.Last();
+            var service = this.dataContext.ServicingInfo.ToArray().LastOrDefault();
 
-            var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
-            foreach (var ins in instructions)
-            {
-                if (ins.InstructionStatus == MachineServiceStatus.Expired)
-                {
-                    expired = true;
-                }
-            }
+            expired = this.dataContext.Instructions.Any(s => s.ServicingInfo.Id == service.Id && s.InstructionStatus == MachineServiceStatus.Expired);
 
             return expired;
         }
@@ -642,16 +636,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             bool expiring = false;
 
-            var service = this.dataContext.ServicingInfo.Last();
+            var service = this.dataContext.ServicingInfo.ToArray().LastOrDefault();
 
-            var instructions = this.dataContext.Instructions.Where(s => s.ServicingInfo.Id == service.Id).ToList();
-            foreach (var ins in instructions)
-            {
-                if (ins.InstructionStatus == MachineServiceStatus.Expiring)
-                {
-                    expiring = true;
-                }
-            }
+            expiring = this.dataContext.Instructions.Any(s => s.ServicingInfo.Id == service.Id && s.InstructionStatus == MachineServiceStatus.Expiring);
 
             return expiring;
         }
@@ -702,7 +689,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 try
                 {
                     // Confirm setup date in actual record
-                    var service = this.dataContext.ServicingInfo.Last();
+                    var service = this.dataContext.ServicingInfo.ToArray().LastOrDefault();
                     if (service.ServiceStatus == MachineServiceStatus.Expired)
                     {
                         this.logger.LogWarning(Resources.General.MaintenanceStateExpired);
@@ -737,7 +724,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.ScheduleNotification(service, 0, MachineServiceStatus.Undefined);
 
                     var instructions = this.dataContext.Instructions.Include(n => n.Definition).Where(s => s.ServicingInfo.Id == service.Id).ToList();
-                    var machine = this.dataContext.Machines.LastOrDefault();
+                    var machine = this.dataContext.Machines.AsNoTracking().FirstOrDefault();
                     this.allStat = this.dataContext.ServicingInfo
                             .Include(i => i.Instructions)
                             .Include(i => i.MachineStatistics)

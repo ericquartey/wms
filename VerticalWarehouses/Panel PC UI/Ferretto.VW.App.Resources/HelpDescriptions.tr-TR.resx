@@ -1,0 +1,1281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BeltBurnishingUpLimit" xml:space="preserve">
+    <value>Testin gerektirdiği üst kotanın değerini gösterir. Değeri yalnızca alan düzenlenebilirse ayarlayın.</value>
+  </data>
+  <data name="BeltBurnishingDownLimit" xml:space="preserve">
+    <value>Testin gerektirdiği alt kotanın değerini gösterir. Değeri yalnızca alan düzenlenebilirse ayarlayın.</value>
+  </data>
+  <data name="BeltBurnishingRequiredCycles" xml:space="preserve">
+    <value>Gerekli döngü sayısını ayarlayın.</value>
+  </data>
+  <data name="BeltBurnishingCompletedCycles" xml:space="preserve">
+    <value>Halihazırda tamamlanan döngü sayısını görüntüler.</value>
+  </data>
+  <data name="BeltBurnishingActualPosition" xml:space="preserve">
+    <value>Eksenin mevcut konumunu raporlar.</value>
+  </data>
+  <data name="BeltBurnishingStartCycle" xml:space="preserve">
+    <value>Testi başlatın. Test, gerekli döngü sayısına ulaşılana veya durdurma düğmesine basılana kadar devam eder.</value>
+  </data>
+  <data name="BeltBurnishingStopCycle" xml:space="preserve">
+    <value>Testi durdurun. Döngü, mevcut hareketin sonunda durur. Döngü başlat düğmesine basmak, tamamlanana kadar test yürütmesini sürdürür.</value>
+  </data>
+  <data name="BeltBurnishingFunctionDescription" xml:space="preserve">
+    <value>Prosedür, giriş verilerinde belirtilen iki nokta arasında dikey ekseni hareket ettirmek için bir dizi döngü gerçekleştirmeye izin verir. Döngü başlatıldığında, gerekli döngülere ulaşılana veya bitirme tuşuna basılana kadar devam eder.</value>
+  </data>
+  <data name="ResolutionCalibrationFunctionDescription" xml:space="preserve">
+    <value>Dikey eksen çözünürlüğü kalibrasyon işlevi, sahada ölçüm yaparak ve ardından sistem tarafından önerilen varsayılan değeri güncelleyerek doğru değeri kalibre etmenize olanak tanır. Prosedür, başarılı bir şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialPositionHelp" xml:space="preserve">
+    <value>Alan düzenlenebilirse, gerekli başlangıç ​​kotasını ayarlayın.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialStartHelp" xml:space="preserve">
+    <value>Başlangıç ​​konumundan bitiş konumuna kadar ölçülen hareketi gösterir.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPositionHelp" xml:space="preserve">
+    <value>Alan düzenlenebilirse, gerekli son kotayı ayarlayın.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalPosizionStartHelp" xml:space="preserve">
+    <value>Düğme, ekseni önceden ayarlanan son konuma hareket ettirmeye başlar.</value>
+  </data>
+  <data name="ResolutionCalibrationMeasuredeValueHelp" xml:space="preserve">
+    <value>Başlangıç ​​konumundan bitiş konumuna kadar ölçülen hareketi gösterir.</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep1" xml:space="preserve">
+    <value>Adım 1: ekseni başlangıç ​​konumuna getirin</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep2" xml:space="preserve">
+    <value>Adım 2: ekseni son boyuta yerleştirin</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep3" xml:space="preserve">
+    <value>3. Adım: Çözünürlüğü yeni değere güncelleyin</value>
+  </data>
+  <data name="VerticalResolutionCalibrationStep4" xml:space="preserve">
+    <value>Adım 4: ekseni yeniden konumlandırın ve prosedürü kapatın</value>
+  </data>
+  <data name="ResolutionCalibrationActualResolutionHelp" xml:space="preserve">
+    <value>ÇözünürlükKalibrasyonGerçekÇözünürlükYardım</value>
+  </data>
+  <data name="ResolutionCalibrationNewResolutionHelp" xml:space="preserve">
+    <value>Prosedür tarafından hesaplanan yeni çözünürlük değerini görüntüler.</value>
+  </data>
+  <data name="ResolutionCalibrationAcceptNewResolution" xml:space="preserve">
+    <value>Önceki çözünürlük değerini yeni hesaplanan değerle değiştirir.</value>
+  </data>
+  <data name="ResolutionCalibrationGoToInitialPosizion" xml:space="preserve">
+    <value>Ekseni ilk konumuna döndürün.</value>
+  </data>
+  <data name="ResolutionCalibrationCloseProcedure" xml:space="preserve">
+    <value>Eksenin orijinini yapın ve prosedürü kapatın.</value>
+  </data>
+  <data name="HelpInstallationStateDescription" xml:space="preserve">
+    <value>Kurulumun mevcut durumunu görüntüler. Halihazırda tamamlanmış kısımlar yeşil, tamamlanacak veya yapılacaklar gri renkle vurgulanır. Bazı prosedürler ancak hazırlık prosedürlerini doğru bir şekilde tamamladıktan sonra mümkündür.</value>
+  </data>
+  <data name="HelpInstallationStateToDo" xml:space="preserve">
+    <value>Gri gösterge, hala yapılması gereken bir prosedürü gösterir.</value>
+  </data>
+  <data name="HelpInstallationStateDone" xml:space="preserve">
+    <value>Yeşil gösterge başarılı bir prosedürü gösterir.</value>
+  </data>
+  <data name="HelpSSTitle" xml:space="preserve">
+    <value>Sensör durumu ekranı</value>
+  </data>
+  <data name="HelpSSDescription" xml:space="preserve">
+    <value>Gri renk, sensörün etkin olmadığını gösterir.</value>
+  </data>
+  <data name="HelpSSStateOn" xml:space="preserve">
+    <value>Yeşil renk, sensörün aktif durumunu gösterir.</value>
+  </data>
+  <data name="HelpSSStateOff" xml:space="preserve">
+    <value>Gri renk, sensörün etkin olmadığını gösterir.</value>
+  </data>
+  <data name="HelpLSMTTitle" xml:space="preserve">
+    <value>Düşük hızlı manuel kontroller.</value>
+  </data>
+  <data name="HelpLSMTDescription" xml:space="preserve">
+    <value>Çeşitli eksenlerin hareketini düşük hızda gerçekleştirmeyi sağlar. Her iki yönde de küçük bir hareket alanı ayarlanır. Düğmelerin metni gerekli harekete göre değişir. Makine test edildikten sonra, tüm çeşitli eksenleri düşük hızda kilitleme olmadan ve sınırsız strok için kontrol etmek mümkün olacaktır.</value>
+  </data>
+  <data name="HelpLSMTActualPosition" xml:space="preserve">
+    <value>Yalnızca ayrı konumlara sahip parçalar için geçerli konumu veya durumu gösterir.</value>
+  </data>
+  <data name="HelpLSMTMoveUp" xml:space="preserve">
+    <value>Seçilen parçaya göre ileri hareket, yukarı hareket veya açılma butonu</value>
+  </data>
+  <data name="HelpLSMTMoveDown" xml:space="preserve">
+    <value>Seçilen parçaya göre geri, aşağı veya kapalı hareket etme butonu</value>
+  </data>
+  <data name="HelpGCDescription" xml:space="preserve">
+    <value>Seçilen bölmenin kapama damperi için bir dizi tekrarlı test yapılmasına izin verir. Ardışık iki hareket arasında bir bekleme süresi ayarlamak mümkündür. Prosedür, ayarlanan döngü sayısına ulaşıldığında veya çıkışta sona erer.</value>
+  </data>
+  <data name="HelpGCRequiredCycles" xml:space="preserve">
+    <value>Gerekli döngü sayısını ayarlayın.</value>
+  </data>
+  <data name="HelpGCDelay" xml:space="preserve">
+    <value>Ardışık iki döngü arasındaki gecikme süresini ayarlayın.</value>
+  </data>
+  <data name="HelpGCCompleted" xml:space="preserve">
+    <value>Halihazırda tamamlanan döngü sayısını gösterir.</value>
+  </data>
+  <data name="HelpGCSensorA" xml:space="preserve">
+    <value>Bariyerin A sensörünün durumu.</value>
+  </data>
+  <data name="HelpGCSensorB" xml:space="preserve">
+    <value>Bariyerin B sensörünün durumu.</value>
+  </data>
+  <data name="HelpGCStartButton" xml:space="preserve">
+    <value>Gerekli testlerin başlangıcını başlatın. Gerekli döngü sayısı sıfırdan büyükse düğme etkindir.</value>
+  </data>
+  <data name="HelpGCStopButton" xml:space="preserve">
+    <value>Geçerli hareket tamamlandığında döngüyü durdurur. Başlat düğmesine bir sonraki basış, testi durdurulan döngüden sonraki döngüden devam ettirir.</value>
+  </data>
+  <data name="HelpVACDescription" xml:space="preserve">
+    <value>Prosedür, sonunda ofset değeri ile gösterilen geçerli konumun ayarlandığı dikey eksenin orijinini yapmanızı sağlar. Prosedür, eksenin yüksekliğe hareketini gerektiren diğer fonksiyonların gerçekleştirilmesi için hazırlık niteliğindedir.</value>
+  </data>
+  <data name="HelpVACDownLimit" xml:space="preserve">
+    <value>Alt hareket limiti.</value>
+  </data>
+  <data name="HelpVACUpLimit" xml:space="preserve">
+    <value>Üst hareket limiti.</value>
+  </data>
+  <data name="HelpVACOffset" xml:space="preserve">
+    <value>Geçerli ofset değeri. Eksen orijininin sonunda, mevcut kota bu değere ayarlanır.</value>
+  </data>
+  <data name="HelpVACResolution" xml:space="preserve">
+    <value>Eksenin mevcut çözünürlüğü.</value>
+  </data>
+  <data name="HelpVACFinalResult" xml:space="preserve">
+    <value>Prosedürün nihai sonucunu bildirin.</value>
+  </data>
+  <data name="HelpVacStart" xml:space="preserve">
+    <value>Dikey eksen orijin prosedürünü başlatır.</value>
+  </data>
+  <data name="HelpVACStop" xml:space="preserve">
+    <value>Dikey eksen orijin prosedürünü durdurur.</value>
+  </data>
+  <data name="ResolutionCalibrationInitialReadValueHelp" xml:space="preserve">
+    <value>Sayaç tarafından okunan mevcut konumun başlangıç ​​değeri.</value>
+  </data>
+  <data name="ResolutionCalibrationFinalReadValueHelp" xml:space="preserve">
+    <value>Sayaç tarafından okunan mevcut pozisyonun son değeri.</value>
+  </data>
+  <data name="HelpCCVDescription" xml:space="preserve">
+    <value>Prosedür, seçilen hücrenin boyutunu kontrol etmenizi ve muhtemelen düzeltmenizi sağlar. Düzeltme yalnızca seçili hücreye uygulanır.</value>
+  </data>
+  <data name="HelpCCVSelectedCell" xml:space="preserve">
+    <value>Boyutunu kontrol etmek istediğiniz hücreyi ayarlayın.</value>
+  </data>
+  <data name="HelpCCVCellPosition" xml:space="preserve">
+    <value>Seçili olan hücrenin boyutunu belirtir.</value>
+  </data>
+  <data name="HelpCCVStepValue" xml:space="preserve">
+    <value>Ayarlama aşamasında yükseklikteki değişimin değeri.</value>
+  </data>
+  <data name="HelpCCVAttualPosition" xml:space="preserve">
+    <value>Eksen koordinatının geçerli değeri.</value>
+  </data>
+  <data name="HelpCCVCorrectionValue" xml:space="preserve">
+    <value>Uygulanacak düzeltmenin toplam değeri.</value>
+  </data>
+  <data name="HelpCCVSetPosition" xml:space="preserve">
+    <value>Dikey ekseni seçili hücreye yerleştirin.</value>
+  </data>
+  <data name="HelpCCVStepPiu" xml:space="preserve">
+    <value>Eksenin mevcut koordinatını adım tarafından belirtilen değer kadar artırır.</value>
+  </data>
+  <data name="HelpCCVStepMeno" xml:space="preserve">
+    <value>Eksenin mevcut koordinatını adım tarafından belirtilen değer kadar azaltır.</value>
+  </data>
+  <data name="HelpCCVApplyCorrection" xml:space="preserve">
+    <value>Hareket tuşlarına her basıldığında eksenin mevcut koordinatına uygulanan adım değeri.</value>
+  </data>
+  <data name="HelpVPPMDescription" xml:space="preserve">
+    <value>Prosedür, çeşitli raf kapısı panellerinin doğru konumlandırıldığını kontrol etmenizi sağlar. Test edilen panele ait tüm hücrelere herhangi bir düzeltme uygulanır.</value>
+  </data>
+  <data name="HelpVPPMTotalPanels" xml:space="preserve">
+    <value>Referans hücre tarafından seçilen taraftaki panellerin toplam sayısını gösterir.</value>
+  </data>
+  <data name="HelpVPPMActualPanel" xml:space="preserve">
+    <value>Şu anda seçili olan ve kontrol edilmekte olan paneli gösterir.</value>
+  </data>
+  <data name="HelpVPPMSelectedCell" xml:space="preserve">
+    <value>Kontrol edilecek panelin türetildiği seçili hücre. Tek veya çift sayılar ön veya arka tarafı seçer.</value>
+  </data>
+  <data name="HelpVPPMSelectedCellPosition" xml:space="preserve">
+    <value>Seçili hücrenin boyutu.</value>
+  </data>
+  <data name="HelpVPPMActualPosition" xml:space="preserve">
+    <value>Eksenin mevcut konumunu gösterir. Adım düğmelerinin hareketi ile değiştirilir.</value>
+  </data>
+  <data name="HelpVPPMStepValue" xml:space="preserve">
+    <value>Boyut değiştirilirken kullanılacak adım değeri.</value>
+  </data>
+  <data name="HelpVPPMCorrectionValue" xml:space="preserve">
+    <value>Seçili hücrenin boyutuna uygulanacak düzeltmenin toplam değeri.</value>
+  </data>
+  <data name="HelpVPPMNextPanel" xml:space="preserve">
+    <value>Kontrol etmek için bir sonraki panele gitmenizi sağlar.</value>
+  </data>
+  <data name="HelpVPPMGoToCell" xml:space="preserve">
+    <value>Ekseni seçili hücreye yerleştirin.</value>
+  </data>
+  <data name="HelpVPPMStepPiu" xml:space="preserve">
+    <value>Eksenin mevcut koordinatını adım tarafından belirtilen değer kadar artırır.</value>
+  </data>
+  <data name="HelpVPPMStepMeno" xml:space="preserve">
+    <value>Eksenin mevcut koordinatını adım tarafından belirtilen değer kadar azaltır.</value>
+  </data>
+  <data name="HelpVPPMApplyCorrection" xml:space="preserve">
+    <value>Düzeltmeyi, seçili olan paneldeki hücre grubuna uygulayın.</value>
+  </data>
+  <data name="HelpGHCDescription" xml:space="preserve">
+    <value>Prosedür, çekmece yüksekliği algılama bariyerini ayarlamanıza izin verir. Yüksekliğe ulaşıldı sinyali, test şablonunun ön konumlandırma aşamasında da kullanılmalıdır.</value>
+  </data>
+  <data name="HelpGHCVelocity" xml:space="preserve">
+    <value>Kalibrasyon aşamasında kullanılacak hızı ayarlayın.</value>
+  </data>
+  <data name="HelpGHCSystemError" xml:space="preserve">
+    <value>Ayarlanan kalibrasyon hızından ve sistem tarama süresinden kaynaklanan sistem hatasını gösterir. Hatayı azaltmak için hızı azaltın.</value>
+  </data>
+  <data name="HelpGHCTollerance" xml:space="preserve">
+    <value>Ölçümde izin verilen maksimum toleransı ayarlar. Sonuç gerekli değeri aşarsa test başarısız olur.</value>
+  </data>
+  <data name="HelpGHCHeightReached" xml:space="preserve">
+    <value>Yükseklik doğrulama elemanı olarak kullanılan kirişin aktivasyonunu gösterir.</value>
+  </data>
+  <data name="HelpGHCCurrentPosition" xml:space="preserve">
+    <value>Zincir ekseninin geçerli konumunu döndürür.</value>
+  </data>
+  <data name="HelpGHCBarrierCorrection" xml:space="preserve">
+    <value>Bariyere uygulanacak düzeltmeyi belirtir. Artı işareti bariyeri yükseltmeyi, eksi işareti ise belirtilen değer kadar düşürmeyi gerektirir.</value>
+  </data>
+  <data name="HelpGHCFinalResult" xml:space="preserve">
+    <value>Nihai test sonucunu rapor edin.</value>
+  </data>
+  <data name="HelpGHCStart" xml:space="preserve">
+    <value>Düğme, kontrol prosedürünü başlatır.</value>
+  </data>
+  <data name="HelpGHCStop" xml:space="preserve">
+    <value>Düğme, kontrol prosedürünü durdurur.</value>
+  </data>
+  <data name="HelpWCDescription" xml:space="preserve">
+    <value>Prosedür, ağırlık ölçümünün beklenen tolerans dahilinde olduğunu doğrulamanızı sağlar. Ölçüm için uygun alanda belirtilen miktarda numune ağırlıkları kullanılır.</value>
+  </data>
+  <data name="HelpWCTestRun" xml:space="preserve">
+    <value>Verilen akımın örneklerinin gerçekleştirildiği düşük hızda gerçekleştirilen çalışmayı gösterir.</value>
+  </data>
+  <data name="HelpWCWeightInserted" xml:space="preserve">
+    <value>Test için girilen numune ağırlığını gösterir.</value>
+  </data>
+  <data name="HelpWCWeightTollerance" xml:space="preserve">
+    <value>Ölçünün gerektirdiği toleransı gösterir.</value>
+  </data>
+  <data name="HelpWCWeightMeasured" xml:space="preserve">
+    <value>Sistem tarafından ölçülen ağırlığı gösterir.</value>
+  </data>
+  <data name="HelpWCFinalResult" xml:space="preserve">
+    <value>Prosedürün nihai sonucunu bildirin. Ölçülen ağırlık ayarlanan tolerans dahilindeyse sonuç pozitif olacaktır.</value>
+  </data>
+  <data name="HelpWCStart" xml:space="preserve">
+    <value>Test prosedürünü başlatın.</value>
+  </data>
+  <data name="HelpWCStop" xml:space="preserve">
+    <value>Test prosedürünü durdurun.</value>
+  </data>
+  <data name="HelpVOCDescription" xml:space="preserve">
+    <value>Prosedür, çeşitli hücrelerin yüksekliğini dikey eksenin referans sistemiyle hizalamak için dikey eksenin sapmasını düzeltmenize izin verir.</value>
+  </data>
+  <data name="HelpVOCSelectedCell" xml:space="preserve">
+    <value>Kontrol için hücre seçildi.</value>
+  </data>
+  <data name="HelpVOCCellPosition" xml:space="preserve">
+    <value>Seçili hücrenin mevcut yüksekliği</value>
+  </data>
+  <data name="HelpVOCStepValue" xml:space="preserve">
+    <value>Eksen hareket tuşlarına her basıldığında uygulanacak yükseklik değişikliğinin değeri.</value>
+  </data>
+  <data name="HelpVOCActualPosition" xml:space="preserve">
+    <value>Dikey eksenin geçerli konumu.</value>
+  </data>
+  <data name="HelpVOCActualOffset" xml:space="preserve">
+    <value>Dikey eksen ofsetinin geçerli değeri.</value>
+  </data>
+  <data name="HelpVOCAdjustedOffset" xml:space="preserve">
+    <value>Yeni ofset değeri.</value>
+  </data>
+  <data name="HelpVOCGoToCell" xml:space="preserve">
+    <value>Dikey ekseni seçili hücrenin boyutuna taşır.</value>
+  </data>
+  <data name="HelpVOCStepPiu" xml:space="preserve">
+    <value>Dikey eksenin mevcut yüksekliğini ayarlanan adım değeri kadar artırır.</value>
+  </data>
+  <data name="HelpVOCStepMeno" xml:space="preserve">
+    <value>Ayarlanan adım değeri kadar dikey eksenin mevcut yüksekliğini azaltır.</value>
+  </data>
+  <data name="HelpVOCApplyCorrection" xml:space="preserve">
+    <value>Dikey eksen ofsetini belirtilen değere günceller.</value>
+  </data>
+  <data name="HelpCSCDescription" xml:space="preserve">
+    <value>Prosedür, ilk ve son seçilen arasında bir hücre bloğunu değiştirmenize izin verir. Seçilen taraf, tek veya çift olmasına bağlı olarak, başlangıç ​​hücre numarasına göre otomatik olarak gösterilir.</value>
+  </data>
+  <data name="HelpCSCInitialCell" xml:space="preserve">
+    <value>Bloğun başlangıç ​​hücre numarasını ayarlayın.</value>
+  </data>
+  <data name="HelpCSCFinalCell" xml:space="preserve">
+    <value>Bloğun son hücresinin numarasını ayarlayın.</value>
+  </data>
+  <data name="HelpCSCCorrection" xml:space="preserve">
+    <value>Seçilen hücre grubuna uygulanacak düzeltmenin istenen değerini ayarlayın.</value>
+  </data>
+  <data name="HelpCSCSelectedSide" xml:space="preserve">
+    <value>Düzenleme yaptığınız tarafı gösterir. Taraf, çift veya tek ise, seçilen başlangıç ​​hücre numarasına göre otomatik olarak belirlenir.</value>
+  </data>
+  <data name="HelpCSCApplyCorrection" xml:space="preserve">
+    <value>Düzeltmeyi seçili hücre grubuna uygulayın.</value>
+  </data>
+  <data name="HelpLFDTotalCells" xml:space="preserve">
+    <value>Test edilecek toplam hücre sayısını gösterir.</value>
+  </data>
+  <data name="HelpLFDTestedCells" xml:space="preserve">
+    <value>Şu anda test edilen hücre sayısını gösterir.</value>
+  </data>
+  <data name="HelpLFDCellInTest" xml:space="preserve">
+    <value>Şu anda test edilmekte olan hücrenin numarası.</value>
+  </data>
+  <data name="HelpLFDDrawerNumber" xml:space="preserve">
+    <value>Takılmakta olan çekmecenin numarası.</value>
+  </data>
+  <data name="HelpLFDMaxLoad" xml:space="preserve">
+    <value>Yükleme sırasında çekmecenin maksimum kapasitesi.</value>
+  </data>
+  <data name="HelpLFDInsertDrawer" xml:space="preserve">
+    <value>Çekmece yerleştirme prosedürünü başlatın. Prosedür, planlanan döngüler tamamlandığında sona erer.</value>
+  </data>
+  <data name="HelpLFDRecallDrawer" xml:space="preserve">
+    <value>Bölmedeki test için kullanılan çekmeceyi hatırlayın.</value>
+  </data>
+  <data name="HelpLFDDescription" xml:space="preserve">
+    <value>Prosedür, makinenin alt ve üst hücrelerini ve ayrıca devre dışı olarak belirtilen hücre bloklarının altındaki ve üstündeki hücreleri test etmek için uygun giriş alanında seçilen çekmeceyi kullanmanızı sağlar. Prosedürün amacı, bu alanlarda mekanik parazit olmadığını doğrulamaktır.</value>
+  </data>
+  <data name="HelpLDRDescription" xml:space="preserve">
+    <value>Prosedür, devreye alma prosedürünün sonunda boş çekmeceleri makinenin içine yerleştirmenizi sağlar. Çekmeceler, en düşük önceliğe göre seçilerek serbest blokların içine yerleştirilir.</value>
+  </data>
+  <data name="HelpLDRTotalDrawers" xml:space="preserve">
+    <value>Takılacak toplam çekmece sayısı.</value>
+  </data>
+  <data name="HelpLDRInsertedDrawers" xml:space="preserve">
+    <value>Çekmeceler zaten arabaya yerleştirilmiş.</value>
+  </data>
+  <data name="HelpLDRDrawerToInsert" xml:space="preserve">
+    <value>Takılmakta olan çekmecenin numarası. Uygun düğme ile oluşturulabilir veya uygun alana eklenebilir.</value>
+  </data>
+  <data name="HelpLDRMaxLoad" xml:space="preserve">
+    <value>Takılan çekmece için izin verilen maksimum kapasiteyi gösterir.</value>
+  </data>
+  <data name="HelpLDRNextDrawer" xml:space="preserve">
+    <value>Düğme, eklenecek bir sonraki çekmeceyi ayarlar. sayı, girilen son sayıyı takip eden sayıdır.</value>
+  </data>
+  <data name="HelpLDRStart" xml:space="preserve">
+    <value>Seçilen çekmeceyi yerleştirme prosedürünü başlatır.</value>
+  </data>
+  <data name="HelpBCTRDescription" xml:space="preserve">
+    <value>Prosedür, çeşitli bölmelerdeki çeşitli olası konumların yüksekliğini kontrol etmenize ve muhtemelen düzeltmenize olanak tanır. Prosedür, makine yapılandırmasını açıklayan belgede belirtilen bölme tipi için uygundur. Aynı bölmede birden fazla pozisyon olması durumunda, prosedür çoklu kontrollere izin verir.</value>
+  </data>
+  <data name="HelpBCTRSelectedBay" xml:space="preserve">
+    <value>Oranlarını kontrol etmek istediğiniz körfezi seçin.</value>
+  </data>
+  <data name="HelpBCTRSelectedPosition" xml:space="preserve">
+    <value>Yüksekliğini kontrol etmek istediğiniz seçili bölme içindeki konumu belirtir. Otomatik olarak ayarlanır.</value>
+  </data>
+  <data name="HelpBCTRPositionHeight" xml:space="preserve">
+    <value>Kontrol altındaki bölmede seçilen konumun yüksekliğini görüntüler.</value>
+  </data>
+  <data name="HelpBCTRStepValue" xml:space="preserve">
+    <value>Hareket tuşlarına her basıldığında eksenin mevcut koordinatına uygulanan adım değeri.</value>
+  </data>
+  <data name="HelpBCTRCorrectionValue" xml:space="preserve">
+    <value>Seçilen bölme konumunun yüksekliğine uygulanacak düzeltmenin kümülatif değeri.</value>
+  </data>
+  <data name="HelpBCTRMoveToPosition" xml:space="preserve">
+    <value>Dikey ekseni seçilen bölme konumuna yerleştirin.</value>
+  </data>
+  <data name="HelpBCTRStepPiu" xml:space="preserve">
+    <value>Eksenin mevcut koordinatını adım tarafından belirtilen değer kadar artırır.</value>
+  </data>
+  <data name="HelpBCTRStepMeno" xml:space="preserve">
+    <value>Eksenin mevcut koordinatını adım tarafından belirtilen değer kadar azaltır.</value>
+  </data>
+  <data name="HelpBCTRAdjust" xml:space="preserve">
+    <value>Bay-akım konumunun mevcut yüksekliğini uygun alanda belirtilen değerle düzeltir.</value>
+  </data>
+  <data name="HelpBCTRNextPosition" xml:space="preserve">
+    <value>Etkinleştirilirse, düğme o anda seçili olan bölmede bir sonraki konumu seçmenize olanak tanır. Yeni pozisyon için prosedür tekrarlanmalıdır.</value>
+  </data>
+  <data name="HelpIPGDescription" xml:space="preserve">
+    <value>Ana menü, makine devreye alma aşaması için öngörülen tüm fonksiyonlara erişim sağlar.</value>
+  </data>
+  <data name="HelpIPGHeder" xml:space="preserve">
+    <value>Ana menü.</value>
+  </data>
+  <data name="HelpIPGError" xml:space="preserve">
+    <value>Görünür olduğunda bir hatanın varlığını gösterir. Düğmeye basmak, durumu geri yüklemeye ayrılmış pencereyi açar.</value>
+  </data>
+  <data name="HelpIPGOff" xml:space="preserve">
+    <value>Bu düğmenin Kapalı durumu, makine hareketlerinin devre dışı bırakıldığını gösterir.</value>
+  </data>
+  <data name="HelpIPGOn" xml:space="preserve">
+    <value>Bu düğmenin Açık durumu, makinenin hareket etmek için etkinleştirildiğini gösterir.</value>
+  </data>
+  <data name="HelpIPGInstaller" xml:space="preserve">
+    <value>Halihazırda oturum açmış olan kullanıcının adını gösterir. Basıldığında, sistemden çıkış yapmanızı sağlar.</value>
+  </data>
+  <data name="HelpIPGHelp" xml:space="preserve">
+    <value>Basıldığında, seçili olan işlev için bağlamsal menüyü açar.</value>
+  </data>
+  <data name="HelpIPGUp" xml:space="preserve">
+    <value>Çeşitli işlevlere erişmek için düğmeler listesini yukarı kaydırmanızı sağlar.</value>
+  </data>
+  <data name="HelpIPGButton" xml:space="preserve">
+    <value>Kurulum işlevlerine erişmek için düğmelerin listesi.</value>
+  </data>
+  <data name="HelpIPGDown" xml:space="preserve">
+    <value>Çeşitli işlevlere erişmek için düğmeler listesini aşağı kaydırmanızı sağlar.</value>
+  </data>
+  <data name="HelpDLUTDescription" xml:space="preserve">
+    <value>Prosedür, uygun giriş alanlarında seçilen bölmeyi kullanarak bir çekmecenin bir dizi iniş ve biniş testini gerçekleştirmenize izin verir. Test için, uygun alanda belirtilenlere göre hızlanma, yavaşlama ve hız besleme oranını değiştirmek mümkündür. Test, gerekli döngü sayısına ulaşılana veya durdurma düğmesine basılana kadar devam eder.</value>
+  </data>
+  <data name="HelpDLUTBay" xml:space="preserve">
+    <value>Testi yapmak istediğiniz bölmenin numarasını girin.</value>
+  </data>
+  <data name="HelpDLUTPosition" xml:space="preserve">
+    <value>Testi yapmak istediğiniz bölmenin içindeki konumu girin.</value>
+  </data>
+  <data name="HelpDLUTFeedRate" xml:space="preserve">
+    <value>Test için gereken ilerleme hızını girin. Azalma ayrıca hızlanma ve yavaşlama değerlerini de etkiler.</value>
+  </data>
+  <data name="HelpDLUTChain" xml:space="preserve">
+    <value>Zincir ekseninin mevcut konumunu başlangıç ​​yüksekliğine göre bir değer olarak bildirir.</value>
+  </data>
+  <data name="HelpDLUTCyclesRequired" xml:space="preserve">
+    <value>Gerekli test döngüsü sayısını girin.</value>
+  </data>
+  <data name="HelpDLUTCycleCompleted" xml:space="preserve">
+    <value>Halihazırda gerçekleştirilen tamamlanmış döngülerin sayısını raporlar.</value>
+  </data>
+  <data name="HelpDLUTGotoPosition" xml:space="preserve">
+    <value>Dikey ekseni seçilen bölmenin içindeki konuma taşır. Yükseklik, biniş ofsetini dikkate alır.</value>
+  </data>
+  <data name="HelpDLUTStart" xml:space="preserve">
+    <value>Test prosedürünü başlatın. Düğme, yalnızca dikey eksen bölmede gerekli konuma geldikten sonra etkinleşir.</value>
+  </data>
+  <data name="HelpDLUTStop" xml:space="preserve">
+    <value>Test döngüsünü durdurun.</value>
+  </data>
+  <data name="HelpLSMTComandMode" xml:space="preserve">
+    <value>Manuel komutlar için şu anda etkin olan modu bildirir. Genişletilmiş strok modu, devreye alma tamamlandıktan sonra otomatik olarak ayarlanır.</value>
+  </data>
+  <data name="HelpSRCPageHeader" xml:space="preserve">
+    <value>Dosya kaydetme prosedürünü iptal edin.</value>
+  </data>
+  <data name="HelpSRCDescription" xml:space="preserve">
+    <value>Prosedür, yapılandırma dosyalarını harici cihaza kaydetmenize veya kurtarmanıza olanak tanır.</value>
+  </data>
+  <data name="HelpSRCSaveSide" xml:space="preserve">
+    <value>Yapılandırma kaydetme prosedürü.</value>
+  </data>
+  <data name="HelpSRCSaveFolder" xml:space="preserve">
+    <value>Yapılandırma dosyalarının kaydedileceği otomatik olarak oluşturulan klasörü belirtir.</value>
+  </data>
+  <data name="HelpSRCSaveButton" xml:space="preserve">
+    <value>Yapılandırma dosyalarını kaydetme prosedürünü başlatın. Halihazırda mevcut olan tüm dosyaların üzerine yazılacaktır.</value>
+  </data>
+  <data name="HelpSRCSaveConfirmButton" xml:space="preserve">
+    <value>Dosya kaydetme prosedürünü onaylayın.</value>
+  </data>
+  <data name="HelpSRCSaveAbortButton" xml:space="preserve">
+    <value>Dosya kaydetme prosedürünü iptal edin.</value>
+  </data>
+  <data name="HelpSRCLoadSide" xml:space="preserve">
+    <value>Yapılandırma geri yükleme prosedürü.</value>
+  </data>
+  <data name="HelpSRCLoadButton" xml:space="preserve">
+    <value>Yapılandırma dosyaları yükleme prosedürünü başlatın. Halihazırda mevcut olan tüm dosyaların üzerine yazılacaktır.</value>
+  </data>
+  <data name="HelpSRCLoadConfirmButton" xml:space="preserve">
+    <value>Dosya yükleme prosedürünü onaylayın.</value>
+  </data>
+  <data name="HelpSRCLoadAbortButton" xml:space="preserve">
+    <value>Dosya yükleme prosedürünü iptal edin.</value>
+  </data>
+  <data name="HelpOpMainPageHeadr" xml:space="preserve">
+    <value>İlk sayfa.</value>
+  </data>
+  <data name="HelpOpMainPageDescription" xml:space="preserve">
+    <value>Ana menü, ekranın üst kısmındaki uygun düğmeleri kullanarak makine durumunu kontrol etmenizi sağlar. Sol taraftaki navigasyon butonlarını kullanarak çeşitli fonksiyonlara ulaşmak mümkündür.</value>
+  </data>
+  <data name="HelpOpMainManu" xml:space="preserve">
+    <value>Manuel durumu gösterir. Otomatik döngü askıya alınır.</value>
+  </data>
+  <data name="HelpOpMainAuto" xml:space="preserve">
+    <value>Otomatik durumu gösterir. Makine, kontrol sisteminden gelen komutları yönetir.</value>
+  </data>
+  <data name="HelpOpMainOff" xml:space="preserve">
+    <value>Motorlara giden güç devre dışı. Hareketler hiçbir modda mümkün değildir.</value>
+  </data>
+  <data name="HelpOpMainOn" xml:space="preserve">
+    <value>Motorlara giden güç etkinleştirilir. Makine hareket yapabilir.</value>
+  </data>
+  <data name="HelpOpMainServiceAdvice" xml:space="preserve">
+    <value>Sistem, makinenin bazı parçalarının planlı bakım zamanına yaklaştığını bildirir.</value>
+  </data>
+  <data name="HelpOpMainServiceAllert" xml:space="preserve">
+    <value>Sistem, makinenin bazı parçalarının iki bakım işlemi arasındaki planlanan sürenin sonuna geldiğini bildirir. Bakım gerekli!</value>
+  </data>
+  <data name="HelpOpMainError" xml:space="preserve">
+    <value>Makine çalışırken bir hata oluştu. Bu düğmeye basmak, kurtarma prosedürlerini yönetmek için sayfayı açar.</value>
+  </data>
+  <data name="HelpOpMainUser" xml:space="preserve">
+    <value>Şu anda oturum açmış olan operatörün adını bildirir. Düğmeye basmak oturumu kapatmanızı sağlar.</value>
+  </data>
+  <data name="HelpOpMainHelp" xml:space="preserve">
+    <value>Düğme, kullandığınız yordam bağlamında yardım sayfasını açar.</value>
+  </data>
+  <data name="HelpOpMainDrawerOp" xml:space="preserve">
+    <value>Düğme, bölmedeki çekmecede programlanan işlemleri yönetmek için sayfayı açar.</value>
+  </data>
+  <data name="HelpOpMainItem" xml:space="preserve">
+    <value>Düğme, bir makale kodu aramanıza izin veren sayfayı açar.</value>
+  </data>
+  <data name="HelpOpMainLists" xml:space="preserve">
+    <value>Düğme, WMS tarafından planlanan yürütmeyi bekleyen listelerin görüntü sayfasını açar.</value>
+  </data>
+  <data name="HelpOpMainOther" xml:space="preserve">
+    <value>Ek işlevlere erişim sağlar.</value>
+  </data>
+  <data name="HelpDrawerWaitDescription" xml:space="preserve">
+    <value>Sayfa, bölmeye gelen son çekmecede sistemin planlanan işlemleri tamamladığını gösterir. Planlanan işlemlere ayrılmış sayfanın açılmasına neden olacak bir sonraki çekmecenin gelişini bekliyor.</value>
+  </data>
+  <data name="HelpDrawerWaitNote" xml:space="preserve">
+    <value>Not, sistemin mevcut durumunu bildirir.</value>
+  </data>
+  <data name="HelpDrawerWaitScheduledOperations" xml:space="preserve">
+    <value>Alan, operatörün üzerinde çalıştığı bölmeye yönelik halihazırda programlanmış olan operasyonların sayısını bildirir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDescription" xml:space="preserve">
+    <value>Prosedür, kullanıcının çalıştığı bölmede bulunan çekmecede planlanan para çekme işlemi ile ilgili tüm detaylı bilgileri sağlar. Varsa çizim çekmecenin bölünmesini gösterir ve vurgulanan alan üzerinde çalışılacak bölmeyi gösterir. Varsa, işlenmekte olan öğenin görüntüsü de gösterilir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyRequest" xml:space="preserve">
+    <value>Vurgulanan bölmeden çıkarılacak öğenin miktarı görüntülenir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingQtyPicked" xml:space="preserve">
+    <value>Kullanıcı, stokun yeterli olmaması durumunda fiilen çekilen miktarı değiştirebilir. Normal koşullar altında, alan zaten gerekli miktarla doldurulmuştur.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailDescription" xml:space="preserve">
+    <value>Pencere, çekme penceresinde mevcut olanlara bir dizi ek bilgi gösterir. Hem toplanan kalem hem de ilişkili herhangi bir paketleme listesi için ayrıntılı bilgiler görüntülenir. Varsa, makale resmi de görüntülenir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailListRow" xml:space="preserve">
+    <value>Devam eden para çekme işleminin başvurduğu liste satırını gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Toplanan ürünün üretim tarihi belirtilir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Varsa, çekilen ürünün üretim lotu belirtilir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Gerektiğinde cayma konusu materyalin durumu belirtilir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListCode" xml:space="preserve">
+    <value>Varsa, toplanan çeşitli öğelerle ilgili bilgilerin toplandığı paketleme listesini gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailPackListDescription" xml:space="preserve">
+    <value>Varsa, toplanan malzemeleri birleştiren paketleme listesinin açıklamasını gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailBoxType" xml:space="preserve">
+    <value>Toplanan öğenin ambalaj tipinin göstergesini sağlar.</value>
+  </data>
+  <data name="HelpDrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Vurgulanan bölmeden çıkarılacak öğenin miktarı görüntülenir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailDescription" xml:space="preserve">
+    <value>Sayfa, şu anda devam eden para yatırma işleminin ayrıntılarını gösterir. Yapılacak işlemlerle ilgili daha fazla detay temel sayfada verilmektedir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Devam eden işlemde yer alan listenin satırını gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Öğenin üretim tarihinden itibaren raporlar.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Ödenen kalemin malzeme durumunu gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailLotto" xml:space="preserve">
+    <value>Devam eden işlemde yer alan listenin satırını gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailPackaging" xml:space="preserve">
+    <value>Ödenen öğenin ambalaj türünü belirtir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDetailQtyToRefill" xml:space="preserve">
+    <value>Belirtilen bölmeye dökülecek miktar.</value>
+  </data>
+  <data name="HelpCommonList" xml:space="preserve">
+    <value>Devam eden prosedürle ilişkili listenin kodu gösterilir.</value>
+  </data>
+  <data name="HelpCommonListDescription" xml:space="preserve">
+    <value>Devam eden işlemle ilişkili listenin açıklamasını gösterir.</value>
+  </data>
+  <data name="HelpCommonItem" xml:space="preserve">
+    <value>Devam etmekte olan işlemde yer alan öğenin kodunu gösterir.</value>
+  </data>
+  <data name="HelpCommonItemDescription" xml:space="preserve">
+    <value>Geçerli işleme konu olan öğenin açıklaması görüntülenir.</value>
+  </data>
+  <data name="HelpCommonPosition" xml:space="preserve">
+    <value>Alan, benimsenen kodlamaya göre eşlenen, devam etmekte olan işlemin bölme nesnesinin bulunduğu konumu gösterir.</value>
+  </data>
+  <data name="HelpCommonNote" xml:space="preserve">
+    <value>Yapılacak işlemle ilgili her türlü not operatöre gösterilir.</value>
+  </data>
+  <data name="HelpCommonDetail" xml:space="preserve">
+    <value>Düğme, devam etmekte olan işlemle ilgili daha fazla ayrıntı gösteren sayfaya girmenizi sağlar.</value>
+  </data>
+  <data name="HelpCommonConfirm" xml:space="preserve">
+    <value>Mevcut işlemin tamamlandığını onaylayın.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingDescription" xml:space="preserve">
+    <value>Prosedür, ödemedeki ile aynı özelliklere sahip öğeyi içeren bölmeyi yeniden doldurmayı mümkün kılar. Prosedür, kaydedilen değer yanlışsa bölmenin maksimum kapasitesinin güncellenmesine izin verir.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Seçilen bölmeye dökülecek miktar.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingUpdateMaxQty" xml:space="preserve">
+    <value>Bölmenin maksimum kapasitesinin güncellemesini yönetmek için sayfayı açar.</value>
+  </data>
+  <data name="HelpDrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Seçili bölmeye fiilen dökülen miktarı ayarlamanızı sağlar.</value>
+  </data>
+  <data name="HelpCommonGridColumnHeader" xml:space="preserve">
+    <value>Tablonun sütun açıklaması.</value>
+  </data>
+  <data name="HelpCommonUp" xml:space="preserve">
+    <value>İşaretçiyi önceki öğeye taşıyın. Çift basış, listenin başına gider.</value>
+  </data>
+  <data name="HelpCommonDown" xml:space="preserve">
+    <value>İşaretçiyi bir sonraki öğeye taşıyın. Çift basmak listenin sonuna gider.</value>
+  </data>
+  <data name="HelpListsInWaitDescription" xml:space="preserve">
+    <value>Prosedür, WMS sistemi tarafından yürütülmeyi bekleyen tüm listeleri görüntülemenizi sağlar. İlgili makineler her liste için belirtilmiştir. Listelerin yalnızca, prosedürün kullanıldığı makinede alınması gereken bazı makalelerin bulunduğu kısmını yürütmek mümkündür.</value>
+  </data>
+  <data name="HelpListsInWaitGridList" xml:space="preserve">
+    <value>Izgara sütunu, yürütmeyi bekleyen listelerin kodlarını sunar.</value>
+  </data>
+  <data name="HelpListsInWaitGridDescription" xml:space="preserve">
+    <value>Kılavuzun sütunu, yürütmeyi bekleyen listelerin açıklamasını sunar.</value>
+  </data>
+  <data name="HelpListsInWaitGridMachine" xml:space="preserve">
+    <value>Sütun, her liste için, yürütülmesi için dahil olan makinelerin listesini gösterir.</value>
+  </data>
+  <data name="HelpListsInWaitListsDetail" xml:space="preserve">
+    <value>Düğme, mevcut makalelerin listesini görebileceğiniz listenin ayrıntı sayfasına erişmenizi sağlar.</value>
+  </data>
+  <data name="HelpListsInWaitListsExecute" xml:space="preserve">
+    <value>Düğme etkinse, üzerinde çalıştığınız makinede mevcut olan kısım için o anda seçili olan listeyi yürütmenize olanak tanır.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridRow" xml:space="preserve">
+    <value>Görüntülenen listenin satır numarasını gösterir.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItem" xml:space="preserve">
+    <value>Makale kodunu belirtin.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridItemDescription" xml:space="preserve">
+    <value>Öğenin açıklamasını bildirin.</value>
+  </data>
+  <data name="HelpDetailListsInWaitGridQuantity" xml:space="preserve">
+    <value>O kalemin gerekli miktarını gösterir.</value>
+  </data>
+  <data name="HelpDetailListsInWaitDescription" xml:space="preserve">
+    <value>Sayfa, seçilen listenin ayrıntılarını gösterir. Makale, üzerinde çalıştığınız makinede bulunduğundan, görüntülenen tüm satırlarda yalnızca vurgulananları yürütmek mümkündür. "Listeyi çalıştır" düğmesi, yalnızca üzerinde çalıştığınız makinede en az bir yürütülebilir satır varsa etkindir.</value>
+  </data>
+  <data name="HelpItemSearchDescription" xml:space="preserve">
+    <value>Prosedür, hem kod hem de açıklama sütunlarını kullanarak bir makale aramanıza olanak tanır. Arama alanına girilen metin, iki sütunun içeriğini kullanarak gerekli olanı bulmak için otomatik olarak kullanılır. Sonuç ızgarada görüntülenir.</value>
+  </data>
+  <data name="HelpItemSearchGridItem" xml:space="preserve">
+    <value>Arama kriterlerine uyan makale kodlarının listesini gösterir.</value>
+  </data>
+  <data name="HelpItemSearchGridItemDescription" xml:space="preserve">
+    <value>Arama kriterlerine uyan makale kodlarının açıklamasını gösterir.</value>
+  </data>
+  <data name="HelpItemSearchGridMachine" xml:space="preserve">
+    <value>Satırda belirtilen öğeyi içeren makinelerin listesini gösterir. Bir makale bir veya daha fazla makinede bulunabilir.</value>
+  </data>
+  <data name="HelpItemSearchTextToFind" xml:space="preserve">
+    <value>Alandaki kod ve öğe açıklama alanlarına aranacak karakterlerin sırasını girin.</value>
+  </data>
+  <data name="HelpItemSearchQtyAvailable" xml:space="preserve">
+    <value>Üzerinde çalıştığınız makinede seçilen öğenin kullanılabilir miktarını gösterir.</value>
+  </data>
+  <data name="HelpItemSearchQtyRequired" xml:space="preserve">
+    <value>Alan, yalnızca seçilen kalem için mevcut miktar sıfırdan büyükse etkinleştirilir. Mevcut miktarı aşmayan bir değer girilebilir.</value>
+  </data>
+  <data name="HelpItemSearchItemCall" xml:space="preserve">
+    <value>Seçilen öğeyi gerekli miktarda talep etmenizi sağlar. Düğme, yalnızca öğe, çalıştığınız makinede mevcutsa etkinleştirilir.</value>
+  </data>
+  <data name="HelpItemSearchDetailDescription" xml:space="preserve">
+    <value>Sayfa, seçilen makalenin ana verilerini görüntüler. Daha detaylı bilgi yönetim WMS seviyesinde görüntülenebilir.</value>
+  </data>
+  <data name="HelpItemSearchDetailMangementType" xml:space="preserve">
+    <value>Makalenin nasıl yönetileceğini gösterir.</value>
+  </data>
+  <data name="HelpItemSearchDetailFifoPeriod" xml:space="preserve">
+    <value>Belirtilen ölçü biriminde ifade edilen eşyanın Fifo dönemini belirtir.</value>
+  </data>
+  <data name="HelpItemSearchDetailCategory" xml:space="preserve">
+    <value>Kategoriler di appartenenza dell'articolo.</value>
+  </data>
+  <data name="HelpItemSearchDetailClasse" xml:space="preserve">
+    <value>Seçilen öğenin işleme sınıfı.</value>
+  </data>
+  <data name="HelpItemSearchDetailMeasurementUnit" xml:space="preserve">
+    <value>Öğe için seçilen ölçü birimi.</value>
+  </data>
+  <data name="HelpItemSearchDetailAverageWeight" xml:space="preserve">
+    <value>Belirtilen ölçü biriminde ifade edilen ortalama birim ağırlık.</value>
+  </data>
+  <data name="HelpDetailListsInWaitListExecute" xml:space="preserve">
+    <value>Vurgulanan liste satırlarının yürütülmesine izin verir. Düğme yalnızca, üzerinde çalıştığınız makinede seçilen listenin en az bir satırı yürütülebiliyorsa etkinleştirilir.</value>
+  </data>
+  <data name="HelpDetailListsInWaitMachine" xml:space="preserve">
+    <value>Sütun, eşyanın şu anda üzerinde bulunduğu makineyi veya makineleri gösterir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Prosedür, operatörün üzerinde çalıştığı bölmedeki seçili çekmeceyi aramanıza izin verir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridDrawer" xml:space="preserve">
+    <value>Izgara verilerinin başvurduğu çekmecenin numarasını gösterir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridHeight" xml:space="preserve">
+    <value>Seçili çekmecenin geçerli yüksekliği.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridWeight" xml:space="preserve">
+    <value>Seçili çekmecenin mevcut ağırlığını gösterir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridCell" xml:space="preserve">
+    <value>Çekmecede saklandığı hücreyi belirtir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridSide" xml:space="preserve">
+    <value>Makinenin çekmecenin saklandığı tarafını gösterir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallGridStatus" xml:space="preserve">
+    <value>Çekmecenin mevcut durumunu raporlar. Kırmızı renk, çekmecenin o anda bağlı olan kullanıcı tarafından geri çağrılamadığını gösterir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallRequestedDrawer" xml:space="preserve">
+    <value>Geri çağrılacak çekmecenin numarasını gösterir.</value>
+  </data>
+  <data name="HelpImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Düğme, ızgarada seçili olan çekmeceyi geri çağırmanızı sağlar. Çekmece mevcut kullanıcı tarafından çağrılabilirse düğme etkindir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDescription" xml:space="preserve">
+    <value>Makinenin arka tarafı için sıkıştırma prosedürünü etkinleştirir. Gerekli alanı kurtarmak mümkünse düğme etkindir.</value>
+  </data>
+  <data name="HelpDrawerCompactingSide" xml:space="preserve">
+    <value>Sağlanan verilerin ilgili olduğu makine tarafını belirtir.</value>
+  </data>
+  <data name="HelpDrawerCompactingFragment" xml:space="preserve">
+    <value>Geçerli tarafta bulunan kayıp parça sayısını gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceRecoverable" xml:space="preserve">
+    <value>Geçerli tarafta kurtarılabilecek maksimum alanı bildirin.</value>
+  </data>
+  <data name="HelpDrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Kurtarmak için alan. Varsayılan olarak, kurtarılabilir alanın maksimum değerine ayarlanmıştır.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactFront" xml:space="preserve">
+    <value>Makinenin ön tarafı için sıkıştırma prosedürünü etkinleştirir. Gerekli alanı kurtarmak mümkünse düğme etkindir.</value>
+  </data>
+  <data name="HelpDrawerCompactingCompactRear" xml:space="preserve">
+    <value>Makinenin arka tarafı için sıkıştırma prosedürünü etkinleştirir. Gerekli alanı kurtarmak mümkünse düğme etkindir.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDescription" xml:space="preserve">
+    <value>Kurtarmak için alan. Varsayılan olarak, kurtarılabilir alanın maksimum değerine ayarlanmıştır.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridDrawer" xml:space="preserve">
+    <value>Çekmece numarasını gösterir.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridMissions" xml:space="preserve">
+    <value>Çekmecenin tabi olduğu görev sayısını gösterir.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationGridCompartments" xml:space="preserve">
+    <value>Durumlarından bağımsız olarak çekmecenin içinde bulunan eşlenmiş bölmelerin sayısını gösterir.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationTotalDrawer" xml:space="preserve">
+    <value>Makinede tahsis edilen toplam çekmece sayısını raporlar.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationDimension" xml:space="preserve">
+    <value>Makine içinde saklanan çekmecelerin boyutunu gösterir.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationMachineFilling" xml:space="preserve">
+    <value>Makinenin toplam dolum derecesini hem grafik hem de sayısal biçimde gösterir.</value>
+  </data>
+  <data name="HelpDrawerSpaceSaturationWeightAnalisys" xml:space="preserve">
+    <value>Çeşitli çekmecelerde tahsis edilen ağırlıkla ilgili istatistiksel analiz prosedürüne erişim sağlar.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationDescription" xml:space="preserve">
+    <value>Prosedür, çeşitli çekmecelerde ve genel olarak makinenin içinde tahsis edilen ağırlık hakkında veri sağlar. Her çekmece için, mevcut yükseklik, her çekmece için yüklenebilecek maksimum ağırlık, dara, mevcut toplam ağırlık ve ayrıca grafiksel olarak sağlanan maksimum ağırlıkla karşılaştırıldığında mevcut ağırlığın yüzdesi dahil olmak üzere daha fazla bilgi sağlanır. ve sayısal form. Tüm makine için geçerli bir global gösterge de sağlanır.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridDrawer" xml:space="preserve">
+    <value>Çekmece numarasını gösterir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridHeight" xml:space="preserve">
+    <value>Mevcut çekmece yüksekliği.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridMaxWeight" xml:space="preserve">
+    <value>Çekmece için izin verilen maksimum ağırlığı belirtir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridGross" xml:space="preserve">
+    <value>Boş çekmecenin ağırlığını gösterir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridActualWeight" xml:space="preserve">
+    <value>Çekmecenin mevcut ağırlığını raporlar.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGridWeightPercent" xml:space="preserve">
+    <value>Mümkün olan maksimuma göre kullanılan ağırlık yüzdesini gösterir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Makinede tahsis edilen maksimum çekmece sayısını belirtir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossCapacityMax" xml:space="preserve">
+    <value>Makinenin maksimum brüt kapasitesini gösterir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationGrossLoaded" xml:space="preserve">
+    <value>Yüklenen brüt ağırlığı gösterir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetCapacity" xml:space="preserve">
+    <value>Makine tarafından izin verilen maksimum net akış.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationNetLoaded" xml:space="preserve">
+    <value>Halihazırda yüklü olan net ağırlığı gösterir.</value>
+  </data>
+  <data name="HelpDrawerWeightSaturationWeightPercent" xml:space="preserve">
+    <value>İzin verilen maksimum ağırlığa atıfta bulunulan yüklü ağırlığın mevcut yüzdesini gösterir.</value>
+  </data>
+  <data name="HelpMachineStatisticsDescription" xml:space="preserve">
+    <value>Prosedür, makinenin ana parçalarının istatistiksel verilerini sağlar. Sağlanan veriler, kurulum anından itibaren makinenin kullanım ömrü boyunca ne yaptığına atıfta bulunur.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalCycles" xml:space="preserve">
+    <value>Dikey eksen tarafından gerçekleştirilen toplam döngü sayısını gösterir. Bir döngü, iki nokta arasındaki kaymaya eşdeğerdir.</value>
+  </data>
+  <data name="HelpMachineStatisticsVerticalKm" xml:space="preserve">
+    <value>Km'nin toplamını bildirir. Kurulum anından itibaren dikey eksen tarafından hareket ettirilir.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter1" xml:space="preserve">
+    <value>Yuva n'yi donatan deklanşör tarafından gerçekleştirilen toplam döngü sayısını bildirir. 1. Bir çevrim, toplam veya ara açma veya kapama işlemidir.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter2" xml:space="preserve">
+    <value>Yuva n'yi donatan deklanşör tarafından gerçekleştirilen toplam döngü sayısını bildirir. 2. Bir çevrim, toplam veya ara açma veya kapama işlemidir.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter3" xml:space="preserve">
+    <value>Yuva n'yi donatan deklanşör tarafından gerçekleştirilen toplam döngü sayısını bildirir. 3. Bir çevrim, toplam veya ara açma veya kapama işlemidir.</value>
+  </data>
+  <data name="HelpMachineStatisticsHorizontalCycles" xml:space="preserve">
+    <value>Alan, kurulumdan bu yana zincir tarafından makine asansöründe gerçekleştirilen toplam döngü sayısını gösterir. Bir döngü, bir gemiye binme veya iniş operasyonudur.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay1" xml:space="preserve">
+    <value>Alan, bölme n'yi etkileyen toplam çekmece sayısını gösterir. 2. Bir çekmece bölmeye getirildiğinde ve daha sonra depoya geri döndüğünde sayı artar.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay2" xml:space="preserve">
+    <value>Alan, bölme n'yi etkileyen toplam çekmece sayısını gösterir. 2. Bir çekmece bölmeye getirildiğinde ve daha sonra depoya geri döndüğünde sayı artar.</value>
+  </data>
+  <data name="HelpMachineStatisticsBay3" xml:space="preserve">
+    <value>Alan, bölme n'yi etkileyen toplam çekmece sayısını gösterir. 3. Bir çekmece bölmeye getirildiğinde ve daha sonra depoya geri döndüğünde sayı artar.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridKit" xml:space="preserve">
+    <value>Sütun, seçilen bileşen için kit kodunu gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridDescription" xml:space="preserve">
+    <value>Sütun, çeşitli kitlerin açıklamasını gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridState" xml:space="preserve">
+    <value>Kitin mevcut durumunu gösterir. turuncu renk bakımın yaklaştığını, kırmızı sürenin dolduğunu ve dolayısıyla bakım gerektiğini gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageGridRequest" xml:space="preserve">
+    <value>Sütun, belirli bir kit için bakım personeline zaten bir müdahale talebinin yapıldığını gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageModel" xml:space="preserve">
+    <value>Makine modelini gösterin.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageSerial" xml:space="preserve">
+    <value>Makinenin seri numarasını bildirin.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageInstallation" xml:space="preserve">
+    <value>Makine kurulum tarihini bildirir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageLastMaintenance" xml:space="preserve">
+    <value>Son bakımın yapıldığı tarihi gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageNextMaintenance" xml:space="preserve">
+    <value>Bir sonraki bakım için tahmini tarihi gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceMainPageMachineStatus" xml:space="preserve">
+    <value>Kitin mevcut durumunu gösterir. turuncu renk bakımın yaklaştığını, kırmızı sürenin dolduğunu ve dolayısıyla bakım gerektiğini gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailDescription" xml:space="preserve">
+    <value>Sayfa, seçilen kitin bakımının dayandığı verileri görüntülemenizi sağlar. Planlı bakım işlemlerini belirlemek için sistem tarafından kullanılan tüm bilgiler görüntülenir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridElement" xml:space="preserve">
+    <value>Seçilen bakım kiti tarafından kullanılan parça numarasını gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridDescription" xml:space="preserve">
+    <value>Seçilen kitte kullanılan bileşenin açıklamasını raporlar.</value>
+  </data>
+  <data name="HelpMaintenanceDetailGridQuantity" xml:space="preserve">
+    <value>Seçilen kitte bulunması gereken parça sayısını belirtir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesTotal" xml:space="preserve">
+    <value>Makine kurulduğundan beri tamamlanan toplam döngü sayısı.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesFromLastMaint" xml:space="preserve">
+    <value>Son bakımdan bu yana gerçekleştirilen döngü sayısını raporlar.</value>
+  </data>
+  <data name="HelpMaintenanceDetailCyclesBetweenTwoMaint" xml:space="preserve">
+    <value>İki bakım işlemi arasında gerçekleştirilebilecek döngü sayısını gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Turuncu rengin bakımın yaklaştığını, kırmızının ise bakımın bittiğini göstermesi kuralı ile kitin durumunu bildirir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailHoursRequired" xml:space="preserve">
+    <value>Gerekli bakım işlemini gerçekleştirmek için gereken saat sayısını gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Bakım işleminin gerçekleştirilebilmesi için yüksekte çalışma için bir platform kullanımının gerekli olup olmadığını gösterir.</value>
+  </data>
+  <data name="HelpMaintenanceDetailSendRequestContact" xml:space="preserve">
+    <value>Yardım ofisine bir bakım müdahalesi düzenlemek için iletişime geçilmesini isteyen bir e-posta göndermenize olanak tanır.</value>
+  </data>
+  <data name="HelpGeneralInfoDescription" xml:space="preserve">
+    <value>Sayfa, üzerinde çalıştığınız makineyle ilgili bir dizi genel bilgi sunar. Diğer bilgilerin yanı sıra bir sonraki bakımın tarihi de görüntülenir. Daha fazla bakım yapılması durumunda en son tarih görüntülenir.</value>
+  </data>
+  <data name="HelpGeneralInfoModel" xml:space="preserve">
+    <value>Üzerinde çalıştığınız makinenin modelini gösterir.</value>
+  </data>
+  <data name="HelpGeneralInfoSerial" xml:space="preserve">
+    <value>Üzerinde çalıştığınız makinenin seri numarasını gösterir.</value>
+  </data>
+  <data name="HelpGeneralInfoSwRelease" xml:space="preserve">
+    <value>Şu anda makinede yüklü olan SW'nin sürümünü gösterir.</value>
+  </data>
+  <data name="HelpGeneralInfoTotalDrawers" xml:space="preserve">
+    <value>Makineye takılan toplam çekmece sayısı.</value>
+  </data>
+  <data name="HelpGeneralInfoInstallationDate" xml:space="preserve">
+    <value>Makine kurulum tarihini bildirir.</value>
+  </data>
+  <data name="HelpGeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Son bakımın tarihini gösterir.</value>
+  </data>
+  <data name="HelpGeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Bir sonraki bakımın tahmini tarihini gösterir.</value>
+  </data>
+  <data name="HelpGeneralInfoMachineStatus" xml:space="preserve">
+    <value>Makinenin mevcut bakım durumunu raporlar.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataDescription" xml:space="preserve">
+    <value>Sayfa, makinenin özelliklerine göre çekmece alanının kullanımı ve yüklenen toplam ağırlık ile ilgili bazı istatistiksel bilgileri görüntüler. Makinenin kullanımına ilişkin bilgiler de görüntülenir.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataMovedDrawers" xml:space="preserve">
+    <value>Kurulumun başlangıcından bu yana taşınan toplam çekmece sayısı.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataOccupiedArea" xml:space="preserve">
+    <value>Kullanılabilir toplam alana atıfta bulunulan makinenin içinde işgal edilen alanın yüzdesini gösterir.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataLoadedWeight" xml:space="preserve">
+    <value>Kurulumun başlangıcından bu yana taşınan toplam çekmece sayısı.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataPowerOnTotalTime" xml:space="preserve">
+    <value>Makine kurulduğundan beri toplam açık kalma süresini raporlar.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataAutomaticTotalTime" xml:space="preserve">
+    <value>Otomatik modda geçen toplam süre ile kurulum anından itibaren açma süresi arasındaki oranı gösterir.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataUseRatio" xml:space="preserve">
+    <value>Kullanım katsayısı, otomatik hareketli çekmecelerde geçirilen süre ile ateşleme süresi arasındaki oranı gösterir.</value>
+  </data>
+  <data name="HelpCellsStatisticsDescription" xml:space="preserve">
+    <value>Prosedür, makinenin içinde bulunan hücrelerle ilgili istatistiksel verileri gösterir. Ön ve arka tarafla ilgili global verilere ek olarak, hem ön hem de arka taraf için sağlanan çeşitli durumlardaki hücre sayısına ilişkin veriler görüntülenir.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridStatus" xml:space="preserve">
+    <value>Satır verilerinin başvurduğu hücrenin durumunu bildirir.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotAnt" xml:space="preserve">
+    <value>Ön tarafa atıfta bulunan kılavuzun ilk sütununda belirtilen duruma sahip hücrelerin toplamını gösterir.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotAnt" xml:space="preserve">
+    <value>Ön tarafa atıfta bulunan kılavuzun ilk sütununda belirtilen duruma sahip hücrelerin yüzdesini gösterir.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridTotPost" xml:space="preserve">
+    <value>Ön tarafa atıfta bulunan kılavuzun ilk sütununda belirtilen duruma sahip hücrelerin toplamını gösterir.</value>
+  </data>
+  <data name="HelpCellsStatisticsGridPercTotPost" xml:space="preserve">
+    <value>Arka tarafa atıfta bulunan kılavuzun ilk sütununda belirtilen duruma sahip hücrelerin yüzdesini gösterir.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsTot" xml:space="preserve">
+    <value>Makinede bulunan toplam hücre sayısı.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsAnt" xml:space="preserve">
+    <value>Makinenin önünde bulunan toplam hücre sayısı.</value>
+  </data>
+  <data name="HelpCellsStatisticsCellsPost" xml:space="preserve">
+    <value>Makinenin arka tarafında bulunan toplam hücre sayısı.</value>
+  </data>
+  <data name="HelpCellsStatisticsTotalOccupiedCells" xml:space="preserve">
+    <value>Mevcut hücrelerin toplamına atıfta bulunulan dolu hücrelerin yüzdesini gösterir.</value>
+  </data>
+  <data name="HelpCellsStatisticsButtonOther" xml:space="preserve">
+    <value>Düğme, depolama alanı sıkıştırma prosedürüne erişim sağlar.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonCellsStatistics" xml:space="preserve">
+    <value>Hücre istatistikleri görüntüleme sayfasını etkinleştirin.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonDrawersStatistics" xml:space="preserve">
+    <value>Makinede bulunan çeşitli çekmecelerin istatistiksel veri sayfasını görüntüler.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonMachineStatistics" xml:space="preserve">
+    <value>Makinenin istatistiksel verilerinin görüntülendiği sayfaya erişim sağlar.</value>
+  </data>
+  <data name="HelpStatisticsGeneralDataButtonErrorsStatistics" xml:space="preserve">
+    <value>Kurulumdan bu yana makine tarafından oluşturulan hatalarla ilgili istatistiksel verileri görüntülemek için sayfayı etkinleştirir.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonDrawerCall" xml:space="preserve">
+    <value>Çekmeceye göre anında aramaya ayrılmış sayfayı görüntüleyin.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonCompacting" xml:space="preserve">
+    <value>Depolama alanı sıkıştırma prosedürlerinin yönetim sayfasına erişim sağlar.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonStastistics" xml:space="preserve">
+    <value>Üzerinde çalıştığınız makine ile ilgili istatistiksel bilgilere ayrılmış bölüme erişmenizi sağlar.</value>
+  </data>
+  <data name="HelpGeneralInfoButtonMaintenance" xml:space="preserve">
+    <value>Üzerinde çalıştığınız makine için öngörülen bakım işlemlerine ayrılmış sayfayı açar.</value>
+  </data>
+  <data name="HelpErrorsStatisticsDescription" xml:space="preserve">
+    <value>Prosedür, üzerinde çalıştığınız makineyle ilgili hata istatistikleri görüntüleme sayfasına erişmenizi sağlar. İstatistikler, kurulum anından danışma anına kadar olan tüm süreyi kapsar.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridError" xml:space="preserve">
+    <value>Tablonun sütunu, üzerinde çalıştığınız makine tarafından oluşturulan hata kodlarının listesini gösterir.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridTotal" xml:space="preserve">
+    <value>Her bir bireysel hatanın yüzde görülme sıklığı, sayılan toplam hatalara göre gösterilir.</value>
+  </data>
+  <data name="HelpErrorsStatisticsGridPercTotal" xml:space="preserve">
+    <value>YardımHatalarİstatistiklerGridPercToplam</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersMoved" xml:space="preserve">
+    <value>Alan, kurulumun başlangıcından bu yana kullanılan toplam çekmece sayısını gösterir. Bir çekmece, bir kaynaktan bir hedefe taşındığında taşınmış olarak kabul edilir.</value>
+  </data>
+  <data name="HelpErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Tabloda seçilen hatanın tam açıklaması görüntülenir.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotaleErrors" xml:space="preserve">
+    <value>Kurulumdan bu yana makinenin saydığı toplam hata sayısı görüntülenir.</value>
+  </data>
+  <data name="HelpErrorsStatisticsTotalDrawersNoError" xml:space="preserve">
+    <value>Alan, hatasız hareket ettirilen çekmecelerin ortalamasını ifade eden sistem tarafından hesaplanan istatistiksel bir veriyi gösterir.</value>
+  </data>
+  <data name="HelpErrorsStatisticsReliability" xml:space="preserve">
+    <value>Sistem, makinenin güvenilirlik katsayısını, sayılan hata sayısı ile taşınan çekmecelerin toplamı arasındaki oran olarak hesaplar.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDescription" xml:space="preserve">
+    <value>Sayfa, bölmedeki çekmeceye tahsis edilen çeşitli kalemler üzerinde yapılacak envanter işlemine ilişkin ana verileri sunar. Prosedür, talep edilen ürünü içeren bölme belirtildiğinde, operatörün mevcut stokta bulunan parça miktarını girmesini bekler.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Alan, operatör tarafından sayılan o anda stokta bulunan parça miktarını gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailDescription" xml:space="preserve">
+    <value>Sayfa, operatöre şu anda devam etmekte olan envanter işlemi hakkında daha fazla ayrıntı sağlar.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailProductionDate" xml:space="preserve">
+    <value>Stokta bulunan kalemin üretim tarihini bildirir.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailMaterialStatus" xml:space="preserve">
+    <value>Envanter olan kalemin malzeme durumunu gösterir.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailLotto" xml:space="preserve">
+    <value>Stok aşamasında kalemin üretim partisini raporlar.</value>
+  </data>
+  <data name="HelpDrawerActivityInventoryDetailPackaging" xml:space="preserve">
+    <value>Envanter olan kalem için kullanılan ambalaj türünü bildirin.</value>
+  </data>
+  <data name="HelpListsInWaitGridType" xml:space="preserve">
+    <value>Aşağıdaki koda göre liste türünü belirtir: P: V seç: I koy: Envanter</value>
+  </data>
+  <data name="HelpCommonListType" xml:space="preserve">
+    <value>Aşağıdaki koda göre seçilen liste tipini belirtir: P: V seç: I koy: Envanter.</value>
+  </data>
+  <data name="HelpGeneralInfoWmsStatus" xml:space="preserve">
+    <value>Alan, varsa, üzerinde çalıştığınız makineyi kontrol eden WMS'nin mevcut durumunu bildirir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDescription" xml:space="preserve">
+    <value>Sayfa, sıkıştırma prosedürünün ilerlemesini gösterir. Taşınmakta olan çekmece ve hangi hücreden çekildiği ve hangi hücreye gittiği belirtilir. Prosedürün ilerlemesi, halihazırda kurtarılan alana ek olarak, parçaların ve kurtarılacak alanın bir göstergesi ile de gösterilir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Halihazırda taşınmakta olan çekmecenin kodunu gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>İşlenmekte olan çekmecenin depolandığı kaynak hücreyi gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Taşıma sırasında çekmecenin taşınacağı hücre numarasını belirtir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailCurrentStep" xml:space="preserve">
+    <value>Çeşitli çekmecelerin kullanım döngüsünün mevcut aşamasını bildirir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Dikey eksenin geçerli konumunu gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>Yatay eksenin geçerli konumunu gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailFragmentRemaining" xml:space="preserve">
+    <value>Hala paketlenecek parça sayısını gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Şu anda geri kazanılan toplam alanı gösterir.</value>
+  </data>
+  <data name="HelpDrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Prosedürün sona ermesinden sonra kurtarılması gereken alanı bildirir.</value>
+  </data>
+  <data name="HelpMachineStatisticsShutter" xml:space="preserve">
+    <value>Yuva n'yi donatan deklanşör tarafından gerçekleştirilen toplam döngü sayısını bildirir. 1. Bir çevrim, toplam veya ara açma veya kapama işlemidir.</value>
+  </data>
+  <data name="CarouselCalibrationFunctionDescription" xml:space="preserve">
+    <value>Dönen kalibrasyon işlevi, bir dizi ardışık otomatik hareket gerçekleştirerek ve ardından sistem tarafından önerilen varsayılan değeri güncelleyerek doğru değeri kalibre etmenize olanak tanır. Prosedür, doğru şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="ExternalBayCalibrationFunctionDescription" xml:space="preserve">
+    <value>Harici bölme kalibrasyon işlevi, bir dizi ardışık otomatik hareket gerçekleştirerek ve ardından sistem tarafından önerilen varsayılan değeri güncelleyerek doğru değeri kalibre etmenize olanak tanır. Prosedür, doğru şekilde tamamlanana kadar ardışık adımlarla çalışır.</value>
+  </data>
+  <data name="BayOperationsDescription" xml:space="preserve">
+    <value>Mevcut bölmedeki işlemleri kontrol eden aşağıdaki parametreleri ayarlayabilirsiniz.</value>
+  </data>
+  <data name="BayOperationsDescriptionWarning" xml:space="preserve">
+    <value>UYARI: bazı özellikler için WMS özelleştirmesi gerekir</value>
+  </data>
+  <data name="HelpFBDDescription" xml:space="preserve">
+    <value>Bu işlem, arka taraftaki hücrelerin tüm konumlarını güncellemenizi sağlar, kaydetme işlemi birkaç saniye sürebilir.</value>
+  </data>
+</root>

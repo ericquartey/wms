@@ -637,7 +637,8 @@ namespace Ferretto.VW.Simulator.Services
             {
                 messageResponse = "TEST OFF OK";
             }
-            else if (messageReceived.StartsWith("SET ", StringComparison.Ordinal))
+            else if (messageReceived.StartsWith("SET ", StringComparison.Ordinal)
+                || messageReceived.StartsWith("SCROLL ON ", StringComparison.Ordinal))
             {
                 var subStr = messageReceived.Split(' ');
                 if (subStr.Length > 1)
@@ -646,7 +647,7 @@ namespace Ferretto.VW.Simulator.Services
                     this.alphaNumericBar1Message = messageReceived.Substring(messageReceived.IndexOf(subStr[1], StringComparison.Ordinal) + subStr[1].Length).Trim();
                 }
             }
-            else if (messageReceived.StartsWith("GET ", StringComparison.Ordinal))
+            else if (messageReceived.StartsWith("GET", StringComparison.Ordinal))
             {
                 messageResponse = "GET " + this.alphaNumericBar1Message;
             }

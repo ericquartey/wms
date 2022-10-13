@@ -117,5 +117,4 @@
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties configuration_4vertimag-configuration_1galperti_1mv20-0129_1json__JsonSchema="MV20-0132" /></VisualStudio></ProjectExtensions>
 </Project>

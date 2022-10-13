@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
 using static Ferretto.VW.Devices.AlphaNumericBar.AlphaNumericBarCommands;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.Devices.AlphaNumericBar
 {
@@ -23,7 +25,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private const string NEW_LINE = "\r\n";
 
-        private readonly ConcurrentQueue<string> errorsQueue = new ConcurrentQueue<string>();
+        //private readonly ConcurrentQueue<string> errorsQueue = new ConcurrentQueue<string>();
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
@@ -49,24 +51,37 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private int maxMessageLength;
 
+        private List<string> messageFields;
+
+        private int savedOffset;
+
+        private string savedScrollMsg;
+
+        private string savedSetMsg;
+
         private AlphaNumericBarSize size = AlphaNumericBarSize.ExtraLarge;
 
         private NetworkStream stream = null;
 
-        //private string selectedMessage;
-
         //private double? selectedPosition;
         private bool testEnabled;
 
+        //private string selectedMessage;
         private bool testScrollEnabled;
+
+        private bool useGet;
 
         #endregion
 
         #region Properties
 
+        public bool HasGetErrors { get; set; }
+
         public IPAddress IpAddress => this.ipAddress;
 
         public bool IsConnected => this.client?.Connected ?? false;
+
+        public bool IsTestLoop { get; set; }
 
         public int MaxMessageLength => this.maxMessageLength;
 
@@ -163,30 +178,33 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return result;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <returns></returns>
-        public async Task<bool> ClearAsync()
-        {
-            this.ClearConcurrentQueue(this.messagesToBeSendQueue);
-            this.EnqueueCommand(AlphaNumericBarCommands.Command.CLEAR);
-            return true;
-        }
-
         public void ClearCommands()
         {
-            this.ClearConcurrentQueue(this.messagesToBeSendQueue);
+            ClearConcurrentQueue(this.messagesToBeSendQueue);
+            ClearConcurrentQueue(this.messagesReceivedQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
             this.SelectedMessage = null;
+            this.savedSetMsg = null;
+            this.savedScrollMsg = null;
         }
 
-        public void Configure(IPAddress ipAddress, int port, AlphaNumericBarSize size, bool bayIsExternal = false, int maxMessageLength = 125, bool clearOnClose = false)
+        public void Configure(
+            IPAddress ipAddress,
+            int port,
+            AlphaNumericBarSize size,
+            bool bayIsExternal = false,
+            int maxMessageLength = 125,
+            bool clearOnClose = false,
+            bool useGet = false,
+            List<string> messageFields = null)
         {
             this.ipAddress = ipAddress;
             this.Port = port;
             this.size = size;
             this.maxMessageLength = maxMessageLength;
             this.clearOnClose = clearOnClose;
+            this.useGet = useGet;
+            this.messageFields = messageFields;
 
             switch (size)
             {
@@ -273,7 +291,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> DimAsync(int dimension)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.DIM, null, dimension);
             return true;
         }
@@ -301,7 +319,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> EnabledAsync(bool enable, bool force = true)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
+            ClearConcurrentQueue(this.messagesReceivedQueue);
+            this.savedSetMsg = null;
+            this.savedScrollMsg = null;
 
             if (enable == this.barEnabled && !force)
             {
@@ -329,8 +350,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             var result = false;
             try
             {
-                this.ClearConcurrentQueue(this.messagesReceivedQueue);
-                this.ClearConcurrentQueue(this.errorsQueue);
+                //this.ClearConcurrentQueue(this.messagesReceivedQueue);
+                //this.ClearConcurrentQueue(this.errorsQueue);
                 int errors = 0;
 
                 while (!this.messagesToBeSendQueue.IsEmpty
@@ -374,7 +395,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                                 }
                                 if (bytes <= 0 || !this.IsResponseOk(sendMessage, responseMessage))
                                 {
-                                    this.logger.Debug($"ExecuteCommands;ArgumentException;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                                    this.logger.Debug($"ExecuteCommands;Response error;{sendMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")},{responseMessage.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
                                     if (errors++ > 5)
                                     {
                                         this.ClearCommands();
@@ -432,6 +453,77 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             return result;
+        }
+
+        public string GetMessageFromWmsOperation(MissionOperation operation)
+        {
+            var message = "?";
+
+            switch (operation.Type)
+            {
+                case MissionOperationType.Pick:
+                    message = "-";
+                    break;
+
+                case MissionOperationType.Put:
+                    message = "+";
+                    break;
+            }
+            message += (operation.RequestedQuantity - operation.DispatchedQuantity);
+
+            if (this.messageFields != null && this.messageFields.Any())
+            {
+                foreach (var field in this.messageFields)
+                {
+                    if (!string.IsNullOrEmpty(field))
+                    {
+                        switch (field)
+                        {
+                            case "ItemCode":
+                                message += " " + operation.ItemCode;
+                                break;
+
+                            case "ItemDescription":
+                                message += " " + operation.ItemDescription;
+                                break;
+
+                            case "Destination":
+                                message += " " + operation.Destination;
+                                break;
+
+                            case "ItemListCode":
+                                message += " " + operation.ItemListCode;
+                                break;
+
+                            case "ItemListDescription":
+                                message += " " + operation.ItemListDescription;
+                                break;
+
+                            case "ItemListRowCode":
+                                message += " " + operation.ItemListRowCode;
+                                break;
+
+                            case "ItemNotes":
+                                message += " " + operation.ItemNotes;
+                                break;
+
+                            case "Lot":
+                                message += " " + operation.Lot;
+                                break;
+
+                            case "SerialNumber":
+                                message += " " + operation.SerialNumber;
+                                break;
+
+                            case "Sscc":
+                                message += " " + operation.Sscc;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return message;
         }
 
         public bool GetOffsetArrowAndMessage(double x, string message, out int offsetArrow, out int offsetMessage, out int scrollEnd)
@@ -542,7 +634,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> HelpAsync()
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.HELP);
             return true;
         }
@@ -554,7 +646,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> LuminosityAsync(int luminosity)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
             if (luminosity > 15)
             {
                 luminosity = 15;
@@ -720,7 +812,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetAndWriteArrowAsync(int arrowPosition, bool forceClear = true)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
 
             if (forceClear)
             {
@@ -740,7 +832,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetAndWriteMessageAsync(string message, int offset = 0, bool forceClear = true)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
+            ClearConcurrentQueue(this.messagesReceivedQueue);
+            this.savedSetMsg = null;
+            this.savedScrollMsg = null;
 
             //this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);    // mandatory, otherwise see duplicated message
 
@@ -752,12 +847,18 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_OFF, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SET, message, offset);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
+            if (this.useGet)
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.GET);
+                this.savedSetMsg = message;
+                this.savedOffset = offset;
+            }
 
             return true;
         }
 
         /// <summary>
-        /// Send a sequence of SET and WRITE command width scroll.
+        /// Send a sequence of SET and WRITE command with scroll.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="offset"></param>
@@ -766,7 +867,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetAndWriteMessageScrollAsync(string message, int offset = 0, int scrollEnd = 0, bool forceClear = true)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
+            ClearConcurrentQueue(this.messagesReceivedQueue);
+            this.savedSetMsg = null;
+            this.savedScrollMsg = null;
             //this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);    // mandatory, otherwise see duplicated message
 
             if (forceClear)
@@ -776,6 +880,12 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.SCROLL_ON, message, offset, scrollEnd);
             this.EnqueueCommand(AlphaNumericBarCommands.Command.WRITE);
+            if (this.useGet)
+            {
+                this.EnqueueCommand(AlphaNumericBarCommands.Command.GET);
+                this.savedScrollMsg = message;
+                this.savedOffset = offset;
+            }
             return true;
         }
 
@@ -788,7 +898,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetCustomCharacterAsync(int index, int offset, bool forceClear = true)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
 
             if (forceClear)
             {
@@ -806,7 +916,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> SetScrollEnabledAsync(bool enable)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -827,7 +937,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> TestAsync(bool enable)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.ENABLE_OFF);
 
@@ -851,7 +961,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
         /// <returns></returns>
         public async Task<bool> TestScrollAsync(bool enable)
         {
-            this.ClearConcurrentQueue(this.errorsQueue);
+            //this.ClearConcurrentQueue(this.errorsQueue);
 
             if (enable)
             {
@@ -865,9 +975,38 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             return true;
         }
 
-        private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
+        public async Task<bool> TryResendWriteAsync()
         {
-            while (concurrentQueure.TryDequeue(out _)) { }
+            var ret = false;
+            if (!this.useGet)
+            {
+                this.savedSetMsg = null;
+                this.savedScrollMsg = null;
+                return ret;
+            }
+            if (!string.IsNullOrEmpty(this.savedSetMsg))
+            {
+                ret = await this.ResendIfNotGet(this.savedSetMsg);
+                if (ret)
+                {
+                    this.savedSetMsg = null;
+                }
+            }
+            else if (!string.IsNullOrEmpty(this.savedScrollMsg))
+            {
+                ret = await this.ResendIfNotGet(this.savedScrollMsg);
+                if (ret)
+                {
+                    this.savedScrollMsg = null;
+                }
+            }
+            return ret;
+        }
+
+        private static bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueue)
+        {
+            while (concurrentQueue.TryDequeue(out _))
+            { }
             return true;
         }
 
@@ -1010,6 +1149,10 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 case AlphaNumericBarCommands.Command.WRITE:
                     this.barEnabled = true;
                     break;
+
+                case AlphaNumericBarCommands.Command.GET:
+                    strCommand = "GET";
+                    break;
             }
 
             strCommand += NEW_LINE;
@@ -1091,6 +1234,40 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             return result;
+        }
+
+        private async Task<bool> ResendIfNotGet(string message)
+        {
+            var ret = false;
+            if (!this.messagesReceivedQueue.IsEmpty)
+            {
+                var receivedArray = this.messagesReceivedQueue.ToArray();
+                var encoded = this.Encode(message, this.maxMessageLength - message.Length);
+                var isOk = receivedArray.Any(r => r.Contains(encoded.Substring(0, Math.Min(encoded.Length, 100))));
+                if (isOk)
+                {
+                    this.logger.Debug($"Received GET message OK");
+                    ret = true;
+                }
+                else if (receivedArray.Any(r => r.StartsWith("GET", StringComparison.Ordinal)))
+                {
+                    this.HasGetErrors = true;
+                    this.logger.Debug($"Received GET message Error");
+                    if (!this.IsTestLoop)
+                    {
+                        this.logger.Debug($"Retry sending WRITE");
+                        await this.SetAndWriteMessageAsync(message, this.savedOffset, false);
+                        // only one retry
+                    }
+                    ret = true;
+                }
+                else
+                {
+                    this.logger.Debug($"waiting GET message");
+                }
+            }
+
+            return ret;
         }
 
         #endregion

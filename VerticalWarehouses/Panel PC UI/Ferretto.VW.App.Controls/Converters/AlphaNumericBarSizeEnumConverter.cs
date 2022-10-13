@@ -13,8 +13,11 @@ namespace Ferretto.VW.App.Controls.Converters
         {
             try
             {
-                AlphaNumericBarSize size;
-                Enum.TryParse(value.ToString(), out size);
+                AlphaNumericBarSize size = AlphaNumericBarSize.Small;
+                if (value != null)
+                {
+                    Enum.TryParse(value.ToString(), out size);
+                }
                 switch (size)
                 {
                     case AlphaNumericBarSize.ExtraLarge:

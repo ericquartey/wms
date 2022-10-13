@@ -150,6 +150,7 @@
                           Margin="0"
                           HorizontalContentAlignment="Center"
                           AllowDefaultButton="False"
+                          AllowNullInput="True"
                           FontSize="{StaticResource FontSize_Very_High}"
                           Foreground="{DynamicResource PpcForeground}"
                           IsEnabled="{Binding IsEnabled}"

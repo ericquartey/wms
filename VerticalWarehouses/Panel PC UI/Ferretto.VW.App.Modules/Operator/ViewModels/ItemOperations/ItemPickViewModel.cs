@@ -410,9 +410,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
-            this.IsQuantityLimited = configuration.Machine.IsQuantityLimited;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
+            this.IsQuantityLimited = configuration.IsQuantityLimited;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
 
             this.IsAddItem = false;
@@ -439,14 +439,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
             if (this.IsQuantityLimited && this.MissionOperation != null)
             {
-                this.MaxInputQuantity = this.MissionOperation.RequestedQuantity;
+                this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
             }
 
             this.BarcodeImageExist = false;
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
 
-            this.IsAddItemFeatureAvailable = configuration.Machine.IsEnableAddItem &&
-                configuration.Machine.IsDrapery &&
+            this.IsAddItemFeatureAvailable = configuration.IsEnableAddItem &&
+                configuration.IsDrapery &&
                 this.IsCurrentDraperyItem;
 
             // Setup only reserved for Tendaggi Paradiso
@@ -480,6 +480,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.CanPickBox = false;
                 }
 
+                if (this.IsQuantityLimited && this.MissionOperation != null)
+                {
+                    this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
+                }
                 this.InputQuantity = this.MissionRequestedQuantity;
                 base.InitializeInputQuantity();
                 //this.AvailableQuantity = this.MissionRequestedQuantity;

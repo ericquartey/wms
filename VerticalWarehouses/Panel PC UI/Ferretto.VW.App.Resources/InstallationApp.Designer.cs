@@ -2392,6 +2392,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty Fields, enter at least 1 field..
+        /// </summary>
+        public static string EmptyFields {
+            get {
+                return ResourceManager.GetString("EmptyFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Weighing with empty unit.
         /// </summary>
         public static string EmptyUnitWeighing {
@@ -2802,6 +2811,15 @@ namespace Ferretto.VW.App.Resources {
         public static string False {
             get {
                 return ResourceManager.GetString("False", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Field.
+        /// </summary>
+        public static string Field {
+            get {
+                return ResourceManager.GetString("Field", resourceCulture);
             }
         }
         
@@ -4512,6 +4530,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LogsFromTelemetryServiceCompleted {
             get {
                 return ResourceManager.GetString("LogsFromTelemetryServiceCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message not sent - GET Error.
+        /// </summary>
+        public static string LoopError {
+            get {
+                return ResourceManager.GetString("LoopError", resourceCulture);
             }
         }
         
@@ -6721,6 +6748,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start Loop.
+        /// </summary>
+        public static string StartLoop {
+            get {
+                return ResourceManager.GetString("StartLoop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start recall from cell to bay.
         /// </summary>
         public static string StartManualDrawerRecall {
@@ -6879,6 +6915,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StopInProgress {
             get {
                 return ResourceManager.GetString("StopInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Loop Test.
+        /// </summary>
+        public static string StopLoop {
+            get {
+                return ResourceManager.GetString("StopLoop", resourceCulture);
             }
         }
         
@@ -7509,6 +7554,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UpperBound {
             get {
                 return ResourceManager.GetString("UpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GET Message.
+        /// </summary>
+        public static string UseGetMessage {
+            get {
+                return ResourceManager.GetString("UseGetMessage", resourceCulture);
             }
         }
         

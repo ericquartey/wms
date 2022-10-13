@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MissionManager
@@ -51,6 +53,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MessageType.WmsEnableChanged:
                     await this.OnWmsEnableChanged(serviceProvider);
                     break;
+
+                case MessageType.SaveToWms:
+                    await this.OnSaveToWms(message.Description, serviceProvider);
+                    break;
             }
         }
 
@@ -89,6 +95,15 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnNewWmsMissionAvailable()
         {
             await this.RetrieveNewWmsMissionsAsync();
+        }
+
+        private async Task OnSaveToWms(string loadUnitId, IServiceProvider serviceProvider)
+        {
+            var loadinUnitsDataProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            if (int.TryParse(loadUnitId, out var id))
+            {
+                await loadinUnitsDataProvider.SaveToWmsAsync(id);
+            }
         }
 
         #endregion

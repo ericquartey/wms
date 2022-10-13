@@ -213,6 +213,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             base.Disappear();
 
             this.SearchItem = string.Empty;
+            this.lists.Clear();
+            this.RaisePropertyChanged(nameof(this.Lists));
             this.IsWaitingForResponse = false;
         }
 
@@ -296,8 +298,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
 
-            var configuration = await this.machineConfigurationWebService.GetAsync();
-            this.IsCarrefour = configuration.Machine.IsCarrefour;
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsCarrefour = configuration.IsCarrefour;
 
             await this.LoadListsAsync();
 
@@ -417,7 +419,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     await this.FilterList(this.searchItem, this.tokenSource.Token);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
@@ -556,10 +558,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.lists.Count > 0)
                 {
                     this.IsShipmentDayVisible = this.lists.Any(i => i.ShipmentUnitCode != null);
-                    if (!this.IsCarrefour)
-                    {
-                        this.lists.ForEach(l => l.IsSpecialPriority = false);
-                    }
                 }
 
                 this.RaisePropertyChanged(nameof(this.Lists));

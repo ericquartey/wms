@@ -494,8 +494,74 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             mission.LoadUnitDestination = bay.Positions.First(b => !b.IsBlocked).Location;
                         }
                     }
+                    else if (this.MachineVolatileDataProvider.RandomCells
+                        && this.MachineVolatileDataProvider.LoadUnitsToTest?.Count == 1
+                        && bay.IsDouble)
+                    {
+                        // Random DestinationBay (BIG, BID, BED)
+                        var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (upper is LoadingUnitLocation.NoLocation)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper);
+                            }
+                            return false;
+                        }
+                        var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (bottom is LoadingUnitLocation.NoLocation)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
+                            }
                     else
                     {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
+                            }
+                            return false;
+                        }
+
+                        var randIdex = new Random().Next(2);
+
+                        var destinationBay1 = randIdex == 0 ? upper : bottom;
+                        var destinationBay2 = randIdex == 0 ? bottom : upper;
+
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay1, mission, false);
+
+                        if (returnValue)
+                        {
+                            mission.LoadUnitDestination = destinationBay1;
+                        }
+                        else
+                        {
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay2, mission, false);
+
+                            if (returnValue)
+                            {
+                                mission.LoadUnitDestination = destinationBay2;
+                            }
+                            else
+                            {
+                                if (showErrors || !bay.Positions.Any(p => p.LoadingUnit is null))
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                }
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Standard DestinationBay
                         var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
                         if (upper is LoadingUnitLocation.NoLocation)
                         {
@@ -526,7 +592,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (!bay.IsDouble ||
                             bay.Carousel != null)
                         {
-                            // If bay is not double or bay is carousel
+                            // If bay is not double or bay is carousel (BIS, BES, BIG)
                             // always check upper position first
                             returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false /*|| messageData.Destination == upper*/);
                             if (returnValue)
@@ -588,7 +654,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         if (bay.IsDouble &&
                             bay.IsExternal)
                         {
-                            // If bay is double and bay is external we choose automatically the destination
+                            // If bay is double and bay is external we choose automatically the destination (BED)
                             returnValue = true;
                             // Always check bottom position first
                             var bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
@@ -619,10 +685,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             !bay.IsExternal &&
                             bay.Carousel == null)
                         {
-                            // If bay is double and bay is not carousel
+                            // If bay is double and bay is not carousel (BID)
                             returnValue = true;
                             // Always check upper position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
+                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
                             if (bValue)
                             {
                                 // Upper position is empty.
@@ -656,10 +722,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
+                                        // check if bottom position has a high LU
+                                        var lu = this.BaysDataProvider.GetLoadingUnitByDestination(bottom);
+                                        var maxHeight = bay.Positions.First(p => !p.IsUpper).MaxSingleHeight;
+                                        if (lu != null && lu.Height > maxHeight)
+                                        {
+                                            if (showErrors)
+                                            {
+                                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                            }
+                                            else
+                                            {
+                                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                            }
+                                            returnValue = false;
+                                        }
+                                        else
+                                        {
                                         // We choose definitely the upper position
                                         mission.LoadUnitDestination = upper;
                                     }
                                 }
+                            }
                             }
                             else
                             {

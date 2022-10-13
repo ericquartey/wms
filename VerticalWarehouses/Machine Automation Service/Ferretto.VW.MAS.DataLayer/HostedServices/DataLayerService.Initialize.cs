@@ -135,6 +135,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     var rotationClassSchedule = scope.ServiceProvider.GetRequiredService<IRotationClassScheduleProvider>();
                     rotationClassSchedule.CheckRotationClass();
 
+                    var accessories = scope.ServiceProvider.GetRequiredService<IAccessoriesDataProvider>();
+                    accessories.CheckAccessories();
+
                     // performance optimization
                     var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
                     elevatorDataProvider.GetAxis(Orientation.Horizontal);
@@ -148,7 +151,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                     machineProvider.CheckBackupServer();
                     baysDataProvider.AddElevatorPseudoBay();
-                    machineProvider.Get();
                     var bays = baysDataProvider.GetAll();
                     var machineVolatileDataProvider = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
 

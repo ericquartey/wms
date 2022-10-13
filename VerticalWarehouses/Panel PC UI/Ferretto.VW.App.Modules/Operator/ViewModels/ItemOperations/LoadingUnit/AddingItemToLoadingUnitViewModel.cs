@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -21,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
+
         private readonly INavigationService navigationService;
 
         private bool acquiredLotValue;
@@ -29,7 +33,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand addItemCommand;
 
+        private DelegateCommand cancelReasonCommand;
+
         private int compartmentId;
+
+        private DelegateCommand confirmReasonCommand;
 
         private string expireDate;
 
@@ -40,6 +48,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isAddItemButtonEnabled;
 
         private bool isFromList;
+
+        private bool isOrderVisible;
+
+        private bool isReasonVisible;
 
         private string itemDescription;
 
@@ -55,9 +67,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private MissionOperation missionOperation;
 
+        private int? orderId;
+
+        private IEnumerable<OperationReason> orders;
+
         private double quantityIncrement;
 
         private int? quantityTolerance;
+
+        private int? reasonId;
+
+        private string reasonNotes;
+
+        private IEnumerable<OperationReason> reasons;
 
         private string serialNumber;
 
@@ -72,6 +94,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public AddingItemToLoadingUnitViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineItemsWebService itemsWebService,
+            IMachineMissionOperationsWebService missionOperationsWebService,
             INavigationService navigationService,
             IDialogService dialogService,
             IAuthenticationService authenticationService)
@@ -84,6 +107,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
         }
 
         #endregion
@@ -98,6 +122,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   (this.addItemCommand = new DelegateCommand(
                       async () => await this.AddItemToLoadingUnitAsync(),
                       this.CanAddItemButton));
+
+        public ICommand CancelReasonCommand =>
+           this.cancelReasonCommand
+           ??
+           (this.cancelReasonCommand = new DelegateCommand(
+               this.CancelReason));
+
+        public ICommand ConfirmReasonCommand =>
+                          this.confirmReasonCommand
+          ??
+          (this.confirmReasonCommand = new DelegateCommand(
+              async () => await this.ExecuteOperationAsync(),
+              this.CanExecuteItemPick));
 
         public string ExpireDate
         {
@@ -137,6 +174,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.isFromList;
             set => this.SetProperty(ref this.isFromList, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsOrderVisible
+        {
+            get => this.isOrderVisible;
+            set => this.SetProperty(ref this.isOrderVisible, value);
+        }
+
+        public bool IsReasonVisible
+        {
+            get => this.isReasonVisible;
+            set => this.SetProperty(ref this.isReasonVisible, value);
+        }
+
+        public bool IsWaitingForReason { get; private set; }
 
         public string ItemDescription
         {
@@ -183,6 +234,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.missionOperation, value, this.RaiseCanExecuteChanged);
         }
 
+        public int? OrderId
+        {
+            get => this.orderId;
+            set => this.SetProperty(ref this.orderId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public IEnumerable<OperationReason> Orders
+        {
+            get => this.orders;
+            set => this.SetProperty(ref this.orders, value);
+        }
+
         public double QuantityIncrement
         {
             get => this.quantityIncrement;
@@ -197,6 +260,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.SetProperty(ref this.quantityTolerance, value);
                 this.QuantityIncrement = Math.Pow(10, -this.quantityTolerance.Value);
             }
+        }
+
+        public int? ReasonId
+        {
+            get => this.reasonId;
+            set => this.SetProperty(ref this.reasonId, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ReasonNotes
+        {
+            get => this.reasonNotes;
+            set => this.SetProperty(ref this.reasonNotes, value);
+        }
+
+        public IEnumerable<OperationReason> Reasons
+        {
+            get => this.reasons;
+            set => this.SetProperty(ref this.reasons, value);
         }
 
         public string SerialNumber
@@ -229,6 +310,41 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task<bool> CheckReasonsAsync()
+        {
+            this.ReasonId = null;
+            this.OrderId = null;
+
+            try
+            {
+                var missionOperationType = MissionOperationType.Put;
+
+                this.ReasonNotes = null;
+                this.Reasons = await this.missionOperationsWebService.GetAllReasonsAsync(missionOperationType);
+
+                if (this.reasons?.Any() == true)
+                {
+                    if (this.reasons.Count() == 1)
+                    {
+                        this.ReasonId = this.reasons.First().Id;
+                    }
+                }
+
+                this.IsOrderVisible = this.Reasons != null && this.Reasons.Any() && this.Orders != null && this.Orders.Any();
+                this.IsReasonVisible = this.Reasons != null && this.Reasons.Any() && (this.Orders == null || !this.Orders.Any());
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+                this.Reasons = null;
+                this.Orders = null;
+                this.IsOrderVisible = false;
+                this.IsReasonVisible = false;
+            }
+
+            return this.Reasons?.Any() == true;
+        }
 
         public async Task CommandUserActionAsync(UserActionEventArgs userAction)
         {
@@ -336,9 +452,46 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             this.addItemCommand.RaiseCanExecuteChanged();
+            this.cancelReasonCommand?.RaiseCanExecuteChanged();
+            this.confirmReasonCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task AddItemToLoadingUnitAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            this.NoteEnabled = true;
+            var waitForReason = await this.CheckReasonsAsync();
+
+            this.IsWaitingForReason = waitForReason;
+
+            if (true)//!waitForReason) // Force true ImmediateAddItem dont handle ResonNote
+            {
+                await this.ExecuteOperationAsync();
+            }
+        }
+
+        private bool CanAddItemButton()
+        {
+            return this.isAddItemButtonEnabled;
+        }
+
+        private void CancelReason()
+        {
+            this.Reasons = null;
+            this.Orders = null;
+            this.IsOrderVisible = false;
+            this.IsReasonVisible = false;
+            this.IsWaitingForResponse = false;
+            this.IsWaitingForReason = false;
+        }
+
+        private bool CanExecuteItemPick()
+        {
+            return !(this.reasonId is null);
+        }
+
+        private async Task ExecuteOperationAsync()
         {
             this.ClearNotifications();
 
@@ -349,6 +502,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.MissionOperation != null)
                 {
                     this.Logger.Debug($"Immediate adding item {this.itemId} by list {this.missionOperation.ItemListRowCode} into loading unit {this.LoadingUnitId} ...");
+                    // Add ReasonNote
                     await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
                                          this.LoadingUnitId,
                                          this.missionOperation.ItemListRowCode,
@@ -360,6 +514,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
+                    // Add ReasonNote
                     await this.machineLoadingUnitsWebService.ImmediateAddItemAsync(
                                          this.LoadingUnitId,
                                          this.itemId,
@@ -378,11 +533,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} failed. Error: {exc}");
                 this.ShowNotification(Localized.Get("OperatorApp.ItemAddingFailed"), Services.Models.NotificationSeverity.Error);
             }
-        }
-
-        private bool CanAddItemButton()
-        {
-            return this.isAddItemButtonEnabled;
         }
 
         #endregion

@@ -2839,4 +2839,22 @@
   <data name="LocalAndWmsNotAllowed" xml:space="preserve">
     <value>Local not available is WMS is active</value>
   </data>
+  <data name="UseGetMessage" xml:space="preserve">
+    <value>GET Message</value>
+  </data>
+  <data name="Field" xml:space="preserve">
+    <value>Field</value>
+  </data>
+  <data name="EmptyFields" xml:space="preserve">
+    <value>Empty Fields, enter at least 1 field.</value>
+  </data>
+  <data name="StartLoop" xml:space="preserve">
+    <value>Start Loop</value>
+  </data>
+  <data name="StopLoop" xml:space="preserve">
+    <value>Stop Loop Test</value>
+  </data>
+  <data name="LoopError" xml:space="preserve">
+    <value>Message not sent - GET Error</value>
+  </data>
 </root>

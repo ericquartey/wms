@@ -25,22 +25,24 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
-- Aggiunta classe di rotazione ABC
-- Aggiunta gestione lettore badge senza WMS
-- Aggiunto utente Guest
-- Ricerca articoli: aggiunta visualizzazione della data di scadenza
+## Nuove Funzionalità 1.0.53 rispetto la 1.0.52
+- Il servizio MAS usa di nuovo il netcore 2.2
+- Aggiunta lingua turca
+- Aggiunto parametro per evidenziare la lista in attesa
+- Aggiunti parametri per confermare la fine lista
 
 ## Bug Risolti
-- Ricerca articoli: corretta la quantità nelle altre macchine
-- Gestione operatori: corretto il cambio della password di Operator
-- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
-- Login: corretto livello degli utenti di wms con nomi uguali ai locali
-- Gestione celle: le celle bloccate non risultano libere
-- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
+- Eliminati rallentamenti evidenziati nella versione precedente
+- Correzione ai comandi manuali
 
-## Compatibile con adapter 0.4.40
+## Compatibile con adapter 0.4.41
 ***
+
+[Versione 1.0.52](#id1052)
+
+[Versione 1.0.51](#id1051)
+
+[Versione 1.0.50](#id1050)
 
 [Versione 1.0.49](#id1049)
 
@@ -142,6 +144,55 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1052"></a>
+## Nuove Funzionalità 1.0.52 rispetto la 1.0.51
+- Test completo: con un solo cassetto l'opzione Random cambia anche la posizione in baia
+- Barra Alfanumerica: aggiunto test ciclico dei messaggi
+
+## Bug Risolti
+- Viste di prelievo e versamento: corretto aggiornamento della barra led
+- Aggiungi articolo: corretta mancanza di tastiera a video
+- Liste in attesa: corretta dimensione della descrizione
+- Le celle bloccate sono evidenziate in rosso
+- BIG: corretto ripristino se si blocca l'homing
+- Manutenzione: corretta chiusura collaudo con Baia2
+- Installer: eliminato il primo riavvio
+
+## Compatibile con adapter 0.4.41
+
+<a id="id1051"></a>
+## Nuove Funzionalità 1.0.51 rispetto la 1.0.50
+- Il servizio MAS usa ora il netcore 3.1
+- Barra Alfanumerica - aggiunto Messaggio GET e messaggi configurabili
+
+## Bug Risolti
+- Gli utenti di WMS possono avere password vuote
+- Pagina di prelievo - corretto aggiornamento della quantità da prelevare
+- Card dei sensori - non serve cambiare pagina per cambiare tema chiaro/scuro
+- Gli accessori si possono modificare prima di accendere la macchina
+- Serranda UpperHalf - corretto ciclo di sollevamento giostra
+- Chiamata cassetto - non perde più la selezione
+- BID - corretta gestione cassetti alti
+
+## Compatibile con adapter 0.4.40
+
+<a id="id1050"></a>
+## Nuove Funzionalità 1.0.50 rispetto la 1.0.49
+- Aggiunta classe di rotazione ABC
+- Aggiunta gestione lettore badge senza WMS
+- Aggiunto utente Guest
+- Ricerca articoli: aggiunta visualizzazione della data di scadenza
+
+## Bug Risolti
+- Ricerca articoli: corretta la quantità nelle altre macchine
+- Gestione operatori: corretto il cambio della password di Operator
+- Gestione errori altezza e peso: eliminata la conferma dei numeri di cassetto
+- Login: corretto livello degli utenti di wms con nomi uguali ai locali
+- Gestione celle: le celle bloccate non risultano libere
+- Controllo quote celle: aggiunto Correggi sostegno per cambiare coppie di quote
+
+## Compatibile con adapter 0.4.40
 
 <a id="id1049"></a>
 ## Nuove Funzionalità 1.0.49 rispetto la 1.0.48

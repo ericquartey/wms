@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
     public class ItemListExecution : ItemList
     {
+        private readonly IMachineIdentityWebService machineIdentityWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
+
         #region Constructors
 
         public ItemListExecution(ItemList itemList, int machineId)
@@ -39,7 +41,6 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.ShipmentUnitDescription = itemList.ShipmentUnitDescription;
             this.Priority = itemList.Priority;
             this.IsDispatchable = itemList.IsDispatchable;
-            this.IsSpecialPriority = itemList.Priority == 10;
 
             if (itemList.Machines?.Any(m => m.Id == machineId) == true)
             {
@@ -80,9 +81,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
         public ListExecutionMode ExecutionMode { get; }
 
-        public bool IsColorTag => !this.IsDispatchable || this.IsSpecialPriority;
+        public bool IsSpecialPriority => this.Priority == this.machineIdentityWebService.GetWaitingListPriorityHighlightedAsync().Result;
 
-        public bool IsSpecialPriority { get; set; }
+        public bool IsColorTag => !this.IsDispatchable || this.IsSpecialPriority;
 
         public string MachinesInfo { get; }
 

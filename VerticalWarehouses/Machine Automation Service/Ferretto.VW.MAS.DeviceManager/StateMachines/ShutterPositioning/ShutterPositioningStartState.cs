@@ -103,7 +103,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                                     shutterPositionTarget = ShutterPosition.Closed;
 
-                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors || this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
+                                    if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+                                        || this.machineData.PositioningMessageData.ShutterType == ShutterType.UpperHalf)
                                     {
                                         shutterPositionTarget = ShutterPosition.Half;
                                     }
