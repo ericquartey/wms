@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && unitToMove.Height < bayPosition.MaxDoubleHeight + tolerance
                     )
                 {
-                    if (locationBay.Positions.Count() == 1)
+                    if (locationBay.Positions.Count(p => !p.IsBlocked) == 1)
                     {
                         returnValue = true;
                     }
@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
-                    canRetry = locationBay.IsDouble && locationBay.Positions.Any(p => p.MaxDoubleHeight > 0);
+                    canRetry = locationBay.IsDouble && locationBay.Positions.Count(p => !p.IsBlocked) > 1;
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
                 else

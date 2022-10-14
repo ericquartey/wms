@@ -547,7 +547,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var bay = this.dataContext.Bays
                     .AsNoTracking()
-                    .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
+                    .Select(b => new { b.Number, b.IoDevice.Index })
+                    .SingleOrDefault(b => b.Index == ioIndex);
 
                 if (bay is null)
                 {
@@ -819,6 +820,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return returnValue;
+        }
+
+        public bool GetIsExternal(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.AsNoTracking()
+                    .Select(b => new { b.Number, b.IsExternal })
+                    .SingleOrDefault(b => b.Number == bayNumber)
+                    .IsExternal;
+            }
         }
 
         public bool GetLightOn(BayNumber bayNumber)
@@ -1165,7 +1177,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(targetBay);
+                var bay = this.dataContext.Bays.FirstOrDefault(b => b.Number == targetBay);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(targetBay.ToString());
@@ -1173,7 +1185,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 bay.Operation = newOperation;
 
-                this.Update(bay);
+                this.dataContext.SaveChanges();
 
                 return bay;
             }

@@ -519,8 +519,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
                             }
-                    else
-                    {
+                            else
+                            {
                                 this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
                             }
                             return false;
@@ -739,11 +739,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         }
                                         else
                                         {
-                                        // We choose definitely the upper position
-                                        mission.LoadUnitDestination = upper;
+                                            // We choose definitely the upper position
+                                            mission.LoadUnitDestination = upper;
+                                        }
                                     }
                                 }
-                            }
                             }
                             else
                             {
