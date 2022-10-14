@@ -911,7 +911,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                         this.logger.Debug($"GetByBarcodeAsync '{item?.Code}'.");
                                     }
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
                                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
                                 }
@@ -1000,6 +1000,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
+            if (this.Mission.Operations.Count(o => o.Status != MissionOperationStatus.Completed) == 1
+                && (await this.machineIdentityWebService.GetListPickConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Pick
+                || await this.machineIdentityWebService.GetListPutConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Put))
+            {
+                var result = this.DialogService.ShowMessage(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.YesNo);
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
             if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id))
             {
                 this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
@@ -1695,7 +1706,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.maxKnownIndexSelection = 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //if (this.appear)
                 //{
@@ -1776,7 +1787,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
                     }

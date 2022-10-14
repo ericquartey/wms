@@ -2914,20 +2914,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Request confirm for last operation on load unit.
+        ///   Looks up a localized string similar to Request confirm for last operation in the list.
         /// </summary>
-        public static string IsRequestConfirmForLastOperationOnLoadingUnit {
+        public static string IsRequestConfirmForLastOperationOnList {
             get {
-                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
+                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnList", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Request confirm for last operation on load unit.
         /// </summary>
-        public static string IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate_1_ {
+        public static string IsRequestConfirmForLastOperationOnLoadingUnit {
             get {
-                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]", resourceCulture);
+                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
             }
         }
         
