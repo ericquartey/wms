@@ -34,6 +34,7 @@
 ## Bug Risolti
 - Eliminati rallentamenti evidenziati nella versione precedente
 - Correzione ai comandi manuali
+- Il versamento manuale gestisce il barcode per selezionare l'articolo
 
 ## Compatibile con adapter 0.4.41
 ***
