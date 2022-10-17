@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             return update;
         }
 
-        private bool isWaitingMissionOnThisBay(DataModels.Bay bay)
+        private bool isWaitingMissionOnThisBay(Bay bay)
         {
             var retValue = false;
 
