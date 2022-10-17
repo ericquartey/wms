@@ -34,7 +34,6 @@
 ## Bug Risolti
 - Eliminati rallentamenti evidenziati nella versione precedente
 - Correzione ai comandi manuali
-- Aggiungi articolo da lista gestisce il barcode per la selezione
 
 ## Compatibile con adapter 0.4.41
 ***
