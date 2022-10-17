@@ -2037,8 +2037,8 @@
   <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
     <value>Modifica giacenza per differenza</value>
   </data>
-  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
-    <value>Conferma l'ultima operazione del cassetto</value>
+  <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
+    <value>Conferma l'ultima operazione della lista</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Articoli trovati in tabella di scambio</value>

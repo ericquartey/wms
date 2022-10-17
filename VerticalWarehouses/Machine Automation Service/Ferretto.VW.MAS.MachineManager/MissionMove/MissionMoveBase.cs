@@ -12,7 +12,6 @@ using Ferretto.VW.MAS.MachineManager.MissionMove.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -23,7 +22,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
     {
         #region Constructors
 
-        protected MissionMoveBase(DataModels.Mission mission,
+        protected MissionMoveBase(Mission mission,
              IServiceProvider serviceProvider,
              IEventAggregator eventAggregator)
         {
@@ -55,7 +54,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public IMachineVolatileDataProvider MachineVolatileDataProvider { get; }
 
-        public DataModels.Mission Mission { get; set; }
+        public Mission Mission { get; set; }
 
         public IServiceProvider ServiceProvider { get; }
 
@@ -88,7 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         /// <param name="bayLocation"></param>
         /// <param name="mission"></param>
         /// <returns></returns>
-        public bool CheckBayHeight(DataModels.Bay locationBay, LoadingUnitLocation bayLocation, DataModels.Mission mission, out bool canRetry, out MachineErrorCode errorCode)
+        public bool CheckBayHeight(Bay locationBay, LoadingUnitLocation bayLocation, Mission mission, out bool canRetry, out MachineErrorCode errorCode)
         {
             var returnValue = false;
             canRetry = false;
@@ -123,7 +122,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && unitToMove.Height < bayPosition.MaxDoubleHeight + tolerance
                     )
                 {
-                    if (locationBay.Positions.Count() == 1)
+                    if (locationBay.Positions.Count(p => !p.IsBlocked) == 1)
                     {
                         returnValue = true;
                     }
@@ -144,7 +143,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     && unitToMove.Height > bayPosition.MaxSingleHeight + tolerance)
                 {
                     this.Logger.LogWarning($"Load unit Height {unitToMove.Height:0.00} higher than single {bayPosition.MaxSingleHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
-                    canRetry = locationBay.IsDouble && locationBay.Positions.Any(p => p.MaxDoubleHeight > 0);
+                    canRetry = locationBay.IsDouble && locationBay.Positions.Count(p => !p.IsBlocked) > 1;
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
                 else
@@ -187,7 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             return false;
         }
 
-        public bool CheckMissionShowError(DataModels.Mission mission)
+        public bool CheckMissionShowError(Mission mission)
         {
             if (mission.ErrorCode != MachineErrorCode.NoError)
             {
@@ -283,7 +282,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public void DepositUnitEnd(bool restore = false)
         {
             var bayShutter = false;
-            DataModels.Bay bay = null;
+            Bay bay = null;
             if (this.Mission.LoadUnitDestination != LoadingUnitLocation.Cell)
             {
                 bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
@@ -827,7 +826,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             return update;
         }
 
-        private bool isWaitingMissionOnThisBay(DataModels.Bay bay)
+        private bool isWaitingMissionOnThisBay(Bay bay)
         {
             var retValue = false;
 
@@ -840,7 +839,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         .Where(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            (m.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            (m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
                         );
 
                     retValue = waitMissions.Any();
@@ -873,8 +872,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         .Where(
                             m => m.LoadUnitId != this.Mission.LoadUnitId &&
                             m.Id != this.Mission.Id &&
-                            ((m.Status == CommonUtils.Messages.Enumerations.MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
-                            || (m.Status == CommonUtils.Messages.Enumerations.MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
+                            ((m.Status == MissionStatus.Waiting && m.Step == MissionStep.WaitPick)
+                            || (m.Status == MissionStatus.New && bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)))
                         );
 
                     retValue = waitMissions.Any();

@@ -871,6 +871,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await this.ShowItemDetailsByBarcodeAsync(userAction);
                 return;
             }
+            if (this.IsAddListItemVisible)
+            {
+                await this.ShowItemDetailsByBarcodeAsync(userAction);
+                return;
+            }
 
             if (this.IsBoxOperationVisible && userAction.UserAction == UserAction.VerifyItem)
             {

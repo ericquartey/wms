@@ -51,13 +51,11 @@ namespace Ferretto.VW.MAS.DataLayer
                             {
                                 bar.Accessories.AlphaNumericBar.Field1 = "ItemCode";
                                 this.dataContext.SaveChanges();
-                                this.baysDataProvider.RemoveCache(bar.Number);
                             }
                             if (bar.Accessories.AlphaNumericBar.Field2 is null)
                             {
                                 bar.Accessories.AlphaNumericBar.Field2 = "ItemDescription";
                                 this.dataContext.SaveChanges();
-                                this.baysDataProvider.RemoveCache(bar.Number);
                             }
                         }
                     }
@@ -162,7 +160,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(barBay.Accessories.AlphaNumericBar);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(barBay.Number);
             }
         }
 
@@ -191,7 +188,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.DeviceInformation.Update(deviceInfo);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -214,7 +210,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.BarcodeReader);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -233,7 +228,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.CardReader);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -251,7 +245,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.LabelPrinter);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -275,7 +268,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(laserPointer);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bayNumber);
             }
         }
 
@@ -309,7 +301,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.Accessories.Update(bay.Accessories.TokenReader);
                 }
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -338,7 +329,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.DeviceInformation.Update(deviceInfo);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
@@ -375,7 +365,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.Accessories.Update(bay.Accessories.WeightingScale);
                 this.dataContext.SaveChanges();
-                this.baysDataProvider.RemoveCache(bay.Number);
             }
         }
 
