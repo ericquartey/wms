@@ -494,6 +494,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 return;
             }
 
+            if (this.IsAddListItemVisible)
+            {
+                await this.ShowItemDetailsByBarcodeAsync(userAction);
+                if (!string.IsNullOrEmpty(base.SearchItem))
+                {
+                    this.SearchItem = base.SearchItem;
+                }
+                return;
+            }
+
             if (this.CanPutBoxes() && userAction.UserAction == UserAction.VerifyItem)
             {
                 await this.PutBoxAsync(userAction.Code);

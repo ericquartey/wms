@@ -909,6 +909,17 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                return this.dataContext.Bays.AsNoTracking()
+                    .Select(b => new { b.Number, b.IsExternal })
+                    .SingleOrDefault(b => b.Number == bayNumber)
+                    .IsExternal;
+            }
+        }
+
+        public bool GetIsExternal(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
                 return this.GetByNumber(bayNumber).IsExternal;
             }
         }
@@ -1416,7 +1427,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.Operation = newOperation;
 
                 this.dataContext.SaveChanges();
-                this.RemoveCache(bay.Number);
 
                 return bay;
             }
@@ -1511,6 +1521,27 @@ namespace Ferretto.VW.MAS.DataLayer
                         bay.RotationClass = ROTATION_CLASS_B;
                     }
                     this.RemoveCache(bay.Number);
+                }
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetRotationClass(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                foreach (var bay in this.dataContext.Bays
+                    .Where(b => b.Number < BayNumber.ElevatorBay))
+                {
+                    if (bay.Number == bayNumber)
+                    {
+                        bay.RotationClass = ROTATION_CLASS_A;
+                    }
+                    else
+                    {
+                        bay.RotationClass = ROTATION_CLASS_B;
+                    }
                 }
 
                 this.dataContext.SaveChanges();

@@ -30,6 +30,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetItemUniqueIdLength();
 
+        bool GetListPickConfirm();
+
+        bool GetListPutConfirm();
+
         Machine GetMinMaxHeight();
 
         MachineStatistics GetPresentStatistics();

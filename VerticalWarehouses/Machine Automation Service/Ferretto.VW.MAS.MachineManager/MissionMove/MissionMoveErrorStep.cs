@@ -373,21 +373,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    this.Mission.RestoreStep = MissionStep.NotDefined;
-                    this.Mission.RestoreConditions = false;
-                    this.Mission.NeedMovingBackward = false;
-                    if (this.Mission.MissionType == MissionType.OUT
-                        || this.Mission.MissionType == MissionType.WMS
-                        || this.Mission.MissionType == MissionType.FullTestOUT
-                        )
-                    {
-                        var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
-                    }
-                    else
-                    {
-                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                        newStep.OnEnter(null);
+                this.Mission.RestoreStep = MissionStep.NotDefined;
+                this.Mission.RestoreConditions = false;
+                this.Mission.NeedMovingBackward = false;
+                if (this.Mission.MissionType == MissionType.OUT
+                    || this.Mission.MissionType == MissionType.WMS
+                    || this.Mission.MissionType == MissionType.FullTestOUT
+                    )
+                {
+                    var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
+                }
+                else
+                {
+                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                    newStep.OnEnter(null);
                     }
                 }
             }
