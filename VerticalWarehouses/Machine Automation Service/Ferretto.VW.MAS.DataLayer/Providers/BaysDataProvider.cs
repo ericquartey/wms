@@ -442,6 +442,28 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;
 
+        public IEnumerable<BayNumber> GetBayNumbers()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => b.Number);
+            }
+        }
+
+        public WarehouseSide GetBaySide(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .Select(b => new { b.Number, b.Side })
+                    .First(b => b.Number == bayNumber)
+                    .Side;
+            }
+        }
+
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public BayNumber GetByAxis(IHomingMessageData data)
         {

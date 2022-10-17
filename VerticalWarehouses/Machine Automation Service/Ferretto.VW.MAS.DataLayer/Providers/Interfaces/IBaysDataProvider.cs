@@ -116,11 +116,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void PerformHoming(BayNumber bayNumber);
 
-        void RemoveCache(BayNumber bayNumber);
-
         void RemoveLoadingUnit(int loadingUnitId);
-
-        void RemovePositionCache(LoadingUnitLocation location);
 
         void ResetMachine();
 
