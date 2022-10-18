@@ -41,6 +41,8 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
         private TcpClient client;
 
+        private int errorCount;
+
         private IPAddress ipAddress;
 
         private int ledHideOnLeftSide;
@@ -820,6 +822,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
             }
 
             this.EnqueueCommand(AlphaNumericBarCommands.Command.CSTSET, "", arrowPosition, 0);
+            this.errorCount = 0;
             return true;
         }
 
@@ -1251,15 +1254,26 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
                 }
                 else if (receivedArray.Any(r => r.StartsWith("GET", StringComparison.Ordinal)))
                 {
-                    this.HasGetErrors = true;
                     this.logger.Debug($"Received GET message Error");
                     if (!this.IsTestLoop)
                     {
                         this.logger.Debug($"Retry sending WRITE");
                         await this.SetAndWriteMessageAsync(message, this.savedOffset, false);
                         // only one retry
+                        ret = true;
                     }
-                    ret = true;
+                    else if (++this.errorCount > 1)
+                    {
+                        // testLoop: stop sending messages
+                        this.HasGetErrors = true;
+                        ret = true;
+                    }
+                    else
+                    {
+                        // testLoop: retry
+                        this.logger.Debug($"Retry sending WRITE");
+                        await this.SetAndWriteMessageAsync(message, this.savedOffset, false);
+                    }
                 }
                 else
                 {

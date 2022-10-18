@@ -1000,7 +1000,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
-            if (this.Mission.Operations.Count(o => o.Status != MissionOperationStatus.Completed) == 1
+            if (this.Mission.Operations.Count(o => o.Status != MissionOperationStatus.Completed && o.ItemListCode == this.MissionOperation.ItemListCode) == 1 //&& await this.MissionOperationsService.IsLastWmsMissionAsync(this.MissionOperation.ItemListCode) // await this.
                 && (await this.machineIdentityWebService.GetListPickConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Pick
                 || await this.machineIdentityWebService.GetListPutConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Put))
             {
