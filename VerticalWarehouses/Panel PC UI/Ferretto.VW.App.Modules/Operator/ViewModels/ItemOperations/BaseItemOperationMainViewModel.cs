@@ -1000,16 +1000,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
-            var res = await this.MissionOperationsService.IsLastWmsMissionAsync(this.MissionOperation.ItemListCode);
-
-            if (res is null)
-            {
-                return;
-            }
-
-            var isMultiMachine = await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id);
-
-            if (res.Value
+            if (this.Mission.Operations.Count(o => o.Status != MissionOperationStatus.Completed && o.ItemListCode == this.MissionOperation.ItemListCode) == 1 //&& await this.MissionOperationsService.IsLastWmsMissionAsync(this.MissionOperation.ItemListCode) // await this.
                 && (await this.machineIdentityWebService.GetListPickConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Pick
                 || await this.machineIdentityWebService.GetListPutConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Put))
             {
@@ -1020,7 +1011,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
 
-            if (isMultiMachine)
+            if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id))
             {
                 this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
             }
