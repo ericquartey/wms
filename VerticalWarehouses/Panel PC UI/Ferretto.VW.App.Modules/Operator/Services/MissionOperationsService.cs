@@ -197,6 +197,32 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
+        public async Task<bool?> IsLastWmsMissionAsync(string itemListCode)
+        {
+            try
+            {
+                var allMissionsList = await this.missionsWebService.GetAllAsync();
+
+                var allOperation = new List<MissionOperationInfo>();
+
+                foreach (var item in allMissionsList)
+                {
+                    var mission = await this.missionsWebService.GetByWmsIdAsync(item.WmsId.Value);
+                    if (mission.Operations.Any())
+                    {
+                        allOperation.AddRange(mission.Operations.Where(o => o.ItemListCode == itemListCode));
+                    }
+                }
+
+                return allOperation.Count(o => o.Status != MissionOperationStatus.Completed) == 1;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
         public async Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId)
         {
             var retValue = true;

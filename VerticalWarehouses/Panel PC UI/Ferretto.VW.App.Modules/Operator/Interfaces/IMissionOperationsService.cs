@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         Task<IEnumerable<ProductInMachine>> GetProductsAsync(int? areaId, string itemCode, CancellationToken? cancellationToken = null);
 
+        Task<bool?> IsLastWmsMissionAsync(string itemListCode);
+
         Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId);
 
         Task<bool> IsMultiMachineAsync(int missionId);
