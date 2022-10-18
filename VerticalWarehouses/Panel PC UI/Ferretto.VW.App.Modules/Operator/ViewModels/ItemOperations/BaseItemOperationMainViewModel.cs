@@ -2240,7 +2240,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.IsOperationConfirmed || this.IsOperationCanceled)
             {
                 this.IsOperationConfirmed = false;
+            }
 
+            if (this.MissionOperation != this.MissionOperationsService.ActiveWmsOperation)
+            {
                 await this.RetrieveMissionOperationAsync();
 
                 await this.GetLoadingUnitDetailsAsync();

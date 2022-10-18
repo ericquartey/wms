@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly DataLayerContext dataContext;
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
@@ -20,7 +22,7 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IMachineProvider machineProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
-        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
@@ -138,10 +140,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");
-                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.BayOne);
-                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.BayTwo);
-                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.BayThree);
-                        this.baysDataProvider.RemoveCache(CommonUtils.Messages.Enumerations.BayNumber.ElevatorBay);
                     }
                     catch (Exception e)
                     {

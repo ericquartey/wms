@@ -45,8 +45,8 @@ namespace Ferretto.VW.MAS.DataLayer
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
                     .Include(m => m.Elevator)
-                       .ThenInclude(e => e.Axes)
-                           .ThenInclude(a => a.Inverter)
+                               .ThenInclude(e => e.Axes)
+                                   .ThenInclude(a => a.Inverter)
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.StructuralProperties)
                     .Include(m => m.Bays)
@@ -230,6 +230,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool GetListPickConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPickConfirm).First();
+            }
+        }
+
+        public bool GetListPutConfirm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPutConfirm).First();
+            }
+        }
+
         public Machine GetMinMaxHeight()
         {
             lock (this.dataContext)
@@ -349,21 +365,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.WaitingListPriorityHighlighted).First();
-            }
-        }
-
-        public bool GetListPutConfirm()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPutConfirm).First();
-            }
-        }
-        public bool GetListPickConfirm()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.ListPickConfirm).First();
             }
         }
 

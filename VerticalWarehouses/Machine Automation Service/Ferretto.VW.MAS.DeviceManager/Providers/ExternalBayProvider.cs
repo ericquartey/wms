@@ -526,6 +526,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
+            bay = this.baysDataProvider.GetByNumber(bay.Number);
 
             // Target position is positive with TowardOperator movement direction, otherwise is negative
             var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.External.Race : -bay.External.Race;
@@ -823,6 +824,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new InvalidOperationException(policy.Reason);
                 }
             }
+            bay = this.baysDataProvider.GetByNumber(bay.Number);
 
             this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 

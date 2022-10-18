@@ -656,7 +656,7 @@ namespace Ferretto.VW.Simulator.Services
                 return;
             }
 
-            Task.Delay(1000).Wait();
+            Task.Delay(100).Wait();
             System.Diagnostics.Debug.WriteLine($"{DateTime.Now:HH:mm:ss} ReplyAlphaNumericBar1 response --> '{messageResponse}'");
             client.Client.Send(Encoding.ASCII.GetBytes(messageResponse + Environment.NewLine));
         }

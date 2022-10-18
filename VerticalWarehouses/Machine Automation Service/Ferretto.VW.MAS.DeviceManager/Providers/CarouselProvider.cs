@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -237,6 +238,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
+            bay = this.baysDataProvider.GetByNumber(bay.Number);
 
             var targetPosition = bay.Carousel.ElevatorDistance * (direction is VerticalMovementDirection.Up ? 1 : -1);
 
@@ -402,6 +404,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new InvalidOperationException(policy.Reason);
                 }
             }
+            bay = this.baysDataProvider.GetByNumber(bay.Number);
 
             this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 
