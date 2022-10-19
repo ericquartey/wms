@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     do
                     {
                         await Task.Delay(5000).ConfigureAwait(true);
-                        this.logger.LogTrace("SocketLink ExecutePollingAsync");
+                        this.logger.LogTrace("SocketLink Stop");
                     }
                     while (!cancellationToken.IsCancellationRequested);
                 }
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
                             //var msgReceived = Encoding.ASCII.GetString(buffer, 0, bytes);
                             lastActivity = DateTime.Now;
-                            this.logger.LogTrace("SocketLink Recived " + msgReceived);
+                            this.logger.LogTrace("SocketLink Received " + msgReceived);
 
                             var msgResponse = "";
                             using (var scope = this.serviceScopeFactory.CreateScope())
@@ -201,6 +201,7 @@ namespace Ferretto.VW.MAS.SocketLink
                                 var outStream = Encoding.ASCII.GetBytes(msgResponse);
                                 socket.Send(outStream);
                                 this.logger.LogTrace("SocketLink Send " + msgResponse);
+                                lastActivity = DateTime.Now;
                             }
                         }
                     }
