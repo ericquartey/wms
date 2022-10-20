@@ -237,6 +237,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                                 var ex = new Exception();
                                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Socket Transport failed to connect", 0), FieldMessageType.InverterError);
+                                Thread.Sleep(100);
                                 continue;
                             }
                             else
@@ -263,6 +264,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.Logger.LogError($"2:Inverter message is null");
                                 errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
                                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+                                Thread.Sleep(100);
                                 continue;
                             }
 
@@ -288,7 +290,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message}", ex);
                             errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne, ex.Message);
                             this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
-
+                            Thread.Sleep(100);
                             continue;
                         }
                         catch (Exception ex)
@@ -308,6 +310,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
                             this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                             this.socketTransport.Disconnect();
+                            Thread.Sleep(100);
                             continue;
                         }
 
@@ -376,7 +379,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                             else
                             {
-                                Thread.Sleep(5);
+                                Thread.Sleep(100);
                             }
                         }
                     }

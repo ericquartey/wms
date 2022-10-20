@@ -248,6 +248,7 @@ namespace Ferretto.VW.MAS.IODriver
                         }
 
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(new Exception(), "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                        Thread.Sleep(100);
                         continue;
                     }
                     else
@@ -291,6 +292,7 @@ namespace Ferretto.VW.MAS.IODriver
                         }
                         var ex = new Exception();
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                        Thread.Sleep(100);
                         continue;
                     }
                 }
@@ -311,6 +313,7 @@ namespace Ferretto.VW.MAS.IODriver
                         errorsProvider.RecordNew(MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                     }
                     this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                    Thread.Sleep(100);
                     continue;
                 }
                 catch (Exception ex)
@@ -338,6 +341,7 @@ namespace Ferretto.VW.MAS.IODriver
                     var ex = new Exception();
                     this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                     this.ioTransport.Disconnect();
+                    Thread.Sleep(100);
                     continue;
                 }
 
@@ -345,6 +349,7 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     // this is not an error: we try to recover from messages received in more pieces
                     this.logger.LogWarning($"5:IO Driver message is not complete: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.receiveBuffer)}");
+                    Thread.Sleep(100);
                     continue;
                 }
 
@@ -377,6 +382,7 @@ namespace Ferretto.VW.MAS.IODriver
                         var ex = new Exception();
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.ioTransport.Disconnect();
+                        Thread.Sleep(100);
                         break;
                     }
 
@@ -415,6 +421,7 @@ namespace Ferretto.VW.MAS.IODriver
                         }
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         this.ioTransport.Disconnect();
+                        Thread.Sleep(100);
                         break;
                     }
 
@@ -616,6 +623,7 @@ namespace Ferretto.VW.MAS.IODriver
                                     errorsProvider.RecordNew(MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
                                 }
                                 this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                                Thread.Sleep(100);
                                 continue;
                             }
 
@@ -630,7 +638,7 @@ namespace Ferretto.VW.MAS.IODriver
                         }
                         else
                         {
-                            Thread.Sleep(5);
+                            Thread.Sleep(100);
                         }
                     }
                 }
@@ -694,7 +702,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
             catch (IoDriverException ex)
             {
-                this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected};\nInner exception: {ex.InnerException.Message}");
+                this.logger.LogError($"2:Exception: {ex.Message} while connecting to ETH24 I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected};\nInner exception: {ex.InnerException.Message}");
                 using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
@@ -706,7 +714,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
             catch (Exception ex)
             {
-                this.logger.LogCritical($"Fatal error while connecting to Modbus I/O master: {ex.Message} - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+                this.logger.LogCritical($"Fatal error while connecting to ETH24 I/O master: {ex.Message} - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
                 this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), isFatalError: true);
 
