@@ -2887,6 +2887,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm last operation PickList .
+        /// </summary>
+        public static string IsListPickConfirm {
+            get {
+                return ResourceManager.GetString("IsListPickConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm last operation Put List .
+        /// </summary>
+        public static string IsListPutConfirm {
+            get {
+                return ResourceManager.GetString("IsListPutConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search items in this area.
         /// </summary>
         public static string IsLocalMachineItems {
@@ -2955,6 +2973,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IsUpdatingStockByDifference_Duplicate_1_ {
             get {
                 return ResourceManager.GetString("IsUpdatingStockByDifference_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting List Priority Highlighted.
+        /// </summary>
+        public static string IsWaitingListPriorityHighlighted {
+            get {
+                return ResourceManager.GetString("IsWaitingListPriorityHighlighted", resourceCulture);
             }
         }
         

@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineIdentityWebService identityService;
 
+        private readonly IMachineItemListsWebService itemListsWebService;
+
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -64,6 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public MissionOperationsService(
             IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineMissionsWebService missionsWebService,
+            IMachineItemListsWebService itemListsWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineAccessoriesWebService machineAccessoriesWebService,
             IMachineBaysWebService machineBaysWebService,
@@ -87,6 +90,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
+            this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
 
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
@@ -197,24 +201,37 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task<bool?> IsLastWmsMissionAsync(string itemListCode)
+        public async Task<bool?> IsLastRowForListAsync(string itemListCode)
         {
             try
             {
-                var allMissionsList = await this.missionsWebService.GetAllAsync();
+                var bay = await this.bayManager.GetBayAsync();
+                var machineIdentity = await this.identityService.GetAsync();
 
-                var allOperation = new List<MissionOperationInfo>();
-
-                foreach (var item in allMissionsList)
+                if (machineIdentity is null)
                 {
-                    var mission = await this.missionsWebService.GetByWmsIdAsync(item.WmsId.Value);
-                    if (mission.Operations.Any())
-                    {
-                        allOperation.AddRange(mission.Operations.Where(o => o.ItemListCode == itemListCode));
-                    }
+                    return null;
                 }
 
-                return allOperation.Count(o => o.Status != MissionOperationStatus.Completed) == 1;
+                var machineId = machineIdentity.Id;
+                var areaId = machineIdentity.AreaId;
+
+                var fullLists = await this.areasWebService.GetItemListsAsync(areaId.Value, machineId, bay.Id, true, this.authenticationService.UserName);
+
+                var activList = fullLists.ToList().Find(l => l.Code == itemListCode);
+
+                var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
+
+                //foreach (var item in allMissionsList)
+                //{
+                //    var mission = await this.missionsWebService.GetByWmsIdAsync(item.WmsId.Value);
+                //    if (mission.Operations.Any())
+                //    {
+                //        allOperation.AddRange(mission.Operations.Where(o => o.ItemListCode == itemListCode));
+                //    }
+                //}
+
+                return listRows.Count(r => r.Status != ItemListRowStatus.Completed) == 1;
             }
             catch (Exception ex)
             {

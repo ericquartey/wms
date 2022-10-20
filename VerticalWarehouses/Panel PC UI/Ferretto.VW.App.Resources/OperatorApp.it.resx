@@ -2241,4 +2241,13 @@
   <data name="Delete" xml:space="preserve">
     <value>Elimina</value>
   </data>
+  <data name="IsWaitingListPriorityHighlighted" xml:space="preserve">
+    <value>Priorità evidenziata liste in attesa</value>
+  </data>
+  <data name="IsListPutConfirm" xml:space="preserve">
+    <value>Conferma ultima operazione della lista di deposito</value>
+  </data>
+  <data name="IsListPickConfirm" xml:space="preserve">
+    <value>Conferma ultima operazione della lista di prelievo</value>
+  </data>
 </root>

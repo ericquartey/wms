@@ -2641,4 +2641,13 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="IsWaitingListPriorityHighlighted" xml:space="preserve">
+    <value>Waiting List Priority Highlighted</value>
+  </data>
+  <data name="IsListPutConfirm" xml:space="preserve">
+    <value>Confirm last operation Put List </value>
+  </data>
+  <data name="IsListPickConfirm" xml:space="preserve">
+    <value>Confirm last operation PickList </value>
+  </data>
 </root>

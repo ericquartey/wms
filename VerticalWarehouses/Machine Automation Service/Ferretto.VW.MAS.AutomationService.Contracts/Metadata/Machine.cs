@@ -84,16 +84,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsRotationClass { get; set; }
 
             [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ListPickConfirm))]
-            [Id(33)]
-            public bool ListPickConfirm { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ListPutConfirm))]
-            [Id(34)]
-            public bool ListPutConfirm { get; set; }
-
-            [Editable(true)]
             [Unit("mm")]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_LoadDepth))]
             [Id(4)]
@@ -163,11 +153,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
             [Id(23)]
             public int VerticalCyclesToCalibrate { get; set; }
-
-            [Editable(true)]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.WaitingListPriorityHighlighted))]
-            [Id(32)]
-            public int? WaitingListPriorityHighlighted { get; set; }
 
             #endregion
         }

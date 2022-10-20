@@ -160,6 +160,29 @@
                                       IsChecked="{Binding IsQuantityLimited, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsQuantityLimited}" />
 
+                <StackPanel Orientation="Horizontal">
+
+                    <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsWaitingListPriorityHighlighted, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsWaitingListPriorityHighlighted}" />
+                    
+                     <controls:PpcTextBox Margin="0,10,15,0"
+                                          VerticalAlignment="Center"
+                                          Width="100"
+                                          IsEnabled="{Binding IsWaitingListPriorityHighlighted}"
+                                          InputText="{Binding WaitingListPriorityHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsListPutConfirm, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsListPutConfirm}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsListPickConfirm, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsListPickConfirm}" />
             </StackPanel>
         </ScrollViewer>
 
@@ -173,6 +196,7 @@
                                  VerticalAlignment="Center"
                                  InputText="{Binding ItemUniqueIdLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{res:Loc OperatorApp.ItemUniqueIdLength}" />
+
         </StackPanel>
       
     
