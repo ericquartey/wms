@@ -201,43 +201,21 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task<bool?> IsLastRowForListAsync(string itemListCode)
+        public async Task<bool> IsLastRowForListAsync(string itemListCode)
         {
-            try
-            {
-                var bay = await this.bayManager.GetBayAsync();
-                var machineIdentity = await this.identityService.GetAsync();
+            var bay = await this.bayManager.GetBayAsync();
+            var machineIdentity = await this.identityService.GetAsync();
 
-                if (machineIdentity is null)
-                {
-                    return null;
-                }
+            var machineId = machineIdentity.Id;
+            var areaId = machineIdentity.AreaId;
 
-                var machineId = machineIdentity.Id;
-                var areaId = machineIdentity.AreaId;
+            var fullLists = await this.areasWebService.GetItemListsAsync(areaId.Value, machineId, bay.Id, true, this.authenticationService.UserName);
 
-                var fullLists = await this.areasWebService.GetItemListsAsync(areaId.Value, machineId, bay.Id, true, this.authenticationService.UserName);
+            var activList = fullLists.ToList().Find(l => l.Code == itemListCode);
 
-                var activList = fullLists.ToList().Find(l => l.Code == itemListCode);
+            var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
 
-                var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
-
-                //foreach (var item in allMissionsList)
-                //{
-                //    var mission = await this.missionsWebService.GetByWmsIdAsync(item.WmsId.Value);
-                //    if (mission.Operations.Any())
-                //    {
-                //        allOperation.AddRange(mission.Operations.Where(o => o.ItemListCode == itemListCode));
-                //    }
-                //}
-
-                return listRows.Count(r => r.Status != ItemListRowStatus.Completed) == 1;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                return null;
-            }
+            return listRows.Count(r => r.Machines.Any()) == 1;
         }
 
         public async Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId)
