@@ -1,15 +1,11 @@
-﻿using System;
-using System.Linq;
-using Ferretto.VW.MAS.DataModels;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore.Storage;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using Ferretto.VW.MAS.Resources;
+using Ferretto.VW.MAS.DataModels;
+using System.Linq;
+using System;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -63,10 +59,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     .Single());
 
-        private readonly IMemoryCache cache;
-
-        private readonly MemoryCacheEntryOptions cacheOptions;
-
         private readonly DataLayerContext dataContext;
 
         private readonly ILogger<SetupProceduresDataProvider> logger;
@@ -76,22 +68,12 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Constructors
 
         public SetupProceduresDataProvider(
-            IMemoryCache memoryCache,
-            IConfiguration configuration,
-            DataLayerContext dataContext,
+                    DataLayerContext dataContext,
             ILogger<SetupProceduresDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
-            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
-
-        #endregion
-
-        #region Properties
-
-        private static string GetAllCacheKey => "SetupCacheKey";
 
         #endregion
 
@@ -101,13 +83,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                this.cache.TryGetValue(GetAllCacheKey, out SetupProceduresSet cacheEntry);
-                if (cacheEntry is null)
-                {
-                    cacheEntry = GetAllCompile(this.dataContext);
-                    this.cache.Set(GetAllCacheKey, cacheEntry, this.cacheOptions);
-                }
-                return cacheEntry;
+                return GetAllCompile(this.dataContext);
             }
         }
 
@@ -344,7 +320,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
             context.AddOrUpdate(setupProceduresSet?.HorizontalChainCalibration, (e) => e.Id);
             context.AddOrUpdate(setupProceduresSet?.HorizontalResolutionCalibration, (e) => e.Id);
-            this.RemoveCache();
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure, int? requiredCycles = null)
@@ -368,7 +343,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
                     this.dataContext.SaveChanges();
-                    this.RemoveCache();
 
                     return repeatedTestProcedure;
                 }
@@ -391,7 +365,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.dataContext.SetupProcedures.Update(positioningProcedure);
                     this.dataContext.SaveChanges();
-                    this.RemoveCache();
 
                     return positioningProcedure;
                 }
@@ -435,7 +408,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SetupProcedures.Update(existingProcedure);
                 this.dataContext.SaveChanges();
-                this.RemoveCache();
 
                 return existingProcedure;
             }
@@ -453,7 +425,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     this.dataContext.SetupProcedures.Update(repeatedTestProcedure);
                     this.dataContext.SaveChanges();
-                    this.RemoveCache();
 
                     return repeatedTestProcedure;
                 }
@@ -514,13 +485,6 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(setupProceduresSet?.HorizontalResolutionCalibration, (e) => e.Id);
 
             dataContext.SaveChanges();
-
-            this.RemoveCache();
-        }
-
-        private void RemoveCache()
-        {
-            this.cache.Remove(GetAllCacheKey);
         }
 
         #endregion
