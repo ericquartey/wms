@@ -2032,9 +2032,6 @@
   <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
     <value>Değişim tablosunda barkodla öğe ara (WMS özel)</value>
   </data>
-  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
-    <value>Yük ünitesinde son işlem için onay isteme</value>
-  </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Takas tablosunda bulunan öğeler</value>
   </data>

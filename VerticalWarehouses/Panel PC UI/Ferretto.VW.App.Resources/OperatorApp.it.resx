@@ -2038,7 +2038,7 @@
     <value>Modifica giacenza per differenza</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
-    <value>Conferma l'ultima operazione della lista</value>
+    <value>La lista {1} è terminata</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Articoli trovati in tabella di scambio</value>

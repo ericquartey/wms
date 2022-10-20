@@ -1947,9 +1947,6 @@
   <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
     <value>Żądanie potwierdzenia ostatniej operacji na jednostce ładunkowej</value>
   </data>
-  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
-    <value>Żądanie potwierdzenia ostatniej operacji na jednostce ładunkowej</value>
-  </data>
   <data name="IsUpdatingStockByDifference" xml:space="preserve">
     <value>Edytuj stan magazynu według różnicy</value>
   </data>

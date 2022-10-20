@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
+        private readonly IMachineService machineService;
+
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly IMachineMissionsWebService missionsWebService;
@@ -70,6 +72,7 @@ namespace Ferretto.VW.App.Modules.Operator
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineAccessoriesWebService machineAccessoriesWebService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineService machineService,
             IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient,
             IAuthenticationService authenticationService,
@@ -87,6 +90,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
@@ -205,7 +209,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.machineService.Bay;
                 var machineIdentity = await this.identityService.GetAsync();
 
                 if (machineIdentity is null)
@@ -333,13 +337,13 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machine = await this.identityService.GetAsync();
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.machineService.Bay;
 
                 if (bay.CheckListContinueInOtherMachine is false)
                 {
                     return false;
                 }
+                var machine = await this.identityService.GetAsync();
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, this.authenticationService.UserName);
 

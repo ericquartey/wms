@@ -1005,13 +1005,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
             }
 
-            var lastOperationList = false;
+            var lastOperationList = string.Empty;
             if ((await this.machineIdentityWebService.GetListPickConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Pick) ||
                 (await this.machineIdentityWebService.GetListPutConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Put))
             {
-                lastOperationList = this.Mission.Operations.Count(o => o.Status != MissionOperationStatus.Completed && o.ItemListCode == this.MissionOperation.ItemListCode) == 1;
+                var isLastOperationList = await this.MissionOperationsService.IsLastRowForListAsync(this.MissionOperation.ItemListCode);
+                if (isLastOperationList is true)
+                {
+                    lastOperationList = this.MissionOperation.ItemListCode;
+                }
             }
-
 
             System.Diagnostics.Debug.Assert(
                 this.InputQuantity.HasValue,
@@ -1034,7 +1037,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
                 ItemDetails item = null;
-                if (this.MissionOperation.ItemId > 0)
+                if (this.MissionOperation?.ItemId > 0)
                 {
                     item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 }
@@ -1126,10 +1129,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //    this.DialogService.ShowMessage(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.YesNo);
                 //}
 
-
-                if (lastOperationList)
+                if (!string.IsNullOrEmpty(lastOperationList))
                 {
-                    this.DialogService.ShowMessage(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
+                    this.DialogService.ShowMessage(string.Format(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), lastOperationList),
+                        Localized.Get("OperatorApp.OperationConfirmed"),
+                        DialogType.Information,
+                        DialogButtons.OK);
                 }
 
                 //this.navigationService.GoBackTo(

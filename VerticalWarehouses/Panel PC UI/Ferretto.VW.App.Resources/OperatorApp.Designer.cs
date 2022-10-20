@@ -2932,7 +2932,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Request confirm for last operation in the list.
+        ///   Looks up a localized string similar to The list {1} is terminated.
         /// </summary>
         public static string IsRequestConfirmForLastOperationOnList {
             get {

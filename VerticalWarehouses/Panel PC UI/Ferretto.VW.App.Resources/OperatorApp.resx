@@ -2438,7 +2438,7 @@
     <value>Search item by barcode in exchange table (WMS custom)</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
-    <value>Request confirm for last operation in the list</value>
+    <value>The list {1} is terminated</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Items found in exchange table</value>
