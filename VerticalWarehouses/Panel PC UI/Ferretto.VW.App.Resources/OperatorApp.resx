@@ -2415,10 +2415,6 @@
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
   </data>
-  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
-    <value>Stock variation</value>
-    <comment>Label</comment>
-  </data>
   <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
     <value>Retrieving item failed</value>
     <comment>Label Message</comment>
@@ -2431,14 +2427,8 @@
     <value>Operation successfully</value>
     <comment>Label Message</comment>
   </data>
-  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
-    <value>Edit Stock by difference</value>
-  </data>
-  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
-    <value>Search item by barcode in exchange table (WMS custom)</value>
-  </data>
   <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
-    <value>Request confirm for last operation in the list</value>
+    <value>The list {0} is terminated</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Items found in exchange table</value>
@@ -2640,5 +2630,14 @@
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="IsWaitingListPriorityHighlighted" xml:space="preserve">
+    <value>Waiting List Priority Highlighted</value>
+  </data>
+  <data name="IsListPutConfirm" xml:space="preserve">
+    <value>Confirm last operation Put List </value>
+  </data>
+  <data name="IsListPickConfirm" xml:space="preserve">
+    <value>Confirm last operation PickList </value>
   </data>
 </root>

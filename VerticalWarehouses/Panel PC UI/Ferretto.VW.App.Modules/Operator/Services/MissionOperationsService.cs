@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachineIdentityWebService identityService;
 
+        private readonly IMachineItemListsWebService itemListsWebService;
+
         private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -38,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
+        private readonly IMachineService machineService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
@@ -64,9 +68,11 @@ namespace Ferretto.VW.App.Modules.Operator
         public MissionOperationsService(
             IMachineMissionOperationsWebService missionOperationsWebService,
             IMachineMissionsWebService missionsWebService,
+            IMachineItemListsWebService itemListsWebService,
             IMachineLoadingUnitsWebService loadingUnitsWebService,
             IMachineAccessoriesWebService machineAccessoriesWebService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineService machineService,
             IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient,
             IAuthenticationService authenticationService,
@@ -84,9 +90,11 @@ namespace Ferretto.VW.App.Modules.Operator
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineAccessoriesWebService = machineAccessoriesWebService ?? throw new ArgumentNullException(nameof(machineAccessoriesWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
+            this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
 
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
@@ -197,30 +205,21 @@ namespace Ferretto.VW.App.Modules.Operator
             }
         }
 
-        public async Task<bool?> IsLastWmsMissionAsync(string itemListCode)
+        public async Task<bool> IsLastRowForListAsync(string itemListCode)
         {
-            try
-            {
-                var allMissionsList = await this.missionsWebService.GetAllAsync();
+            var bay = this.machineService.Bay;
+            var machineIdentity = await this.identityService.GetAsync();
 
-                var allOperation = new List<MissionOperationInfo>();
+            var machineId = machineIdentity.Id;
+            var areaId = machineIdentity.AreaId;
 
-                foreach (var item in allMissionsList)
-                {
-                    var mission = await this.missionsWebService.GetByWmsIdAsync(item.WmsId.Value);
-                    if (mission.Operations.Any())
-                    {
-                        allOperation.AddRange(mission.Operations.Where(o => o.ItemListCode == itemListCode));
-                    }
-                }
+            var fullLists = await this.areasWebService.GetItemListsAsync(areaId.Value, machineId, bay.Id, true, this.authenticationService.UserName);
 
-                return allOperation.Count(o => o.Status != MissionOperationStatus.Completed) == 1;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                return null;
-            }
+            var activList = fullLists.ToList().Find(l => l.Code == itemListCode);
+
+            var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
+
+            return listRows.Count(r => r.Machines.Any()) == 1;
         }
 
         public async Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId)
@@ -316,13 +315,13 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machine = await this.identityService.GetAsync();
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.machineService.Bay;
 
                 if (bay.CheckListContinueInOtherMachine is false)
                 {
                     return false;
                 }
+                var machine = await this.identityService.GetAsync();
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, this.authenticationService.UserName);
 

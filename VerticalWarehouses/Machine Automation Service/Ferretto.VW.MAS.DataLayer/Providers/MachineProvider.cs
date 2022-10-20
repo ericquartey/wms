@@ -559,6 +559,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.IsCarrefour = machine.IsCarrefour;
                 machineDB.IsQuantityLimited = machine.IsQuantityLimited;
                 machineDB.IsAddItemByList = machine.IsAddItemByList;
+                machineDB.WaitingListPriorityHighlighted = machine.WaitingListPriorityHighlighted;
+                machineDB.ListPickConfirm = machine.ListPickConfirm;
+                machineDB.ListPutConfirm = machine.ListPutConfirm;
+
                 this.dataContext.SaveChanges();
             }
         }

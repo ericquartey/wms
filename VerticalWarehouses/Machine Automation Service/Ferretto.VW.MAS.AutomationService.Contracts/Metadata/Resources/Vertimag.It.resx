@@ -630,13 +630,4 @@
   <data name="IsRotationClass" xml:space="preserve">
     <value>Classe di rotazione</value>
   </data>
-  <data name="WaitingListPriorityHighlighted" xml:space="preserve">
-    <value>Priorità della lista d'attesa evidenziata</value>
-  </data>
-  <data name="ListPutConfirm" xml:space="preserve">
-    <value>Conferma Lista Inserimento</value>
-  </data>
-  <data name="ListPickConfirm" xml:space="preserve">
-    <value>Conferma Lista Prelievo</value>
-  </data>
 </root>

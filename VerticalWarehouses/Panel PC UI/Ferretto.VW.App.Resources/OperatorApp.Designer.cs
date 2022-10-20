@@ -763,15 +763,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stock variation.
-        /// </summary>
-        public static string ChangingStock_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("ChangingStock_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loading articles....
         /// </summary>
         public static string ChargeItem {
@@ -2878,11 +2869,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search item by barcode in exchange table (WMS custom).
+        ///   Looks up a localized string similar to Confirm last operation PickList .
         /// </summary>
-        public static string IsEnableHandlingItemOperations_Duplicate_1_ {
+        public static string IsListPickConfirm {
             get {
-                return ResourceManager.GetString("IsEnableHandlingItemOperations_Duplicate[1]", resourceCulture);
+                return ResourceManager.GetString("IsListPickConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm last operation Put List .
+        /// </summary>
+        public static string IsListPutConfirm {
+            get {
+                return ResourceManager.GetString("IsListPutConfirm", resourceCulture);
             }
         }
         
@@ -2914,7 +2914,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Request confirm for last operation in the list.
+        ///   Looks up a localized string similar to The list {0} is terminated.
         /// </summary>
         public static string IsRequestConfirmForLastOperationOnList {
             get {
@@ -2950,11 +2950,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Stock by difference.
+        ///   Looks up a localized string similar to Waiting List Priority Highlighted.
         /// </summary>
-        public static string IsUpdatingStockByDifference_Duplicate_1_ {
+        public static string IsWaitingListPriorityHighlighted {
             get {
-                return ResourceManager.GetString("IsUpdatingStockByDifference_Duplicate[1]", resourceCulture);
+                return ResourceManager.GetString("IsWaitingListPriorityHighlighted", resourceCulture);
             }
         }
         

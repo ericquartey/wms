@@ -898,24 +898,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List Pick Confirm.
-        /// </summary>
-        public static string ListPickConfirm {
-            get {
-                return ResourceManager.GetString("ListPickConfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List Put Confirm.
-        /// </summary>
-        public static string ListPutConfirm {
-            get {
-                return ResourceManager.GetString("ListPutConfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
@@ -1623,15 +1605,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Waiting List Priority Highlighted.
-        /// </summary>
-        public static string WaitingListPriorityHighlighted {
-            get {
-                return ResourceManager.GetString("WaitingListPriorityHighlighted", resourceCulture);
             }
         }
     }

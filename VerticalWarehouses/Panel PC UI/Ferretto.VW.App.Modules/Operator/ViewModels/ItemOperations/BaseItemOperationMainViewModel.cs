@@ -1000,20 +1000,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
-            if (this.Mission.Operations.Count(o => o.Status != MissionOperationStatus.Completed && o.ItemListCode == this.MissionOperation.ItemListCode) == 1 //&& await this.MissionOperationsService.IsLastWmsMissionAsync(this.MissionOperation.ItemListCode) // await this.
-                && (await this.machineIdentityWebService.GetListPickConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Pick
-                || await this.machineIdentityWebService.GetListPutConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Put))
-            {
-                var result = this.DialogService.ShowMessage(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.YesNo);
-                if (result == DialogResult.No)
-                {
-                    return;
-                }
-            }
-
             if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id))
             {
                 this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
+            }
+
+            var lastOperationList = string.Empty;
+            if ((await this.machineIdentityWebService.GetListPickConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Pick) ||
+                (await this.machineIdentityWebService.GetListPutConfirmAsync() && this.MissionOperation.Type == MissionOperationType.Put))
+            {
+                var isLastOperationList = await this.MissionOperationsService.IsLastRowForListAsync(this.MissionOperation.ItemListCode);
+                if (isLastOperationList is true)
+                {
+                    lastOperationList = this.MissionOperation.ItemListCode;
+                }
             }
 
             System.Diagnostics.Debug.Assert(
@@ -1037,7 +1037,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.IsOperationConfirmed = true;
                 ItemDetails item = null;
-                if (this.MissionOperation.ItemId > 0)
+                if (this.MissionOperation?.ItemId > 0)
                 {
                     item = await this.itemsWebService.GetByIdAsync(this.MissionOperation.ItemId);
                 }
@@ -1120,6 +1120,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     this.Logger.Debug($"Activate Bay");
                     await this.machineBaysWebService.ActivateAsync();
+                }
+
+                if (!string.IsNullOrEmpty(lastOperationList))
+                {
+                    this.DialogService.ShowMessage(string.Format(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), lastOperationList),
+                        Localized.Get("OperatorApp.OperationConfirmed"),
+                        DialogType.Information,
+                        DialogButtons.OK);
                 }
 
                 //this.navigationService.GoBackTo(

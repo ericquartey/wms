@@ -75,6 +75,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool view;
 
+        private int waitingListPriorityHighlighted;
+
+        private bool isWaitingListPriorityHighlighted;
+
+        private bool isListPutConfirm;
+
+        private bool isListPickConfirm;
+
         #endregion
 
         #region Constructors
@@ -256,6 +264,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.view, value, this.CanExecute);
         }
 
+
+        public int WaitingListPriorityHighlighted
+        {
+            get => this.waitingListPriorityHighlighted;
+            set => this.SetProperty(ref this.waitingListPriorityHighlighted, value, this.CanExecute);
+        }
+
+        public bool IsWaitingListPriorityHighlighted
+        {
+            get => this.isWaitingListPriorityHighlighted;
+            set => this.SetProperty(ref this.isWaitingListPriorityHighlighted, value, this.CanExecute);
+        }
+
+        public bool IsListPickConfirm
+        {
+            get => this.isListPickConfirm;
+            set => this.SetProperty(ref this.isListPickConfirm, value, this.CanExecute);
+        }
+
+        public bool IsListPutConfirm
+        {
+            get => this.isListPutConfirm;
+            set => this.SetProperty(ref this.isListPutConfirm, value, this.CanExecute);
+        }
+
         #endregion
 
         #region Methods
@@ -322,6 +355,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsQuantityLimited = configuration.IsQuantityLimited;
                 this.ItemUniqueIdLength = configuration.ItemUniqueIdLength;
                 this.ToteBarcodeLength = configuration.ToteBarcodeLength;
+
+                this.WaitingListPriorityHighlighted = configuration.WaitingListPriorityHighlighted.Value;
+                this.IsListPickConfirm = configuration.ListPickConfirm;
+                this.IsListPutConfirm = configuration.ListPutConfirm;
+                this.IsWaitingListPriorityHighlighted = this.WaitingListPriorityHighlighted != -1;
+
             }
             catch (Exception ex)
             {
@@ -361,6 +400,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.ToteBarcodeLength = this.ToteBarcodeLength;
                 machine.IsDrapery = this.IsDrapery;
                 machine.IsQuantityLimited = this.IsQuantityLimited;
+
+                machine.WaitingListPriorityHighlighted = this.IsWaitingListPriorityHighlighted && this.WaitingListPriorityHighlighted >= 0 ? this.WaitingListPriorityHighlighted : -1;
+                machine.ListPutConfirm = this.IsListPutConfirm;
+                machine.ListPickConfirm = this.IsListPickConfirm;
 
                 await this.identityService.SetBayOperationParamsAsync(machine);
 
