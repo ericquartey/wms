@@ -763,15 +763,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stock variation.
-        /// </summary>
-        public static string ChangingStock_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("ChangingStock_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loading articles....
         /// </summary>
         public static string ChargeItem {
@@ -2878,15 +2869,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search item by barcode in exchange table (WMS custom).
-        /// </summary>
-        public static string IsEnableHandlingItemOperations_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("IsEnableHandlingItemOperations_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Confirm last operation PickList .
         /// </summary>
         public static string IsListPickConfirm {
@@ -2932,7 +2914,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The list {1} is terminated.
+        ///   Looks up a localized string similar to The list {0} is terminated.
         /// </summary>
         public static string IsRequestConfirmForLastOperationOnList {
             get {
@@ -2964,15 +2946,6 @@ namespace Ferretto.VW.App.Resources {
         public static string IsUpdatingStockByDifference {
             get {
                 return ResourceManager.GetString("IsUpdatingStockByDifference", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Edit Stock by difference.
-        /// </summary>
-        public static string IsUpdatingStockByDifference_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("IsUpdatingStockByDifference_Duplicate[1]", resourceCulture);
             }
         }
         

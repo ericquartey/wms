@@ -1122,7 +1122,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.machineBaysWebService.ActivateAsync();
                 }
 
-
                 if (!string.IsNullOrEmpty(lastOperationList))
                 {
                     this.DialogService.ShowMessage(string.Format(Localized.Get("OperatorApp.IsRequestConfirmForLastOperationOnList"), lastOperationList),

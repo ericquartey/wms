@@ -207,7 +207,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public async Task<bool> IsLastRowForListAsync(string itemListCode)
         {
-            var bay = await this.bayManager.GetBayAsync();
+            var bay = this.machineService.Bay;
             var machineIdentity = await this.identityService.GetAsync();
 
             var machineId = machineIdentity.Id;

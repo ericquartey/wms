@@ -2014,9 +2014,6 @@
   <data name="Machine" xml:space="preserve">
     <value>makine</value>
   </data>
-  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
-    <value>Stok değişimi</value>
-  </data>
   <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
     <value>Öğe alınamadı</value>
   </data>
@@ -2025,12 +2022,6 @@
   </data>
   <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
     <value>İşlem başarıyla tamamlandı</value>
-  </data>
-  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
-    <value>Stoku farka göre düzenle</value>
-  </data>
-  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
-    <value>Değişim tablosunda barkodla öğe ara (WMS özel)</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Takas tablosunda bulunan öğeler</value>

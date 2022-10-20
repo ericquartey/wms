@@ -1899,9 +1899,6 @@
   <data name="ChangingStock" xml:space="preserve">
     <value>Zmiennośc zapasów magazynowych</value>
   </data>
-  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
-    <value>Zmiennośc zapasów magazynowych</value>
-  </data>
   <data name="ConfirmInstruction" xml:space="preserve">
     <value>Potwierdź grupę</value>
   </data>
@@ -1935,9 +1932,6 @@
   <data name="IsEnableHandlingItemOperations" xml:space="preserve">
     <value>Pobierz i odłuż na postawie kodu kreskowego</value>
   </data>
-  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
-    <value>Wyszukaj pozycję według kodu kreskowego w tabeli wymiany (niestandardowy WMS)</value>
-  </data>
   <data name="IsLocalMachineItems" xml:space="preserve">
     <value>Wyszukaj towary w tej maszynie</value>
   </data>
@@ -1948,9 +1942,6 @@
     <value>Żądanie potwierdzenia ostatniej operacji na jednostce ładunkowej</value>
   </data>
   <data name="IsUpdatingStockByDifference" xml:space="preserve">
-    <value>Edytuj stan magazynu według różnicy</value>
-  </data>
-  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
     <value>Edytuj stan magazynu według różnicy</value>
   </data>
   <data name="ItemAdding" xml:space="preserve">

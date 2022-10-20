@@ -2019,9 +2019,6 @@
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
   </data>
-  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
-    <value>Variazione giacenza</value>
-  </data>
   <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
     <value>Recupero articolo non riuscito</value>
   </data>
@@ -2031,14 +2028,8 @@
   <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
     <value>Operazione eseguita con successo</value>
   </data>
-  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
-    <value>Ricerca articolo con barcode in tabella di scambio (WMS custom)</value>
-  </data>
-  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
-    <value>Modifica giacenza per differenza</value>
-  </data>
   <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
-    <value>La lista {1} è terminata</value>
+    <value>La lista {0} è terminata</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Articoli trovati in tabella di scambio</value>
