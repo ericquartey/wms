@@ -332,7 +332,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         "tr-TR",
                         "Turco");
 
-
                 default:
                     return new Culture(
                             $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/EN.png",
@@ -432,8 +431,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             res.Add(new Culture(
                         $"pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/Flags/TR.png",
                         "tr-TR",
-                        "Turco"));
-
+                        "Türk"));
 
             return res;
         }
