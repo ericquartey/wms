@@ -846,13 +846,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool GetIsExternal(BayNumber bayNumber)
         {
-            lock (this.dataContext)
+            bool isExternal = false;
+            if (!this.machineVolatileDataProvider.IsExternal.TryGetValue(bayNumber, out isExternal))
             {
-                return this.dataContext.Bays.AsNoTracking()
-                    .Select(b => new { b.Number, b.IsExternal })
-                    .SingleOrDefault(b => b.Number == bayNumber)
-                    .IsExternal;
+                lock (this.dataContext)
+                {
+                    isExternal = this.dataContext.Bays.AsNoTracking()
+                        .Select(b => new { b.Number, b.IsExternal })
+                        .SingleOrDefault(b => b.Number == bayNumber)
+                        .IsExternal;
+                    this.machineVolatileDataProvider.IsExternal.Add(bayNumber, isExternal);
+                }
             }
+            return isExternal;
         }
 
         public bool GetLightOn(BayNumber bayNumber)

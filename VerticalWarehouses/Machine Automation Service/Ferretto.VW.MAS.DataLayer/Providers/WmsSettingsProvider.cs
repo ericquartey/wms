@@ -23,15 +23,22 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
+
         #endregion
 
         #region Constructors
 
-        public WmsSettingsProvider(DataLayerContext dataContext, IDataLayerService dataLayerService, IEventAggregator eventAggregator)
+        public WmsSettingsProvider(
+            DataLayerContext dataContext,
+            IDataLayerService dataLayerService,
+            IMachineVolatileDataProvider machineVolatileDataProvider,
+            IEventAggregator eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.dataLayerService = dataLayerService ?? throw new ArgumentNullException(nameof(dataContext));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
         }
 
         #endregion
@@ -127,10 +134,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     return false;
                 }
 
-                lock (this.dataContext)
+                if (this.machineVolatileDataProvider.WmsIsEnabled is null)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.IsEnabled).Single();
+                    lock (this.dataContext)
+                    {
+                        this.machineVolatileDataProvider.WmsIsEnabled = this.dataContext.WmsSettings.AsNoTracking().Select(w => w.IsEnabled).Single();
+                    }
                 }
+                return this.machineVolatileDataProvider.WmsIsEnabled.Value;
             }
             set
             {
@@ -138,23 +149,26 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     return;
                 }
-
-                lock (this.dataContext)
+                if (this.machineVolatileDataProvider.WmsIsEnabled is null || value != this.machineVolatileDataProvider.WmsIsEnabled.Value)
                 {
-                    var settings = this.dataContext.WmsSettings.Single();
-
-                    settings.IsEnabled = value;
-                    if (this.dataContext.SaveChanges() > 0)
+                    lock (this.dataContext)
                     {
-                        this.eventAggregator
-                            .GetEvent<NotificationEvent>()
-                            .Publish(
-                                new CommonUtils.Messages.NotificationMessage
-                                {
-                                    Destination = MessageActor.AutomationService,
-                                    Source = MessageActor.DataLayer,
-                                    Type = CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged
-                                });
+                        this.machineVolatileDataProvider.WmsIsEnabled = value;
+                        var settings = this.dataContext.WmsSettings.Single();
+
+                        settings.IsEnabled = value;
+                        if (this.dataContext.SaveChanges() > 0)
+                        {
+                            this.eventAggregator
+                                .GetEvent<NotificationEvent>()
+                                .Publish(
+                                    new CommonUtils.Messages.NotificationMessage
+                                    {
+                                        Destination = MessageActor.AutomationService,
+                                        Source = MessageActor.DataLayer,
+                                        Type = MessageType.WmsEnableChanged
+                                    });
+                        }
                     }
                 }
             }
@@ -240,7 +254,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                 {
                                     Destination = MessageActor.AutomationService,
                                     Source = MessageActor.DataLayer,
-                                    Type = CommonUtils.Messages.Enumerations.MessageType.WmsEnableChanged
+                                    Type = MessageType.WmsEnableChanged
                                 });
                     }
                 }
@@ -255,7 +269,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     return false;
                 }
-
                 lock (this.dataContext)
                 {
                     return this.dataContext.WmsSettings.AsNoTracking().Single().SocketLinkEndOfLine;
@@ -285,10 +298,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     return false;
                 }
 
-                lock (this.dataContext)
+                if (this.machineVolatileDataProvider.SocketLinkIsEnabled is null)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.SocketLinkIsEnabled).Single();
+                    lock (this.dataContext)
+                    {
+                        this.machineVolatileDataProvider.SocketLinkIsEnabled = this.dataContext.WmsSettings.AsNoTracking().Select(w => w.SocketLinkIsEnabled).Single();
+                    }
                 }
+                return this.machineVolatileDataProvider.SocketLinkIsEnabled.Value;
             }
             set
             {
@@ -299,18 +316,19 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 lock (this.dataContext)
                 {
+                    this.machineVolatileDataProvider.SocketLinkIsEnabled = value;
                     this.dataContext.WmsSettings.Single().SocketLinkIsEnabled = value;
                     this.dataContext.SaveChanges();
-                    this.eventAggregator
-                        .GetEvent<NotificationEvent>()
-                        .Publish(
-                            new CommonUtils.Messages.NotificationMessage
-                            {
-                                Destination = MessageActor.AutomationService,
-                                Source = MessageActor.DataLayer,
-                                Type = CommonUtils.Messages.Enumerations.MessageType.SocketLinkEnableChanged
-                            });
                 }
+                this.eventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(
+                        new CommonUtils.Messages.NotificationMessage
+                        {
+                            Destination = MessageActor.AutomationService,
+                            Source = MessageActor.DataLayer,
+                            Type = MessageType.SocketLinkEnableChanged
+                        });
             }
         }
 
