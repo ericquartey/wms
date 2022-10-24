@@ -2521,7 +2521,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             SocketLinkIsEnabled = false,
                             SocketLinkPolling = 120,
                             SocketLinkPort = 7075,
-                            SocketLinkTimeout = 60000,
+                            SocketLinkTimeout = 600,
                             TimeSyncIntervalMilliseconds = 60000
                         });
                 });

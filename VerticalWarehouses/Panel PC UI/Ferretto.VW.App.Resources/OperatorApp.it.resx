@@ -1953,9 +1953,6 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>Seleziona commessa</value>
   </data>
-  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
-    <value>Seleziona commessa</value>
-  </data>
   <data name="Suspend" xml:space="preserve">
     <value>Sospendi</value>
   </data>
@@ -2018,15 +2015,6 @@
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Macchina</value>
-  </data>
-  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
-    <value>Recupero articolo non riuscito</value>
-  </data>
-  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
-    <value>Articolo non disponibile</value>
-  </data>
-  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
-    <value>Operazione eseguita con successo</value>
   </data>
   <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
     <value>La lista {0} è terminata</value>

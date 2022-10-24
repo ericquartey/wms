@@ -196,15 +196,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Confirm.
-        /// </summary>
-        public static string Confirm_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("Confirm_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to automatic mode the machine and restore all pending movements?.
         /// </summary>
         public static string ConfirmMachineModeSwitchAutomatic {
@@ -601,7 +592,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Timeout (s).
         /// </summary>
         public static string SocketLinkTimeout {
             get {

@@ -4696,15 +4696,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation successfully.
-        /// </summary>
-        public static string OperationSuccess_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("OperationSuccess_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Original Average Unitary Weight [g].
         /// </summary>
         public static string OriginalAverageWeight {
@@ -4993,15 +4984,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item not available.
-        /// </summary>
-        public static string ProductNotAvailable_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("ProductNotAvailable_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Put.
         /// </summary>
         public static string Put {
@@ -5173,15 +5155,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retrieving item failed.
-        /// </summary>
-        public static string RetrievingItemFailed_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("RetrievingItemFailed_Duplicate[1]", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Running state changed.
         /// </summary>
         public static string RunningStateChanged {
@@ -5277,15 +5250,6 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectOrders {
             get {
                 return ResourceManager.GetString("SelectOrders", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select order.
-        /// </summary>
-        public static string SelectOrders_Duplicate_1_ {
-            get {
-                return ResourceManager.GetString("SelectOrders_Duplicate[1]", resourceCulture);
             }
         }
         

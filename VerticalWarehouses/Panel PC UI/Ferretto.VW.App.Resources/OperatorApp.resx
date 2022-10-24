@@ -2343,9 +2343,6 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>Select order</value>
   </data>
-  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
-    <value>Select order</value>
-  </data>
   <data name="Suspend" xml:space="preserve">
     <value>Suspend</value>
     <comment>Label Message</comment>
@@ -2414,18 +2411,6 @@
   </data>
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
-  </data>
-  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
-    <value>Retrieving item failed</value>
-    <comment>Label Message</comment>
-  </data>
-  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
-    <value>Item not available</value>
-    <comment>Label Message</comment>
-  </data>
-  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
-    <value>Operation successfully</value>
-    <comment>Label Message</comment>
   </data>
   <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
     <value>The list {0} is terminated</value>

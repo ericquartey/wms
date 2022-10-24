@@ -330,9 +330,6 @@
   <data name="SocketLinkEndOfLine" xml:space="preserve">
     <value>Satır sonu LF</value>
   </data>
-  <data name="Confirm_Duplicate[1]" xml:space="preserve">
-    <value>Onaylamak</value>
-  </data>
   <data name="FindZeroElevator" xml:space="preserve">
     <value>Sıfır asansör bul</value>
   </data>

@@ -340,16 +340,13 @@
     <value>Timeout (ms)</value>
   </data>
   <data name="SocketLinkTimeout" xml:space="preserve">
-    <value></value>
+    <value>Timeout (s)</value>
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="SocketLinkEndOfLine" xml:space="preserve">
     <value>End of line LF</value>
-  </data>
-  <data name="Confirm_Duplicate[1]" xml:space="preserve">
-    <value>Confirm</value>
   </data>
   <data name="FindZeroElevator" xml:space="preserve">
     <value>Find zero elevator</value>
