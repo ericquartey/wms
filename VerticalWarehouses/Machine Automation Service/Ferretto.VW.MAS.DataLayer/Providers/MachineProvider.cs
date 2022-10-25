@@ -173,6 +173,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool GetAggregateList()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.AggregateList).First();
+            }
+        }
+
         public string GetBackupServer()
         {
             lock (this.dataContext)
@@ -562,6 +570,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.WaitingListPriorityHighlighted = machine.WaitingListPriorityHighlighted;
                 machineDB.ListPickConfirm = machine.ListPickConfirm;
                 machineDB.ListPutConfirm = machine.ListPutConfirm;
+                machineDB.AggregateList = machine.AggregateList;
 
                 this.dataContext.SaveChanges();
             }

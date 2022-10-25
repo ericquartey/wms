@@ -115,6 +115,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(machineInfo);
         }
 
+        [HttpPost("get/Aggregate/List")]
+        public ActionResult<bool> GetAggregateList()
+        {
+            return this.Ok(this.machineProvider.GetAggregateList());
+        }
+
         [HttpGet("get-all-RotationClassSchedule")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
@@ -153,6 +159,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<int> GetItemUniqueIdLength()
         {
             return this.Ok(this.machineProvider.GetItemUniqueIdLength());
+        }
+
+        [HttpPost("get/List/Pick/Confirm")]
+        public ActionResult<bool> GetListPickConfirm()
+        {
+            return this.Ok(this.machineProvider.GetListPickConfirm());
+        }
+
+        [HttpPost("get/List/Put/Confirm")]
+        public ActionResult<bool> GetListPutConfirm()
+        {
+            return this.Ok(this.machineProvider.GetListPutConfirm());
         }
 
         [HttpGet("statistics")]
@@ -202,18 +220,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<int?> GetWaitingListPriorityHighlighted()
         {
             return this.Ok(this.machineProvider.GetWaitingListPriorityHighlighted());
-        }
-
-        [HttpPost("get/List/Put/Confirm")]
-        public ActionResult<bool> GetListPutConfirm()
-        {
-            return this.Ok(this.machineProvider.GetListPutConfirm());
-        }
-
-        [HttpPost("get/List/Pick/Confirm")]
-        public ActionResult<bool> GetListPickConfirm()
-        {
-            return this.Ok(this.machineProvider.GetListPickConfirm());
         }
 
         [HttpPost("get/IsDisableQtyItemEditingPick")]

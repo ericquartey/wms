@@ -2640,4 +2640,7 @@
   <data name="IsListPickConfirm" xml:space="preserve">
     <value>Confirm last operation PickList </value>
   </data>
+  <data name="IsAggregateList" xml:space="preserve">
+    <value>Aggregate List</value>
+  </data>
 </root>

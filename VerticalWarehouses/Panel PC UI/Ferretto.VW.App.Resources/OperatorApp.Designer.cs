@@ -2779,6 +2779,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aggregate List.
+        /// </summary>
+        public static string IsAggregateList {
+            get {
+                return ResourceManager.GetString("IsAggregateList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carrefour (WMS custom).
         /// </summary>
         public static string IsCarrefour {
