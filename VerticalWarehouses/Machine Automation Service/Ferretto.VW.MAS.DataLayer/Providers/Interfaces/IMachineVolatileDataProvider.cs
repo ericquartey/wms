@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
@@ -63,6 +64,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool RandomCells { get; set; }
 
         int? RequiredCycles { get; set; }
+
+        Uri ServiceUrl { get; set; }
 
         bool? SocketLinkIsEnabled { get; set; }
 

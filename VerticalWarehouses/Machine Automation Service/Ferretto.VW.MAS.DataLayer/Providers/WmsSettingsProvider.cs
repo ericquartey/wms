@@ -234,17 +234,28 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             {
                 if (this.dataLayerService.IsReady)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.ServiceUrl).Single() ?? DefaultUri;
+                    if (this.machineVolatileDataProvider.ServiceUrl is null)
+                    {
+                        lock (this.dataContext)
+                        {
+                            this.machineVolatileDataProvider.ServiceUrl = this.dataContext.WmsSettings.AsNoTracking().Select(w => w.ServiceUrl).Single() ?? DefaultUri;
+                        }
+                    }
+                    return this.machineVolatileDataProvider.ServiceUrl;
                 }
-
                 return DefaultUri;
             }
             set
             {
-                if (this.dataLayerService.IsReady)
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+                if (this.machineVolatileDataProvider.ServiceUrl is null || value != this.machineVolatileDataProvider.ServiceUrl)
                 {
                     lock (this.dataContext)
                     {
+                        this.machineVolatileDataProvider.ServiceUrl = value;
                         this.dataContext.WmsSettings.Single().ServiceUrl = value;
                         this.dataContext.SaveChanges();
                         this.eventAggregator
