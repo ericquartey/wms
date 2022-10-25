@@ -449,6 +449,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.IsReasonVisible = false;
+            this.IsOrderVisible = false;
+
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             this.addItemCommand.RaiseCanExecuteChanged();
@@ -459,7 +468,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private async Task AddItemToLoadingUnitAsync()
         {
             this.IsWaitingForResponse = true;
-
             this.NoteEnabled = true;
             var waitForReason = await this.CheckReasonsAsync();
 
