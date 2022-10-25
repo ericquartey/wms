@@ -231,7 +231,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             try
             {
-                this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+                this.SetupStatusCapabilities = this.MachineService.SetupStatus;
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {

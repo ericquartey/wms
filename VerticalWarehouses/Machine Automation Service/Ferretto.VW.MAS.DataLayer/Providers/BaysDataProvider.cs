@@ -394,32 +394,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
-        public BayAccessories GetAccessories(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.AlphaNumericBar)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.BarcodeReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.CardReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.LabelPrinter)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.LaserPointer)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.TokenReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.WeightingScale)
-                    .AsNoTracking()
-                    .SingleOrDefault(b => b.Number == bayNumber);
-
-                return bay.Accessories ?? new BayAccessories();
-            }
-        }
-
         public IEnumerable<Bay> GetAll()
         {
             lock (this.dataContext)

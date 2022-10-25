@@ -546,10 +546,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             try
             {
-                // TODO: Optimize this and next call (make one query to MAS for setup status) - Move everything inside machine service
+                this.MachineService.SetupStatus = null;
                 await this.MachineService.GetTuningStatus();
-
-                var status = await this.machineSetupStatusWebService.GetAsync();
+                var status = this.MachineService.SetupStatus;
 
                 BaySetupStatus bayStatus;
                 switch (this.MachineService.BayNumber)

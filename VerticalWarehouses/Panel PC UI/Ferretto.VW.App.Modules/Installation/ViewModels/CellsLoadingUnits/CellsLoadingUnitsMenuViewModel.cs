@@ -16,7 +16,6 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Ferretto.VW.Utils.Extensions;
 
-
 namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Warning(WarningsArea.Installation)]
@@ -174,7 +173,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.healthProbeService.HealthMasStatus == HealthStatus.Healthy || this.healthProbeService.HealthMasStatus == HealthStatus.Degraded)
                 {
-                    var setupStatus = await this.setupStatusWebService.GetAsync();
+                    var setupStatus = this.MachineService.SetupStatus;
                     foreach (var menuItem in this.cellItems)
                     {
                         var itemStatus = this.GetItemStatus(menuItem, setupStatus);

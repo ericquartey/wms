@@ -140,13 +140,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsCellsHeightCheckProcedureBypassed => this.CellsHeightCheck.IsBypassed;
 
+        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
+
         public bool ShowFixBackDrawers
         {
             get => this.showFixBackDrawers;
             set => this.SetProperty(ref this.showFixBackDrawers, value, this.RaiseCanExecuteChanged);
         }
-
-        public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
         private SetupStepStatus CellPanelsCheck => this.SetupStatusCapabilities?.CellPanelsCheck ?? new SetupStepStatus();
 
@@ -158,16 +158,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        protected override async Task OnDataRefreshAsync()
-        {
-            await this.UpdateSetupStatusAsync();
-        }
-
         public override Task OnAppearedAsync()
         {
             this.ShowFixBackDrawers = this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
             return base.OnAppearedAsync();
+        }
+
+        protected override async Task OnDataRefreshAsync()
+        {
+            await this.UpdateSetupStatusAsync();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -245,7 +245,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private async Task UpdateSetupStatusAsync()
         {
-            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+            this.SetupStatusCapabilities = this.MachineService.SetupStatus;
 
             switch (this.MachineService.BayNumber)
             {
