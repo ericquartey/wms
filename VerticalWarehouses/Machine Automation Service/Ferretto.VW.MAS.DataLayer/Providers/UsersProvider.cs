@@ -19,13 +19,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly TimeSpan tokenValidity = new TimeSpan(0, 30, 0);
 
+        private readonly IWmsSettingsProvider wmsSettingsProvider;
+
         #endregion
 
         #region Constructors
 
-        public UsersProvider(DataLayerContext dataContext)
+        public UsersProvider(DataLayerContext dataContext, IWmsSettingsProvider wmsSettingsProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.wmsSettingsProvider = wmsSettingsProvider;
 
             this.AreSetUsers();
 
@@ -394,7 +397,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (!this.dataContext.WmsSettings.First().IsEnabled)
+                if (!this.wmsSettingsProvider.IsEnabled)
                 {
                     return true;
                 }

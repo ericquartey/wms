@@ -137,16 +137,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private bool CanCompactingStart()
         {
-            var bay = this.baysDataProvider.GetByNumber(BayNumber.BayOne);
+            var canStart = this.machineVolatileDataProvider.Mode == CommonUtils.Messages.MachineMode.Automatic &&
+                this.machineVolatileDataProvider.MachinePowerState == CommonUtils.Messages.MachinePowerState.Powered;
 
-            var activeMission = this.missionsDataProvider.GetAllActiveMissions();
+            if (canStart)
+            {
+                var activeMission = this.missionsDataProvider.GetAllExecutingMissions();
+                canStart = !activeMission.Any(x => x.Status == MissionStatus.Executing);
+            }
 
-            var res = this.machineVolatileDataProvider.Mode == CommonUtils.Messages.MachineMode.Automatic &&
-                this.machineVolatileDataProvider.MachinePowerState == CommonUtils.Messages.MachinePowerState.Powered &&
-                (bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified || bay.CurrentMission == null) &&
-                !activeMission.Any(x => x.Status == MissionStatus.Executing);
+            if (canStart)
+            {
+                var bay = this.baysDataProvider.GetByNumberShutter(BayNumber.BayOne);
+                canStart = bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified || bay.CurrentMission == null;
+            }
 
-            return res;
+            return canStart;
         }
 
         #endregion

@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             var anyActiveMission = this.missionsDataProvider.GetAllActiveMissions().Any();
 
-            var logoutSettings = this.GetAllLogoutSettings();
+            var logoutSettings = this.GetAllLogoutSettings().ToList();
 
             if (logoutSettings != null && logoutSettings.Any())
             {

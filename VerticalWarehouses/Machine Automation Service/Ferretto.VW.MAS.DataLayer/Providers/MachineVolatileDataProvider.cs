@@ -195,6 +195,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int? RequiredCycles { get; set; }
 
+        public Uri ServiceUrl { get; set; }
+
         public bool? SocketLinkIsEnabled { get; set; }
 
         public Dictionary<BayNumber, SocketLinkOperation> SocketLinkOperation { get; set; }

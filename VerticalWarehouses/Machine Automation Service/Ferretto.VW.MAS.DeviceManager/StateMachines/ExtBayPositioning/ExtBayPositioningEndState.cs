@@ -227,161 +227,161 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
 
         private void UpdateLoadingUnitForManualMovement()
         {
-            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-            {
-                var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                var cellsProvider = scope.ServiceProvider.GetRequiredService<ICellsProvider>();
-                var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
-                var loadingUnitProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            //using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            //{
+            //    var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+            //    var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+            //    var cellsProvider = scope.ServiceProvider.GetRequiredService<ICellsProvider>();
+            //    var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+            //    var loadingUnitProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
 
-                var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
+            //    var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
 
-                //
-                // NOT Update the loading unit position:
-                //   LU is always in the bay
-                //   the position can changed: internal position or external position (notify by the sensors)
-                //
+            //
+            // NOT Update the loading unit position:
+            //   LU is always in the bay
+            //   the position can changed: internal position or external position (notify by the sensors)
+            //
 
-                // USELESS ===>
-                // 1. check if elevator is opposite a bay or a cell
-                var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
-                var cell = elevatorDataProvider.GetCurrentCell();
+            // USELESS ===>
+            // 1. check if elevator is opposite a bay or a cell
+            //var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
+            //var cell = elevatorDataProvider.GetCurrentCell();
 
-                var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            //var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
 
-                var isChanged = false;
-                using (var transaction = elevatorDataProvider.GetContextTransaction())
-                {
-                    if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
-                    {
-                        // TODO:
-                        // Define a baysDataProvider.SetLoadingUnit(*) for the position internal and external (?)
+            //var isChanged = false;
+            //using (var transaction = elevatorDataProvider.GetContextTransaction())
+            //{
+            //    if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
+            //    {
+            // TODO:
+            // Define a baysDataProvider.SetLoadingUnit(*) for the position internal and external (?)
 
-                        //var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            //var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
 
-                        //if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
-                        //{
-                        //    // 1. Possible pickup from bay
-                        //    if (machineResourcesProvider.IsDrawerCompletelyOnCradle &&
-                        //        !machineResourcesProvider.IsDrawerInBayInternalPosition(bay.Number) &&
-                        //        !machineResourcesProvider.IsDrawerInBayExternalPosition(bay.Number))
-                        //    {
-                        //        elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
-                        //        baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                        //        isChanged = true;
-                        //    }
-                        //}
-                        //else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
-                        //{
-                        //    // 2. Possible deposit to bay
-                        //    if (machineResourcesProvider.IsDrawerCompletelyOffCradle &&
-                        //        machineResourcesProvider.IsDrawerInBayInternalPosition(bay.Number) &&
-                        //        !machineResourcesProvider.IsDrawerInBayExternalPosition(bay.Number))
-                        //    {
-                        //        elevatorDataProvider.SetLoadingUnit(null);
-                        //        baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
-                        //        loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
-                        //        isChanged = true;
-                        //    }
-                        //}
-                    }
+            //if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
+            //{
+            //    // 1. Possible pickup from bay
+            //    if (machineResourcesProvider.IsDrawerCompletelyOnCradle &&
+            //        !machineResourcesProvider.IsDrawerInBayInternalPosition(bay.Number) &&
+            //        !machineResourcesProvider.IsDrawerInBayExternalPosition(bay.Number))
+            //    {
+            //        elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+            //        baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+            //        isChanged = true;
+            //    }
+            //}
+            //else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
+            //{
+            //    // 2. Possible deposit to bay
+            //    if (machineResourcesProvider.IsDrawerCompletelyOffCradle &&
+            //        machineResourcesProvider.IsDrawerInBayInternalPosition(bay.Number) &&
+            //        !machineResourcesProvider.IsDrawerInBayExternalPosition(bay.Number))
+            //    {
+            //        elevatorDataProvider.SetLoadingUnit(null);
+            //        baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
+            //        loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
+            //        isChanged = true;
+            //    }
+            //}
+            //}
 
-                    //if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
-                    //{
-                    //    var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                    //    if (this.machineData.MessageData.TargetPosition > 0
-                    //        && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                    //        && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
-                    //    {
-                    //        var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
-                    //        var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
-                    //        if (origin != null
-                    //            && destination != null
-                    //            && origin.LoadingUnit != null)
-                    //        {
-                    //            baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id, 0);
-                    //            baysDataProvider.SetLoadingUnit(origin.Id, null);
-                    //            isChanged = true;
-                    //        }
-                    //    }
-                    //}
-                    //else if (bayPosition != null)
-                    //{
-                    //    var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
-                    //    var isDrawerInBay = bayPosition.IsUpper
-                    //         ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                    //         : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+            //if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
+            //{
+            //    var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            //    if (this.machineData.MessageData.TargetPosition > 0
+            //        && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+            //        && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
+            //    {
+            //        var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+            //        var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+            //        if (origin != null
+            //            && destination != null
+            //            && origin.LoadingUnit != null)
+            //        {
+            //            baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id, 0);
+            //            baysDataProvider.SetLoadingUnit(origin.Id, null);
+            //            isChanged = true;
+            //        }
+            //    }
+            //}
+            //else if (bayPosition != null)
+            //{
+            //    var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
+            //    var isDrawerInBay = bayPosition.IsUpper
+            //         ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+            //         : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
 
-                    //    if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
-                    //    // possible pickup from bay
-                    //    {
-                    //        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
-                    //        {
-                    //            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
-                    //            baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                    //            isChanged = true;
-                    //        }
-                    //    }
-                    //    else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
-                    //    // possible deposit to bay
-                    //    {
-                    //        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
-                    //        {
-                    //            elevatorDataProvider.SetLoadingUnit(null);
-                    //            baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
-                    //            loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
-                    //            isChanged = true;
-                    //        }
-                    //    }
-                    //}
-                    //else if (cell != null)
-                    //{
-                    //    if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
-                    //    // possible pickup from cell
-                    //    {
-                    //        if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
-                    //        {
-                    //            elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
-                    //            cellsProvider.SetLoadingUnit(cell.Id, null);
-                    //            isChanged = true;
-                    //        }
-                    //    }
-                    //    else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
-                    //    // possible deposit to cell
-                    //    {
-                    //        if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
-                    //        {
-                    //            if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
-                    //            {
-                    //                elevatorDataProvider.SetLoadingUnit(null);
-                    //                cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
-                    //                isChanged = true;
-                    //            }
-                    //            else
-                    //            {
-                    //                this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
-                    //            }
-                    //        }
-                    //    }
-                    //}
+            //    if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
+            //    // possible pickup from bay
+            //    {
+            //        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
+            //        {
+            //            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+            //            baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+            //            isChanged = true;
+            //        }
+            //    }
+            //    else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
+            //    // possible deposit to bay
+            //    {
+            //        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
+            //        {
+            //            elevatorDataProvider.SetLoadingUnit(null);
+            //            baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
+            //            loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
+            //            isChanged = true;
+            //        }
+            //    }
+            //}
+            //else if (cell != null)
+            //{
+            //    if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
+            //    // possible pickup from cell
+            //    {
+            //        if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
+            //        {
+            //            elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
+            //            cellsProvider.SetLoadingUnit(cell.Id, null);
+            //            isChanged = true;
+            //        }
+            //    }
+            //    else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
+            //    // possible deposit to cell
+            //    {
+            //        if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            //        {
+            //            if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+            //            {
+            //                elevatorDataProvider.SetLoadingUnit(null);
+            //                cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+            //                isChanged = true;
+            //            }
+            //            else
+            //            {
+            //                this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+            //            }
+            //        }
+            //    }
+            //}
 
-                    transaction.Commit();
-                }
-                if (isChanged)
-                {
-                    this.ParentStateMachine.PublishNotificationMessage(
-                            new NotificationMessage(
-                                null,
-                                $"Load Unit position changed",
-                                MessageActor.Any,
-                                MessageActor.DeviceManager,
-                                MessageType.Positioning,
-                                this.stateData.MachineData.RequestingBay,
-                                this.stateData.MachineData.RequestingBay,
-                                MessageStatus.OperationUpdateData));
-                }
-            }
+            //transaction.Commit();
+            //}
+            //if (isChanged)
+            //{
+            //    this.ParentStateMachine.PublishNotificationMessage(
+            //            new NotificationMessage(
+            //                null,
+            //                $"Load Unit position changed",
+            //                MessageActor.Any,
+            //                MessageActor.DeviceManager,
+            //                MessageType.Positioning,
+            //                this.stateData.MachineData.RequestingBay,
+            //                this.stateData.MachineData.RequestingBay,
+            //                MessageStatus.OperationUpdateData));
+            //}
+            //}
         }
 
         private void UpdateLoadingUnitLocation()

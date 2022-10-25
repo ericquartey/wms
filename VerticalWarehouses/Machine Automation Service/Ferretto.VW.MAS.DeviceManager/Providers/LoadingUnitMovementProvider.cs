@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit)
         {
-            var bayPosition = this.baysDataProvider.GetPositionByLocation(loadingUnitPosition);
+            var bayPosition = bay.Positions.FirstOrDefault(b => b.Location == loadingUnitPosition);
 
             if (bay.Carousel != null)
             {

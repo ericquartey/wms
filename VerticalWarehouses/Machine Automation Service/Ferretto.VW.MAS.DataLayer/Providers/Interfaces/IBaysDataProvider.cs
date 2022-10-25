@@ -69,6 +69,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <returns>The bay identified by the given number.</returns>
         Bay GetByNumber(BayNumber bayNumber);
 
+        Bay GetByNumberShutter(BayNumber bayNumber);
+
         int GetCarouselBayFindZeroLimit(BayNumber bayNumber);
 
         double GetChainOffset(InverterIndex inverterIndex);

@@ -134,8 +134,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.ManualMovements)
-                    .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
                         .ThenInclude(s => s.ManualMovements)
                     .Include(b => b.Carousel)
@@ -292,7 +290,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public bool CheckIntrusion(BayNumber bayNumber, bool enable)
         {
-            var bay = this.GetByNumber(bayNumber);
+            var bay = this.GetByNumberShutter(bayNumber);
             if (bay.IsCheckIntrusion
                 && (bay.Shutter is null || bay.Shutter.Type == ShutterType.NotSpecified)
                 )
@@ -394,32 +392,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
-        public BayAccessories GetAccessories(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.AlphaNumericBar)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.BarcodeReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.CardReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.LabelPrinter)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.LaserPointer)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.TokenReader)
-                    .Include(b => b.Accessories)
-                        .ThenInclude(a => a.WeightingScale)
-                    .AsNoTracking()
-                    .SingleOrDefault(b => b.Number == bayNumber);
-
-                return bay.Accessories ?? new BayAccessories();
-            }
-        }
-
         public IEnumerable<Bay> GetAll()
         {
             lock (this.dataContext)
@@ -435,12 +407,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays.AsNoTracking().Count();
             }
         }
-
-        public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
-
-        public ExternalBayManualParameters GetAssistedMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.AssistedMovements;
-
-        public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;
 
         public IEnumerable<BayNumber> GetBayNumbers()
         {
@@ -661,6 +627,30 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Bay GetByNumberShutter(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    return this.dataContext.Bays
+                        .AsNoTracking()
+                        .Include(i => i.Shutter)
+                            .ThenInclude(s => s.Inverter)
+                        .Include(b => b.Shutter)
+                            .ThenInclude(s => s.AssistedMovements)
+                        .Include(b => b.Shutter)
+                            .ThenInclude(s => s.ManualMovements)
+                        .Where(b => b.Number == bayNumber)
+                        .Single();
+                }
+                catch
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+            }
+        }
+
         public int GetCarouselBayFindZeroLimit(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.BayFindZeroLimit;
 
         public double GetChainOffset(InverterIndex inverterIndex)
@@ -767,7 +757,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         case MovementMode.ShutterTest:
                         case MovementMode.ShutterPosition:
-                            returnValue = this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+                            returnValue = this.GetByNumberShutter(bayNumber).Shutter.Inverter.Index;
                             break;
 
                         case MovementMode.BayChain:
@@ -810,7 +800,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 case BayNumber.BayTwo:
                 case BayNumber.BayThree:
-                    returnValue = this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+                    returnValue = this.GetByNumberShutter(bayNumber).Shutter.Inverter.Index;
                     break;
 
                 default:
@@ -900,12 +890,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.ManualMovements;
-
-        public ExternalBayManualParameters GetManualMovementsExternalBay(BayNumber bayNumber) => this.GetByNumber(bayNumber).External.ManualMovements;
-
-        public ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.ManualMovements;
-
         public BayPosition GetPositionById(int bayPositionId)
         {
             lock (this.dataContext)
@@ -955,7 +939,7 @@ namespace Ferretto.VW.MAS.DataLayer
         //public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
         public InverterIndex GetShutterInverterIndex(BayNumber bayNumber)
         {
-            var shutter = this.GetByNumber(bayNumber).Shutter;
+            var shutter = this.GetByNumberShutter(bayNumber).Shutter;
             if (shutter == null)
             {
                 return InverterIndex.None;
@@ -963,10 +947,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
             return shutter.Inverter.Index;
         }
-
-        public double GetShutterMaxSpeed(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.MaxSpeed;
-
-        public double GetShutterMinSpeed(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.MinSpeed;
 
         public void IncrementCycles(BayNumber bayNumber)
         {

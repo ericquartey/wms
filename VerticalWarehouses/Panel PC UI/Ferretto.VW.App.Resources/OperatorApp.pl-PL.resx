@@ -1989,9 +1989,6 @@
   <data name="OperationSuccess" xml:space="preserve">
     <value>Operacja wykonana z powodzeniem</value>
   </data>
-  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
-    <value>Operacja wykonana z powodzeniem</value>
-  </data>
   <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
     <value>Częściowo wykonane i zakończone</value>
   </data>
@@ -2007,22 +2004,13 @@
   <data name="ProductNotAvailable" xml:space="preserve">
     <value>Brak dostępnego towaru</value>
   </data>
-  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
-    <value>Towar niedostępny</value>
-  </data>
   <data name="RetrievingItemFailed" xml:space="preserve">
     <value>Retrieving item failed</value>
-  </data>
-  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
-    <value>Nie udało się pobrać elementu</value>
   </data>
   <data name="ScaleNotResponding" xml:space="preserve">
     <value>Waga nie odpowiada.</value>
   </data>
   <data name="SelectOrders" xml:space="preserve">
-    <value>Wybierz zamówienie</value>
-  </data>
-  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
     <value>Wybierz zamówienie</value>
   </data>
   <data name="SetPoint" xml:space="preserve">
