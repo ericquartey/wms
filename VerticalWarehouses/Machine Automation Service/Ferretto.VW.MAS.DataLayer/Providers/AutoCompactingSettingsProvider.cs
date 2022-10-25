@@ -148,7 +148,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (canStart)
             {
-                var bay = this.baysDataProvider.GetByNumber(BayNumber.BayOne);
+                var bay = this.baysDataProvider.GetByNumberShutter(BayNumber.BayOne);
                 canStart = bay.Shutter != null && bay.Shutter.Type != ShutterType.NotSpecified || bay.CurrentMission == null;
             }
 

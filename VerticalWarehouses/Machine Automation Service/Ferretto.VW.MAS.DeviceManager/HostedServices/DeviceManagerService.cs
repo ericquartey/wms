@@ -548,7 +548,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             try
                             {
                                 var bayNumber = baysDataProvider.GetByInverterIndex(inverter.SystemIndex);
-                                var bay = baysDataProvider.GetByNumber(bayNumber);
+                                var bay = baysDataProvider.GetByNumberShutter(bayNumber);
                                 if (bay.Shutter != null && bay.Shutter.Inverter != null
                                     && bay.Shutter.Inverter.Index == inverter.SystemIndex
                                     && bay.Shutter.Type == ShutterType.NotSpecified)
