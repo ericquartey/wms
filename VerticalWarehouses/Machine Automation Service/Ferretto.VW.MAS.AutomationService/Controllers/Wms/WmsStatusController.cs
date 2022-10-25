@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.SocketLink.Providers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IErrorsProvider errorsProvider;
 
+        private readonly ISystemSocketLinkProvider systemSocketLinkProvider;
+
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
         #endregion
@@ -26,10 +29,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public WmsStatusController(
             IWmsSettingsProvider wmsSettingsProvider,
+            ISystemSocketLinkProvider systemSocketLinkProvider,
             IErrorsProvider errorsProvider)
         {
             this.wmsSettingsProvider = wmsSettingsProvider;
             this.errorsProvider = errorsProvider;
+            this.systemSocketLinkProvider = systemSocketLinkProvider;
         }
 
         #endregion
@@ -133,24 +138,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.wmsSettingsProvider.IsEnabled = isEnabled;
             this.wmsSettingsProvider.ServiceUrl = httpUrl is null ? null : new Uri(httpUrl);
             this.wmsSettingsProvider.ConnectionTimeout = connectionTimeout;
-
-            this.wmsSettingsProvider.SocketLinkIsEnabled = socketLinkIsEnabled;
             this.wmsSettingsProvider.SocketLinkPort = socketLinkPort;
             this.wmsSettingsProvider.SocketLinkTimeout = socketLinkTimeout;
             this.wmsSettingsProvider.SocketLinkPolling = socketLinkPolling;
             this.wmsSettingsProvider.SocketLinkEndOfLine = socketLinkEndOfLine;
-        }
-
-        [HttpPut("update-wms-time-settings")]
-        public async Task UpdateIsTimeSyncEnabledAsync()
-        {
-            this.wmsSettingsProvider.IsTimeSyncEnabled = true;
+            this.wmsSettingsProvider.SocketLinkIsEnabled = socketLinkIsEnabled;
         }
 
         [HttpPut("update-delay-timeout")]
         public async Task UpdateDelayTimeout(int seconds)
         {
             this.wmsSettingsProvider.DelayTimeout = seconds;
+        }
+
+        [HttpPut("update-wms-time-settings")]
+        public async Task UpdateIsTimeSyncEnabledAsync()
+        {
+            this.wmsSettingsProvider.IsTimeSyncEnabled = true;
         }
 
         [HttpPost("time-sync-interval-milliseconds-update")]

@@ -34437,17 +34437,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync()
+        public System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds)
         {
-            return UpdateIsTimeSyncEnabledAsync(System.Threading.CancellationToken.None);
+            return UpdateDelayTimeoutAsync(seconds, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds, System.Threading.CancellationToken cancellationToken)
         {
+            if (seconds == null)
+                throw new System.ArgumentNullException("seconds");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/status/update-wms-time-settings");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/status/update-delay-timeout?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("seconds") + "=").Append(System.Uri.EscapeDataString(ConvertToString(seconds, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -34499,22 +34504,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds)
+        public System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync()
         {
-            return UpdateDelayTimeoutAsync(seconds, System.Threading.CancellationToken.None);
+            return UpdateIsTimeSyncEnabledAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync(System.Threading.CancellationToken cancellationToken)
         {
-            if (seconds == null)
-                throw new System.ArgumentNullException("seconds");
-    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/status/update-delay-timeout?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("seconds") + "=").Append(System.Uri.EscapeDataString(ConvertToString(seconds, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/wms/status/update-wms-time-settings");
     
             var client_ = _httpClient;
             try
