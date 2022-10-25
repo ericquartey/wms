@@ -73,6 +73,30 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("{id}/additem-reasons")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddItemReasonsAsync(int id, int itemId, double quantity, int compartmentId, string lot, string serialNumber, int? reasonId, string reasonNotes, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        {
+            //public async Task<IActionResult> ImmediateAddItemAsync(int id, int itemId, int quantity, int compartmentId, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            try
+            {
+                //await loadingUnitsWmsWebService.ImmediateAddItemAsync(id, itemId, quantity, compartmentId);
+                await loadingUnitsWmsWebService.ImmediateAddItemAsync(id, itemId, quantity, compartmentId, lot, serialNumber, reasonId, reasonNotes);
+            }
+            catch (WmsWebApiException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+            }
+
+            return this.Ok();
+        }
+
         [HttpPost("add-test-unit")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

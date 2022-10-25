@@ -140,6 +140,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool ListPutConfirm { get; set; }
 
+        public bool AggregateList { get; set; }
+
         /// <summary>
         /// Load Unit depth, in millimeters
         /// </summary>

@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Machine Get();
 
+        bool GetAggregateList();
+
         string GetBackupServer();
 
         string GetBackupServerPassword();

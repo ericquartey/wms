@@ -574,7 +574,16 @@ namespace Ferretto.VW.App.Modules.Operator
                     else
                     {
                         this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");
-                        newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+
+                        if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
+                        {
+                            newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
+                        }
+                        else
+                        {
+                            newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+                        }
+
                         try
                         {
                             await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);

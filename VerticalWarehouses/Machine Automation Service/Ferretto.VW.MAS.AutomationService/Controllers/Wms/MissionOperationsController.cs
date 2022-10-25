@@ -106,6 +106,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
         }
 
+        [HttpGet("{id}/aggregate")]
+        public async Task<ActionResult<MissionOperation>> GetByAggregateAsync(int id)
+        {
+            return this.Ok(await this.missionOperationsWmsWebService.AggregateAsync(id));
+        }
+
         [HttpGet("orders")]
         public async Task<ActionResult<IEnumerable<OperationReason>>> GetOrdersAsync()
         {

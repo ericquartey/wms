@@ -2229,4 +2229,7 @@
   <data name="IsListPickConfirm" xml:space="preserve">
     <value>Conferma ultima operazione della lista di prelievo</value>
   </data>
+  <data name="IsAggregateList" xml:space="preserve">
+    <value>Aggrega Liste</value>
+  </data>
 </root>

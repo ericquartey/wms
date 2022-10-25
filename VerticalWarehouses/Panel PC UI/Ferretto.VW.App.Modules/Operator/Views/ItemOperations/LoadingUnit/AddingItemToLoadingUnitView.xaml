@@ -204,13 +204,13 @@
                             Style="{StaticResource ConfirmButton}" />
 
         <!--Control for confirm with reason and note-->
-        <!--<localControls:ReasonsView Grid.RowSpan="7"
+        <localControls:ReasonsView Grid.RowSpan="7"
                                    Grid.Row="1"
                                    Visibility="{Binding IsReasonVisible, Converter={StaticResource BTVC}}" />
 
         <localControls:ReasonsAndOrdersView Grid.RowSpan="7"
                                             Grid.Row="1"
-                                            Visibility="{Binding IsOrderVisible, Converter={StaticResource BTVC}}" />-->
+                                            Visibility="{Binding IsOrderVisible, Converter={StaticResource BTVC}}" />
 
     </Grid>
 
