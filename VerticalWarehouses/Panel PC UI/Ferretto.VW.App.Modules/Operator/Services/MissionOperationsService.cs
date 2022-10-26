@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken loadingUnitToken;
 
+        private IEnumerable<Mission> machineMissions;
+
         private bool multilist;
 
         private int unitId;
@@ -402,9 +404,10 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.unitId;
         }
 
-        public async Task RefreshAsync(bool force = false)
+        public async Task<IEnumerable<Mission>> RefreshAsync(bool force = false)
         {
             await this.RefreshActiveMissionAsync(force: force);
+            return this.machineMissions;
         }
 
         public async Task StartAsync()
@@ -649,12 +652,12 @@ namespace Ferretto.VW.App.Modules.Operator
                 //var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
 
                 // Retrieve the machine missions
-                var machineMissions = await this.missionsWebService.GetAllAsync();
+                this.machineMissions = await this.missionsWebService.GetAllAsync();
                 IOrderedEnumerable<Mission> activeMissions = null;
 
                 if (missionId.HasValue)
                 {
-                    activeMissions = machineMissions.Where(m =>
+                    activeMissions = this.machineMissions.Where(m =>
                             m.Step is MissionStep.WaitPick
                             &&
                             m.TargetBay == this.bayNumber
@@ -668,7 +671,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
                 else
                 {
-                    activeMissions = machineMissions.Where(m =>
+                    activeMissions = this.machineMissions.Where(m =>
                         m.Step is MissionStep.WaitPick
                         &&
                         m.TargetBay == this.bayNumber
