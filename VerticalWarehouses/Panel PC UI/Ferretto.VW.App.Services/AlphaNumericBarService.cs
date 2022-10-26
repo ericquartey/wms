@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Services
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineWmsStatusWebService machineWmsStatusWebService;
-
+        private readonly IMachineService machineService;
         private readonly IMachineMissionsWebService missionWebService;
 
         private readonly int pollingDelay = 200;
@@ -61,7 +61,8 @@ namespace Ferretto.VW.App.Services
             IAlphaNumericBarDriver alphaNumericBarDriver,
             IMachineMissionsWebService missionWebService,
             ILaserPointerService laserPointerService,
-            IMachineWmsStatusWebService machineWmsStatusWebService
+            IMachineWmsStatusWebService machineWmsStatusWebService,
+            IMachineService machineService
             )
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -70,6 +71,7 @@ namespace Ferretto.VW.App.Services
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
             this.laserPointerService = laserPointerService ?? throw new ArgumentNullException(nameof(laserPointerService));
             this.machineWmsStatusWebService = machineWmsStatusWebService ?? throw new ArgumentNullException(nameof(machineWmsStatusWebService));
+            this.machineService = machineService;
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -288,7 +290,7 @@ namespace Ferretto.VW.App.Services
                     var activeMission = await this.RetrieveActiveMissionAsync();
                     if (activeMission != null && activeMission.WmsId.HasValue)
                     {
-                        var bay = await this.bayManager.GetBayAsync();
+                        var bay = this.machineService.Bay;
                         var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
 
                         if (bayPosition is null)

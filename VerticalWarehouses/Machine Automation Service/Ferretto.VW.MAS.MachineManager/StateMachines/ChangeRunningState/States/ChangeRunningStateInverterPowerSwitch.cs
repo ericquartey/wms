@@ -80,9 +80,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     case MessageStatus.OperationEnd:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
-                        var bays = this.baysDataProvider.GetAll().ToList();
+                        var bays = this.baysDataProvider.GetAll();
 
-                        if (this.stateMachineResponses.Values.Count == bays.Count)
+                        if (this.stateMachineResponses.Values.Count == bays.Count())
                         {
                             returnValue = this.GetState<IChangeRunningStateEndState>();
                             ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;

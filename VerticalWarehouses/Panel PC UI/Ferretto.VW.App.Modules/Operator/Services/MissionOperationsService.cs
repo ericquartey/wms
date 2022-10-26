@@ -644,7 +644,7 @@ namespace Ferretto.VW.App.Modules.Operator
             try
             {
                 // Retrieve properties of bay: check if it is an internal double bay
-                var bay = await this.machineBaysWebService.GetByNumberAsync(this.bayNumber);
+                var bay = this.machineService.Bay;
                 //var isInternalDoubleBay = bay.IsDouble && (bay.Carousel == null);
                 //var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
 

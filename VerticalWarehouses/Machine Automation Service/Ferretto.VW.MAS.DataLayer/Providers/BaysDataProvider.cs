@@ -38,8 +38,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Inverter)
                     .Include(b => b.Accessories)
                         .ThenInclude(a => a.LaserPointer)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Shutter)
@@ -126,8 +124,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(a => a.TokenReader)
                     .Include(b => b.Accessories)
                         .ThenInclude(a => a.WeightingScale)
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Shutter)
@@ -146,16 +142,15 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber));
 
-        private static readonly Func<DataLayerContext, LoadingUnitLocation, BayPosition> GetPositionByLocationCompile =
+        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetPositionByLocationCompile =
                 EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
-                context.BayPositions
-                    .AsNoTracking()
-                .Include(b => b.Bay)
-                    .ThenInclude(i => i.Carousel)
-                .Include(b => b.Bay)
-                    .ThenInclude(i => i.External)
-                .Include(b => b.LoadingUnit)
-                .SingleOrDefault(p => p.Location == location));
+                context.Bays
+                .AsNoTracking()
+                .Include(b => b.Positions)
+                    .ThenInclude(b => b.LoadingUnit)
+                .Include(i => i.Carousel)
+                .Include(i => i.External)
+                .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
 
         private readonly IMemoryCache cache;
 
@@ -396,15 +391,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return GetAllCompile(this.dataContext).ToArray();
-            }
-        }
-
-        public int GetAllCount()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Bays.AsNoTracking().Count();
+                var bays = GetAllCompile(this.dataContext).ToArray();
+                foreach (var bay in bays)
+                {
+                    this.LoadBayPositions(bay);
+                }
+                return bays;
             }
         }
 
@@ -468,7 +460,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return GetByCellCompile(this.dataContext, cell);
+                var bay = GetByCellCompile(this.dataContext, cell);
+                if (bay != null)
+                {
+                    foreach (var position in bay.Positions)
+                    {
+                        position.Bay = bay;
+                    }
+                }
+                return bay;
             }
         }
 
@@ -557,6 +557,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(ioIndex.ToString());
                 }
+                foreach (var position in bay.Positions)
+                {
+                    position.Bay = bay;
+                }
 
                 return bay;
             }
@@ -566,7 +570,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return GetByLoadingUnitLocationCompile(this.dataContext, location);
+                var bay = GetByLoadingUnitLocationCompile(this.dataContext, location);
+                if (bay != null)
+                {
+                    foreach (var position in bay.Positions)
+                    {
+                        position.Bay = bay;
+                    }
+                }
+                return bay;
             }
         }
 
@@ -622,6 +634,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
+                this.LoadBayPositions(bay);
 
                 return bay;
             }
@@ -633,7 +646,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 try
                 {
-                    return this.dataContext.Bays
+                    var bay = this.dataContext.Bays
                         .AsNoTracking()
                         .Include(i => i.Shutter)
                             .ThenInclude(s => s.Inverter)
@@ -643,6 +656,12 @@ namespace Ferretto.VW.MAS.DataLayer
                             .ThenInclude(s => s.ManualMovements)
                         .Where(b => b.Number == bayNumber)
                         .Single();
+
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+                    return bay;
                 }
                 catch
                 {
@@ -677,7 +696,31 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.machineVolatileDataProvider.GetBayEncoderPosition(bayNumber);
         }
 
-        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
+        public Inverter GetInverterByNumber(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    var bay = this.dataContext.Bays
+                        .AsNoTracking()
+                        .Include(i => i.Inverter)
+                        .Where(b => b.Number == bayNumber)
+                        .Single();
+
+                    if (bay is null || bay.Inverter is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+                    return bay.Inverter;
+                }
+                catch
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+            }
+        }
+
         public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -691,7 +734,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case BayNumber.BayOne:
                 case BayNumber.BayTwo:
                 case BayNumber.BayThree:
-                    returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                    returnValue = this.GetInverterByNumber(bayNumber).Index;
                     break;
 
                 default:
@@ -765,13 +808,13 @@ namespace Ferretto.VW.MAS.DataLayer
                         case MovementMode.BayTest:
                         case MovementMode.BayChainFindZero:
                         case MovementMode.DoubleExtBayTest:
-                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            returnValue = this.GetInverterByNumber(bayNumber).Index;
                             break;
 
                         case MovementMode.ExtBayChain:
                         case MovementMode.ExtBayChainManual:
                         case MovementMode.ExtBayTest:
-                            returnValue = this.GetByNumber(bayNumber).Inverter.Index;
+                            returnValue = this.GetInverterByNumber(bayNumber).Index;
                             break;
 
                         default:
@@ -886,7 +929,8 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.BayPositions
                     .AsNoTracking()
-                    .SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
+                    .Select(p => new { p.Location, p.LoadingUnit.Id })
+                    .SingleOrDefault(p => p.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
             }
         }
 
@@ -897,6 +941,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bayPosition = this.dataContext.BayPositions
                     .Include(b => b.LoadingUnit)
                     .AsNoTracking()
+                    .Select(p => new BayPosition()
+                    {
+                        BayId = p.BayId,
+                        Height = p.Height,
+                        IsBlocked = p.IsBlocked,
+                        LoadingUnit = p.LoadingUnit,
+                        Location = p.Location,
+                        MaxDoubleHeight = p.MaxDoubleHeight,
+                        MaxSingleHeight = p.MaxSingleHeight,
+                        ProfileOffset = p.ProfileOffset
+                    })
                     .SingleOrDefault(p => p.Id == bayPositionId);
 
                 if (bayPosition is null)
@@ -910,13 +965,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayPosition GetPositionByLocation(LoadingUnitLocation location)
         {
-            var bayPosition = GetPositionByLocationCompile(this.dataContext, location);
-            if (bayPosition is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(location.ToString());
-            }
+                var bay = GetPositionByLocationCompile(this.dataContext, location);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(location.ToString());
+                }
+                foreach (var position in bay.Positions)
+                {
+                    position.Bay = bay;
+                }
 
-            return bayPosition;
+                return bay.Positions.FirstOrDefault(p => p.Location == location);
+            }
         }
 
         public double GetResolution(InverterIndex inverterIndex)
@@ -936,7 +998,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        //public InverterIndex GetShutterInverterIndex(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.Inverter.Index;
         public InverterIndex GetShutterInverterIndex(BayNumber bayNumber)
         {
             var shutter = this.GetByNumberShutter(bayNumber).Shutter;
@@ -1505,6 +1566,31 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return loadingUnits;
+        }
+
+        private void LoadBayPositions(Bay bay)
+        {
+            var positions = this.dataContext.BayPositions
+                .Include(i => i.LoadingUnit)
+                .Select(p => new BayPosition()
+                {
+                    BayId = p.BayId,
+                    Height = p.Height,
+                    IsBlocked = p.IsBlocked,
+                    Id = p.Id,
+                    LoadingUnit = p.LoadingUnit,
+                    Location = p.Location,
+                    MaxDoubleHeight = p.MaxDoubleHeight,
+                    MaxSingleHeight = p.MaxSingleHeight,
+                    ProfileOffset = p.ProfileOffset
+                })
+                .Where(p => p.BayId == bay.Id)
+                .ToList();
+            foreach (var position in positions)
+            {
+                position.Bay = bay;
+            }
+            bay.Positions = positions;
         }
 
         private void Update(Bay bay)

@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         [JsonIgnore]
         public Bay Bay { get; set; }
+
+        public int? BayId { get; set; }
 
         public double Height { get; set; }
 

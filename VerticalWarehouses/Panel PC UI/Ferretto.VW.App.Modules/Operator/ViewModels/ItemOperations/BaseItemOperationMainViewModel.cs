@@ -1509,7 +1509,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectedCompartment = null;
             this.InitializeInputQuantity();
 
-            this.bay = await this.BayManager.GetBayAsync();
+            this.bay = this.MachineService.Bay;
 
             this.RaisePropertyChanged(nameof(this.IsBaySideBack));
 

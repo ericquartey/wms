@@ -237,7 +237,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.Logger.Debug($"Show the evadability options view for item list {itemList.Id}");
 
-                    var bay = await this.bayManager.GetBayAsync();
+                    var bay = this.MachineService.Bay;
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.WaitingLists.EVADABILITYOPTIONS,
@@ -256,7 +256,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 try
                 {
-                    var bay = await this.bayManager.GetBayAsync();
+                    var bay = this.MachineService.Bay;
                     await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, ItemListEvadabilityType.Execute, bay.Id, this.authenticationService.UserName);
                     await this.LoadListsAsync();
                     this.ShowNotification(
@@ -458,7 +458,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    var bay = await this.bayManager.GetBayAsync();
+                    var bay = this.MachineService.Bay;
                     var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, this.authenticationService.UserName);
 
                     var ItemExecutionList = new List<ItemListExecution>();
@@ -541,7 +541,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.MachineService.Bay;
                 var lastItemListId = this.selectedList?.Id;
                 var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, this.authenticationService.UserName);
 

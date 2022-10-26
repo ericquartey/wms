@@ -359,12 +359,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 {
                     // Retrieve the bay
                     var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                    var bay = baysDataProvider.GetByNumber(this.machineData.TargetBay);
+                    var isExternal = baysDataProvider.GetIsExternal(this.machineData.TargetBay);
 
                     // Check if zero sensor is ON
                     if (this.machineData.CalibrationType == Calibration.FindSensor
                         && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay)
-                        && !bay.IsExternal)
+                        && !isExternal)
                     {
                         ok = false;
                         errorText = string.Format(Resources.General.ResourceManager.GetString("InternalServerErrorTitle", CommonUtils.Culture.Actual));
@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         //}
 
                         // Handle external bay
-                        if (bay.IsExternal)
+                        if (isExternal)
                         {
                             // Check presence in external position
                             //if (ok

@@ -4700,6 +4700,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class BayPosition : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("BayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? BayId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     

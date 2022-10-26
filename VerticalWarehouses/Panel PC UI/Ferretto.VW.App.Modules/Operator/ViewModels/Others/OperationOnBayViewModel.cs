@@ -335,7 +335,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.isBusy = true;
-                this.Bay = await this.machineBaysWebService.GetByNumberAsync(this.MachineService.BayNumber);
+                this.Bay = this.MachineService.Bay;
                 this.Pick = this.Bay.Pick;
                 this.Put = this.Bay.Put;
                 this.View = this.Bay.View;
