@@ -48,14 +48,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("can-move")]
         public ActionResult<ActionPolicy> CanMove(ExternalBayMovementDirection direction, MovementCategory movementCategory)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.BayNumber);
             return this.Ok(this.externalBayProvider.CanMove(direction, bay, movementCategory));
         }
 
         [HttpPost("can-move-ext-double")]
         public ActionResult<ActionPolicy> CanMoveExternalDouble(ExternalBayMovementDirection direction, MovementCategory movementCategory, bool isPositionUpper)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.BayNumber);
             return this.Ok(this.externalBayProvider.CanMoveExtDouble(direction, bay, movementCategory, isPositionUpper));
         }
 
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(ExternalBayMovementDirection direction)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.BayNumber);
             this.externalBayProvider.Move(direction, null, bay, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(ExternalBayMovementDirection direction, bool bypass)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.BayNumber);
             this.externalBayProvider.MoveManual(direction, -1, null, bypass, bay, MessageActor.AutomationService);
 
             return this.Accepted();

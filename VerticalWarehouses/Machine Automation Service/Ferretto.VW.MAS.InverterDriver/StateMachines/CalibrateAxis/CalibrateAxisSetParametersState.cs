@@ -218,11 +218,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             {
                                 var bayProvider = this.ParentStateMachine.GetRequiredService<IBaysDataProvider>();
                                 var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
-                                var bay = bayProvider.GetByNumber(bayNumber);
 
-                                if (!bay.IsExternal && bay.Carousel != null)
+                                if (!bayProvider.GetIsExternal(bayNumber))
                                 {
                                     // Handle the carousel
+                                    var bay = bayProvider.GetByNumberCarousel(bayNumber);
                                     if (bay.Carousel.HomingCreepSpeed >= 4 * CREEP_SPEED_CAROUSEL_DEFAULT)
                                     {
                                         isCommandToSend = false;
@@ -237,6 +237,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                                 else
                                 {
                                     // Handle the external bay
+                                    var bay = bayProvider.GetByNumberExternal(bayNumber);
                                     if (bay.External.HomingCreepSpeed >= 4 * CREEP_SPEED_EXTERNALBAY_DEFAULT)
                                     {
                                         isCommandToSend = false;
@@ -350,11 +351,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             {
                 var bayProvider = this.ParentStateMachine.GetRequiredService<IBaysDataProvider>();
                 var bayNumber = bayProvider.GetByInverterIndex(this.InverterStatus.SystemIndex);
-                var bay = bayProvider.GetByNumber(bayNumber);
 
-                if (!bay.IsExternal && bay.Carousel != null)
+                if (!bayProvider.GetIsExternal(bayNumber))
                 {
                     // Handle the carousel
+                    var bay = bayProvider.GetByNumberCarousel(bayNumber);
                     if (bay.Carousel.HomingFastSpeed >= 2 * FAST_SPEED_CAROUSEL_DEFAULT)
                     {
                         isCommandToSend = false;
@@ -369,6 +370,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 else
                 {
                     // Handle the external bay
+                    var bay = bayProvider.GetByNumberExternal(bayNumber);
                     if (bay.External.HomingFastSpeed >= 2 * FAST_SPEED_EXTERNALBAY_DEFAULT)
                     {
                         isCommandToSend = false;

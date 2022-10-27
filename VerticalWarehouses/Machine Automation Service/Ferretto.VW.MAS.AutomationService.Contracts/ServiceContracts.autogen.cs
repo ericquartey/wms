@@ -5610,6 +5610,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MovementProfile : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("ElevatorAxisId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ElevatorAxisId { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Name", Required = Newtonsoft.Json.Required.Always)]
         public MovementProfileType Name { get; set; }
     

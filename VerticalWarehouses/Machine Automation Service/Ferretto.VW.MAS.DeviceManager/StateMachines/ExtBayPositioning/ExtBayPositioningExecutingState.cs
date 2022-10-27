@@ -270,7 +270,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
             }
 
             // Carry out the target position
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.machineData.RequestingBay);
             var race = bay.External.Race;
 
             var distanceMovement = race;
@@ -345,7 +345,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ExtBayPositioning
         /// </returns>
         private bool IsInvalidSensorsCondition()
         {
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.machineData.RequestingBay);
             //var externalBayMovementDirection = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards) ?
             //    ExternalBayMovementDirection.TowardOperator :
             //    ExternalBayMovementDirection.TowardMachine;

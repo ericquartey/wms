@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
                         try
                         {
-                            var bay = baysDataProvider.GetByNumber(bayNumber);
+                            //var bay = baysDataProvider.GetByNumber(bayNumber);
 
                             //if (!bay.Inventory && (wmsMission.Operations.Count() == wmsMission.Operations.Where(s => s.Type == MissionOperationType.Inventory).Count()))
                             //{
@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             {
                                 missionSchedulingProvider.QueueBayMission(
                                     wmsMission.LoadingUnitId,
-                                    bay.Number,
+                                    bayNumber,
                                     wmsMission.Id,
                                     wmsMission.Priority);
                             }
