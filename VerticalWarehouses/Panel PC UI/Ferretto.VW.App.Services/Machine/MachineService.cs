@@ -343,6 +343,8 @@ namespace Ferretto.VW.App.Services
 
         public IEnumerable<Cell> OriginalCells => this.originalCells;
 
+        public SetupStatusCapabilities SetupStatus { get; set; }
+
         internal bool LUPresentInBay1 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay1 || this.sensorsService.Sensors.LUPresentMiddleBottomBay1) : this.sensorsService.Sensors.LUPresentInBay1;
 
         internal bool LUPresentInBay2 => (this.Bay.IsExternal || this.Bay.Carousel == null) && this.Bay.IsDouble ? (this.sensorsService.Sensors.LUPresentInBay2 || this.sensorsService.Sensors.LUPresentMiddleBottomBay2) : this.sensorsService.Sensors.LUPresentInBay2;
@@ -466,11 +468,17 @@ namespace Ferretto.VW.App.Services
                     this.sessionService.MachineIdentity = idService;
                     this.IsTuningCompleted = idService.InstallationDate.HasValue;
                 }
+                if (idService is null
+                    || this.SetupStatus is null
+                    || !this.IsTuningCompleted
+                    )
+                {
+                    this.SetupStatus = await this.machineSetupStatusWebService.GetAsync();
+                }
 
-                var setupStatus = await this.machineSetupStatusWebService.GetAsync();
-                this.IsAxisTuningCompleted = setupStatus.VerticalOriginCalibration.IsCompleted &&
-                    setupStatus.VerticalResolutionCalibration.IsCompleted &&
-                    setupStatus.VerticalOffsetCalibration.IsCompleted;
+                this.IsAxisTuningCompleted = this.SetupStatus.VerticalOriginCalibration.IsCompleted &&
+                    this.SetupStatus.VerticalResolutionCalibration.IsCompleted &&
+                    this.SetupStatus.VerticalOffsetCalibration.IsCompleted;
             }
             catch (Exception ex)
             {

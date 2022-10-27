@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
+        public int? ElevatorAxisId { get; set; }
+
         public MovementProfileType Name { get; set; }
 
         public IEnumerable<StepMovementParameters> Steps { get; set; }

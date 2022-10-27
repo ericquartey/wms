@@ -222,7 +222,7 @@
                            VerticalAlignment="Bottom"
                            InputText="{Binding SocketLinkTimeout, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding SocketLinkIsEnabled}"
-                           LabelText="{res:Loc General.TimeoutMs}" />
+                           LabelText="{res:Loc General.SocketLinkTimeout}" />
 
       <controls:PpcTextBox Grid.Row="0"
                            Grid.Column="2"

@@ -449,6 +449,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.IsReasonVisible = false;
+            this.IsOrderVisible = false;
+
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             this.addItemCommand.RaiseCanExecuteChanged();
@@ -459,13 +468,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private async Task AddItemToLoadingUnitAsync()
         {
             this.IsWaitingForResponse = true;
-
             this.NoteEnabled = true;
             var waitForReason = await this.CheckReasonsAsync();
 
             this.IsWaitingForReason = waitForReason;
 
-            if (true)//!waitForReason) // Force true ImmediateAddItem dont handle ResonNote
+            if (!waitForReason) // Force true ImmediateAddItem dont handle ResonNote
             {
                 await this.ExecuteOperationAsync();
             }
@@ -502,7 +510,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.MissionOperation != null)
                 {
                     this.Logger.Debug($"Immediate adding item {this.itemId} by list {this.missionOperation.ItemListRowCode} into loading unit {this.LoadingUnitId} ...");
-                    // Add ReasonNote
+                    // No ReasonNote
                     await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
                                          this.LoadingUnitId,
                                          this.missionOperation.ItemListRowCode,
@@ -515,13 +523,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
                     // Add ReasonNote
-                    await this.machineLoadingUnitsWebService.ImmediateAddItemAsync(
+                    await this.machineLoadingUnitsWebService.AddItemReasonsAsync(
                                          this.LoadingUnitId,
                                          this.itemId,
                                          this.InputQuantity,
                                          this.compartmentId,
                                          this.Lot,
-                                         this.SerialNumber);
+                                         this.SerialNumber,
+                                         this.ReasonId,
+                                         this.ReasonNotes);
                 }
 
                 this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);

@@ -141,7 +141,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StartDoubleExtBayTest(ExternalBayMovementDirection direction, BayNumber bayNumber, MessageActor sender, bool isUpper)
         {
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
             var policy = this.CanMoveExtDouble(direction, bay, MovementCategory.Assisted, isUpper);
             if (!policy.IsAllowed)
             {
@@ -456,7 +456,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (!turnBack)
             {
                 // in BED with bottom disabled we have to move back after homing
-                var bay = this.baysDataProvider.GetByNumber(bayNumber);
+                var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
                 turnBack = bay.IsDouble && bay.Positions.Any(p => !p.IsUpper && p.IsBlocked);
             }
             IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, calibration, loadingUnitId, showErrors, turnBack);
@@ -526,7 +526,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-            bay = this.baysDataProvider.GetByNumber(bay.Number);
 
             // Target position is positive with TowardOperator movement direction, otherwise is negative
             var targetPosition = (direction == ExternalBayMovementDirection.TowardOperator) ? bay.External.Race : -bay.External.Race;
@@ -586,7 +585,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // For automatic movements
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
             var policy = this.CanMoveExtDouble(direction, bay, MovementCategory.Automatic, isUpper);
             if (!policy.IsAllowed)
             {
@@ -655,7 +654,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // For assisted movements
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
             var policy = this.CanMove(direction, bay, MovementCategory.Assisted);
             if (!policy.IsAllowed)
             {
@@ -735,7 +734,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // For assisted movements
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
             var policy = this.CanMoveExtDouble(direction, bay, MovementCategory.Assisted, isUpper);
             if (!policy.IsAllowed)
             {
@@ -824,7 +823,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new InvalidOperationException(policy.Reason);
                 }
             }
-            bay = this.baysDataProvider.GetByNumber(bay.Number);
 
             this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 
@@ -910,7 +908,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // For manual movements
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
             if (!bypassConditions)
             {
                 var policy = this.CanMoveExtDouble(direction, bay, MovementCategory.Manual, false);
@@ -1004,7 +1002,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // Manual movement
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
 
             var policy = default(ActionPolicy);
             if (bay.IsDouble)
@@ -1081,7 +1079,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             // Manual movement
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
 
             var policy = default(ActionPolicy);
             if (bay.IsDouble)
@@ -1166,7 +1164,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ExternalBayMovementDirection.TowardOperator :
                 ExternalBayMovementDirection.TowardMachine;
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberExternal(bayNumber);
             var policy = this.CanMove(direction, bay, MovementCategory.Assisted);
             if (!policy.IsAllowed)
             {

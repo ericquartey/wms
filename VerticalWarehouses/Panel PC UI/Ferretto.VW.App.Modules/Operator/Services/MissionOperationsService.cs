@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private SubscriptionToken loadingUnitToken;
 
+        private IEnumerable<Mission> machineMissions;
+
         private bool multilist;
 
         private int unitId;
@@ -402,9 +404,10 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.unitId;
         }
 
-        public async Task RefreshAsync(bool force = false)
+        public async Task<IEnumerable<Mission>> RefreshAsync(bool force = false)
         {
             await this.RefreshActiveMissionAsync(force: force);
+            return this.machineMissions;
         }
 
         public async Task StartAsync()
@@ -574,7 +577,16 @@ namespace Ferretto.VW.App.Modules.Operator
                     else
                     {
                         this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");
-                        newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+
+                        if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
+                        {
+                            newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
+                        }
+                        else
+                        {
+                            newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+                        }
+
                         try
                         {
                             await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
@@ -635,17 +647,17 @@ namespace Ferretto.VW.App.Modules.Operator
             try
             {
                 // Retrieve properties of bay: check if it is an internal double bay
-                var bay = await this.machineBaysWebService.GetByNumberAsync(this.bayNumber);
+                var bay = this.machineService.Bay;
                 //var isInternalDoubleBay = bay.IsDouble && (bay.Carousel == null);
                 //var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
 
                 // Retrieve the machine missions
-                var machineMissions = await this.missionsWebService.GetAllAsync();
+                this.machineMissions = await this.missionsWebService.GetAllAsync();
                 IOrderedEnumerable<Mission> activeMissions = null;
 
                 if (missionId.HasValue)
                 {
-                    activeMissions = machineMissions.Where(m =>
+                    activeMissions = this.machineMissions.Where(m =>
                             m.Step is MissionStep.WaitPick
                             &&
                             m.TargetBay == this.bayNumber
@@ -659,7 +671,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
                 else
                 {
-                    activeMissions = machineMissions.Where(m =>
+                    activeMissions = this.machineMissions.Where(m =>
                         m.Step is MissionStep.WaitPick
                         &&
                         m.TargetBay == this.bayNumber

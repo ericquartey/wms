@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("can-move")]
         public ActionResult<ActionPolicy> CanMove(VerticalMovementDirection direction, MovementCategory movementCategory)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberCarousel(this.BayNumber);
             return this.Ok(this.carouselProvider.CanMove(direction, bay, movementCategory));
         }
 
@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult Move(VerticalMovementDirection direction)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberCarousel(this.BayNumber);
             this.carouselProvider.Move(direction, null, bay, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult MoveManual(VerticalMovementDirection direction)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysDataProvider.GetByNumberCarousel(this.BayNumber);
             this.carouselProvider.MoveManual(direction, -1, null, true, bay, MessageActor.AutomationService);
 
             return this.Accepted();

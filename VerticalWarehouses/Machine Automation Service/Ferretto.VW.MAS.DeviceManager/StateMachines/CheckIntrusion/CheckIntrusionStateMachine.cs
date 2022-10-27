@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
             lock (this.CurrentState)
             {
                 var stateData = new CheckIntrusionStateData(this, this.machineData);
-                var bay = this.machineData.BaysDataProvider.GetByNumber(this.machineData.TargetBay);
+                var bay = this.machineData.BaysDataProvider.GetByNumberShutter(this.machineData.TargetBay);
                 if ((bay.Shutter != null
                         && bay.Shutter.Type != ShutterType.NotSpecified
                         )

@@ -130,12 +130,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                await this.missionOperationsService.RefreshAsync();
+                var missions = await this.missionOperationsService.RefreshAsync();
 
                 this.count = 0;
 
                 this.loadingUnits.Clear();
-                this.moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAsync(this.machineService.BayNumber);
+                this.moveUnitId = this.GetAllUnitGoBay(missions, this.machineService.BayNumber);
 
                 if (this.moveUnitId != null)
                 {
@@ -148,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.moveUnits.Clear();
-                this.moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAsync(this.machineService.BayNumber);
+                this.moveUnitIdToCell = this.GetAllUnitGoCell(missions, this.machineService.BayNumber);
 
                 if (this.moveUnitIdToCell != null)
                 {
@@ -237,6 +237,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             return string.Format(Localized.Get("OperatorApp.LoadingUnitsSendToBay"), this.moveUnitId.Count(), (int)this.MachineService.BayNumber);
+        }
+
+        private List<int> GetAllUnitGoBay(IEnumerable<Mission> missions, BayNumber bayNumber)
+        {
+            var unitGoBay = new List<int>();
+            foreach (var unit in missions
+                .Where(x => (x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS)
+                    && x.TargetBay == bayNumber)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate))
+            {
+                unitGoBay.Add(unit.LoadUnitId);
+            }
+            return unitGoBay;
+        }
+
+        private List<int> GetAllUnitGoCell(IEnumerable<Mission> missions, BayNumber bayNumber)
+        {
+            var unitGoBay = new List<int>();
+            foreach (var unit in missions
+                .Where(x => (x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS)
+                    && x.TargetBay == bayNumber)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate))
+            {
+                unitGoBay.Add(unit.LoadUnitId);
+            }
+            return unitGoBay;
         }
 
         #endregion

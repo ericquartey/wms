@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.ProfileResolution
                         var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         this.targetPosition = this.machineData.MessageData.TargetPosition;
                         positioningFieldMessageData.TargetPosition = this.targetPosition;
-                        var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                        var bay = this.baysDataProvider.GetByNumberCarousel(this.machineData.RequestingBay);
                         var bayPosition = new BayPosition();
                         if (!bay.IsDouble)
                         {

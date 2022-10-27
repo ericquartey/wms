@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="sender"></param>
         public void Move(ShutterMovementDirection direction, bool bypassConditions, BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberShutter(bayNumber);
             var parameters = bay.Shutter.ManualMovements;
             var maxSpeed = bay.Shutter.MaxSpeed;
             var minSpeed = bay.Shutter.MinSpeed;
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var direction = ShutterMovementDirection.NotSpecified;
             var shutterInverter = this.baysDataProvider.GetShutterInverterIndex(bayNumber);
             var position = this.sensorsProvider.GetShutterPosition(shutterInverter);
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberShutter(bayNumber);
 
             if (targetPosition == ShutterPosition.Closed && bay.Shutter.Type == ShutterType.UpperHalf)
             {
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.ResourceManager.GetString("TheNumberOfTestCyclesMustBeStrictlyPositive", CommonUtils.Culture.Actual));
             }
 
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberShutter(bayNumber);
             var parameters = bay.Shutter.AssistedMovements;
             var maxSpeed = bay.Shutter.MaxSpeed;
             var minSpeed = bay.Shutter.MinSpeed;

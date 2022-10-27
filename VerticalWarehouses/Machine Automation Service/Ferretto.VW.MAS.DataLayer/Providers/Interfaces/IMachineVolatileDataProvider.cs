@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
@@ -34,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsDeviceManagerBusy { get; set; }
 
+        Dictionary<BayNumber, bool> IsExternal { get; set; }
+
         bool IsHomingActive { get; set; }
 
         bool IsHomingExecuted { get; set; }
@@ -41,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsMachineRunning { get; }
 
         bool? IsOneTonMachine { get; set; }
+
+        bool IsOptimizeRotationClass { get; set; }
 
         Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
@@ -50,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         List<int> LoadUnitsToTest { get; set; }
 
+        int? MachineId { get; set; }
+
         MachinePowerState MachinePowerState { get; set; }
 
         MachineMode Mode { get; set; }
@@ -58,12 +65,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int? RequiredCycles { get; set; }
 
+        Uri ServiceUrl { get; set; }
+
+        bool? SocketLinkIsEnabled { get; set; }
+
         Dictionary<BayNumber, SocketLinkOperation> SocketLinkOperation { get; set; }
 
         bool StopTest { get; set; }
 
         MachineMode UiFilteredMode { get; }
-        bool IsOptimizeRotationClass { get; set; }
+
+        int? WMSConnectionTimeout { get; set; }
+
+        bool? WMSIsConnected { get; set; }
+
+        bool? WmsIsEnabled { get; set; }
 
         #endregion
 

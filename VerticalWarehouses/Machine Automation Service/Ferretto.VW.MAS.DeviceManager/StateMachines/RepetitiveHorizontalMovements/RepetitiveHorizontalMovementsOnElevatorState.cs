@@ -109,7 +109,6 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.Logger.LogDebug($"1:Start {this.GetType().Name} RequestingBay: {this.machineData.RequestingBay} TargetBay: {this.machineData.TargetBay}");
 
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
 
             // Check if vertical movement to the bay position quote is allowed
             var policy = this.CanMoveToBayPosition(bayPosition.Id);

@@ -912,8 +912,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var count = 0;
-
-                var moveUnitId = await this.machineMissionsWebService.GetAllUnitGoBayAllAsync();
+                var missions = await this.machineMissionsWebService.GetAllAsync();
+                var moveUnitId = this.GetAllUnitGoBay(missions);
 
                 if (moveUnitId != null)
                 {
@@ -923,7 +923,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                var moveUnitIdToCell = await this.machineMissionsWebService.GetAllUnitGoCellAllAsync();
+                var moveUnitIdToCell =this.GetAllUnitGoCell(missions);
 
                 if (moveUnitIdToCell != null)
                 {
@@ -962,6 +962,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.unitHeight));
                 this.RaisePropertyChanged(nameof(this.unitWeight));
             }
+        }
+
+        private List<int> GetAllUnitGoBay(IEnumerable<Mission> missions)
+        {
+            var unitGoBay = new List<int>();
+            foreach (var unit in missions
+                .Where(x => x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate))
+            {
+                unitGoBay.Add(unit.LoadUnitId);
+            }
+            return unitGoBay;
+        }
+
+        private List<int> GetAllUnitGoCell(IEnumerable<Mission> missions)
+        {
+            var unitGoBay = new List<int>();
+            foreach (var unit in missions
+                .Where(x => x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate))
+            {
+                unitGoBay.Add(unit.LoadUnitId);
+            }
+            return unitGoBay;
         }
 
         public override async Task OnAppearedAsync()
@@ -1041,7 +1067,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 do
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(800);
                     await this.GetLoadingUnitsAsync();
                 }
                 while (this.IsVisible);

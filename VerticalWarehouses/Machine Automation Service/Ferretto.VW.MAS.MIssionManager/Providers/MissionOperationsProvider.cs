@@ -132,6 +132,11 @@ namespace Ferretto.VW.MAS.MissionManager
             return await this.missionOperationsWmsWebService.GetByIdAsync(wmsId);
         }
 
+        //public async Task<MissionOperation> GetByAggregateAsync(int wmsId)
+        //{
+        //    return await this.missionOperationsWmsWebService.AggregateAsync(wmsId);
+        //}
+
         public int GetCountByBay(BayNumber bayNumber)
         {
             return this.missionsDataProvider

@@ -68,6 +68,10 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="bayNumber">The number of the bay to retrieve.</param>
         /// <returns>The bay identified by the given number.</returns>
         Bay GetByNumber(BayNumber bayNumber);
+        Bay GetByNumberCarousel(BayNumber bayNumber);
+        Bay GetByNumberExternal(BayNumber bayNumber);
+        Bay GetByNumberPositions(BayNumber bayNumber);
+        Bay GetByNumberShutter(BayNumber bayNumber);
 
         int GetCarouselBayFindZeroLimit(BayNumber bayNumber);
 

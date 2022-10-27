@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements
             this.Logger.LogDebug($"1:Start {this.GetType().Name} RequestingBay: {this.machineData.RequestingBay} TargetBay: {this.machineData.TargetBay}");
 
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumberCarousel(this.machineData.TargetBay);
 
             // Check if a loading unit is on board of the elevator to detect the previous state
             if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null)

@@ -83,6 +83,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isListPickConfirm;
 
+        private bool isAggregateList;
+
         #endregion
 
         #region Constructors
@@ -289,6 +291,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isListPutConfirm, value, this.CanExecute);
         }
 
+        public bool IsAggregateList
+        {
+            get => this.isAggregateList;
+            set => this.SetProperty(ref this.isAggregateList, value, this.CanExecute);
+        }
+
         #endregion
 
         #region Methods
@@ -327,7 +335,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.isBusy = true;
-                this.Bay = await this.machineBaysWebService.GetByNumberAsync(this.MachineService.BayNumber);
+                this.Bay = this.MachineService.Bay;
                 this.Pick = this.Bay.Pick;
                 this.Put = this.Bay.Put;
                 this.View = this.Bay.View;
@@ -360,6 +368,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsListPickConfirm = configuration.ListPickConfirm;
                 this.IsListPutConfirm = configuration.ListPutConfirm;
                 this.IsWaitingListPriorityHighlighted = this.WaitingListPriorityHighlighted != -1;
+
+                this.IsAggregateList = configuration.AggregateList;
 
             }
             catch (Exception ex)
@@ -404,6 +414,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.WaitingListPriorityHighlighted = this.IsWaitingListPriorityHighlighted && this.WaitingListPriorityHighlighted >= 0 ? this.WaitingListPriorityHighlighted : -1;
                 machine.ListPutConfirm = this.IsListPutConfirm;
                 machine.ListPickConfirm = this.IsListPickConfirm;
+
+                machine.AggregateList = this.IsAggregateList;
 
                 await this.identityService.SetBayOperationParamsAsync(machine);
 

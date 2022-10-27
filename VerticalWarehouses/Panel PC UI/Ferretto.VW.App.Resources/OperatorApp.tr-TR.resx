@@ -1947,9 +1947,6 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>Sipariş seç</value>
   </data>
-  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
-    <value>Sipariş seç</value>
-  </data>
   <data name="Suspend" xml:space="preserve">
     <value>Askıya almak</value>
   </data>
@@ -2013,15 +2010,6 @@
   </data>
   <data name="Machine" xml:space="preserve">
     <value>makine</value>
-  </data>
-  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
-    <value>Öğe alınamadı</value>
-  </data>
-  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
-    <value>madde mevcut değil</value>
-  </data>
-  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
-    <value>İşlem başarıyla tamamlandı</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
     <value>Takas tablosunda bulunan öğeler</value>

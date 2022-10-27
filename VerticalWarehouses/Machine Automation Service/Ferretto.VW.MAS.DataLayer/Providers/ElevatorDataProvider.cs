@@ -168,14 +168,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (!this.cache.TryGetValue(cacheKey, out ElevatorAxis cacheEntry))
                 {
                     cacheEntry = this.dataContext.ElevatorAxes.AsNoTracking()
-                        .Include(a => a.Profiles)
-                        .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
                         .Include(a => a.ManualMovements)
                         .Include(a => a.AssistedMovements)
                         .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == orientation);
+
+                    cacheEntry.Profiles = this.dataContext.MovementProfiles.AsNoTracking()
+                        .Include(i => i.Steps)
+                        .Where(w => w.ElevatorAxisId == cacheEntry.Id)
+                        .ToList();
 
                     if (cacheEntry is null)
                     {

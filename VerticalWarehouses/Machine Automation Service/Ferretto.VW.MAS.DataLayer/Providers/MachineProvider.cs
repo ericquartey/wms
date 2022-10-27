@@ -130,6 +130,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
+            this.machineVolatile.MachineId = null;
             lock (this.dataContext)
             {
                 this.dataContext.Machines.Add(machine);
@@ -170,6 +171,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 });
 
                 return entity;
+            }
+        }
+
+        public bool GetAggregateList()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.AggregateList).First();
             }
         }
 
@@ -216,10 +225,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int GetIdentity()
         {
-            lock (this.dataContext)
+            if (this.machineVolatile.MachineId is null)
             {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.Id).First();
+                lock (this.dataContext)
+                {
+                    this.machineVolatile.MachineId = this.dataContext.Machines.AsNoTracking().Select(m => m.Id).First();
+                }
             }
+            return this.machineVolatile.MachineId.Value;
         }
 
         public int GetItemUniqueIdLength()
@@ -374,6 +387,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
+            this.machineVolatile.MachineId = null;
+            this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
             context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
@@ -562,6 +577,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.WaitingListPriorityHighlighted = machine.WaitingListPriorityHighlighted;
                 machineDB.ListPickConfirm = machine.ListPickConfirm;
                 machineDB.ListPutConfirm = machine.ListPutConfirm;
+                machineDB.AggregateList = machine.AggregateList;
 
                 this.dataContext.SaveChanges();
             }
@@ -573,6 +589,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 dataContext = this.dataContext;
+                this.machineVolatile.MachineId = null;
             }
             int count = await dataContext.Database.ExecuteSqlCommandAsync("update cellpanels set MachineId = null;");
             int count1 = await dataContext.Database.ExecuteSqlCommandAsync("update bays set MachineId = null;");
@@ -591,6 +608,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
+            this.machineVolatile.MachineId = null;
+            this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
             machine.Elevator?.Axes.ForEach((a) =>
             {
                 dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
@@ -805,6 +824,9 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
+            this.machineVolatile.MachineId = null;
+            this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+
             machine.Elevator?.Axes.ForEach((a) =>
             {
                 dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);

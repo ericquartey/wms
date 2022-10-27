@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit)
         {
-            var bayPosition = this.baysDataProvider.GetPositionByLocation(loadingUnitPosition);
+            var bayPosition = bay.Positions.FirstOrDefault(b => b.Location == loadingUnitPosition);
 
             if (bay.Carousel != null)
             {
@@ -492,12 +492,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (axis == Axis.BayChain)
             {
-                var bay = this.baysDataProvider.GetByNumber(requestingBay);
-                if (bay.Carousel != null)
+                if (!this.baysDataProvider.GetIsExternal(requestingBay))
                 {
                     this.carouselProvider.Homing(calibration, loadingUnitId, showErrors, requestingBay, sender, false);
                 }
-                if (bay.External != null)
+                else
                 {
                     this.externalBayProvider.Homing(calibration, loadingUnitId, showErrors, turnBack, requestingBay, sender);
                 }
@@ -587,7 +586,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (restore)
             {
-                var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                var bay = this.baysDataProvider.GetByNumberExternal(requestingBay);
                 var distance = bay.External.Race;
                 switch (direction)
                 {

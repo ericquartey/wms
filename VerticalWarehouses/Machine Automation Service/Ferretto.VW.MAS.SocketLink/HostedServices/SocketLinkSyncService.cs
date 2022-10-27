@@ -40,6 +40,14 @@ namespace Ferretto.VW.MAS.SocketLink
 
         private TcpListener listenerSocketLink;
 
+        private bool socketLinkEndOfLine;
+
+        private int socketLinkPolling;
+
+        private bool socketLinkRunning;
+
+        private int socketLinkTimeout;
+
         #endregion
 
         #region Constructors
@@ -112,14 +120,18 @@ namespace Ferretto.VW.MAS.SocketLink
         private void Disable()
         {
             this.cancellationTokenSource?.Cancel();
-            this.cancellationTokenSource = null;
         }
 
         private void Enable()
         {
             //this.Disable();
-
-            Task.Run(this.ExecutePollingAsync);
+            this.socketLinkPolling = this.wmsSettingsProvider.SocketLinkPolling;
+            this.socketLinkTimeout = this.wmsSettingsProvider.SocketLinkTimeout;
+            this.socketLinkEndOfLine = this.wmsSettingsProvider.SocketLinkEndOfLine;
+            if (!this.socketLinkRunning)
+            {
+                Task.Run(this.ExecutePollingAsync);
+            }
         }
 
         private async Task ExecutePollingAsync()
@@ -129,41 +141,43 @@ namespace Ferretto.VW.MAS.SocketLink
 
             try
             {
+                this.logger.LogInformation("SocketLink Starting service on port " + this.wmsSettingsProvider.SocketLinkPort);
                 this.listenerSocketLink = new TcpListener(IPAddress.Any, this.wmsSettingsProvider.SocketLinkPort);
 
                 using (var scope = this.serviceScopeFactory.CreateScope())
                 {
                     this.listenerSocketLink.Start();
+                    this.socketLinkRunning = true;
 
                     while (!cancellationToken.IsCancellationRequested)
                     {
                         if (this.listenerSocketLink.Pending())
                         {
                             var client = this.listenerSocketLink.AcceptTcpClient();
-                            _ = Task.Run(() => this.ManageClient(client));
+                            _ = Task.Run(() => this.ManageClient(client, cancellationToken));
                         }
                         else
                         {
                             Thread.Sleep(100); //<--- timeout
                         }
                     }
-
-                    do
-                    {
-                        await Task.Delay(5000).ConfigureAwait(true);
-                        this.logger.LogTrace("SocketLink Stop");
-                    }
-                    while (!cancellationToken.IsCancellationRequested);
+                    this.listenerSocketLink?.Stop();
                 }
             }
             catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
-                this.logger.LogTrace("SocketLink Stopping Socket");
-                return;
+                this.listenerSocketLink?.Stop();
+                this.logger.LogInformation($"SocketLink Stopping Socket. {ex.Message}");
             }
+            catch (Exception ex2)
+            {
+                this.listenerSocketLink?.Stop();
+                this.logger.LogInformation($"SocketLink {ex2.Message}");
+            }
+            this.socketLinkRunning = false;
         }
 
-        private void ManageClient(TcpClient client)
+        private void ManageClient(TcpClient client, CancellationToken cancellationToken)
         {
             var timeout = false;
             var lastActivity = DateTime.Now;
@@ -172,7 +186,7 @@ namespace Ferretto.VW.MAS.SocketLink
             var socket = client.Client;
             var buffer = new byte[1024];
 
-            while (client.Connected && !timeout)
+            while (client.Connected && !timeout && !cancellationToken.IsCancellationRequested)
             {
                 if (socket != null && socket.Connected)
                 {
@@ -193,7 +207,7 @@ namespace Ferretto.VW.MAS.SocketLink
                             using (var scope = this.serviceScopeFactory.CreateScope())
                             {
                                 var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived, this.wmsSettingsProvider.SocketLinkEndOfLine);
+                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived, this.socketLinkEndOfLine);
                             }
 
                             if (!string.IsNullOrEmpty(msgResponse))
@@ -217,9 +231,11 @@ namespace Ferretto.VW.MAS.SocketLink
                 }
                 else
                 {
-                    this.PeridicAction(socket, ref periodicActivity);
+                    this.PeriodicAction(socket, ref periodicActivity);
                 }
             }
+            client?.Close();
+            this.logger.LogDebug("SocketLink connection close");
         }
 
         private void OnDataLayerReady(NotificationMessage message)
@@ -228,8 +244,6 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (this.wmsSettingsProvider.SocketLinkIsEnabled)
                 {
-                    this.logger.LogInformation("SocketLink Starting service on port " + this.wmsSettingsProvider.SocketLinkPort);
-
                     this.Enable();
                 }
                 else
@@ -255,11 +269,11 @@ namespace Ferretto.VW.MAS.SocketLink
             }
         }
 
-        private void PeridicAction(Socket socket, ref DateTime periodicActivity)
+        private void PeriodicAction(Socket socket, ref DateTime periodicActivity)
         {
-            if (this.wmsSettingsProvider.SocketLinkPolling > 0)
+            if (this.socketLinkPolling > 0)
             {
-                if (DateTime.Now > periodicActivity.AddSeconds(this.wmsSettingsProvider.SocketLinkPolling))
+                if (DateTime.Now > periodicActivity.AddSeconds(this.socketLinkPolling))
                 {
                     periodicActivity = DateTime.Now;
                     var msgResponse = "";
@@ -268,7 +282,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     {
                         var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
                         var periodicResponseHeder = new List<SocketLinkCommand.HeaderType>() { SocketLinkCommand.HeaderType.STATUS_EXT_REQUEST_CMD };
-                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder, this.wmsSettingsProvider.SocketLinkEndOfLine);
+                        msgResponse = socketLinkSyncProvider.PeriodicResponse(periodicResponseHeder, this.socketLinkEndOfLine);
 
                         if (!string.IsNullOrEmpty(msgResponse))
                         {
@@ -285,12 +299,12 @@ namespace Ferretto.VW.MAS.SocketLink
         {
             var timeout = false;
 
-            if (this.wmsSettingsProvider.SocketLinkTimeout > 0)
+            if (this.socketLinkTimeout > 0)
             {
-                if (DateTime.Now > lastActivity.AddSeconds(this.wmsSettingsProvider.SocketLinkTimeout))
+                if (DateTime.Now > lastActivity.AddSeconds(this.socketLinkTimeout))
                 {
                     timeout = true;
-                    this.logger.LogTrace("SocketLink socket Timeout " + this.wmsSettingsProvider.SocketLinkTimeout);
+                    this.logger.LogTrace("SocketLink socket Timeout " + this.socketLinkTimeout);
                 }
             }
 

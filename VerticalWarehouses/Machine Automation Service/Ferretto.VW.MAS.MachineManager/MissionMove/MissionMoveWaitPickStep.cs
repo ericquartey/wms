@@ -43,9 +43,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
-            var bayPosition = this.BaysDataProvider.GetPositionByLocation(this.Mission.LoadUnitDestination);
-
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
+            var bayPosition = bay.Positions.FirstOrDefault(b => b.Location == this.Mission.LoadUnitDestination);
 
             if (bay.Carousel != null
                 && !this.SensorsProvider.IsLoadingUnitInLocation(bayPosition.Location))

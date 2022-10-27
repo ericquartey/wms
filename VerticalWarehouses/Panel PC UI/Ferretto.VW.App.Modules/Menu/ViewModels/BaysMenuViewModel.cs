@@ -83,8 +83,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.CanExecuteCommand() &&
                       (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
-        private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
-
         public ICommand CarouselCalibrationCommand =>
                     this.carouselCalibrationCommand
             ??
@@ -104,8 +102,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 ));
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration ?? new SetupStepStatus();
 
         public ICommand ExternalBayCalibrationCommand =>
                     this.externalBayCalibrationCommand
@@ -136,10 +132,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsExternalBayCalibrationCompleted => this.ExternalBayCalibration.IsCompleted && !this.ExternalBayCalibration.IsBypassed;
 
-        public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal && !f.IsDouble); // TODO - decide how to perform an external bay calibration test
+        public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal && !f.IsDouble);
 
         public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
+        // TODO - decide how to perform an external bay calibration test
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted && !this.BayShutter.IsBypassed;
 
         public bool IsTestShutterVisible => this.MachineService.HasShutter;
@@ -153,8 +150,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.TestShutter),
                 () => this.CanExecuteCommand() &&
                       (this.BayShutter.CanBePerformed || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
-
-        private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
 
         private SetupStepStatus BayControl => this.BaySetupStatus?.Check ?? new SetupStepStatus();
 
@@ -187,6 +182,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private SetupStepStatus BayShutter => this.BaySetupStatus?.Shutter ?? new SetupStepStatus();
 
+        private SetupStepStatus CarouselCalibration => this.BaySetupStatus?.CarouselCalibration ?? new SetupStepStatus();
+
+        private SetupStepStatus ExternalBayCalibration => this.BaySetupStatus?.ExternalBayCalibration ?? new SetupStepStatus();
+
+        private SetupStepStatus VerticalOriginCalibration => this.SetupStatusCapabilities?.VerticalOriginCalibration ?? new SetupStepStatus();
+
         #endregion
 
         #region Methods
@@ -213,7 +214,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         protected override async Task OnDataRefreshAsync()
         {
-            this.SetupStatusCapabilities = await this.machineSetupStatusWebService.GetAsync();
+            this.SetupStatusCapabilities = this.MachineService.SetupStatus;
 
             this.RaiseCanExecuteChanged();
         }

@@ -76,8 +76,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.SocketLinkOperation.Add(BayNumber.BayTwo, null);
             this.SocketLinkOperation.Add(BayNumber.BayThree, null);
 
-            //x this.EnableLocalDbSavingOnTelemetry = false;
-            //x this.EnableLocalDbSavingOnServer = false;
+            this.IsExternal = new Dictionary<BayNumber, bool>();
+
             if (dataLayerService.IsReady)
             {
                 this.OnDataLayerReady();
@@ -111,19 +111,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int ExecutedCycles { get; set; }
 
-        // Enable/disable the raw database saving on telemetry
-        // (TODO: use another object for this configuration parameter)
-        //x public bool EnableLocalDbSavingOnTelemetry { get; set; }
         public bool IsAutomationServiceReady { get; set; }
 
-        // Enable/disable the raw database saving on server (EjLog)
-        // (TODO: use another object for this configuration parameter)
-        //x public bool EnableLocalDbSavingOnServer { get; set; }
         public Dictionary<BayNumber, bool> IsBayHomingExecuted { get; set; }
 
         public Dictionary<BayNumber, bool> IsBayLightOn { get; set; }
 
         public bool IsDeviceManagerBusy { get; set; }
+
+        public Dictionary<BayNumber, bool> IsExternal { get; set; }
 
         public bool IsHomingActive { get; set; }
 
@@ -168,6 +164,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public List<int> LoadUnitsToTest { get; set; }
 
+        public int? MachineId { get; set; }
+
         public MachinePowerState MachinePowerState { get; set; }
 
         public MachineMode Mode
@@ -196,6 +194,10 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool RandomCells { get; set; }
 
         public int? RequiredCycles { get; set; }
+
+        public Uri ServiceUrl { get; set; }
+
+        public bool? SocketLinkIsEnabled { get; set; }
 
         public Dictionary<BayNumber, SocketLinkOperation> SocketLinkOperation { get; set; }
 
@@ -265,6 +267,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
+
+        public int? WMSConnectionTimeout { get; set; }
+
+        public bool? WMSIsConnected { get; set; }
+
+        public bool? WmsIsEnabled { get; set; }
 
         #endregion
 

@@ -60,6 +60,7 @@ namespace Ferretto.VW.App.Services
         Models.MachineStatus MachineStatus { get; }
 
         IEnumerable<Cell> OriginalCells { get; }
+        SetupStatusCapabilities SetupStatus { get; set; }
 
         #endregion
 

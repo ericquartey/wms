@@ -522,7 +522,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.machineData.MessageData.Direction = this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
 
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.machineData.TargetBay);
 
             var race = bay.External.Race;
             var targetPosition = race;

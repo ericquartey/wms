@@ -236,7 +236,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
                 var cell = elevatorDataProvider.GetCurrentCell();
 
-                var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                //var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
 
                 var isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())

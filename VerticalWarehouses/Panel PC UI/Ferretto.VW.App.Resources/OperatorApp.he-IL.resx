@@ -1527,9 +1527,6 @@
   <data name="SelectOrders" xml:space="preserve">
     <value>בחר הזמנה</value>
   </data>
-  <data name="SelectOrders_Duplicate[1]" xml:space="preserve">
-    <value>בחר הזמנה</value>
-  </data>
   <data name="SelectReasons" xml:space="preserve">
     <value>בחר סיבה</value>
   </data>
