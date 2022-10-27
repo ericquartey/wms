@@ -268,6 +268,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int? WMSConnectionTimeout { get; set; }
+
+        public bool? WMSIsConnected { get; set; }
+
         public bool? WmsIsEnabled { get; set; }
 
         #endregion

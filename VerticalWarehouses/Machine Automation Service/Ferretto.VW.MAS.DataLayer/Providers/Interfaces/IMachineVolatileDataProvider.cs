@@ -75,6 +75,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineMode UiFilteredMode { get; }
 
+        int? WMSConnectionTimeout { get; set; }
+
+        bool? WMSIsConnected { get; set; }
+
         bool? WmsIsEnabled { get; set; }
 
         #endregion

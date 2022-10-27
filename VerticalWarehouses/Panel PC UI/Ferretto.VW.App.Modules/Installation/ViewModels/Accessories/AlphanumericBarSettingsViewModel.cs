@@ -152,7 +152,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.HasGetErrors = false;
                         this.incrementTimeLoop = 1;
                         this.loopTextMessage = this.TestMessageText;
-                        this.loopTimer = new Timer(this.CallBackLoop, null, 0, 10000);
+                        this.loopTimer = new Timer(this.CallBackLoop, null, 0, 5000);
                     }
                     else
                     {
