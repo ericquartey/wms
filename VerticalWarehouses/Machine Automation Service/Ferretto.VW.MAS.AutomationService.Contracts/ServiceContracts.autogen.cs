@@ -4739,11 +4739,23 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("Description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Description { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("FixedCell", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? FixedCell { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("FixedHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public double? FixedHeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("GrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double GrossWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsCellFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCellFixed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsHeightFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsHeightFixed { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsInFullTest", Required = Newtonsoft.Json.Required.Always)]
         public bool IsInFullTest { get; set; }
@@ -4762,12 +4774,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRotationClassFixed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRotationClassFixed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsCellFixed", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsCellFixed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsHeightFixed", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsHeightFixed { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public double LaserOffset { get; set; }
@@ -4825,6 +4831,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsNotAvailable", Required = Newtonsoft.Json.Required.Always)]
         public bool IsNotAvailable { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsNotAvailableFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsNotAvailableFixed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("PanelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }
     
@@ -4879,6 +4888,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [System.Runtime.Serialization.EnumMember(Value = @"UnderWeight")]
         UnderWeight = 5,
+    
+        [System.Runtime.Serialization.EnumMember(Value = @"Reserved")]
+        Reserved = 6,
     
     }
     
@@ -5276,6 +5288,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Machine : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("AggregateList", Required = Newtonsoft.Json.Required.Always)]
+        public bool AggregateList { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("BackupServer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BackupServer { get; set; }
     
@@ -5357,6 +5372,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsLoadUnitFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLoadUnitFixed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsLocalMachineItems", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLocalMachineItems { get; set; }
     
@@ -5383,9 +5401,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ListPutConfirm", Required = Newtonsoft.Json.Required.Always)]
         public bool ListPutConfirm { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("AggregateList", Required = Newtonsoft.Json.Required.Always)]
-        public bool AggregateList { get; set; }
     
         [Newtonsoft.Json.JsonProperty("LoadUnitDepth", Required = Newtonsoft.Json.Required.Always)]
         public double LoadUnitDepth { get; set; }
@@ -5434,9 +5449,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("WaitingListPriorityHighlighted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? WaitingListPriorityHighlighted { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsLoadUnitFixed", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsLoadUnitFixed { get; set; }
     
         public string ToJson() 
         {

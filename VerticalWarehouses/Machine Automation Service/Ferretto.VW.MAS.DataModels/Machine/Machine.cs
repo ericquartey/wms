@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public bool AggregateList { get; set; }
+
         public string BackupServer { get; set; }
 
         public string BackupServerPassword { get; set; }
@@ -102,6 +104,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsHeartBeat { get; set; }
 
+        public bool IsLoadUnitFixed { get; set; }
+
         /// <summary>
         /// search items only in local machine (Deima compatibility)
         /// </summary>
@@ -139,8 +143,6 @@ namespace Ferretto.VW.MAS.DataModels
         public bool ListPickConfirm { get; set; }
 
         public bool ListPutConfirm { get; set; }
-
-        public bool AggregateList { get; set; }
 
         /// <summary>
         /// Load Unit depth, in millimeters
@@ -207,8 +209,6 @@ namespace Ferretto.VW.MAS.DataModels
         public int VerticalCyclesToCalibrate { get; set; } = 50;
 
         public int? WaitingListPriorityHighlighted { get; set; }
-
-        public bool IsLoadUnitFixed { get; set; }
 
         #endregion
 

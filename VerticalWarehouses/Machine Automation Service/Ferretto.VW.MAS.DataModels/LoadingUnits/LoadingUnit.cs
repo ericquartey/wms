@@ -32,6 +32,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
+        public int? FixedCell { get; set; }
+
+        public double? FixedHeight { get; set; }
+
         /// <summary>
         /// Gets or sets the actual gross weight of the loading unit, in kilograms.
         /// </summary>
@@ -65,6 +69,13 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        public bool IsCellFixed { get; set; }
+
+        /// <summary>
+        /// this property is always equal to IsCellFixed
+        /// </summary>
+        public bool IsHeightFixed { get; set; }
+
         public bool IsInFullTest { get; set; }
 
         [Obsolete("Use the IsIntoMachineOK field instead.")]
@@ -86,9 +97,6 @@ namespace Ferretto.VW.MAS.DataModels
         /// if enabled the rotation class is not automatically calculated - only the user can change it
         /// </summary>
         public bool IsRotationClassFixed { get; set; }
-
-        public bool IsCellFixed { get; set; }
-        public bool IsHeightFixed { get; set; }
 
         /// <summary>
         /// distance to subtract to the ZOffset of the LaserPointer for all products in this LU

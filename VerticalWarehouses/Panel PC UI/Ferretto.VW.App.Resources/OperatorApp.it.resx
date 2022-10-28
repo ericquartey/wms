@@ -2232,4 +2232,7 @@
   <data name="IsAggregateList" xml:space="preserve">
     <value>Aggrega Liste</value>
   </data>
+  <data name="BlockLevelReserved" xml:space="preserve">
+    <value>Prenotato</value>
+  </data>
 </root>

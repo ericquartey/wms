@@ -170,7 +170,7 @@
                 </Grid>
                 <Grid Grid.Column="8"
                       Grid.Row="1"
-                      Visibility="{Binding IsLoadUnitFixedEnabled, Converter={StaticResource BTVC}}">
+                      Visibility="Collapsed">
                     <controls:PpcCheckBox Grid.Column="8"
                                           Grid.Row="1"
                                           VerticalAlignment="Bottom"

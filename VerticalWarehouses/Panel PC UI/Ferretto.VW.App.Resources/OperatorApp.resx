@@ -2628,4 +2628,8 @@
   <data name="IsAggregateList" xml:space="preserve">
     <value>Aggregate List</value>
   </data>
+  <data name="BlockLevelReserved" xml:space="preserve">
+    <value>Reserved</value>
+    <comment>BlockLevel</comment>
+  </data>
 </root>

@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsHomingExecuted { get; set; }
 
+        bool? IsLoadUnitFixed { get; set; }
+
         bool IsMachineRunning { get; }
 
         bool? IsOneTonMachine { get; set; }

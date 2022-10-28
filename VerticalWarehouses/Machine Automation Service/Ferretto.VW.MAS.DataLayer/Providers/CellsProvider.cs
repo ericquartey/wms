@@ -141,6 +141,17 @@ namespace Ferretto.VW.MAS.DataLayer
                 return false;
             }
 
+            if (loadUnit.IsCellFixed
+                && loadUnit.FixedCell.HasValue
+                && loadUnit.FixedCell.Value != cell.Id
+                && !cellsInRange.Any(c => !c.IsFree
+                    || c.IsNotAvailableFixed
+                    || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
+                    ))
+            {
+                return false;
+            }
+
             if (loadUnit.Cell != null)
             {
                 // in cell-to-cell movements we check only the cells not presently occupied by this load unit
@@ -343,6 +354,14 @@ namespace Ferretto.VW.MAS.DataLayer
             else
             {
                 loadUnitHeight = loadUnit.Height;
+            }
+
+            if (machine.IsLoadUnitFixed
+                && !isCellTest
+                && loadUnit.IsCellFixed
+                && loadUnit.FixedCell.HasValue)
+            {
+                return this.FindEmptyFixedCell(loadUnit, machine, loadUnitHeight);
             }
 
             if (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent))
@@ -870,19 +889,10 @@ namespace Ferretto.VW.MAS.DataLayer
                             && occupiedCell.LoadingUnit.Id != loadingUnit.Id
                             )
                         {
-                            // TODO - remove this check when all versions are > 0.27.24
-                            if (occupiedCell.Position >= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
-                            {
-                                // this happens because of the change in VerticalPositionTolerance: from 12,5 to 27mm
-                                continue;
-                            }
                             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellUnexpectedlyContainsAnotherLoadingUnit", CommonUtils.Culture.Actual));
                         }
 
-                        if (occupiedCell.IsFree
-                            // TODO - remove this check when all versions are > 0.27.18
-                            && occupiedCell.Position < cell.Position + loadingUnit.Height + VerticalPositionTolerance
-                            )
+                        if (occupiedCell.IsFree)
                         {
                             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("TheCellIsUnexpectedlyFree", CommonUtils.Culture.Actual));
                         }
@@ -890,6 +900,18 @@ namespace Ferretto.VW.MAS.DataLayer
                         occupiedCell.IsFree = true;
                         occupiedCell.LoadingUnit = null;
                         if (occupiedCell.BlockLevel == BlockLevel.UnderWeight)
+                        {
+                            occupiedCell.BlockLevel = BlockLevel.None;
+                        }
+
+                        if (machine.IsLoadUnitFixed
+                            && loadingUnit.IsCellFixed
+                            && occupiedCell.BlockLevel == BlockLevel.None)
+                        {
+                            occupiedCell.BlockLevel = BlockLevel.Reserved;
+                        }
+                        else if (!machine.IsLoadUnitFixed
+                            && occupiedCell.BlockLevel == BlockLevel.Reserved)
                         {
                             occupiedCell.BlockLevel = BlockLevel.None;
                         }
@@ -959,7 +981,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                     }
 
-                    loadingUnit.Status = DataModels.Enumerations.LoadingUnitStatus.InLocation;
+                    loadingUnit.Status = LoadingUnitStatus.InLocation;
                     //this.dataContext.SaveChanges();
                     //loadingUnit = this.dataContext.LoadingUnits
                     //    .SingleOrDefault(l => l.Id == loadingUnitId);
@@ -1114,6 +1136,37 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(c => c.Panel)
                     .SingleOrDefault(c => c.Id == cellId);
             }
+        }
+
+        private int FindEmptyFixedCell(LoadingUnit loadUnit, Machine machine, double loadUnitHeight)
+        {
+            var cell = this.GetById(loadUnit.FixedCell.Value);
+            var cellsInRange = this.dataContext.Cells.Where(c => c.Panel.Side == cell.Side
+                    && (c.Position >= cell.Position - (loadUnit.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
+                    && c.Position <= cell.Position + loadUnitHeight + VerticalPositionTolerance)
+                .ToList();
+            if (!cellsInRange.Any())
+            {
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+            }
+
+            var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
+            if (availableSpace < loadUnitHeight)
+            {
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+            }
+
+            if (loadUnit.IsCellFixed
+                && loadUnit.FixedCell.HasValue
+                && loadUnit.FixedCell.Value != cell.Id
+                && !cellsInRange.Any(c => !c.IsFree
+                    || c.IsNotAvailableFixed
+                    || (c.BlockLevel == BlockLevel.NeedsTest)
+                    ))
+            {
+                throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+            }
+            return loadUnit.FixedCell.Value;
         }
 
         private Cell FindLowerCellByHeight(Cell[] cells, int iCell, double height)
