@@ -633,4 +633,7 @@
   <data name="IsRotationClass" xml:space="preserve">
     <value>Rotation Class</value>
   </data>
+  <data name="IsLoadUnitFixed" xml:space="preserve">
+    <value>Is Load Unit Fixed</value>
+  </data>
 </root>

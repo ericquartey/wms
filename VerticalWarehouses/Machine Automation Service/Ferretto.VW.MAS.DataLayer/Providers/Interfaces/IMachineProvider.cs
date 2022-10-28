@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetIdentity();
 
+        bool GetIsLoadUnitFixed();
+
         int GetItemUniqueIdLength();
 
         bool GetListPickConfirm();

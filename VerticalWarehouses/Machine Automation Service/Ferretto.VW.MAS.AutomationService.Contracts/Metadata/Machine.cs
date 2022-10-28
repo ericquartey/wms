@@ -79,6 +79,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool IsHeartBeat { get; set; }
 
             [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsLoadUnitFixed))]
+            [Id(32)]
+            public bool IsLoadUnitFixed { get; set; }
+
+            [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsRotationClass))]
             [Id(30)]
             public bool IsRotationClass { get; set; }

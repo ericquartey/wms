@@ -235,6 +235,14 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.machineVolatile.MachineId.Value;
         }
 
+        public bool GetIsLoadUnitFixed()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsLoadUnitFixed).First();
+            }
+        }
+
         public int GetItemUniqueIdLength()
         {
             lock (this.dataContext)
