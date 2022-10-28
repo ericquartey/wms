@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Newtonsoft.Json;
 
@@ -87,6 +86,9 @@ namespace Ferretto.VW.MAS.DataModels
         /// if enabled the rotation class is not automatically calculated - only the user can change it
         /// </summary>
         public bool IsRotationClassFixed { get; set; }
+
+        public bool IsCellFixed { get; set; }
+        public bool IsHeightFixed { get; set; }
 
         /// <summary>
         /// distance to subtract to the ZOffset of the LaserPointer for all products in this LU

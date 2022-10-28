@@ -4084,11 +4084,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell Fixed.
+        /// </summary>
+        public static string IsCellFixed {
+            get {
+                return ResourceManager.GetString("IsCellFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free.
         /// </summary>
         public static string IsFree {
             get {
                 return ResourceManager.GetString("IsFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height Fixed.
+        /// </summary>
+        public static string IsHeightFixed {
+            get {
+                return ResourceManager.GetString("IsHeightFixed", resourceCulture);
             }
         }
         

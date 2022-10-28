@@ -2857,4 +2857,10 @@
   <data name="LoopError" xml:space="preserve">
     <value>Message not sent - GET Error</value>
   </data>
+  <data name="IsHeightFixed" xml:space="preserve">
+    <value>Height Fixed</value>
+  </data>
+  <data name="IsCellFixed" xml:space="preserve">
+    <value>Cell Fixed</value>
+  </data>
 </root>

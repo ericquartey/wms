@@ -1386,6 +1386,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetFireAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsLoadUnitFixedAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsLoadUnitFixedAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsRotationClassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -4756,6 +4763,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsRotationClassFixed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRotationClassFixed { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsCellFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsCellFixed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsHeightFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsHeightFixed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LaserOffset", Required = Newtonsoft.Json.Required.Always)]
         public double LaserOffset { get; set; }
     
@@ -5421,6 +5434,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("WaitingListPriorityHighlighted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? WaitingListPriorityHighlighted { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsLoadUnitFixed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsLoadUnitFixed { get; set; }
     
         public string ToJson() 
         {

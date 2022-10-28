@@ -630,4 +630,7 @@
   <data name="IsRotationClass" xml:space="preserve">
     <value>Classe di rotazione</value>
   </data>
+  <data name="IsLoadUnitFixed" xml:space="preserve">
+    <value>Cassetti ad associazione fissa</value>
+  </data>
 </root>

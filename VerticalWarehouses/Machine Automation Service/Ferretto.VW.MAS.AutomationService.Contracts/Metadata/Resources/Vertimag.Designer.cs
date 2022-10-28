@@ -844,6 +844,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Is Load Unit Fixed.
+        /// </summary>
+        public static string IsLoadUnitFixed {
+            get {
+                return ResourceManager.GetString("IsLoadUnitFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rotation Class.
         /// </summary>
         public static string IsRotationClass {

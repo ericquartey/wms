@@ -208,6 +208,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? WaitingListPriorityHighlighted { get; set; }
 
+        public bool IsLoadUnitFixed { get; set; }
+
         #endregion
 
         #region Methods

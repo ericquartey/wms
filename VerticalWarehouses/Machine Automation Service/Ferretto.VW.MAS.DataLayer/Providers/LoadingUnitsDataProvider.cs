@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -483,6 +481,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.LaserOffset = loadingUnit.LaserOffset;
                 luDb.MissionsCountRotation = loadingUnit.MissionsCountRotation;
                 luDb.IsRotationClassFixed = loadingUnit.IsRotationClassFixed;
+                luDb.IsCellFixed = loadingUnit.IsCellFixed;
+                luDb.IsHeightFixed = loadingUnit.IsHeightFixed;
                 if (loadingUnit.IsRotationClassFixed)
                 {
                     luDb.RotationClass = loadingUnit.RotationClass;

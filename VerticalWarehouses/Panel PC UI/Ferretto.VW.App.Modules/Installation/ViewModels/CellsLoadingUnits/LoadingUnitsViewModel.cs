@@ -73,6 +73,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand updateTareCommand;
 
+        private bool isLoadUnitFixedEnabled;
+
         #endregion
 
         #region Constructors
@@ -207,6 +209,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isRotationClassEnabled;
             set => this.SetProperty(ref this.isRotationClassEnabled, value);
+        }
+        public bool IsLoadUnitFixedEnabled
+        {
+            get => this.isLoadUnitFixedEnabled;
+            set => this.SetProperty(ref this.isLoadUnitFixedEnabled, value);
         }
 
         public ObservableCollection<LoadingUnit> LoadingUnits => IEnumConvert(this.MachineService.Loadunits);
@@ -383,6 +390,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+            this.IsLoadUnitFixedEnabled = await this.machineIdentityWebService.GetIsLoadUnitFixedAsync();
 
             this.SubscribeToEvents();
 
