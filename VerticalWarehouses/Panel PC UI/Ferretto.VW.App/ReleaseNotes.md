@@ -25,20 +25,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.53 rispetto la 1.0.52
-- Il servizio MAS usa di nuovo il netcore 2.2. Eliminate le cache aggiunte nella 1.0.52.
-- Aggiunta lingua turca
-- Aggiunto parametro per evidenziare la lista in attesa
-- Aggiunti parametri per confermare la fine lista
+## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
+- Ferretto Nuget Package 0.16.47
+- Aggiunto parametro di baia "Aggrega Liste"
 
 ## Bug Risolti
-- Eliminati rallentamenti evidenziati nella versione precedente
-- Correzione ai comandi manuali
-- Il versamento manuale gestisce il barcode per selezionare l'articolo
-- 
+- Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
+- SocketLink: corretto start/stop del servizio
 
-## Compatibile con adapter 0.4.41
+## Compatibile con adapter 0.4.42
 ***
+
+[Versione 1.0.53](#id1053)
 
 [Versione 1.0.52](#id1052)
 
@@ -146,6 +144,21 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1053"></a>
+## Nuove Funzionalità 1.0.53 rispetto la 1.0.52
+- Il servizio MAS usa di nuovo il netcore 2.2. Eliminate le cache aggiunte nella 1.0.52.
+- Aggiunta lingua turca
+- Aggiunto parametro per evidenziare la lista in attesa
+- Aggiunti parametri per confermare la fine lista
+
+## Bug Risolti
+- Eliminati rallentamenti evidenziati nella versione precedente
+- Correzione ai comandi manuali
+- Il versamento manuale gestisce il barcode per selezionare l'articolo
+- 
+
+## Compatibile con adapter 0.4.41
 
 <a id="id1052"></a>
 ## Nuove Funzionalità 1.0.52 rispetto la 1.0.51

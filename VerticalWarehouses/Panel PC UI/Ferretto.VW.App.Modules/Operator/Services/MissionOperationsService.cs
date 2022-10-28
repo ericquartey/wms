@@ -578,18 +578,28 @@ namespace Ferretto.VW.App.Modules.Operator
                     {
                         this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");
 
-                        if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
-                        {
-                            newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
-                        }
-                        else
-                        {
-                            newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
-                        }
-
                         try
                         {
-                            await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
+                            if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
+                            {
+                                newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
+                            }
+                            else
+                            {
+                                newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+                            }
+
+                            if (newWmsOperation == null || newWmsOperation.Status is MissionOperationStatus.Completed)
+                            {
+                                this.logger.Debug($"Active WMS operation '{newWmsOperationInfo.Id}' is closed.");
+                                newMachineMission = null;
+                                newWmsMission = null;
+                                newWmsOperation = null;
+                            }
+                            else
+                            {
+                                await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -597,6 +607,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                             newMachineMission = null;
                             newWmsMission = null;
+                            newWmsOperation = null;
                         }
                     }
                 }

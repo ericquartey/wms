@@ -1659,10 +1659,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Include(i => i.LoadingUnit)
                 .Select(p => new BayPosition()
                 {
+                    Id = p.Id,
                     BayId = p.BayId,
                     Height = p.Height,
                     IsBlocked = p.IsBlocked,
-                    Id = p.Id,
                     LoadingUnit = p.LoadingUnit,
                     Location = p.Location,
                     MaxDoubleHeight = p.MaxDoubleHeight,
