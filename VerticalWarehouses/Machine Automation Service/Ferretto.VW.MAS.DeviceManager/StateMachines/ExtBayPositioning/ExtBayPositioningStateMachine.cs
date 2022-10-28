@@ -104,8 +104,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
                 if (this.machineData.MessageData.BypassConditions ||
                     this.CheckConditions(out var errorText, out var errorCode))
                 {
-                    var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-
                     this.ChangeState(new ExtBayPositioningStartState(stateData, this.Logger));
                 }
                 else
@@ -151,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ExtBayPositioning
         /// <returns><c>true</c> if success, <c>false</c> otherwise</returns>
         private bool CheckConditions(out string errorText, out DataModels.MachineErrorCode errorCode)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.machineData.TargetBay);
             var ok = true;
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;

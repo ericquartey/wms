@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager.CheckIntrusion
             this.inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
             this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.inverterIndex}");
 
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumberPositions(this.machineData.TargetBay);
             this.bayPositionId = bay.Positions.First(p => p.IsUpper).Id;
             this.minHeight = this.machineProvider.GetMinMaxHeight().LoadUnitMinHeight;
 

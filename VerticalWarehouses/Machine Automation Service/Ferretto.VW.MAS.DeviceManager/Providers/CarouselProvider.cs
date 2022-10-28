@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Security.Cryptography;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -184,7 +183,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //    throw new InvalidOperationException(policy.Reason);
             //}
 
-            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            var bay = this.baysDataProvider.GetByNumberCarousel(requestingBay);
 
             var chainPosition = this.baysDataProvider.GetChainPosition(requestingBay);
             var targetPosition = chainPosition - 20;
@@ -238,7 +237,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new InvalidOperationException(policy.Reason);
             }
-            bay = this.baysDataProvider.GetByNumber(bay.Number);
+            if (bay.Carousel is null || bay.EmptyLoadMovement is null)
+            {
+                bay = this.baysDataProvider.GetByNumberCarousel(bay.Number);
+            }
 
             var targetPosition = bay.Carousel.ElevatorDistance * (direction is VerticalMovementDirection.Up ? 1 : -1);
 
@@ -295,7 +297,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberCarousel(bayNumber);
             var policy = this.CanMove(direction, bay, MovementCategory.Assisted);
             if (!policy.IsAllowed)
             {
@@ -344,7 +346,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void StartTest(BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumberCarousel(bayNumber);
             var policy = this.CanMove(VerticalMovementDirection.Up, bay, MovementCategory.Assisted);
             if (!policy.IsAllowed)
             {
@@ -404,7 +406,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new InvalidOperationException(policy.Reason);
                 }
             }
-            bay = this.baysDataProvider.GetByNumber(bay.Number);
+            if (bay.Carousel is null || bay.EmptyLoadMovement is null)
+            {
+                bay = this.baysDataProvider.GetByNumberCarousel(bay.Number);
+            }
 
             this.machineVolatileDataProvider.IsBayHomingExecuted[bay.Number] = false;
 

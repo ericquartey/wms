@@ -101,8 +101,6 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
                 if (this.machineData.MessageData.BypassConditions ||
                     this.CheckConditions(out var errorText, out var errorCode))
                 {
-                    var bay = this.baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-
                     this.ChangeState(new HorizontalResolutionStartState(stateData, this.Logger));
                 }
                 else

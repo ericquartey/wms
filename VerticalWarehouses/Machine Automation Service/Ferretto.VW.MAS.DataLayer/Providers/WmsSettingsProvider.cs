@@ -54,10 +54,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     return 0;
                 }
 
-                lock (this.dataContext)
+                if (this.machineVolatileDataProvider.WMSConnectionTimeout is null)
                 {
-                    return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.ConnectionTimeout).Single();
+                    lock (this.dataContext)
+                    {
+                        this.machineVolatileDataProvider.WMSConnectionTimeout = this.dataContext.WmsSettings.AsNoTracking().Select(w => w.ConnectionTimeout).Single();
+                    }
                 }
+                return this.machineVolatileDataProvider.WMSConnectionTimeout.Value;
             }
             set
             {
@@ -66,10 +70,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     return;
                 }
 
-                lock (this.dataContext)
+                if (this.machineVolatileDataProvider.WMSConnectionTimeout is null || value != this.machineVolatileDataProvider.WMSConnectionTimeout.Value)
                 {
-                    this.dataContext.WmsSettings.Single().ConnectionTimeout = value;
-                    this.dataContext.SaveChanges();
+                    lock (this.dataContext)
+                    {
+                        this.machineVolatileDataProvider.WMSConnectionTimeout = value;
+                        this.dataContext.WmsSettings.Single().ConnectionTimeout = value;
+                        this.dataContext.SaveChanges();
+                    }
                 }
             }
         }
@@ -103,22 +111,30 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         {
             get
             {
-                if (this.dataLayerService.IsReady)
+                if (!this.dataLayerService.IsReady)
+                {
+                    return false;
+                }
+                if (this.machineVolatileDataProvider.WMSIsConnected is null)
                 {
                     lock (this.dataContext)
                     {
-                        return this.dataContext.WmsSettings.AsNoTracking().Select(w => w.IsConnected).Single();
+                        this.machineVolatileDataProvider.WMSIsConnected = this.dataContext.WmsSettings.AsNoTracking().Select(w => w.IsConnected).Single();
                     }
                 }
-
-                return false;
+                return this.machineVolatileDataProvider.WMSIsConnected.Value;
             }
             set
             {
-                if (this.dataLayerService.IsReady)
+                if (!this.dataLayerService.IsReady)
+                {
+                    return;
+                }
+                if (this.machineVolatileDataProvider.WMSIsConnected is null || value != this.machineVolatileDataProvider.WMSIsConnected.Value)
                 {
                     lock (this.dataContext)
                     {
+                        this.machineVolatileDataProvider.WMSIsConnected = value;
                         this.dataContext.WmsSettings.Single().IsConnected = value;
                         this.dataContext.SaveChanges();
                     }

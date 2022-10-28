@@ -562,7 +562,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
 
-            var bay = baysDataProvider.GetByNumber(machineProvider.BayTestNumber);
+            var bay = baysDataProvider.GetByNumberPositions(machineProvider.BayTestNumber);
             if (bay != null)
             {
                 foreach (var bayPosition in bay.Positions)

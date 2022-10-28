@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.DeviceManager.StateMachines.Homing
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
 
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumberExternal(this.machineData.TargetBay);
             var targetPosition = bay.External.Race - this.baysDataProvider.GetChainPosition(this.machineData.TargetBay) + bay.ChainOffset;
             var speed = new[] { bay.FullLoadMovement.Speed };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };

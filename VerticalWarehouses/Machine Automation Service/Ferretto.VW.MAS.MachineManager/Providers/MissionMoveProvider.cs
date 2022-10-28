@@ -290,7 +290,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             this.Logger.LogDebug($"Check the waiting missions on double bay...");
 
             // Check the type of bay and apply the waiting routine only with double bay
-            var bay = baysDataProvider.GetByNumber(mission.TargetBay);
+            var bay = baysDataProvider.GetByNumberPositions(mission.TargetBay);
             if (!bay.IsDouble || (bay.IsDouble && bay.IsExternal))
             {
                 // No mission to check

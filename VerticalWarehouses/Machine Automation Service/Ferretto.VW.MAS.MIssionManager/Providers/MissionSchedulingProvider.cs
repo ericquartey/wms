@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType)
         {
-            var bay = this.baysDataProvider.GetByNumber(sourceBayNumber);
+            var bay = this.baysDataProvider.GetByNumberPositions(sourceBayNumber);
             if (bay.Positions.Any(x => x.LoadingUnit?.Id == loadingUnitId))
             {
                 this.logger.LogDebug(
@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var returnValue = true;
             const double tolerance = 2.5;
 
-            var bay = this.baysDataProvider.GetByNumber(targetBayNumber);
+            var bay = this.baysDataProvider.GetByNumberPositions(targetBayNumber);
             if (bay.Positions.All(p => p.MaxDoubleHeight == 0))
             {
                 if (bay.Positions.All(p => height > p.MaxSingleHeight + tolerance))
