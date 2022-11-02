@@ -1058,7 +1058,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void FreeFixedLoadUnits(Machine machine, DataLayerContext dataContext)
         {
-            var loadUnits = dataContext.LoadingUnits.Where(lu => lu.IsCellFixed || lu.IsHeightFixed).ToList();
+            var loadUnits = dataContext.LoadingUnits.Where(lu => lu.IsCellFixed).ToList();
             if (loadUnits.Count > 0)
             {
                 loadUnits.ForEach(lu =>
