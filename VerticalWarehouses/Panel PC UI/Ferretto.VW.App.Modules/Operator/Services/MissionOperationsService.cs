@@ -122,7 +122,11 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             this.logger.Debug($"User requested to complete operation '{operationId}' with quantity {quantity}.");
 
-            var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
+            var operationToComplete = this.ActiveWmsOperation;
+            if (operationToComplete.Id != operationId)
+            {
+                await this.missionOperationsWebService.GetByIdAsync(operationId);
+            }
             this.logger.Debug($"Operation to complete has status '{operationToComplete.Status}'.");
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
@@ -719,7 +723,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 if (activeMissions.Any())
                 {
                     var loadUnitId = activeMissions.FirstOrDefault().LoadUnitId;
-                    if (machineMissions.Any(m => m.LoadUnitId == loadUnitId && m.MissionType == MissionType.IN)
+                    if (this.machineMissions.Any(m => m.LoadUnitId == loadUnitId && m.MissionType == MissionType.IN)
                         // BID must wait for second load unit to move away from bay
                         || (bay.IsDouble && !bay.IsExternal && bay.Carousel == null
                             && bay.Positions.Any(p => p.LoadingUnit != null && p.LoadingUnit.Id != loadUnitId)
