@@ -583,6 +583,10 @@ namespace Ferretto.VW.App.Modules.Operator
                             if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
                             {
                                 newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
+                                if (newWmsOperation != null)
+                                {
+                                    newWmsOperation.MissionId = newWmsMission.Id;
+                                }
                             }
                             else
                             {

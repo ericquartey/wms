@@ -28,7 +28,7 @@
 ## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
 - Ferretto Nuget Package 0.16.47
 - Aggiunto parametro di baia "Aggrega Liste"
-- Aggiunta gestione dei cassetti a passo fisso
+- Aggiunta gestione dei cassetti ad associazione fissa
 
 ## Bug Risolti
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
