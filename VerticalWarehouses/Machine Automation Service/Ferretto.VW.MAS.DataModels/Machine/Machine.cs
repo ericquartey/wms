@@ -104,6 +104,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsHeartBeat { get; set; }
 
+        /// <summary>
+        /// The load units can have fixed cell and fixed height.
+        /// </summary>
         public bool IsLoadUnitFixed { get; set; }
 
         /// <summary>

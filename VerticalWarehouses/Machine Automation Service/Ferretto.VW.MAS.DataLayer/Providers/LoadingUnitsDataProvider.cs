@@ -490,6 +490,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         luDb.FixedCell = luDb.CellId;
                         luDb.FixedHeight = luDb.Height;
+                        luDb.RotationClass = null;
                         luDb.IsCellFixed = true;
                     }
                     else if (!luDb.IsCellFixed)
@@ -644,7 +645,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var loadUnits = this.dataContext
                     .LoadingUnits
-                    .Where(l => l.Status != LoadingUnitStatus.Blocked && !l.IsRotationClassFixed);
+                    .Where(l => l.Status != LoadingUnitStatus.Blocked && !l.IsRotationClassFixed && !l.IsCellFixed);
 
                 var totalMissionCount = loadUnits.Sum(s => s.MissionsCountRotation);
                 var missionCount = 0;
