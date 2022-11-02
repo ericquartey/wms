@@ -122,11 +122,8 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             this.logger.Debug($"User requested to complete operation '{operationId}' with quantity {quantity}.");
 
-            var operationToComplete = this.ActiveWmsOperation;
-            if (operationToComplete.Id != operationId)
-            {
-                await this.missionOperationsWebService.GetByIdAsync(operationId);
-            }
+            var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
+
             this.logger.Debug($"Operation to complete has status '{operationToComplete.Status}'.");
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
