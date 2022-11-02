@@ -383,9 +383,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:
+                    var reason = string.Empty;
                     if (messageData.DestinationCellId != null)
                     {
-                        returnValue = this.CellsProvider.CanFitLoadingUnit(messageData.DestinationCellId.Value, this.Mission.LoadUnitId, (this.Mission.MissionType == MissionType.FirstTest));
+                        returnValue = this.CellsProvider.CanFitLoadingUnit(messageData.DestinationCellId.Value, this.Mission.LoadUnitId, (this.Mission.MissionType == MissionType.FirstTest), out reason);
                         mission.DestinationCellId = messageData.DestinationCellId;
                         mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                     }
@@ -417,7 +418,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         if (showErrors)
                         {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay);
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay, reason);
                         }
                         else
                         {

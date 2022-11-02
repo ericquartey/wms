@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest = false);
+        bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest, out string reason);
 
         int CleanUnderWeightCells();
 

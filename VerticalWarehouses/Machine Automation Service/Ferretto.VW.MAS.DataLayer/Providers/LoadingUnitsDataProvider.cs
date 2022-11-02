@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                 }
 
-                if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id))
+                if (!this.cellsProvider.CanFitLoadingUnit(loadingUnit.CellId.Value, loadingUnit.Id, isCellTest: false, out var reason))
                 {
                     lock (this.dataContext)
                     {

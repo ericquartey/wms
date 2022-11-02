@@ -535,11 +535,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
                                 {
-                                    if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                                    if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id, isCellTest: false, out var reason))
                                     {
                                         elevatorDataProvider.SetLoadingUnit(null);
                                         cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
-                                        this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to Cell id {cell.Id}");
+                                        this.Logger.LogDebug($"SetLoadingUnit: Load Unit {loadingUnitOnElevator.Id}; from elevator to Cell id {cell.Id}; {reason}");
                                         isChanged = true;
                                     }
                                     else

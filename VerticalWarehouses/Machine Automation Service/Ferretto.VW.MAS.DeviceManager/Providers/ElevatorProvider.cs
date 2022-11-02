@@ -562,9 +562,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #2: there is enough space to host the loading unit in the specified cell
-            if (!this.cellsProvider.CanFitLoadingUnit(elevatorCell.Id, loadingUnit.Id))
+            if (!this.cellsProvider.CanFitLoadingUnit(elevatorCell.Id, loadingUnit.Id, isCellTest: false, out var reason))
             {
-                return new ActionPolicy { Reason = Resources.Elevator.ResourceManager.GetString("TheLoadingUnitDoesNotFitInTheSpecifiedCell", CommonUtils.Culture.Actual) };
+                return new ActionPolicy { Reason = reason };
             }
 
             // check #3: elevator's pawl cannot be be in zero position

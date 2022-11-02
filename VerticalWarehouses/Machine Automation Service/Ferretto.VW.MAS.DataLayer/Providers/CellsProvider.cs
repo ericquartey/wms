@@ -77,12 +77,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest = false)
+        public bool CanFitLoadingUnit(int cellId, int loadingUnitId, bool isCellTest, out string reason)
         {
             var cell = this.GetById(cellId);
+            reason = string.Empty;
 
             if (cell.LoadingUnit != null)
             {
+                reason = Resources.Cells.ResourceManager.GetString("TheCellIsNotFree", CommonUtils.Culture.Actual);
                 return false;
             }
 
@@ -90,6 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 && (!isCellTest || cell.BlockLevel != BlockLevel.NeedsTest)
                 )
             {
+                reason = Resources.Cells.ResourceManager.GetString("TheTargetCellIsBlocked", CommonUtils.Culture.Actual);
                 return false;
             }
 
@@ -130,12 +133,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ToList();
             if (!cellsInRange.Any())
             {
+                reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellCannotFitTheLoadUnit", CommonUtils.Culture.Actual);
                 return false;
             }
 
             var availableSpace = cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight;
             if (availableSpace < loadUnitHeight)
             {
+                reason = Resources.Cells.ResourceManager.GetString("TheSpecifiedCellCannotFitTheLoadUnit", CommonUtils.Culture.Actual);
                 return false;
             }
 
@@ -147,9 +152,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     || (!isCellTest && c.BlockLevel == BlockLevel.NeedsTest)
                     ))
             {
+                reason = Resources.Cells.ResourceManager.GetString("TheLoadUnitHasFixedCell", CommonUtils.Culture.Actual);
                 return false;
             }
 
+            reason = Resources.Elevator.ResourceManager.GetString("TheLoadingUnitDoesNotFitInTheSpecifiedCell", CommonUtils.Culture.Actual);
             if (loadUnit.Cell != null)
             {
                 // in cell-to-cell movements we check only the cells not presently occupied by this load unit

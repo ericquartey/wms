@@ -33,7 +33,7 @@
 ## Bug Risolti
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
 - SocketLink: corretto start/stop del servizio
-- Operazioni di prelievo/versamento: eliminati dati duplicati in alcuni casi
+- Operazioni di prelievo/versamento: eliminati alcuni casi di dati duplicati 
 
 ## Compatibile con adapter 0.4.42
 ***
