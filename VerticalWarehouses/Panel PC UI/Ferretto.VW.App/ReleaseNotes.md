@@ -28,10 +28,12 @@
 ## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
 - Ferretto Nuget Package 0.16.47
 - Aggiunto parametro di baia "Aggrega Liste"
+- Aggiunta gestione dei cassetti a passo fisso
 
 ## Bug Risolti
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
 - SocketLink: corretto start/stop del servizio
+- Operazioni di prelievo/versamento: eliminati dati duplicati in alcuni casi
 
 ## Compatibile con adapter 0.4.42
 ***
