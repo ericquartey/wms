@@ -220,9 +220,14 @@ namespace Ferretto.VW.App.Modules.Operator
 
             var activList = fullLists.ToList().Find(l => l.Code == itemListCode);
 
-            var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
+            if (activList != null)
+            {
+                var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
 
-            return listRows.Count(r => r.Machines.Any()) == 1;
+                return listRows.Count(r => r.Machines.Any()) == 1;
+            }
+
+            return false;
         }
 
         public async Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId)
