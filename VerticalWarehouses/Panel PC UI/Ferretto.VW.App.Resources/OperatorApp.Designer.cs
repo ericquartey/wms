@@ -484,6 +484,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reserved.
+        /// </summary>
+        public static string BlockLevelReserved {
+            get {
+                return ResourceManager.GetString("BlockLevelReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Space only.
         /// </summary>
         public static string BlockLevelSpaceOnly {

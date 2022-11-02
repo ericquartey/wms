@@ -131,6 +131,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
+            this.machineVolatile.IsLoadUnitFixed = null;
             lock (this.dataContext)
             {
                 this.dataContext.Machines.Add(machine);
@@ -233,6 +234,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
             return this.machineVolatile.MachineId.Value;
+        }
+
+        public bool GetIsLoadUnitFixed()
+        {
+            if (this.machineVolatile.IsLoadUnitFixed is null)
+            {
+                lock (this.dataContext)
+                {
+                    this.machineVolatile.IsLoadUnitFixed = this.dataContext.Machines.AsNoTracking().Select(m => m.IsLoadUnitFixed).First();
+                }
+            }
+            return this.machineVolatile.IsLoadUnitFixed.Value;
         }
 
         public int GetItemUniqueIdLength()
@@ -389,6 +402,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
             this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.IsLoadUnitFixed = null;
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
             context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
@@ -590,6 +604,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 dataContext = this.dataContext;
                 this.machineVolatile.MachineId = null;
+                this.machineVolatile.IsLoadUnitFixed = null;
             }
             int count = await dataContext.Database.ExecuteSqlCommandAsync("update cellpanels set MachineId = null;");
             int count1 = await dataContext.Database.ExecuteSqlCommandAsync("update bays set MachineId = null;");
@@ -610,6 +625,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
             this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.IsLoadUnitFixed = null;
             machine.Elevator?.Axes.ForEach((a) =>
             {
                 dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
@@ -826,6 +842,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
             this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.IsLoadUnitFixed = null;
 
             machine.Elevator?.Axes.ForEach((a) =>
             {
@@ -874,6 +891,12 @@ namespace Ferretto.VW.MAS.DataLayer
             //});
             dataContext.AddOrUpdate(machine, (e) => e.Id);
             dataContext.SaveChanges();
+
+            if (!machine.IsLoadUnitFixed)
+            {
+                this.FreeReservedCells(machine, dataContext);
+                this.FreeFixedLoadUnits(machine, dataContext);
+            }
         }
 
         public void UpdateTotalAutomaticTime(TimeSpan duration)
@@ -1031,6 +1054,32 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             return null;
+        }
+
+        private void FreeFixedLoadUnits(Machine machine, DataLayerContext dataContext)
+        {
+            var loadUnits = dataContext.LoadingUnits.Where(lu => lu.IsCellFixed).ToList();
+            if (loadUnits.Count > 0)
+            {
+                loadUnits.ForEach(lu =>
+                {
+                    lu.FixedCell = null;
+                    lu.FixedHeight = null;
+                    lu.IsCellFixed = false;
+                    lu.IsHeightFixed = false;
+                });
+                dataContext.SaveChanges();
+            }
+        }
+
+        private void FreeReservedCells(Machine machine, DataLayerContext dataContext)
+        {
+            var cells = dataContext.Cells.Where(c => c.BlockLevel == BlockLevel.Reserved).ToList();
+            if (cells.Count > 0)
+            {
+                cells.ForEach(cell => cell.BlockLevel = BlockLevel.None);
+                dataContext.SaveChanges();
+            }
         }
 
         #endregion

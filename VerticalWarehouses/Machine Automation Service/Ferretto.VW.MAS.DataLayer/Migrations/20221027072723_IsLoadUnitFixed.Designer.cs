@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20221027072723_IsLoadUnitFixed")]
+    partial class IsLoadUnitFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1268,10 +1270,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("CellId");
 
                     b.Property<string>("Description");
-
-                    b.Property<int?>("FixedCell");
-
-                    b.Property<double?>("FixedHeight");
 
                     b.Property<double>("GrossWeight");
 

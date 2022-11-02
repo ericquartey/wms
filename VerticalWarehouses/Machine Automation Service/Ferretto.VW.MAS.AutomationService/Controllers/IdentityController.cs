@@ -149,6 +149,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsFireAlarmActive());
         }
 
+        [HttpPost("get/IsLoadUnitFixed")]
+        public ActionResult<bool> GetIsLoadUnitFixed()
+        {
+            return this.Ok(this.machineProvider.GetIsLoadUnitFixed());
+        }
+
         [HttpPost("get/is/rotation/class")]
         public ActionResult<bool> GetIsRotationClass()
         {

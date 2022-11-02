@@ -342,7 +342,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         && loadUnit.IsRotationClassDifferent
                         && this.machineVolatileDataProvider.IsOptimizeRotationClass)
                     {
-                        cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id);
+                        cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, CompactingType.RotationCompacting);
                         loadUnitOut = loadUnit;
                         return true;
                     }

@@ -11,16 +11,19 @@ namespace Ferretto.VW.MAS.DataModels
         // the cell is not blocked.
         None,
 
-        // no loading unit can be placed on the cell, but a loading unit content can occupy the space of the cell.
+        // no load unit can be placed on the cell, but a load unit content can occupy the space of the cell.
         SpaceOnly,
 
-        // no load unit or its content can be placed on the cell. No loading unit content can occupy the space of the cell.
+        // no load unit or its content can be placed on the cell. No load unit content can occupy the space of the cell.
         Blocked,
 
         // the cell must be tested in the "first load unit" test. After testing the BlockLevel returns to None.
         NeedsTest,
 
         // the cell must be free because the next cell is occupied by a very heavy LU
-        UnderWeight
+        UnderWeight,
+
+        // the cell is reserved for fixed-cell load units
+        Reserved
     }
 }

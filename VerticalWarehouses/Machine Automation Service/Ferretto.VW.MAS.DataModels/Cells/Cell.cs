@@ -14,7 +14,14 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsFree { get; set; }
 
-        public bool IsNotAvailable => this.BlockLevel == BlockLevel.Blocked || this.BlockLevel == BlockLevel.UnderWeight || this.BlockLevel == BlockLevel.Undefined;
+        public bool IsNotAvailable => this.BlockLevel == BlockLevel.Blocked
+            || this.BlockLevel == BlockLevel.UnderWeight
+            || this.BlockLevel == BlockLevel.Reserved
+            || this.BlockLevel == BlockLevel.Undefined;
+
+        public bool IsNotAvailableFixed => this.BlockLevel == BlockLevel.Blocked
+            || this.BlockLevel == BlockLevel.UnderWeight
+            || this.BlockLevel == BlockLevel.Undefined;
 
         /// <summary>
         /// The loading unit currently stored in the cell.

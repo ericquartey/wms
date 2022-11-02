@@ -43,6 +43,10 @@ namespace Ferretto.VW.App.Controls.Converters
                         translate.Add(Resources.Localized.Get("OperatorApp.BlockLevelUnderWeight"));
                         break;
 
+                    case BlockLevel.Reserved:
+                        translate.Add(Resources.Localized.Get("OperatorApp.BlockLevelReserved"));
+                        break;
+
                     default:
                         translate.Add(((BlockLevel)value).ToString());
                         break;

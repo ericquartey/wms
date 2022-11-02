@@ -123,6 +123,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.logger.Debug($"User requested to complete operation '{operationId}' with quantity {quantity}.");
 
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
+
             this.logger.Debug($"Operation to complete has status '{operationToComplete.Status}'.");
 
             if (operationToComplete.Status is MissionOperationStatus.Executing)
@@ -219,9 +220,14 @@ namespace Ferretto.VW.App.Modules.Operator
 
             var activList = fullLists.ToList().Find(l => l.Code == itemListCode);
 
-            var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
+            if (activList != null)
+            {
+                var listRows = await this.itemListsWebService.GetRowsAsync(activList.Id);
 
-            return listRows.Count(r => r.Machines.Any()) == 1;
+                return listRows.Count(r => r.Machines.Any()) == 1;
+            }
+
+            return false;
         }
 
         public async Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId)
@@ -578,18 +584,32 @@ namespace Ferretto.VW.App.Modules.Operator
                     {
                         this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");
 
-                        if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
-                        {
-                            newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
-                        }
-                        else
-                        {
-                            newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
-                        }
-
                         try
                         {
-                            await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
+                            if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
+                            {
+                                newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
+                                if (newWmsOperation != null)
+                                {
+                                    newWmsOperation.MissionId = newWmsMission.Id;
+                                }
+                            }
+                            else
+                            {
+                                newWmsOperation = await this.missionOperationsWebService.GetByIdAsync(newWmsOperationInfo.Id);
+                            }
+
+                            if (newWmsOperation == null || newWmsOperation.Status is MissionOperationStatus.Completed)
+                            {
+                                this.logger.Debug($"Active WMS operation '{newWmsOperationInfo.Id}' is closed.");
+                                newMachineMission = null;
+                                newWmsMission = null;
+                                newWmsOperation = null;
+                            }
+                            else
+                            {
+                                await this.missionOperationsWebService.ExecuteAsync(newWmsOperationInfo.Id, this.authenticationService.UserName);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -597,6 +617,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                             newMachineMission = null;
                             newWmsMission = null;
+                            newWmsOperation = null;
                         }
                     }
                 }
@@ -699,7 +720,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 if (activeMissions.Any())
                 {
                     var loadUnitId = activeMissions.FirstOrDefault().LoadUnitId;
-                    if (machineMissions.Any(m => m.LoadUnitId == loadUnitId && m.MissionType == MissionType.IN)
+                    if (this.machineMissions.Any(m => m.LoadUnitId == loadUnitId && m.MissionType == MissionType.IN)
                         // BID must wait for second load unit to move away from bay
                         || (bay.IsDouble && !bay.IsExternal && bay.Carousel == null
                             && bay.Positions.Any(p => p.LoadingUnit != null && p.LoadingUnit.Id != loadUnitId)

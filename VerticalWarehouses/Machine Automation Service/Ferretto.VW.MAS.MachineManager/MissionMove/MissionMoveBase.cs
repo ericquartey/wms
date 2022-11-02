@@ -159,6 +159,28 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     this.Logger.LogWarning($"First test Load unit Height {unitToMove.Height:0.00} higher than machine min {machine.LoadUnitMinHeight}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
                     errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
                 }
+
+                if (mission.LoadUnitDestination >= LoadingUnitLocation.Cell
+                    && returnValue
+                    && this.MachineVolatileDataProvider.IsLoadUnitFixed is true)
+                {
+                    var loadUnit = this.LoadingUnitsDataProvider.GetById(this.Mission.LoadUnitId);
+                    if (loadUnit.IsCellFixed
+                        && loadUnit.FixedHeight.HasValue)
+                    {
+                        if (unitToMove.Height > loadUnit.FixedHeight.Value)
+                        {
+                            returnValue = false;
+                            this.Logger.LogError($"Load unit Height {unitToMove.Height:0.00} higher than fixed height {loadUnit.FixedHeight.Value}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                            errorCode = MachineErrorCode.LoadUnitHeightFromBayExceeded;
+                        }
+                        else
+                        {
+                            this.LoadingUnitsDataProvider.SetHeight(this.Mission.LoadUnitId, loadUnit.FixedHeight.Value);
+                            this.Logger.LogInformation($"Load unit Height measured {unitToMove.Height:0.00} converted to fixed height {loadUnit.FixedHeight.Value}: Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} ");
+                        }
+                    }
+                }
             }
             return returnValue;
         }

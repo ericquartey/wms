@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Newtonsoft.Json;
 
@@ -33,6 +32,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
+        public int? FixedCell { get; set; }
+
+        public double? FixedHeight { get; set; }
+
         /// <summary>
         /// Gets or sets the actual gross weight of the loading unit, in kilograms.
         /// </summary>
@@ -65,6 +68,13 @@ namespace Ferretto.VW.MAS.DataModels
                 this.height = value;
             }
         }
+
+        public bool IsCellFixed { get; set; }
+
+        /// <summary>
+        /// this property is always equal to IsCellFixed
+        /// </summary>
+        public bool IsHeightFixed { get; set; }
 
         public bool IsInFullTest { get; set; }
 

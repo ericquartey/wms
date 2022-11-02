@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -176,6 +174,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(l => l.Cell)
                     .ThenInclude(c => c.Panel)
                     .Where(x => x.Cell != null
+                        && !x.IsCellFixed
                         && !this.dataContext.Missions.Any(m => m.LoadUnitId == x.Id
                             && (m.Status == MissionStatus.Executing
                                 || (m.Status == MissionStatus.New && m.MissionType != MissionType.WMS && m.MissionType != MissionType.OUT)
@@ -483,6 +482,32 @@ namespace Ferretto.VW.MAS.DataLayer
                 luDb.LaserOffset = loadingUnit.LaserOffset;
                 luDb.MissionsCountRotation = loadingUnit.MissionsCountRotation;
                 luDb.IsRotationClassFixed = loadingUnit.IsRotationClassFixed;
+                if (loadingUnit.IsCellFixed)
+                {
+                    if (!luDb.IsCellFixed
+                        && luDb.CellId != null
+                        && luDb.Height > 0)
+                    {
+                        luDb.FixedCell = luDb.CellId;
+                        luDb.FixedHeight = luDb.Height;
+                        luDb.IsCellFixed = true;
+                    }
+                    else if (!luDb.IsCellFixed)
+                    {
+                        luDb.FixedCell = null;
+                        luDb.FixedHeight = null;
+                        luDb.IsCellFixed = false;
+                    }
+                }
+                else
+                {
+                    luDb.FixedCell = null;
+                    luDb.FixedHeight = null;
+                    luDb.IsCellFixed = false;
+                }
+
+                luDb.IsHeightFixed = luDb.IsCellFixed;
+
                 if (loadingUnit.IsRotationClassFixed)
                 {
                     luDb.RotationClass = loadingUnit.RotationClass;

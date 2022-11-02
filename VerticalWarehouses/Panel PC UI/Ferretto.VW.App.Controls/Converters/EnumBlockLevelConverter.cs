@@ -33,12 +33,15 @@ namespace Ferretto.VW.App.Controls.Converters
                     case BlockLevel.UnderWeight:
                         return Resources.Localized.Get("OperatorApp.BlockLevelUnderWeight");
 
+                    case BlockLevel.Reserved:
+                        return Resources.Localized.Get("OperatorApp.BlockLevelReserved");
+
                     default:
                         return Resources.Localized.Get("OperatorApp.BlockLevelUndefined");
                         //return ((BlockLevel)value).ToString();
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return value;
             }
@@ -80,11 +83,15 @@ namespace Ferretto.VW.App.Controls.Converters
                     {
                         return BlockLevel.UnderWeight;
                     }
+                    if (strValue.Equals(Resources.Localized.Get("OperatorApp.BlockLevelReserved"), StringComparison.CurrentCulture))
+                    {
+                        return BlockLevel.Reserved;
+                    }
                 }
 
                 return blk;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return BlockLevel.Undefined;
             }
