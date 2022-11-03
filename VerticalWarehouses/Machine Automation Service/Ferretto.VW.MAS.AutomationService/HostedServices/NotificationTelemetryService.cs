@@ -7,6 +7,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.SocketLink;
+using Ferretto.VW.MAS.SocketLink.Providers;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -109,8 +111,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 {
                     if (machineVolatile.SocketLinkIsEnabled is true)
                     {
-                        var socketLinkProvider = scope.ServiceProvider.GetRequiredService<SocketLink.SocketLinkProvider>();
-                        result = $"socket link {socketLinkProvider.GetVersion()}";
+                        var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                        result = $"SOCKET-LINK {socketLinkProvider.GetVersion()}";
                     }
                 }
             }
@@ -189,9 +191,10 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
-                Version = NotificationTelemetryService.GetVersion()
+                Version = NotificationTelemetryService.GetVersion(),
+                WmsVersion = await this.GetWmsVersionAsync()
             };
-            var wmsVersion = await this.GetWmsVersionAsync();
+
             await this.telemetryHub.SendMachineAsync(machineDto);
         }
 
