@@ -280,24 +280,6 @@ namespace Ferretto.VW.MAS.DataLayer
             return cellId;
         }
 
-        /// <summary>
-        /// Try to find an empty cell for the LoadUnit passed.
-        /// Store-in logic:
-        ///     . LU weight must not exceed total machine weight (this should be already controlled by weight check)
-        ///     . if LU height is not defined (conventionally: zero) set max height
-        ///     . try to select side with less weight
-        ///     . for each free cell measure available space:
-        ///         select only cells with enough space and sort by priority
-        ///     . the priority field corresponds to the position, but it can be used to sort cells starting from bay positions, if bays are at a high level
-        /// if it does not find a cell it throws an exception
-        /// </summary>
-        /// <param name="loadingUnitId"></param>
-        /// <param name="compactingType">
-        ///     ExactMatchCompacting: The side is fixed and the space is not more than load unit height
-        ///     AnySpaceCompacting: The side is fixed
-        ///     </param>
-        ///     <param name="isCellTest">finds a cell marked for the first load unit test</param>
-        /// <returns>the preferred cellId that fits the LoadUnit</returns>
         public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false, bool randomCells = false)
         {
             var loadUnit = this.dataContext.LoadingUnits
@@ -604,6 +586,32 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
             throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
+        }
+
+        public void FreeReservedCells(LoadingUnit luDb)
+        {
+            if (luDb.FixedCell is null)
+            {
+                return;
+            }
+            lock (this.dataContext)
+            {
+                var cell = this.dataContext.Cells.Include(i => i.Panel).FirstOrDefault(c => c.Id == luDb.FixedCell);
+                if (cell != null)
+                {
+                    var machine = this.machineProvider.GetMinMaxHeight();
+                    var cells = this.dataContext.Cells.Where(c => c.BlockLevel == BlockLevel.Reserved
+                                && c.Panel.Side == cell.Side
+                                && (c.Position >= cell.Position - (luDb.IsVeryHeavy(machine.LoadUnitVeryHeavyPercent) ? CellHeight : 0))
+                                && c.Position <= cell.Position + luDb.FixedHeight + VerticalPositionTolerance)
+                                .ToList();
+                    if (cells.Count > 0)
+                    {
+                        cells.ForEach(cell => cell.BlockLevel = BlockLevel.None);
+                        this.dataContext.SaveChanges();
+                    }
+                }
+            }
         }
 
         public IEnumerable<Cell> GetAll()
@@ -917,13 +925,12 @@ namespace Ferretto.VW.MAS.DataLayer
                             occupiedCell.BlockLevel = BlockLevel.None;
                         }
 
-                        if (machine.IsLoadUnitFixed
-                            && loadingUnit.IsCellFixed
+                        if (loadingUnit.IsCellFixed
                             && occupiedCell.BlockLevel == BlockLevel.None)
                         {
                             occupiedCell.BlockLevel = BlockLevel.Reserved;
                         }
-                        else if (!machine.IsLoadUnitFixed
+                        else if (!loadingUnit.IsCellFixed
                             && occupiedCell.BlockLevel == BlockLevel.Reserved)
                         {
                             occupiedCell.BlockLevel = BlockLevel.None;

@@ -364,6 +364,10 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 this.cellsProvider.SetLoadingUnit(lu.CellId.Value, null);
             }
+            if (lu.FixedCell.HasValue)
+            {
+                this.cellsProvider.FreeReservedCells(lu);
+            }
             if (lu.Status == LoadingUnitStatus.InBay)
             {
                 this.baysDataProvider.RemoveLoadingUnit(loadingUnitsId);
@@ -408,6 +412,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException($"Load Unit ID={loadingUnit.Id}");
             }
+            var originalCellFixed = luDb.IsCellFixed;
 
             if (loadingUnit.CellId.HasValue &&
                 loadingUnit.Height <= 0)
@@ -491,23 +496,21 @@ namespace Ferretto.VW.MAS.DataLayer
                         luDb.FixedCell = luDb.CellId;
                         luDb.FixedHeight = luDb.Height;
                         luDb.RotationClass = null;
-                        luDb.IsCellFixed = true;
                     }
                     else if (!luDb.IsCellFixed)
                     {
                         luDb.FixedCell = null;
                         luDb.FixedHeight = null;
-                        luDb.IsCellFixed = false;
                     }
                 }
                 else
                 {
+                    this.cellsProvider.FreeReservedCells(luDb);
                     luDb.FixedCell = null;
                     luDb.FixedHeight = null;
-                    luDb.IsCellFixed = false;
                 }
-
-                luDb.IsHeightFixed = luDb.IsCellFixed;
+                luDb.IsCellFixed = luDb.FixedCell.HasValue && luDb.FixedCell.Value > 0;
+                luDb.IsHeightFixed = luDb.FixedHeight.HasValue && luDb.FixedHeight.Value > 0;
 
                 if (loadingUnit.IsRotationClassFixed)
                 {

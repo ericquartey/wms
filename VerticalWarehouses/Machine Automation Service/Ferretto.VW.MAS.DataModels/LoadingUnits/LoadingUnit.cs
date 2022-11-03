@@ -32,8 +32,14 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
+        /// <summary>
+        /// the load unit can be stored only in this cell
+        /// </summary>
         public int? FixedCell { get; set; }
 
+        /// <summary>
+        /// the load unit cannot be higher than this, and when it is lower it will be forced to this height
+        /// </summary>
         public double? FixedHeight { get; set; }
 
         /// <summary>
@@ -69,6 +75,9 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        /// <summary>
+        /// The load unit has fixed cell: it will always be stored in the same cell
+        /// </summary>
         public bool IsCellFixed { get; set; }
 
         /// <summary>
