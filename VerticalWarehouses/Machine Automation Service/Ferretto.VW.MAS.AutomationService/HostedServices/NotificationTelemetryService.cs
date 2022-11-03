@@ -107,14 +107,12 @@ namespace Ferretto.VW.MAS.AutomationService
                 {
                     result = await machineWms.GetWmsVersionAsync(machineVolatile.MachineId.Value);
                 }
-                else
+                else if (machineVolatile.SocketLinkIsEnabled is true)
                 {
-                    if (machineVolatile.SocketLinkIsEnabled is true)
-                    {
-                        var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                        result = $"SL {socketLinkProvider.GetVersion()}";
-                    }
+                    var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                    result = $"SL {socketLinkProvider.GetVersion()}";
                 }
+                
             }
 
             return result;

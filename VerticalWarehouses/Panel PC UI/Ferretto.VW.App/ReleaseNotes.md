@@ -26,9 +26,10 @@
 # Note di versione
 
 ## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
-- Ferretto Nuget Package 0.16.47
+- Ferretto Nuget Package 0.16.48
 - Aggiunto parametro di baia "Aggrega Liste"
 - Aggiunta gestione dei cassetti ad associazione fissa
+- Aggiunta WmsVersion alla telemetria
 
 ## Bug Risolti
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
