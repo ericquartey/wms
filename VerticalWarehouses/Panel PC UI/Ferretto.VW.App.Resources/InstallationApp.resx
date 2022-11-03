@@ -2863,4 +2863,7 @@
   <data name="IsCellFixed" xml:space="preserve">
     <value>Cell Fixed</value>
   </data>
+  <data name="ChangeLoadUnitFixed" xml:space="preserve">
+    <value>Change Load Unit Fixed</value>
+  </data>
 </root>

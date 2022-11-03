@@ -2769,4 +2769,7 @@
   <data name="IsHeightFixed" xml:space="preserve">
     <value>Altezza Fissa</value>
   </data>
+  <data name="ChangeLoadUnitFixed" xml:space="preserve">
+    <value>Cambia gestione fissa</value>
+  </data>
 </root>

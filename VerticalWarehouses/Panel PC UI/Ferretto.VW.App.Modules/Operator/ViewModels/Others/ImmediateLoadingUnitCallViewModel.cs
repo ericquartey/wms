@@ -40,11 +40,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand changeRotationClassCommand;
 
+        private DelegateCommand changeLoadUnitFixedCommand;
+
         private bool isEnabledLaser;
 
         private bool isRotationClassEnabled;
 
         private bool isUserLimited;
+
+        private bool isLoadUnitFixedEnabled;
 
         private int? loadingUnitId;
 
@@ -99,6 +103,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
            ??
            (this.changeRotationClassCommand = new DelegateCommand(this.ChangeRotationClassAppear, this.CanChangeRotationClass));
 
+        public ICommand ChangeLoadUnitFixedCommand =>
+           this.changeLoadUnitFixedCommand
+           ??
+           (this.changeLoadUnitFixedCommand = new DelegateCommand(this.ChangeLoadUnitFixedAppear, this.CanChangeLoadUnitFixed));
+
         public bool IsEnabledLaser
         {
             get => this.isEnabledLaser;
@@ -111,6 +120,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isRotationClassEnabled;
             set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsLoadUnitFixedEnabled
+        {
+            get => this.isLoadUnitFixedEnabled;
+            set => this.SetProperty(ref this.isLoadUnitFixedEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public override bool IsWaitingForResponse
@@ -248,6 +263,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.IsRotationClassEnabled = await this.machineIdentityWebService.GetIsRotationClassAsync();
+            this.IsLoadUnitFixedEnabled = await this.machineIdentityWebService.GetIsLoadUnitFixedAsync();
 
             await this.MachineService.GetLoadUnits(details: true);
             this.loadingUnits = this.MachineService.Loadunits.ToList();
@@ -263,6 +279,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
                 this.changeRotationClassCommand?.RaiseCanExecuteChanged();
+                this.changeLoadUnitFixedCommand?.RaiseCanExecuteChanged();
                 if (!string.IsNullOrEmpty(this.authenticationService.UserName))
                 {
                     this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
@@ -279,6 +296,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
             this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
             this.changeRotationClassCommand?.RaiseCanExecuteChanged();
+            this.changeLoadUnitFixedCommand?.RaiseCanExecuteChanged();
 
             if (this.selectedLoadingUnit == null)
             {
@@ -322,7 +340,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanChangeRotationClass()
         {
-            return this.isRotationClassEnabled && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
+            return this.IsRotationClassEnabled && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
+        }
+
+        private bool CanChangeLoadUnitFixed()
+        {
+            return this.IsLoadUnitFixedEnabled && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
         }
 
         private void ChangeLaserOffsetAppear()
@@ -339,6 +362,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.Others.CHANGEROTATIONCLASS,
+                this.SelectedLoadingUnit,
+                trackCurrentView: true);
+        }
+
+        private void ChangeLoadUnitFixedAppear()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.CHANGELOADUNITFIXED,
                 this.SelectedLoadingUnit,
                 trackCurrentView: true);
         }
