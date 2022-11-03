@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     if (machineVolatile.SocketLinkIsEnabled is true)
                     {
                         var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                        result = $"SOCKET-LINK {socketLinkProvider.GetVersion()}";
+                        result = $"SL {socketLinkProvider.GetVersion()}";
                     }
                 }
             }
