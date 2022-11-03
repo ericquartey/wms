@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.SocketLink
     {
         #region Methods
 
+        string GetVersion();
+
         string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses, bool isLineFeed);
 
         string ProcessCommands(string buffer, bool isLineFeed);
