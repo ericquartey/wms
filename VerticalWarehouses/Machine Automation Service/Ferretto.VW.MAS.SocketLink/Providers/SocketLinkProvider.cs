@@ -77,6 +77,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
         #region Methods
 
+        public string GetVersion()
+        {
+            return VERSION;
+        }
+
         /// <summary>
         /// Method return the string with the commands that must periodically send.
         /// </summary>

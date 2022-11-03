@@ -7,10 +7,13 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.SocketLink;
+using Ferretto.VW.MAS.SocketLink.Providers;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.Telemetry.Contracts.Hub;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -92,6 +95,31 @@ namespace Ferretto.VW.MAS.AutomationService
                 .ToString();
         }
 
+        private async Task<string> GetWmsVersionAsync()
+        {
+            var result = string.Empty;
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var machineWms = scope.ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
+                var machineVolatile = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+
+                if (machineVolatile.WmsIsEnabled is true)
+                {
+                    result = await machineWms.GetWmsVersionAsync(machineVolatile.MachineId.Value);
+                }
+                else
+                {
+                    if (machineVolatile.SocketLinkIsEnabled is true)
+                    {
+                        var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+                        result = $"SL {socketLinkProvider.GetVersion()}";
+                    }
+                }
+            }
+
+            return result;
+        }
+
         private void OnHubConnectionStatusChanged1(object sender, Common.Hubs.ConnectionStatusChangedEventArgs e)
         {
             this.Logger.LogTrace("Connection to Telemetry hub changed (connected={isConnected})", e.IsConnected);
@@ -159,11 +187,12 @@ namespace Ferretto.VW.MAS.AutomationService
         private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
         {
             var machine = this.machineProvider.GetMinMaxHeight();
-            var machineDto = new Machine
+            var machineDto = new ServiceDesk.Telemetry.Machine
             {
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
-                Version = NotificationTelemetryService.GetVersion()
+                Version = NotificationTelemetryService.GetVersion(),
+                WmsVersion = await this.GetWmsVersionAsync()
             };
 
             await this.telemetryHub.SendMachineAsync(machineDto);
