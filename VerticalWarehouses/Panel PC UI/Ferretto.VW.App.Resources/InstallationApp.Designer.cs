@@ -1195,6 +1195,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Load Unit Fixed.
+        /// </summary>
+        public static string ChangeLoadUnitFixed {
+            get {
+                return ResourceManager.GetString("ChangeLoadUnitFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change machine number.
         /// </summary>
         public static string ChangeMachineNumber {
