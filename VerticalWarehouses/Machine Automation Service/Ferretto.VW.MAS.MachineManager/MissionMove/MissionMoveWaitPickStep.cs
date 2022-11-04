@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitPick;
-            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+            this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.Status = MissionStatus.Waiting;
@@ -122,6 +122,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
                         )
                     {
+                        // this step do not increase mission time
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.MissionsDataProvider.Update(this.Mission);
                         this.OnStop(StopRequestReason.Error);
                     }
                     break;
@@ -136,6 +139,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         && !this.MissionsDataProvider.GetAllActiveMissions().Any(m => m.ErrorMovements.HasFlag(MissionErrorMovements.AbortMovement))
                         )
                     {
+                        // this step do not increase mission time
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.MissionsDataProvider.Update(this.Mission);
                         this.OnStop(StopRequestReason.Error);
                     }
                     break;
@@ -145,6 +151,8 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         public override void OnResume(CommandMessage command)
         {
             this.Mission.Status = MissionStatus.Executing;
+            // this step do not increase mission time
+            this.Mission.StepTime = DateTime.UtcNow;
             this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
@@ -160,7 +168,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     if (messageData.MissionType == MissionType.NoType)
                     {
-                        this.Mission.StepTime = DateTime.UtcNow;
                         // Remove LoadUnit
 
                         var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
@@ -212,7 +219,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         else
                         {
                             // Update mission and start moving
-                            this.Mission.StepTime = DateTime.UtcNow;
                             this.Mission.MissionType = messageData.MissionType;
                             this.Mission.WmsId = messageData.WmsId;
                             this.Mission.LoadUnitSource = bayPosition.Location;

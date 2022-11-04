@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.EjectLoadUnit = false;
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitDepositBay;
-            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+            this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.StopReason = StopRequestReason.NoReason;
@@ -152,6 +152,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             // Transition of step: MissionMoveToTargetStep -> MissionMoveWaitDepositBayStep -> MissionMoveDepositUnitStep
 
+            // this step do not increase mission time
+            this.Mission.StepTime = DateTime.UtcNow;
+            this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             // get the (target) bay

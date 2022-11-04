@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.BayChain;
-            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+            this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.CloseShutterBayNumber = BayNumber.None;

@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (mission.Status != MissionStatus.Completed)
                 {
                     mission.Status = MissionStatus.Completed;
-                    mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
+                    mission.MissionTime = mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
                     this.machineProvider.UpdateMissionTime(mission.MissionTime);
                 }
 

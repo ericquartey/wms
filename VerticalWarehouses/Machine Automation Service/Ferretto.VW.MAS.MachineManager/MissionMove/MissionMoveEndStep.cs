@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.End;
-            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+            this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.DeviceNotifications = MissionDeviceNotifications.None;
             this.Mission.BayNotifications = MissionBayNotifications.None;
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     this.Mission.BayNotifications = MissionBayNotifications.None;
                     this.Mission.Status = MissionStatus.Aborted;
-                    this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+                    this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
                     this.MissionsDataProvider.Update(this.Mission);
 
                     this.MachineProvider.UpdateMissionTime(this.Mission.MissionTime);
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             if (this.Mission.StopReason != StopRequestReason.NoReason)
             {
                 this.Mission.Status = MissionStatus.Aborted;
-                this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+                this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
                 this.MissionsDataProvider.Update(this.Mission);
 
                 this.MachineProvider.UpdateMissionTime(this.Mission.MissionTime);
