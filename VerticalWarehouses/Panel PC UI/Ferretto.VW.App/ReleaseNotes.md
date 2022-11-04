@@ -34,7 +34,8 @@
 ## Bug Risolti
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
 - SocketLink: corretto start/stop del servizio
-- Operazioni di prelievo/versamento: eliminati alcuni casi di dati duplicati 
+- Operazioni di prelievo/versamento: eliminati alcuni casi di dati duplicati
+- Chiamata cassetto: le note sono ora nella tabella
 
 ## Compatibile con adapter 0.4.42
 ***
