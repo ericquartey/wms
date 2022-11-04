@@ -343,8 +343,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 loadUnitHeight = loadUnit.Height;
             }
 
-            if (machine.IsLoadUnitFixed
-                && !isCellTest
+            if (!isCellTest
                 && loadUnit.IsCellFixed
                 && loadUnit.FixedCell.HasValue)
             {

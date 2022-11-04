@@ -335,17 +335,28 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanChangeLaserOffset()
         {
-            return this.IsEnabledLaser && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
+            return this.IsEnabledLaser
+                && this.selectedLoadingUnit != null
+                && this.selectedLoadingUnit.Id > 0
+                && !this.isUserLimited;
         }
 
         private bool CanChangeRotationClass()
         {
-            return this.IsRotationClassEnabled && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
+            return this.IsRotationClassEnabled
+                && this.selectedLoadingUnit != null
+                && this.selectedLoadingUnit.Id > 0
+                && !this.isUserLimited
+                && !this.selectedLoadingUnit.IsCellFixed;
         }
 
         private bool CanChangeLoadUnitFixed()
         {
-            return this.IsLoadUnitFixedEnabled && this.selectedLoadingUnit != null && this.selectedLoadingUnit.Id > 0 && !this.isUserLimited;
+            return this.IsLoadUnitFixedEnabled
+                && this.selectedLoadingUnit != null
+                && this.selectedLoadingUnit.Id > 0
+                && !this.isUserLimited
+                && (this.selectedLoadingUnit.CellId.HasValue || this.selectedLoadingUnit.IsCellFixed);
         }
 
         private void ChangeLaserOffsetAppear()
