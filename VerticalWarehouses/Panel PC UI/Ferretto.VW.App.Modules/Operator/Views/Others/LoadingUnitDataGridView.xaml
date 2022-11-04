@@ -24,7 +24,7 @@
                       FontSize="{StaticResource FontSize_High}"
                       HeadersVisibility="Column"
                       HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-                      HorizontalScrollBarVisibility="Disabled"
+                      HorizontalScrollBarVisibility="Auto"
                       IsReadOnly="True"
                       IsSynchronizedWithCurrentItem="True"
                       ItemsSource="{Binding LoadingUnits}"
@@ -236,7 +236,7 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn x:Name="Column1"
-                                        Width="1*"
+                                        Width="100"
                                         Binding="{Binding Path=Code}"
                                         Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}"
                                         SortDirection="Ascending"
@@ -259,7 +259,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTemplateColumn x:Name="Column2"
-                                            Width="0.75*"
+                                            Width="85"
                                             Header="{Resources:Loc InstallationApp.Height}"
                                             SortDirection="Ascending"
                                             SortMemberPath="Height">
@@ -291,7 +291,7 @@
                         </DataGridTemplateColumn.CellStyle>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn x:Name="Column3"
-                                            Width="1.2*"
+                                            Width="85"
                                             Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
                                             SortDirection="Ascending"
                                             SortMemberPath="NetWeight">
@@ -329,7 +329,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn x:Name="Column4"
-                                            Width="0.75*"
+                                            Width="75"
                                             Header="{Resources:Loc InstallationApp.Cell}"
                                             SortDirection="Ascending"
                                             SortMemberPath="CellId">
@@ -361,7 +361,7 @@
                         </DataGridTemplateColumn.CellStyle>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn x:Name="Column5"
-                                        Width="1*"
+                                        Width="75"
                                         Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
                                         Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderSide}"
                                         SortDirection="Ascending"
@@ -384,7 +384,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn x:Name="Column6"
-                                        Width="1*"
+                                        Width="85"
                                         Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
                                         Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}"
                                         SortDirection="Ascending"
@@ -407,7 +407,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
                     <DataGridTextColumn x:Name="Column7"
-                                        Width="0.8*"
+                                        Width="80"
                                         Visibility="{Binding DataContext.IsEnabledLaser, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
                                         Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
                                         Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
@@ -430,7 +430,8 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Width="1*"
+                    <DataGridTemplateColumn x:Name="Column8"
+                                            Width="85"
                                             SortDirection="Ascending"
                                             Header="{Resources:Loc InstallationApp.RotationClass}"
                                             Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
@@ -452,6 +453,29 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="Column9"
+                                        Width="auto"
+                                        Binding="{Binding Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                        Header="{Resources:Loc OperatorApp.CommonNote}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="Description">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

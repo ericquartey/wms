@@ -67,6 +67,7 @@
             <Border Grid.Row="0"
                     Height="auto"
                     MaxHeight="150"
+                    Visibility="Collapsed"
                     MinHeight="90"
                     Margin="15,0,15,0"
                     Background="{DynamicResource PpcBackground}">
@@ -104,16 +105,12 @@
             </Border>
 
             <ctrls:PpcSpinEdit Grid.Row="1"
-                               Width="230"
                                Height="80"
-                               HorizontalAlignment="Right"
-                               Margin="15,10,15,0"
-                               EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
+                               Margin="15,0,15,0"
                                KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
-                               LabelText="{Resources:Loc OperatorApp.ImmediateDrawerCallRequiredDrawer}"
+                               LabelText="{Resources:Loc OperatorApp.LoadingUnit}"
                                Mask="##0"
-                               MaxValue="{Binding MaxLoadingUnitId}"
                                MinValue="{Binding MinLoadingUnitId}" />
 
             <controls:PpcButton Grid.Row="2"
