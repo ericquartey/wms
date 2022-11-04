@@ -1,0 +1,85 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Operator.Views.ChangeLoadUnitFixedView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="15,0,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.ChangeLoadUnitFixed}" />
+                    <TextBlock Margin="0,0,0,0"
+                             VerticalAlignment="Top"
+                             FontSize="25"
+                             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                    <Run Text="{res:Loc OperatorApp.LoadUnit}" /> <Run Text="{Binding SelectedLoadingUnit.Id}" />
+                  </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel>
+                    <TextBlock Grid.ColumnSpan="2"
+                               FontSize="13"
+                               Margin="0,2,0,5"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="{res:Loc InstallationApp.Height}" />
+                    <TextBox Width="150"
+                             Margin="0,0,0,20"
+                             IsReadOnly="True"
+                             HorizontalAlignment="Left"
+                             Text="{Binding SelectedLoadingUnit.FixedHeight, StringFormat={}{0:F2}}"
+                             Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center" />
+                </StackPanel>
+
+                <StackPanel>
+                    <TextBlock Grid.ColumnSpan="2"
+                               FontSize="13"
+                               Margin="10,2,0,5"
+                               Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
+                               Text="{res:Loc InstallationApp.Cell}" />
+                    <TextBox Width="150"
+                             Margin="10,0,0,20"
+                             HorizontalAlignment="Left"
+                             IsReadOnly="True"
+                             Text="{Binding SelectedLoadingUnit.FixedCell}"
+                             Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+
+            <controls:PpcCheckBox Grid.Column="0"
+                                  Grid.Row="1"
+                                  IsEnabled="{Binding IsEnabledEditing}"
+                                  HorizontalAlignment="Stretch"
+                                  LabelText="{res:Loc InstallationApp.FixedCell}"
+                                  IsChecked="{Binding SelectedLoadingUnit.IsCellFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  VerticalAlignment="Bottom"
+                                  Margin="0,10,0,4" />
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="2"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SaveCommand}"
+                            Content="{res:Loc General.Save}"
+                            Style="{StaticResource ConfirmButton}" />
+    </Grid>
+</ctrls:View>

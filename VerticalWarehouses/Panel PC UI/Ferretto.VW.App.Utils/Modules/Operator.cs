@@ -99,6 +99,8 @@
 
             public const string CHANGELASEROFFSET = "ChangeLaserOffsetViewModel";
 
+            public const string CHANGELOADUNITFIXED = "ChangeLoadUnitFixedViewModel";
+
             public const string CHANGEROTATIONCLASS = "ChangeRotationClassViewModel";
 
             public const string IMMEDIATELOADINGUNITCALL = "ImmediateLoadingUnitCallViewModel";

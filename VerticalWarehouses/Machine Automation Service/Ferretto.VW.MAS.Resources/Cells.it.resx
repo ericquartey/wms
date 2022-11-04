@@ -168,4 +168,7 @@
   <data name="TheTargetCellIsBlocked" xml:space="preserve">
     <value>La cella di destinazione è bloccata.</value>
   </data>
+  <data name="TheLoadUnitHasFixedCell" xml:space="preserve">
+    <value>Il cassetto ha cella fissa e non può essere spostato</value>
+  </data>
 </root>

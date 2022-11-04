@@ -6,9 +6,11 @@ using Ferretto.VW.MAS.SocketLink.Models;
 
 namespace Ferretto.VW.MAS.SocketLink
 {
-    internal interface ISocketLinkSyncProvider
+    public interface ISocketLinkSyncProvider
     {
         #region Methods
+
+        string GetVersion();
 
         string PeriodicResponse(List<SocketLinkCommand.HeaderType> typeOfResponses, bool isLineFeed);
 

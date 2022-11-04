@@ -12,6 +12,8 @@
 
         public string Version { get; set; }
 
+        public string WmsVersion { get; set; }
+
         #endregion
     }
 }

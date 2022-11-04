@@ -14,6 +14,8 @@ namespace Ferretto.VW.TelemetryService.Data
 
         public string Version { get; set; } = string.Empty!;
 
+        public string WmsVersion { get; set; } = string.Empty!;
+
         #endregion
     }
 }

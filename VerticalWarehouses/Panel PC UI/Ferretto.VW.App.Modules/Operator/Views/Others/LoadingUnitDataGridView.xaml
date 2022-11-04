@@ -4,410 +4,482 @@
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls">
 
-  <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-          BorderThickness="{DynamicResource PpcBorderThickness}"
-          CornerRadius="2">
+    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+            BorderThickness="{DynamicResource PpcBorderThickness}"
+            CornerRadius="2">
         <Grid>
-            <FrameworkElement x:Name="dummyElement" Visibility="Collapsed" />
-            
+            <FrameworkElement x:Name="dummyElement"
+                              Visibility="Collapsed" />
+
             <DataGrid Name="DataGrid"
-              Width="auto"
-              Height="auto"
-              AutoGenerateColumns="False"
-              Background="{DynamicResource VWAPP_BACKGROUND}"
-              BorderThickness="0"
-              CanUserReorderColumns="False"
-              CanUserResizeColumns="False"
-              CanUserResizeRows="False"
-              CanUserSortColumns="True"
-              FontSize="{StaticResource FontSize_High}"
-              HeadersVisibility="Column"
-              HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-              HorizontalScrollBarVisibility="Disabled"
-              IsReadOnly="True"
-              IsSynchronizedWithCurrentItem="True"
-              ItemsSource="{Binding LoadingUnits}"
-              RowHeight="45"
-              SelectedItem="{Binding SelectedLoadingUnit}"
-              SelectionMode="Single"
-              Sorting="DataGridName_Sorting"
-              VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-              VerticalScrollBarVisibility="Auto">
+                      Width="auto"
+                      Height="auto"
+                      AutoGenerateColumns="False"
+                      Background="{DynamicResource VWAPP_BACKGROUND}"
+                      BorderThickness="0"
+                      CanUserReorderColumns="False"
+                      CanUserResizeColumns="False"
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="True"
+                      FontSize="{StaticResource FontSize_High}"
+                      HeadersVisibility="Column"
+                      HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                      HorizontalScrollBarVisibility="Auto"
+                      IsReadOnly="True"
+                      IsSynchronizedWithCurrentItem="True"
+                      ItemsSource="{Binding LoadingUnits}"
+                      RowHeight="35"
+                      SelectedItem="{Binding SelectedLoadingUnit}"
+                      SelectionMode="Single"
+                      Sorting="DataGridName_Sorting"
+                      VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+                      VerticalScrollBarVisibility="Auto">
 
-      <DataGrid.Template>
-        <ControlTemplate TargetType="{x:Type DataGrid}">
-          <Border Padding="{TemplateBinding Padding}"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  SnapsToDevicePixels="True">
-            <ScrollViewer x:Name="DG_ScrollViewer"
-                          Focusable="false">
-              <ScrollViewer.Template>
-                <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                  <Grid>
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto" />
-                      <ColumnDefinition Width="*" />
-                      <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                      <RowDefinition Height="Auto" />
-                      <RowDefinition Height="*" />
-                      <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Button Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                            Command="{x:Static DataGrid.SelectAllCommand}"
-                            Focusable="false"
-                            Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
+                <DataGrid.Template>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer"
+                                          Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Button Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                                    Command="{x:Static DataGrid.SelectAllCommand}"
+                                                    Focusable="false"
+                                                    Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
                                                                           TypeInTargetAssembly={x:Type DataGrid}}}"
-                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                    <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
-                                                    Grid.Column="1"
-                                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                            Grid.Row="1"
-                                            Grid.ColumnSpan="2"
-                                            CanContentScroll="{TemplateBinding CanContentScroll}" />
-                    <ScrollBar x:Name="PART_VerticalScrollBar"
-                               Grid.Row="1"
-                               Grid.Column="2"
-                               ContextMenuService.IsEnabled="False"
-                               Maximum="{TemplateBinding ScrollableHeight}"
-                               Orientation="Vertical"
-                               Style="{DynamicResource MyScrollBar}"
-                               ViewportSize="{TemplateBinding ViewportHeight}"
-                               Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                               Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                    <Grid Grid.Row="2"
-                          Grid.Column="1">
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                        <ColumnDefinition Width="*" />
-                      </Grid.ColumnDefinitions>
-                      <ScrollBar x:Name="PART_HorizontalScrollBar"
-                                 Grid.Column="1"
-                                 ContextMenuService.IsEnabled="False"
-                                 Maximum="{TemplateBinding ScrollableWidth}"
-                                 Orientation="Horizontal"
-                                 Style="{DynamicResource MyScrollBar}"
-                                 ViewportSize="{TemplateBinding ViewportWidth}"
-                                 Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                 Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                    </Grid>
-                  </Grid>
-                </ControlTemplate>
-              </ScrollViewer.Template>
-              <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </ScrollViewer>
-          </Border>
-        </ControlTemplate>
-      </DataGrid.Template>
+                                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                                                            Grid.Column="1"
+                                                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                                    Grid.Row="1"
+                                                                    Grid.ColumnSpan="2"
+                                                                    CanContentScroll="{TemplateBinding CanContentScroll}" />
+                                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                                       Grid.Row="1"
+                                                       Grid.Column="2"
+                                                       ContextMenuService.IsEnabled="False"
+                                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                                       Orientation="Vertical"
+                                                       Style="{DynamicResource MyScrollBar}"
+                                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Grid Grid.Row="2"
+                                                  Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                                           Grid.Column="1"
+                                                           ContextMenuService.IsEnabled="False"
+                                                           Maximum="{TemplateBinding ScrollableWidth}"
+                                                           Orientation="Horizontal"
+                                                           Style="{DynamicResource MyScrollBar}"
+                                                           ViewportSize="{TemplateBinding ViewportWidth}"
+                                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                           Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </DataGrid.Template>
 
-      <DataGrid.ColumnHeaderStyle>
-        <Style TargetType="DataGridColumnHeader">
-          <Setter Property="Template">
-            <Setter.Value>
-              <ControlTemplate TargetType="DataGridColumnHeader">
-                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                        BorderThickness="0,0,0,1"
-                        CornerRadius="2">
-                  <Grid Name="HedearGrid">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="*" />
-                      <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ContentPresenter Grid.Column="0"
-                                      Margin="18,0,0,0"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center" />
-                    <Path x:Name="SortArrow"
-                          Grid.Column="1"
-                          Width="8"
-                          Height="6"
-                          Margin="0,0,10,0"
-                          HorizontalAlignment="Right"
-                          VerticalAlignment="Center"
-                          Data="M0,0 L1,0 0.5,1 z"
-                          Fill="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}"
-                          RenderTransformOrigin="0.5,0.4"
-                          Stretch="Fill" />
-                  </Grid>
-                </Border>
-                <ControlTemplate.Triggers>
-                  <Trigger Property="SortDirection" Value="Ascending">
-                    <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
-                    <Setter TargetName="SortArrow" Property="RenderTransform">
-                      <Setter.Value>
-                        <RotateTransform Angle="180" CenterX="0" CenterY="0" />
-                      </Setter.Value>
-                    </Setter>
-                  </Trigger>
-                  <Trigger Property="SortDirection" Value="Descending">
-                    <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
-                  </Trigger>
-                </ControlTemplate.Triggers>
-              </ControlTemplate>
-            </Setter.Value>
-          </Setter>
-          <Setter Property="Height" Value="40" />
-          <Setter Property="HorizontalContentAlignment" Value="Center" />
-          <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-          <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-          <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-        </Style>
-      </DataGrid.ColumnHeaderStyle>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridColumnHeader">
+                                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            CornerRadius="2">
+                                        <Grid Name="HedearGrid">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ContentPresenter Grid.Column="0"
+                                                              Margin="18,0,0,0"
+                                                              HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center" />
+                                            <Path x:Name="SortArrow"
+                                                  Grid.Column="1"
+                                                  Width="8"
+                                                  Height="6"
+                                                  Margin="0,0,10,0"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalAlignment="Center"
+                                                  Data="M0,0 L1,0 0.5,1 z"
+                                                  Fill="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}"
+                                                  RenderTransformOrigin="0.5,0.4"
+                                                  Stretch="Fill" />
+                                        </Grid>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="SortDirection"
+                                                 Value="Ascending">
+                                            <Setter TargetName="SortArrow"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                            <Setter TargetName="SortArrow"
+                                                    Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <RotateTransform Angle="180"
+                                                                     CenterX="0"
+                                                                     CenterY="0" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="SortDirection"
+                                                 Value="Descending">
+                                            <Setter TargetName="SortArrow"
+                                                    Property="Visibility"
+                                                    Value="Visible" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Height"
+                                Value="40" />
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                        <Setter Property="Background"
+                                Value="{DynamicResource VWAPP_BACKGROUND}" />
+                        <Setter Property="Foreground"
+                                Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                        <Setter Property="BorderBrush"
+                                Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
 
-      <DataGrid.Style>
-        <Style TargetType="DataGrid">
-          <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-          <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
-        </Style>
-      </DataGrid.Style>
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid">
+                        <Setter Property="Background"
+                                Value="{DynamicResource VWAPP_BACKGROUND}" />
+                        <Setter Property="FontFamily"
+                                Value="HelveticaNeue-LightCond" />
+                    </Style>
+                </DataGrid.Style>
 
-      <DataGrid.CellStyle>
-        <Style TargetType="DataGridCell">
-          <Style.Resources>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                             Color="{StaticResource ColorFerrettoMediumGray}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                             Color="{StaticResource ColorFerrettoMediumGray}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                             Color="{StaticResource ColorFerrettoPureWhite}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                             Color="{StaticResource ColorFerrettoPureWhite}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                             Color="{StaticResource ColorFerrettoMediumGray}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                             Color="{StaticResource ColorFerrettoPureWhite}" />
-          </Style.Resources>
-          <Setter Property="BorderThickness" Value="1,0,0,0" />
-          <Setter Property="HorizontalContentAlignment" Value="Center" />
-          <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-          <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-        </Style>
-      </DataGrid.CellStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
+                                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                        </Style.Resources>
+                        <Setter Property="BorderThickness"
+                                Value="1,0,0,0" />
+                        <Setter Property="HorizontalContentAlignment"
+                                Value="Center" />
+                        <Setter Property="BorderBrush"
+                                Value="{DynamicResource PpcButtonBorderBrush}" />
+                        <Setter Property="Foreground"
+                                Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                    </Style>
+                </DataGrid.CellStyle>
 
-      <DataGrid.RowStyle>
-        <Style TargetType="{x:Type DataGridRow}">
-          <Style.Resources>
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                             Color="{StaticResource ColorFerrettoMediumGray}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
-                             Color="{StaticResource ColorFerrettoMediumGray}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
-                             Color="{StaticResource ColorFerrettoPureWhite}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
-                             Color="{StaticResource ColorFerrettoPureWhite}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
-                             Color="{StaticResource ColorFerrettoMediumGray}" />
-            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
-                             Color="{StaticResource ColorFerrettoPureWhite}" />
-          </Style.Resources>
-          <Setter Property="FontSize" Value="14" />
-          <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-          <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
-        </Style>
-      </DataGrid.RowStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"
+                                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                             Color="{StaticResource ColorFerrettoMediumGray}" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                             Color="{StaticResource ColorFerrettoPureWhite}" />
+                        </Style.Resources>
+                        <Setter Property="FontSize"
+                                Value="14" />
+                        <Setter Property="Background"
+                                Value="{DynamicResource VWAPP_BACKGROUND}" />
+                        <Setter Property="Foreground"
+                                Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                    </Style>
+                </DataGrid.RowStyle>
 
-      <DataGrid.Columns>
-        <DataGridTextColumn x:Name="Column1"
-                            Width="1*"
-                            Binding="{Binding Path=Code}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Code">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column2"
-                            Width="1*"
-                            Binding="{Binding Path=Height, StringFormat={}{0:F2}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderHeight}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Height">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="1,0,0,0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <!--<DataGridTextColumn x:Name="Column3"
-                            Width="0.7*"
-                            Binding="{Binding Path=NetWeight, StringFormat={}{0:F2}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
-                            SortDirection="Ascending"
-                            SortMemberPath="NetWeight">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>-->
-        <DataGridTemplateColumn x:Name="Column3"
-                                Width="1.2*"
-                                Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
-                                SortDirection="Ascending"
-                                SortMemberPath="NetWeight">
-          <DataGridTemplateColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTemplateColumn.CellStyle>
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <Grid>
-                <!--<ProgressBar Height="30"
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="Column1"
+                                        Width="100"
+                                        Binding="{Binding Path=Code}"
+                                        Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderDrawer}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="Code">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn x:Name="Column2"
+                                            Width="85"
+                                            Header="{Resources:Loc InstallationApp.Height}"
+                                            SortDirection="Ascending"
+                                            SortMemberPath="Height">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,0"
+                                            HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Path=Height, StringFormat={}{0:F2}}" />
+                                    <Grid Visibility="{Binding DataContext.IsLoadUnitFixedEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}">
+                                        <TextBlock Text="*"
+                                                   Margin="0,0,-6,0"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Visibility="{Binding IsHeightFixed ,Converter={StaticResource BTVC}}" />
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0,0,0,0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="Column3"
+                                            Width="85"
+                                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderWeight}"
+                                            SortDirection="Ascending"
+                                            SortMemberPath="NetWeight">
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <!--<ProgressBar Height="30"
                              Margin="5"
                              Maximum="{Binding MaxNetWeight}"
                              Minimum="0"
                              Value="{Binding NetWeight}" />-->
 
-                <controls:PpcProgressBar Grid.Row="1"
-                                         Height="30"
-                                         Margin="5"
-                                         Color1="{DynamicResource FerrettoGreen}"
-                                         Color2="Green"
-                                         Maximum="{Binding MaxNetWeight}"
-                                         Minimum="0"
-                                         Value="{Binding NetWeight}" />
+                                    <controls:PpcProgressBar Grid.Row="1"
+                                                             Height="30"
+                                                             Margin="5"
+                                                             Color1="{DynamicResource FerrettoGreen}"
+                                                             Color2="Green"
+                                                             Maximum="{Binding MaxNetWeight}"
+                                                             Minimum="0"
+                                                             Value="{Binding NetWeight}" />
 
-                <TextBlock HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Text="{Binding Path=NetWeight, StringFormat={}{0:F2}}" />
-              </Grid>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-        <DataGridTextColumn x:Name="Column4"
-                            Width="0.8*"
-                            Binding="{Binding Path=CellId}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderCell}"
-                            SortDirection="Ascending"
-                            SortMemberPath="CellId">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column5"
-                            Width="1*"
-                            Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderSide}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Cell.Side">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column6"
-                            Width="1*"
-                            Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}"
-                            SortDirection="Ascending"
-                            SortMemberPath="Status">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column7"
-                            Width="0.8*"
-                            Visibility="{Binding DataContext.IsEnabledLaser, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
-                            Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
-                            Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
-                            SortDirection="Ascending"
-                            SortMemberPath="LaserOffset">
-          <DataGridTextColumn.CellStyle>
-            <Style TargetType="DataGridCell">
-              <Setter Property="BorderThickness" Value="0" />
-              <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-            </Style>
-          </DataGridTextColumn.CellStyle>
-          <DataGridTextColumn.ElementStyle>
-            <Style TargetType="TextBlock">
-              <Setter Property="HorizontalAlignment" Value="Center" />
-              <Setter Property="VerticalAlignment" Value="Center" />
-            </Style>
-          </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-
-        <DataGridTemplateColumn Width="1*"
-                                SortDirection="Ascending"
-                                Header="{Resources:Loc InstallationApp.RotationClass}"
-                                Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
-            SortMemberPath="RotationClass">
-            <DataGridTemplateColumn.CellTemplate>
-                <DataTemplate>
-                    <Grid HorizontalAlignment="Stretch"
-                                Visibility="{Binding RotationClass,Converter={StaticResource RTVC}}"
-                                VerticalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Center"
-                                   Foreground="{Binding ., Converter={StaticResource CTFC}}"
-                                   FontSize="18"
-                                   Text="{Binding Path=RotationClass}" />
-                        <TextBlock Text="*"
-                                    HorizontalAlignment="Center"
-                                    Margin="20,0,0,0"
-                                    Visibility="{Binding IsRotationClassFixed ,Converter={StaticResource BTVC}}" />
-                    </Grid>
-                </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-
-        </DataGridTemplateColumn>
-    </DataGrid.Columns>
-    </DataGrid>
-
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Path=NetWeight, StringFormat={}{0:F2}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="Column4"
+                                            Width="75"
+                                            Header="{Resources:Loc InstallationApp.Cell}"
+                                            SortDirection="Ascending"
+                                            SortMemberPath="CellId">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,0"
+                                            HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                    <TextBlock HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Text="{Binding Path=CellId}" />
+                                    <Grid Visibility="{Binding DataContext.IsLoadUnitFixedEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}">
+                                        <TextBlock Text="*"
+                                                   Margin="0,0,-6,0"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   Visibility="{Binding IsCellFixed ,Converter={StaticResource BTVC}}" />
+                                    </Grid>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="1,0,0,0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="Column5"
+                                        Width="75"
+                                        Binding="{Binding Path=Cell.Side, Converter={StaticResource EWSC}}"
+                                        Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderSide}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="Cell.Side">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column6"
+                                        Width="85"
+                                        Binding="{Binding Path=Status, Converter={StaticResource LUSEC}}"
+                                        Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderState}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="Status">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn x:Name="Column7"
+                                        Width="80"
+                                        Visibility="{Binding DataContext.IsEnabledLaser, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
+                                        Binding="{Binding Path=LaserOffset, StringFormat={}{0:F0}}"
+                                        Header="{Resources:Loc OperatorApp.OtherDrawerDataGridHeaderLaser}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="LaserOffset">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTemplateColumn x:Name="Column8"
+                                            Width="85"
+                                            SortDirection="Ascending"
+                                            Header="{Resources:Loc InstallationApp.RotationClass}"
+                                            Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
+                                            SortMemberPath="RotationClass">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch"
+                                      Visibility="{Binding RotationClass,Converter={StaticResource RTVC}}"
+                                      VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Foreground="{Binding ., Converter={StaticResource CTFC}}"
+                                               FontSize="18"
+                                               Text="{Binding Path=RotationClass}" />
+                                    <TextBlock Text="*"
+                                               HorizontalAlignment="Center"
+                                               Margin="20,0,0,0"
+                                               Visibility="{Binding IsRotationClassFixed ,Converter={StaticResource BTVC}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="Column9"
+                                        Width="auto"
+                                        Binding="{Binding Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                        Header="{Resources:Loc OperatorApp.CommonNote}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="Description">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Left" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                                <Setter Property="Margin"
+                                        Value="10,0" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </Border>
 </UserControl>

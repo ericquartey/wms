@@ -49,8 +49,6 @@
   <conv:ImageToSourceConverter x:Key="ITSC" />
   <conv:InverterToStringConverter x:Key="INVTSC" />
 
-    <conv:BlockLevelToColorConverter x:Key="BLTCC" />
-
     <conv:CounterNameConverter x:Key="CNC" />
   <conv:BayNumberToStringConverter x:Key="BNTSC" />
   <conv:ItemListTypeEnumConverter x:Key="ILTEC" />

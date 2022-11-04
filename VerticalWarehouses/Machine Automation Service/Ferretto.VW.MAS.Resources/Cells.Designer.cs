@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The load unit has fixed cell and cannot be moved.
+        /// </summary>
+        public static string TheLoadUnitHasFixedCell {
+            get {
+                return ResourceManager.GetString("TheLoadUnitHasFixedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified cell cannot fit the load unit.
         /// </summary>
         public static string TheSpecifiedCellCannotFitTheLoadUnit {

@@ -1195,6 +1195,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Load Unit Fixed.
+        /// </summary>
+        public static string ChangeLoadUnitFixed {
+            get {
+                return ResourceManager.GetString("ChangeLoadUnitFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change machine number.
         /// </summary>
         public static string ChangeMachineNumber {
@@ -2914,6 +2923,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fixed Cell.
+        /// </summary>
+        public static string FixedCell {
+            get {
+                return ResourceManager.GetString("FixedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed Height.
+        /// </summary>
+        public static string FixedHeight {
+            get {
+                return ResourceManager.GetString("FixedHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fix Support.
         /// </summary>
         public static string FixSupport {
@@ -4084,29 +4111,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell Fixed.
-        /// </summary>
-        public static string IsCellFixed {
-            get {
-                return ResourceManager.GetString("IsCellFixed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Free.
         /// </summary>
         public static string IsFree {
             get {
                 return ResourceManager.GetString("IsFree", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Height Fixed.
-        /// </summary>
-        public static string IsHeightFixed {
-            get {
-                return ResourceManager.GetString("IsHeightFixed", resourceCulture);
             }
         }
         

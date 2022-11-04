@@ -262,10 +262,15 @@
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource PpcButtonBorderBrush}" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding BlockLevel, Converter={StaticResource BLTCC}}"
-                                                 Value="True">
+                                    <DataTrigger Binding="{Binding BlockLevel}"
+                                                 Value="Blocked">
                                         <Setter Property="Foreground"
                                                 Value="{DynamicResource FerrettoRed}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding BlockLevel}"
+                                                 Value="Reserved">
+                                        <Setter Property="Foreground"
+                                                Value="{DynamicResource FerrettoYellow}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
