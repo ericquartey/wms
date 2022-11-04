@@ -107,10 +107,12 @@
             <ctrls:PpcSpinEdit Grid.Row="1"
                                Height="80"
                                Margin="15,0,15,0"
+                               EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
                                KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                LabelText="{Resources:Loc OperatorApp.LoadingUnit}"
                                Mask="##0"
+                               MaxValue="{Binding MaxLoadingUnitId}"
                                MinValue="{Binding MinLoadingUnitId}" />
 
             <controls:PpcButton Grid.Row="2"
