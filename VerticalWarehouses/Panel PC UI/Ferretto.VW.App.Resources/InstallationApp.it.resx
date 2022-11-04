@@ -2763,10 +2763,10 @@
   <data name="LoopError" xml:space="preserve">
     <value>Messaggio non inviato - Errore GET</value>
   </data>
-  <data name="IsCellFixed" xml:space="preserve">
+  <data name="FixedCell" xml:space="preserve">
     <value>Cella Fissa</value>
   </data>
-  <data name="IsHeightFixed" xml:space="preserve">
+  <data name="FixedHeight" xml:space="preserve">
     <value>Altezza Fissa</value>
   </data>
   <data name="ChangeLoadUnitFixed" xml:space="preserve">

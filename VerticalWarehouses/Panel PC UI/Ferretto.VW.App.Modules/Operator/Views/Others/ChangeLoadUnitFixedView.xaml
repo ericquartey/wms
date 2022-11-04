@@ -68,7 +68,7 @@
                                   Grid.Row="1"
                                   IsEnabled="{Binding IsEnabledEditing}"
                                   HorizontalAlignment="Stretch"
-                                  LabelText="{res:Loc InstallationApp.IsCellFixed}"
+                                  LabelText="{res:Loc InstallationApp.FixedCell}"
                                   IsChecked="{Binding SelectedLoadingUnit.IsCellFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   VerticalAlignment="Bottom"
                                   Margin="0,10,0,4" />

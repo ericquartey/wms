@@ -457,7 +457,8 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Width="1*"
+                    <DataGridTemplateColumn x:Name="Column8"
+                                            Width="1*"
                                             SortDirection="Ascending"
                                             Header="{Resources:Loc InstallationApp.RotationClass}"
                                             Visibility="{Binding DataContext.IsRotationClassEnabled, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
@@ -486,6 +487,54 @@
                             </Style>
                         </DataGridTemplateColumn.CellStyle>
                     </DataGridTemplateColumn>
+                    
+                    <DataGridTextColumn x:Name="Column9"
+                                        Width="1*"
+                                        Binding="{Binding Path=FixedCell}"
+                                        Header="{Resources:Loc InstallationApp.FixedCell}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="FixedCell">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    
+                    <DataGridTextColumn x:Name="Column10"
+                                        Width="1*"
+                                        Binding="{Binding Path=FixedHeight, StringFormat={}{0:F0}}"
+                                        Header="{Resources:Loc InstallationApp.FixedHeight}"
+                                        SortDirection="Ascending"
+                                        SortMemberPath="FixedHeight">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness"
+                                        Value="0" />
+                                <Setter Property="BorderBrush"
+                                        Value="{DynamicResource PpcButtonBorderBrush}" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment"
+                                        Value="Center" />
+                                <Setter Property="VerticalAlignment"
+                                        Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

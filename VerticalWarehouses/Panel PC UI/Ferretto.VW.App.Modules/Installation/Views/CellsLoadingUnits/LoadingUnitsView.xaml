@@ -166,7 +166,7 @@
                                           Margin="0,0,0,5"
                                           IsChecked="{Binding SelectedLU.IsCellFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           HorizontalAlignment="Stretch"
-                                          LabelText="{res:Loc InstallationApp.IsCellFixed}" />
+                                          LabelText="{res:Loc InstallationApp.FixedCell}" />
                 </Grid>
                 <Grid Grid.Column="8"
                       Grid.Row="1"
@@ -177,7 +177,7 @@
                                           Margin="0,0,0,5"
                                           HorizontalAlignment="Stretch"
                                           IsChecked="{Binding SelectedLU.IsHeightFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          LabelText="{res:Loc InstallationApp.IsHeightFixed}" />
+                                          LabelText="{res:Loc InstallationApp.FixedHeight}" />
                 </Grid>
 
                 <StackPanel Grid.Row="1"
@@ -230,7 +230,7 @@
                 </controls:PpcTextBox>
 
                 <controls:PpcTextBox Grid.Row="1"
-                                     IsEnabled="False"
+                                     IsEnabled="{Binding IsEnabledEditing}"
                                      Grid.Column="1"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
@@ -261,7 +261,7 @@
                                      Grid.Column="2"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
-                                     IsEnabled="False"
+                                     IsEnabled="{Binding IsEnabledEditing}"
                                      InputText="{Binding SelectedLU.Height, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                      LabelText="{res:Loc InstallationApp.Height}">
                     <!--  LabelText="Height">  -->
