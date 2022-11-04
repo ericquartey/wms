@@ -1,4 +1,4 @@
-﻿mark<style>
+﻿<style>
     a:link {
         color: red;
         background-color: transparent;
@@ -36,6 +36,7 @@
 - SocketLink: corretto start/stop del servizio
 - Operazioni di prelievo/versamento: eliminati alcuni casi di dati duplicati
 - Chiamata cassetto: le note sono ora nella tabella
+- Corretta registrazione del tempo missioni attive
 
 ## Compatibile con adapter 0.4.42
 ***

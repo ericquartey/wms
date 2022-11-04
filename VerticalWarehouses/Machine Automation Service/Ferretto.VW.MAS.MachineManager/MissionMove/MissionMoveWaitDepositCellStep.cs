@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             this.Mission.RestoreStep = MissionStep.NotDefined;
             this.Mission.Step = MissionStep.WaitDepositCell;
-            this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
+            this.Mission.MissionTime = this.Mission.MissionTime.Add(DateTime.UtcNow - this.Mission.StepTime);
             this.Mission.StepTime = DateTime.UtcNow;
             this.Mission.StopReason = StopRequestReason.NoReason;
             this.Mission.Status = MissionStatus.Executing;
@@ -82,6 +82,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 case MessageStatus.OperationFaultStop:
                     if (notification.RequestingBay == this.Mission.TargetBay || notification.RequestingBay == BayNumber.None)
                     {
+                        // this step do not increase mission time
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.MissionsDataProvider.Update(this.Mission);
                         this.OnStop(StopRequestReason.Error);
                     }
                     break;
@@ -93,6 +96,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         || notification.TargetBay == this.Mission.TargetBay
                         )
                     {
+                        // this step do not increase mission time
+                        this.Mission.StepTime = DateTime.UtcNow;
+                        this.MissionsDataProvider.Update(this.Mission);
                         this.OnStop(StopRequestReason.Error);
                     }
                     break;
@@ -101,6 +107,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
+            // this step do not increase mission time
+            this.Mission.StepTime = DateTime.UtcNow;
+            this.MissionsDataProvider.Update(this.Mission);
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitSource);
             if (bay is null)
