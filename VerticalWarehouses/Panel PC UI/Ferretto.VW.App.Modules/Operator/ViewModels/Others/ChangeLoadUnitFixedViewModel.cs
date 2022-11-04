@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                     this.saveCommand
             ??
             (this.saveCommand = new DelegateCommand(
-                async () => await this.SaveRotationClassAsync(),
+                async () => await this.SaveAsync(),
                 this.CanSave));
 
         public LoadingUnit SelectedLoadingUnit
@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        private async Task SaveRotationClassAsync()
+        private async Task SaveAsync()
         {
             try
             {

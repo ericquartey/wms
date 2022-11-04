@@ -18,29 +18,30 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical">
-            <!--  titolo  -->
-            <TextBlock VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{res:Loc InstallationApp.ChangeLoadUnitFixed}" />
-        </StackPanel>
-
         <StackPanel Grid.Row="1"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Center">
-
+            <TextBlock VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc InstallationApp.ChangeLoadUnitFixed}" />
+                    <TextBlock Margin="0,0,0,0"
+                             VerticalAlignment="Top"
+                             FontSize="25"
+                             Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                    <Run Text="{res:Loc OperatorApp.LoadUnit}" /> <Run Text="{Binding SelectedLoadingUnit.Id}" />
+                  </TextBlock>
             <StackPanel Orientation="Horizontal">
                 <StackPanel>
                     <TextBlock Grid.ColumnSpan="2"
                                FontSize="13"
-                               Margin="10,2,0,5"
+                               Margin="0,2,0,5"
                                Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
                                Text="{res:Loc InstallationApp.Height}" />
                     <TextBox Width="150"
-                             Margin="10,0,0,20"
+                             Margin="0,0,0,20"
                              IsReadOnly="True"
                              HorizontalAlignment="Left"
-                             Text="{Binding SelectedLoadingUnit.Height, StringFormat={}{0:F2}}"
+                             Text="{Binding SelectedLoadingUnit.FixedHeight, StringFormat={}{0:F2}}"
                              Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                              VerticalAlignment="Center"
                              VerticalContentAlignment="Center" />
@@ -56,7 +57,7 @@
                              Margin="10,0,0,20"
                              HorizontalAlignment="Left"
                              IsReadOnly="True"
-                             Text="{Binding SelectedLoadingUnit.CellId}"
+                             Text="{Binding SelectedLoadingUnit.FixedCell}"
                              Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
                              VerticalAlignment="Center"
                              VerticalContentAlignment="Center" />
@@ -70,7 +71,7 @@
                                   LabelText="{res:Loc InstallationApp.IsCellFixed}"
                                   IsChecked="{Binding SelectedLoadingUnit.IsCellFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   VerticalAlignment="Bottom"
-                                  Margin="10,10,0,4" />
+                                  Margin="0,10,0,4" />
         </StackPanel>
 
         <controls:PpcButton Grid.Row="2"
