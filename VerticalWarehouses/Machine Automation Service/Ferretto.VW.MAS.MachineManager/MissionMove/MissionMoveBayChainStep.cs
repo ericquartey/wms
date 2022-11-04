@@ -376,6 +376,10 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
         public override void OnResume(CommandMessage command)
         {
+            // the waiting status do not increase mission time
+            this.Mission.StepTime = DateTime.UtcNow;
+            this.MissionsDataProvider.Update(this.Mission);
+
             var bay = this.BaysDataProvider.GetByLoadingUnitLocation(this.Mission.LoadUnitDestination);
             if (bay is null)
             {

@@ -1907,7 +1907,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         // wms mission is finished
                         mission.Status = MissionStatus.Completed;
-                        mission.MissionTime = mission.MissionTime.Add(DateTime.UtcNow - mission.StepTime);
+                        mission.StepTime = DateTime.UtcNow;
                         missionsDataProvider.Update(mission);
                         machineProvider.UpdateMissionTime(mission.MissionTime);
                         baysDataProvider.ClearMission(bayNumber);
