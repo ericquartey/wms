@@ -124,6 +124,19 @@ namespace Ferretto.VW.MAS.AutomationService
             };
 
             await this.SendErrorLogAsync(errorLog);
+
+            if (messageData?.MachineMode == MachineMode.Automatic)
+            {
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var machineVolatile = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
+
+                    if (machineVolatile.WmsIsEnabled is true)
+                    {
+                        await this.SendMachineInfoAsync();
+                    }
+                }
+            }
         }
 
         private async Task OnMachineStatePowerUpStartAsync(MachineStateActiveMessageData messageData)

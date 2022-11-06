@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 var machineWms = scope.ServiceProvider.GetRequiredService<IMachinesWmsWebService>();
                 var machineVolatile = scope.ServiceProvider.GetRequiredService<IMachineVolatileDataProvider>();
 
-                if (machineVolatile.WmsIsEnabled is true && machineVolatile.WMSIsConnected is true)
+                if (machineVolatile.WmsIsEnabled is true)
                 {
                     try
                     {
@@ -118,6 +118,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 {
                     var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
                     result = $"SL {socketLinkProvider.GetVersion()}";
+                }
+                else
+                {
+                    result = "-";
                 }
             }
 
@@ -188,7 +192,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
+        private async Task SendMachineInfoAsync()
         {
             var machine = this.machineProvider.GetMinMaxHeight();
             var machineDto = new ServiceDesk.Telemetry.Machine
@@ -200,6 +204,11 @@ namespace Ferretto.VW.MAS.AutomationService
             };
 
             await this.telemetryHub.SendMachineAsync(machineDto);
+        }
+
+        private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
+        {
+            await this.SendMachineInfoAsync();
         }
 
         #endregion

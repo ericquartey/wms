@@ -142,9 +142,10 @@ namespace Ferretto.VW.TelemetryService
             }
 
             this.logger.LogDebug(
-                "Received machine identification from client. Machine is '{model}', '{serial}'.",
+                "Received machine identification from client. Machine is '{model}', '{serial}', wms version '{}'.",
                 machine.ModelName,
-                machine.SerialNumber);
+                machine.SerialNumber,
+                machine.WmsVersion);
 
             using var scope = this.serviceScopeFactory.CreateScope();
             scope.ServiceProvider.GetRequiredService<IMachineProvider>().SaveAsync(machine);
