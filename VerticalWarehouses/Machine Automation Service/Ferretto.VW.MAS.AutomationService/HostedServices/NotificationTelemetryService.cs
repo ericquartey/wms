@@ -119,6 +119,10 @@ namespace Ferretto.VW.MAS.AutomationService
                     var socketLinkProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
                     result = $"SL {socketLinkProvider.GetVersion()}";
                 }
+                else
+                {
+                    result = "-";
+                }
             }
 
             return result;
@@ -188,7 +192,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
+        private async Task SendMachineInfoAsync()
         {
             var machine = this.machineProvider.GetMinMaxHeight();
             var machineDto = new ServiceDesk.Telemetry.Machine
@@ -200,6 +204,11 @@ namespace Ferretto.VW.MAS.AutomationService
             };
 
             await this.telemetryHub.SendMachineAsync(machineDto);
+        }
+
+        private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)
+        {
+            await this.SendMachineInfoAsync();
         }
 
         #endregion
