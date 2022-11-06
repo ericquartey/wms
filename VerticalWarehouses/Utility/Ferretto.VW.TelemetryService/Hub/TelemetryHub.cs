@@ -142,7 +142,7 @@ namespace Ferretto.VW.TelemetryService
             }
 
             this.logger.LogDebug(
-                "Received machine identification from client. Machine is '{model}', '{serial}', wms version '{}'.",
+                "Received machine identification from client. Machine is '{model}', '{serial}', wms version '{version}'.",
                 machine.ModelName,
                 machine.SerialNumber,
                 machine.WmsVersion);
