@@ -253,7 +253,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     || (this.machineVolatileDataProvider.IsOptimizeRotationClass
                         && !string.IsNullOrEmpty(cell.RotationClass)
                         && !string.IsNullOrEmpty(loadingUnit.RotationClass)
-                        && cell.RotationClass[0] < loadingUnit.RotationClass[0])
+                        && !string.IsNullOrEmpty(loadingUnit.Cell.RotationClass)
+                        && cell.RotationClass[0] < loadingUnit.RotationClass[0]
+                        && cell.RotationClass[0] != loadingUnit.Cell.RotationClass[0]
+                        )
                     )
                 {
                     break;
@@ -399,6 +402,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     // don't want floating cells: previous cell is free and available
                     var isFloating = (prev != null && prev.IsFree && prev.BlockLevel == BlockLevel.None && !randomCells);
+                    if (isFloating
+                        && machine.IsRotationClass
+                        && !string.IsNullOrEmpty(prev.RotationClass)
+                        && !string.IsNullOrEmpty(cell.RotationClass)
+                        && prev.RotationClass != cell.RotationClass)
+                    {
+                        isFloating = false;
+                    }
 
                     // SpaceOnly cells can be occupied by high load units
                     if (isFloating
@@ -437,7 +448,8 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (cells.Any(c => c.Panel.Side == cell.Side
                                 && c.Position < cell.Position
                                 && c.IsFree
-                                && c.BlockLevel == BlockLevel.None)
+                                && c.BlockLevel == BlockLevel.None
+                                && !this.machineVolatileDataProvider.IsOptimizeRotationClass)
                             )
                             {
                                 firstFree = false;
@@ -457,8 +469,11 @@ namespace Ferretto.VW.MAS.DataLayer
                         {
                             if (compactingType != CompactingType.RotationCompacting
                                 || string.IsNullOrEmpty(cell.RotationClass)
+                                || string.IsNullOrEmpty(loadUnit.RotationClass)
                                 || string.IsNullOrEmpty(loadUnit.Cell?.RotationClass)
-                                || loadUnit.Cell.RotationClass[0] < cell.RotationClass[0]
+                                || cell.RotationClass[0] == loadUnit.RotationClass[0]
+                                || (loadUnit.RotationClass == ROTATION_CLASS_A && loadUnit.Cell.RotationClass[0] > cell.RotationClass[0])
+                                || (loadUnit.RotationClass == ROTATION_CLASS_C && loadUnit.Cell.RotationClass[0] < cell.RotationClass[0])
                                 )
                             {
                                 availableCell.Add(new AvailableCell(cell, availableSpace));
