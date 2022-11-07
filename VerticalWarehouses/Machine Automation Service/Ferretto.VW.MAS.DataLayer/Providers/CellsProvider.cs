@@ -458,7 +458,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             if (compactingType != CompactingType.RotationCompacting
                                 || string.IsNullOrEmpty(cell.RotationClass)
                                 || string.IsNullOrEmpty(loadUnit.Cell?.RotationClass)
-                                || loadUnit.Cell.RotationClass[0] != cell.RotationClass[0]
+                                || loadUnit.Cell.RotationClass[0] < cell.RotationClass[0]
                                 )
                             {
                                 availableCell.Add(new AvailableCell(cell, availableSpace));
