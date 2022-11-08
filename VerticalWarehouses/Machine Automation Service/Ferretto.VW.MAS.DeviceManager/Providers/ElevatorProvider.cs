@@ -816,20 +816,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
 
             // close other bays
-            var bays = this.baysDataProvider.GetAll();
-            foreach (var otherBay in bays)
+            var bayNumbers = this.baysDataProvider.GetBayNumbers();
+            foreach (var bayNumber in bayNumbers.Where(b => b < BayNumber.ElevatorBay))
             {
-                if (otherBay.Shutter != null
-                    && otherBay.Shutter.Type != ShutterType.NotSpecified
-                    && otherBay.Number != requestingBay
-                    )
+                try
                 {
-                    var shutterInverter = otherBay.Shutter.Inverter.Index;
-                    var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
-                    if (shutterPosition != ShutterPosition.Closed)
+                    var otherBay = this.baysDataProvider.GetByNumberShutter(bayNumber);
+                    if (otherBay.Shutter != null
+                        && otherBay.Shutter.Type != ShutterType.NotSpecified
+                        && otherBay.Number != requestingBay
+                        )
                     {
-                        this.shutterProvider.MoveTo(ShutterPosition.Closed, otherBay.Number, MessageActor.AutomationService);
+                        var shutterInverter = otherBay.Shutter.Inverter.Index;
+                        var shutterPosition = this.machineResourcesProvider.GetShutterPosition(shutterInverter);
+                        if (shutterPosition != ShutterPosition.Closed)
+                        {
+                            this.shutterProvider.MoveTo(ShutterPosition.Closed, otherBay.Number, MessageActor.AutomationService);
+                        }
                     }
+                }
+                catch
+                {
+                    // do nothing
                 }
             }
         }

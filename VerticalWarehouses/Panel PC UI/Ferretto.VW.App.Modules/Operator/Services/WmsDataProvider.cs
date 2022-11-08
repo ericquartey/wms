@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineService machineService;
+
         private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
         private bool isEnabled;
@@ -32,13 +34,15 @@ namespace Ferretto.VW.App.Modules.Operator
             IBayManager bayManager,
             IMachineItemsWebService itemWebService,
             IMachineWmsStatusWebService wmsStatusWebService,
-            IMachineCompartmentsWebService compartmentsWebService
+            IMachineCompartmentsWebService compartmentsWebService,
+            IMachineService machineService
             )
         {
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
             this.itemWebService = itemWebService ?? throw new System.ArgumentNullException(nameof(itemWebService));
             this.wmsStatusWebService = wmsStatusWebService ?? throw new System.ArgumentNullException(nameof(wmsStatusWebService));
             this.compartmentsWebService = compartmentsWebService ?? throw new ArgumentNullException(nameof(compartmentsWebService));
+            this.machineService = machineService;
         }
 
         #endregion
@@ -62,7 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             try
             {
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.machineService.Bay;
 
                 await this.itemWebService.CheckAsync(itemId, new ItemOptions
                 {
@@ -108,7 +112,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             try
             {
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.machineService.Bay;
 
                 await this.itemWebService.PickAsync(itemId, new ItemOptions
                 {
@@ -146,7 +150,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
             try
             {
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.machineService.Bay;
 
                 await this.itemWebService.PutAsync(itemId, new ItemOptions
                 {

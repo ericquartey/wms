@@ -76,7 +76,9 @@ namespace Ferretto.VW.MAS.DataLayer
             this.SocketLinkOperation.Add(BayNumber.BayTwo, null);
             this.SocketLinkOperation.Add(BayNumber.BayThree, null);
 
+            this.BayNumbers = new List<BayNumber>();
             this.IsExternal = new Dictionary<BayNumber, bool>();
+            this.IsTelescopic = new Dictionary<BayNumber, bool>();
 
             if (dataLayerService.IsReady)
             {
@@ -100,6 +102,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Properties
+
+        public List<BayNumber> BayNumbers { get; set; }
 
         public BayNumber BayTestNumber { get; set; }
 
@@ -161,6 +165,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
         public bool IsStandbyDbOk { get; set; }
+
+        public Dictionary<BayNumber, bool> IsTelescopic { get; set; }
 
         public Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 

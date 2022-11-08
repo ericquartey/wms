@@ -233,6 +233,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 });
 
                 this.dataContext.SaveChanges();
+                this.machineVolatileDataProvider.BayNumbers = new List<BayNumber>();
             }
         }
 
@@ -402,12 +403,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<BayNumber> GetBayNumbers()
         {
-            lock (this.dataContext)
+            if (!this.machineVolatileDataProvider.BayNumbers.Any())
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Select(b => b.Number);
+                lock (this.dataContext)
+                {
+                    this.machineVolatileDataProvider.BayNumbers = this.dataContext.Bays
+                        .AsNoTracking()
+                        .Select(b => b.Number)
+                        .ToList();
+                }
             }
+            return this.machineVolatileDataProvider.BayNumbers;
         }
 
         public WarehouseSide GetBaySide(BayNumber bayNumber)
@@ -979,6 +985,23 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
             return isExternal;
+        }
+
+        public bool GetIsTelescopic(BayNumber bayNumber)
+        {
+            bool isTelescopic = false;
+            if (!this.machineVolatileDataProvider.IsTelescopic.TryGetValue(bayNumber, out isTelescopic))
+            {
+                lock (this.dataContext)
+                {
+                    isTelescopic = this.dataContext.Bays.AsNoTracking()
+                        .Select(b => new { b.Number, b.IsTelescopic })
+                        .SingleOrDefault(b => b.Number == bayNumber)
+                        .IsTelescopic;
+                    this.machineVolatileDataProvider.IsTelescopic.Add(bayNumber, isTelescopic);
+                }
+            }
+            return isTelescopic;
         }
 
         public bool GetLightOn(BayNumber bayNumber)

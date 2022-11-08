@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        List<BayNumber> BayNumbers { get; set; }
+
         BayNumber BayTestNumber { get; set; }
 
         double ElevatorHorizontalPosition { get; set; }
@@ -52,6 +54,8 @@ namespace Ferretto.VW.MAS.DataLayer
         Dictionary<BayNumber, bool> IsShutterHomingActive { get; set; }
 
         bool IsStandbyDbOk { get; set; }
+
+        Dictionary<BayNumber, bool> IsTelescopic { get; set; }
 
         Dictionary<int, int> LoadUnitsExecutedCycles { get; set; }
 

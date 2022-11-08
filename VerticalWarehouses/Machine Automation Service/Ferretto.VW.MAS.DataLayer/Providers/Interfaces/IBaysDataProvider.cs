@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DataLayer
         IoIndex GetIoDevice(BayNumber bayNumber);
 
         bool GetIsExternal(BayNumber bayNumber);
-
+        bool GetIsTelescopic(BayNumber bayNumber);
         bool GetLightOn(BayNumber bayNumber);
 
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
