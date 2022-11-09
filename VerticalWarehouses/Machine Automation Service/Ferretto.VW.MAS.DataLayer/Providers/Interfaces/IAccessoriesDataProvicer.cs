@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool CheckAccessories();
 
         BayAccessories GetAccessories(BayNumber bayNumber);
+        AlphaNumericBar GetAlphaNumericBar(BayNumber bayNumber);
+        LaserPointer GetLaserPointer(BayNumber bayNumber);
 
         void UpdateAlphaNumericBar(BayNumber bayNumber, bool isEnabled, string ipAddress, int port, AlphaNumericBarSize size, int maxMessageLength, bool clearOnClose, bool? useGet = false, List<string> messageFields = null);
 

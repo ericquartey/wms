@@ -60,6 +60,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(accessories);
         }
 
+        [HttpGet("get-alpha")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<AlphaNumericBar> GetAlphanumericBar(BayNumber BayNumber)
+        {
+            var alpha = this.accessoriesDataProvider.GetAlphaNumericBar(BayNumber);
+
+            return this.Ok(alpha);
+        }
+
+        [HttpGet("get-laser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public ActionResult<LaserPointer> GetLaserPointer(BayNumber BayNumber)
+        {
+            var laser = this.accessoriesDataProvider.GetLaserPointer(BayNumber);
+
+            return this.Ok(laser);
+        }
+
         [HttpPut("print-test-page")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]

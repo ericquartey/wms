@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
+
         private readonly IAlphaNumericBarDriver alphaNumericBarDriver;
 
         private readonly IBayManager bayManager;
@@ -32,7 +34,7 @@ namespace Ferretto.VW.App.Services
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         private readonly IMachineWmsStatusWebService machineWmsStatusWebService;
-        private readonly IMachineService machineService;
+
         private readonly IMachineMissionsWebService missionWebService;
 
         private readonly int pollingDelay = 200;
@@ -62,7 +64,7 @@ namespace Ferretto.VW.App.Services
             IMachineMissionsWebService missionWebService,
             ILaserPointerService laserPointerService,
             IMachineWmsStatusWebService machineWmsStatusWebService,
-            IMachineService machineService
+            IMachineAccessoriesWebService accessoriesWebService
             )
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -71,7 +73,7 @@ namespace Ferretto.VW.App.Services
             this.missionWebService = missionWebService ?? throw new ArgumentNullException(nameof(missionWebService));
             this.laserPointerService = laserPointerService ?? throw new ArgumentNullException(nameof(laserPointerService));
             this.machineWmsStatusWebService = machineWmsStatusWebService ?? throw new ArgumentNullException(nameof(machineWmsStatusWebService));
-            this.machineService = machineService;
+            this.accessoriesWebService = accessoriesWebService;
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -103,15 +105,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var accessories = await this.bayManager.GetBayAccessoriesAsync();
-
-                if (accessories is null)
-                {
-                    this.isEnabled = false;
-                    return;
-                }
-
-                var alphaNumericBar = accessories.AlphaNumericBar;
+                var alphaNumericBar = await this.accessoriesWebService.GetAlphanumericBarAsync(this.bayNumber);
 
                 if (alphaNumericBar != null &&
                     alphaNumericBar.IsEnabledNew)
@@ -290,7 +284,7 @@ namespace Ferretto.VW.App.Services
                     var activeMission = await this.RetrieveActiveMissionAsync();
                     if (activeMission != null && activeMission.WmsId.HasValue)
                     {
-                        var bay = this.machineService.Bay;
+                        var bay = await this.bayManager.GetPositionsBayAsync();
                         var bayPosition = bay.Positions.SingleOrDefault(p => p.LoadingUnit?.Id == e.WmsMission.LoadingUnit.Id);
 
                         if (bayPosition is null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Fields
 
         public readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineAccessoriesWebService accessoriesWebService;
 
         private readonly IBayManager bayManager;
 
@@ -123,8 +126,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ILaserPointerDriver laserPointerDriver,
             ISessionService sessionService,
             IWmsDataProvider wmsDataProvider,
-            IMachineConfigurationWebService machineConfigurationWebService
-            )
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IMachineAccessoriesWebService accessoriesWebService)
             : base(PresentationMode.Operator)
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
@@ -137,6 +140,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.laserPointerDriver = laserPointerDriver ?? throw new ArgumentNullException(nameof(laserPointerDriver));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.accessoriesWebService = accessoriesWebService ?? throw new ArgumentNullException(nameof(accessoriesWebService));
         }
 
         #endregion
@@ -448,12 +452,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task LaserOnAsync()
         {
-            var accessories = await this.bayManager.GetBayAccessoriesAsync();
-            if (accessories is null)
-            {
-                return;
-            }
-            var laserPointer = accessories.LaserPointer;
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            var laserPointer = await this.accessoriesWebService.GetLaserPointerAsync(bayNumber);
             if (laserPointer is null
                 || !laserPointer.IsEnabledNew)
             {
@@ -522,8 +522,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsAddItemLists = configuration.IsAddItemByList;
             this.IsBoxEnabled = configuration.Box;
 
-            var accessories = await this.bayManager.GetBayAccessoriesAsync();
-            this.isLaserEnabled = accessories?.LaserPointer?.IsEnabledNew ?? false;
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+            var laserPointer = await this.accessoriesWebService.GetLaserPointerAsync(bayNumber);
+            this.isLaserEnabled = laserPointer?.IsEnabledNew ?? false;
             this.IsLaserOnEnabled = this.isLaserEnabled;// && this.sessionService.UserAccessLevel != UserAccessLevel.Operator;
             this.IsLaserOffEnabled = false;
 
