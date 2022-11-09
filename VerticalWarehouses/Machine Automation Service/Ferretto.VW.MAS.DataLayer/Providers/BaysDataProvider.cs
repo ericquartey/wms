@@ -1136,6 +1136,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsLoadUnitInBay(BayNumber bayNumber, int id)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Include(b => b.CurrentMission).Any(b => b.CurrentMission.LoadUnitId == id && b.Number == bayNumber);
+            }
+        }
+
         public bool IsMissionInBay(Mission mission)
         {
             lock (this.dataContext)

@@ -273,11 +273,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             }
             else
             {
-                var bay = baysDataProvider.GetByNumber(mission.TargetBay);
-                if (bay != null
-                    && bay.CurrentMission != null
-                    && bay.CurrentMission.LoadUnitId == mission.LoadUnitId
-                    )
+                if (baysDataProvider.IsLoadUnitInBay(mission.TargetBay, mission.LoadUnitId))
                 {
                     baysDataProvider.ClearMission(mission.TargetBay);
                 }

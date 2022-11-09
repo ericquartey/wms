@@ -123,13 +123,13 @@ namespace Ferretto.VW.App.Services
                         alphaNumericBar.Field5,
                     };
 
-                    var bay = await this.bayManager.GetBayAsync();
+                    var isExternal = await this.bayManager.GetIsExternalAsync();
 
                     this.alphaNumericBarDriver.Configure(
                         ipAddress,
                         port,
                         size,
-                        bay.IsExternal,
+                        isExternal,
                         alphaNumericBar.MaxMessageLength,
                         alphaNumericBar.ClearAlphaBarOnCloseView is true,
                         alphaNumericBar.UseGet is true,

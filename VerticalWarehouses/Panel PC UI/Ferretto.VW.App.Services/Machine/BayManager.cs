@@ -100,6 +100,13 @@ namespace Ferretto.VW.App.Services
             return await this.machineBaysWebService.GetByNumberAsync(bayNumber);
         }
 
+        public async Task<bool> GetIsExternalAsync()
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            return await this.machineBaysWebService.GetIsExternalAsync(bayNumber);
+        }
+
         public async Task<Bay> GetPositionsBayAsync()
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
