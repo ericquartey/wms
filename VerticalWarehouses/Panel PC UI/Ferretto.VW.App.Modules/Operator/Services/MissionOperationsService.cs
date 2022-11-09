@@ -591,7 +591,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
                             try
                             {
-                                if (await this.identityService.GetAggregateListAsync()) // is aggregatelist
+                                if (await this.identityService.GetAggregateListAsync()          // is aggregatelist
+                                    && newWmsOperationInfo.Type == MissionOperationType.Pick)
                                 {
                                     newWmsOperation = await this.missionOperationsWebService.GetByAggregateAsync(newWmsOperationInfo.Id);
                                     if (newWmsOperation != null)
