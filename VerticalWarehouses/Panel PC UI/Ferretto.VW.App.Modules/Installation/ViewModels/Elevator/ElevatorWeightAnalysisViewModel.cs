@@ -435,7 +435,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.bay = await this.bayManager.GetBayAsync();
+                this.bay = this.MachineService.Bay;
 
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }

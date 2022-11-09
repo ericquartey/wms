@@ -597,7 +597,9 @@ namespace Ferretto.VW.App.Services
 
         public async Task UpdateLoadUnitInBayAsync()
         {
-            this.Bay = await this.bayManagerService.GetBayAsync();
+            var bayPositions = await this.bayManagerService.GetPositionsBayAsync();
+            this.Bay.Positions = bayPositions.Positions;
+            this.sensorsService.SetBay(this.Bay);
             if (this.Bay.IsDouble || this.BayFirstPositionIsUpper || this.Bay.Carousel != null)
             {
                 if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
@@ -1479,6 +1481,7 @@ namespace Ferretto.VW.App.Services
             // Devo aggiornare i dati delle posizioni della baia
             this.bays = await this.machineBaysWebService.GetAllAsync();
             this.Bay = await this.bayManagerService.GetBayAsync();
+            this.sensorsService.SetBay(this.Bay);
 
             this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
             this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;

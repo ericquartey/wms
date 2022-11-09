@@ -21,6 +21,7 @@ namespace Ferretto.VW.App.Services
 
         /// <exception cref="MasWebApiException"></exception>
         Task<Bay> GetBayAsync();
+        Task<Bay> GetPositionsBayAsync();
 
         /// <exception cref="MasWebApiException"></exception>
         Task InitializeAsync();

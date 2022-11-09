@@ -93,6 +93,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
+        [HttpGet("get-positions{bayNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<Bay> GetPositionsByNumber(BayNumber bayNumber)
+        {
+            var bay = this.baysDataProvider.GetByNumberPositions(bayNumber);
+
+            return this.Ok(bay);
+        }
+
         [HttpPost("get-light")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

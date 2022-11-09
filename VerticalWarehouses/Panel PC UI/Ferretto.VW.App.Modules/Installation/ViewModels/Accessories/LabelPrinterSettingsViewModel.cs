@@ -117,7 +117,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                var bay = await this.bayManagerService.GetBayAsync();
+                var bay = this.MachineService.Bay;
 
                 var bayNumber = bay.Number;
 

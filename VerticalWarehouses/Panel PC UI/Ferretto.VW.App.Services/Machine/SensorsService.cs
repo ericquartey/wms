@@ -417,13 +417,17 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                await this.GetBayAsync()
-                    .ContinueWith(async (m) => await this.InitializeSensorsAsync());
+                await this.InitializeSensorsAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        public void SetBay(Bay bay)
+        {
+            this.Bay = bay;
         }
 
         private async Task GetBayAsync()
@@ -432,7 +436,10 @@ namespace Ferretto.VW.App.Services
             {
                 if (this.IsHealthy)
                 {
-                    this.Bay = await this.bayManagerService.GetBayAsync();
+                    if (this.Bay is null)
+                    {
+                        this.Bay = await this.bayManagerService.GetBayAsync();
+                    }
                     this.BayNumber = this.Bay.Number;
 
                     if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
@@ -479,6 +486,7 @@ namespace Ferretto.VW.App.Services
         {
             if (status.HealthMasStatus == HealthStatus.Healthy || status.HealthMasStatus == HealthStatus.Degraded)
             {
+                await this.GetBayAsync();
                 await this.RefreshAsync(true);
             }
         }
