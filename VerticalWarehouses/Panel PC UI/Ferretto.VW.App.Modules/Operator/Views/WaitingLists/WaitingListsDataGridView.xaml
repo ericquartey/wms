@@ -162,7 +162,7 @@
       </DataGridTemplateColumn>
 
       <DataGridTextColumn x:Name="Column1"
-                          Width="120"
+                          Width="90"
                           Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
                           Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
 
@@ -197,7 +197,7 @@
 
       <DataGridTextColumn x:Name="Column3"
                           Width="*"
-                          MinWidth="120"
+                          MinWidth="150"
                           Binding="{Binding Description}"
                           Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
 
@@ -238,7 +238,7 @@
       </DataGridTextColumn>
 
       <DataGridTextColumn x:Name="Column8"
-                          Width="60"
+                          Width="50"
                           Binding="{Binding Priority}"
                           Header="{Resources:Loc OperatorApp.Priority}">
         <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
@@ -251,7 +251,7 @@
       </DataGridTextColumn>
 
       <DataGridTemplateColumn x:Name="Column9"
-                              Width="100"
+                              Width="40"
                               SortMemberPath="ExecutionMode"
                               CanUserSort="True"
                               Header="{Resources:Loc OperatorApp.ListAvailable}">

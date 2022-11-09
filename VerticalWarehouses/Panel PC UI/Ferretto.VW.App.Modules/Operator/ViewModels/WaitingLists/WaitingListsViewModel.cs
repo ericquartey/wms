@@ -553,6 +553,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.lists.Clear();
+                //newLists.ForEach(l => l.Priority = 9999); // TEST
                 newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
 
                 if (this.lists.Count > 0)
