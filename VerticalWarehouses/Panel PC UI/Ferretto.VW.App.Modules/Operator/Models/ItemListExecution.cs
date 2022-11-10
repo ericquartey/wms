@@ -22,11 +22,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
     public class ItemListExecution : ItemList
     {
-        private readonly IMachineIdentityWebService machineIdentityWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineIdentityWebService>();
-
         #region Constructors
 
-        public ItemListExecution(ItemList itemList, int machineId)
+        public ItemListExecution(ItemList itemList, int machineId, int? priorityHilighted)
         {
             if (itemList is null)
             {
@@ -40,6 +38,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             this.ShipmentUnitCode = itemList.ShipmentUnitCode;
             this.ShipmentUnitDescription = itemList.ShipmentUnitDescription;
             this.Priority = itemList.Priority;
+            this.IsSpecialPriority = this.Priority == priorityHilighted;
             this.IsDispatchable = itemList.IsDispatchable;
 
             if (itemList.Machines?.Any(m => m.Id == machineId) == true)
@@ -53,7 +52,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
             }
         }
 
-        public ItemListExecution(ItemListDetails itemList, int machineId)
+        public ItemListExecution(ItemListDetails itemList, int machineId, int? priorityHilighted)
             : this(
                 new ItemList
                 {
@@ -69,7 +68,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
                     ShipmentUnitDescription = itemList.ShipmentUnitDescription,
                     IsDispatchable = itemList.IsDispatchable,
                     Status = itemList.Status,
-                }, machineId)
+                },
+                machineId,
+                priorityHilighted)
         {
         }
 
@@ -81,9 +82,9 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
         public ListExecutionMode ExecutionMode { get; }
 
-        public bool IsSpecialPriority => this.Priority == this.machineIdentityWebService.GetWaitingListPriorityHighlightedAsync().Result;
-
         public bool IsColorTag => !this.IsDispatchable || this.IsSpecialPriority;
+
+        public bool IsSpecialPriority { get; set; }
 
         public string MachinesInfo { get; }
 

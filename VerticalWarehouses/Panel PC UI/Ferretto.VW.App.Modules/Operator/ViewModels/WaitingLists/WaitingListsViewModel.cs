@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int machineId;
 
+        private int? priorityHighlighted;
+
         private bool reloadSearchItems;
 
         private string searchItem;
@@ -300,6 +302,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsCarrefour = configuration.IsCarrefour;
+            this.priorityHighlighted = configuration.WaitingListPriorityHighlighted;
 
             await this.LoadListsAsync();
 
@@ -347,7 +350,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var isEqual = true;
 
             IList<ItemListExecution> tmpLists = new List<ItemListExecution>();
-            newLists.ForEach(l => tmpLists.Add(new ItemListExecution(l, this.machineId)));
+            newLists.ForEach(l => tmpLists.Add(new ItemListExecution(l, this.machineId, this.priorityHighlighted)));
 
             isEqual = tmpLists.Count == this.lists.Count;
 
@@ -431,7 +434,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     var BarcodeItemList = new List<ItemListExecution>();
 
-                    BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
+                    BarcodeItemList.Add(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id, this.priorityHighlighted));
 
                     await this.ExecuteListAsync(BarcodeItemList);
                 }
@@ -462,7 +465,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var fullLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, this.authenticationService.UserName);
 
                     var ItemExecutionList = new List<ItemListExecution>();
-                    fullLists.ForEach(x => ItemExecutionList.Add(new ItemListExecution(x, this.machineId)));
+                    fullLists.ForEach(x => ItemExecutionList.Add(new ItemListExecution(x, this.machineId, this.priorityHighlighted)));
 
                     this.lists.Clear();
 
@@ -518,7 +521,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 var list = await this.itemListsWebService.GetByNumAsync(listCode);
 
-                this.ShowDetails(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id));
+                this.ShowDetails(new ItemListExecution(list.FirstOrDefault(), this.bayManager.Identity.Id, this.priorityHighlighted));
             }
             catch
             {
@@ -554,7 +557,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.lists.Clear();
                 //newLists.ForEach(l => l.Priority = 9999); // TEST
-                newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
+                newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId, this.priorityHighlighted)));
 
                 if (this.lists.Count > 0)
                 {
