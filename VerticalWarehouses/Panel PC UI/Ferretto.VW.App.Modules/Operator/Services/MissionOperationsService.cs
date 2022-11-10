@@ -686,11 +686,11 @@ namespace Ferretto.VW.App.Modules.Operator
                 //var isExternalDoubleBay = bay.IsDouble && bay.IsExternal;
 
                 // Retrieve the machine missions
-                this.machineMissions = await this.missionsWebService.GetAllAsync();
                 IOrderedEnumerable<Mission> activeMissions = null;
 
                 if (missionId.HasValue)
                 {
+                    this.machineMissions = await this.missionsWebService.GetAllAsync();
                     activeMissions = this.machineMissions.Where(m =>
                             m.Step is MissionStep.WaitPick
                             &&
@@ -705,6 +705,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
                 else
                 {
+                    this.machineMissions = this.machineService.Missions;
                     activeMissions = this.machineMissions.Where(m =>
                         m.Step is MissionStep.WaitPick
                         &&

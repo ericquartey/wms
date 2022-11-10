@@ -61,6 +61,7 @@ namespace Ferretto.VW.App.Services
 
         IEnumerable<Cell> OriginalCells { get; }
         SetupStatusCapabilities SetupStatus { get; set; }
+        IEnumerable<Mission> Missions { get; }
 
         #endregion
 

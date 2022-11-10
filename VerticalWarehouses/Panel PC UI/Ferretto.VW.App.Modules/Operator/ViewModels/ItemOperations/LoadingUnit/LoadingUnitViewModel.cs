@@ -913,7 +913,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var count = 0;
-                var missions = await this.machineMissionsWebService.GetAllAsync();
+                var missions = this.machineService.Missions;
                 var moveUnitId = this.GetAllUnitGoBay(missions);
 
                 if (moveUnitId != null)
