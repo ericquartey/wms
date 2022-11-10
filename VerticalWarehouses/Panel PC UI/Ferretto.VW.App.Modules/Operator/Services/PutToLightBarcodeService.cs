@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachinePutToLightWebService putToLightWebService;
 
+        private readonly ISessionService sessionService;
+
         private string selectedBasketCode;
 
         private string selectedCarCode;
@@ -41,11 +43,13 @@ namespace Ferretto.VW.App.Modules.Operator
         public PutToLightBarcodeService(
             IMachinePutToLightWebService putToLightWebService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             IEventAggregator eventAggregator)
         {
             this.putToLightWebService = putToLightWebService;
             this.identityService = identityService;
             this.eventAggregator = eventAggregator;
+            this.sessionService = sessionService;
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -104,7 +108,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -128,7 +132,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -153,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -178,7 +182,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -262,7 +266,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));

@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitService;
 
+        private readonly ISessionService sessionService;
+
         private int currentItemIndex;
 
         private ICustomControlDrawerSaturationDataGridViewModel dataGridViewModel;
@@ -48,12 +50,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public StatisticsSpaceSaturationViewModel(
             IMachineLoadingUnitsWebService loadingUnitService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             ICustomControlDrawerSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
             : base(PresentationMode.Operator)
         {
             this.loadingUnitService = loadingUnitService ?? throw new ArgumentNullException(nameof(loadingUnitService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel ?? throw new ArgumentNullException(nameof(drawerWeightSaturationDataGridViewModel));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.dataGridViewModelRef = drawerWeightSaturationDataGridViewModel as CustomControlDrawerSaturationDataGridViewModel;
         }
@@ -124,7 +128,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.currentItemIndex = 0;
 
-                var machine = await this.identityService.GetAsync();
+                var machine = this.sessionService.MachineIdentity;
                 this.Dimension = $"{(int)machine.Width}x{(int)machine.Depth}";
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));

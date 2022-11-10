@@ -291,7 +291,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
             this.IsShipmentDayVisible = false;
 
-            var machineIdentity = await this.identityService.GetAsync();
+            var machineIdentity = this.sessionService.MachineIdentity;
             if (machineIdentity is null)
             {
                 return;

@@ -27,19 +27,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private const string RESETDATA = "reset";
 
+        private readonly IBayManager bayManager;
+
         private readonly List<FileInfo> importableFiles = new List<FileInfo>();
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly IMachineMissionsWebService missionsWebService;
-
-        private readonly IBayManager bayManager;
-
         private readonly IMachineDevicesWebService machineDevicesWebService;
 
-        private readonly ISessionService sessionService;
+        private readonly IMachineMissionsWebService missionsWebService;
 
-        private readonly IMachineIdentityWebService identityService;
+        private readonly ISessionService sessionService;
 
         private readonly IUsbWatcherService usbWatcher;
 
@@ -74,19 +72,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ParameterInverterViewModel(
-            IMachineIdentityWebService identityService,
             ISessionService sessionService,
             IMachineMissionsWebService missionsWebService,
             IBayManager bayManager,
             IMachineDevicesWebService machineDevicesWebService,
             IMachineConfigurationWebService machineConfigurationWebService,
-            IUsbWatcherService usbWatcher) : base(identityService)
+            IUsbWatcherService usbWatcher) : base(sessionService)
         {
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.missionsWebService = missionsWebService ?? throw new ArgumentNullException(nameof(missionsWebService));
-            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.usbWatcher = usbWatcher;
         }
@@ -232,8 +228,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(Localized.Get("InstallationApp.MissionActive"), Services.Models.NotificationSeverity.Warning);
             }
-
-
         }
 
         protected override async Task OnDataRefreshAsync()

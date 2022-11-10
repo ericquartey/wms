@@ -462,14 +462,12 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var idService = await this.machineIdentityWebService.GetAsync();
-                if (idService != null)
+                if (this.sessionService.MachineIdentity is null)
                 {
-                    this.sessionService.MachineIdentity = idService;
-                    this.IsTuningCompleted = idService.InstallationDate.HasValue;
+                    this.sessionService.MachineIdentity = await this.machineIdentityWebService.GetAsync();
+                    this.IsTuningCompleted = this.sessionService.MachineIdentity.InstallationDate.HasValue;
                 }
-                if (idService is null
-                    || this.SetupStatus is null
+                if (this.SetupStatus is null
                     || !this.IsTuningCompleted
                     )
                 {

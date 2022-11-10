@@ -51,6 +51,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IOperatorHubClient operatorHubClient;
 
+        private readonly ISessionService sessionService;
+
         private SubscriptionToken healthToken;
 
         private bool isDisposed;
@@ -83,6 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator
             IMachineAreasWebService areasWebService,
             IMachineConfigurationWebService machineConfigurationWebService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             IBayManager bayManager)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
@@ -99,6 +102,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.operatorHubClient.AssignedMissionChanged += async (sender, e) => await this.OnAssignedMissionChangedAsync(sender, e);
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
@@ -164,7 +168,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public async Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync()
         {
-            var machine = await this.identityService.GetAsync();
+            var machine = this.sessionService.MachineIdentity;
             var list = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, (int)this.bayNumber, true, this.authenticationService.UserName);
 
             return list;
@@ -213,7 +217,7 @@ namespace Ferretto.VW.App.Modules.Operator
         public async Task<bool> IsLastRowForListAsync(string itemListCode)
         {
             var bay = this.machineService.Bay;
-            var machineIdentity = await this.identityService.GetAsync();
+            var machineIdentity = this.sessionService.MachineIdentity;
 
             var machineId = machineIdentity.Id;
             var areaId = machineIdentity.AreaId;
@@ -331,7 +335,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 {
                     return false;
                 }
-                var machine = await this.identityService.GetAsync();
+                var machine = this.sessionService.MachineIdentity;
 
                 var allMissionsList = await this.areasWebService.GetItemListsAsync(machine.AreaId.Value, machine.Id, bay.Id, true, this.authenticationService.UserName);
 

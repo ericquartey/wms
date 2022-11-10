@@ -54,6 +54,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
+        private readonly ISessionService sessionService;
+
         private readonly IWmsDataProvider wmsDataProvider;
 
         private bool appear;
@@ -170,7 +172,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineConfigurationWebService machineConfigurationWebService,
             IAuthenticationService authenticationService,
             IMachineMissionsWebService machineMissionsWebService,
-            IMachineIdentityWebService machineIdentityWebService)
+            IMachineIdentityWebService machineIdentityWebService,
+            ISessionService sessionService)
             : base(PresentationMode.Operator)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
@@ -185,6 +188,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.sessionService = sessionService;
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
@@ -1217,7 +1221,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.areaId is null)
                 {
-                    var machineIdentity = await this.identityService.GetAsync();
+                    var machineIdentity = this.sessionService.MachineIdentity;
                     this.areaId = machineIdentity.AreaId;
                 }
                 this.isPickItemPutItemOperationsEnabled = await this.identityService.IsEnableHandlingItemOperationsAsync();
@@ -1439,9 +1443,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                if (this.areaId is null)
+                if (this.areaId is null && this.sessionService.MachineIdentity != null)
                 {
-                    var machineIdentity = await this.identityService.GetAsync();
+                    var machineIdentity = this.sessionService.MachineIdentity;
                     this.areaId = machineIdentity.AreaId;
                 }
 
@@ -1454,7 +1458,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.isDistinctBySerialNumber,
                     cancellationToken);
 
-                var model = await this.identityService.GetAsync();
+                var model = this.sessionService.MachineIdentity;
 
                 if (model is null)
                 {

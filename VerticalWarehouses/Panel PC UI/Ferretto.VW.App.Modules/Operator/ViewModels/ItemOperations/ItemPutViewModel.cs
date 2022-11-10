@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly List<MissionOperation> putLists = new List<MissionOperation>();
 
+        private readonly ISessionService sessionService;
+
         private DelegateCommand barcodeReaderCancelCommand;
 
         private DelegateCommand barcodeReaderConfirmCommand;
@@ -128,7 +130,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IAuthenticationService authenticationService,
             IMachineAccessoriesWebService accessoriesWebService,
             IAlphaNumericBarService alphaNumericBarService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            ISessionService sessionService)
             : base(
                   areasWebService,
                   machineIdentityWebService,
@@ -146,7 +149,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                   wmsDataProvider,
                   authenticationService,
                   accessoriesWebService,
-                  machineBaysWebService)
+                  machineBaysWebService,
+                  sessionService)
         {
             this.itemsWebService = itemsWebService ?? throw new ArgumentNullException(nameof(itemsWebService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
@@ -163,6 +167,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionOperationsService = missionOperationsService;
 
             this.alphaNumericBarService = alphaNumericBarService;
+            this.sessionService = sessionService;
         }
 
         #endregion
@@ -1010,7 +1015,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                var machineId = (await this.identityService.GetAsync()).Id;
+                var machineId = this.sessionService.MachineIdentity.Id;
 
                 this.putLists.Clear();
 

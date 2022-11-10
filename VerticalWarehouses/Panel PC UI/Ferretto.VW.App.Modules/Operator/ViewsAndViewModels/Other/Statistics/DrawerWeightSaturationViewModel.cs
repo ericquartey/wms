@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineLoadingUnitsWebService loadingUnitService;
+
+        private readonly ISessionService sessionService;
 
         private int currentItemIndex;
 
@@ -45,11 +48,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         public DrawerWeightSaturationViewModel(
             IMachineLoadingUnitsWebService loadingUnitService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;
             this.loadingUnitService = loadingUnitService;
             this.identityService = identityService;
+            this.sessionService = sessionService;
         }
 
         #endregion
@@ -147,7 +152,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 gridData.SelectedLoadingUnit = selectedLoadingUnit;
                 this.TotalLoadingUnits = loadingUnits.Count();
                 this.currentItemIndex = 0;
-                var machine = await this.identityService.GetAsync();
+                var machine = this.sessionService.MachineIdentity;
                 this.MaxGrossWeight = machine.MaxGrossWeight;
                 this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
