@@ -241,14 +241,14 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Info));
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlInfo));
         }
 
         private void NotifySuccess(string message)
         {
             this.eventAggregator
               .GetEvent<PresentationNotificationPubSubEvent>()
-              .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Success));
+              .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlSuccess));
         }
 
         private void NotifyWarning(string message)

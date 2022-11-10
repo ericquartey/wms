@@ -63,6 +63,8 @@
 
             public const string PICK_DETAILS = "ItemPickDetailsViewModel";
 
+            public const string PTL_MESSAGE = "PtlMessageViewModel";
+
             public const string PUT = "ItemPutViewModel";
 
             public const string PUT_DETAILS = "ItemPutDetailsViewModel";
