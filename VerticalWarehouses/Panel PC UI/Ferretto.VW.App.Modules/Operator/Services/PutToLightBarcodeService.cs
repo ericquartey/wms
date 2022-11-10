@@ -121,6 +121,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -146,6 +147,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -171,6 +173,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -195,6 +198,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -279,6 +283,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
