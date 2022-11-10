@@ -294,6 +294,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var machineIdentity = this.sessionService.MachineIdentity;
             if (machineIdentity is null)
             {
+                machineIdentity = await this.identityService.GetAsync();
+            }
+            if (machineIdentity is null)
+            {
                 return;
             }
 

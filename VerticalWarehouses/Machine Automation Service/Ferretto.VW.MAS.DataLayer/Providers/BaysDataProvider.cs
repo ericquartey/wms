@@ -51,13 +51,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.CurrentMission));
 
         private static readonly Func<DataLayerContext, int, Bay> GetByBayPositionIdCompile =
-                EF.CompileQuery((DataLayerContext context, int bayPositionId) =>
+                EF.CompileQuery((DataLayerContext context, int bayNumber) =>
                 context.Bays
                     .AsNoTracking()
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId)));
+                .SingleOrDefault(b => (int)b.Number == bayNumber));
 
         private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =
                 EF.CompileQuery((DataLayerContext context, Cell cell) =>
@@ -140,15 +138,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber));
 
-        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetPositionByLocationCompile =
-                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+        private static readonly Func<DataLayerContext, int, Bay> GetPositionByLocationCompile =
+                EF.CompileQuery((DataLayerContext context, int number) =>
                 context.Bays
                 .AsNoTracking()
-                .Include(b => b.Positions)
-                    .ThenInclude(b => b.LoadingUnit)
                 .Include(i => i.Carousel)
                 .Include(i => i.External)
-                .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
+                .FirstOrDefault(b => (int)b.Number == number));
 
         private readonly IMemoryCache cache;
 
@@ -450,12 +446,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetByBayPositionIdCompile(this.dataContext, bayPositionId);
+                var bayNumber = this.GetBayNumberByLocationId(bayPositionId);
+                if (!bayNumber.HasValue)
+                {
+                    throw new EntityNotFoundException(bayPositionId);
+                }
+                var bay = GetByBayPositionIdCompile(this.dataContext, bayNumber.Value);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);
                 }
 
+                this.LoadBayPositions(bay);
                 return bay;
             }
         }
@@ -1078,15 +1080,17 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetPositionByLocationCompile(this.dataContext, location);
+                var bayNumber = this.GetBayNumberByLocation(location);
+                if (!bayNumber.HasValue)
+                {
+                    throw new EntityNotFoundException(location.ToString());
+                }
+                var bay = GetPositionByLocationCompile(this.dataContext, bayNumber.Value);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(location.ToString());
                 }
-                foreach (var position in bay.Positions)
-                {
-                    position.Bay = bay;
-                }
+                this.LoadBayPositions(bay);
 
                 return bay.Positions.FirstOrDefault(p => p.Location == location);
             }
@@ -1657,9 +1661,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private int? GetBayNumberByLocation(LoadingUnitLocation location)
         {
-            return this.dataContext.BayPositions
-                                                .AsNoTracking()
+            return this.dataContext.BayPositions.AsNoTracking()
                                                 .Where(p => p.Location == location)
+                                                .Select(p => p.BayId)
+                                                .SingleOrDefault();
+        }
+
+        private int? GetBayNumberByLocationId(int locationId)
+        {
+            return this.dataContext.BayPositions.AsNoTracking()
+                                                .Where(p => p.Id == locationId)
                                                 .Select(p => p.BayId)
                                                 .SingleOrDefault();
         }
