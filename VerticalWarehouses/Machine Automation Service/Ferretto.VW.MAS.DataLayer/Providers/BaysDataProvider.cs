@@ -91,8 +91,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex));
 
-        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetByLoadingUnitLocationCompile =
-                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+        private static readonly Func<DataLayerContext, int, Bay> GetByLoadingUnitLocationCompile =
+                EF.CompileQuery((DataLayerContext context, int number) =>
                 context.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.DataLayer
                      .Include(b => b.Carousel)
                      .Include(b => b.External)
                      .Include(b => b.CurrentMission)
-                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
+                    .FirstOrDefault(b => (int)b.Number == number));
 
         private static readonly Func<DataLayerContext, BayNumber, Bay> GetByNumberCompile =
                                 EF.CompileQuery((DataLayerContext context, BayNumber bayNumber) =>
@@ -574,7 +574,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetByLoadingUnitLocationCompile(this.dataContext, location);
+                var bayNumber = this.GetBayNumberByLocation(location);
+                if (!bayNumber.HasValue)
+                {
+                    return null;
+                }
+                var bay = GetByLoadingUnitLocationCompile(this.dataContext, bayNumber.Value);
                 if (bay != null)
                 {
                     this.LoadBayPositions(bay);
@@ -1649,6 +1654,15 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
+
+        private int? GetBayNumberByLocation(LoadingUnitLocation location)
+        {
+            return this.dataContext.BayPositions
+                                                .AsNoTracking()
+                                                .Where(p => p.Location == location)
+                                                .Select(p => p.BayId)
+                                                .SingleOrDefault();
+        }
 
         /// <summary>
         /// TODO, this method it's dublicated because the insert in LoadUnitDataProvider generate a circural ref error
