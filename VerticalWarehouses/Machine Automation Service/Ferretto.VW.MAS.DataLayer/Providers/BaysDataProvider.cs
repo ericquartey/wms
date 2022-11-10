@@ -99,8 +99,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(i => i.Inverter)
                      .Include(b => b.Carousel)
                      .Include(b => b.External)
-                     .Include(b => b.Positions)
-                        .ThenInclude(t => t.LoadingUnit)
                      .Include(b => b.CurrentMission)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
 
@@ -579,10 +577,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = GetByLoadingUnitLocationCompile(this.dataContext, location);
                 if (bay != null)
                 {
-                    foreach (var position in bay.Positions)
-                    {
-                        position.Bay = bay;
-                    }
+                    this.LoadBayPositions(bay);
                 }
                 return bay;
             }
