@@ -2287,10 +2287,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.areaId is null)
                 {
                     var machineIdentity = this.sessionService.MachineIdentity;
-                    if (machineIdentity is null || machineIdentity.AreaId is null)
-                    {
-                        machineIdentity = await this.machineIdentityWebService.GetAsync();
-                    }
                     this.areaId = machineIdentity.AreaId;
                 }
 

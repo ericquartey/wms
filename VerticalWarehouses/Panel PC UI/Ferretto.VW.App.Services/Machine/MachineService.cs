@@ -464,7 +464,8 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                if (this.sessionService.MachineIdentity is null)
+                if (this.sessionService.MachineIdentity is null
+                    || this.sessionService.MachineIdentity.AreaId is null)
                 {
                     this.sessionService.MachineIdentity = await this.machineIdentityWebService.GetAsync();
                     this.IsTuningCompleted = this.sessionService.MachineIdentity.InstallationDate.HasValue;
