@@ -201,6 +201,20 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     case NotificationSeverity.Success:
                         this.logger.Info(message.Msg);
                         break;
+
+                    case NotificationSeverity.PtlInfo:
+                    case NotificationSeverity.PtlWarning:
+                    case NotificationSeverity.PtlError:
+                    case NotificationSeverity.PtlInfoStart:
+                        if (!this.NavigationService.IsActiveView(nameof(Utils.Modules.Operator), Utils.Modules.Operator.ItemOperations.PTL_MESSAGE))
+                        {
+                            this.NavigationService.Appear(nameof(Utils.Modules.Operator),
+                                                           Utils.Modules.Operator.ItemOperations.PTL_MESSAGE,
+                                                           message,
+                                                           trackCurrentView: true);
+                        }
+
+                        break;
                 }
             }
         }

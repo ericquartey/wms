@@ -13,5 +13,15 @@
         Success,
 
         Error,
+
+        PtlInfo,
+
+        PtlInfoStart,
+
+        PtlSuccess,
+
+        PtlWarning,
+
+        PtlError,
     }
 }

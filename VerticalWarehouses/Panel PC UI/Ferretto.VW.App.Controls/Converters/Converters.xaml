@@ -14,6 +14,10 @@
 
     <conv:LoadingUnitLocationConverter x:Key="LULC" />
     
+    <conv:NotificationSeverityToBrushConverter x:Key="NSTBC" />
+    <conv:NotificationSeverityToForegroundConverter x:Key="NSTFC" />
+    <conv:NotificationSeverityToIconNameConverter x:Key="NSTINC" />
+    
     <conv:ClassToForegroundConverter x:Key="CTFC" />
 
     <conv:BoolToThicknessConverter x:Key="BTTC" />
