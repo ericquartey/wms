@@ -365,7 +365,7 @@ namespace Ferretto.VW.App.Accessories
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Warning));
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlWarning));
         }
 
         private async Task OnBarcodeReceivedAsync(ActionEventArgs e)

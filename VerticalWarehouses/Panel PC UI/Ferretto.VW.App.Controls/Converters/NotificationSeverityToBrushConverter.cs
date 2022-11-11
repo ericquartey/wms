@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Controls.Converters
 
             var severity = (NotificationSeverity)value;
 
-            if (severity == NotificationSeverity.PtlInfo)
+            if (severity == NotificationSeverity.PtlInfo || severity == NotificationSeverity.PtlInfoStart)
             {
                 severity = NotificationSeverity.Info;
             }

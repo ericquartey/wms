@@ -16,6 +16,8 @@
 
         PtlInfo,
 
+        PtlInfoStart,
+
         PtlSuccess,
 
         PtlWarning,

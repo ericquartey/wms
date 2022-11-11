@@ -213,23 +213,23 @@ namespace Ferretto.VW.App.Modules.Operator
             switch (e.UserAction)
             {
                 case UserAction.AssociateBasketToShelf:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartAssociateBoxToShelf"));
+                    this.NotifyInfoStart(Localized.Get("OperatorApp.StartAssociateBoxToShelf"));
                     break;
 
                 case UserAction.RemoveFullBasket:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartMarkingFullBox"));
+                    this.NotifyInfoStart(Localized.Get("OperatorApp.StartMarkingFullBox"));
                     break;
 
                 case UserAction.CompleteBasket:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingBox"));
+                    this.NotifyInfoStart(Localized.Get("OperatorApp.StartClosingBox"));
                     break;
 
                 case UserAction.CarToMachine:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartCarToMachine"));
+                    this.NotifyInfoStart(Localized.Get("OperatorApp.StartCarToMachine"));
                     break;
 
                 case UserAction.CarComplete:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingCar"));
+                    this.NotifyInfoStart(Localized.Get("OperatorApp.StartClosingCar"));
                     break;
             }
         }
@@ -238,7 +238,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(ex));
+                .Publish(new PresentationNotificationMessage(ex.Message, Services.Models.NotificationSeverity.PtlError));
         }
 
         private void NotifyInfo(string message)
@@ -247,6 +247,14 @@ namespace Ferretto.VW.App.Modules.Operator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlInfo));
         }
+
+        private void NotifyInfoStart(string message)
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlInfoStart));
+        }
+
 
         private void NotifySuccess(string message)
         {
@@ -259,7 +267,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Warning));
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlWarning));
         }
 
         private async Task RemoveFullBasketAsync()

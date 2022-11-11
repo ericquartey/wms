@@ -14,24 +14,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IPutToLightBarcodeService putToLightBarcodeService;
-
         private readonly IBarcodeReaderService barcodeReaderService;
 
         private SubscriptionToken presentationNotificationToken;
 
-        private bool isBusy;
-
-        private PresentationNotificationMessage ptlMessage;
-
-        private PresentationNotificationMessage ptlMessage2;
-
         private ObservableCollection<PresentationNotificationMessage> listPtlMessage = new ObservableCollection<PresentationNotificationMessage>();
 
-        private bool hasErrors;
-
-
-
+        private PresentationNotificationMessage ptlErrorWarning = null;
 
         private DelegateCommand showBarcodeReaderCommand;
 
@@ -41,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isVisibleBarcodeReader;
 
-        private string barcodeString = "1";
+        private string barcodeString;
 
         #endregion
 
@@ -51,7 +40,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBarcodeReaderService barcodeReaderService)
                 : base(PresentationMode.Operator)
         {
-            this.putToLightBarcodeService = putToLightBarcodeService ?? throw new ArgumentNullException(nameof(putToLightBarcodeService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
         }
 
@@ -59,16 +47,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public PresentationNotificationMessage PtlMessage
+        public PresentationNotificationMessage PtlErrorWarning
         {
-            get => this.ptlMessage;
-            set => this.SetProperty(ref this.ptlMessage, value);
-        }
-
-        public PresentationNotificationMessage PtlMessage2
-        {
-            get => this.ptlMessage2;
-            set => this.SetProperty(ref this.ptlMessage2, value);
+            get => this.ptlErrorWarning;
+            set => this.SetProperty(ref this.ptlErrorWarning, value);
         }
 
         public ObservableCollection<PresentationNotificationMessage> ListPtlMessage
@@ -77,28 +59,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.listPtlMessage, value);
         }
 
-        public bool HasErrors
-        {
-            get => this.hasErrors;
-            set => this.SetProperty(ref this.hasErrors, value);
-        }
-
         public ICommand ShowBarcodeReaderCommand =>
            this.showBarcodeReaderCommand
            ??
            (this.showBarcodeReaderCommand = new DelegateCommand(this.ShowBarcodeReader));
 
         public ICommand BarcodeReaderCancelCommand =>
-                                    this.barcodeReaderCancelCommand
-                    ??
-                    (this.barcodeReaderCancelCommand = new DelegateCommand(
-                        async () => this.BarcodeReaderCancel()));
+            this.barcodeReaderCancelCommand
+            ??
+            (this.barcodeReaderCancelCommand = new DelegateCommand(async () => this.BarcodeReaderCancel()));
 
         public ICommand BarcodeReaderConfirmCommand =>
-                                            this.barcodeReaderConfirmCommand
-                    ??
-                    (this.barcodeReaderConfirmCommand = new DelegateCommand(
-                        async () => this.BarcodeReaderConfirm()));
+            this.barcodeReaderConfirmCommand
+            ??
+            (this.barcodeReaderConfirmCommand = new DelegateCommand(async () => this.BarcodeReaderConfirm(), this.CanConfirm));
+
         public bool IsVisibleBarcodeReader
         {
             get => this.isVisibleBarcodeReader;
@@ -114,6 +89,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        private bool CanConfirm()
+        {
+            return !string.IsNullOrEmpty(this.BarcodeString);
+        }
 
         public override async Task OnAppearedAsync()
         {
@@ -132,12 +112,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsVisibleBarcodeReader = false;
             this.ListPtlMessage.Clear();
-            this.PtlMessage2 = new PresentationNotificationMessage("", NotificationSeverity.NotSpecified);
+            this.BarcodeString = string.Empty;
+            this.PtlErrorWarning = null;
         }
 
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.barcodeReaderConfirmCommand.RaiseCanExecuteChanged();
         }
 
         public void NotificationChanged(PresentationNotificationMessage message)
@@ -149,8 +132,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             switch (message.NotificationSeverity)
             {
+                case NotificationSeverity.PtlInfoStart:
+                    this.ListPtlMessage.Clear();
+                    this.ListPtlMessage.Add(message);
+                    break;
                 case NotificationSeverity.PtlInfo:
                     this.ListPtlMessage.Add(message);
+                    break;
+                case NotificationSeverity.PtlWarning:
+                case NotificationSeverity.PtlError:
+                    this.PtlErrorWarning = message;
                     break;
                 case NotificationSeverity.PtlSuccess:
                     this.NavigationService.GoBack();
@@ -165,21 +156,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                this.isBusy = true;
-
                 if (this.Data is PresentationNotificationMessage message)
                 {
-                    this.PtlMessage = message;
-                    this.ListPtlMessage.Add(message);
+                    if (message.NotificationSeverity == NotificationSeverity.PtlInfoStart)
+                    {
+                        this.ListPtlMessage.Add(message);
+                    }
+                    else
+                    {
+                        this.PtlErrorWarning = message;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.isBusy = false;
             }
         }
 
@@ -201,8 +192,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         protected void ShowBarcodeReader()
         {
-            this.IsVisibleBarcodeReader = true;
+            this.IsVisibleBarcodeReader = !this.IsVisibleBarcodeReader;
         }
+
         public void BarcodeReaderCancel()
         {
             this.IsVisibleBarcodeReader = false;
