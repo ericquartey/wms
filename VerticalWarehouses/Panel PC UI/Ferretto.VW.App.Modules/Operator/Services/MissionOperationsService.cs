@@ -348,12 +348,10 @@ namespace Ferretto.VW.App.Modules.Operator
                 var retVal = currentMission.Machines.ToList().Exists(x => x.Id != machine.Id);
                 if (retVal)
                 {
-                    machineList = " (";
                     foreach (var otherMachine in currentMission.Machines.Where(x => x.Id != machine.Id))
                     {
-                        machineList = machineList + ", " + otherMachine.Id.ToString();
+                        machineList = machineList + " [" + otherMachine.Id.ToString() + "]";
                     }
-                    machineList = machineList + ")";
                 }
                 return machineList;
             }
