@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    var bay = this.BaysDataProvider.GetByNumberPositions(this.Mission.TargetBay);
 
                     if (bay.IsExternal &&
                         bay.IsDouble)

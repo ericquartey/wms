@@ -660,7 +660,7 @@ namespace Ferretto.VW.MAS.SocketLink
 
                         if (trayStatus == DataModels.Enumerations.LoadingUnitStatus.InLocation)
                         {
-                            var exitBay = this.baysDataProvider.GetByNumber(exitBayNumber);
+                            var exitBay = this.baysDataProvider.GetByNumberNoInclude(exitBayNumber);
                             this.logger.LogInformation($"Move load unit {trayNumber} to bay {exitBay.Number}");
                             this.missionSchedulingProvider.QueueBayMission(trayNumber, exitBay.Number, MissionType.OUT);
 
@@ -902,7 +902,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
 
-                    var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
+                    var bay = this.baysDataProvider.GetByNumberNoInclude(cmdReceived.GetBayNumber());
 
                     var id = cmdReceived.GetPayloadByPosition(2);
                     var message = cmdReceived.GetPayloadByPosition(3);
@@ -965,7 +965,7 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
-                    var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
+                    var bay = this.baysDataProvider.GetByNumberPositions(cmdReceived.GetBayNumber());
                     var trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
                     var numberMissionOnBay = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Count(m => m.MissionType == MissionType.OUT);
 
@@ -1047,7 +1047,7 @@ namespace Ferretto.VW.MAS.SocketLink
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(1));
                     cmdResponse.AddPayload(cmdReceived.GetPayloadByPosition(2));
 
-                    var bay = this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber());
+                    var bay = this.baysDataProvider.GetByNumberNoInclude(cmdReceived.GetBayNumber());
                     var missionType = (MissionType)Enum.Parse(typeof(MissionType), cmdReceived.GetPayloadByPosition(2));
 
                     var activeMissions = this.missionsDataProvider.GetAllActiveMissionsByBay(bay.Number).Where(m => m.MissionType == missionType);
@@ -1247,7 +1247,7 @@ namespace Ferretto.VW.MAS.SocketLink
                 if (this.WarehouseNumberIsValid(cmdReceived))
                 {
                     var bayNumber = cmdReceived.GetBayNumber();
-                    var bay = this.baysDataProvider.GetByNumber(bayNumber);
+                    var bay = this.baysDataProvider.GetByNumberPositions(bayNumber);
                     trayNumber = bay.Positions.OrderByDescending(o => o.IsUpper).FirstOrDefault(x => x.LoadingUnit != null)?.LoadingUnit?.Id ?? 0;
 
                     if (trayNumber > 0

@@ -629,7 +629,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         || mission.RestoreStep == MissionStep.WaitPick
                         )
                     {
-                        var bay = bayProvider.GetByNumber(mission.TargetBay);
+                        var bay = bayProvider.GetByNumberCarousel(mission.TargetBay);
                         if (bay != null
                             && bay.Carousel != null)
                         {

@@ -460,7 +460,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
                         {
-                            var bay = baysDataProvider.GetByNumberCarousel(this.machineData.RequestingBay);
+                            var bay = baysDataProvider.GetByNumberPositions(this.machineData.RequestingBay);
                             if (this.machineData.MessageData.TargetPosition > 0
                                 && machineResourcesProvider.IsDrawerInBayTop(bay.Number, bay.IsExternal)
                                 && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number, bay.IsExternal))

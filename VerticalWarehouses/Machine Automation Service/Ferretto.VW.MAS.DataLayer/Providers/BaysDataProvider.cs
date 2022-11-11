@@ -710,6 +710,30 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Bay GetByNumberNoInclude(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    var bay = this.dataContext.Bays
+                        .AsNoTracking()
+                        .Where(b => b.Number == bayNumber)
+                        .Single();
+
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
+                    return bay;
+                }
+                catch
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+            }
+        }
+
         public Bay GetByNumberPositions(BayNumber bayNumber)
         {
             lock (this.dataContext)

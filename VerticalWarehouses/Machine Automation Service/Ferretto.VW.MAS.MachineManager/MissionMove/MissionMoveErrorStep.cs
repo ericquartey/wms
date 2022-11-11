@@ -281,7 +281,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 case MissionStep.ElevatorBayUp:
-                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    var bay = this.BaysDataProvider.GetByNumberShutter(this.Mission.TargetBay);
                     if (bay.IsExternal &&
                         bay.IsDouble)
                     {
@@ -373,21 +373,21 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                this.Mission.RestoreStep = MissionStep.NotDefined;
-                this.Mission.RestoreConditions = false;
-                this.Mission.NeedMovingBackward = false;
-                if (this.Mission.MissionType == MissionType.OUT
-                    || this.Mission.MissionType == MissionType.WMS
-                    || this.Mission.MissionType == MissionType.FullTestOUT
-                    )
-                {
-                    var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
-                }
-                else
-                {
-                    var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
-                    newStep.OnEnter(null);
+                    this.Mission.RestoreStep = MissionStep.NotDefined;
+                    this.Mission.RestoreConditions = false;
+                    this.Mission.NeedMovingBackward = false;
+                    if (this.Mission.MissionType == MissionType.OUT
+                        || this.Mission.MissionType == MissionType.WMS
+                        || this.Mission.MissionType == MissionType.FullTestOUT
+                        )
+                    {
+                        var newStep = new MissionMoveWaitPickStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
+                    }
+                    else
+                    {
+                        var newStep = new MissionMoveEndStep(this.Mission, this.ServiceProvider, this.EventAggregator);
+                        newStep.OnEnter(null);
                     }
                 }
             }
@@ -572,7 +572,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     return;
 
                 case MissionStep.ElevatorBayUp:
-                    var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+                    var bay = this.BaysDataProvider.GetByNumberPositions(this.Mission.TargetBay);
                     if (bay.IsExternal &&
                         bay.IsDouble)
                     {
@@ -631,7 +631,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Mission.StopReason = StopRequestReason.NoReason;
             var shutterInverter = this.BaysDataProvider.GetShutterInverterIndex(this.Mission.TargetBay);
             var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+            var bay = this.BaysDataProvider.GetByNumberShutter(this.Mission.TargetBay);
             if (shutterInverter != InverterIndex.None
                 && bay.Shutter != null
                 && bay.Shutter.Type != ShutterType.NotSpecified

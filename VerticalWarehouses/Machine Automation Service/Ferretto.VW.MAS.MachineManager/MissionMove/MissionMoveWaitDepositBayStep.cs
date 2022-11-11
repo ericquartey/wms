@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             // get the (target) bay
-            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+            var bay = this.BaysDataProvider.GetByNumberCarousel(this.Mission.TargetBay);
 
             // upper location
             var upperBayLocation = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             this.Logger.LogDebug($"{this.GetType().Name}: {this.Mission}");
 
             // get the (target) bay
-            var bay = this.BaysDataProvider.GetByNumber(this.Mission.TargetBay);
+            var bay = this.BaysDataProvider.GetByNumberCarousel(this.Mission.TargetBay);
 
             if (bay.IsExternal && bay.IsDouble)
             {

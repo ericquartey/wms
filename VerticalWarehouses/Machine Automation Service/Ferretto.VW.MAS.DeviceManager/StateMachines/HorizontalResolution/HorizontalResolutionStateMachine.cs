@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.DeviceManager.HorizontalResolution
         /// <returns><c>true</c> if success, <c>false</c> otherwise</returns>
         private bool CheckConditions(out string errorText, out DataModels.MachineErrorCode errorCode)
         {
-            var bay = this.baysDataProvider.GetByNumber(this.machineData.TargetBay);
+            var bay = this.baysDataProvider.GetByNumberCarousel(this.machineData.TargetBay);
             var ok = true;
             errorText = string.Empty;
             errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;

@@ -73,6 +73,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay GetByNumberExternal(BayNumber bayNumber);
 
+        Bay GetByNumberNoInclude(BayNumber bayNumber);
+
         Bay GetByNumberPositions(BayNumber bayNumber);
 
         Bay GetByNumberShutter(BayNumber bayNumber);
