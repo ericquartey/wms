@@ -1004,9 +1004,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
-            if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id))
+            if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id, out var machineList))
             {
-                this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
+                this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo") + machineList,
+                    Localized.Get("OperatorApp.OperationConfirmed"),
+                    DialogType.Information,
+                    DialogButtons.OK);
             }
 
             var lastOperationList = string.Empty;

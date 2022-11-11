@@ -325,11 +325,12 @@ namespace Ferretto.VW.App.Modules.Operator
             return retValue;
         }
 
-        public async Task<bool> IsMultiMachineAsync(int missionId)
+        public async Task<bool> IsMultiMachineAsync(int missionId, out string machineList)
         {
             try
             {
                 var bay = this.machineService.Bay;
+                machineList = string.Empty;
 
                 if (bay.CheckListContinueInOtherMachine is false)
                 {
@@ -344,8 +345,17 @@ namespace Ferretto.VW.App.Modules.Operator
                 {
                     return false;
                 }
-
-                return currentMission.Machines.ToList().Exists(x => x.Id != machine.Id);
+                var retVal = currentMission.Machines.ToList().Exists(x => x.Id != machine.Id);
+                if (retVal)
+                {
+                    machineList = " (";
+                    foreach (var machine in currentMission.Machines.Where(x => x.Id != machine.Id))
+                    {
+                        machineList = machineList + ", " + machine.Id.ToString();
+                    }
+                    machineList = machineList + ")";
+                }
+                return retVal;
             }
             catch (Exception ex)
             {

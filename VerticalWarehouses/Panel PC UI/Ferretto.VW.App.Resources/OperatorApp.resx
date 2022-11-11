@@ -2455,7 +2455,7 @@
     <value>Drapery handling (WMS custom)</value>
   </data>
   <data name="OperationMultiMachineInfo" xml:space="preserve">
-    <value>The operation continues on another machine</value>
+    <value>The operation continues on other machines</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priority</value>
