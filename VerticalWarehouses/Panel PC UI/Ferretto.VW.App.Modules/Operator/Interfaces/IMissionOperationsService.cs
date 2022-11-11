@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         Task<bool> IsLastWmsMissionForCurrentLoadingUnitAsync(int missionId);
 
-        Task<bool> IsMultiMachineAsync(int missionId, out string machineList);
+        Task<string> IsMultiMachineAsync(int missionId);
 
         bool IsRecallLoadingUnitId();
 

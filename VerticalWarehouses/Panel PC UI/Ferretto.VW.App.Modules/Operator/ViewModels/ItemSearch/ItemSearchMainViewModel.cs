@@ -1443,9 +1443,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             try
             {
-                if (this.areaId is null && this.sessionService.MachineIdentity != null)
+                if (this.areaId is null)
                 {
                     var machineIdentity = this.sessionService.MachineIdentity;
+                    if (machineIdentity is null || machineIdentity.AreaId is null)
+                    {
+                        machineIdentity = await this.machineIdentityWebService.GetAsync();
+                    }
                     this.areaId = machineIdentity.AreaId;
                 }
 

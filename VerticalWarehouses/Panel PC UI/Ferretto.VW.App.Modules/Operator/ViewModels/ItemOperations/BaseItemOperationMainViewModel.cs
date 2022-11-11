@@ -1004,7 +1004,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
-            if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id, out var machineList))
+            var machineList = await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id);
+            if (!string.IsNullOrEmpty(machineList))
             {
                 this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo") + machineList,
                     Localized.Get("OperatorApp.OperationConfirmed"),
@@ -2286,7 +2287,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.areaId is null)
                 {
                     var machineIdentity = this.sessionService.MachineIdentity;
-                    if (machineIdentity is null)
+                    if (machineIdentity is null || machineIdentity.AreaId is null)
                     {
                         machineIdentity = await this.machineIdentityWebService.GetAsync();
                     }

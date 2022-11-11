@@ -325,16 +325,16 @@ namespace Ferretto.VW.App.Modules.Operator
             return retValue;
         }
 
-        public async Task<bool> IsMultiMachineAsync(int missionId, out string machineList)
+        public async Task<string> IsMultiMachineAsync(int missionId)
         {
+            var machineList = string.Empty;
             try
             {
                 var bay = this.machineService.Bay;
-                machineList = string.Empty;
 
                 if (bay.CheckListContinueInOtherMachine is false)
                 {
-                    return false;
+                    return machineList;
                 }
                 var machine = this.sessionService.MachineIdentity;
 
@@ -343,24 +343,24 @@ namespace Ferretto.VW.App.Modules.Operator
                 var currentMission = allMissionsList.ToList().Find(x => x.Code == this.ActiveWmsMission?.Operations.FirstOrDefault().ItemListCode);
                 if (currentMission is null)
                 {
-                    return false;
+                    return machineList;
                 }
                 var retVal = currentMission.Machines.ToList().Exists(x => x.Id != machine.Id);
                 if (retVal)
                 {
                     machineList = " (";
-                    foreach (var machine in currentMission.Machines.Where(x => x.Id != machine.Id))
+                    foreach (var otherMachine in currentMission.Machines.Where(x => x.Id != machine.Id))
                     {
-                        machineList = machineList + ", " + machine.Id.ToString();
+                        machineList = machineList + ", " + otherMachine.Id.ToString();
                     }
                     machineList = machineList + ")";
                 }
-                return retVal;
+                return machineList;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-                return false;
+                return machineList;
             }
         }
 
