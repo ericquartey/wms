@@ -14,9 +14,11 @@
 
         Error,
 
-        PtlInfo,
-
         PtlInfoStart,
+
+        PtlInfo1,
+
+        PtlInfo2,
 
         PtlSuccess,
 

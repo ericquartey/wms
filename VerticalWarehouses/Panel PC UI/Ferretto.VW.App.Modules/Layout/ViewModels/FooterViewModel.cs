@@ -202,7 +202,6 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                         this.logger.Info(message.Msg);
                         break;
 
-                    case NotificationSeverity.PtlInfo:
                     case NotificationSeverity.PtlWarning:
                     case NotificationSeverity.PtlError:
                     case NotificationSeverity.PtlInfoStart:
