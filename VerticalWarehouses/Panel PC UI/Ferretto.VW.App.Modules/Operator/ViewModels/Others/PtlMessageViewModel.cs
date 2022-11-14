@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -18,7 +17,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private SubscriptionToken presentationNotificationToken;
 
-        private ObservableCollection<PresentationNotificationMessage> listPtlMessage = new ObservableCollection<PresentationNotificationMessage>();
+        private PresentationNotificationMessage ptlStartInfo;
+
+        private PresentationNotificationMessage ptlInfo1 = null;
+
+        private PresentationNotificationMessage ptlInfo2 = null;
 
         private PresentationNotificationMessage ptlErrorWarning = null;
 
@@ -53,10 +56,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.ptlErrorWarning, value);
         }
 
-        public ObservableCollection<PresentationNotificationMessage> ListPtlMessage
+        public PresentationNotificationMessage PtlStartInfo
         {
-            get => this.listPtlMessage;
-            set => this.SetProperty(ref this.listPtlMessage, value);
+            get => this.ptlStartInfo;
+            set => this.SetProperty(ref this.ptlStartInfo, value);
+        }
+
+        public PresentationNotificationMessage PtlInfo1
+        {
+            get => this.ptlInfo1;
+            set => this.SetProperty(ref this.ptlInfo1, value);
+        }
+
+        public PresentationNotificationMessage PtlInfo2
+        {
+            get => this.ptlInfo2;
+            set => this.SetProperty(ref this.ptlInfo2, value);
         }
 
         public ICommand ShowBarcodeReaderCommand =>
@@ -111,8 +126,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.UnSubscribe();
 
             this.IsVisibleBarcodeReader = false;
-            this.ListPtlMessage.Clear();
             this.BarcodeString = string.Empty;
+
+            this.PtlStartInfo = null;
+            this.PtlInfo1 = null;
+            this.PtlInfo2 = null;
             this.PtlErrorWarning = null;
         }
 
@@ -133,23 +151,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (message.NotificationSeverity)
             {
                 case NotificationSeverity.PtlInfoStart:
-                    this.ListPtlMessage.Clear();
-                    this.ListPtlMessage.Add(message);
+                    this.PtlStartInfo = message;
+                    this.PtlInfo1 = null;
+                    this.PtlInfo2 = null;
+                    this.PtlErrorWarning = null;
                     break;
-                case NotificationSeverity.PtlInfo:
-                    this.ListPtlMessage.Add(message);
+                case NotificationSeverity.PtlInfo1:
+                    this.PtlInfo1 = message;
+                    this.PtlErrorWarning = null;
+                    break;
+                case NotificationSeverity.PtlInfo2:
+                    this.PtlInfo2 = message;
+                    this.PtlErrorWarning = null;
+                    break;
+                case NotificationSeverity.PtlSuccess:
+                    this.NavigationService.GoBack();
+                    this.PtlErrorWarning = null;
                     break;
                 case NotificationSeverity.PtlWarning:
                 case NotificationSeverity.PtlError:
                     this.PtlErrorWarning = message;
                     break;
-                case NotificationSeverity.PtlSuccess:
-                    this.NavigationService.GoBack();
-                    break;
                 default:
                     break;
             }
-
         }
 
         private async Task LoadData()
@@ -158,13 +183,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.Data is PresentationNotificationMessage message)
                 {
-                    if (message.NotificationSeverity == NotificationSeverity.PtlInfoStart)
+                    switch (message.NotificationSeverity)
                     {
-                        this.ListPtlMessage.Add(message);
-                    }
-                    else
-                    {
-                        this.PtlErrorWarning = message;
+                        case NotificationSeverity.PtlInfoStart:
+                            this.PtlStartInfo = message;
+                            break;
+                        case NotificationSeverity.PtlInfo1:
+                            this.PtlInfo1 = message;
+                            break;
+                        case NotificationSeverity.PtlInfo2:
+                            this.PtlInfo2 = message;
+                            break;
+                        case NotificationSeverity.PtlWarning:
+                        case NotificationSeverity.PtlError:
+                            this.PtlErrorWarning = message;
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
