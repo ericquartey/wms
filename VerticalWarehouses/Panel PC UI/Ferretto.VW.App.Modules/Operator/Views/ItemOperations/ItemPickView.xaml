@@ -76,7 +76,7 @@
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="0"
             Visibility="{Binding IsAddItem, Converter={StaticResource BTVIC}}">
-      <Grid Margin="20">
+      <Grid Margin="5">
         <Grid.RowDefinitions>
           <RowDefinition Height="165" />
           <RowDefinition Height="*" />
@@ -109,13 +109,13 @@
     </Border>
 
     <Border Grid.Row="2"
-            Margin="0,15,0,0"
+            Margin="0,5,0,0"
             Background="{DynamicResource PpcBackground}"
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="0"
             Visibility="{Binding IsAddItem, Converter={StaticResource BTVC}}">
-      <Grid Margin="20">
+      <Grid Margin="5">
         <Grid.RowDefinitions>
           <RowDefinition Height="165" />
           <RowDefinition Height="*" />
