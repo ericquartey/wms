@@ -33,6 +33,7 @@
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
 - Liste in attesa: aumentato spazio per la descrizione di lista
 - Nella conferma della lista che continua su altre macchine appare l'elenco delle macchine
+- Barra alfanumerica: inserito ritardo per l'invio dei messaggi
 
 ## Compatibile con adapter 0.4.42
 ***
