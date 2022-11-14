@@ -32,10 +32,10 @@
                    Text="Put to Light"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}" />
 
-        <StackPanel>
+        <StackPanel Grid.Row="1" Margin="0,15,15,0">
             
             <Border Padding="15,5"
-                    Margin="5"
+                    Margin="0,5"
                     Background="{Binding PtlStartInfo.NotificationSeverity, Converter={StaticResource NSTBC}}"
                     Visibility="{Binding PtlStartInfo.Msg, Converter={StaticResource RTVC}}">
                 <Grid>
@@ -62,9 +62,9 @@
             </Border>
             
             <Border Padding="15,5"
-                    Margin="5"
-                    Background="{Binding PtlSelectShelfInfo.NotificationSeverity, Converter={StaticResource NSTBC}}"
-                    Visibility="{Binding PtlSelectShelfInfo.Msg, Converter={StaticResource RTVC}}">
+                    Margin="0,5"
+                    Background="{Binding PtlInfo1.NotificationSeverity, Converter={StaticResource NSTBC}}"
+                    Visibility="{Binding PtlInfo1.Msg, Converter={StaticResource RTVC}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -75,23 +75,23 @@
                                               Margin="0,0,15,0"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
-                                              Foreground="{Binding PtlSelectShelfInfo.NotificationSeverity, Converter={StaticResource NSTFC}}"
-                                              Kind="{Binding PtlSelectShelfInfo.NotificationSeverity, Converter={StaticResource NSTINC}}" />
+                                              Foreground="{Binding PtlInfo1.NotificationSeverity, Converter={StaticResource NSTFC}}"
+                                              Kind="{Binding PtlInfo1.NotificationSeverity, Converter={StaticResource NSTINC}}" />
                     <TextBlock Grid.Column="1"
                                Margin="0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               Foreground="{Binding PtlSelectShelfInfo.NotificationSeverity, Converter={StaticResource NSTFC}}"
+                               Foreground="{Binding PtlInfo1.NotificationSeverity, Converter={StaticResource NSTFC}}"
                                Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                               Text="{Binding PtlSelectShelfInfo.Msg}"
+                               Text="{Binding PtlInfo1.Msg}"
                                TextWrapping="Wrap" />
                 </Grid>
             </Border>
             
             <Border Padding="15,5"
-                    Margin="5"
-                    Background="{Binding PtlSelectBasketfInfo.NotificationSeverity, Converter={StaticResource NSTBC}}"
-                    Visibility="{Binding PtlSelectBasketfInfo.Msg, Converter={StaticResource RTVC}}">
+                    Margin="0,5"
+                    Background="{Binding PtlInfo2.NotificationSeverity, Converter={StaticResource NSTBC}}"
+                    Visibility="{Binding PtlInfo2.Msg, Converter={StaticResource RTVC}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -102,15 +102,15 @@
                                               Margin="0,0,15,0"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
-                                              Foreground="{Binding PtlSelectBasketfInfo.NotificationSeverity, Converter={StaticResource NSTFC}}"
-                                              Kind="{Binding PtlSelectBasketfInfo.NotificationSeverity, Converter={StaticResource NSTINC}}" />
+                                              Foreground="{Binding PtlInfo2.NotificationSeverity, Converter={StaticResource NSTFC}}"
+                                              Kind="{Binding PtlInfo2.NotificationSeverity, Converter={StaticResource NSTINC}}" />
                     <TextBlock Grid.Column="1"
                                Margin="0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               Foreground="{Binding PtlSelectBasketfInfo.NotificationSeverity, Converter={StaticResource NSTFC}}"
+                               Foreground="{Binding PtlInfo2.NotificationSeverity, Converter={StaticResource NSTFC}}"
                                Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
-                               Text="{Binding PtlSelectBasketfInfo.Msg}"
+                               Text="{Binding PtlInfo2.Msg}"
                                TextWrapping="Wrap" />
                 </Grid>
             </Border>
