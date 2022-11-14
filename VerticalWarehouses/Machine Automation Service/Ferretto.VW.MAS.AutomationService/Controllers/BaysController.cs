@@ -93,6 +93,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(bay);
         }
 
+        [HttpGet("get-isexternal{bayNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<bool> GetIsExternal(BayNumber bayNumber)
+        {
+            return this.Ok(this.baysDataProvider.GetIsExternal(bayNumber));
+        }
+
         [HttpPost("get-light")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,6 +109,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetLight()
         {
             return this.Ok(this.baysDataProvider.GetLightOn(this.BayNumber));
+        }
+
+        [HttpGet("get-positions{bayNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<Bay> GetPositionsByNumber(BayNumber bayNumber)
+        {
+            var bay = this.baysDataProvider.GetByNumberPositions(bayNumber);
+
+            return this.Ok(bay);
         }
 
         [HttpPost("homing")]

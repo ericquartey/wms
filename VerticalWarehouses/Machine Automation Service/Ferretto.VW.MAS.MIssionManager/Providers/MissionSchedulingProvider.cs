@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (loadUnitSource == LoadingUnitLocation.NoLocation)
                 {
                     var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-                    var bay = this.baysDataProvider.GetByNumber(sourceBayNumber);
+                    var bay = this.baysDataProvider.GetByNumberCarousel(sourceBayNumber);
                     var isUpper = true;
                     if (bay.IsDouble && bay.IsExternal)
                     {

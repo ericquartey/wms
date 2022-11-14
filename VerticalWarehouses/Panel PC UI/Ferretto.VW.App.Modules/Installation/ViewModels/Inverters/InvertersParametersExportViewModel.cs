@@ -53,8 +53,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public InvertersParametersExportViewModel(
             IMachineConfigurationWebService machineConfigurationWebService,
             IMachineDevicesWebService machineDevicesWebService,
-            IMachineIdentityWebService identityService,
-            IUsbWatcherService usbWatcher) : base(identityService)
+            ISessionService sessionService,
+            IUsbWatcherService usbWatcher)
+            : base(sessionService)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));

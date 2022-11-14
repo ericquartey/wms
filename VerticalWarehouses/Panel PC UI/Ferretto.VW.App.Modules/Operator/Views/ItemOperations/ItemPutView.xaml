@@ -77,7 +77,7 @@
             BorderBrush="{DynamicResource PpcBorderBrush}"
             BorderThickness="{DynamicResource PpcBorderThickness}"
             CornerRadius="0">
-      <Grid Margin="20">
+      <Grid Margin="5">
         <Grid.RowDefinitions>
           <RowDefinition Height="165" />
           <RowDefinition Height="*" />

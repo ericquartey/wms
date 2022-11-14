@@ -341,6 +341,8 @@ namespace Ferretto.VW.App.Services
 
         public double MaxSolidSpace { get; private set; }
 
+        public IEnumerable<Mission> Missions { get; private set; }
+
         public IEnumerable<Cell> OriginalCells => this.originalCells;
 
         public SetupStatusCapabilities SetupStatus { get; set; }
@@ -462,14 +464,13 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var idService = await this.machineIdentityWebService.GetAsync();
-                if (idService != null)
+                if (this.sessionService.MachineIdentity is null
+                    || this.sessionService.MachineIdentity.AreaId is null)
                 {
-                    this.sessionService.MachineIdentity = idService;
-                    this.IsTuningCompleted = idService.InstallationDate.HasValue;
+                    this.sessionService.MachineIdentity = await this.machineIdentityWebService.GetAsync();
+                    this.IsTuningCompleted = this.sessionService.MachineIdentity.InstallationDate.HasValue;
                 }
-                if (idService is null
-                    || this.SetupStatus is null
+                if (this.SetupStatus is null
                     || !this.IsTuningCompleted
                     )
                 {
@@ -597,7 +598,9 @@ namespace Ferretto.VW.App.Services
 
         public async Task UpdateLoadUnitInBayAsync()
         {
-            this.Bay = await this.bayManagerService.GetBayAsync();
+            var bayPositions = await this.bayManagerService.GetPositionsBayAsync();
+            this.Bay.Positions = bayPositions.Positions;
+            this.sensorsService.SetBay(this.Bay);
             if (this.Bay.IsDouble || this.BayFirstPositionIsUpper || this.Bay.Carousel != null)
             {
                 if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
@@ -725,14 +728,14 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var missions = (await this.missionsWebService.GetAllAsync());
-                this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+                this.Missions = (await this.missionsWebService.GetAllAsync());
+                this.IsMissionInError = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-                this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+                this.IsMissionInErrorByLoadUnitOperations = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
-                this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
+                this.IsMissionWms = this.Missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
 
-                this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
+                this.MachineStatus.IsMovingLoadingUnit = this.Missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
@@ -869,6 +872,16 @@ namespace Ferretto.VW.App.Services
                             else
                             {
                                 this.logger.Debug($"OnDataChanged({this.BayNumber}):{typeof(TData).Name}; {message.Status};");
+                            }
+
+                            if (message?.Data is MoveLoadingUnitMessageData)
+                            {
+                                this.Missions = await this.missionsWebService.GetAllAsync();
+                                this.IsMissionInError = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+
+                                this.IsMissionInErrorByLoadUnitOperations = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+
+                                this.IsMissionWms = this.Missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
                             }
 
                             lock (this.MachineStatus)
@@ -1112,13 +1125,13 @@ namespace Ferretto.VW.App.Services
                             }
                             if (this.MachineStatus.IsMovingLoadingUnit)
                             {
-                                var missions = await this.missionsWebService.GetAllAsync();
-                                this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+                                this.Missions = await this.missionsWebService.GetAllAsync();
+                                this.IsMissionInError = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-                                this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+                                this.IsMissionInErrorByLoadUnitOperations = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
-                                this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
-                                this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
+                                this.IsMissionWms = this.Missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
+                                this.MachineStatus.IsMovingLoadingUnit = this.Missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
                             }
 
                             var embarkedLoadingUnit = await this.GetLodingUnitOnBoardAsync();
@@ -1466,19 +1479,20 @@ namespace Ferretto.VW.App.Services
 
         private async Task UpdateBay()
         {
-            var missions = (await this.missionsWebService.GetAllAsync());
+            this.Missions = await this.missionsWebService.GetAllAsync();
 
-            this.IsMissionInError = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
+            this.IsMissionInError = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined);
 
-            this.IsMissionInErrorByLoadUnitOperations = missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
+            this.IsMissionInErrorByLoadUnitOperations = this.Missions.Any(a => a.RestoreStep != MAS.AutomationService.Contracts.MissionStep.NotDefined && a.MissionType == MAS.AutomationService.Contracts.MissionType.LoadUnitOperation);
 
-            this.IsMissionWms = missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
+            this.IsMissionWms = this.Missions.Any(a => a.MissionType == MAS.AutomationService.Contracts.MissionType.WMS);
 
-            this.MachineStatus.IsMovingLoadingUnit = missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
+            this.MachineStatus.IsMovingLoadingUnit = this.Missions.Any(m => m.Status == MAS.AutomationService.Contracts.MissionStatus.Executing);
 
             // Devo aggiornare i dati delle posizioni della baia
             this.bays = await this.machineBaysWebService.GetAllAsync();
             this.Bay = await this.bayManagerService.GetBayAsync();
+            this.sensorsService.SetBay(this.Bay);
 
             this.HasShutter = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type != ShutterType.NotSpecified : false;
             this.IsShutterThreeSensors = (this.Bay.Shutter != null) ? this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors : false;

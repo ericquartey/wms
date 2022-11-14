@@ -54,11 +54,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public InvertersParametersImportViewModel(
-            IMachineIdentityWebService identityService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService,
             IUsbWatcherService usbWatcher)
-            : base(identityService)
+            : base(sessionService)
         {
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineDevicesWebService = machineDevicesWebService ?? throw new ArgumentNullException(nameof(machineDevicesWebService));

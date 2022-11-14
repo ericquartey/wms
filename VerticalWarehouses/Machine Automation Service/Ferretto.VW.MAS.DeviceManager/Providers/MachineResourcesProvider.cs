@@ -36,14 +36,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
+        private readonly int[] outCurrent = new int[3 * REMOTEIO_OUTPUTS * 8];
+
+        private readonly bool[] outFault = new bool[3 * REMOTEIO_OUTPUTS * 8];
+
         /// <summary>
         /// It contains the Remote IO sensor status between index 0 and 47
         /// followed by the Inverter sensor between index 48 and 111.
         /// </summary>
         private readonly bool[] sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
-
-        private readonly bool[] outFault = new bool[3 * REMOTEIO_OUTPUTS * 8];
-        private readonly int[] outCurrent = new int[3 * REMOTEIO_OUTPUTS * 8];
 
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -216,14 +217,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (bool[])this.sensorStatus.Clone();
         }
 
-        public bool[] GetOutFault()
-        {
-            return (bool[])this.outFault.Clone();
-        }
-
         public int[] GetOutCurrent()
         {
             return (int[])this.outCurrent.Clone();
+        }
+
+        public bool[] GetOutFault()
+        {
+            return (bool[])this.outFault.Clone();
         }
 
         public ShutterPosition GetShutterPosition(InverterIndex inverterIndex)
@@ -641,31 +642,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public bool UpdateDiagOutFault(byte ioIndex, bool[] newOutFault)
-        {
-            if (newOutFault == null)
-            {
-                return false;
-            }
-            if (ioIndex > 2)
-            {
-                return false;
-            }
-            var requiredUpdate = false;
-            for (var index = 0; index < REMOTEIO_OUTPUTS && !requiredUpdate; index++)
-            {
-                if (this.outFault[(ioIndex * REMOTEIO_OUTPUTS) + index] != newOutFault[index])
-                {
-                    requiredUpdate = true;
-                }
-            }
-            if(requiredUpdate)
-            {
-                Array.Copy(newOutFault, 0, this.outFault, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
-            }
-            return requiredUpdate;
-        }
-
         public bool UpdateDiagOutCurrent(byte ioIndex, int[] newOutCurrent)
         {
             if (newOutCurrent == null)
@@ -687,6 +663,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (requiredUpdate)
             {
                 Array.Copy(newOutCurrent, 0, this.outCurrent, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
+            }
+            return requiredUpdate;
+        }
+
+        public bool UpdateDiagOutFault(byte ioIndex, bool[] newOutFault)
+        {
+            if (newOutFault == null)
+            {
+                return false;
+            }
+            if (ioIndex > 2)
+            {
+                return false;
+            }
+            var requiredUpdate = false;
+            for (var index = 0; index < REMOTEIO_OUTPUTS && !requiredUpdate; index++)
+            {
+                if (this.outFault[(ioIndex * REMOTEIO_OUTPUTS) + index] != newOutFault[index])
+                {
+                    requiredUpdate = true;
+                }
+            }
+            if (requiredUpdate)
+            {
+                Array.Copy(newOutFault, 0, this.outFault, (ioIndex * REMOTEIO_OUTPUTS), REMOTEIO_OUTPUTS);
             }
             return requiredUpdate;
         }
@@ -930,30 +931,30 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 var eventAggregator = scope.ServiceProvider.GetRequiredService<IEventAggregator>();
                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                foreach (var bay in baysDataProvider.GetAll())
+                foreach (var bayNumber in baysDataProvider.GetBayNumbers())
                 {
                     var isError = false;
-                    switch (bay.Number)
+                    switch (bayNumber)
                     {
                         case BayNumber.BayOne:
-                            isError = (bay.IsTelescopic &&
+                            isError = (baysDataProvider.GetIsTelescopic(bayNumber) &&
                                 !this.TeleOkBay1);
                             break;
 
                         case BayNumber.BayTwo:
-                            isError = (bay.IsTelescopic &&
+                            isError = (baysDataProvider.GetIsTelescopic(bayNumber) &&
                                 !this.TeleOkBay2);
                             break;
 
                         case BayNumber.BayThree:
-                            isError = (bay.IsTelescopic &&
+                            isError = (baysDataProvider.GetIsTelescopic(bayNumber) &&
                                 !this.TeleOkBay3);
                             break;
                     }
 
                     if (isError)
                     {
-                        errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bay.Number);
+                        errorsProvider.RecordNew(MachineErrorCode.TelescopicBayError, bayNumber);
                         if (this.IsMachineInRunningState)
                         {
                             var stopMachineData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, StopRequestReason.Stop);
@@ -962,7 +963,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                 MessageActor.MachineManager,
                                 MessageActor.DeviceManager,
                                 MessageType.ChangeRunningState,
-                                bay.Number);
+                                bayNumber);
                             eventAggregator.GetEvent<CommandEvent>().Publish(stopMachineMessage);
                         }
                     }

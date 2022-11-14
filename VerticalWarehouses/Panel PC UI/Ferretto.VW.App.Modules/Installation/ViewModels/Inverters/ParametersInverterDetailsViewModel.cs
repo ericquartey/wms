@@ -54,10 +54,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ParametersInverterDetailsViewModel(
             Services.IDialogService dialogService,
-            IMachineIdentityWebService identityService,
             ISessionService sessionService,
             IMachineDevicesWebService machineDevicesWebService)
-            : base(identityService)
+            : base(sessionService)
         {
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));

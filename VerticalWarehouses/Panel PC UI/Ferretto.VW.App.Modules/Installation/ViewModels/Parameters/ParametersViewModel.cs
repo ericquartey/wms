@@ -165,7 +165,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                                             this.sessionService.UserAccessLevel == UserAccessLevel.Support ||
                                             this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
-            var model = await this.identityService.GetAsync();
+            var model = this.sessionService.MachineIdentity;
 
             this.NewMachineId = model.Id;
 
@@ -241,6 +241,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 //this.configuration = await this.machineConfigurationWebService.GetAsync();
                 //this.RaisePropertyChanged(nameof(this.Configuration));
 
+                this.sessionService.MachineIdentity = null;
                 await this.MachineService.OnUpdateServiceAsync();
                 await this.OnDataRefreshAsync();
 

@@ -68,9 +68,15 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="bayNumber">The number of the bay to retrieve.</param>
         /// <returns>The bay identified by the given number.</returns>
         Bay GetByNumber(BayNumber bayNumber);
+
         Bay GetByNumberCarousel(BayNumber bayNumber);
+
         Bay GetByNumberExternal(BayNumber bayNumber);
+
+        Bay GetByNumberNoInclude(BayNumber bayNumber);
+
         Bay GetByNumberPositions(BayNumber bayNumber);
+
         Bay GetByNumberShutter(BayNumber bayNumber);
 
         int GetCarouselBayFindZeroLimit(BayNumber bayNumber);
@@ -88,6 +94,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IoIndex GetIoDevice(BayNumber bayNumber);
 
         bool GetIsExternal(BayNumber bayNumber);
+
+        bool GetIsTelescopic(BayNumber bayNumber);
 
         bool GetLightOn(BayNumber bayNumber);
 
@@ -111,6 +119,8 @@ namespace Ferretto.VW.MAS.DataLayer
         InverterIndex GetShutterInverterIndex(BayNumber bayNumber);
 
         void IncrementCycles(BayNumber bayNumber);
+
+        bool IsLoadUnitInBay(BayNumber bayNumber, int id);
 
         bool IsMissionInBay(Mission mission);
 

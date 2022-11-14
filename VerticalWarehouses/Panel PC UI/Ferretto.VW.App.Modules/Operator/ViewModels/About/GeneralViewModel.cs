@@ -25,11 +25,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly IMachineAboutWebService machineAboutWebService;
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
-        private readonly IMachineMissionsWebService machineMissionsWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineWmsStatusWebService wmsStatusWebService;
+        private readonly IMachineMissionsWebService machineMissionsWebService;
+
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
+
+        private readonly IMachineWmsStatusWebService wmsStatusWebService;
 
         private int averageHeight;
 
@@ -219,7 +222,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await base.OnDataRefreshAsync();
 
-                this.Model = await this.identityService.GetAsync();
+                this.Model = this.sessionService.MachineIdentity;
 
                 this.Statistics = await this.identityService.GetStatisticsAsync();
 

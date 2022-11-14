@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using NLog;
 using Prism.Events;
@@ -24,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator
 
         private readonly IMachinePutToLightWebService putToLightWebService;
 
+        private readonly ISessionService sessionService;
+
         private string selectedBasketCode;
 
         private string selectedCarCode;
@@ -41,11 +44,13 @@ namespace Ferretto.VW.App.Modules.Operator
         public PutToLightBarcodeService(
             IMachinePutToLightWebService putToLightWebService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             IEventAggregator eventAggregator)
         {
             this.putToLightWebService = putToLightWebService;
             this.identityService = identityService;
             this.eventAggregator = eventAggregator;
+            this.sessionService = sessionService;
 
             this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
@@ -104,7 +109,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -121,6 +126,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -128,7 +134,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -146,6 +152,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -153,7 +160,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -171,6 +178,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -178,7 +186,7 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -195,6 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -209,23 +218,23 @@ namespace Ferretto.VW.App.Modules.Operator
             switch (e.UserAction)
             {
                 case UserAction.AssociateBasketToShelf:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartAssociateBoxToShelf"));
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartAssociateBoxToShelf"), NotificationSeverity.PtlInfoStart);
                     break;
 
                 case UserAction.RemoveFullBasket:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartMarkingFullBox"));
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartMarkingFullBox"), NotificationSeverity.PtlInfoStart);
                     break;
 
                 case UserAction.CompleteBasket:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingBox"));
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingBox"), NotificationSeverity.PtlInfoStart);
                     break;
 
                 case UserAction.CarToMachine:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartCarToMachine"));
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartCarToMachine"), NotificationSeverity.PtlInfoStart);
                     break;
 
                 case UserAction.CarComplete:
-                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingCar"));
+                    this.NotifyInfo(Localized.Get("OperatorApp.StartClosingCar"), NotificationSeverity.PtlInfoStart);
                     break;
             }
         }
@@ -234,35 +243,35 @@ namespace Ferretto.VW.App.Modules.Operator
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(ex));
+                .Publish(new PresentationNotificationMessage(ex.Message, Services.Models.NotificationSeverity.PtlError));
         }
 
-        private void NotifyInfo(string message)
+        private void NotifyInfo(string message, NotificationSeverity severity = NotificationSeverity.NotSpecified)
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Info));
+                .Publish(new PresentationNotificationMessage(message, severity));
         }
 
         private void NotifySuccess(string message)
         {
             this.eventAggregator
               .GetEvent<PresentationNotificationPubSubEvent>()
-              .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Success));
+              .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlSuccess));
         }
 
         private void NotifyWarning(string message)
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Warning));
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlWarning));
         }
 
         private async Task RemoveFullBasketAsync()
         {
             try
             {
-                var machineIdentity = await this.identityService.GetAsync();
+                var machineIdentity = this.sessionService.MachineIdentity;
                 if (machineIdentity is null)
                 {
                     this.NotifyError(new Exception(Localized.Get("OperatorApp.IdMachineNotDefined")));
@@ -279,6 +288,7 @@ namespace Ferretto.VW.App.Modules.Operator
             catch (Exception ex)
             {
                 this.NotifyError(ex);
+                this.ResetUserSelection();
             }
         }
 
@@ -381,7 +391,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             else
             {
-                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedBox"), this.selectedBasketCode));
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedBox"), this.selectedBasketCode), NotificationSeverity.PtlInfo2);
                 await this.RunActionAsync();
             }
         }
@@ -405,7 +415,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             else
             {
-                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedCar"), this.selectedCarCode));
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedCar"), this.selectedCarCode), NotificationSeverity.PtlInfo1);
                 await this.RunActionAsync();
             }
         }
@@ -434,7 +444,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             else
             {
-                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedMachine"), this.selectedMachineCode));
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedMachine"), this.selectedMachineCode), NotificationSeverity.PtlInfo2);
                 await this.RunActionAsync();
             }
         }
@@ -459,7 +469,7 @@ namespace Ferretto.VW.App.Modules.Operator
             }
             else
             {
-                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedShelf"), this.selectedShelfCode));
+                this.NotifyInfo(string.Format(Localized.Get("OperatorApp.SelectedShelf"), this.selectedShelfCode), NotificationSeverity.PtlInfo1);
                 await this.RunActionAsync();
             }
         }

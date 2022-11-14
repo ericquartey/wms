@@ -2059,7 +2059,7 @@
     <value>Gestione tessuti (WMS custom)</value>
   </data>
   <data name="OperationMultiMachineInfo" xml:space="preserve">
-    <value>L'operazione continua su un'altra macchine</value>
+    <value>L'operazione continua su altre macchine</value>
   </data>
   <data name="Priority" xml:space="preserve">
     <value>Priorità</value>

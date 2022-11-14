@@ -402,6 +402,8 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
             this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.IsTelescopic = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.BayNumbers = new List<BayNumber>();
             this.machineVolatile.IsLoadUnitFixed = null;
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
@@ -624,7 +626,9 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
+            this.machineVolatile.BayNumbers = new List<BayNumber>();
             this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.IsTelescopic = new Dictionary<BayNumber, bool>();
             this.machineVolatile.IsLoadUnitFixed = null;
             machine.Elevator?.Axes.ForEach((a) =>
             {
@@ -841,7 +845,9 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
             this.cache.Remove(ElevatorDataProvider.GetAxesCacheKey());
             this.machineVolatile.MachineId = null;
+            this.machineVolatile.BayNumbers = new List<BayNumber>();
             this.machineVolatile.IsExternal = new Dictionary<BayNumber, bool>();
+            this.machineVolatile.IsTelescopic = new Dictionary<BayNumber, bool>();
             this.machineVolatile.IsLoadUnitFixed = null;
 
             machine.Elevator?.Axes.ForEach((a) =>

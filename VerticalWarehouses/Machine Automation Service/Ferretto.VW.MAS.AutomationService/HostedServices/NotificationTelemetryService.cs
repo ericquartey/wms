@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private bool enableConnectionFlag;
 
+        private bool isHandover;
+
         #endregion
 
         #region Constructors
@@ -204,6 +206,10 @@ namespace Ferretto.VW.MAS.AutomationService
             };
 
             await this.telemetryHub.SendMachineAsync(machineDto);
+
+            var scope = this.ServiceScopeFactory.CreateScope();
+            var si = scope.ServiceProvider.GetRequiredService<IServicingProvider>().GetActual();
+            this.isHandover = si?.LastServiceDate is null;
         }
 
         private async Task TelemetryHub_MachineReceivedChangedAsync(object sender, EventArgs e)

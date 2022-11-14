@@ -72,6 +72,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IOperatorNavigationService operatorNavigationService;
 
+        private readonly ISessionService sessionService;
+
         private readonly IWmsDataProvider wmsDataProvider;
 
         private DelegateCommand addItemCommand;
@@ -223,7 +225,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
             IMachineAccessoriesWebService accessoriesWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            ISessionService sessionService)
             : base(loadingUnitsWebService, itemsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
@@ -240,6 +243,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
             this.accessoriesWebService = accessoriesWebService ?? throw new ArgumentNullException(nameof(accessoriesWebService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
@@ -1000,9 +1004,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
-            if (await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id))
+            var machineList = await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id);
+            if (!string.IsNullOrEmpty(machineList))
             {
-                this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo"), Localized.Get("OperatorApp.OperationConfirmed"), DialogType.Information, DialogButtons.OK);
+                this.DialogService.ShowMessage(Localized.Get("OperatorApp.OperationMultiMachineInfo") + machineList,
+                    Localized.Get("OperatorApp.OperationConfirmed"),
+                    DialogType.Information,
+                    DialogButtons.OK);
             }
 
             var lastOperationList = string.Empty;
@@ -2278,7 +2286,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.areaId is null)
                 {
-                    var machineIdentity = await this.machineIdentityWebService.GetAsync();
+                    var machineIdentity = this.sessionService.MachineIdentity;
                     this.areaId = machineIdentity.AreaId;
                 }
 

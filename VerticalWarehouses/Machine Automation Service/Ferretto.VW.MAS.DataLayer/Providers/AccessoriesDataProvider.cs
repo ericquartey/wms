@@ -97,8 +97,46 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public AlphaNumericBar GetAlphaNumericBar(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    return this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.AlphaNumericBar)
+                        .Select(s => new { s.Number, s.Accessories.AlphaNumericBar })
+                        .First(b => b.Number == bayNumber)
+                        .AlphaNumericBar;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        public LaserPointer GetLaserPointer(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    return this.dataContext.Bays.Include(b => b.Accessories)
+                        .ThenInclude(a => a.LaserPointer)
+                        .Select(s => new { s.Number, s.Accessories.LaserPointer })
+                        .First(b => b.Number == bayNumber)
+                        .LaserPointer;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
         public void UpdateAlphaNumericBar(
-            BayNumber bayNumber,
+                    BayNumber bayNumber,
             bool isEnabled,
             string ipAddress,
             int port,

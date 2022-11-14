@@ -145,7 +145,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TelemetryLoginLogoutAsync(string action, string supportToken = "")
         {
-            var bay = await this.bayManager.GetBayAsync();
+            var bay = this.MachineService.Bay;
 
             var errorLog = new ErrorLog
             {

@@ -976,7 +976,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 //this.isCompleted = false;
 
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.MachineService.Bay;
                 var bayPosition = bay.Positions.Single(b => b.LocationUpDown == MAS.AutomationService.Contracts.LoadingUnitLocation.Up);
 
                 var unit = bayPosition?.LoadingUnit;

@@ -881,7 +881,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var bay = await this.bayManager.GetBayAsync();
+                var bay = this.MachineService.Bay;
                 var bayPosition = bay.Positions.Single(b => b.Height == bay.Positions.Max(p => p.Height));
 
                 await this.machineElevatorWebService.MoveToBayPositionAsync(

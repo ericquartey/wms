@@ -4687,7 +4687,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The operation continues on another machine.
+        ///   Looks up a localized string similar to The operation continues on other machines.
         /// </summary>
         public static string OperationMultiMachineInfo {
             get {

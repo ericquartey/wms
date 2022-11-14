@@ -25,21 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
-- Ferretto Nuget Package 0.16.48
-- Aggiunto parametro di baia "Aggrega Liste"
-- Aggiunta gestione dei cassetti ad associazione fissa
-- Aggiunta WmsVersion alla telemetria
+## Nuove Funzionalità 1.0.55 rispetto la 1.0.54
+- Le informazioni delle operazioni del PTL appaiono in una pagina a parte e non vengono sovrascritte
+- 
 
 ## Bug Risolti
 - Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
-- SocketLink: corretto start/stop del servizio
-- Operazioni di prelievo/versamento: eliminati alcuni casi di dati duplicati
-- Chiamata cassetto: le note sono ora nella tabella
-- Corretta registrazione del tempo delle missioni attive
+- Liste in attesa: aumentato spazio per la descrizione di lista
+- Nella conferma della lista che continua su altre macchine appare l'elenco delle macchine
+- Barra alfanumerica: inserito ritardo per l'invio dei messaggi
 
 ## Compatibile con adapter 0.4.42
 ***
+
+[Versione 1.0.54](#id1054)
 
 [Versione 1.0.53](#id1053)
 
@@ -149,6 +148,22 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1054"></a>
+## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
+- Ferretto Nuget Package 0.16.48
+- Aggiunto parametro di baia "Aggrega Liste"
+- Aggiunta gestione dei cassetti ad associazione fissa
+- Aggiunta WmsVersion alla telemetria
+
+## Bug Risolti
+- Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
+- SocketLink: corretto start/stop del servizio
+- Operazioni di prelievo/versamento: eliminati alcuni casi di dati duplicati
+- Chiamata cassetto: le note sono ora nella tabella
+- Corretta registrazione del tempo delle missioni attive
+
+## Compatibile con adapter 0.4.42
 
 <a id="id1053"></a>
 ## Nuove Funzionalità 1.0.53 rispetto la 1.0.52

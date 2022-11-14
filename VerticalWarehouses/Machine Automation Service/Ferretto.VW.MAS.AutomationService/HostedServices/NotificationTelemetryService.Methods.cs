@@ -57,10 +57,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 return;
             }
 
-            var si = serviceProvider
-                .GetRequiredService<IServicingProvider>()
-                .GetActual();
-            if (si?.LastServiceDate is null)
+            if (this.isHandover)
             {
                 this.Logger.LogTrace("Do not send error log to telemetry service during handover.");
                 return;

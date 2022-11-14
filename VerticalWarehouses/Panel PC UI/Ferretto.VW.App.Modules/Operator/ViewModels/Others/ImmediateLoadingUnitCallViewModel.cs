@@ -19,7 +19,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     [Warning(WarningsArea.User)]
     public class ImmediateLoadingUnitCallViewModel : BaseOperatorViewModel
     {
-
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
@@ -38,17 +37,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand changeLaserOffsetCommand;
 
-        private DelegateCommand changeRotationClassCommand;
-
         private DelegateCommand changeLoadUnitFixedCommand;
 
+        private DelegateCommand changeRotationClassCommand;
+
         private bool isEnabledLaser;
+
+        private bool isLoadUnitFixedEnabled;
 
         private bool isRotationClassEnabled;
 
         private bool isUserLimited;
-
-        private bool isLoadUnitFixedEnabled;
 
         private int? loadingUnitId;
 
@@ -98,20 +97,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ??
             (this.changeLaserOffsetCommand = new DelegateCommand(this.ChangeLaserOffsetAppear, this.CanChangeLaserOffset));
 
-        public ICommand ChangeRotationClassCommand =>
-           this.changeRotationClassCommand
-           ??
-           (this.changeRotationClassCommand = new DelegateCommand(this.ChangeRotationClassAppear, this.CanChangeRotationClass));
-
         public ICommand ChangeLoadUnitFixedCommand =>
            this.changeLoadUnitFixedCommand
            ??
            (this.changeLoadUnitFixedCommand = new DelegateCommand(this.ChangeLoadUnitFixedAppear, this.CanChangeLoadUnitFixed));
 
+        public ICommand ChangeRotationClassCommand =>
+                   this.changeRotationClassCommand
+           ??
+           (this.changeRotationClassCommand = new DelegateCommand(this.ChangeRotationClassAppear, this.CanChangeRotationClass));
+
         public bool IsEnabledLaser
         {
             get => this.isEnabledLaser;
             set => this.SetProperty(ref this.isEnabledLaser, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsLoadUnitFixedEnabled
+        {
+            get => this.isLoadUnitFixedEnabled;
+            set => this.SetProperty(ref this.isLoadUnitFixedEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsOperator => this.sessionService.UserAccessLevel <= MAS.AutomationService.Contracts.UserAccessLevel.Movement;
@@ -120,12 +125,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isRotationClassEnabled;
             set => this.SetProperty(ref this.isRotationClassEnabled, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsLoadUnitFixedEnabled
-        {
-            get => this.isLoadUnitFixedEnabled;
-            set => this.SetProperty(ref this.isLoadUnitFixedEnabled, value, this.RaiseCanExecuteChanged);
         }
 
         public override bool IsWaitingForResponse
@@ -217,6 +216,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
+        #region Methods
+
         public async Task CallLoadingUnitAsync()
         {
             if (this.selectedLoadingUnit == null)
@@ -275,7 +276,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
                 this.LoadingUnitId = null;
 
-                var bay = this.MachineService.Bays?.FirstOrDefault(b => b.Number == this.MachineService.BayNumber);
+                var bay = this.MachineService.Bay;
                 this.IsEnabledLaser = bay?.Accessories?.LaserPointer?.IsEnabledNew ?? false;
                 this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
                 this.changeRotationClassCommand?.RaiseCanExecuteChanged();
@@ -341,15 +342,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 && !this.isUserLimited;
         }
 
-        private bool CanChangeRotationClass()
-        {
-            return this.IsRotationClassEnabled
-                && this.selectedLoadingUnit != null
-                && this.selectedLoadingUnit.Id > 0
-                && !this.isUserLimited
-                && !this.selectedLoadingUnit.IsCellFixed;
-        }
-
         private bool CanChangeLoadUnitFixed()
         {
             return this.IsLoadUnitFixedEnabled
@@ -357,6 +349,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 && this.selectedLoadingUnit.Id > 0
                 && !this.isUserLimited
                 && (this.selectedLoadingUnit.CellId.HasValue || this.selectedLoadingUnit.IsCellFixed);
+        }
+
+        private bool CanChangeRotationClass()
+        {
+            return this.IsRotationClassEnabled
+                && this.selectedLoadingUnit != null
+                && this.selectedLoadingUnit.Id > 0
+                && !this.isUserLimited
+                && !this.selectedLoadingUnit.IsCellFixed;
         }
 
         private void ChangeLaserOffsetAppear()
@@ -368,20 +369,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 trackCurrentView: true);
         }
 
-        private void ChangeRotationClassAppear()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.Others.CHANGEROTATIONCLASS,
-                this.SelectedLoadingUnit,
-                trackCurrentView: true);
-        }
-
         private void ChangeLoadUnitFixedAppear()
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.Others.CHANGELOADUNITFIXED,
+                this.SelectedLoadingUnit,
+                trackCurrentView: true);
+        }
+
+        private void ChangeRotationClassAppear()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.CHANGEROTATIONCLASS,
                 this.SelectedLoadingUnit,
                 trackCurrentView: true);
         }
@@ -440,5 +441,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         false);
         }
 
+        #endregion
     }
 }

@@ -441,7 +441,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
                 default:
                     // destination is bay, but first we must decide which position to use
-                    var bay = this.BaysDataProvider.GetByNumber(requestingBay);
+                    var bay = this.BaysDataProvider.GetByNumberCarousel(requestingBay);
                     var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
 
                     if (destinationBay != null && destinationBay.Number != bay.Number)

@@ -222,8 +222,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ISessionService sessionService,
             IWmsDataProvider wmsDataProvider,
             IAuthenticationService authenticationService,
-            IMachineConfigurationWebService machineConfigurationWebService)
-            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider, machineConfigurationWebService)
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IMachineAccessoriesWebService accessoriesWebService)
+            : base(machineIdentityWebService, machineLoadingUnitsWebService, missionOperationsService, eventAggregator, bayManager, laserPointerDriver, sessionService, wmsDataProvider, machineConfigurationWebService, accessoriesWebService)
         {
             this.deviceService = deviceService ?? throw new ArgumentNullException(nameof(deviceService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
@@ -912,7 +913,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var count = 0;
-                var missions = await this.machineMissionsWebService.GetAllAsync();
+                var missions = this.machineService.Missions;
                 var moveUnitId = this.GetAllUnitGoBay(missions);
 
                 if (moveUnitId != null)
@@ -923,7 +924,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                var moveUnitIdToCell =this.GetAllUnitGoCell(missions);
+                var moveUnitIdToCell = this.GetAllUnitGoCell(missions);
 
                 if (moveUnitIdToCell != null)
                 {
@@ -962,32 +963,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.RaisePropertyChanged(nameof(this.unitHeight));
                 this.RaisePropertyChanged(nameof(this.unitWeight));
             }
-        }
-
-        private List<int> GetAllUnitGoBay(IEnumerable<Mission> missions)
-        {
-            var unitGoBay = new List<int>();
-            foreach (var unit in missions
-                .Where(x => x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS)
-                .OrderBy(o => o.Priority)
-                .ThenBy(o => o.CreationDate))
-            {
-                unitGoBay.Add(unit.LoadUnitId);
-            }
-            return unitGoBay;
-        }
-
-        private List<int> GetAllUnitGoCell(IEnumerable<Mission> missions)
-        {
-            var unitGoBay = new List<int>();
-            foreach (var unit in missions
-                .Where(x => x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS)
-                .OrderBy(o => o.Priority)
-                .ThenBy(o => o.CreationDate))
-            {
-                unitGoBay.Add(unit.LoadUnitId);
-            }
-            return unitGoBay;
         }
 
         public override async Task OnAppearedAsync()
@@ -1840,6 +1815,32 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var activeView = this.NavigationService.GetActiveView();
             var model = (activeView as System.Windows.FrameworkElement)?.DataContext;
             return model?.GetType()?.Name;
+        }
+
+        private List<int> GetAllUnitGoBay(IEnumerable<Mission> missions)
+        {
+            var unitGoBay = new List<int>();
+            foreach (var unit in missions
+                .Where(x => x.MissionType == MissionType.OUT || x.MissionType == MissionType.WMS)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate))
+            {
+                unitGoBay.Add(unit.LoadUnitId);
+            }
+            return unitGoBay;
+        }
+
+        private List<int> GetAllUnitGoCell(IEnumerable<Mission> missions)
+        {
+            var unitGoBay = new List<int>();
+            foreach (var unit in missions
+                .Where(x => x.MissionType == MissionType.IN || x.MissionType == MissionType.WMS)
+                .OrderBy(o => o.Priority)
+                .ThenBy(o => o.CreationDate))
+            {
+                unitGoBay.Add(unit.LoadUnitId);
+            }
+            return unitGoBay;
         }
 
         private async Task GetItemInfoAsync()

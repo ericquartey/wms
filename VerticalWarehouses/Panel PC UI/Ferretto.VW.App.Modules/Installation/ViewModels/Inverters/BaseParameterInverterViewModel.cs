@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineIdentityWebService identityService;
+        private readonly ISessionService sessionService;
 
         private SubscriptionToken inverterParameterReceivedToken;
 
@@ -31,10 +31,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public BaseParameterInverterViewModel(IMachineIdentityWebService identityService)
+        public BaseParameterInverterViewModel(ISessionService sessionService)
                 : base(PresentationMode.Installer)
         {
-            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public string Filename(IEnumerable<Inverter> source, DriveInfo drive, bool unique)
         {
-            var model = this.identityService.GetAsync().Result;
+            var model = this.sessionService.MachineIdentity;
             var serial = model.SerialNumber;
             if (string.IsNullOrEmpty(nameof(serial)))
             {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public string Filename(VertimagConfiguration source, DriveInfo drive, bool unique)
         {
-            var model = this.identityService.GetAsync().Result;
+            var model = this.sessionService.MachineIdentity;
             var serial = model.SerialNumber;
             if (string.IsNullOrEmpty(nameof(serial)))
             {

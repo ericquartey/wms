@@ -26,6 +26,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
+        private readonly ISessionService sessionService;
+
         private int? areaId;
 
         private int currentItemIndex;
@@ -54,6 +56,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineIdentityWebService identityService,
             IMachineItemListsWebService itemListsWebService,
             IMachineConfigurationWebService machineConfigurationWebService,
+            ISessionService sessionService,
             IAuthenticationService authenticationService)
             : base(PresentationMode.Operator)
         {
@@ -61,6 +64,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.itemListsWebService = itemListsWebService ?? throw new ArgumentNullException(nameof(itemListsWebService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -196,7 +200,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            var machineIdentity = await this.identityService.GetAsync();
+            var machineIdentity = this.sessionService.MachineIdentity;
             if (machineIdentity == null)
             {
                 return;

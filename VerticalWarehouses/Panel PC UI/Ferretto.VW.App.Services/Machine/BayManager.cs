@@ -88,17 +88,6 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public async Task<LoadingUnit> GetAccessibleLoadingUnitAsync()
-        {
-            var bay = await this.GetBayAsync();
-
-            return bay.Positions
-                .Where(p => p.LoadingUnit != null)
-                .OrderByDescending(p => p.Height)
-                .Select(p => p.LoadingUnit)
-                .FirstOrDefault();
-        }
-
         public async Task<BayAccessories> GetBayAccessoriesAsync()
         {
             return await this.accessoriesWebService.GetAllAsync();
@@ -109,6 +98,20 @@ namespace Ferretto.VW.App.Services
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
             return await this.machineBaysWebService.GetByNumberAsync(bayNumber);
+        }
+
+        public async Task<bool> GetIsExternalAsync()
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            return await this.machineBaysWebService.GetIsExternalAsync(bayNumber);
+        }
+
+        public async Task<Bay> GetPositionsBayAsync()
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            return await this.machineBaysWebService.GetPositionsByNumberAsync(bayNumber);
         }
 
         public async Task InitializeAsync()

@@ -51,13 +51,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.CurrentMission));
 
         private static readonly Func<DataLayerContext, int, Bay> GetByBayPositionIdCompile =
-                EF.CompileQuery((DataLayerContext context, int bayPositionId) =>
+                EF.CompileQuery((DataLayerContext context, int bayNumber) =>
                 context.Bays
                     .AsNoTracking()
-                    .Include(b => b.Positions)
-                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                .SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId)));
+                .SingleOrDefault(b => (int)b.Number == bayNumber));
 
         private static readonly Func<DataLayerContext, Cell, Bay> GetByCellCompile =
                 EF.CompileQuery((DataLayerContext context, Cell cell) =>
@@ -91,18 +89,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex));
 
-        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetByLoadingUnitLocationCompile =
-                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+        private static readonly Func<DataLayerContext, int, Bay> GetByLoadingUnitLocationCompile =
+                EF.CompileQuery((DataLayerContext context, int number) =>
                 context.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
                         .ThenInclude(i => i.Inverter)
                      .Include(b => b.Carousel)
                      .Include(b => b.External)
-                     .Include(b => b.Positions)
-                        .ThenInclude(t => t.LoadingUnit)
                      .Include(b => b.CurrentMission)
-                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
+                    .FirstOrDefault(b => (int)b.Number == number));
 
         private static readonly Func<DataLayerContext, BayNumber, Bay> GetByNumberCompile =
                                 EF.CompileQuery((DataLayerContext context, BayNumber bayNumber) =>
@@ -142,15 +138,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber));
 
-        private static readonly Func<DataLayerContext, LoadingUnitLocation, Bay> GetPositionByLocationCompile =
-                EF.CompileQuery((DataLayerContext context, LoadingUnitLocation location) =>
+        private static readonly Func<DataLayerContext, int, Bay> GetPositionByLocationCompile =
+                EF.CompileQuery((DataLayerContext context, int number) =>
                 context.Bays
                 .AsNoTracking()
-                .Include(b => b.Positions)
-                    .ThenInclude(b => b.LoadingUnit)
                 .Include(i => i.Carousel)
                 .Include(i => i.External)
-                .FirstOrDefault(b => b.Positions.Any(p => p.Location == location)));
+                .FirstOrDefault(b => (int)b.Number == number));
 
         private readonly IMemoryCache cache;
 
@@ -233,6 +227,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 });
 
                 this.dataContext.SaveChanges();
+                this.machineVolatileDataProvider.BayNumbers = new List<BayNumber>();
             }
         }
 
@@ -402,12 +397,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<BayNumber> GetBayNumbers()
         {
-            lock (this.dataContext)
+            if (!this.machineVolatileDataProvider.BayNumbers.Any())
             {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Select(b => b.Number);
+                lock (this.dataContext)
+                {
+                    this.machineVolatileDataProvider.BayNumbers = this.dataContext.Bays
+                        .AsNoTracking()
+                        .Select(b => b.Number)
+                        .ToList();
+                }
             }
+            return this.machineVolatileDataProvider.BayNumbers;
         }
 
         public WarehouseSide GetBaySide(BayNumber bayNumber)
@@ -446,12 +446,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetByBayPositionIdCompile(this.dataContext, bayPositionId);
+                var bayNumber = this.GetBayNumberByLocationId(bayPositionId);
+                if (!bayNumber.HasValue)
+                {
+                    throw new EntityNotFoundException(bayPositionId);
+                }
+                var bay = GetByBayPositionIdCompile(this.dataContext, bayNumber.Value);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);
                 }
 
+                this.LoadBayPositions(bay);
                 return bay;
             }
         }
@@ -570,13 +576,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetByLoadingUnitLocationCompile(this.dataContext, location);
+                var bayNumber = this.GetBayNumberByLocation(location);
+                if (!bayNumber.HasValue)
+                {
+                    return null;
+                }
+                var bay = GetByLoadingUnitLocationCompile(this.dataContext, bayNumber.Value);
                 if (bay != null)
                 {
-                    foreach (var position in bay.Positions)
-                    {
-                        position.Bay = bay;
-                    }
+                    this.LoadBayPositions(bay);
                 }
                 return bay;
             }
@@ -693,6 +701,30 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw new EntityNotFoundException(bayNumber.ToString());
                     }
                     this.LoadBayPositions(bay);
+                    return bay;
+                }
+                catch
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+            }
+        }
+
+        public Bay GetByNumberNoInclude(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    var bay = this.dataContext.Bays
+                        .AsNoTracking()
+                        .Where(b => b.Number == bayNumber)
+                        .Single();
+
+                    if (bay is null)
+                    {
+                        throw new EntityNotFoundException(bayNumber.ToString());
+                    }
                     return bay;
                 }
                 catch
@@ -981,6 +1013,23 @@ namespace Ferretto.VW.MAS.DataLayer
             return isExternal;
         }
 
+        public bool GetIsTelescopic(BayNumber bayNumber)
+        {
+            bool isTelescopic = false;
+            if (!this.machineVolatileDataProvider.IsTelescopic.TryGetValue(bayNumber, out isTelescopic))
+            {
+                lock (this.dataContext)
+                {
+                    isTelescopic = this.dataContext.Bays.AsNoTracking()
+                        .Select(b => new { b.Number, b.IsTelescopic })
+                        .SingleOrDefault(b => b.Number == bayNumber)
+                        .IsTelescopic;
+                    this.machineVolatileDataProvider.IsTelescopic.Add(bayNumber, isTelescopic);
+                }
+            }
+            return isTelescopic;
+        }
+
         public bool GetLightOn(BayNumber bayNumber)
         {
             return this.machineVolatileDataProvider.IsBayLightOn.GetValueOrDefault(bayNumber);
@@ -1055,15 +1104,17 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = GetPositionByLocationCompile(this.dataContext, location);
+                var bayNumber = this.GetBayNumberByLocation(location);
+                if (!bayNumber.HasValue)
+                {
+                    throw new EntityNotFoundException(location.ToString());
+                }
+                var bay = GetPositionByLocationCompile(this.dataContext, bayNumber.Value);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(location.ToString());
                 }
-                foreach (var position in bay.Positions)
-                {
-                    position.Bay = bay;
-                }
+                this.LoadBayPositions(bay);
 
                 return bay.Positions.FirstOrDefault(p => p.Location == location);
             }
@@ -1110,6 +1161,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 bay.TotalCycles++;
                 this.dataContext.SaveChanges();
+            }
+        }
+
+        public bool IsLoadUnitInBay(BayNumber bayNumber, int id)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Include(b => b.CurrentMission).Any(b => b.CurrentMission.LoadUnitId == id && b.Number == bayNumber);
             }
         }
 
@@ -1623,6 +1682,22 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         internal static string GetInverterIndexCacheKey(InverterIndex inverterIndex) => $"{nameof(GetByInverterIndex)}{inverterIndex}";
+
+        private int? GetBayNumberByLocation(LoadingUnitLocation location)
+        {
+            return this.dataContext.BayPositions.AsNoTracking()
+                                                .Where(p => p.Location == location)
+                                                .Select(p => p.BayId)
+                                                .SingleOrDefault();
+        }
+
+        private int? GetBayNumberByLocationId(int locationId)
+        {
+            return this.dataContext.BayPositions.AsNoTracking()
+                                                .Where(p => p.Id == locationId)
+                                                .Select(p => p.BayId)
+                                                .SingleOrDefault();
+        }
 
         /// <summary>
         /// TODO, this method it's dublicated because the insert in LoadUnitDataProvider generate a circural ref error

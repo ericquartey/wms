@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineLoadingUnitsWebService loadingUnitService;
 
+        private readonly ISessionService sessionService;
+
         private int currentItemIndex;
 
         private ICommand downDataGridButtonCommand;
@@ -53,11 +55,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public StatisticsWeightSaturationViewModel(
             IMachineLoadingUnitsWebService loadingUnitService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
             : base(PresentationMode.Operator)
         {
             this.loadingUnitService = loadingUnitService ?? throw new ArgumentNullException(nameof(loadingUnitService));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.drawerWeightSaturationDataGridViewModel = drawerWeightSaturationDataGridViewModel ?? throw new ArgumentNullException(nameof(drawerWeightSaturationDataGridViewModel));
 
             this.dataGridViewModelRef = drawerWeightSaturationDataGridViewModel as CustomControlDrawerWeightSaturationDataGridViewModel;
@@ -144,7 +148,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 gridData.SelectedLoadingUnit = selectedLoadingUnit;
                 this.TotalLoadingUnits = loadingUnits.Count();
                 this.currentItemIndex = 0;
-                var machine = await this.identityService.GetAsync();
+                var machine = this.sessionService.MachineIdentity;
                 this.MaxGrossWeight = machine.MaxGrossWeight;
                 this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);

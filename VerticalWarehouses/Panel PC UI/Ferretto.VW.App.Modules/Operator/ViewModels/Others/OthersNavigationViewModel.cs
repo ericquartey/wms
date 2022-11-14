@@ -10,7 +10,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IMachineIdentityWebService identityService;
+        private readonly ISessionService sessionService;
 
         private Brush machineServiceStatusBrush;
 
@@ -24,10 +24,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Constructors
 
-        public OthersNavigationViewModel(IMachineIdentityWebService identityService)
+        public OthersNavigationViewModel(ISessionService sessionService)
             : base()
         {
-            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -70,7 +70,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.Model = await this.identityService.GetAsync();
+            this.Model = this.sessionService.MachineIdentity;
             this.MachineServiceStatusBrush = this.GetBrushForServiceStatus(this.Model.ServiceStatus);
 
             this.UpdateWmsServicesStatus(this.HealthProbeService.HealthWmsStatus);

@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -17,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IMachineLoadingUnitsWebService loadingUnitService;
+
+        private readonly ISessionService sessionService;
 
         // private readonly IMachineStatisticsService machineStatisticsService;
 
@@ -43,12 +46,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         public DrawerSpaceSaturationViewModel(
             IMachineLoadingUnitsWebService loadingUnitService,
             IMachineIdentityWebService identityService,
+            ISessionService sessionService,
 
             // IMachineStatisticsService machineStatisticsService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
             this.loadingUnitService = loadingUnitService;
             this.identityService = identityService;
+            this.sessionService = sessionService;
 
             // this.machineStatisticsService = machineStatisticsService;
             this.dataGridViewModel = drawerSaturationDataGridViewModel;
@@ -114,7 +119,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
                 this.currentItemIndex = 0;
 
-                var machine = await this.identityService.GetAsync();
+                var machine = this.sessionService.MachineIdentity;
                 this.Dimension = $"{(int)machine.Width}x{(int)machine.Depth}";
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
