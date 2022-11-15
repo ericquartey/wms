@@ -2283,9 +2283,6 @@
   <data name="StartCalibrationButton" xml:space="preserve">
     <value>Nacisnąć Start, aby rozpocząć kalibrację</value>
   </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value>Wywołaj szufladę: Poczekaj, aż poprzednia szuflada ponownie wejdzie do komórki, a następnie wybierz żądaną szufladę i naciśnij przycisk Wywołaj szufladę. Gdy szuflada znajdzie się w zatoce, ponownie pojawi się procedura kalibracji wagi</value>
-  </data>
   <data name="UnloadToBay" xml:space="preserve">
     <value>Rozładunek</value>
   </data>
@@ -2405,12 +2402,6 @@
   </data>
   <data name="RandomCells" xml:space="preserve">
     <value>Losowe przydzielanie komórek </value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value>Int w dół</value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
-    <value>Int w górę</value>
   </data>
   <data name="UnitHightInternalPosition" xml:space="preserve">
     <value>Jednostka w wysokiej pozycji wewnętrznej</value>
