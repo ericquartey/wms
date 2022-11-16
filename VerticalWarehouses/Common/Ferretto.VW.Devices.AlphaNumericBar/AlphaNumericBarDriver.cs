@@ -370,7 +370,7 @@ namespace Ferretto.VW.Devices.AlphaNumericBar
 
                         if (this.IsConnected)
                         {
-                            Thread.Sleep(20);
+                            Thread.Sleep(200);
                             this.logger.Trace($"ExecuteCommands();Write");
                             var data = Encoding.ASCII.GetBytes(sendMessage);
                             this.stream = this.client.GetStream();

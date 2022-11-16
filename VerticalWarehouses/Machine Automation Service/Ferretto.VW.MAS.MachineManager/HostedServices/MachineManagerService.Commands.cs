@@ -185,8 +185,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
                             // So call the UpdateWaitingMission and start the current mission
                             if (!missionMoveProvider.UpdateWaitingMission(missionsDataProvider, baysDataProvider, mission)
-                                || !missionMoveProvider.StartMission(mission, command, serviceProvider, false)
-                                )
+                                || missionMoveProvider.StartMission(mission, command, serviceProvider, false))
                             {
                                 this.Logger.LogWarning($"Conditions not met to activate Mission:Id={mission.Id}, Load Unit {mission.LoadUnitId} .");
                             }
