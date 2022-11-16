@@ -2526,16 +2526,7 @@
   <data name="InvertersProgrammingStarted" xml:space="preserve">
     <value></value>
   </data>
-  <data name="CallUnitWeight" xml:space="preserve">
-    <value></value>
-  </data>
   <data name="ImportStructure" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="InternalDown" xml:space="preserve">
-    <value></value>
-  </data>
-  <data name="InternalUp" xml:space="preserve">
     <value></value>
   </data>
   <data name="MaxMessageLength" xml:space="preserve">

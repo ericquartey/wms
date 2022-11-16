@@ -871,15 +871,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string CallUnitWeight {
-            get {
-                return ResourceManager.GetString("CallUnitWeight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Carousel calibration.
         /// </summary>
         public static string CarouselCalibration {
@@ -3846,24 +3837,6 @@ namespace Ferretto.VW.App.Resources {
         public static string InternalBayShort {
             get {
                 return ResourceManager.GetString("InternalBayShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string InternalDown {
-            get {
-                return ResourceManager.GetString("InternalDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string InternalUp {
-            get {
-                return ResourceManager.GetString("InternalUp", resourceCulture);
             }
         }
         

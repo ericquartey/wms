@@ -351,6 +351,7 @@
 - Aggiornate traduzioni polacche
 - Correzione alla selezione della Ricerca Articolo
 - Correzione alla Chiamata Cassetto: offset laser
+- BID: correzione in caso di molti cassetti in coda
 
 ## Compatibile con adapter 0.4.31 e 0.4.32
 
