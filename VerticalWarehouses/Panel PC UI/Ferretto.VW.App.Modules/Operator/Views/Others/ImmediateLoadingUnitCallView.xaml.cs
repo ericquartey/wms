@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             var viewModel = this.DataContext as ImmediateLoadingUnitCallViewModel;
             var grid = sender as DataGrid;
 
-            if (grid.SelectedItems != null)
+            if (grid.SelectedItems != null && grid.SelectedItems.Count > 0)
             {
                 var selectedList = grid.SelectedItems.OfType<LoadingUnit>().ToList();
 
