@@ -34,6 +34,7 @@
 - Liste in attesa: aumentato spazio per la descrizione di lista
 - Nella conferma della lista che continua su altre macchine appare l'elenco delle macchine
 - Barra alfanumerica: inserito ritardo per l'invio dei messaggi
+- BID: correzione in caso di molti cassetti in coda
 
 ## Compatibile con adapter 0.4.42
 ***

@@ -220,7 +220,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public bool UpdateWaitingMission(IMissionsDataProvider missionsDataProvider, IBaysDataProvider baysDataProvider, Mission mission)
         {
-            this.Logger.LogDebug($"Check the waiting missions...");
+            this.Logger.LogDebug($"Check the waiting missions... Id={mission.Id}, Load Unit {mission.LoadUnitId}, status {mission.Status}, step {mission.Step}");
 
             // if there is a new or waiting mission we have to take her place
             var waitMission = missionsDataProvider.GetAllMissions()
@@ -266,8 +266,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                         this.Logger.LogDebug($"{this.GetType().Name}: Delete {waitMission}");
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    this.Logger.LogError(ex.Message);
                     return false;
                 }
             }
@@ -292,6 +293,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 // No mission to check
                 this.Logger.LogTrace($"Bay is NOT double... No check waiting missions");
                 return false;
+            }
+
+            if (mission.Step == MissionStep.WaitDepositBay)
+            {
+                this.Logger.LogDebug($"Mission {mission.Id} already waiting for resume");
+                return true;
             }
 
             // Retrieve the mission on the bay with Step = MissionStep.WaitDepositInBay

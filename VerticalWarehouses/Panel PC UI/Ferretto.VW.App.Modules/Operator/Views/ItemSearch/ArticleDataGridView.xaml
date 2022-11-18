@@ -59,7 +59,7 @@
       </DataGridTextColumn>
         
       <DataGridTemplateColumn x:Name="Column3"
-                              Width="100"
+                              Width="60"
                               CanUserSort="True"
                               SortMemberPath="IsQtyOnMachine"
                               Header="{Resources:Loc OperatorApp.ListAvailable}">
@@ -77,6 +77,7 @@
                           Width="100"
                           Binding="{Binding Path=Lot}"
                           Header="{Resources:Loc OperatorApp.Lot}"
+                          
                           Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsGroupbyLot, Converter={StaticResource BTVC}}">
         <DataGridTextColumn.CellStyle>
           <Style TargetType="DataGridCell">
@@ -88,6 +89,7 @@
           <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="Margin" Value="5,0,5,0" />
           </Style>
         </DataGridTextColumn.ElementStyle>
@@ -109,6 +111,7 @@
           <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="Margin" Value="5,0,5,0" />
           </Style>
         </DataGridTextColumn.ElementStyle>
