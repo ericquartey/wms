@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand loadingUnitsMissionsCommand;
 
+        private SubscriptionToken loadUnitsChangedToken;
+
         private int maxLoadingUnitId;
 
         private int minLoadingUnitId;
@@ -158,11 +160,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     if (this.LoadingUnits.Any(s => s.Id == this.loadingUnitId))
                     {
-                        this.SelectedLoadingUnit = this.LoadingUnits.SingleOrDefault(s => s.Id == this.loadingUnitId);
+                        this.selectedLoadingUnit = this.LoadingUnits.SingleOrDefault(s => s.Id == this.loadingUnitId);
                     }
                     else
                     {
-                        this.SelectedLoadingUnit = null;
+                        this.selectedLoadingUnit = null;
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -173,7 +175,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public List<LoadingUnit> LoadingUnits
         {
             get => this.loadingUnits;
-            set => this.SetProperty(ref this.loadingUnits, value, this.RaiseCanExecuteChanged);
+            set => this.SetProperty(ref this.loadingUnits, value);
         }
 
         //public IEnumerable<LoadingUnit> LoadingUnits => this.MachineService.Loadunits;
@@ -201,7 +203,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {
-                    this.LoadingUnitId = this.selectedLoadingUnit?.Id;
+                    this.loadingUnitId = this.selectedLoadingUnit?.Id;
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -251,15 +253,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.SelectedLoadingUnit = null;
+                this.LoadingUnitId = null;
             }
         }
 
         public override async Task OnAppearedAsync()
         {
+            await base.OnAppearedAsync();
             this.LoadingUnitId = null;
-
-            this.SubscribeToEvents();
 
             this.IsBackNavigationAllowed = true;
 
@@ -286,38 +287,42 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.isUserLimited = await this.MachineUsersWebService.GetIsLimitedAsync(this.authenticationService.UserName);
                 }
             }
-
-            await base.OnAppearedAsync();
+            this.SubscribeToEvents();
         }
 
         protected override void RaiseCanExecuteChanged()
         {
-            base.RaiseCanExecuteChanged();
-
-            this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
-            this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
-            this.changeRotationClassCommand?.RaiseCanExecuteChanged();
-            this.changeLoadUnitFixedCommand?.RaiseCanExecuteChanged();
-
-            if (this.selectedLoadingUnit == null)
+            if (this.IsVisible)
             {
-                if (this.MachineService.Loadunits is null || !this.MachineService.Loadunits.Any())
+                base.RaiseCanExecuteChanged();
+
+                this.callLoadingUnitCommand?.RaiseCanExecuteChanged();
+                this.changeLaserOffsetCommand?.RaiseCanExecuteChanged();
+                this.changeRotationClassCommand?.RaiseCanExecuteChanged();
+                this.changeLoadUnitFixedCommand?.RaiseCanExecuteChanged();
+
+                if (this.selectedLoadingUnit == null)
                 {
-                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoLoadingUnitsToMove"), (int)this.MachineService.BayNumber), Services.Models.NotificationSeverity.Error);
-                    return;
+                    //if (this.MachineService.Loadunits is null || !this.MachineService.Loadunits.Any())
+                    //{
+                    //    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoLoadingUnitsToMove"), (int)this.MachineService.BayNumber), Services.Models.NotificationSeverity.Error);
+                    //    return;
+                    //}
+                    //this.loadingUnits = this.MachineService.Loadunits.ToList();
+                    //this.RaisePropertyChanged(nameof(this.LoadingUnits));
+                    //if (this.LoadingUnits.Any())
+                    //{
+                    //    this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
+                    //    this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
+                    //}
+                    this.loadingUnitId = null;
+                    //this.selectedLoadingUnit = null;
                 }
-                this.loadingUnits = this.MachineService.Loadunits.ToList();
-                this.RaisePropertyChanged(nameof(this.LoadingUnits));
 
-                this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
-                this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
-                this.loadingUnitId = null;
-                this.selectedLoadingUnit = null;
+                this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
+                this.RaisePropertyChanged(nameof(this.LoadingUnitId));
+                this.RaisePropertyChanged(nameof(this.IsOperator));
             }
-
-            this.RaisePropertyChanged(nameof(this.SelectedLoadingUnit));
-            this.RaisePropertyChanged(nameof(this.LoadingUnitId));
-            this.RaisePropertyChanged(nameof(this.IsOperator));
         }
 
         private bool CanCallLoadingUnit()
@@ -407,6 +412,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        private void OnLoadUnitsUpdate(LoadUnitsChangedMessage obj)
+        {
+            var oldSel = this.LoadingUnitId;
+            this.LoadingUnits = obj.Loadunits.ToList();
+            this.LoadingUnitId = oldSel;
+            if (this.LoadingUnits.Any())
+            {
+                this.MinLoadingUnitId = this.loadingUnits.Select(s => s.Id).Min();
+                this.MaxLoadingUnitId = this.loadingUnits.Select(s => s.Id).Max();
+            }
+        }
+
         private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message.Data?.MovementMode == MovementMode.BayTest)
@@ -437,6 +454,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
                         this.OnHomingProcedureStatusChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.loadUnitsChangedToken = this.loadUnitsChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<LoadUnitsChangedPubSubEvent>()
+                    .Subscribe(
+                        this.OnLoadUnitsUpdate,
                         ThreadOption.UIThread,
                         false);
         }

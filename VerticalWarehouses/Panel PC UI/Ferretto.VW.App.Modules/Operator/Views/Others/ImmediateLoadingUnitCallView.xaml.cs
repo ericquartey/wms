@@ -23,8 +23,11 @@ namespace Ferretto.VW.App.Modules.Operator.Views
             var viewModel = this.DataContext as ImmediateLoadingUnitCallViewModel;
             var grid = sender as DataGrid;
 
-            if (grid.SelectedItems != null && grid.SelectedItems.Count > 0)
+            if (grid.SelectedItems != null
+                && grid.SelectedItems.Count > 0
+                && !e.Handled)
             {
+                e.Handled = true;
                 var selectedList = grid.SelectedItems.OfType<LoadingUnit>().ToList();
 
                 viewModel.SelectedUnits = selectedList;
@@ -32,7 +35,9 @@ namespace Ferretto.VW.App.Modules.Operator.Views
                 var template = grid.Template;
                 var scrol = (ScrollViewer)template.FindName("DG_ScrollViewer", grid);
 
-                if ((scrol.VerticalOffset + 10 <= grid.SelectedIndex || scrol.VerticalOffset > grid.SelectedIndex) && !viewModel.IsWaitingForResponse)
+                if ((scrol.VerticalOffset + 11 <= grid.SelectedIndex
+                    || (scrol.VerticalOffset > grid.SelectedIndex && grid.SelectedIndex < grid.Items.Count - 11))
+                    && !viewModel.IsWaitingForResponse)
                 {
                     scrol.ScrollToVerticalOffset(grid.SelectedIndex);
                 }
