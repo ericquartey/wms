@@ -381,14 +381,13 @@
         </Border>
       </Border>
 
-      <controls:PpcButton Grid.Row="3"
+      <controls:PpcButton Grid.Row="4"
                           Margin="15,8,15,0"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
                           Command="{Binding SuspendCommand}"
                           Content="{resources:Loc OperatorApp.Suspend}"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="Collapsed" />
+                          Style="{StaticResource ConfirmButton}"/>
 
     </Grid>
   </Grid>

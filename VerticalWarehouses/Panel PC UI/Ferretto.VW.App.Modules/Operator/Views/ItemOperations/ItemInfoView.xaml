@@ -58,6 +58,7 @@
         <ColumnDefinition />
         <ColumnDefinition />
         <ColumnDefinition />
+        <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
       <controls:PpcLabeledText Grid.Row="0"
@@ -86,8 +87,9 @@
                                ContentText="{Binding MissionOperation.ItemListRowCode}"
                                LabelText="{resources:Loc OperatorApp.CommonListRow}" />
 
-      <StackPanel Grid.Row="1"
+      <StackPanel Grid.Row="2"
                   Grid.Column="2"
+                  Grid.ColumnSpan="2"
                   Margin="0,0,0,5"
                   Orientation="Horizontal">
         <controls:PpcLabeledText HorizontalAlignment="Left"
@@ -106,8 +108,8 @@
         </Border>
       </StackPanel>
 
-      <StackPanel Grid.Row="2"
-                  Grid.Column="2"
+      <StackPanel Grid.Row="1"
+                  Grid.Column="3"
                   Margin="0,0,0,5"
                   Orientation="Horizontal"
                   Visibility="{Binding IsCarrefourOrDraperyItem, Converter={StaticResource BTVIC}}">
@@ -166,14 +168,16 @@
 
       <controls:PpcLabeledText Grid.Row="2"
                                Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               Margin="0,0,5,0"
                                MaxHeight="40"
-                               HorizontalAlignment="Left"
+                               HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
                                ContentText="{Binding MissionOperation.ItemListDescription}"
                                LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
 
-      <controls:PpcLabeledText Grid.Row="2"
-                               Grid.Column="1"
+      <controls:PpcLabeledText Grid.Row="1"
+                               Grid.Column="2"
                                MaxHeight="40"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
