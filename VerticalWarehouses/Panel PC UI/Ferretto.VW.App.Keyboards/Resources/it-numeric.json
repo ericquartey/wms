@@ -195,7 +195,7 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "\u00a5"
+              "CommandText": "\u00a3"
             }
           },
           "Width": "Auto"
