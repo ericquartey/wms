@@ -507,7 +507,7 @@ namespace Ferretto.VW.Simulator.Services
                     var inverter = sender as InverterModel;
 
                     // Retrieve bay position (upper/lower position)
-                    var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 5);
+                    var bayPosition = bay.Positions.FirstOrDefault(x => Math.Abs(x.Height - this.Inverters00.AxisPositionY - this.Machine.Elevator.Axes.First().Offset) <= 8);
 
                     if (bayPosition != null)
                     {
