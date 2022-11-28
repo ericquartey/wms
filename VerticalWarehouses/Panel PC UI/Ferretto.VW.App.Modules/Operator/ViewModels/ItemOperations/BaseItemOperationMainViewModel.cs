@@ -892,6 +892,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
 
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
+                        if (!string.IsNullOrEmpty(this.InputLot))
+                        {
+                            try
+                            {
+                                var item = await this.itemsWebService.GetByBarcodeAsync(this.InputLot);
+                                e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
+                                if (!e.HasMismatch)
+                                {
+                                    this.logger.Debug($"GetByBarcodeAsync by lot: '{item?.Code}'.");
+                                    await this.ConfirmOperationAsync(item?.Code);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Error);
+                                this.ResetInputFields();
+                            }
+                            break;
+                        }
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
                         if (e.HasMismatch
@@ -918,6 +937,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 catch (Exception)
                                 {
                                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
+                                    this.ResetInputFields();
                                 }
                             }
                         }

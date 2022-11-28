@@ -219,7 +219,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.loadingUnitId = loadingUnitId;
             }
-            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
+            this.IsBarcodeActive = this.barcodeReaderService.IsEnabled;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 

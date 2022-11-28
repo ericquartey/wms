@@ -420,7 +420,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsAddItem = false;
             this.IsAddItemLists = false;
 
-            this.IsBarcodeActive = this.barcodeReaderService.IsActive;
+            this.IsBarcodeActive = this.barcodeReaderService.IsEnabled;
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 
