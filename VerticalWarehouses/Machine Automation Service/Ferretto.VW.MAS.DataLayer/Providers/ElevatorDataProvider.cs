@@ -332,9 +332,9 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool IsVerticalPositionWithinTolerance(double position)
         {
             return
-                this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance < position
+                this.machineVolatileDataProvider.ElevatorVerticalPosition - VerticalPositionValidationTolerance <= position
                 &&
-                this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance > position;
+                this.machineVolatileDataProvider.ElevatorVerticalPosition + VerticalPositionValidationTolerance >= position;
         }
 
         public void ResetMachine()
@@ -376,12 +376,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                this.logger.LogDebug($"Elevator axis current bay position save {bayPositionId}");
                 var currentBayPosition = this.GetCachedCurrentBayPosition();
 
                 var elevator = this.dataContext.Elevators
                     .Include(e => e.BayPosition)
                     .Include(e => e.Cell)
-                    .ThenInclude(c => c.Panel)
+                        .ThenInclude(c => c.Panel)
                     .Single();
 
                 if (currentBayPosition is null || currentBayPosition.Id != bayPositionId)
@@ -415,6 +416,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                this.logger.LogDebug($"Elevator axis current cell save {cellId}");
                 var currentCell = this.GetCachedCurrentCell();
 
                 var elevator = this.dataContext.Elevators

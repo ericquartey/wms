@@ -277,10 +277,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         public bool HasStepStart => this.currentStep is ErrorLoadunitMissingStepStart;
 
-        internal bool IsBay1Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsDouble ?? false;
-
-        internal bool IsBay1External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsExternal ?? false;
-
         public bool IsBay1PositionDownVisible
         {
             get => this.isBay1PositionDownVisible;
@@ -293,10 +289,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.isBay1PositionUpVisible, value);
         }
 
-        internal bool IsBay2Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsDouble ?? false;
-
-        internal bool IsBay2External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsExternal ?? false;
-
         public bool IsBay2PositionDownVisible
         {
             get => this.isBay2PositionDownVisible;
@@ -308,10 +300,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             get => this.isBay2PositionUpVisible;
             set => this.SetProperty(ref this.isBay2PositionUpVisible, value);
         }
-
-        internal bool IsBay3Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsDouble ?? false;
-
-        internal bool IsBay3External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsExternal ?? false;
 
         public bool IsBay3PositionDownVisible
         {
@@ -374,12 +362,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.luIdOnElevator, value);
         }
 
-        internal bool LUPresentInBay1 => this.IsBay1External && this.IsBay1Double ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1 || this.SensorsService.Sensors.RobotOptionBay1 || this.SensorsService.Sensors.TrolleyOptionBay1) : this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentInBay1;
-
-        internal bool LUPresentInBay2 => this.IsBay2External && this.IsBay2Double ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2 || this.SensorsService.Sensors.RobotOptionBay2 || this.SensorsService.Sensors.TrolleyOptionBay2) : this.IsBay2External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentInBay2;
-
-        internal bool LUPresentInBay3 => this.IsBay3External && this.IsBay3Double ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3 || this.SensorsService.Sensors.RobotOptionBay3 || this.SensorsService.Sensors.TrolleyOptionBay3) : this.IsBay3External ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) : this.SensorsService.Sensors.LUPresentInBay3;
-
         public MachineError MachineError
         {
             get => this.machineError;
@@ -441,13 +423,31 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         internal IEnumerable<BayPosition> Bay3Positions => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.Positions;
 
+        internal bool IsBay1Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsDouble ?? false;
+
+        internal bool IsBay1External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayOne)?.IsExternal ?? false;
+
+        internal bool IsBay2Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsDouble ?? false;
+
+        internal bool IsBay2External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayTwo)?.IsExternal ?? false;
+
+        internal bool IsBay3Double => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsDouble ?? false;
+
+        internal bool IsBay3External => this.MachineService.Bays?.FirstOrDefault(a => a.Number == BayNumber.BayThree)?.IsExternal ?? false;
+
+        internal bool LUPresentInBay1 => this.IsBay1External && this.IsBay1Double ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1 || this.SensorsService.Sensors.RobotOptionBay1 || this.SensorsService.Sensors.TrolleyOptionBay1) : this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentInBay1;
+
         internal bool LUPresentInBay1Down => this.IsBay1External && this.IsBay1Double ? (this.SensorsService.Sensors.LUPresentMiddleBottomBay1 || this.SensorsService.Sensors.RobotOptionBay1) : this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentMiddleBottomBay1;
 
         internal bool LUPresentInBay1Up => this.IsBay1External && this.IsBay1Double ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.TrolleyOptionBay1) : this.IsBay1External ? (this.SensorsService.Sensors.LUPresentInBay1 || this.SensorsService.Sensors.LUPresentMiddleBottomBay1) : this.SensorsService.Sensors.LUPresentInBay1;
 
+        internal bool LUPresentInBay2 => this.IsBay2External && this.IsBay2Double ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2 || this.SensorsService.Sensors.RobotOptionBay2 || this.SensorsService.Sensors.TrolleyOptionBay2) : this.IsBay2External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentInBay2;
+
         internal bool LUPresentInBay2Down => this.IsBay2External && this.IsBay2Double ? (this.SensorsService.Sensors.LUPresentMiddleBottomBay2 || this.SensorsService.Sensors.RobotOptionBay2) : this.IsBay2External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentMiddleBottomBay2;
 
         internal bool LUPresentInBay2Up => this.IsBay2External && this.IsBay2Double ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.TrolleyOptionBay2) : this.IsBay2External ? (this.SensorsService.Sensors.LUPresentInBay2 || this.SensorsService.Sensors.LUPresentMiddleBottomBay2) : this.SensorsService.Sensors.LUPresentInBay2;
+
+        internal bool LUPresentInBay3 => this.IsBay3External && this.IsBay3Double ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3 || this.SensorsService.Sensors.RobotOptionBay3 || this.SensorsService.Sensors.TrolleyOptionBay3) : this.IsBay3External ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) : this.SensorsService.Sensors.LUPresentInBay3;
 
         internal bool LUPresentInBay3Down => this.IsBay3External && this.IsBay3Double ? (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 || this.SensorsService.Sensors.RobotOptionBay3) : this.IsBay3External ? (this.SensorsService.Sensors.LUPresentInBay3 || this.SensorsService.Sensors.LUPresentMiddleBottomBay3) : this.SensorsService.Sensors.LUPresentMiddleBottomBay3;
 
@@ -691,7 +691,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                         this.IsBay2PositionUpVisible = true;
                     }
 
-                    if (this.LUPresentInBay1Down &&
+                    if (this.LUPresentInBay2Down &&
                         this.HasBay2PositionDownVisible)
                     {
                         this.LuIdOnBay2Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
@@ -743,6 +743,19 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
                 else
                 {
+                    if (this.LUPresentInBay3 &&
+                    this.HasBay3PositionUpVisible)
+                    {
+                        this.LuIdOnBay3Up = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height == 0)?.Id;
+                        this.IsBay3PositionUpVisible = true;
+                    }
+
+                    if (this.SensorsService.Sensors.LUPresentMiddleBottomBay3 &&
+                        this.HasBay3PositionDownVisible)
+                    {
+                        this.LuIdOnBay3Down = this.MachineService.Loadunits?.FirstOrDefault(l => l.Status == LoadingUnitStatus.Undefined && l.Height != 0)?.Id;
+                        this.IsBay3PositionDownVisible = true;
+                    }
                 }
 
                 if (this.IsBay3PositionUpVisible || this.IsBay3PositionDownVisible)
