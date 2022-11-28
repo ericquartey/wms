@@ -6982,6 +6982,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Suspend current list.
+        /// </summary>
+        public static string SuspendList {
+            get {
+                return ResourceManager.GetString("SuspendList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Suspend current operation.
         /// </summary>
         public static string SuspendOperation {

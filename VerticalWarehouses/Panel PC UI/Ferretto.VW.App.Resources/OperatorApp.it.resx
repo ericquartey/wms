@@ -2235,4 +2235,19 @@
   <data name="BlockLevelReserved" xml:space="preserve">
     <value>Prenotato</value>
   </data>
+  <data name="Group" xml:space="preserve">
+    <value>Gruppo</value>
+  </data>
+  <data name="GroupDescription" xml:space="preserve">
+    <value>Descrizione Gruppo</value>
+  </data>
+  <data name="Causal" xml:space="preserve">
+    <value>Causale</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Commessa</value>
+  </data>
+  <data name="SuspendList" xml:space="preserve">
+    <value>Sospendi Lista</value>
+  </data>
 </root>

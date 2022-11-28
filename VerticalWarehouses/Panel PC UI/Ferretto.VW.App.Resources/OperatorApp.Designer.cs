@@ -700,6 +700,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Causal.
+        /// </summary>
+        public static string Causal {
+            get {
+                return ResourceManager.GetString("Causal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell.
         /// </summary>
         public static string Cell {
@@ -2469,6 +2478,24 @@ namespace Ferretto.VW.App.Resources {
         public static string GoodQuantityBeforeDefectDrapery {
             get {
                 return ResourceManager.GetString("GoodQuantityBeforeDefectDrapery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        public static string Group {
+            get {
+                return ResourceManager.GetString("Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group Description.
+        /// </summary>
+        public static string GroupDescription {
+            get {
+                return ResourceManager.GetString("GroupDescription", resourceCulture);
             }
         }
         
@@ -4714,6 +4741,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        public static string Order {
+            get {
+                return ResourceManager.GetString("Order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Original Average Unitary Weight [g].
         /// </summary>
         public static string OriginalAverageWeight {
@@ -5862,6 +5898,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Suspending {
             get {
                 return ResourceManager.GetString("Suspending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suspend List.
+        /// </summary>
+        public static string SuspendList {
+            get {
+                return ResourceManager.GetString("SuspendList", resourceCulture);
             }
         }
         

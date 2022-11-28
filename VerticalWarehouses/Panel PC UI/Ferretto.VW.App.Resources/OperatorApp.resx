@@ -2632,4 +2632,19 @@
     <value>Reserved</value>
     <comment>BlockLevel</comment>
   </data>
+  <data name="Causal" xml:space="preserve">
+    <value>Causal</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="GroupDescription" xml:space="preserve">
+    <value>Group Description</value>
+  </data>
+  <data name="SuspendList" xml:space="preserve">
+    <value>Suspend List</value>
+  </data>
 </root>

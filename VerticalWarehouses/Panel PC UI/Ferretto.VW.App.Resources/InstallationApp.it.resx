@@ -2772,4 +2772,7 @@
   <data name="ChangeLoadUnitFixed" xml:space="preserve">
     <value>Cambia gestione fissa</value>
   </data>
+  <data name="SuspendList" xml:space="preserve">
+    <value>Sospendi la lista corrente</value>
+  </data>
 </root>
