@@ -403,8 +403,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.inputLot;
             protected set => this.SetProperty(
                 ref this.inputLot,
-                value,
-                () => this.IsItemLotValid = value is null || this[nameof(this.InputLot)] != null);
+                value);
         }
 
         public double? InputQuantity
@@ -430,8 +429,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.inputSerialNumber;
             protected set => this.SetProperty(
                 ref this.inputSerialNumber,
-                value,
-                () => this.IsItemSerialNumberValid = this.inputSerialNumber is null || this[nameof(this.InputSerialNumber)] != null);
+                value);
         }
 
         public bool IsAddEnabled
@@ -883,41 +881,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
 
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
-                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode;
+                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation?.ItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
                         this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+                        this.IsItemSerialNumberValid = this.InputSerialNumber is null || this.MissionOperation?.SerialNumber is null || this.InputSerialNumber == this.MissionOperation?.SerialNumber;
 
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
-                        if (!string.IsNullOrEmpty(this.InputLot))
-                        {
-                            try
-                            {
-                                var item = await this.itemsWebService.GetByBarcodeAsync(this.InputLot);
-                                e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
-                                if (!e.HasMismatch)
-                                {
-                                    this.logger.Debug($"GetByBarcodeAsync by lot: '{item?.Code}'.");
-                                    await this.ConfirmOperationAsync(item?.Code);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Error);
-                                this.ResetInputFields();
-                            }
-                            break;
-                        }
+                        this.IsItemLotValid = this.InputLot is null || this.MissionOperation?.Lot is null || this.InputLot == this.MissionOperation?.Lot;
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
-                        if (e.HasMismatch
-                            && !this.IsItemCodeValid
+                        if (!this.IsItemCodeValid
                             && e.GetItemCode() != null
-                            && this.MissionOperation?.ItemCode != null
-                            )
+                            && this.MissionOperation?.ItemCode != null)
                         {
                             if (this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght)
                             {
@@ -928,7 +907,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 try
                                 {
                                     var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
-                                    e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
+                                    e.HasMismatch = item?.Code != this.MissionOperation.ItemCode;
                                     if (!e.HasMismatch)
                                     {
                                         this.logger.Debug($"GetByBarcodeAsync '{item?.Code}'.");
