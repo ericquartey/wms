@@ -24,23 +24,23 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var value = (WeightCalibartionStep)(item ?? WeightCalibartionStep.CallUnit);
+            var value = (WeightCalibrationStep)(item ?? WeightCalibrationStep.CallUnit);
 
             switch (value)
             {
-                case WeightCalibartionStep.CallUnit:
+                case WeightCalibrationStep.CallUnit:
                     return this.EnumCallUnit;
 
-                case WeightCalibartionStep.EmptyUnitWeighing:
+                case WeightCalibrationStep.EmptyUnitWeighing:
                     return this.EnumEmptyUnitWeighing;
 
-                case WeightCalibartionStep.OptionalWeighing1:
+                case WeightCalibrationStep.OptionalWeighing1:
                     return this.EnumOptionalWeighing1;
 
-                case WeightCalibartionStep.FullUnitWeighing:
+                case WeightCalibrationStep.FullUnitWeighing:
                     return this.EnumFullUnitWeighing;
 
-                case WeightCalibartionStep.SetWeight:
+                case WeightCalibrationStep.SetWeight:
                     return this.EnumSetWeight;
             }
 
