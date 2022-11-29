@@ -387,7 +387,7 @@
                                           VerticalAlignment="Top"
                                           Foreground="{Binding IsItemCodeValid, Converter={StaticResource BoolToGreenRedConverter}}"
                                           Kind="{Binding IsItemCodeValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                          Visibility="{Binding InputItemCode, Converter={StaticResource RTVC}}" />
+                                          Visibility="{Binding IsItemCodeValid, Converter={StaticResource BTVIC}}" />
 
             </Border>
           </Grid>

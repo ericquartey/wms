@@ -104,7 +104,7 @@
                                       VerticalAlignment="Top"
                                       Foreground="{Binding IsItemLotValid, Converter={StaticResource BoolToGreenRedConverter}}"
                                       Kind="{Binding IsItemLotValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                      Visibility="{Binding InputLot, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding IsItemLotValid, Converter={StaticResource BTVIC}}" />
         </Border>
       </StackPanel>
 
@@ -126,7 +126,7 @@
                                       VerticalAlignment="Top"
                                       Foreground="{Binding IsItemSerialNumberValid, Converter={StaticResource BoolToGreenRedConverter}}"
                                       Kind="{Binding IsItemSerialNumberValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                      Visibility="{Binding InputSerialNumber, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding IsItemSerialNumberValid, Converter={StaticResource BTVIC}}" />
         </Border>
       </StackPanel>
 

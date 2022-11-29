@@ -693,7 +693,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     case nameof(this.InputLot):
                         {
-                            if (this.InputLot != null && this.InputLot == this.MissionOperation?.Lot)
+                            if (!this.isItemLotValid)
                             {
                                 return columnName;
                             }
@@ -920,6 +920,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 }
                             }
                         }
+                        else if (!this.IsItemLotValid || !this.IsItemSerialNumberValid)
+                        {
+                            this.ResetInputFields();
+                        }
 
                         if (e.HasMismatch)
                         {
@@ -945,6 +949,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             else
                             {
                                 await this.ConfirmOperationAsync(e.Code);
+                                this.ResetInputFields();
                             }
                         }
                     }
@@ -984,6 +989,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
                                 await this.ConfirmOperationAsync(e.Code);
+                                this.ResetInputFields();
                             }
                             else
                             {
@@ -1003,6 +1009,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmOperationAsync(string barcode)
         {
+            this.IsItemCodeValid = true;
+            this.IsItemLotValid = true;
+            this.isItemSerialNumberValid = true;
+
             var machineList = await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id);
             if (!string.IsNullOrEmpty(machineList))
             {
@@ -2315,7 +2325,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputSerialNumber = null;
             this.InputLot = null;
             this.InputItemCode = null;
-            this.IsItemCodeValid = false;
+            //this.IsItemCodeValid = false;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }
