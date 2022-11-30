@@ -708,6 +708,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsAddItem = false;
             this.IsAddItemLists = configuration.IsAddItemByList;
+            this.IsBarcodeActive = this.barcodeReaderService.IsEnabled;
 
             this.CloseLine = false;
             this.FullCompartment = false;

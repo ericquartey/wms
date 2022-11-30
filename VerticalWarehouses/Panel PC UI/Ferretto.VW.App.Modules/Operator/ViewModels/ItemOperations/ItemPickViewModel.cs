@@ -364,7 +364,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                     else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
                     {
-                        await this.ConfirmOperationAsync(this.barcodeOk);
+                        await this.ConfirmOperationAsync(this.barcodeOk, !string.IsNullOrEmpty(this.InputSerialNumber));
 
                         return;
                     }

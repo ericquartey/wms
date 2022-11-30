@@ -373,21 +373,22 @@
 
         <controls:PpcButton Width="54"
                             Height="50"
+                            Margin="5,8,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding ShowBarcodeReaderCommand}"
+                            KindMaterial="BarcodeScan"
+                            Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
+
+          <controls:PpcButton Width="55"
+                            Height="50"
                             Margin="5,8,15,0"
                             HorizontalAlignment="right"
                             VerticalAlignment="Bottom"
                             Command="{Binding SuspendCommand}"
                             KindMaterial="Pause" />
 
-        <controls:PpcButton Width="54"
-                            Height="50"
-                            Margin="5,8,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding ShowBarcodeReaderCommand}"
-                            KindMaterial="BarcodeScan"
-                            Visibility="{Binding IsBarcodeActive, Converter={StaticResource BTVC}}" />
-      </StackPanel>
+            </StackPanel>
     </Grid>
 
     <Grid Grid.RowSpan="3"

@@ -948,7 +948,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                await this.ConfirmOperationAsync(e.Code);
+                                await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
                                 this.ResetInputFields();
                             }
                         }
@@ -966,8 +966,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+                        this.IsItemSerialNumberValid = this.InputSerialNumber is null || this.MissionOperation?.SerialNumber is null || this.InputSerialNumber == this.MissionOperation?.SerialNumber;
 
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
+                        this.IsItemLotValid = this.InputLot is null || this.MissionOperation?.Lot is null || this.InputLot == this.MissionOperation?.Lot;
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
                         if (e.HasMismatch)
@@ -988,7 +990,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             {
                                 this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                                await this.ConfirmOperationAsync(e.Code);
+                                await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
                                 this.ResetInputFields();
                             }
                             else
@@ -1007,7 +1009,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task ConfirmOperationAsync(string barcode)
+        public async Task ConfirmOperationAsync(string barcode, bool isSerialNumber = false)
         {
             this.IsItemCodeValid = true;
             this.IsItemLotValid = true;
@@ -1095,7 +1097,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)
+                if ((barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                    || this.MissionOperation.MaximumQuantity == decimal.One
+                    || isSerialNumber)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
