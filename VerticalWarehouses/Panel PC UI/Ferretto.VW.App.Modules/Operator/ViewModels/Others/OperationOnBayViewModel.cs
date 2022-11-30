@@ -85,6 +85,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAggregateList;
 
+        private bool isWaitingList;
+
         #endregion
 
         #region Constructors
@@ -119,6 +121,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.inventory;
             set => this.SetProperty(ref this.inventory, value, this.CanExecute);
+        }
+
+        public bool IsWaitingList
+        {
+            get => this.isWaitingList;
+            set => this.SetProperty(ref this.isWaitingList, value, this.CanExecute);
         }
 
         public bool IsBox
@@ -351,6 +359,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItem = configuration.IsEnableAddItem;
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
+                this.IsWaitingList = configuration.IsWaitingListFiltered is true;
                 this.IsDrapery = configuration.IsDrapery;
                 this.IsDisableQtyItemEditingPick = configuration.IsDisableQtyItemEditingPick;
                 this.IsDoubleConfirmBarcodeInventory = configuration.IsDoubleConfirmBarcodeInventory;
@@ -398,6 +407,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsEnableAddItem = this.IsEnableAddItem;
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
+                machine.IsWaitingListFiltered = this.IsWaitingList;
                 machine.IsDisableQtyItemEditingPick = this.IsDisableQtyItemEditingPick;
                 machine.IsDoubleConfirmBarcodeInventory = this.IsDoubleConfirmBarcodeInventory;
                 machine.IsDoubleConfirmBarcodePick = this.IsDoubleConfirmBarcodePick;

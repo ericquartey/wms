@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.DataModels
         /// <summary>
         /// Gets or sets to filter the waiting list on the actual machine.
         /// </summary>
-        public bool IsWaitingListFiltered { get; set; }
+        public bool? IsWaitingListFiltered { get; set; }
 
         /// <summary>
         /// When this value is greater than zero it is used to separate item barcode from serial

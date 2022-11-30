@@ -156,6 +156,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     machine.WaitingListPriorityHighlighted = -1;
                 }
+                if (machine.IsWaitingListFiltered == null)
+                {
+                    machine.IsWaitingListFiltered = true;
+                }
                 this.dataContext.SaveChanges();
             }
         }
