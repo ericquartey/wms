@@ -2647,4 +2647,7 @@
   <data name="SuspendList" xml:space="preserve">
     <value>Suspend List</value>
   </data>
+  <data name="IsWaitingList" xml:space="preserve">
+    <value>View list only on local machine</value>
+  </data>
 </root>

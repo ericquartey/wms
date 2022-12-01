@@ -188,6 +188,11 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsAggregateList, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsAggregateList}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsWaitingList, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsWaitingList}" />
             </StackPanel>
         </ScrollViewer>
 

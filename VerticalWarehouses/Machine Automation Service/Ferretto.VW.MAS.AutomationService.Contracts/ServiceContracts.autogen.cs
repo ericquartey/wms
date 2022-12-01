@@ -5421,6 +5421,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsUpdatingStockByDifference", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpdatingStockByDifference { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsWaitingListFiltered", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsWaitingListFiltered { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ItemUniqueIdLength", Required = Newtonsoft.Json.Required.Always)]
         public int ItemUniqueIdLength { get; set; }
     

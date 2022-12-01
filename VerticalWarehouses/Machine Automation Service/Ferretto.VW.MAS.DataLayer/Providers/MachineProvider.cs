@@ -156,6 +156,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     machine.WaitingListPriorityHighlighted = -1;
                 }
+                if (machine.IsWaitingListFiltered == null)
+                {
+                    machine.IsWaitingListFiltered = true;
+                }
                 this.dataContext.SaveChanges();
             }
         }
@@ -594,6 +598,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ListPickConfirm = machine.ListPickConfirm;
                 machineDB.ListPutConfirm = machine.ListPutConfirm;
                 machineDB.AggregateList = machine.AggregateList;
+                machineDB.IsWaitingListFiltered = machine.IsWaitingListFiltered;
 
                 this.dataContext.SaveChanges();
             }

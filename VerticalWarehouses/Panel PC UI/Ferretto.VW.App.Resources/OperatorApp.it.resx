@@ -2250,4 +2250,7 @@
   <data name="SuspendList" xml:space="preserve">
     <value>Sospendi Lista</value>
   </data>
+  <data name="IsWaitingList" xml:space="preserve">
+    <value>Lista sulla sola macchina locale</value>
+  </data>
 </root>

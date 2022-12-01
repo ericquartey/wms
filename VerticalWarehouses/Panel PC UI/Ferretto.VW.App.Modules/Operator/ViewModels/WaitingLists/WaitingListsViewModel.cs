@@ -47,6 +47,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isShipmentDayVisible;
 
+        private bool? isWaitingListLocal;
+
         private string itemSearchLabel;
 
         private DelegateCommand listDetailButtonCommand;
@@ -308,6 +310,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsCarrefour = configuration.IsCarrefour;
             this.priorityHighlighted = configuration.WaitingListPriorityHighlighted;
 
+            this.isWaitingListLocal = configuration.IsWaitingListFiltered;
+
             await this.LoadListsAsync();
 
             await this.RefreshListsAsync();
@@ -560,8 +564,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 this.lists.Clear();
-                //newLists.ForEach(l => l.Priority = 9999); // TEST
-                newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId, this.priorityHighlighted)));
+
+                if (this.isWaitingListLocal is true)
+                {
+                    foreach (var newList in newLists.Where(x => x.Machines?.Any(m => m.Id == this.machineId) == true))
+                    {
+                        this.lists.Add(new ItemListExecution(newList, this.machineId, this.priorityHighlighted));
+                    }
+                }
+                else
+                {
+                    newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId, this.priorityHighlighted)));
+                }
 
                 if (this.lists.Count > 0)
                 {
