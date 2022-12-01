@@ -598,6 +598,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ListPickConfirm = machine.ListPickConfirm;
                 machineDB.ListPutConfirm = machine.ListPutConfirm;
                 machineDB.AggregateList = machine.AggregateList;
+                machineDB.IsWaitingListFiltered = machine.IsWaitingListFiltered;
 
                 this.dataContext.SaveChanges();
             }
