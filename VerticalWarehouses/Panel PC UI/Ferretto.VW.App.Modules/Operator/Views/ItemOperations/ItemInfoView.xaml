@@ -238,13 +238,15 @@
             HorizontalAlignment="Stretch"
             Background="White"
             Visibility="{Binding BarcodeImageExist, Converter={StaticResource BTVC}}">
-      <Image MaxHeight="120"
-             Margin="2,5,2,5"
-             Source="{Binding BarcodeImageSource}"
-             Stretch="Uniform" />
-    </Border>
+            <Image MaxHeight="120"
+                 Margin="2,5,2,5"
+                 Source="{Binding BarcodeImageSource}"
+                 Stretch="Uniform" />
+     </Border>
 
-    <Border Grid.Row="1"
+
+
+        <Border Grid.Row="1"
             Grid.Column="2"
             Width="230"
             Height="90"
@@ -258,8 +260,8 @@
 
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
           <TextBlock x:Name="ItemCodeLabel"
                      Margin="8,4"
@@ -279,9 +281,27 @@
                      Foreground="{DynamicResource PpcForeground}"
                      Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
                      TextWrapping="Wrap" />
-        </Grid>
+
+
+                </Grid>
       </Border>
     </Border>
 
-  </Grid>
+        <Border Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Visibility="{Binding IsNrLabelsEditable, Converter={StaticResource BTVC}}">
+
+            <ctrls:PpcSpinEdit
+                    Width="230"
+                    Height="85"
+                    Margin="1,0,1,0"
+                    EditValue="{Binding NrLabels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    LabelText="{resources:Loc OperatorApp.LabelsEditableCaption}"
+                    MinValue="0"
+                    MaxValue="10"/>
+            
+        </Border>
+
+    </Grid>
 </UserControl>

@@ -2253,4 +2253,10 @@
   <data name="IsWaitingList" xml:space="preserve">
     <value>Lista sulla sola macchina locale</value>
   </data>
+  <data name="IsNrLabelsEditable" xml:space="preserve">
+    <value>Numero di etichette editabile</value>
+  </data>
+  <data name="LabelsEditableCaption" xml:space="preserve">
+    <value>Numero copie</value>
+  </data>
 </root>

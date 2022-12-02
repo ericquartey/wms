@@ -193,6 +193,11 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsWaitingList, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsWaitingList}" />
+                
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsNrLabelsEditable, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsNrLabelsEditable}" />
             </StackPanel>
         </ScrollViewer>
 

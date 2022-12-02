@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Migrations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
@@ -87,14 +88,14 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <returns>
         /// Returns HTTP 200 if the completion request was successfully processed.
         /// </returns>
-        public async Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null, double wastedQuantity = 0, string toteBarcode = null, string userName = null)
+        public async Task CompleteAsync(int wmsId, double quantity, string printerName, string barcode = null, double wastedQuantity = 0, string toteBarcode = null, string userName = null, int? nrLabels = null)
         {
             try
             {
                 if (this.wmsSettingsProvider.IsEnabled)
                 {
                     //x double wastedQuantity = 0;
-                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, wastedQuantity, printerName, null, barcode, toteBarcode, userName);
+                    await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, wastedQuantity, printerName, null, barcode, toteBarcode, userName, nrLabels);
                 }
                 else
                 {
@@ -186,7 +187,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// </param>
         /// <returns>
         /// </returns>
-        public async Task PartiallyCompleteAsync(int wmsId, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null)
+        public async Task PartiallyCompleteAsync(int wmsId, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null, int? nrLabels = null)
         {
             if (!this.wmsSettingsProvider.IsEnabled)
             {
@@ -195,7 +196,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsWmsWebService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment, userName);
+                await this.missionOperationsWmsWebService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment, userName, nrLabels);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {

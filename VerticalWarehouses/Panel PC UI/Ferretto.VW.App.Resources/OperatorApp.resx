@@ -2650,4 +2650,10 @@
   <data name="IsWaitingList" xml:space="preserve">
     <value>View list only on local machine</value>
   </data>
+  <data name="IsNrLabelsEditable" xml:space="preserve">
+    <value>Nr. of labels editable</value>
+  </data>
+  <data name="LabelsEditableCaption" xml:space="preserve">
+    <value>Nr. Copies</value>
+  </data>
 </root>

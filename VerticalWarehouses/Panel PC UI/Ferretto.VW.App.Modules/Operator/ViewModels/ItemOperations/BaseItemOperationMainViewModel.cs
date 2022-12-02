@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ItemWeightChangedMessage lastItemQuantityMessage;
 
+        public int nrLabels;
+
         private const int DefaultPageSize = 20;
 
         private const int ItemsToCheckBeforeLoad = 2;
@@ -155,6 +157,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isItemLotValid = true;
 
         private bool isItemSerialNumberValid = true;
+
+        private bool? isNrLabelEditable;
 
         private bool isOperationCanceled;
 
@@ -538,6 +542,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsMinebeaScale { get; private set; }
 
+        public bool? IsNrLabelEditable
+        {
+            get => this.isNrLabelEditable;
+            set => this.SetProperty(ref this.isNrLabelEditable, value);
+        }
+
         public bool IsOperationCanceled
         {
             get => this.isOperationCanceled;
@@ -589,6 +599,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public double? NetWeight { get; set; }
+
+        public int NrLabels
+        {
+            get => this.nrLabels;
+            set => this.SetProperty(ref this.nrLabels, value);
+        }
 
         public IList<ItemInfo> Products => new List<ItemInfo>(this.products);
 
@@ -755,11 +771,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
-        //public bool CanConfirmMissionOperationPut()
-        //{
-        //    return this.IsAddEnabled;
-        //}
-
         #region Methods
 
         public virtual bool CanConfirmOperation()
@@ -784,6 +795,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity.Value == this.MissionRequestedQuantity;
         }
 
+        //public bool CanConfirmMissionOperationPut()
+        //{
+        //    return this.IsAddEnabled;
+        //}
         public virtual bool CanConfirmOperationCanceled()
         {
             return
@@ -829,10 +844,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew;
         }
-
-        //public async Task ConfirmMissionOperationAsync()
-        //{
-        //}
 
         public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
@@ -1009,6 +1020,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        //public async Task ConfirmMissionOperationAsync()
+        //{
+        //}
         public async Task ConfirmOperationAsync(string barcode, bool isSerialNumber = false)
         {
             this.IsItemCodeValid = true;
@@ -1102,12 +1116,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     || isSerialNumber)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode, 0, null, this.nrLabels);
                     quantity = 1;
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode, 0, null, this.nrLabels);
                 }
 
                 if (canComplete)
@@ -1271,18 +1285,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment, this.nrLabels);
                 }
                 else if (this.fullCompartment)
                 {
                     var compartmentId = this.MissionOperation.CompartmentId;
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
 
                     await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
                 }
 
                 if (canComplete)
@@ -1591,7 +1605,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment, this.nrLabels);
                 }
                 else if (this.fullCompartment)
                 {
@@ -1600,7 +1614,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
                 }
 
                 if (!canComplete)
@@ -2347,6 +2361,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.maxKnownIndexSelection = 0;
             }
+        }
+
+        private void SetProperty(ref object isNrLabelEditable, bool? value)
+        {
+            throw new NotImplementedException();
         }
 
         private void ShowDraperyItemConfirmView(string barcode, bool isPartiallyConfirmOperation)

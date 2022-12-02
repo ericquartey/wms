@@ -424,6 +424,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 
+            this.IsNrLabelEditable = this.MachineService.Bay.IsNrLabelEditable;
+            this.NrLabels = 1;
+
             //this.CanInputAvailableQuantity = true;
             this.CanInputAvailableQuantity = this.IsEnableAvailableQtyItemEditingPick;
             this.CanInputQuantity = true;
@@ -445,7 +448,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             this.BarcodeImageExist = false;
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+
+            if (this.IsNrLabelEditable is false)
+            {
+                this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+            }
 
             this.IsAddItemFeatureAvailable = configuration.IsEnableAddItem &&
                 configuration.IsDrapery &&
@@ -646,7 +653,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false);
+                var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, false, false, this.nrLabels);
                 if (!canComplete)
                 {
                     this.ShowNotification(Localized.Get("OperatorApp.OperationCancelled"));
@@ -886,7 +893,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         var itemId = this.MissionOperation.Id;
 
                         this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem);
+                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem, this.nrLabels);
 
                         if (canComplete)
                         {

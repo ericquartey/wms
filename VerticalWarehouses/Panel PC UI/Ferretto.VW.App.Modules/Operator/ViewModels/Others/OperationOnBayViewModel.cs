@@ -59,6 +59,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isLocalMachineItems;
 
+        private bool isNrLabelsEditable;
+
         private bool isOrderList;
 
         private bool isQuantityLimited;
@@ -68,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isShowBarcodeImage;
 
         private bool isUpdatingStockByDifference;
+
+        private bool isWaitingList;
 
         private bool isWaitingListPriorityHighlighted;
 
@@ -84,16 +88,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool view;
 
         private int waitingListPriorityHighlighted;
-
-        private bool isWaitingListPriorityHighlighted;
-
-        private bool isListPutConfirm;
-
-        private bool isListPickConfirm;
-
-        private bool isAggregateList;
-
-        private bool isWaitingList;
 
         #endregion
 
@@ -135,12 +129,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAggregateList;
             set => this.SetProperty(ref this.isAggregateList, value, this.CanExecute);
-        }
-
-        public bool IsWaitingList
-        {
-            get => this.isWaitingList;
-            set => this.SetProperty(ref this.isWaitingList, value, this.CanExecute);
         }
 
         public bool IsBox
@@ -234,6 +222,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isLocalMachineItems, value, this.CanExecute);
         }
 
+        public bool IsNrLabelsEditable
+        {
+            get => this.isNrLabelsEditable;
+            set => this.SetProperty(ref this.isNrLabelsEditable, value, this.CanExecute);
+        }
+
         public bool IsOrderList
         {
             get => this.isOrderList;
@@ -262,6 +256,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isUpdatingStockByDifference;
             set => this.SetProperty(ref this.isUpdatingStockByDifference, value, this.CanExecute);
+        }
+
+        public bool IsWaitingList
+        {
+            get => this.isWaitingList;
+            set => this.SetProperty(ref this.isWaitingList, value, this.CanExecute);
         }
 
         public bool IsWaitingListPriorityHighlighted
@@ -404,7 +404,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.isBusy = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage, this.IsCheckListContinueInOtherMachine);
+                await this.machineBaysWebService.SetAllOperationsBayAsync(this.Pick, this.Put, this.View, this.Inventory, this.BarcodeAutomaticPut, this.bay.Id, this.IsShowBarcodeImage, this.IsCheckListContinueInOtherMachine, this.IsNrLabelsEditable);
 
                 var machine = new Machine();
                 machine.IsEnableHandlingItemOperations = this.IsEnableHandlingItemOperations;

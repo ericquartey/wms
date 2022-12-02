@@ -2941,6 +2941,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Cerca una stringa localizzata simile a Nr. of labels editable.
+        /// </summary>
+        public static string IsNrLabelsEditable {
+            get {
+                return ResourceManager.GetString("IsNrLabelsEditable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cerca una stringa localizzata simile a Order List (WMS custom).
         /// </summary>
         public static string IsOrderList {
@@ -3333,6 +3342,15 @@ namespace Ferretto.VW.App.Resources {
         public static string KmElevatorAxis {
             get {
                 return ResourceManager.GetString("KmElevatorAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Cerca una stringa localizzata simile a Nr. Copies.
+        /// </summary>
+        public static string LabelsEditableCaption {
+            get {
+                return ResourceManager.GetString("LabelsEditableCaption", resourceCulture);
             }
         }
         

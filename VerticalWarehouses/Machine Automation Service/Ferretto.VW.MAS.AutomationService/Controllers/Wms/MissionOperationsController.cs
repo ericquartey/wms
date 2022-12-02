@@ -69,9 +69,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, string userName = null)
+        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName, string barcode, double wastedQuantity, string toteBarcode, string userName = null, int? nrLabels = null)
         {
-            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, toteBarcode, userName);
+            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName, barcode, wastedQuantity, toteBarcode, userName, nrLabels);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 
@@ -92,6 +92,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(await this.missionOperationsProvider.GetReasonsAsync(type));
         }
 
+        [HttpGet("{id}/aggregate")]
+        public async Task<ActionResult<MissionOperation>> GetByAggregateAsync(int id)
+        {
+            return this.Ok(await this.missionOperationsWmsWebService.AggregateAsync(id));
+        }
+
         [HttpGet("count")]
         public ActionResult<int> GetByBayCount()
         {
@@ -104,12 +110,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<MissionOperation>> GetByIdAsync(int id)
         {
             return this.Ok(await this.missionOperationsWmsWebService.GetByIdAsync(id));
-        }
-
-        [HttpGet("{id}/aggregate")]
-        public async Task<ActionResult<MissionOperation>> GetByAggregateAsync(int id)
-        {
-            return this.Ok(await this.missionOperationsWmsWebService.AggregateAsync(id));
         }
 
         [HttpGet("orders")]
@@ -141,9 +141,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/partially-complete")]
-        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null)
+        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool emptyCompartment = false, bool fullCompartment = false, string userName = null, int? nrLabels = null)
         {
-            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment, userName);
+            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, wastedQuantity, printerName, emptyCompartment, fullCompartment, userName, nrLabels);
 
             await this.hubContext.Clients.All.SendAsync(nameof(IOperatorHub.ProductsChanged));
 

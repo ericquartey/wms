@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         #region Methods
 
-        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null)
+        public async Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null, int? nrLabels = null)
         {
             this.logger.Debug($"User requested to complete operation '{operationId}' with quantity {quantity}.");
 
@@ -142,7 +142,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     barcode,
                     wastedQuantity,
                     toteBarcode,
-                    this.authenticationService.UserName);
+                    this.authenticationService.UserName,
+                    nrLabels);
 
                 await this.RefreshActiveMissionAsync();
 
@@ -380,7 +381,7 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.multilist;
         }
 
-        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment)
+        public async Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, int? nrLabels = null)
         {
             this.logger.Debug($"User requested to partially complete operation '{operationId}' with quantity {quantity}.");
             var operationToComplete = await this.missionOperationsWebService.GetByIdAsync(operationId);
@@ -395,7 +396,8 @@ namespace Ferretto.VW.App.Modules.Operator
                     labelPrinterName,
                     emptyCompartment,
                     fullCompartment,
-                    this.authenticationService.UserName);
+                    this.authenticationService.UserName,
+                    nrLabels);
 
                 await this.RefreshActiveMissionAsync();
 

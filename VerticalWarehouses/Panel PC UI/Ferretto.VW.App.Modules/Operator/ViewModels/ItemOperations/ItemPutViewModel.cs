@@ -593,12 +593,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)//16 => lunghezza matrice
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode, 0, null, this.nrLabels);
                     quantity = 1;
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode, 0, null, this.nrLabels);
                 }
 
                 if (this.FullCompartment)
@@ -716,6 +716,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ProductsDataGridViewVisibility = false;
             this.IsKeyboardButtonVisible = configuration.TouchHelper;
 
+            this.IsNrLabelEditable = this.MachineService.Bay.IsNrLabelEditable;
+            this.NrLabels = 1;
+
             await base.OnAppearedAsync();
 
             // Setup only reserved for Tendaggi Paradiso
@@ -726,7 +729,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
             }
             this.BarcodeImageExist = false;
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+
+            if (this.IsNrLabelEditable is false) { 
+                this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+            }
 
             this.MeasureUnitDescription = string.Format(Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
 
@@ -955,12 +961,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (barcode != null)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode, 0, null, this.nrLabels);
                     this.Logger.Debug("Barcode: " + barcode);
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
                 }
 
                 if (canComplete)
