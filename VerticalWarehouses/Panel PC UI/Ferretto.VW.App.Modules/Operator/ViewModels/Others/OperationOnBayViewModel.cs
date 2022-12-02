@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool inventory;
 
+        private bool isAggregateList;
+
         private bool isBox;
 
         private bool isBusy;
@@ -51,6 +53,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnableNoteRules;
 
+        private bool isListPickConfirm;
+
+        private bool isListPutConfirm;
+
         private bool isLocalMachineItems;
 
         private bool isOrderList;
@@ -62,6 +68,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isShowBarcodeImage;
 
         private bool isUpdatingStockByDifference;
+
+        private bool isWaitingListPriorityHighlighted;
 
         private int itemUniqueIdLength;
 
@@ -121,6 +129,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.inventory;
             set => this.SetProperty(ref this.inventory, value, this.CanExecute);
+        }
+
+        public bool IsAggregateList
+        {
+            get => this.isAggregateList;
+            set => this.SetProperty(ref this.isAggregateList, value, this.CanExecute);
         }
 
         public bool IsWaitingList
@@ -202,6 +216,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isEnableHandlingItemOperations, value, this.CanExecute);
         }
 
+        public bool IsListPickConfirm
+        {
+            get => this.isListPickConfirm;
+            set => this.SetProperty(ref this.isListPickConfirm, value, this.CanExecute);
+        }
+
+        public bool IsListPutConfirm
+        {
+            get => this.isListPutConfirm;
+            set => this.SetProperty(ref this.isListPutConfirm, value, this.CanExecute);
+        }
+
         public bool IsLocalMachineItems
         {
             get => this.isLocalMachineItems;
@@ -236,6 +262,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isUpdatingStockByDifference;
             set => this.SetProperty(ref this.isUpdatingStockByDifference, value, this.CanExecute);
+        }
+
+        public bool IsWaitingListPriorityHighlighted
+        {
+            get => this.isWaitingListPriorityHighlighted;
+            set => this.SetProperty(ref this.isWaitingListPriorityHighlighted, value, this.CanExecute);
         }
 
         public int ItemUniqueIdLength
@@ -274,35 +306,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.view, value, this.CanExecute);
         }
 
-
         public int WaitingListPriorityHighlighted
         {
             get => this.waitingListPriorityHighlighted;
             set => this.SetProperty(ref this.waitingListPriorityHighlighted, value, this.CanExecute);
-        }
-
-        public bool IsWaitingListPriorityHighlighted
-        {
-            get => this.isWaitingListPriorityHighlighted;
-            set => this.SetProperty(ref this.isWaitingListPriorityHighlighted, value, this.CanExecute);
-        }
-
-        public bool IsListPickConfirm
-        {
-            get => this.isListPickConfirm;
-            set => this.SetProperty(ref this.isListPickConfirm, value, this.CanExecute);
-        }
-
-        public bool IsListPutConfirm
-        {
-            get => this.isListPutConfirm;
-            set => this.SetProperty(ref this.isListPutConfirm, value, this.CanExecute);
-        }
-
-        public bool IsAggregateList
-        {
-            get => this.isAggregateList;
-            set => this.SetProperty(ref this.isAggregateList, value, this.CanExecute);
         }
 
         #endregion
@@ -379,7 +386,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingListPriorityHighlighted = this.WaitingListPriorityHighlighted != -1;
 
                 this.IsAggregateList = configuration.AggregateList;
-
             }
             catch (Exception ex)
             {
