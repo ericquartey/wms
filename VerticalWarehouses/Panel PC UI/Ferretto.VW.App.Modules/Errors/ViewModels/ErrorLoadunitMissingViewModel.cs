@@ -84,6 +84,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private string elevatorText;
 
+        private string errorBay;
+
         private string errorTime;
 
         private bool isBay1PositionDownVisible;
@@ -244,6 +246,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this[nameof(this.LuIdOnBay2Up)],
             this[nameof(this.LuIdOnBay3Down)],
             this[nameof(this.LuIdOnBay3Up)]);
+
+        public string ErrorBay
+        {
+            get => this.errorBay;
+            set => this.SetProperty(ref this.errorBay, value);
+        }
 
         public string ErrorTime
         {
@@ -606,6 +614,28 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 if (this.MachineError is null)
                 {
                     await this.MarkAsResolvedAsync();
+                }
+                else
+                {
+                    this.ErrorBay = string.Empty;
+                    switch (this.MachineError.BayNumber)
+                    {
+                        case BayNumber.BayOne:
+                            {
+                                this.ErrorBay = App.Resources.Localized.Get("OperatorApp.Bay1");
+                                break;
+                            }
+                        case BayNumber.BayTwo:
+                            {
+                                this.ErrorBay = App.Resources.Localized.Get("OperatorApp.Bay2");
+                                break;
+                            }
+                        case BayNumber.BayThree:
+                            {
+                                this.ErrorBay = App.Resources.Localized.Get("OperatorApp.Bay3");
+                                break;
+                            }
+                    }
                 }
 
                 var stepValue = 2;

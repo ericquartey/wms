@@ -388,7 +388,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             }
             if (this.Mission.Status != MissionStatus.Waiting)
             {
-                this.Logger.LogInformation($"Move Bay chain allowed only for waiting missions. Wait for another resume.");
+                this.Logger.LogInformation($"Move Bay chain allowed only for waiting missions. Wait for another resume. Mission:Id={this.Mission.Id}");
                 return;
             }
             var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
@@ -456,7 +456,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 {
                     //this.ErrorsProvider.RecordNew(MachineErrorCode.MoveBayChainNotAllowed, this.Mission.TargetBay);
                     //throw new StateMachineException(ErrorDescriptions.MoveBayChainNotAllowed, this.Mission.TargetBay, MessageActor.MachineManager);
-                    this.Logger.LogInformation($"Move Bay chain not allowed at the moment. Wait for another resume.");
+                    this.Logger.LogInformation($"Move Bay chain not allowed at the moment. Wait for another resume. Mission:Id={this.Mission.Id}");
                 }
             }
 #if CHECK_BAY_SENSOR
@@ -469,7 +469,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             {
                 //this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotRemoved, this.Mission.TargetBay);
                 //throw new StateMachineException(ErrorDescriptions.LoadUnitNotRemoved, this.Mission.TargetBay, MessageActor.MachineManager);
-                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved);
+                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotRemoved + $" Id={this.Mission.Id}");
             }
 #endif
         }
