@@ -536,7 +536,7 @@ namespace Ferretto.VW.App.Modules.Operator
                 {
                     this.logger.Debug($"Outgoing loading unit is waiting for an operation.");
 
-                    this.ActiveMachineMission = await this.RetrieveActiveMissionAsync();
+                    this.ActiveMachineMission = await this.RetrieveActiveMissionAsync(message.Data.MissionId);
                     this.ActiveWmsMission = null;
                     this.ActiveWmsOperation = null;
 
