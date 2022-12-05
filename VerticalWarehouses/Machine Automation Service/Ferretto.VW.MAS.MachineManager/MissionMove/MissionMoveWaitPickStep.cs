@@ -210,11 +210,13 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 && x.Id != this.Mission.Id
                                 );
 
-                        if (activeMission != null)
+                        if (activeMission != null
+                            || (messageData.Source == LoadingUnitLocation.NoLocation && messageData.Destination == LoadingUnitLocation.NoLocation))
                         {
-                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                             this.Mission.Status = MissionStatus.Waiting;
+                            this.Logger.LogInformation($"{ErrorReasons.AnotherMissionIsActiveForThisBay} Mission:Id={this.Mission.Id}, Load Unit {this.Mission.LoadUnitId}");
                             this.MissionsDataProvider.Update(this.Mission);
+                            this.SendMoveNotification(this.Mission.TargetBay, this.Mission.Step.ToString(), MessageStatus.OperationWaitResume);
                         }
                         else
                         {

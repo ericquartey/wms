@@ -1317,7 +1317,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage, bool checkListContinueInOtherMachine)
+        public void SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage, bool checkListContinueInOtherMachine, bool IsNrLabelsEditable)
         {
             lock (this.dataContext)
             {
@@ -1329,7 +1329,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 bay.BarcodeAutomaticPut = barcodeAutomaticPut;
                 bay.ShowBarcodeImage = showBarcodeImage;
                 bay.CheckListContinueInOtherMachine = checkListContinueInOtherMachine;
-
+                bay.IsNrLabelEditable = IsNrLabelsEditable;
                 this.dataContext.SaveChanges();
             }
         }

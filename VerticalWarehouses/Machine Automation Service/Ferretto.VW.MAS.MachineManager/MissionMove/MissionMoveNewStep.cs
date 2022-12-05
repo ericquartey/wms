@@ -422,7 +422,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationCell);
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationCell + $" Id={this.Mission.Id}");
                         }
                     }
 
@@ -460,7 +460,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             {
                                 this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
                                 this.Logger.LogInformation($"Scheduling Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, bay.Number);
                                 return false;
                             }
                         }
@@ -477,7 +477,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated);
+                            this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated + $" Id={this.Mission.Id}");
                         }
                         return false;
                     }
@@ -509,7 +509,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper + $" Id={this.Mission.Id}");
                             }
                             return false;
                         }
@@ -522,7 +522,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom + $" Id={this.Mission.Id}");
                             }
                             return false;
                         }
@@ -554,7 +554,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 else
                                 {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                 }
                                 return false;
                             }
@@ -572,7 +572,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper + $" Id={this.Mission.Id}");
                             }
                             return false;
                         }
@@ -585,7 +585,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom + $" Id={this.Mission.Id}");
                             }
                             return false;
                         }
@@ -623,7 +623,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                     }
                                     return false;
                                 }
@@ -638,7 +638,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                     }
                                     return false;
                                 }
@@ -717,7 +717,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         }
                                         else
                                         {
-                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                         }
                                         returnValue = false;
                                     }
@@ -734,7 +734,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                             }
                                             else
                                             {
-                                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                             }
                                             returnValue = false;
                                         }
@@ -757,7 +757,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                     }
                                     returnValue = false;
                                 }
@@ -781,7 +781,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         }
                                         else
                                         {
-                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay);
+                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                         }
                                         returnValue = false;
                                     }
@@ -811,7 +811,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceElevator);
+                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceElevator + $" Id={this.Mission.Id}");
                         return false;
                     }
                 }
@@ -826,7 +826,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentOnEmptyElevator + $" Id={this.Mission.Id}");
                             return false;
                         }
                     }
@@ -844,7 +844,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitElevator);
+                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitElevator + $" Id={this.Mission.Id}");
                         return false;
                     }
                 }
@@ -859,7 +859,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentOnEmptyElevator + $" Id={this.Mission.Id}");
                             return false;
                         }
                     }
@@ -1054,7 +1054,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
+                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen + $" Id={this.Mission.Id}");
                                     }
                                     return false;
                                 }
@@ -1070,7 +1070,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell);
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell + $" Id={this.Mission.Id}");
                         }
                         return false;
                     }
@@ -1123,7 +1123,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     }
                                     else
                                     {
-                                        this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled);
+                                        this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled + $" Id={this.Mission.Id}");
                                     }
                                     return false;
                                 }
@@ -1165,7 +1165,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                     else
                     {
-                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound);
+                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound + $" Id={this.Mission.Id}");
                     }
                     if (unitToMove == null)
                     {
@@ -1192,7 +1192,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitOtherBay);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitOtherBay + $" Id={this.Mission.Id}");
                             }
                         }
                     }
@@ -1209,7 +1209,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound);
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound + $" Id={this.Mission.Id}");
                         }
                     }
                     else if (unitToMove.CellId.HasValue)
@@ -1221,7 +1221,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentInCell);
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentInCell + $" Id={this.Mission.Id}");
                         }
                     }
                     else
@@ -1239,7 +1239,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay);
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay + $" Id={this.Mission.Id}");
                             }
                         }
 #endif
@@ -1259,7 +1259,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 else
                                 {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen);
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen + $" Id={this.Mission.Id}");
                                 }
                             }
                             else if (bay.Positions.FirstOrDefault(b => b.Location == messageData.Source).IsBlocked)
@@ -1271,7 +1271,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                 }
                                 else
                                 {
-                                    this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled);
+                                    this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled + $" Id={this.Mission.Id}");
                                 }
                             }
                         }
@@ -1299,7 +1299,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 }
                 else
                 {
-                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceDb);
+                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceDb + $" Id={this.Mission.Id}");
                 }
             }
 

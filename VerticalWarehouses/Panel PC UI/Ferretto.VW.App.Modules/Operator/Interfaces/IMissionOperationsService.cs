@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null);
+        Task<bool> CompleteAsync(int operationId, double quantity, string barcode = null, double wastedQuantity = 0, string toteBarcode = null, int? nrLabels = null);
 
         Task<IEnumerable<ItemList>> GetAllMissionsMachineAsync();
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         /// <exception cref="MasWebApiException"></exception>
         /// <exception cref="System.Net.Http.HttpRequestException"></exception>
-        Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment);
+        Task<bool> PartiallyCompleteAsync(int operationId, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, int? nrLabels);
 
         Task RecallLoadingUnitAsync(int id);
 

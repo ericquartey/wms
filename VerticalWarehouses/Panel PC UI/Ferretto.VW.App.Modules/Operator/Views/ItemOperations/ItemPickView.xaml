@@ -387,7 +387,7 @@
                                           VerticalAlignment="Top"
                                           Foreground="{Binding IsItemCodeValid, Converter={StaticResource BoolToGreenRedConverter}}"
                                           Kind="{Binding IsItemCodeValid, Converter={StaticResource BoolToValidationIconConverter}}"
-                                          Visibility="{Binding InputItemCode, Converter={StaticResource RTVC}}" />
+                                          Visibility="{Binding IsItemCodeValid, Converter={StaticResource BTVIC}}" />
 
             </Border>
           </Grid>
@@ -558,6 +558,8 @@
                           Command="{Binding SuspendCommand}"
                           KindMaterial="Pause"/>
 
+
+
             </StackPanel>
 
 
@@ -623,7 +625,7 @@
                               VerticalAlignment="Bottom"
                               IsChecked="{Binding CloseLine, Mode=TwoWay}" />
       </StackPanel>
-
+      
 
             <!--<StackPanel Grid.Column="2"
                         Visibility="{Binding CanConfirmPartialOperation, Converter={StaticResource BTVC}}">
@@ -689,7 +691,9 @@
                                HorizontalAlignment="Stretch"
                                InputText="{Binding BarcodeString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                LabelText="{resources:Loc OperatorApp.EnterBarcode}" />
-        </Grid>
+
+
+                </Grid>
       </Border>
       <StackPanel Grid.Row="2"
                   Grid.Column="1"

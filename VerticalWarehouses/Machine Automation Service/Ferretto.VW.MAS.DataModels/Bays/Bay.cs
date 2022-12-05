@@ -47,6 +47,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsFastDepositToBay { get; set; }
 
+        /// <summary>
+        /// Gets or sets the number of labels to print
+        /// </summary>
+        public bool? IsNrLabelEditable { get; set; }
+
         public bool IsTelescopic { get; set; }
 
         public int LastCalibrationCycles { get; set; }

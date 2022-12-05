@@ -112,6 +112,8 @@ namespace Ferretto.VW.App.Accessories
 
         public bool IsActive => this.isStarted;
 
+        public bool IsEnabled => this.isDeviceEnabled;
+
         #endregion
 
         #region Methods
@@ -365,7 +367,7 @@ namespace Ferretto.VW.App.Accessories
         {
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.PtlWarning));
+                .Publish(new PresentationNotificationMessage(message, Services.Models.NotificationSeverity.Warning));
         }
 
         private async Task OnBarcodeReceivedAsync(ActionEventArgs e)

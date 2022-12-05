@@ -37,6 +37,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
@@ -44,7 +45,13 @@
                                Text="{res:Loc ErrorsApp.CheckUnit}"
                                TextWrapping="Wrap" />
 
-                    <StackPanel Grid.Column="1"
+                    <TextBlock Grid.Column="1"
+                               Margin="0,0,0,15"
+                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               Text="{Binding ErrorBay}"
+                               TextWrapping="Wrap" />
+
+                    <StackPanel Grid.Column="2"
                                 Margin="0,0,0,15"
                                 HorizontalAlignment="Right"
                                 Orientation="Vertical">

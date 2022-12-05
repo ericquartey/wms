@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(ElevatorAxis.Metadata))]
-    partial class ElevatorAxis
+    public partial class ElevatorAxis
     {
         #region Classes
 
@@ -89,20 +89,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [ScaffoldColumn(false)]
             public Orientation Orientation { get; set; }
 
-            [Id(13)]
-            [Unit("mm")]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateLength))]
-            public double ProfileCalibrateLength { get; set; }
+            //[Id(13)]
+            //[Unit("mm")]
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateLength))]
+            //public double ProfileCalibrateLength { get; set; }
 
-            [Id(14)]
-            [Unit("mm")]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibratePosition))]
-            public int ProfileCalibratePosition { get; set; }
+            //[Id(14)]
+            //[Unit("mm")]
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibratePosition))]
+            //public int ProfileCalibratePosition { get; set; }
 
-            [Id(15)]
-            [Unit("mm/s")]
-            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateSpeed))]
-            public double ProfileCalibrateSpeed { get; set; }
+            //[Id(15)]
+            //[Unit("mm/s")]
+            //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateSpeed))]
+            //public double ProfileCalibrateSpeed { get; set; }
 
             [Category("Profilo {0}")]
             [CategoryParameter(nameof(MovementProfile.Name), ValueStringifierType = typeof(EnumValueStringifier))]

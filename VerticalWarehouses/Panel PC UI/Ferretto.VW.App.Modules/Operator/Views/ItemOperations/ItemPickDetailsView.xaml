@@ -73,10 +73,11 @@
           <RowDefinition />
           <RowDefinition />
           <RowDefinition />
+          <RowDefinition />
         </Grid.RowDefinitions>
 
         <ctrls:PpcImage Grid.Row="0"
-                        Grid.RowSpan="4"
+                        Grid.RowSpan="3"
                         Grid.Column="0"
                         Width="180"
                         Height="180"
@@ -122,7 +123,35 @@
                                  ContentText="{Binding MissionOperation.ItemListDescription}"
                                  LabelText="{resources:Loc OperatorApp.CommonListDescription}" />
 
-        <controls:PpcLabeledText Grid.Row="5"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.Dock}"
+                                 LabelText="{resources:Loc OperatorApp.Causal}" />
+          
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.Mission}"
+                                 LabelText="{resources:Loc OperatorApp.Order}" />
+          
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.CustomerCode}"
+                                 LabelText="{resources:Loc OperatorApp.Group}" />
+          
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding MissionOperation.ItemDetails.CustomerDescription}"
+                                 LabelText="{resources:Loc OperatorApp.GroupDescription}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -130,16 +159,18 @@
                                  LabelText="{resources:Loc OperatorApp.CommonPackingListCode}"
                                  Visibility="{Binding IsPackingListCodeAvailable, Converter={StaticResource BTVC}}" />
 
-        <controls:PpcLabeledText Grid.Row="5"
-                                 Grid.Column="1"
-                                 Grid.ColumnSpan="3"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="0"
+                                 Grid.RowSpan="3"
+                                 Width="180"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.PackingListDescription}"
                                  LabelText="{resources:Loc OperatorApp.CommonPackingListDescription}"
                                  Visibility="{Binding IsPackingListDescriptionAvailable, Converter={StaticResource BTVC}}" />
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="2"
+          
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.Sscc}"
@@ -147,8 +178,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="3"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ExpirationDate, StringFormat={x:Static resources:General.DateFormatDayNumber}}"
@@ -156,8 +187,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.Column="1"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemDetails.BoxId}"
@@ -165,8 +196,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.Column="2"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemDetails.BoxType}"
@@ -174,8 +205,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.Column="3"
+        <controls:PpcLabeledText Grid.Row="5"
+                                 Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemDetails.CustomerCode}"
@@ -183,8 +214,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="4"
-                                 Grid.Column="1"
+        <controls:PpcLabeledText Grid.Row="5"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemDetails.CustomerDescription}"
@@ -192,8 +223,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="4"
-                                 Grid.Column="2"
+        <controls:PpcLabeledText Grid.Row="5"
+                                 Grid.Column="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemDetails.Dock}"
@@ -201,8 +232,8 @@
                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for Carrefour  -->
 
-        <controls:PpcLabeledText Grid.Row="4"
-                                 Grid.Column="3"
+        <controls:PpcLabeledText Grid.Row="6"
+                                 Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemDetails.Mission}"
@@ -224,8 +255,8 @@
                                          ContentText="{Binding MissionOperation.MaterialStatusId}"
                                          LabelText="{resources:Loc OperatorApp.MaterialStatus}" />-->
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="2"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.ItemListShipmentUnitCode}"
@@ -233,8 +264,8 @@
                                  Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
         <!--  Only reserved for TendaggiParadiso  -->
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="3"
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding MissionOperation.Destination}"
@@ -381,14 +412,14 @@
         </Border>
       </Border>
 
-      <controls:PpcButton Grid.Row="3"
+      <controls:PpcButton Grid.Row="4"
                           Margin="15,8,15,0"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center"
+                          HorizontalAlignment="Right"
+                          VerticalAlignment="Bottom"
+                          Visibility="Collapsed"
                           Command="{Binding SuspendCommand}"
                           Content="{resources:Loc OperatorApp.Suspend}"
-                          Style="{StaticResource ConfirmButton}"
-                          Visibility="Collapsed" />
+                          Style="{StaticResource ConfirmButton}"/>
 
     </Grid>
   </Grid>

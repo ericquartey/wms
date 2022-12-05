@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public int? CurrentWmsMissionOperationId { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.CyclesToCalibrate))]
-            [Id(140)]
+            [Id(37)]
             public int CyclesToCalibrate { get; set; }
 
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.EmptyLoadMovement))]

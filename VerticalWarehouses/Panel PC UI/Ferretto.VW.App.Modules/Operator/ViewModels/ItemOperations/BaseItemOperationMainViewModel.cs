@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public ItemWeightChangedMessage lastItemQuantityMessage;
 
+        public int nrLabels;
+
         private const int DefaultPageSize = 20;
 
         private const int ItemsToCheckBeforeLoad = 2;
@@ -155,6 +157,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isItemLotValid = true;
 
         private bool isItemSerialNumberValid = true;
+
+        private bool? isNrLabelEditable;
 
         private bool isOperationCanceled;
 
@@ -403,8 +407,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.inputLot;
             protected set => this.SetProperty(
                 ref this.inputLot,
-                value,
-                () => this.IsItemLotValid = value is null || this[nameof(this.InputLot)] != null);
+                value);
         }
 
         public double? InputQuantity
@@ -430,8 +433,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.inputSerialNumber;
             protected set => this.SetProperty(
                 ref this.inputSerialNumber,
-                value,
-                () => this.IsItemSerialNumberValid = this.inputSerialNumber is null || this[nameof(this.InputSerialNumber)] != null);
+                value);
         }
 
         public bool IsAddEnabled
@@ -540,6 +542,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsMinebeaScale { get; private set; }
 
+        public bool? IsNrLabelEditable
+        {
+            get => this.isNrLabelEditable;
+            set => this.SetProperty(ref this.isNrLabelEditable, value);
+        }
+
         public bool IsOperationCanceled
         {
             get => this.isOperationCanceled;
@@ -591,6 +599,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public double? NetWeight { get; set; }
+
+        public int NrLabels
+        {
+            get => this.nrLabels;
+            set => this.SetProperty(ref this.nrLabels, value);
+        }
 
         public IList<ItemInfo> Products => new List<ItemInfo>(this.products);
 
@@ -695,7 +709,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     case nameof(this.InputLot):
                         {
-                            if (this.InputLot != null && this.InputLot == this.MissionOperation?.Lot)
+                            if (!this.isItemLotValid)
                             {
                                 return columnName;
                             }
@@ -757,11 +771,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #endregion
 
-        //public bool CanConfirmMissionOperationPut()
-        //{
-        //    return this.IsAddEnabled;
-        //}
-
         #region Methods
 
         public virtual bool CanConfirmOperation()
@@ -786,6 +795,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity.Value == this.MissionRequestedQuantity;
         }
 
+        //public bool CanConfirmMissionOperationPut()
+        //{
+        //    return this.IsAddEnabled;
+        //}
         public virtual bool CanConfirmOperationCanceled()
         {
             return
@@ -831,10 +844,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             return this.MachineService.Bay.Accessories.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew;
         }
-
-        //public async Task ConfirmMissionOperationAsync()
-        //{
-        //}
 
         public async Task CommandUserActionAsync(UserActionEventArgs e)
         {
@@ -883,22 +892,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         }
 
                         this.InputItemCode = e.GetItemCode() ?? this.InputItemCode;
-                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation.ItemCode;
+                        this.IsItemCodeValid = this.InputItemCode is null || this.MissionOperation?.ItemCode is null || this.InputItemCode == this.MissionOperation?.ItemCode;
 
                         this.InputQuantity = e.GetItemQuantity() ?? this.InputQuantity;
 
                         this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+                        this.IsItemSerialNumberValid = this.InputSerialNumber is null || this.MissionOperation?.SerialNumber is null || this.InputSerialNumber == this.MissionOperation?.SerialNumber;
 
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
+                        this.IsItemLotValid = this.InputLot is null || this.MissionOperation?.Lot is null || this.InputLot == this.MissionOperation?.Lot;
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
-                        if (e.HasMismatch
-                            && !this.IsItemCodeValid
+                        if (!this.IsItemCodeValid
                             && e.GetItemCode() != null
-                            && this.MissionOperation?.ItemCode != null
-                            )
+                            && this.MissionOperation?.ItemCode != null)
                         {
                             if (this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght)
                             {
@@ -909,7 +918,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 try
                                 {
                                     var item = await this.itemsWebService.GetByBarcodeAsync(e.GetItemCode());
-                                    e.HasMismatch = (item?.Code != this.MissionOperation.ItemCode);
+                                    e.HasMismatch = item?.Code != this.MissionOperation.ItemCode;
                                     if (!e.HasMismatch)
                                     {
                                         this.logger.Debug($"GetByBarcodeAsync '{item?.Code}'.");
@@ -918,8 +927,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 catch (Exception)
                                 {
                                     this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
+                                    this.ResetInputFields();
                                 }
                             }
+                        }
+                        else if (!this.IsItemLotValid || !this.IsItemSerialNumberValid)
+                        {
+                            this.ResetInputFields();
                         }
 
                         if (e.HasMismatch)
@@ -945,7 +959,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                await this.ConfirmOperationAsync(e.Code);
+                                await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
+                                this.ResetInputFields();
                             }
                         }
                     }
@@ -962,8 +977,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         //this.AvailableQuantity = e.GetItemQuantity() ?? this.availableQuantity; //to fix
 
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
+                        this.IsItemSerialNumberValid = this.InputSerialNumber is null || this.MissionOperation?.SerialNumber is null || this.InputSerialNumber == this.MissionOperation?.SerialNumber;
 
                         this.InputLot = e.GetItemLot() ?? this.InputLot;
+                        this.IsItemLotValid = this.InputLot is null || this.MissionOperation?.Lot is null || this.InputLot == this.MissionOperation?.Lot;
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
                         if (e.HasMismatch)
@@ -984,7 +1001,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             {
                                 this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
 
-                                await this.ConfirmOperationAsync(e.Code);
+                                await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
+                                this.ResetInputFields();
                             }
                             else
                             {
@@ -1002,8 +1020,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public async Task ConfirmOperationAsync(string barcode)
+        //public async Task ConfirmMissionOperationAsync()
+        //{
+        //}
+        public async Task ConfirmOperationAsync(string barcode, bool isSerialNumber = false)
         {
+            this.IsItemCodeValid = true;
+            this.IsItemLotValid = true;
+            this.isItemSerialNumberValid = true;
+
             var machineList = await this.MissionOperationsService.IsMultiMachineAsync(this.Mission.Id);
             if (!string.IsNullOrEmpty(machineList))
             {
@@ -1086,15 +1111,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if (barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght || this.MissionOperation.MaximumQuantity == decimal.One)
+                if ((barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
+                    || this.MissionOperation.MaximumQuantity == decimal.One
+                    || isSerialNumber)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode, 0, null, this.nrLabels);
                     quantity = 1;
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode, 0, null, this.nrLabels);
                 }
 
                 if (canComplete)
@@ -1258,18 +1285,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment, this.nrLabels);
                 }
                 else if (this.fullCompartment)
                 {
                     var compartmentId = this.MissionOperation.CompartmentId;
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
 
                     await this.compartmentsWebService.SetFillPercentageAsync(compartmentId, 100);
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
                 }
 
                 if (canComplete)
@@ -1578,7 +1605,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 if (this.closeLine)
                 {
-                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment);
+                    canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, 0, null, this.emptyCompartment, this.fullCompartment, this.nrLabels);
                 }
                 else if (this.fullCompartment)
                 {
@@ -1587,7 +1614,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, null, 0, null, this.nrLabels);
                 }
 
                 if (!canComplete)
@@ -2316,7 +2343,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.InputSerialNumber = null;
             this.InputLot = null;
             this.InputItemCode = null;
-            this.IsItemCodeValid = false;
+            //this.IsItemCodeValid = false;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
         }
@@ -2334,6 +2361,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.maxKnownIndexSelection = 0;
             }
+        }
+
+        private void SetProperty(ref object isNrLabelEditable, bool? value)
+        {
+            throw new NotImplementedException();
         }
 
         private void ShowDraperyItemConfirmView(string barcode, bool isPartiallyConfirmOperation)

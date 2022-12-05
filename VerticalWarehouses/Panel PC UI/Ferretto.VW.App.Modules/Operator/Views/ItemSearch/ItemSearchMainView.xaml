@@ -43,7 +43,7 @@
 
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="auto" MaxWidth="400" />
       </Grid.ColumnDefinitions>
 
       <Grid.RowDefinitions>
@@ -356,6 +356,7 @@
                            MinValue="0"/>
 
         <StackPanel Grid.Row="4"
+                    HorizontalAlignment="Right"
                     Orientation="Horizontal">
 
           <controls:PpcButton Width="120"
@@ -374,6 +375,7 @@
         </StackPanel>
 
         <StackPanel Grid.Row="5"
+                    HorizontalAlignment="Right"
                     Orientation="Horizontal">
           <controls:PpcButton Width="120"
                               Margin="15,7,0,0"

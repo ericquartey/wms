@@ -455,7 +455,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            this.Logger.LogDebug($"ScheduleMissionsOnBayAsync | Get the active missions...");
+            this.Logger.LogDebug($"ScheduleMissionsOnBayAsync on Bay {bayNumber} | Get the active missions...");
 
             var missions = activeMissions
                 .Where(m =>
@@ -480,7 +480,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (!missions.Any())
             {
-                this.Logger.LogDebug($"No more missions are available for scheduling on this bay");
+                this.Logger.LogDebug($"No more missions are available for scheduling on bay {bayNumber}");
 
                 // no more missions are available for scheduling on this bay
                 this.NotifyAssignedMissionChanged(bayNumber, null);
@@ -540,7 +540,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadUnitId);
 
-                    this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume waiting.", mission.TargetBay, mission.Id);
+                    this.Logger.LogInformation("Bay {bayNumber}: mission {missionId} Resume waiting.", bayNumber, mission.Id);
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(
                         mission.Id,
                         loadingUnitSource,
@@ -1393,7 +1393,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             if (position.LoadingUnit is null)
                             {
-                                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay);
+                                errorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, bay.Number);
 
                                 //this.machineVolatileDataProvider.Mode = MachineMode.Manual;
                                 this.machineVolatileDataProvider.Mode = this.machineVolatileDataProvider.GetMachineModeManualByBayNumber(bay.Number);

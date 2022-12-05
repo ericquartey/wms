@@ -2857,4 +2857,7 @@
   <data name="ChangeLoadUnitFixed" xml:space="preserve">
     <value>Change Load Unit Fixed</value>
   </data>
+  <data name="SuspendList" xml:space="preserve">
+    <value>Suspend current list</value>
+  </data>
 </root>

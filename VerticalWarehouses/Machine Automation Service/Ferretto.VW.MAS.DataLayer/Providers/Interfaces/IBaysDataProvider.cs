@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
-        void SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage, bool checkListContinueInOtherMachine);
+        void SetAllOperationsBay(bool pick, bool put, bool view, bool inventory, bool barcodeAutomaticPut, int bayid, bool showBarcodeImage, bool checkListContinueInOtherMachine, bool IsNrLabelsEditable);
 
         Bay SetBayActive(BayNumber bayNumber, bool active);
 
