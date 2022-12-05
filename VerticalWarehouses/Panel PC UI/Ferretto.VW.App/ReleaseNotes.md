@@ -34,6 +34,7 @@
 - Chiamata cassetto: eliminati casi di interfaccia utente che non risponde ai comandi
 - Vista di prelievo: aumentato lo spazio per la descrizione della lista
 - Gestione missioni: corretti vari errori con Baia 3
+- BIS: corretto un caso di warning errato "Taratura baia non eseguita"
 
 ## Compatibile con adapter 0.4.43
 ***
