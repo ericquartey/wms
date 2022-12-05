@@ -25,19 +25,20 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.55 rispetto la 1.0.54
-- Le informazioni delle operazioni del PTL appaiono in una pagina a parte e non vengono sovrascritte
-- 
+## Nuove Funzionalità 1.0.56 rispetto la 1.0.55
+- Ferretto Nuget Package 0.16.49
+- Aggiunto parametro: Liste in attesa solo su macchina locale
+- Aggiunto parametro: Numero di etichette editabile
 
 ## Bug Risolti
-- Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
-- Liste in attesa: aumentato spazio per la descrizione di lista
-- Nella conferma della lista che continua su altre macchine appare l'elenco delle macchine
-- Barra alfanumerica: inserito ritardo per l'invio dei messaggi
-- BID: correzione in caso di molti cassetti in coda
+- Chiamata cassetto: eliminati casi di interfaccia utente che non risponde ai comandi
+- Vista di prelievo: aumentato lo spazio per la descrizione della lista
+- Gestione missioni: corretti vari errori con Baia 3
 
-## Compatibile con adapter 0.4.42
+## Compatibile con adapter 0.4.43
 ***
+
+[Versione 1.0.55](#id1055)
 
 [Versione 1.0.54](#id1054)
 
@@ -149,6 +150,20 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1055"></a>
+## Nuove Funzionalità 1.0.55 rispetto la 1.0.54
+- Le informazioni delle operazioni del PTL appaiono in una pagina a parte e non vengono sovrascritte
+- 
+
+## Bug Risolti
+- Ristrutturazione del data layer per ridurre i tempi di accesso ai dati
+- Liste in attesa: aumentato spazio per la descrizione di lista
+- Nella conferma della lista che continua su altre macchine appare l'elenco delle macchine
+- Barra alfanumerica: inserito ritardo per l'invio dei messaggi
+- BID: correzione in caso di molti cassetti in coda
+
+## Compatibile con adapter 0.4.42
 
 <a id="id1054"></a>
 ## Nuove Funzionalità 1.0.54 rispetto la 1.0.53
