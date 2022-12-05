@@ -143,7 +143,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public double? VerticalPickupOffset { get; set; }
 
             [Id(25)]
-            [Unfold]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ElevatorWeight))]
+
             public WeightMeasurement WeightMeasurement { get; set; }
 
             #endregion

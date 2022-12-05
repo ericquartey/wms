@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal, int tolerance = 1);
 
-        void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2);
+        void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2, IEnumerable<WeightData> weightData);
 
         void UpdateVerticalLowerBound(double newLowerBound);
 

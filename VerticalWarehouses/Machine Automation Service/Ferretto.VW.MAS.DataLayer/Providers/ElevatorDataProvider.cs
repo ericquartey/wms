@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -566,7 +565,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2)
+        public void UpdateMeasureConst(double measureConst0, double measureConst1, double measureConst2, IEnumerable<WeightData> weightData)
         {
             lock (this.dataContext)
             {
@@ -579,6 +578,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 axis.WeightMeasurement.MeasureConst2 = measureConst2;
 
                 this.dataContext.ElevatorAxes.Update(axis);
+
+                axis.WeightMeasurement.WeightDatas = weightData;
+
                 this.dataContext.SaveChanges();
 
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);

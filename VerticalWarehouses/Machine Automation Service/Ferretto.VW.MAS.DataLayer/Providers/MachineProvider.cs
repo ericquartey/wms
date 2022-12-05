@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.WeightMeasurement)
+                                .ThenInclude(w => w.WeightDatas)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.AssistedMovements)

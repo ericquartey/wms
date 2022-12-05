@@ -10642,14 +10642,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2)
+        public System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Collections.Generic.IEnumerable<WeightData> weightData)
         {
-            return SetMeasureConstAsync(measureConst0, measureConst1, measureConst2, System.Threading.CancellationToken.None);
+            return SetMeasureConstAsync(measureConst0, measureConst1, measureConst2, weightData, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Collections.Generic.IEnumerable<WeightData> weightData, System.Threading.CancellationToken cancellationToken)
         {
             if (measureConst0 == null)
                 throw new System.ArgumentNullException("measureConst0");
@@ -10659,6 +10659,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
             if (measureConst2 == null)
                 throw new System.ArgumentNullException("measureConst2");
+    
+            if (weightData == null)
+                throw new System.ArgumentNullException("weightData");
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/update/MeasureConst?");
@@ -10672,7 +10675,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             {
                 using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(weightData, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
     
