@@ -29,6 +29,7 @@
 - Ferretto Nuget Package 0.16.49
 - Aggiunto parametro: Liste in attesa solo su macchina locale
 - Aggiunto parametro: Numero di etichette editabile
+- Aggiunti dati pesatura nei parametri dell'asse verticale
 
 ## Bug Risolti
 - Chiamata cassetto: eliminati casi di interfaccia utente che non risponde ai comandi

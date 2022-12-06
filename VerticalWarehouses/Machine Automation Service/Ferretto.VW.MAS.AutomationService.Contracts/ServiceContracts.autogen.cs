@@ -5777,7 +5777,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public double NetWeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
-        public WeightCalibartionStep Step { get; set; }
+        public WeightCalibrationStep Step { get; set; }
     
         public string ToJson() 
         {
@@ -5792,7 +5792,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum WeightCalibartionStep
+    public enum WeightCalibrationStep
     {
         CallUnit = 0,
     

@@ -1,6 +1,7 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public enum WeightCalibartionStep
+    public enum WeightCalibrationStep
+
     {
         CallUnit,
 

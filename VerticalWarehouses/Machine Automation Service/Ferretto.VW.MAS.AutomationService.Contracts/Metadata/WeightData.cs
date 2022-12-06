@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(3)]
             [ScaffoldColumn(false)]
-            public WeightCalibartionStep Step { get; set; }
+            public WeightCalibrationStep Step { get; set; }
 
             #endregion
         }

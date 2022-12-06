@@ -10,7 +10,7 @@
 
         public double NetWeight { get; set; }
 
-        public WeightCalibartionStep Step { get; set; }
+        public WeightCalibrationStep Step { get; set; }
 
         #endregion
     }
