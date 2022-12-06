@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current.
+        ///   Looks up a localized string similar to Absorbed current.
         /// </summary>
         public static string Current {
             get {
@@ -916,7 +916,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LUTare.
+        ///   Looks up a localized string similar to LU Tare.
         /// </summary>
         public static string LUTare {
             get {

@@ -569,7 +569,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var axis = this.dataContext.ElevatorAxes.Include(a => a.WeightMeasurement).SingleOrDefault(e => e.Orientation == Orientation.Vertical);
+                var axis = this.dataContext.ElevatorAxes.Include(a => a.WeightMeasurement).ThenInclude(w => w.WeightDatas).SingleOrDefault(e => e.Orientation == Orientation.Vertical);
 
                 axis.WeightMeasurement.MeasureConst0 = measureConst0;
 
@@ -577,9 +577,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 axis.WeightMeasurement.MeasureConst2 = measureConst2;
 
-                this.dataContext.ElevatorAxes.Update(axis);
+                if (axis.WeightMeasurement.WeightDatas.Any())
+                {
+                    foreach (var item in axis.WeightMeasurement.WeightDatas)
+                    {
+                        item.Current = weightData.Where(w => w.Step == item.Step).FirstOrDefault().Current;
+                        item.LUTare = weightData.Where(w => w.Step == item.Step).FirstOrDefault().LUTare;
+                        item.NetWeight = weightData.Where(w => w.Step == item.Step).FirstOrDefault().NetWeight;
+                    }
+                }
+                else
+                {
+                    axis.WeightMeasurement.WeightDatas = weightData;
+                }
 
-                axis.WeightMeasurement.WeightDatas = weightData;
+                this.dataContext.ElevatorAxes.Update(axis);
 
                 this.dataContext.SaveChanges();
 

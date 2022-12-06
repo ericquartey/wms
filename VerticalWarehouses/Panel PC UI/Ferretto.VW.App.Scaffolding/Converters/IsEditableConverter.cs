@@ -46,6 +46,14 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                 {
                     return true;
                 }
+
+                if (entity.Property.Name == "Current" ||
+                    entity.Property.Name == "LUTare" ||
+                    entity.Property.Name == "NetWeight")
+                {
+                    return false;
+                }
+
                 if ((entity.Instance is Shutter ||
                     entity.Instance is ShutterManualParameters) &&
                     this.sessionService.UserAccessLevel >= UserAccessLevel.Installer)

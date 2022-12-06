@@ -19,10 +19,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(1)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.LUTare))]
+            [Unit("kg")]
             public double LUTare { get; set; }
 
             [Id(2)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.NetWeight))]
+            [Unit("kg")]
             public double NetWeight { get; set; }
 
             [Id(3)]

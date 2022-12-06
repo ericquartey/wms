@@ -640,10 +640,10 @@
     <value>Step {0}</value>
   </data>
   <data name="Current" xml:space="preserve">
-    <value>Current</value>
+    <value>Absorbed current</value>
   </data>
   <data name="LUTare" xml:space="preserve">
-    <value>LUTare</value>
+    <value>LU Tare</value>
   </data>
   <data name="NetWeight" xml:space="preserve">
     <value>Net Weight</value>
