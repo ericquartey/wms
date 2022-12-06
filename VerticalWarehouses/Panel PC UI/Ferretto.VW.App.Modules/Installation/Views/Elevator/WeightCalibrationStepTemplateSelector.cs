@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Ferretto.VW.App.Installation.ViewModels;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.Views
 {
@@ -24,23 +24,23 @@ namespace Ferretto.VW.App.Installation.Views
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var value = (WeightCalibrationStep)(item ?? WeightCalibrationStep.CallUnit);
+            var value = (WeightCalibartionStep)(item ?? WeightCalibartionStep.CallUnit);
 
             switch (value)
             {
-                case WeightCalibrationStep.CallUnit:
+                case WeightCalibartionStep.CallUnit:
                     return this.EnumCallUnit;
 
-                case WeightCalibrationStep.EmptyUnitWeighing:
+                case WeightCalibartionStep.Empty:
                     return this.EnumEmptyUnitWeighing;
 
-                case WeightCalibrationStep.OptionalWeighing1:
+                case WeightCalibartionStep.Optional:
                     return this.EnumOptionalWeighing1;
 
-                case WeightCalibrationStep.FullUnitWeighing:
+                case WeightCalibartionStep.Full:
                     return this.EnumFullUnitWeighing;
 
-                case WeightCalibrationStep.SetWeight:
+                case WeightCalibartionStep.SetWeight:
                     return this.EnumSetWeight;
             }
 

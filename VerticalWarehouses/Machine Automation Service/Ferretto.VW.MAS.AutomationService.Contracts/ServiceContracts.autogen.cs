@@ -1006,11 +1006,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task SetLoadUnitOnElevatorAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2);
+        System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Collections.Generic.IEnumerable<WeightData> weightData);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> SetMeasureConstAsync(double measureConst0, double measureConst1, double measureConst2, System.Collections.Generic.IEnumerable<WeightData> weightData, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -5749,6 +5749,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MeasureTime", Required = Newtonsoft.Json.Required.Always)]
         public int MeasureTime { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("WeightDatas", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<WeightData> WeightDatas { get; set; }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
@@ -5758,6 +5761,48 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<WeightMeasurement>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class WeightData : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("Current", Required = Newtonsoft.Json.Required.Always)]
+        public double Current { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("LUTare", Required = Newtonsoft.Json.Required.Always)]
+        public double LUTare { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("NetWeight", Required = Newtonsoft.Json.Required.Always)]
+        public double NetWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("Step", Required = Newtonsoft.Json.Required.Always)]
+        public WeightCalibartionStep Step { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static WeightData FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WeightData>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum WeightCalibartionStep
+    {
+        CallUnit = 0,
+    
+        Empty = 1,
+    
+        Optional = 2,
+    
+        Full = 3,
+    
+        SetWeight = 4,
     
     }
     

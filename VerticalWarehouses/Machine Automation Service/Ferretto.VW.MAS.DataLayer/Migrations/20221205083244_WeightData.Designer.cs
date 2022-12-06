@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20221205083244_WeightData")]
+    partial class WeightData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,8 +101,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsExternal");
 
                     b.Property<bool>("IsFastDepositToBay");
-
-                    b.Property<bool?>("IsNrLabelEditable");
 
                     b.Property<bool>("IsTelescopic");
 
@@ -1433,8 +1433,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsRotationClass");
 
                     b.Property<bool>("IsUpdatingStockByDifference");
-
-                    b.Property<bool?>("IsWaitingListFiltered");
 
                     b.Property<int>("ItemUniqueIdLength");
 

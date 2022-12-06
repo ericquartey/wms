@@ -448,6 +448,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Absorbed current.
+        /// </summary>
+        public static string Current {
+            get {
+                return ResourceManager.GetString("Current", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cycles to calibrate.
         /// </summary>
         public static string CyclesToCalibrate {
@@ -907,6 +916,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LU Tare.
+        /// </summary>
+        public static string LUTare {
+            get {
+                return ResourceManager.GetString("LUTare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
@@ -1294,6 +1312,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Net Weight.
+        /// </summary>
+        public static string NetWeight {
+            get {
+                return ResourceManager.GetString("NetWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Network Configuration.
         /// </summary>
         public static string NetworkConfiguration {
@@ -1614,6 +1641,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string View {
             get {
                 return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step {0}.
+        /// </summary>
+        public static string WeightData {
+            get {
+                return ResourceManager.GetString("WeightData", resourceCulture);
             }
         }
     }

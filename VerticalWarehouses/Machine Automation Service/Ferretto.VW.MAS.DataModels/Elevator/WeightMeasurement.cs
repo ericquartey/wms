@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System.Collections.Generic;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class WeightMeasurement : DataModel
     {
@@ -46,6 +48,8 @@
         /// Gets or sets the time between the start of slow upward movement and the torque current request message, in tenth of seconds.
         /// </summary>
         public int MeasureTime { get; set; }
+
+        public IEnumerable<WeightData> WeightDatas { get; set; }
 
         #endregion
     }
