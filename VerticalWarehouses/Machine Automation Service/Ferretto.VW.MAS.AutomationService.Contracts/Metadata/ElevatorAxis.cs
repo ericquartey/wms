@@ -144,7 +144,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(25)]
             [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ElevatorWeight))]
-
+            [Offset(25)]
             public WeightMeasurement WeightMeasurement { get; set; }
 
             #endregion

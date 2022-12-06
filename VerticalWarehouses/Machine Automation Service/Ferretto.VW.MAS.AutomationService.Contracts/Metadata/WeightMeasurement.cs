@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.Scaffolding.DataAnnotations;
 namespace Ferretto.VW.MAS.AutomationService.Contracts
 {
     [Ferretto.VW.MAS.Scaffolding.DataAnnotations.MetadataType(typeof(WeightMeasurement.Metadata))]
-    partial class WeightMeasurement
+    public partial class WeightMeasurement
     {
         #region Classes
 
@@ -36,22 +36,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.MeasureTime))]
             public int MeasureTime { get; set; }
 
-            #endregion
-
-            //[Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ElevatorWeight))]
-            //[CategoryParameter(nameof(WeightData.Step), ValueStringifierType = typeof(EnumValueStringifier))]
             [Category(Category = nameof(Vertimag.WeightData), ResourceType = typeof(Vertimag))]
             [CategoryParameter(nameof(WeightData.Step), ValueStringifierType = typeof(EnumValueStringifier))]
             [Id(5)]
-            //[Offset(10)]
+            [Offset(5)]
             public IEnumerable<WeightData> WeightDatas { get; set; }
 
-
-            //[Category(Category = nameof(Vertimag.ElevatorAxis), ResourceType = typeof(Vertimag))]
-            //[CategoryParameter(nameof(ElevatorAxis.Orientation), ValueStringifierType = typeof(EnumValueStringifier))]
-            //[Offset(50)]
-            //[Id(10)]
-            //public IEnumerable<ElevatorAxis> Axes { get; set; }
+            #endregion
         }
 
         #endregion

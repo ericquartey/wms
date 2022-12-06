@@ -15,6 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             #region Properties
 
             [Editable(false)]
+            [Id(8)]
             public MovementProfileType Name { get; set; }
 
             [Category("Step {0}")]
@@ -24,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.TotalDistance))]
             [Unit("mm")]
-            [Id(1)]
+            [Id(9)]
             public double TotalDistance { get; set; }
 
             #endregion
