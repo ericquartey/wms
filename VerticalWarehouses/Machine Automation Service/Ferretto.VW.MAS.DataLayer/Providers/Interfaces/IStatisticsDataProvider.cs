@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        bool AddInverterStatistics(double workingHours, double operationHours, double peakHeatSinkTemperature, double peakInsideTemperature, double averageRMSCurrent, double averageActivePower);
+
         int ConfirmAndCreateNew();
 
         MachineStatistics GetActual();

@@ -54,7 +54,7 @@
 
         TableTravelDirection = 1261,
 
-        TorqueCurrent = 211,
+        RMSCurrent = 211,
 
         ProfileInput = 251,
 
@@ -81,5 +81,20 @@
         RunMode = 1399,
 
         Program = 34,
+
+        // statistic parameters
+        WorkingHours = 244,
+
+        OperationHours = 245,
+
+        PeakHeatSinkTemperature = 289,
+
+        PeakInsideTemperature = 291,
+
+        AverageRMSCurrent = 294,
+
+        AverageActivePower = 297,
+
+        ResetAverageMemory = 237, // 5 = 289, 7 = 291, 10 = 294, 13 = 297, 102 = all
     }
 }

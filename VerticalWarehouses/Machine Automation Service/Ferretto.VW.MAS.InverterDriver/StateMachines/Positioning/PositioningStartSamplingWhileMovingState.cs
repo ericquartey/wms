@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             base.ValidateCommandResponse(message);
 
-            if (message.ParameterId == InverterParameterId.TorqueCurrent)
+            if (message.ParameterId == InverterParameterId.RMSCurrent)
             {
                 var sample = this.measurementsProvider.AddSample(
                     this.measurementSession.Id,
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    InverterParameterId.TorqueCurrent));
+                    InverterParameterId.RMSCurrent));
         }
 
         #endregion

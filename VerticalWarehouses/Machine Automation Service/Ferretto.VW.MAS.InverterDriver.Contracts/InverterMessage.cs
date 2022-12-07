@@ -680,7 +680,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.StatusWord:
                 case InverterParameterId.SetOperatingMode:
                 case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.TorqueCurrent:
+                case InverterParameterId.RMSCurrent:
                 case InverterParameterId.TableTravelTableIndex:
                 case InverterParameterId.TableTravelDirection:
                 case InverterParameterId.ShutterTargetPosition:
@@ -750,7 +750,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.StatusWord:
                 case InverterParameterId.SetOperatingMode:
                 case InverterParameterId.StatusDigitalSignals:
-                case InverterParameterId.TorqueCurrent:
+                case InverterParameterId.RMSCurrent:
                 case InverterParameterId.TableTravelTableIndex:
                 case InverterParameterId.TableTravelDirection:
                 case InverterParameterId.ShutterTargetPosition:

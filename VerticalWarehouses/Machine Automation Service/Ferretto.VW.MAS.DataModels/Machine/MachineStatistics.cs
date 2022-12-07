@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System.Collections.Generic;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public sealed class MachineStatistics : DataModel
     {
@@ -11,6 +13,8 @@
             ? this.TotalAutomaticTime.TotalHours * 100 / this.TotalPowerOnTime.TotalHours
             : 0;
 
+        public List<InverterStatistics> InverterStatistics { get; set; }
+
         public System.TimeSpan TotalAutomaticTime { get; set; }
 
         public double TotalBayChainKilometers1 { get; set; }
@@ -22,6 +26,10 @@
         public int TotalHorizontalAxisCycles { get; set; }
 
         public double TotalHorizontalAxisKilometers { get; set; }
+
+        public double TotalInverterMissionTime { get; set; }
+
+        public double TotalInverterPowerOnTime { get; set; }
 
         public int TotalLoadUnitsInBay1 { get; set; }
 

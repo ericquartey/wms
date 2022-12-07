@@ -51,6 +51,58 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public bool AddInverterStatistics(double workingHours,
+            double operationHours,
+            double peakHeatSinkTemperature,
+            double peakInsideTemperature,
+            double averageRMSCurrent,
+            double averageActivePower)
+        {
+            bool addNew = false;
+            this.logger.LogInformation($"Save inverter stat: workingHours {workingHours:0.00}; " +
+                $"operationHours {operationHours:0.00}; " +
+                $"averageActivePower {averageActivePower:0.00}; " +
+                $"averageRMSCurrent {averageRMSCurrent:0.00}; " +
+                $"peakHeatSinkTemperature {peakHeatSinkTemperature:0.00}; " +
+                $"peakInsideTemperature {peakInsideTemperature:0.00}; ");
+
+            lock (this.dataContext)
+            {
+                var stat = this.dataContext.MachineStatistics
+                    .Include(i => i.InverterStatistics)
+                    .ToArray()
+                    .LastOrDefault();
+                stat.TotalInverterMissionTime = workingHours;
+                stat.TotalInverterPowerOnTime = operationHours;
+                var inverterStat = new InverterStatistics()
+                {
+                    AverageActivePower = averageActivePower,
+                    AverageRMSCurrent = averageRMSCurrent,
+                    DateTime = DateTimeOffset.UtcNow,
+                    PeakHeatSinkTemperature = peakHeatSinkTemperature,
+                    PeakInsideTemperature = peakInsideTemperature
+                };
+                var oldStat = stat.InverterStatistics.FirstOrDefault(s => s.DateTime.Year == inverterStat.DateTime.Year
+                    && s.DateTime.DayOfYear == inverterStat.DateTime.DayOfYear
+                    && s.DateTime.Hour == inverterStat.DateTime.Hour);
+                if (oldStat is null)
+                {
+                    stat.InverterStatistics.Add(inverterStat);
+                    addNew = true;
+                }
+                else
+                {
+                    oldStat.AverageActivePower = averageActivePower;
+                    oldStat.AverageRMSCurrent = averageRMSCurrent;
+                    oldStat.DateTime = DateTimeOffset.UtcNow;
+                    oldStat.PeakHeatSinkTemperature = peakHeatSinkTemperature;
+                    oldStat.PeakInsideTemperature = peakInsideTemperature;
+                }
+                this.dataContext.SaveChanges();
+            }
+            return addNew;
+        }
+
         public int ConfirmAndCreateNew()
         {
             lock (this.dataContext)

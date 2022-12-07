@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.startTime = DateTime.UtcNow;
             }
 
-            if (message.ParameterId == InverterParameterId.TorqueCurrent)
+            if (message.ParameterId == InverterParameterId.RMSCurrent)
             {
                 var current = message.UShortPayload / 10.0;
 
@@ -96,12 +96,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 {
                     if (this.retryCount > 3)
                     {
-                        this.Logger.LogError($"PositioningMeasureStartMovingState zero TorqueCurrent");
+                        this.Logger.LogError($"PositioningMeasureStartMovingState zero RMSCurrent");
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     }
                     else
                     {
-                        this.Logger.LogDebug($"Received zero TorqueCurrent, retry {this.retryCount}");
+                        this.Logger.LogDebug($"Received zero RMSCurrent, retry {this.retryCount}");
                         this.RequestSample();
                     }
                     return true;
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    InverterParameterId.TorqueCurrent));
+                    InverterParameterId.RMSCurrent));
         }
 
         private void ScaleMovementsByWeight()
