@@ -204,11 +204,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepOptional => this.currentStep is WeightCalibrationStep.Optional;
 
-        public bool HasStepOptionalWeighing2 => false;
-
-        public bool HasStepOptionalWeighing3 => false;
-
-        public bool HasStepSetWeight => this.currentStep is WeightCalibrationStep.SetWeight;
+        public bool HasStepSetWeight => this.currentStep is WeightCalibartionStep.SetWeight;
 
         public bool IsBusyCallDrawer
         {

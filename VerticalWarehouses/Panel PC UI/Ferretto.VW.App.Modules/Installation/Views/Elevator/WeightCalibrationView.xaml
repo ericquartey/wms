@@ -738,7 +738,7 @@
         </Grid>
 
         <Grid Grid.Row="3">
-          <Border Background="{Binding HasStepOptionalWeighing1, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+          <Border Background="{Binding HasStepOptional, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                   Style="{DynamicResource BorderTimeLineCirle}" />
           <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                      Text="3" />
@@ -746,7 +746,7 @@
         <Grid Grid.Row="3"
               Grid.Column="1"
               Grid.ColumnSpan="2"
-              Visibility="{Binding HasStepOptionalWeighing1, Converter={StaticResource BTVC}, Mode=OneWay}">
+              Visibility="{Binding HasStepOptional, Converter={StaticResource BTVC}, Mode=OneWay}">
           <Path Height="24"
                 VerticalAlignment="Center"
                 StrokeThickness="0"
@@ -755,7 +755,7 @@
         </Grid>
 
         <Grid Grid.Row="4">
-          <Border Background="{Binding HasStepFullUnitWeighing, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+          <Border Background="{Binding HasStepFull, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                   Style="{DynamicResource BorderTimeLineCirle}" />
           <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                      Text="4" />
@@ -763,7 +763,7 @@
         <Grid Grid.Row="4"
               Grid.Column="1"
               Grid.ColumnSpan="2"
-              Visibility="{Binding HasStepFullUnitWeighing, Converter={StaticResource BTVC}, Mode=OneWay}">
+              Visibility="{Binding HasStepFull, Converter={StaticResource BTVC}, Mode=OneWay}">
           <Path Height="24"
                 VerticalAlignment="Center"
                 StrokeThickness="0"
