@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [FilterProperties(nameof(ElevatorAxis.Orientation), Orientation.Vertical, nameof(ElevatorAxis.ChainOffset), nameof(ElevatorAxis.HorizontalCalibrateSpeed), nameof(ElevatorAxis.Center))]
             //nameof(ElevatorAxis.ProfileCalibrateLength), nameof(ElevatorAxis.ProfileCalibratePosition), nameof(ElevatorAxis.ProfileCalibrateSpeed),
             [FilterProperties(nameof(ElevatorAxis.Orientation), Orientation.Horizontal, nameof(ElevatorAxis.VerticalDepositOffset), nameof(ElevatorAxis.VerticalPickupOffset), nameof(ElevatorAxis.HomingAcceleration), nameof(ElevatorAxis.VerticalDepositCompensationDelay), nameof(ElevatorAxis.VerticalPickupCompensationDelay))]
-            [Offset(300)]
+            [Offset(100)]
             [Id(10)]
             public IEnumerable<ElevatorAxis> Axes { get; set; }
 
