@@ -29,11 +29,13 @@
 - Ferretto Nuget Package 0.16.49
 - Aggiunto parametro: Liste in attesa solo su macchina locale
 - Aggiunto parametro: Numero di etichette editabile
+- Aggiunti dati pesatura nei parametri dell'asse verticale
 
 ## Bug Risolti
 - Chiamata cassetto: eliminati casi di interfaccia utente che non risponde ai comandi
 - Vista di prelievo: aumentato lo spazio per la descrizione della lista
 - Gestione missioni: corretti vari errori con Baia 3
+- BIS: corretto un caso di warning errato "Taratura baia non eseguita"
 
 ## Compatibile con adapter 0.4.43
 ***

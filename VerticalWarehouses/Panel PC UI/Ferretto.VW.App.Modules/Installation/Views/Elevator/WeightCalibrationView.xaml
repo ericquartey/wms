@@ -201,6 +201,7 @@
                            Grid.Column="0"
                            Height="90"
                            Margin="15,5"
+                           IsEnabled="False"
                            HorizontalAlignment="Stretch"
                            VerticalAlignment="Center"
                            EditValue="{Binding NetWeight, Mode=TwoWay}"

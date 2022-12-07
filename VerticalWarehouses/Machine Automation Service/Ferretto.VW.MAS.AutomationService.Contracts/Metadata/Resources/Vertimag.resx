@@ -636,4 +636,16 @@
   <data name="IsLoadUnitFixed" xml:space="preserve">
     <value>Is Load Unit Fixed</value>
   </data>
+  <data name="WeightData" xml:space="preserve">
+    <value>Step {0}</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Absorbed current</value>
+  </data>
+  <data name="LUTare" xml:space="preserve">
+    <value>LU Tare</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Net Weight</value>
+  </data>
 </root>

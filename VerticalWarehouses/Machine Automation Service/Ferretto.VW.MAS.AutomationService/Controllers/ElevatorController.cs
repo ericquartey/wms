@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -470,10 +471,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("update/MeasureConst")]
-        public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2)
+        public IActionResult SetMeasureConst(double measureConst0, double measureConst1, double measureConst2, IEnumerable<WeightData> weightData)
         {
-            this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2);
+            this.elevatorDataProvider.UpdateMeasureConst(measureConst0, measureConst1, measureConst2, weightData);
             this.setupProceduresDataProvider.MarkAsCompleted(this.setupProceduresDataProvider.GetWeightMeasurement(), false);
+
             return this.Ok();
         }
 

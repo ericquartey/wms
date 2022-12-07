@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Ferretto.VW.App.Installation.ViewModels;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.Views
 {
@@ -31,13 +31,13 @@ namespace Ferretto.VW.App.Installation.Views
                 case WeightCalibrationStep.CallUnit:
                     return this.EnumCallUnit;
 
-                case WeightCalibrationStep.EmptyUnitWeighing:
+                case WeightCalibrationStep.Empty:
                     return this.EnumEmptyUnitWeighing;
 
-                case WeightCalibrationStep.OptionalWeighing1:
+                case WeightCalibrationStep.Optional:
                     return this.EnumOptionalWeighing1;
 
-                case WeightCalibrationStep.FullUnitWeighing:
+                case WeightCalibrationStep.Full:
                     return this.EnumFullUnitWeighing;
 
                 case WeightCalibrationStep.SetWeight:

@@ -633,4 +633,16 @@
   <data name="IsLoadUnitFixed" xml:space="preserve">
     <value>Cassetti ad associazione fissa</value>
   </data>
+  <data name="WeightData" xml:space="preserve">
+    <value>Step {0}</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Corrente assorbita</value>
+  </data>
+  <data name="LUTare" xml:space="preserve">
+    <value>Tara</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Peso misurato</value>
+  </data>
 </root>
