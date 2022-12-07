@@ -204,7 +204,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool HasStepOptional => this.currentStep is WeightCalibrationStep.Optional;
 
-        public bool HasStepSetWeight => this.currentStep is WeightCalibartionStep.SetWeight;
+        public bool HasStepSetWeight => this.currentStep is WeightCalibrationStep.SetWeight;
 
         public bool IsBusyCallDrawer
         {
@@ -1088,8 +1088,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                            this.RaisePropertyChanged(nameof(this.HasStepEmptyUnitWeighing));
                            this.RaisePropertyChanged(nameof(this.HasStepFull));
                            this.RaisePropertyChanged(nameof(this.HasStepOptional));
-                           this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing2));
-                           this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing3));
+                           //this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing2));
+                           //this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing3));
                            this.RaisePropertyChanged(nameof(this.HasStepSetWeight));
                        },
                        ThreadOption.UIThread,
@@ -1207,8 +1207,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.HasStepEmptyUnitWeighing));
             this.RaisePropertyChanged(nameof(this.HasStepFull));
             this.RaisePropertyChanged(nameof(this.HasStepOptional));
-            this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing2));
-            this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing3));
+            //this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing2));
+            //this.RaisePropertyChanged(nameof(this.HasStepOptionalWeighing3));
             this.RaisePropertyChanged(nameof(this.HasStepSetWeight));
         }
 
