@@ -25,6 +25,7 @@ using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -703,6 +704,26 @@ namespace Ferretto.VW.MAS.InverterDriver
                 var ex = new Exception();
                 this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data data type", 0), FieldMessageType.InverterStatusUpdate);
             }
+        }
+
+        private void ProcessInverterStatisticsMessage(IInverterStatusBase inverter)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            this.Logger.LogTrace("Start the timer for update status word");
+            this.statusWordUpdateTimer[(int)inverter.SystemIndex]?.Change(100, 10000);
+
+            var currentStateMachine = new StatisticsStateMachine(
+                inverter,
+                this.Logger,
+                this.eventAggregator,
+                this.inverterCommandQueue,
+                this.ServiceScopeFactory);
+
+            this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+            currentStateMachine.Start();
+
+            this.refreshTargetTable = true;
         }
 
         private void ProcessInverterSwitchOffMessage(IInverterStatusBase inverter)

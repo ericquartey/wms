@@ -20,6 +20,7 @@ using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.ResetSecurity;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning;
+using Ferretto.VW.MAS.DeviceManager.Statistics;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
@@ -739,6 +740,29 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.StartStateMachine(currentStateMachine);
                 }
+            }
+        }
+
+        private void ProcessStatistics(CommandMessage receivedMessage)
+        {
+            if (this.currentStateMachines.Any(x => x.BayNumber == receivedMessage.TargetBay))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
+                    $"Unable to start '{nameof(StatisticsStateMachine)}' FSM. Operation already in progress on {receivedMessage.TargetBay}",
+                    1, MessageVerbosity.Error));
+            }
+            else
+            {
+                var currentStateMachine = new StatisticsStateMachine(
+                    receivedMessage,
+                    this.EventAggregator,
+                    this.Logger,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"3:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(currentStateMachine);
+
+                this.StartStateMachine(currentStateMachine);
             }
         }
 

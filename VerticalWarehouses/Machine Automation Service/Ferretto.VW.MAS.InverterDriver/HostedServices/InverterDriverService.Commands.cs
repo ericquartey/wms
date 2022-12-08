@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    partial class InverterDriverService
+    internal partial class InverterDriverService
     {
         #region Methods
 
@@ -144,6 +144,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     case FieldMessageType.InverterReading:
                         this.ProcessInverterReadingMessage(receivedMessage, inverter);
+                        break;
+
+                    case FieldMessageType.InverterStatistics:
+                        this.ProcessInverterStatisticsMessage(inverter);
                         break;
                 }
             }

@@ -5854,6 +5854,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("AutomaticTimePercentage", Required = Newtonsoft.Json.Required.Always)]
         public double AutomaticTimePercentage { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("InverterStatistics", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.IEnumerable<InverterStatistics> InverterStatistics { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("TotalAutomaticTime", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.TimeSpan TotalAutomaticTime { get; set; }
@@ -5872,6 +5875,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("TotalHorizontalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
         public double TotalHorizontalAxisKilometers { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalInverterMissionTime", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalInverterMissionTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("TotalInverterPowerOnTime", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalInverterPowerOnTime { get; set; }
     
         [Newtonsoft.Json.JsonProperty("TotalLoadUnitsInBay1", Required = Newtonsoft.Json.Required.Always)]
         public int TotalLoadUnitsInBay1 { get; set; }
@@ -5919,6 +5928,37 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static MachineStatistics FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<MachineStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class InverterStatistics : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("AverageActivePower", Required = Newtonsoft.Json.Required.Always)]
+        public double AverageActivePower { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("AverageRMSCurrent", Required = Newtonsoft.Json.Required.Always)]
+        public double AverageRMSCurrent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("DateTime", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTimeOffset DateTime { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("PeakHeatSinkTemperature", Required = Newtonsoft.Json.Required.Always)]
+        public double PeakHeatSinkTemperature { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("PeakInsideTemperature", Required = Newtonsoft.Json.Required.Always)]
+        public double PeakInsideTemperature { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static InverterStatistics FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<InverterStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

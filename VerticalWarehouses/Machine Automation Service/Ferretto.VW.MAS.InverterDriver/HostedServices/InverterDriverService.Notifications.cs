@@ -19,6 +19,7 @@ using Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Stop;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn;
+using Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -29,7 +30,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver
 {
-    partial class InverterDriverService
+    internal partial class InverterDriverService
     {
         #region Methods
 
@@ -48,6 +49,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.Positioning:
+                    // close state machine
                     {
                         if (receivedMessage.Status == MessageStatus.OperationEnd ||
                             receivedMessage.Status == MessageStatus.OperationError ||
@@ -81,6 +83,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         break;
                     }
                 case FieldMessageType.CalibrateAxis:
+                    // close state machine
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError ||
@@ -105,6 +108,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.ShutterPositioning:
+                    // close state machine
 
                     this.Logger.LogTrace($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type}), inverter {inverterIndex}");
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
@@ -128,6 +132,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case FieldMessageType.InverterSwitchOn:
                 case FieldMessageType.InverterStop:
+                    // close state machine
 
                     this.Logger.LogTrace($"Deallocating [{messageCurrentStateMachine?.GetType().Name}] state machine ({receivedMessage.Type}), inverter {inverterIndex}");
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
@@ -151,6 +156,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterSwitchOff:
+                    // close state machine
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
                     {
@@ -179,6 +185,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterPowerOn:
+                    // close state machine
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
@@ -207,6 +214,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterPowerOff:
+                    // close state machine
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
@@ -242,6 +250,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterFaultReset:
+                    // close state machine
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                         receivedMessage.Status == MessageStatus.OperationError)
@@ -271,6 +280,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case FieldMessageType.InverterProgramming:
                 case FieldMessageType.InverterReading:
+                    // close state machine
 
                     if (receivedMessage.Status == MessageStatus.OperationEnd ||
                             receivedMessage.Status == MessageStatus.OperationError ||
@@ -278,6 +288,28 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (messageCurrentStateMachine is InverterProgrammigState ||
                             messageCurrentStateMachine is InverterReadingState)
+                        {
+                            this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
+                        }
+                        else
+                        {
+                            this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine?.GetType().Name} Handling {receivedMessage.Type}");
+                        }
+                    }
+
+                    break;
+
+                case FieldMessageType.InverterStatistics:
+                    // close state machine
+
+                    if (receivedMessage.Status == MessageStatus.OperationEnd ||
+                            receivedMessage.Status == MessageStatus.OperationError ||
+                            receivedMessage.Status == MessageStatus.OperationStop)
+                    {
+                        if (messageCurrentStateMachine is StatisticsStateMachine)
                         {
                             this.currentStateMachines.Remove(inverterIndex);
 

@@ -31,7 +31,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private const int CleanupTimeout = 60 * 60 * 1000;  // one hour expressed in milliseconds
 
+        private const int StatisticsTimeout = 5 * 60 * 1000;  // 5 minutes expressed in milliseconds
+
         private readonly Timer CleanupTimer;
+
+        private readonly Timer GetStatisticsTimer;
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
@@ -69,6 +73,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
             this.RestartTimer = new Timer(this.OnTimePeriodElapsed2, null, Timeout.Infinite, Timeout.Infinite);
+            this.GetStatisticsTimer = new Timer(this.OnStatisticsElapsed, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         #endregion
@@ -1488,6 +1493,7 @@ namespace Ferretto.VW.MAS.MissionManager
             await this.InvokeSchedulerAsync(serviceProvider);
 
             this.CleanupTimer.Change(CleanupTimeout, CleanupTimeout);
+            this.GetStatisticsTimer.Change(StatisticsTimeout, StatisticsTimeout);
 
             this.Logger.LogTrace("OnDataLayerReady end");
         }
@@ -1715,6 +1721,31 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     this.machineVolatileDataProvider.IsShutterHomingActive[message.TargetBay] = false;
                 }
+            }
+        }
+
+        private void OnStatisticsElapsed(object state)
+        {
+            for (int retries = 0; retries < 20; retries++)
+            {
+                if (!this.machineVolatileDataProvider.IsDeviceManagerBusy)
+                {
+                    IStatisticsMessageData messageData = new StatisticsMessageData();
+
+                    this.EventAggregator
+                        .GetEvent<CommandEvent>()
+                        .Publish(
+                            new CommandMessage(
+                                messageData,
+                                "Get Statistics Command",
+                                MessageActor.DeviceManager,
+                                MessageActor.MissionManager,
+                                MessageType.InverterStatistics,
+                                BayNumber.BayOne));
+                    this.Logger.LogDebug($"OnStatisticsElapsed: bay {BayNumber.BayOne}");
+                    break;
+                }
+                Thread.Sleep(1000);
             }
         }
 

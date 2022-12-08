@@ -77,5 +77,7 @@
         InverterReading,
 
         DiagOutChanged,
+
+        InverterStatistics
     }
 }

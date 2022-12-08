@@ -1,28 +1,29 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DeviceManager.ResetFault.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.Statistics.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.DeviceManager.ResetFault
+namespace Ferretto.VW.MAS.DeviceManager.Statistics
 {
-    internal class ResetFaultErrorState : StateBase
+    internal class StatisticsEndState : StateBase
     {
         #region Fields
 
-        private readonly IResetFaultMachineData machineData;
+        private readonly IStatisticsMachineData machineData;
 
-        private readonly IResetFaultStateData stateData;
+        private readonly IStatisticsStateData stateData;
 
         #endregion
 
         #region Constructors
 
-        public ResetFaultErrorState(IResetFaultStateData stateData, ILogger logger)
+        public StatisticsEndState(IStatisticsStateData stateData, ILogger logger)
             : base(stateData.ParentMachine, logger)
         {
             this.stateData = stateData;
-            this.machineData = stateData.MachineData as IResetFaultMachineData;
+            this.machineData = stateData.MachineData as IStatisticsMachineData;
         }
 
         #endregion
@@ -50,14 +51,13 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
             this.Logger.LogDebug($"Start {this.GetType().Name}");
             var notificationMessage = new NotificationMessage(
                 null,
-                $"Inverter Fault reset failed on bay {this.machineData.TargetBay}. Failed message: {this.stateData.FieldMessage.Description}",
+                $"Get statistics completed",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,
-                MessageType.InverterFaultReset,
+                MessageType.InverterStatistics,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
-                MessageStatus.OperationError,
-                ErrorLevel.Error);
+                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }

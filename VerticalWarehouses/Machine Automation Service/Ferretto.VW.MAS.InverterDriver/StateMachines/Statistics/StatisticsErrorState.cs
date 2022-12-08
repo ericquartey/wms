@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
                 "Statistics error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterReading,
+                FieldMessageType.InverterStatistics,
                 MessageStatus.OperationError,
                 this.InverterStatus.SystemIndex,
                 ErrorLevel.Error);

@@ -163,6 +163,8 @@
 
         ProfileResolution,
 
-        SaveToWms
+        SaveToWms,
+
+        InverterStatistics
     }
 }

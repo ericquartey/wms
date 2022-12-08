@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
                             this.averageRMSCurrent,
                             this.averageActivePower);
 
-                        if (addNew)
+                        if (addNew && false)
                         {
                             short reset = 102;
                             next = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ResetAverageMemory, reset);

@@ -1134,6 +1134,21 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(message.ToBytes());
                     break;
 
+                case InverterParameterId.WorkingHours:
+                case InverterParameterId.OperationHours:
+                case InverterParameterId.PeakHeatSinkTemperature:
+                case InverterParameterId.PeakInsideTemperature:
+                case InverterParameterId.AverageRMSCurrent:
+                case InverterParameterId.AverageActivePower:
+                    var wMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(0, 9999)));
+
+                    result = client.Client.Send(wMessage);
+                    break;
+
+                case InverterParameterId.ResetAverageMemory:
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
                 default:
                     // simulate inverter programming
                     var rxMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(0, 100)));

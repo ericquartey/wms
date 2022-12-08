@@ -20,7 +20,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            this.inverterReadingFieldMessageData = inverterReadingFieldMessageData;
         }
 
         #endregion
@@ -37,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
                 "Statistics End completed",
                 FieldMessageActor.InverterDriver,
                 FieldMessageActor.InverterDriver,
-                FieldMessageType.InverterReading,
+                FieldMessageType.InverterStatistics,
                 MessageStatus.OperationEnd,
                 this.InverterStatus.SystemIndex);
 

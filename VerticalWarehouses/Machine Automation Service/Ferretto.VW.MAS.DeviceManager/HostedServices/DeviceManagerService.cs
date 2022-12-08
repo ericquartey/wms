@@ -136,7 +136,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             && command.Type != MessageType.SensorsChanged
                             && command.Type != MessageType.PowerEnable
                             && command.Type != MessageType.ContinueMovement
-                            && command.Type != MessageType.BayLight);
+                            && command.Type != MessageType.BayLight
+                            && command.Type != MessageType.InverterStatistics);
                     }
                     else
                     {
@@ -146,7 +147,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             && command.Type != MessageType.PowerEnable
                             && command.Type != MessageType.ContinueMovement
                             && command.Type != MessageType.BayLight
-                            && command.Type != MessageType.CheckIntrusion);
+                            && command.Type != MessageType.CheckIntrusion
+                            && command.Type != MessageType.InverterStatistics);
                     }
 
                     // Publish a notification error, if occurs
@@ -255,6 +257,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     case MessageType.CombinedMovements:
                         this.ProcessCombinedMovemets(command, serviceProvider);
+                        break;
+
+                    case MessageType.InverterStatistics:
+                        this.ProcessStatistics(command);
                         break;
                 }
 
