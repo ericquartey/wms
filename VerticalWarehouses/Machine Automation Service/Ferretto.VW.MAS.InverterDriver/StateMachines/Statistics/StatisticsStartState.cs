@@ -20,19 +20,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
 
         private readonly IErrorsProvider errorProvider;
 
-        private uint averageActivePower;
+        private ushort averageActivePower;
 
-        private uint averageRMSCurrent;
+        private ushort averageRMSCurrent;
 
-        private uint operationHours;
+        private ushort operationHours;
 
-        private uint peakHeatSinkTemperature;
+        private ushort peakHeatSinkTemperature;
 
-        private uint peakInsideTemperature;
+        private ushort peakInsideTemperature;
 
         private DateTime startTime = DateTime.UtcNow;
 
-        private uint workingHours;
+        private ushort workingHours;
 
         #endregion
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
                 this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
                 if (message.ParameterId == InverterParameterId.ResetAverageMemory)
                 {
-                    if (message.ShortPayload != 0)
+                    if (message.UShortPayload != 0)
                     {
                         short reset = 0;
                         var next = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ResetAverageMemory, reset);
@@ -126,40 +126,41 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Statistics
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.WorkingHours:
-                        this.workingHours = message.UIntPayload;
+                        this.workingHours = message.UShortPayload;
                         next = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.OperationHours);
                         break;
 
                     case InverterParameterId.OperationHours:
-                        this.operationHours = message.UIntPayload;
+                        this.operationHours = message.UShortPayload;
                         next = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.PeakHeatSinkTemperature);
                         break;
 
                     case InverterParameterId.PeakHeatSinkTemperature:
-                        this.peakHeatSinkTemperature = message.UIntPayload;
+                        this.peakHeatSinkTemperature = message.UShortPayload;
                         next = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.PeakInsideTemperature);
                         break;
 
                     case InverterParameterId.PeakInsideTemperature:
-                        this.peakInsideTemperature = message.UIntPayload;
+                        this.peakInsideTemperature = message.UShortPayload;
                         next = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AverageRMSCurrent);
                         break;
 
                     case InverterParameterId.AverageRMSCurrent:
-                        this.averageRMSCurrent = message.UIntPayload;
+                        this.averageRMSCurrent = message.UShortPayload;
                         next = new InverterMessage(this.InverterStatus.SystemIndex, InverterParameterId.AverageActivePower);
                         break;
 
                     case InverterParameterId.AverageActivePower:
-                        this.averageActivePower = message.UIntPayload;
+                        this.averageActivePower = message.UShortPayload;
                         var addNew = this.ParentStateMachine.GetRequiredService<IStatisticsDataProvider>().AddInverterStatistics(
-                            this.workingHours,
-                            this.operationHours,
-                            this.peakHeatSinkTemperature,
-                            this.peakInsideTemperature,
-                            this.averageRMSCurrent,
-                            this.averageActivePower);
+                            this.workingHours / 10.0,
+                            this.operationHours / 10.0,
+                            this.peakHeatSinkTemperature / 10.0,
+                            this.peakInsideTemperature / 10.0,
+                            this.averageRMSCurrent / 10.0,
+                            this.averageActivePower / 10.0);
 
+                        // TODO - remove this always false to send a reset command to the average inverter values
                         if (addNew && false)
                         {
                             short reset = 102;

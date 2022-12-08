@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int MissionTotalNumber();
 
+        int PurgeInverterStatistics();
+
         double TotalDistance();
 
         #endregion

@@ -59,13 +59,6 @@ namespace Ferretto.VW.MAS.DataLayer
             double averageActivePower)
         {
             bool addNew = false;
-            this.logger.LogInformation($"Save inverter stat: workingHours {workingHours:0.00}; " +
-                $"operationHours {operationHours:0.00}; " +
-                $"averageActivePower {averageActivePower:0.00}; " +
-                $"averageRMSCurrent {averageRMSCurrent:0.00}; " +
-                $"peakHeatSinkTemperature {peakHeatSinkTemperature:0.00}; " +
-                $"peakInsideTemperature {peakInsideTemperature:0.00}; ");
-
             lock (this.dataContext)
             {
                 var stat = this.dataContext.MachineStatistics
@@ -99,6 +92,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     oldStat.PeakInsideTemperature = peakInsideTemperature;
                 }
                 this.dataContext.SaveChanges();
+                this.logger.LogInformation($"Save inverter stat: workingHours {workingHours:0.00}; " +
+                    $"operationHours {operationHours:0.00}; " +
+                    $"averageActivePower {averageActivePower:0.00}; " +
+                    $"averageRMSCurrent {averageRMSCurrent:0.00}; " +
+                    $"peakHeatSinkTemperature {peakHeatSinkTemperature:0.00}; " +
+                    $"peakInsideTemperature {peakInsideTemperature:0.00}; " +
+                    $"new {addNew}; ");
             }
             return addNew;
         }
@@ -162,6 +162,26 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.ServicingInfo.AsNoTracking().Select(s => s.TotalMissions).ToArray().LastOrDefault() ?? 0;
+            }
+        }
+
+        public int PurgeInverterStatistics()
+        {
+            lock (this.dataContext)
+            {
+                var count = 0;
+                var old = this.dataContext.InverterStatistics
+                    .AsEnumerable()
+                    .Where(x => DateTimeOffset.UtcNow.Subtract(x.DateTime).Days > 31)
+                    .ToList();
+                if (old.Any())
+                {
+                    count = old.Count;
+                    this.dataContext.InverterStatistics.RemoveRange(old);
+                    this.dataContext.SaveChanges();
+                    this.logger.LogInformation($"Deleted {count} InverterStatistics.");
+                }
+                return count;
             }
         }
 

@@ -1493,7 +1493,7 @@ namespace Ferretto.VW.MAS.MissionManager
             await this.InvokeSchedulerAsync(serviceProvider);
 
             this.CleanupTimer.Change(CleanupTimeout, CleanupTimeout);
-            this.GetStatisticsTimer.Change(StatisticsTimeout, StatisticsTimeout);
+            this.GetStatisticsTimer.Change(5000, StatisticsTimeout);
 
             this.Logger.LogTrace("OnDataLayerReady end");
         }
@@ -1741,8 +1741,9 @@ namespace Ferretto.VW.MAS.MissionManager
                                 MessageActor.DeviceManager,
                                 MessageActor.MissionManager,
                                 MessageType.InverterStatistics,
-                                BayNumber.BayOne));
-                    this.Logger.LogDebug($"OnStatisticsElapsed: bay {BayNumber.BayOne}");
+                                BayNumber.BayOne,
+                                BayNumber.ElevatorBay));
+                    this.Logger.LogDebug($"OnStatisticsElapsed: bay {BayNumber.ElevatorBay}");
                     break;
                 }
                 Thread.Sleep(1000);
@@ -1770,6 +1771,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 // clean errors
                 var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
                 errorsProvider.PurgeErrors();
+
+                var stats = scope.ServiceProvider.GetRequiredService<IStatisticsDataProvider>();
+                stats.PurgeInverterStatistics();
 
                 // elevator and bay chain homing every new day?
                 //this.machineVolatileDataProvider.IsHomingExecuted = false;

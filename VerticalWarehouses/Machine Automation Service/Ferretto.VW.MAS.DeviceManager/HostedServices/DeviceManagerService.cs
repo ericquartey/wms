@@ -300,6 +300,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     {
                         var notifyMessageToAny = true;
 
+                        // close state machine
                         switch (message.Type)
                         {
                             case MessageType.Homing:
@@ -315,6 +316,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                             case MessageType.InverterProgramming:
                             case MessageType.InverterReading:
+                            case MessageType.InverterStatistics:
                                 this.Logger.LogDebug($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {message.Status} count: {this.currentStateMachines.Count}");
                                 this.currentStateMachines.Remove(messageCurrentStateMachine);
                                 this.SendCleanDebug();
