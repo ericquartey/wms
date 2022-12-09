@@ -170,11 +170,19 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var entity = MachineGetCompile(this.dataContext);
-
-                entity.Elevator?.Axes?.ForEach((axe) =>
+                if (entity.Elevator?.Axes != null)
                 {
-                    axe.Profiles.ForEach((profile) => profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList());
-                });
+                    entity.Elevator.Axes = entity.Elevator.Axes.OrderBy(o => o.Orientation);
+
+                    entity.Elevator.Axes.ForEach((axe) =>
+                    {
+                        axe.Profiles.ForEach((profile) => profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList());
+                        if (axe.WeightMeasurement?.WeightDatas != null)
+                        {
+                            axe.WeightMeasurement.WeightDatas = axe.WeightMeasurement.WeightDatas.OrderBy(o => o.Step);
+                        }
+                    });
+                }
 
                 return entity;
             }
