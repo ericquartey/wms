@@ -360,8 +360,8 @@ namespace Ferretto.VW.MAS.SocketLink
             {
                 payLoadArray[0] = (int)SocketLinkCommand.MachineAlarmStatus.atLeastOneAlarmActiveOnTheMachine;
             }
-
-            foreach (var bay in this.baysDataProvider.GetAll())
+            var bays = this.baysDataProvider.GetAll();
+            foreach (var bay in bays)
             {
                 if (bay.Number == BayNumber.BayOne || bay.Number == BayNumber.BayTwo || bay.Number == BayNumber.BayThree)
                 {
