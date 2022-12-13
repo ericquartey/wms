@@ -172,7 +172,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var count = 0;
                 var old = this.dataContext.InverterStatistics
                     .AsEnumerable()
-                    .Where(x => DateTimeOffset.UtcNow.Subtract(x.DateTime).Days > 31)
+                    .Where(x => DateTimeOffset.UtcNow.Subtract(x.DateTime).Days > 15)
                     .ToList();
                 if (old.Any())
                 {
