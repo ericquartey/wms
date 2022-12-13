@@ -36,6 +36,8 @@
 - Vista di prelievo: aumentato lo spazio per la descrizione della lista
 - Gestione missioni: corretti vari errori con Baia 3
 - BIS: corretto un caso di warning errato "Taratura baia non eseguita"
+- Socket link: eliminato picco di CPU in caso di disconnessione
+- Installer: non cancella più il database della telemetria
 
 ## Compatibile con adapter 0.4.43
 ***

@@ -186,52 +186,54 @@ namespace Ferretto.VW.MAS.SocketLink
             var socket = client.Client;
             var buffer = new byte[1024];
 
-            while (client.Connected && !timeout && !cancellationToken.IsCancellationRequested)
+            using (var scope = this.serviceScopeFactory.CreateScope())
             {
-                if (socket != null && socket.Connected)
+                var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
+
+                while (client.Connected && !timeout && !cancellationToken.IsCancellationRequested)
                 {
-                    if (socket.Poll(SOCKET_POOL_TIMEOUT_MILLI_SECONDS, SelectMode.SelectRead))
+                    if (socket != null && socket.Connected)
                     {
-                        var bytes = socket.Receive(buffer);
-
-                        if (bytes > 0)
+                        if (socket.Poll(SOCKET_POOL_TIMEOUT_MILLI_SECONDS, SelectMode.SelectRead))
                         {
-                            var e = Encoding.GetEncoding("iso-8859-1");
-                            var msgReceived = e.GetString(buffer, 0, bytes);
+                            var bytes = socket.Receive(buffer);
 
-                            //var msgReceived = Encoding.ASCII.GetString(buffer, 0, bytes);
-                            lastActivity = DateTime.Now;
-                            this.logger.LogTrace("SocketLink Received " + msgReceived);
-
-                            var msgResponse = "";
-                            using (var scope = this.serviceScopeFactory.CreateScope())
+                            if (bytes > 0)
                             {
-                                var socketLinkSyncProvider = scope.ServiceProvider.GetRequiredService<ISocketLinkSyncProvider>();
-                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived, this.socketLinkEndOfLine);
-                            }
+                                var e = Encoding.GetEncoding("iso-8859-1");
+                                var msgReceived = e.GetString(buffer, 0, bytes);
 
-                            if (!string.IsNullOrEmpty(msgResponse))
-                            {
-                                var outStream = Encoding.ASCII.GetBytes(msgResponse);
-                                socket.Send(outStream);
-                                this.logger.LogTrace("SocketLink Send " + msgResponse);
+                                //var msgReceived = Encoding.ASCII.GetString(buffer, 0, bytes);
                                 lastActivity = DateTime.Now;
+                                this.logger.LogTrace("SocketLink Received " + msgReceived);
+
+                                var msgResponse = "";
+                                msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived, this.socketLinkEndOfLine);
+
+                                if (!string.IsNullOrEmpty(msgResponse))
+                                {
+                                    var outStream = Encoding.ASCII.GetBytes(msgResponse);
+                                    socket.Send(outStream);
+                                    this.logger.LogTrace("SocketLink Send " + msgResponse);
+                                    lastActivity = DateTime.Now;
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    break;
-                }
+                    else
+                    {
+                        break;
+                    }
 
-                if (this.PeriodicCheckTimeoutIsExpired(lastActivity))
-                {
-                    timeout = true;
-                }
-                else
-                {
-                    this.PeriodicAction(socket, ref periodicActivity);
+                    if (this.PeriodicCheckTimeoutIsExpired(lastActivity))
+                    {
+                        timeout = true;
+                    }
+                    else
+                    {
+                        this.PeriodicAction(socket, ref periodicActivity);
+                    }
+                    Thread.Sleep(10);
                 }
             }
             client?.Close();
