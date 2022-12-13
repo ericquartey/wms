@@ -261,7 +261,7 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="0.6*"
+                    <DataGridTextColumn Width="0.65*"
                                         Binding="{Binding DateTime, StringFormat=dd-MM-yyyy  HH:mm}"
                                         Header="{Resources:Loc InstallationApp.DateTimeMenuTitle}"
                                         SortDirection="Ascending"
@@ -307,9 +307,9 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Width="0.76*"
+                    <DataGridTextColumn Width="*"
                                         Binding="{Binding AverageRMSCurrent}"
-                                        Header="{Resources:Loc InstallationApp.AverageCurrent}"
+                                        Header="{Resources:Loc InstallationApp.AverageRMSCurrent}"
                                         SortDirection="Ascending"
                                         SortMemberPath="AverageRMSCurrent">
                         <DataGridTextColumn.CellStyle>
