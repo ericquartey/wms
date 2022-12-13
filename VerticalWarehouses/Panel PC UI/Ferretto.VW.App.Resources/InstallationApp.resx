@@ -2860,4 +2860,19 @@
   <data name="SuspendList" xml:space="preserve">
     <value>Suspend current list</value>
   </data>
+  <data name="InverterStatistics" xml:space="preserve">
+    <value>Inverter Statistics</value>
+  </data>
+  <data name="AverageActivePower" xml:space="preserve">
+    <value>Average Absorbed Power</value>
+  </data>
+  <data name="PeakHeatSinkTemperature" xml:space="preserve">
+    <value>Peak Outside Temperature</value>
+  </data>
+  <data name="PeakInsideTemperature" xml:space="preserve">
+    <value>Peak Inside Temperature</value>
+  </data>
+  <data name="AverageRMSCurrent" xml:space="preserve">
+    <value>Average Absorbed Current</value>
+  </data>
 </root>

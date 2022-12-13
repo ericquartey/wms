@@ -367,11 +367,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Average Absorbed Power.
+        /// </summary>
+        public static string AverageActivePower {
+            get {
+                return ResourceManager.GetString("AverageActivePower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average Current [A].
         /// </summary>
         public static string AverageCurrent {
             get {
                 return ResourceManager.GetString("AverageCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average Absorbed Current.
+        /// </summary>
+        public static string AverageRMSCurrent {
+            get {
+                return ResourceManager.GetString("AverageRMSCurrent", resourceCulture);
             }
         }
         
@@ -4084,6 +4102,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter Statistics.
+        /// </summary>
+        public static string InverterStatistics {
+            get {
+                return ResourceManager.GetString("InverterStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Free.
         /// </summary>
         public static string IsFree {
@@ -5475,6 +5502,24 @@ namespace Ferretto.VW.App.Resources {
         public static string PasswordFailConfirm {
             get {
                 return ResourceManager.GetString("PasswordFailConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peak Outside Temperature.
+        /// </summary>
+        public static string PeakHeatSinkTemperature {
+            get {
+                return ResourceManager.GetString("PeakHeatSinkTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Peak Inside Temperature.
+        /// </summary>
+        public static string PeakInsideTemperature {
+            get {
+                return ResourceManager.GetString("PeakInsideTemperature", resourceCulture);
             }
         }
         

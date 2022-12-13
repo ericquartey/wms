@@ -26,6 +26,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand goToLogsExport;
 
+        private DelegateCommand goToInverterStatistics;
+
         private MachineStatistics lastServiceStatistics;
 
         private MachineStatistics totalStatistics;
@@ -57,6 +59,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                           ??
                   (this.goToLogsExport = new DelegateCommand(
                       this.ShowLogsExport, this.CanShowLogsExport));
+
+        public ICommand GoToInverterStatistics => this.goToInverterStatistics
+                          ??
+                  (this.goToInverterStatistics = new DelegateCommand(
+                      this.ShowInverterStatistics));
 
         public MachineStatistics LastServiceStatistics
         {
@@ -143,6 +150,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.TotalStatistics.TotalHorizontalAxisCycles = allServicing.Select(s => s.MachineStatistics.TotalHorizontalAxisCycles).Sum();
                 this.TotalStatistics.TotalVerticalAxisCycles = allServicing.Select(s => s.MachineStatistics.TotalVerticalAxisCycles).Sum();
 
+                this.TotalStatistics.TotalInverterMissionTime = allServicing.Select(s => s.MachineStatistics.TotalInverterMissionTime).Sum();
+                this.TotalStatistics.TotalInverterPowerOnTime = allServicing.Select(s => s.MachineStatistics.TotalInverterPowerOnTime).Sum();
+
                 foreach (var time in allServicing)
                 {
                     this.TotalStatistics.TotalMissionTime += time.MachineStatistics.TotalMissionTime;
@@ -182,6 +192,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.About.LOGSEXPORT,
+                null,
+                trackCurrentView: true);
+        }
+
+        private void ShowInverterStatistics()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.About.INVERTERSTATISTICS,
                 null,
                 trackCurrentView: true);
         }

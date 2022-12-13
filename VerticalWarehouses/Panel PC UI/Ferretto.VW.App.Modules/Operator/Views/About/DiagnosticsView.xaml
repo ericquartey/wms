@@ -36,12 +36,26 @@
 
         <views:AboutMenuNavigationView Grid.RowSpan="2" />
 
-        <controls:PpcButton Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="0,0,15,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding GoToLogsExport}"
-                            Content="{Resources:Loc InstallationApp.Export}" />
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <controls:PpcButton Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding GoToInverterStatistics}"
+                                Content="{Resources:Loc InstallationApp.InverterStatistics}" />
+        
+            <controls:PpcButton Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="0,0,15,0"
+                                HorizontalAlignment="Right"
+                                Command="{Binding GoToLogsExport}"
+                                Content="{Resources:Loc InstallationApp.Export}" />
+        </StackPanel>
+
+        
 
 
         <Grid Grid.Row="1"
@@ -341,7 +355,9 @@
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Top"
                                                    Style="{DynamicResource VWAPP_CardSensor_Data}">
-                                            <Run Text="{Binding LastServiceStatistics.TotalMissionTime, StringFormat=hh\\:mm, TargetNullValue=00:00, FallbackValue=00:00}" /> <Run Text="/" /> <Run Text="{Binding TotalStatistics.TotalMissionTime, StringFormat=hh\\:mm, TargetNullValue=00:00, FallbackValue=00:00}" />
+                                            <Run Text="{Binding TotalStatistics.TotalInverterMissionTime}" />
+                                            <Run Text="/" />
+                                            <Run Text="{Binding TotalStatistics.TotalInverterPowerOnTime}" />
                                         </TextBlock>
 
                                         <Border Grid.RowSpan="2"

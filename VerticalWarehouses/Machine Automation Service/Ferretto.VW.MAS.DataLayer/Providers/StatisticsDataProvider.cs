@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.FirstOrDefault(s => s.Id == id);
+                return this.dataContext.MachineStatistics.Include(m => m.InverterStatistics).FirstOrDefault(s => s.Id == id);
             }
         }
 

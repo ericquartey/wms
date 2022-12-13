@@ -2775,4 +2775,19 @@
   <data name="SuspendList" xml:space="preserve">
     <value>Sospendi la lista corrente</value>
   </data>
+  <data name="InverterStatistics" xml:space="preserve">
+    <value>Statistiche Inverter</value>
+  </data>
+  <data name="AverageActivePower" xml:space="preserve">
+    <value>Media Potenza assorbita</value>
+  </data>
+  <data name="PeakHeatSinkTemperature" xml:space="preserve">
+    <value>Picco temperatura esterna</value>
+  </data>
+  <data name="PeakInsideTemperature" xml:space="preserve">
+    <value>Picco temperatura interna</value>
+  </data>
+  <data name="AverageRMSCurrent" xml:space="preserve">
+    <value>Media Corrente assorbita</value>
+  </data>
 </root>

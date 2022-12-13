@@ -115,6 +115,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<UserView>();
             containerRegistry.RegisterForNavigation<NetworkAdaptersView>();
             containerRegistry.RegisterForNavigation<LogsExportView>();
+            containerRegistry.RegisterForNavigation<InverterStatisticsView>();
             containerRegistry.RegisterForNavigation<ReleaseView>();
             containerRegistry.RegisterForNavigation<PtlMessageView>();
 

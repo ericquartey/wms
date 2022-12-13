@@ -28,6 +28,8 @@
 
             public const string LOGSEXPORT = "LogsExportViewModel";
 
+            public const string INVERTERSTATISTICS = "InverterStatisticsViewModel";
+
             public const string NAVIGATION = "AboutMenuNavigationViewModel";
 
             public const string NETWORKADAPTERS = "NetworkAdaptersViewModel";
