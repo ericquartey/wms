@@ -19,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0"
@@ -28,7 +29,7 @@
                    Text="{Resources:Loc InstallationApp.InverterStatistics}" />
 
         <Border Grid.Row="1"
-                Margin="0,0,15,15"
+                Margin="0,0,15,0"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
                 BorderThickness="{DynamicResource PpcBorderThickness}"
                 CornerRadius="2">
@@ -260,7 +261,7 @@
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness"
-                                        Value="1,0,0,0" />
+                                        Value="0,0,0,0" />
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource PpcButtonBorderBrush}" />
                             </Style>
@@ -283,7 +284,7 @@
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness"
-                                        Value="1,0,0,0" />
+                                        Value="0,0,0,0" />
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource PpcButtonBorderBrush}" />
                             </Style>
@@ -306,7 +307,7 @@
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness"
-                                        Value="1,0,0,0" />
+                                        Value="0,0,0,0" />
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource PpcButtonBorderBrush}" />
                             </Style>
@@ -329,7 +330,7 @@
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness"
-                                        Value="1,0,0,0" />
+                                        Value="0,0,0,0" />
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource PpcButtonBorderBrush}" />
                             </Style>
@@ -352,7 +353,7 @@
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Setter Property="BorderThickness"
-                                        Value="1,0,0,0" />
+                                        Value="0,0,0,0" />
                                 <Setter Property="BorderBrush"
                                         Value="{DynamicResource PpcButtonBorderBrush}" />
                             </Style>
@@ -369,5 +370,67 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
+
+        <StackPanel Margin="0,0,0,0"
+                    HorizontalAlignment="Left"
+                    Grid.Row="2">
+            <TextBlock Margin="0,15"
+                       Style="{StaticResource VWAPP_CustomLabelBig_LabelTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.TotalMissionsTimeInverter}"
+                       TextWrapping="WrapWithOverflow" />
+
+            <Border Margin="0,0,15,0"
+                    VerticalAlignment="Top"
+                    Background="{DynamicResource PpcBackground}">
+                <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                        BorderThickness="{DynamicResource PpcBorderThickness}">
+                    <Grid Height="80">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0"
+                              Grid.ColumnSpan="3">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="0,10,0,0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource VWAPP_CardSensor}"
+                                       Text="{res:Loc OperatorApp.ActiveMissionsTimeInverter}"
+                                       TextAlignment="Left" />
+
+                            <TextBlock Grid.Row="1"
+                                       Margin="0"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Top"
+                                       Style="{DynamicResource VWAPP_CardSensor_Data}">
+                                            <Run Text="{Binding TotalStatistics.TotalInverterMissionTime}" />
+                                            <Run Text="/" />
+                                            <Run Text="{Binding TotalStatistics.TotalInverterPowerOnTime}" />
+                            </TextBlock>
+
+                            <Border Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    Margin="0,20"
+                                    VerticalAlignment="Stretch"
+                                    BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                    BorderThickness="1"
+                                    Visibility="Hidden" />
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Border>
+        </StackPanel>
     </Grid>
 </ctrls:View>

@@ -2656,4 +2656,10 @@
   <data name="LabelsEditableCaption" xml:space="preserve">
     <value>Nr. Copies</value>
   </data>
+  <data name="TotalMissionsTimeInverter" xml:space="preserve">
+    <value>Total time of active inverter missions since last Working Hours / On Hours</value>
+  </data>
+  <data name="ActiveMissionsTimeInverter" xml:space="preserve">
+    <value>Time active missions Inverter</value>
+  </data>
 </root>

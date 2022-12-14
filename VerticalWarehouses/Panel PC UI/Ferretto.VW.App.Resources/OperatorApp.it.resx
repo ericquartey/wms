@@ -2259,4 +2259,10 @@
   <data name="LabelsEditableCaption" xml:space="preserve">
     <value>Numero copie</value>
   </data>
+  <data name="TotalMissionsTimeInverter" xml:space="preserve">
+    <value>Totale tempo di missioni attive Inverter da ultima Ore Di Lavoro / Ore di Accensione</value>
+  </data>
+  <data name="ActiveMissionsTimeInverter" xml:space="preserve">
+    <value>Tempo missioni attive Inverter</value>
+  </data>
 </root>

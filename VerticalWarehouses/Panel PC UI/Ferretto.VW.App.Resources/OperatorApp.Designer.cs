@@ -88,6 +88,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time active missions Inverter.
+        /// </summary>
+        public static string ActiveMissionsTimeInverter {
+            get {
+                return ResourceManager.GetString("ActiveMissionsTimeInverter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actual Average Unitary Weight [g].
         /// </summary>
         public static string ActualAverageWeight {
@@ -6069,6 +6078,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TotalMissionsTime {
             get {
                 return ResourceManager.GetString("TotalMissionsTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total time of active inverter missions since last Working Hours / On Hours.
+        /// </summary>
+        public static string TotalMissionsTimeInverter {
+            get {
+                return ResourceManager.GetString("TotalMissionsTimeInverter", resourceCulture);
             }
         }
         

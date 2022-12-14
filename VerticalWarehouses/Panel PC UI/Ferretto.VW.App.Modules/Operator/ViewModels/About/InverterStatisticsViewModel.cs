@@ -75,8 +75,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var allServicing = await this.machineServicingWebService.GetAllAsync();
 
                 this.TotalStatistics = new MachineStatistics();
-                //this.TotalStatistics.InverterStatistics = allServicing.FirstOrDefault().MachineStatistics.InverterStatistics.Reverse();
+
                 this.TotalStatistics.InverterStatistics = allServicing.SelectMany(x => x.MachineStatistics.InverterStatistics).Reverse();
+                this.TotalStatistics.TotalInverterMissionTime = allServicing.Select(s => s.MachineStatistics.TotalInverterMissionTime).Sum();
+                this.TotalStatistics.TotalInverterPowerOnTime = allServicing.Select(s => s.MachineStatistics.TotalInverterPowerOnTime).Sum();
 
                 this.RaisePropertyChanged(nameof(this.TotalStatistics));
             }
