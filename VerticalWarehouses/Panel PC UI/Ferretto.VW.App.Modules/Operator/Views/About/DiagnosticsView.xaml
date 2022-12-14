@@ -355,9 +355,9 @@
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Top"
                                                    Style="{DynamicResource VWAPP_CardSensor_Data}">
-                                            <Run Text="{Binding TotalStatistics.TotalInverterMissionTime}" />
+                                            <Run Text="{Binding LastServiceStatistics.TotalMissionTime, StringFormat=hh\\:mm, TargetNullValue=00:00, FallbackValue=00:00}" />
                                             <Run Text="/" />
-                                            <Run Text="{Binding TotalStatistics.TotalInverterPowerOnTime}" />
+                                            <Run Text="{Binding TotalStatistics.TotalMissionTime, StringFormat=hh\\:mm, TargetNullValue=00:00, FallbackValue=00:00}" />
                                         </TextBlock>
 
                                         <Border Grid.RowSpan="2"
