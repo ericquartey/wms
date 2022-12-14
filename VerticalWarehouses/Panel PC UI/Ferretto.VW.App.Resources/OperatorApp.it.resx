@@ -2260,9 +2260,9 @@
     <value>Numero copie</value>
   </data>
   <data name="TotalMissionsTimeInverter" xml:space="preserve">
-    <value>Totale tempo di missioni attive Inverter da ultima Ore Di Lavoro / Ore di Accensione</value>
+    <value>Tempo Totale di Inverter da ultima Ore Di Lavoro / Ore di Accensione</value>
   </data>
   <data name="ActiveMissionsTimeInverter" xml:space="preserve">
-    <value>Tempo missioni attive Inverter</value>
+    <value>Tempo Inverter</value>
   </data>
 </root>

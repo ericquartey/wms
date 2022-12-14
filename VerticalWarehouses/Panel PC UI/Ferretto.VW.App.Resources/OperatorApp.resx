@@ -2657,9 +2657,9 @@
     <value>Nr. Copies</value>
   </data>
   <data name="TotalMissionsTimeInverter" xml:space="preserve">
-    <value>Total time of active inverter missions since last Working Hours / On Hours</value>
+    <value>Total time of inverter since last Working Hours / On Hours</value>
   </data>
   <data name="ActiveMissionsTimeInverter" xml:space="preserve">
-    <value>Time active missions Inverter</value>
+    <value>Time Inverter</value>
   </data>
 </root>

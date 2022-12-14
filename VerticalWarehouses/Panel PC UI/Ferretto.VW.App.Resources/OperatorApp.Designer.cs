@@ -88,7 +88,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time active missions Inverter.
+        ///   Looks up a localized string similar to Time Inverter.
         /// </summary>
         public static string ActiveMissionsTimeInverter {
             get {
@@ -6082,7 +6082,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total time of active inverter missions since last Working Hours / On Hours.
+        ///   Looks up a localized string similar to Total time of inverter since last Working Hours / On Hours.
         /// </summary>
         public static string TotalMissionsTimeInverter {
             get {
