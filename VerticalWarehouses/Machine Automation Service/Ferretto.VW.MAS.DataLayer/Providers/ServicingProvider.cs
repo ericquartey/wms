@@ -4,7 +4,6 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Migrations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
@@ -103,40 +102,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                // Confirm setup date in actual record
-                var lastService = this.dataContext.ServicingInfo.Include(i => i.Instructions).ToArray().LastOrDefault();
-                lastService.ServiceStatus = MachineServiceStatus.Completed;
-                lastService.NextServiceDate = DateTime.Now;
-                this.dataContext.ServicingInfo.Update(lastService);
-
-                // Add new record
-                var s = new ServicingInfo();
-
-                s.LastServiceDate = DateTime.Now;
-                s.NextServiceDate = DateTime.Now.AddYears(1);
-                s.ServiceStatus = MachineServiceStatus.Valid;
-
-                s.MachineStatisticsId = this.machineStatistics.ConfirmAndCreateNew();
-
-                this.dataContext.ServicingInfo.Add(s);
-                this.dataContext.SaveChanges();
-
-                this.GenerateInstructions(s, lastService);
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void ConfirmSetup()
-        {
-            lock (this.dataContext)
-            {
-                if (this.dataContext.ServicingInfo.ToArray().Count() == 1)
+                try
                 {
-                    // Confirm setup date in actual record
-                    var service = this.dataContext.ServicingInfo.ToArray().First();
-                    service.ServiceStatus = MachineServiceStatus.Completed;
-                    service.InstallationDate = DateTime.Now;
-                    this.dataContext.ServicingInfo.Update(service);
+                    // Confirm Service
+                    var lastService = this.dataContext.ServicingInfo.Include(i => i.Instructions).ToArray().LastOrDefault();
+                    lastService.ServiceStatus = MachineServiceStatus.Completed;
+                    lastService.NextServiceDate = DateTime.Now;
+                    this.dataContext.ServicingInfo.Update(lastService);
+
+                    this.logger.LogInformation("Confirm Service");
 
                     // Add new record
                     var s = new ServicingInfo();
@@ -150,8 +124,52 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.ServicingInfo.Add(s);
                     this.dataContext.SaveChanges();
 
-                    this.GenerateInstructions(s);
+                    this.GenerateInstructions(s, lastService);
                     this.dataContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, ex.Message);
+                }
+
+            }
+        }
+
+        public void ConfirmSetup()
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    if (this.dataContext.ServicingInfo.ToArray().Count() == 1)
+                    {
+                        // Confirm setup date in actual record
+                        var service = this.dataContext.ServicingInfo.ToArray().First();
+                        service.ServiceStatus = MachineServiceStatus.Completed;
+                        service.InstallationDate = DateTime.Now;
+                        this.dataContext.ServicingInfo.Update(service);
+
+                        this.logger.LogInformation("Confirm Setup");
+
+                        // Add new record
+                        var s = new ServicingInfo();
+
+                        s.LastServiceDate = DateTime.Now;
+                        s.NextServiceDate = DateTime.Now.AddYears(1);
+                        s.ServiceStatus = MachineServiceStatus.Valid;
+
+                        s.MachineStatisticsId = this.machineStatistics.ConfirmAndCreateNew();
+
+                        this.dataContext.ServicingInfo.Add(s);
+                        this.dataContext.SaveChanges();
+
+                        this.GenerateInstructions(s);
+                        this.dataContext.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, ex.Message);
                 }
             }
         }
