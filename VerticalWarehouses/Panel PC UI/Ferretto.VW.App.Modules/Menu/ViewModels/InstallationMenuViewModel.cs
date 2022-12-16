@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Menu.Models;
@@ -471,7 +472,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 {
                     await this.machineServicingWebService.ConfirmSetupAsync();
 
+                    Thread.Sleep(500);
+
                     await this.UpdateSetupStatusAsync();
+
+                    this.ShowNotification(Localized.Get("InstallationApp.SaveSuccessful"), Services.Models.NotificationSeverity.Success);
                 }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
