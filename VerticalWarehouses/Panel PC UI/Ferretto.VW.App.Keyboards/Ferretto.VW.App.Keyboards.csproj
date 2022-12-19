@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\bg-lowercase.json" />
+    <None Remove="Resources\bg-numeric.json" />
+    <None Remove="Resources\bg-numpad.json" />
+    <None Remove="Resources\bg-uppercase.json" />
     <None Remove="Resources\cs-lowercase.json" />
     <None Remove="Resources\cs-numeric.json" />
     <None Remove="Resources\cs-numpad.json" />
@@ -102,6 +106,10 @@
     <Resource Include="Resources\fr-numeric.json" />
     <Resource Include="Resources\fr-uppercase.json" />
     <Resource Include="Resources\fr-lowercase.json" />
+    <Resource Include="Resources\bg-lowercase.json" />
+    <Resource Include="Resources\bg-numeric.json" />
+    <Resource Include="Resources\bg-numpad.json" />
+    <Resource Include="Resources\bg-uppercase.json" />
     <Resource Include="Resources\tr-lowercase.json" />
     <Resource Include="Resources\tr-numeric.json" />
     <Resource Include="Resources\tr-numpad.json" />
