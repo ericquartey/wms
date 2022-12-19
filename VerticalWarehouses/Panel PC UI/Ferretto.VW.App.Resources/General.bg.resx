@@ -199,7 +199,7 @@
     <value>Сериен номер:</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Версия \{0\}</value>
+    <value>Версия {0}</value>
   </data>
   <data name="WarehouseSide_Back" xml:space="preserve">
     <value>Заден</value>
