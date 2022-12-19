@@ -117,49 +117,58 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="TheCellAlreadyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Клетката вече съдържа друго чекмедже.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="TheCellIsUnexpectedlyFree" xml:space="preserve">
+    <value>Клетката е неочаквано празна.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
+    <value>Клетката неочаквано съдържа друго чекмедже.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="TheLoadingCannotOccupyABlockedCell" xml:space="preserve">
+    <value>Чекмеджето не може да заема заключена клетка.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
+    <value>Чекмеджето вече е заредено в друга клетка.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights" xml:space="preserve">
+    <value>Зададената височина не се намира между височините на съседни клетки.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels" xml:space="preserve">
+    <value>При зададената височина панелът ще се припокрие с друг съществуващ панел.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheTargetCellIsSpaceOnly" xml:space="preserve">
+    <value>Целевата клетка е само пространство тя не може да поддържа единица товар.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="TheTargetCellIsBlocked" xml:space="preserve">
+    <value>Целевата клетка е заключена.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Посочената клетка не е разположена във вертикалните граници на повдигача.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>Няма клетки на склад.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="TheCellIsNotFree" xml:space="preserve">
+    <value>Клетка не е свободна</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="TheSpecifiedCellCannotFitTheLoadUnit" xml:space="preserve">
+    <value>Посочената клетка не може да съдържа чекмеджето на повдигача</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="TheSpecifiedHeightIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>Посочената височина не е в рамките на вертикалните граници на повдигача.</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
+    <value>Чекмеджето не може да бъде поставено пред деактивирана клетка.</value>
+  </data>
+  <data name="TheTargetCellIsDeactivated" xml:space="preserve">
+    <value>Целевата клетка се деактивира.</value>
+  </data>
+  <data name="TheTargetCellIsUnusable" xml:space="preserve">
+    <value>Целевата клетка е неизползваема.</value>
+  </data>
+  <data name="TheLoadUnitHasFixedCell" xml:space="preserve">
+    <value>Чекмедже е с фиксирана клетка и не може да се мести</value>
   </data>
 </root>

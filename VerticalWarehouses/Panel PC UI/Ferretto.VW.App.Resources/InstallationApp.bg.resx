@@ -1,0 +1,2772 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Auto" xml:space="preserve">
+    <value>Авт</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Проверка ремък</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Над</value>
+  </data>
+  <data name="Forwards" xml:space="preserve">
+    <value>Напред</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Прек връзка</value>
+  </data>
+  <data name="Shutter" xml:space="preserve">
+    <value>Клапа</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Повдигач</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Ръчно</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Изключ</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>Включ</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>На</value>
+  </data>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Начало вертикална ос</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Началото на вертикалната ос не е определено.</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Долна граница (mm)</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Отмест (mm)</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Резултат</value>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Раздел спос (imp/mm)</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Старт</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Стоп</value>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Горна граница (mm)</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Отд</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Д лег</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Бариера против проникван</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Избран двигател на люлка</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Избран двигател на повдигача</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Аварийно спиране</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Наличие на UDC от страна на люлката</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Наличие UDC в люлка страна оператор</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Микро картер лява страна</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Микр картер дясна страна</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Авариен Бутон тип </value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Функция активна безопасност</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Сензор за куче на нула </value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Сензор нула вертикална ос</value>
+  </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Изпитва клапи</value>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Премес</value>
+  </data>
+  <data name="GoToInitialPosition" xml:space="preserve">
+    <value>Прем първонач квота</value>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Първонач ниво (mm)</value>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>Нова разд способн (imp/mm)</value>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Текущ раздел способ (imp/mm)</value>
+  </data>
+  <data name="MeasuredMovement" xml:space="preserve">
+    <value>Измерен ход (mm)</value>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Калибрир раздел способност вертикал ос</value>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Затвор</value>
+  </data>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Завършени цикли (сесия)</value>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Текуща поз (mm)</value>
+  </data>
+  <data name="DelayBetweenCycles" xml:space="preserve">
+    <value>Забав между цикл (s)</value>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Отвор</value>
+  </data>
+  <data name="RequiredCycles" xml:space="preserve">
+    <value>Необходим цикли</value>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Изпитв клапа отдел 1</value>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Височина ток (mm)</value>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Корекция на бариера (mm)</value>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Регулиране на височината на бариерата в отдел 1</value>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Скорост (mm/s)</value>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>Системна грешка (mm)</value>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Изискван толеранс (+/-) (mm)</value>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>калибр на изместв вертикал ос</value>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Контрол тегло</value>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Изискван толеранс (%)</value>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Постав тегло (kg)</value>
+  </data>
+  <data name="MeasuredWeight" xml:space="preserve">
+    <value>Измерен тегло (kg)</value>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Тестови ход (mm)</value>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Коригир отмест (mm)</value>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Текущо изместв (mm)</value>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Процед затваряне</value>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Височина избрана клетка (mm)</value>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>СтСтъпка (mm)</value>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Вис клетка (mm)</value>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Избрана клетка</value>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Текущ панел</value>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Корекция на панела (mm)</value>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Общо панели:</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Преден</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Правилно</value>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Състоян инсталация</value>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Навлизане ремък</value>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Начало вертикална ос</value>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Раздел способн вертикал ос</value>
+  </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Контрол квота клетка</value>
+  </data>
+  <data name="MeasuredInitialPosition" xml:space="preserve">
+    <value>Измерен начален размер (mm)</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Преместване в поз</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Корекция височ клетка (mm)</value>
+  </data>
+  <data name="VerticalOffsetVerify" xml:space="preserve">
+    <value>Проверка вертикал отместв</value>
+  </data>
+  <data name="ShutterSensorA" xml:space="preserve">
+    <value>Сензор А клапа</value>
+  </data>
+  <data name="ShutterSensorB" xml:space="preserve">
+    <value>Сензор B клапа</value>
+  </data>
+  <data name="FinalPosition" xml:space="preserve">
+    <value>Окончат ниво (mm)</value>
+  </data>
+  <data name="StartResolutionProcedure" xml:space="preserve">
+    <value>Начал процедура</value>
+  </data>
+  <data name="CloseProcedure" xml:space="preserve">
+    <value>Процед затваряне</value>
+  </data>
+  <data name="NextPanel" xml:space="preserve">
+    <value>Следващ панел</value>
+  </data>
+  <data name="PanelsControlDescription" xml:space="preserve">
+    <value>Проверка позиц панелите на рафта</value>
+  </data>
+  <data name="ReadFinalPosition" xml:space="preserve">
+    <value>Отч крайния размер (mm)</value>
+  </data>
+  <data name="Gate1HeightReached" xml:space="preserve">
+    <value>Постигна височина</value>
+  </data>
+  <data name="VerticalAxisButton" xml:space="preserve">
+    <value>Повдигач</value>
+  </data>
+  <data name="CellsSideControlDescription" xml:space="preserve">
+    <value>Редакт нива група клетки</value>
+  </data>
+  <data name="CellsSideControlInitialCell" xml:space="preserve">
+    <value>Първон клетка</value>
+  </data>
+  <data name="CellsSideControlFinalCell" xml:space="preserve">
+    <value>Оконч клетка</value>
+  </data>
+  <data name="CellsSideControlCorrection" xml:space="preserve">
+    <value>Необходима корекция (mm)</value>
+  </data>
+  <data name="CellsSideControlSelectedSide" xml:space="preserve">
+    <value>Избрана страна</value>
+  </data>
+  <data name="LoadingDrawersPageHeader" xml:space="preserve">
+    <value>Натов чекмедже.</value>
+  </data>
+  <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
+    <value>Общо чекмеджета</value>
+  </data>
+  <data name="LoadingDrawersMaxWeight" xml:space="preserve">
+    <value>Макс. товар (кг)</value>
+  </data>
+  <data name="LoadingDrawersInsertedDrawers" xml:space="preserve">
+    <value>Вмъкнати чекмедже</value>
+  </data>
+  <data name="LoadingDrawersDrawerToInsert" xml:space="preserve">
+    <value>Вмъкване на чекмедже</value>
+  </data>
+  <data name="LoadingDrawersNextDrawer" xml:space="preserve">
+    <value>Следваща чекмедже</value>
+  </data>
+  <data name="LoadingDrawersStartInsertion" xml:space="preserve">
+    <value>Начало на вмъкване</value>
+  </data>
+  <data name="LoadFirstDrawerPageHeader" xml:space="preserve">
+    <value>Зарежда първо чекмед изпитв клетки</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsToCheck" xml:space="preserve">
+    <value>Общо клетки за тест</value>
+  </data>
+  <data name="LoadFirstDrawerTotCellsChecked" xml:space="preserve">
+    <value>Общо тествани клетки</value>
+  </data>
+  <data name="LoadFirstDrawerActualCellToCheck" xml:space="preserve">
+    <value>Клетка процес изпит</value>
+  </data>
+  <data name="LoadFirstDrawerDrawerToInsert" xml:space="preserve">
+    <value>Вмъкване на чекмедже</value>
+  </data>
+  <data name="LoadFirstDrawerMaxWeight" xml:space="preserve">
+    <value>Максимал капац чекмедже (кг)</value>
+  </data>
+  <data name="LoadFirstDrawerStartLoading" xml:space="preserve">
+    <value>Вмъкване чекмедже</value>
+  </data>
+  <data name="LoadFirstDrawerRecallDrawer" xml:space="preserve">
+    <value>Чекмедже изтегл</value>
+  </data>
+  <data name="BayHeightCheck" xml:space="preserve">
+    <value>Контрол нива отдел</value>
+  </data>
+  <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
+    <value>Местопол в отдел</value>
+  </data>
+  <data name="BayHeight" xml:space="preserve">
+    <value>Вис отдел (mm)</value>
+  </data>
+  <data name="BayHeightCheckActualHeight" xml:space="preserve">
+    <value>Текуща поз (mm)</value>
+  </data>
+  <data name="BayHeightCheckCorrectionValue" xml:space="preserve">
+    <value>Стойност на корекцията (mm)</value>
+  </data>
+  <data name="BayHeightCheckNextPosition" xml:space="preserve">
+    <value>Следваща поз</value>
+  </data>
+  <data name="DLUTestHeader" xml:space="preserve">
+    <value>Тест чекмедже за качване в отдел.</value>
+  </data>
+  <data name="DLUTestFeedRate" xml:space="preserve">
+    <value>Скорост на подаване %</value>
+  </data>
+  <data name="DLUTestCycleRequired" xml:space="preserve">
+    <value>Необходим цикли</value>
+  </data>
+  <data name="DLUTestActualposition" xml:space="preserve">
+    <value>Текуща поз на верига</value>
+  </data>
+  <data name="DLUTestCompletedCycles" xml:space="preserve">
+    <value>Завършени цикли</value>
+  </data>
+  <data name="DLUTestStop" xml:space="preserve">
+    <value>Спиране цикъл</value>
+  </data>
+  <data name="DLUTestStart" xml:space="preserve">
+    <value>Начал цикъл</value>
+  </data>
+  <data name="LSMTNoteHeader" xml:space="preserve">
+    <value>ВНИМАНИЕ:</value>
+  </data>
+  <data name="LSMTComandNote" xml:space="preserve">
+    <value>Понастоящем ръчното управл позволява извършвто на малки движения с ниска скорост без блокировки.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader" xml:space="preserve">
+    <value>Записване конфигурацион файл.</value>
+  </data>
+  <data name="SaveRestoreConfigPageHeader2" xml:space="preserve">
+    <value>Възстановяване конфигурац файлове.</value>
+  </data>
+  <data name="SaveRestoreConfigSelectedFolder" xml:space="preserve">
+    <value>Избрана папка</value>
+  </data>
+  <data name="SaveRestoreConfigSaveButton" xml:space="preserve">
+    <value>Запазване конфигур</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmSaveButton" xml:space="preserve">
+    <value>Потвържд записване</value>
+  </data>
+  <data name="SaveRestoreConfigAbortSaveButton" xml:space="preserve">
+    <value>Отмяна на записване</value>
+  </data>
+  <data name="SaveRestoreConfigRestoreButton" xml:space="preserve">
+    <value>Конфигурац зареждане</value>
+  </data>
+  <data name="SaveRestoreConfigConfirmRestoreButton" xml:space="preserve">
+    <value>потвърж качване</value>
+  </data>
+  <data name="SaveRestoreConfigAbortRestoreButton" xml:space="preserve">
+    <value>Отмяна на качването</value>
+  </data>
+  <data name="HorizontalHomingCompleted" xml:space="preserve">
+    <value>калибр хоризонтална ос е завършено</value>
+  </data>
+  <data name="HorizontalHomingExecuting" xml:space="preserve">
+    <value>извършв калибр на хоризонтална ос ({0} до {1})</value>
+  </data>
+  <data name="HorizontalHomingStarted" xml:space="preserve">
+    <value>Начало калибр хоризонтална ос </value>
+  </data>
+  <data name="SwitchEngineCompleted" xml:space="preserve">
+    <value>Завършена смяна двигател</value>
+  </data>
+  <data name="SwitchEngineStarted" xml:space="preserve">
+    <value>Започва смяна двигател</value>
+  </data>
+  <data name="VerticalHomingExecuting" xml:space="preserve">
+    <value>извършв на калибр вертикална ос ({0} на \1})</value>
+  </data>
+  <data name="VerticalHomingStarted" xml:space="preserve">
+    <value>Старт калибр вертикална ос</value>
+  </data>
+  <data name="VerticalHomingError" xml:space="preserve">
+    <value>Грешка калибр вертикална ос ({0} от \1})</value>
+  </data>
+  <data name="HorizontalHomingError" xml:space="preserve">
+    <value>Грешка калибр хоризонталната ос ({0} от \1})</value>
+  </data>
+  <data name="SwitchEngineError" xml:space="preserve">
+    <value>Грешка обмен осите</value>
+  </data>
+  <data name="StartManualDrawerRecall" xml:space="preserve">
+    <value>Обаждане клетка отделен</value>
+  </data>
+  <data name="StartManualDrawerStore" xml:space="preserve">
+    <value>Зареждане отдел клетка</value>
+  </data>
+  <data name="DrawerStoreAndRecall" xml:space="preserve">
+    <value>Зареждане чекмедже изтегляне чекмедже</value>
+  </data>
+  <data name="InitializingWithEllipsis" xml:space="preserve">
+    <value>Иницииране ...</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>Отд 1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>Отд 2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>Отд 3</value>
+  </data>
+  <data name="ShutterEnduranceTestTitle" xml:space="preserve">
+    <value>Изпитване Клапи Отделен</value>
+  </data>
+  <data name="ShutterClosed" xml:space="preserve">
+    <value>Затвор</value>
+  </data>
+  <data name="ShutterMidWay" xml:space="preserve">
+    <value>среда път</value>
+  </data>
+  <data name="ShutterOpen" xml:space="preserve">
+    <value>Отвор</value>
+  </data>
+  <data name="Step1" xml:space="preserve">
+    <value>Стъпк 1</value>
+  </data>
+  <data name="Step2" xml:space="preserve">
+    <value>Стъпк 2</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Стр клетка</value>
+  </data>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Ниска поз</value>
+  </data>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>висок поз</value>
+  </data>
+  <data name="Displacement" xml:space="preserve">
+    <value>Изместване (мм)</value>
+  </data>
+  <data name="ExternalBay" xml:space="preserve">
+    <value>външ Отдел</value>
+  </data>
+  <data name="ApplyCorrection" xml:space="preserve">
+    <value>Нанесете корекция</value>
+  </data>
+  <data name="InsertDesiredLoadingUnitId" xml:space="preserve">
+    <value>Въвед идентиф на чекмедже</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Проверка</value>
+  </data>
+  <data name="Side" xml:space="preserve">
+    <value>Стр</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Отд</value>
+  </data>
+  <data name="BayPosition" xml:space="preserve">
+    <value>Местопол Отдел</value>
+  </data>
+  <data name="ElevatorVerticalPosition" xml:space="preserve">
+    <value>Вертикална поз (мм)</value>
+  </data>
+  <data name="TrayInBay" xml:space="preserve">
+    <value>Чекмедже Отдел</value>
+  </data>
+  <data name="GoToBay" xml:space="preserve">
+    <value>Отид отдел</value>
+  </data>
+  <data name="Cells" xml:space="preserve">
+    <value>Клетк</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Повдигач</value>
+  </data>
+  <data name="LoadedTray" xml:space="preserve">
+    <value>Заредено чекмедже</value>
+  </data>
+  <data name="TrayWeight" xml:space="preserve">
+    <value>Тегло чекмедж (кг)</value>
+  </data>
+  <data name="ElevatorHorizontalPosition" xml:space="preserve">
+    <value>хоризонтал полож (мм)</value>
+  </data>
+  <data name="ProcedureWasStopped" xml:space="preserve">
+    <value>Процедурата е прекъсната.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Нулиране</value>
+  </data>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Завършени цикли (кумулативни)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Напред</value>
+  </data>
+  <data name="WeightAnalysis" xml:space="preserve">
+    <value>Анализ тегло</value>
+  </data>
+  <data name="TrayTare" xml:space="preserve">
+    <value>Чекмедже тара (кг)</value>
+  </data>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Нетно тегло(кг)</value>
+  </data>
+  <data name="FirewallIsEnabledOnThisTerminal" xml:space="preserve">
+    <value>Защитната стена е активирана на този терминал.</value>
+  </data>
+  <data name="ProcedureCompleted" xml:space="preserve">
+    <value>Процедур е завършена.</value>
+  </data>
+  <data name="GoToPosition" xml:space="preserve">
+    <value>Прем ниво</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>Квота</value>
+  </data>
+  <data name="ConfirmationOperation" xml:space="preserve">
+    <value>Потвържд ли операция?</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Идент чекм</value>
+  </data>
+  <data name="BayCalibration" xml:space="preserve">
+    <value>Калибр отдел</value>
+  </data>
+  <data name="CarouselDown" xml:space="preserve">
+    <value>Въртел над</value>
+  </data>
+  <data name="CarouselUp" xml:space="preserve">
+    <value>Въртел на</value>
+  </data>
+  <data name="ChainCalibration" xml:space="preserve">
+    <value>Калибрир верига</value>
+  </data>
+  <data name="DrawerNumber" xml:space="preserve">
+    <value>Номер чекмедже</value>
+  </data>
+  <data name="GateClose" xml:space="preserve">
+    <value>Затваряне клапа</value>
+  </data>
+  <data name="GateOpen" xml:space="preserve">
+    <value>Отварян клапа</value>
+  </data>
+  <data name="GoToDrawer" xml:space="preserve">
+    <value>Отидет чекмедж</value>
+  </data>
+  <data name="LuPresenceOnMachineCradle" xml:space="preserve">
+    <value>Наличие UDC страна машина</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
+    <value>Наличие UDC страна оператор</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>Информацията е актуализирана.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Записването е завършено успешно</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Идентиф клетка местоназначен</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Вмъкване чекмедж отдел в клетка</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Нулев вериг</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Преместване чекмедже клетка в клетка</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Премахв чекмедже (преместване клетка в отдел)</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Потвържд изваждане чекмедж</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Изпитв Клапан</value>
+  </data>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Ниска поз (мм)</value>
+  </data>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>висок поз (мм)</value>
+  </data>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Налично в ниска поз</value>
+  </data>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Налично висок поз</value>
+  </data>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Чекмедже висок позиц</value>
+  </data>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Чекмедже ниско полож</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Код на чекмедже</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Клетк</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Възстановяване е завършило успешно</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Възстанови</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Експорт</value>
+  </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Намерен файл на устройство</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Поставете устройството с файла за възстановяване - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>Грешка четене на файл</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Експорт е завършен успешно</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Потвърж презаписване файлове ?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>В устройството вече има файл.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Потвърж за нулиране</value>
+  </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Възстанов конфигурация</value>
+  </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Сигурни ли сте че прилагате конфигурация?</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+  </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Успешно завършен тест</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Заден</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Извър претегл</value>
+  </data>
+  <data name="ExeMeasurement" xml:space="preserve">
+    <value>Извършв измерване</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Заряд</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Сваляне</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>поз</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Клетк {0}</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>в Отдел {0}</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Ръководени движен</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Ръчни придвижван</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Калибрир</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Постигна височина</value>
+  </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Възстан машина</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Машината е нулирана успешно.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Клапа надолу</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Включ клапа</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Нисък</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Вис</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Калибрир бариера</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Безопасн</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Сензори безопасност</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Час</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Мес</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Ден</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Минути</value>
+  </data>
+  <data name="SystemDateTime" xml:space="preserve">
+    <value>4.7.5 Дата и час на система</value>
+  </data>
+  <data name="WMSAutoSync" xml:space="preserve">
+    <value>Автоматична синхронизация WMS</value>
+  </data>
+  <data name="SetManualSystemDateTime" xml:space="preserve">
+    <value>Ръчно задаване на дата и час</value>
+  </data>
+  <data name="DateTimeEnteredIsInvalid" xml:space="preserve">
+    <value>Въведена дата и/или час невалидн.</value>
+  </data>
+  <data name="ConfirmUpdateVer" xml:space="preserve">
+    <value>Потвърж ли актуализац на {0} "\1}?</value>
+  </data>
+  <data name="ConfirmUpdate" xml:space="preserve">
+    <value>Потвържд актуализация</value>
+  </data>
+  <data name="UpdateSuccessfullyCompleted" xml:space="preserve">
+    <value>Актуализацията е завършена успешно.</value>
+  </data>
+  <data name="ErrorOnInitialPhaseUpdate" xml:space="preserve">
+    <value>Грешка първоначално актуализиране.</value>
+  </data>
+  <data name="ConfigurationDetected" xml:space="preserve">
+    <value>{0} е конфигур файл който да се импортира.</value>
+  </data>
+  <data name="ExportableDeviceDetected" xml:space="preserve">
+    <value>Налични единици за съхран.</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Внос</value>
+  </data>
+  <data name="MultipleConfigurationsDetected" xml:space="preserve">
+    <value>{0} налични конфигурации за внос.</value>
+  </data>
+  <data name="NoDevicesAvailableAnymore" xml:space="preserve">
+    <value>Единицата за съхран вече не е налична.</value>
+  </data>
+  <data name="RestoreNotPossibleFromFile" xml:space="preserve">
+    <value>Импортиране НЕ е възможно от файл "{0}".</value>
+  </data>
+  <data name="RestorePossibleFromFile" xml:space="preserve">
+    <value>Възможно е импортиране от файл "{0}".</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Изт.</value>
+  </data>
+  <data name="InstallerAppStartedSuccessfully" xml:space="preserve">
+    <value>Прилож инсталиране стартирано успешно.</value>
+  </data>
+  <data name="ErrorExecutingInstallerApp" xml:space="preserve">
+    <value>Грешка при стартиране на приложението за инсталиране.</value>
+  </data>
+  <data name="CellNotValid" xml:space="preserve">
+    <value>Невалидна клетка</value>
+  </data>
+  <data name="InputFormCellIdMustBePositive" xml:space="preserve">
+    <value>InputFormCellId трябва да бъде полож.</value>
+  </data>
+  <data name="InputFormCellIdRequired" xml:space="preserve">
+    <value>Изисква се InputFormCellId.</value>
+  </data>
+  <data name="InputToCellIdMustBePositive" xml:space="preserve">
+    <value>InputToCellId трябва да е положит.</value>
+  </data>
+  <data name="InputToCellIdRequired" xml:space="preserve">
+    <value>Изисква се InputToCellId.</value>
+  </data>
+  <data name="StepMustBePositive" xml:space="preserve">
+    <value>Стъпка да е положителна.</value>
+  </data>
+  <data name="StepRequired" xml:space="preserve">
+    <value>Необход стъпка.</value>
+  </data>
+  <data name="SuccessfullChange" xml:space="preserve">
+    <value>Успешна модификация</value>
+  </data>
+  <data name="AxisVerticalOffsetUpdated" xml:space="preserve">
+    <value>Актуализ отместв вертикал ос</value>
+  </data>
+  <data name="BeltBreakIn" xml:space="preserve">
+    <value>Проверка ремък</value>
+  </data>
+  <data name="CellInsertedNotFree" xml:space="preserve">
+    <value>въведена клетка не е свободна</value>
+  </data>
+  <data name="CellSelectedNotPresent" xml:space="preserve">
+    <value>Избраната клетка не присъства.</value>
+  </data>
+  <data name="CellSelectedRequired" xml:space="preserve">
+    <value>Трябва да се избере клетка.</value>
+  </data>
+  <data name="ChecksumCompleted" xml:space="preserve">
+    <value>Проверка контролната сума на файла е завършена правилно.</value>
+  </data>
+  <data name="ClearTempFolder" xml:space="preserve">
+    <value>Изтрива временната папка '{0}'.</value>
+  </data>
+  <data name="DestinationPositionMustBePositive" xml:space="preserve">
+    <value>Целевата поз трябва да е задълж положителна.</value>
+  </data>
+  <data name="DestinationPositionOutOfRangeAxis" xml:space="preserve">
+    <value>поз местоназначение е извън обхвата на оста ({0}).</value>
+  </data>
+  <data name="DestinationPositionRequired" xml:space="preserve">
+    <value>Изисква се DestinationPosition.</value>
+  </data>
+  <data name="DrawerIdExtracted" xml:space="preserve">
+    <value>Идент чекмедже {0} извл</value>
+  </data>
+  <data name="ErrorCheckFile" xml:space="preserve">
+    <value>Грешка при проверката на файл {0}</value>
+  </data>
+  <data name="ErrorChecksum" xml:space="preserve">
+    <value>Грешка при проверка на контролна сума файл:</value>
+  </data>
+  <data name="ErrorChecksumNotFound" xml:space="preserve">
+    <value>Грешка при проверката на файла '{0}'. Не е намерена контролна сума.</value>
+  </data>
+  <data name="ErrorClearTempFolder" xml:space="preserve">
+    <value>Грешка при изтриването на временната папка:</value>
+  </data>
+  <data name="ErrorExtractingFiles" xml:space="preserve">
+    <value>Грешка по време на изваждане на файл:</value>
+  </data>
+  <data name="ErrorOnStarting" xml:space="preserve">
+    <value>Грешка при старт:</value>
+  </data>
+  <data name="ExtractingFilesCompleted" xml:space="preserve">
+    <value>Изваждане приключи успешно.</value>
+  </data>
+  <data name="GoToFreeCell" xml:space="preserve">
+    <value>Отид  безпл клетка</value>
+  </data>
+  <data name="HorizontalAxisMovementInProgress" xml:space="preserve">
+    <value>Движение по хоризонталната ос в ход...</value>
+  </data>
+  <data name="InputDelayBetweenCyclesMustBePositive" xml:space="preserve">
+    <value>InputDelayBetweenCycles трябва да е задълж положит велич.</value>
+  </data>
+  <data name="InputDelayBetweenCyclesRequired" xml:space="preserve">
+    <value>Изисква се InputDelayBetweenCycles.</value>
+  </data>
+  <data name="InputDisplacementMustBePositive" xml:space="preserve">
+    <value>InputDisplacement трябва да е задълж полож величина.</value>
+  </data>
+  <data name="InputDisplacementRequired" xml:space="preserve">
+    <value>Изисква се InputDisplacement.</value>
+  </data>
+  <data name="InputNetWeightMustBePositive" xml:space="preserve">
+    <value>InputNetWeight трябва да е задълж полож стойност.</value>
+  </data>
+  <data name="InputNetWeightRequired" xml:space="preserve">
+    <value>Изисква се InputNetWeight.</value>
+  </data>
+  <data name="InputWeightMustBePositive" xml:space="preserve">
+    <value>InputWeightRequired трябва да е задълж полож стойност.</value>
+  </data>
+  <data name="InputWeightMustBeSpecified" xml:space="preserve">
+    <value>Трябва да се посочи InputWeightRequired.</value>
+  </data>
+  <data name="InvalidCellIdEntered" xml:space="preserve">
+    <value>Въведен невал идентиф клетка</value>
+  </data>
+  <data name="InvalidCellIdOnInsertedDrawer" xml:space="preserve">
+    <value>Невал идентиф клетка при вмъкн чекмедже</value>
+  </data>
+  <data name="InvalidDestinationChoiceType" xml:space="preserve">
+    <value>Невалиден тип избор на местоназнач</value>
+  </data>
+  <data name="InvalidDrawerIdInBay" xml:space="preserve">
+    <value>Невалид идентиф чекмедже в отд</value>
+  </data>
+  <data name="InvalidDrawerSelected" xml:space="preserve">
+    <value>Избраното чекмедже е невалидно</value>
+  </data>
+  <data name="InvalidEnteredDrawerId" xml:space="preserve">
+    <value>Въведен невалид идентиф чекмедж</value>
+  </data>
+  <data name="InvalidSourceChoiceType" xml:space="preserve">
+    <value>Невалиден тип избор на източник</value>
+  </data>
+  <data name="LoadingUnitIdMustBePositive" xml:space="preserve">
+    <value>LoadingUnitId трябва да е задълж полож величина.</value>
+  </data>
+  <data name="LoadingUnitIdRequired" xml:space="preserve">
+    <value>Изисква се LoadingUnitId.</value>
+  </data>
+  <data name="MeasuredPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Измерваната поз е извън обхвата на оста ({0}).</value>
+  </data>
+  <data name="OperationAborted" xml:space="preserve">
+    <value>Операц е неуспешна.</value>
+  </data>
+  <data name="RequiredCyclesCompleted" xml:space="preserve">
+    <value>Завършен брой необходими цикли.</value>
+  </data>
+  <data name="StartChecksum" xml:space="preserve">
+    <value>Започнете проверка контр сума файл '{0}'.</value>
+  </data>
+  <data name="StartExtractingFiles" xml:space="preserve">
+    <value>Изважда файлове от '{0}'.</value>
+  </data>
+  <data name="StartingApplication" xml:space="preserve">
+    <value>Стартир приложение '{0}'.</value>
+  </data>
+  <data name="StartPositionMustBePositive" xml:space="preserve">
+    <value>Начална поз трябва да е задължит положителна.</value>
+  </data>
+  <data name="StartPositionOutOfRangeAxis" xml:space="preserve">
+    <value>Начална поз извън обхвата на оста ({0}).</value>
+  </data>
+  <data name="TestToRunMustBePositive" xml:space="preserve">
+    <value>TestToRun трябва да е задълж положител.</value>
+  </data>
+  <data name="VerticalAxisMovementInProgress" xml:space="preserve">
+    <value>Движ вертик ос в процес на изпълн...</value>
+  </data>
+  <data name="WeightToleranceMustBePositive" xml:space="preserve">
+    <value>Толеранс тегло трябва да е задълж положителен.</value>
+  </data>
+  <data name="ModeLoadUnitOperations" xml:space="preserve">
+    <value>Дейности чекмедже</value>
+  </data>
+  <data name="Compact" xml:space="preserve">
+    <value>Компакт</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>калибр въртележ</value>
+  </data>
+  <data name="InputDelayMustBePositive" xml:space="preserve">
+    <value>InputDelay тряб да е по-голямо от 0</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanUpper" xml:space="preserve">
+    <value>InputLowerBound трябва да е по-голям от InputUpperBound.</value>
+  </data>
+  <data name="InputLowerBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputLowerBound трябва да е по-голям от {0}.</value>
+  </data>
+  <data name="InputLowerBoundMustBePositive" xml:space="preserve">
+    <value>InputLowerBound трябва да е по-голям от 0</value>
+  </data>
+  <data name="InputLowerBoundRequired" xml:space="preserve">
+    <value>Изисква се InputLowerBound.</value>
+  </data>
+  <data name="InputRequiredCyclesMustBePositive" xml:space="preserve">
+    <value>InputRequiredCycles трябва да е по-голям от 0</value>
+  </data>
+  <data name="InputRequiredCyclesRequired" xml:space="preserve">
+    <value>Изисква се InputRequiredCycles.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanLower" xml:space="preserve">
+    <value>InputUpperBound трябва да е по-голям от InputLowerBound.</value>
+  </data>
+  <data name="InputUpperBoundMustBeGreatherThanValue" xml:space="preserve">
+    <value>InputUpperBound трябва да е по-голям от {0}.</value>
+  </data>
+  <data name="InputUpperBoundMustBePositive" xml:space="preserve">
+    <value>InputUpperrBound трябва да е по-голям от 0</value>
+  </data>
+  <data name="InputUpperBoundRequired" xml:space="preserve">
+    <value>Изисква се InputUpperBound.</value>
+  </data>
+  <data name="HighPositionControl" xml:space="preserve">
+    <value>Проверка висок поз</value>
+  </data>
+  <data name="MoveElevatorAtBayHeightOpenShutter" xml:space="preserve">
+    <value>Поставете повдигача на височината на отдел и отворете клапа ако има такава.</value>
+  </data>
+  <data name="BayPositionDownHeightNew" xml:space="preserve">
+    <value>Нова ниска надм височина (мм)</value>
+  </data>
+  <data name="BayPositionUpHeightNew" xml:space="preserve">
+    <value>Нова висок поз (мм)</value>
+  </data>
+  <data name="CheckBayElevatorAlignment" xml:space="preserve">
+    <value>Проверете подравняването на отдел и повдигача. Ако те не са подравнени коригирайте положто на повдигача.</value>
+  </data>
+  <data name="ConfirmChanges" xml:space="preserve">
+    <value>Потвърдете промените.</value>
+  </data>
+  <data name="LowPositionControl" xml:space="preserve">
+    <value>Проверка ниска поз</value>
+  </data>
+  <data name="MoveElevator" xml:space="preserve">
+    <value>Премест повдигач</value>
+  </data>
+  <data name="NoChanges" xml:space="preserve">
+    <value>Не са направени промени.</value>
+  </data>
+  <data name="SaveCheckPosition" xml:space="preserve">
+    <value>Отбележете новите размери и натиснете Запиши за да влязат в сила промените.</value>
+  </data>
+  <data name="Interaxle" xml:space="preserve">
+    <value>Центр раз (мм)</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Следващ</value>
+  </data>
+  <data name="FirstTest" xml:space="preserve">
+    <value>Първи Тест</value>
+  </data>
+  <data name="CellSelectedBlocked" xml:space="preserve">
+    <value>Избраната клетка е заключена</value>
+  </data>
+  <data name="BeforeStart" xml:space="preserve">
+    <value>Преди да започнем</value>
+  </data>
+  <data name="CalibrationInProgress" xml:space="preserve">
+    <value>калибрто е в ход ...</value>
+  </data>
+  <data name="CalibrationProcedureRequired" xml:space="preserve">
+    <value>Изпълнете процедурата за калибр на отдел за да позиционирате скобата на сензора.</value>
+  </data>
+  <data name="CheckDrawersThenStart" xml:space="preserve">
+    <value>Преди да започнете проверете да няма в отдел чекмеджета. Щракнете върху СТАРТ за да стартирате процедура</value>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Завършет</value>
+  </data>
+  <data name="ConfirmAdjustment" xml:space="preserve">
+    <value>Потвърждав корекция</value>
+  </data>
+  <data name="ErrorInMillimiters" xml:space="preserve">
+    <value>Грешка (мм)</value>
+  </data>
+  <data name="RemainingTime" xml:space="preserve">
+    <value>Оставащо време</value>
+  </data>
+  <data name="Repeat" xml:space="preserve">
+    <value>Повтор</value>
+  </data>
+  <data name="RepeatProcedure" xml:space="preserve">
+    <value>Натиснете Повтарям за да изпълните процедура отново.</value>
+  </data>
+  <data name="SelectDirectionAndApply" xml:space="preserve">
+    <value>Изберете + ако сте над сензора или - ако сте под него и приложете корекцията като натиснете Прилагане на корекция.</value>
+  </data>
+  <data name="StopInProgress" xml:space="preserve">
+    <value>Арестът е в ход...</value>
+  </data>
+  <data name="StopProcedure" xml:space="preserve">
+    <value>Процедура спиране</value>
+  </data>
+  <data name="RaisingsPerformed" xml:space="preserve">
+    <value>Извършени повдигачи</value>
+  </data>
+  <data name="ConfirmSetup" xml:space="preserve">
+    <value>Потвържд приемане</value>
+  </data>
+  <data name="LoadingUnitFromCellToCellDescription" xml:space="preserve">
+    <value>Процедура позволява преместване на чекмедже от Изход клетка в клетка местоназн. За да стартирате процедура въведете идентификатора на чекмедже идентификатора на клетката на местоназ и натиснете Старт</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellDescription" xml:space="preserve">
+    <value>Процедура позволява преместване на чекмедже от изходно отдел в клетка местоназнач. За да стартирате процедура въведете идентификатора на чекмедже и натиснете Старт</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCellSelectDrawerPickingPosition" xml:space="preserve">
+    <value>Избор на поз за вдигане на чекмеджето</value>
+  </data>
+  <data name="LoadingUnitFromBayToBay" xml:space="preserve">
+    <value>Преместв чекмедже от отдел в отдел</value>
+  </data>
+  <data name="LoadingUnitFromBayToBayDescription" xml:space="preserve">
+    <value>Процедурата позволява преместване чекмедже от изходно отдел до целевия отдел. За да стартира процедура въведете идентификатор чекмедже и натиснете Старт</value>
+  </data>
+  <data name="LoadingUnitFromBayToBaySelectDrawerPosition" xml:space="preserve">
+    <value>Избор на поз за местоназначение на чекмеджето</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDescription" xml:space="preserve">
+    <value>Процедура позволява изваждане чекмедже. За да стартирате процедура въведете идентификатор на чекмедже и натиснете Старт</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBayDrawerManagement" xml:space="preserve">
+    <value>Управл чекмеджета</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBaySelectDestinationDrawerPosition" xml:space="preserve">
+    <value>Избор на поз за местоназначение на чекмеджето</value>
+  </data>
+  <data name="ConfirmNewOffset" xml:space="preserve">
+    <value>Потвърж ново отместв</value>
+  </data>
+  <data name="CorrectElevatorPositionNext" xml:space="preserve">
+    <value>Коригирайте позта на повдигача до перфектно подравняване и натиснете Напред.</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Ток [A]</value>
+  </data>
+  <data name="ExecuteCellMeasurement" xml:space="preserve">
+    <value>извършв на измерване клетка</value>
+  </data>
+  <data name="ExecuteElevatorCellPositioning" xml:space="preserve">
+    <value>Разположете повдигача пред клетка.</value>
+  </data>
+  <data name="ExecuteOriginCalibration" xml:space="preserve">
+    <value>Извършв калибр на произхода</value>
+  </data>
+  <data name="MoveElevatorToPlaceMeter" xml:space="preserve">
+    <value>Поставете повдигача на височина която позволява закрепването на метъра.</value>
+  </data>
+  <data name="MoveToElevatorPosition" xml:space="preserve">
+    <value>Преминав към поз повдиг</value>
+  </data>
+  <data name="MoveToQuote" xml:space="preserve">
+    <value>Прем ниво</value>
+  </data>
+  <data name="NewOffset" xml:space="preserve">
+    <value>Ново отместв (мм)</value>
+  </data>
+  <data name="PlaceMeter" xml:space="preserve">
+    <value>Закрепв на метъра</value>
+  </data>
+  <data name="RemoveCarterRestore" xml:space="preserve">
+    <value>Преминете към отстраняване на един от странични капаци и поставете рулетката. Завършете с преместване на картера и възстановяване на работното състояние.</value>
+  </data>
+  <data name="RepeatOriginCalibration" xml:space="preserve">
+    <value>Поради току-що извършената промяна на отмествто отново се изисква калибр на началото на вертикалната ос. Натиснете Старт за да започнете.</value>
+  </data>
+  <data name="SelectedCell" xml:space="preserve">
+    <value>Избрана клетка</value>
+  </data>
+  <data name="StartQuote" xml:space="preserve">
+    <value>Такса заминаване</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Време [s]</value>
+  </data>
+  <data name="VerifyConfirmWarn" xml:space="preserve">
+    <value>Проверете новоизчислената стойност на отместв и натиснете Запис за да стане ефективна промяна. При всички следващи настанявания корекцията ще бъде взета предвид.</value>
+  </data>
+  <data name="FullTest" xml:space="preserve">
+    <value>Изчерп тест</value>
+  </data>
+  <data name="FullTestDescription" xml:space="preserve">
+    <value>Процедурата позволява пълна проверка на всички чекмеджета в машината. За да стартирате процедурата въведете броя на циклите и натиснете Старт</value>
+  </data>
+  <data name="FullTestSessionCycles" xml:space="preserve">
+    <value>Цикли на сесии</value>
+  </data>
+  <data name="ApplyCorrectionMessage" xml:space="preserve">
+    <value>Наистина ли да приложите корекцията?</value>
+  </data>
+  <data name="AttachMeter" xml:space="preserve">
+    <value>Прикрепете рулетка:</value>
+  </data>
+  <data name="ConfirmCalibrationProcedure" xml:space="preserve">
+    <value>Искате ли да потвърдите процедура за калибр?</value>
+  </data>
+  <data name="ConfirmNewResolution" xml:space="preserve">
+    <value>Потвърдете нова резолюция:</value>
+  </data>
+  <data name="DestinationPosition" xml:space="preserve">
+    <value>Квота местоназначение</value>
+  </data>
+  <data name="ElevatorHighAttachMeter" xml:space="preserve">
+    <value>Поставете повдигача на височина която позволява закрепването на метъра.</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart1" xml:space="preserve">
+    <value>Вземете първата мярка (1/2):</value>
+  </data>
+  <data name="ExecuteFirstMisurationPart2" xml:space="preserve">
+    <value>Извършете второто измерване (2/2):</value>
+  </data>
+  <data name="IndicateMisuredPosition" xml:space="preserve">
+    <value>Въведете височина измерена с метъра и натиснете Напред</value>
+  </data>
+  <data name="MisuredPosition" xml:space="preserve">
+    <value>Измер измерени</value>
+  </data>
+  <data name="ModifyLowerBoundDialog" xml:space="preserve">
+    <value>Следният резултат ще промени стойност на LowerBound на машината продължавате ли?</value>
+  </data>
+  <data name="ResetTotalCyclesNumber" xml:space="preserve">
+    <value>Наистина ли искате да нулирате общия брой завършени цикли?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Запаз</value>
+  </data>
+  <data name="StartProcedureMessage" xml:space="preserve">
+    <value>Искате старт процедура</value>
+  </data>
+  <data name="TestStopped" xml:space="preserve">
+    <value>Тест спрян във фаза</value>
+  </data>
+  <data name="VerifyNewCalcolatedValue" xml:space="preserve">
+    <value>Проверете нова изчисл стойност раздел способ и натиснете Запазване за да направите промяна ефективна</value>
+  </data>
+  <data name="VerticalResolutionCalibrationNewResolution" xml:space="preserve">
+    <value>Нова резолюция</value>
+  </data>
+  <data name="ConfirmRestoreToPreviousVersion" xml:space="preserve">
+    <value>Потвърждавате ли възстанов предишна версия?</value>
+  </data>
+  <data name="RestoreInProgress" xml:space="preserve">
+    <value>Възст в процес изп...</value>
+  </data>
+  <data name="RestoreEndedWithErrors" xml:space="preserve">
+    <value>Възстанов е прекратено с грешки</value>
+  </data>
+  <data name="DeleteSnapshotFile" xml:space="preserve">
+    <value>Изтриване на инсталационен файл със снимки '{0}'.</value>
+  </data>
+  <data name="ErrorDeleteSnapshotFile" xml:space="preserve">
+    <value>Грешка при изтриването на файла със снимката.</value>
+  </data>
+  <data name="DrawerManagement" xml:space="preserve">
+    <value>Управл чекмеджета</value>
+  </data>
+  <data name="AverageCurrent" xml:space="preserve">
+    <value>Среден ток [A]</value>
+  </data>
+  <data name="CallUnit" xml:space="preserve">
+    <value>Извикв чекмедже</value>
+  </data>
+  <data name="CarouselCalibrationDescription" xml:space="preserve">
+    <value>Изчакайте до края на процедурата ако е необходимо натиснете бутона "STOP" за незабавно спиране и "СТОП ПРОЦЕДУРА" за спиране във фаза.</value>
+  </data>
+  <data name="CellEditing" xml:space="preserve">
+    <value>Редактиране клетки</value>
+  </data>
+  <data name="CellManagement" xml:space="preserve">
+    <value>Управл клетки</value>
+  </data>
+  <data name="CellPanelsCheckDescription" xml:space="preserve">
+    <value>Уверете се че сте настроили фотоклетките за наличие на чекмедж ако не са настроени може да има блокиране на повдигача в горната част на машината.</value>
+  </data>
+  <data name="CellPanelsCheckPanel" xml:space="preserve">
+    <value>управл панел:</value>
+  </data>
+  <data name="CellPanelsCheckPhotocells" xml:space="preserve">
+    <value>Управлен с фотоклетка:</value>
+  </data>
+  <data name="DeleteUnit" xml:space="preserve">
+    <value>Изтрива чекмедже</value>
+  </data>
+  <data name="ElevatorBack" xml:space="preserve">
+    <value>Повдигач назад</value>
+  </data>
+  <data name="ElevatorDown" xml:space="preserve">
+    <value>Повдиг надолу</value>
+  </data>
+  <data name="ElevatorForwards" xml:space="preserve">
+    <value>Повдигане напред</value>
+  </data>
+  <data name="ElevatorUp" xml:space="preserve">
+    <value>Повдигач на</value>
+  </data>
+  <data name="FallsUnit" xml:space="preserve">
+    <value>Чекмедже връщане</value>
+  </data>
+  <data name="GoToCell" xml:space="preserve">
+    <value>Отид клетка</value>
+  </data>
+  <data name="InsertUnit" xml:space="preserve">
+    <value>Вмъкване чекмедже</value>
+  </data>
+  <data name="ProcedureNotCompleted" xml:space="preserve">
+    <value>Процедура не е завършена</value>
+  </data>
+  <data name="RepeteProcedure" xml:space="preserve">
+    <value>Повторете процедурата тъй като тя не е приключила правилно</value>
+  </data>
+  <data name="SaveUnit" xml:space="preserve">
+    <value>Запазв чекмедж</value>
+  </data>
+  <data name="TestedPanels" xml:space="preserve">
+    <value>Изпитани панели</value>
+  </data>
+  <data name="TotalCyclesCompleted" xml:space="preserve">
+    <value>Общо завършени цикли</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Чекмедж</value>
+  </data>
+  <data name="UnitEditing" xml:space="preserve">
+    <value>Редактиране чекмедже</value>
+  </data>
+  <data name="BarrierCalibration2" xml:space="preserve">
+    <value>калибр бариера</value>
+  </data>
+  <data name="BayMeasurement" xml:space="preserve">
+    <value>Измерване отдел</value>
+  </data>
+  <data name="CalibrationLeftSideMM" xml:space="preserve">
+    <value>калибр лявата страна (мм)</value>
+  </data>
+  <data name="CalibrationResult" xml:space="preserve">
+    <value>Резултат калибр:</value>
+  </data>
+  <data name="CalibrationRightSideMM" xml:space="preserve">
+    <value>калибр дясна страна (мм)</value>
+  </data>
+  <data name="DataBePositive" xml:space="preserve">
+    <value>Цифрата трябва да е положит.</value>
+  </data>
+  <data name="ElevatorInPosition" xml:space="preserve">
+    <value>Повдигача е в поз:</value>
+  </data>
+  <data name="GateCorrection2" xml:space="preserve">
+    <value>Корекция на бариера</value>
+  </data>
+  <data name="InstallationFileFound" xml:space="preserve">
+    <value>{0} намерени инсталационни файлов</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>отляво</value>
+  </data>
+  <data name="LeftSideMeasurement" xml:space="preserve">
+    <value>Измерване лявата страна</value>
+  </data>
+  <data name="MaxValue9" xml:space="preserve">
+    <value>Максим разреш стойност е 9.</value>
+  </data>
+  <data name="MissValue" xml:space="preserve">
+    <value>Липсва стойност</value>
+  </data>
+  <data name="NoInstallationFileFound" xml:space="preserve">
+    <value>Не е намерен инсталационен файл</value>
+  </data>
+  <data name="OneInstallationFileFound" xml:space="preserve">
+    <value>Намерен е инсталационен файл</value>
+  </data>
+  <data name="PageChangeAutomatically" xml:space="preserve">
+    <value>В края на процедурата страницата ще се промени автоматично.</value>
+  </data>
+  <data name="PanelPcCurrentVersion" xml:space="preserve">
+    <value>Текуща версия PanelPc</value>
+  </data>
+  <data name="Panels" xml:space="preserve">
+    <value>Панели</value>
+  </data>
+  <data name="Parameters" xml:space="preserve">
+    <value>Параметри</value>
+  </data>
+  <data name="PositionElevatorBayHeight" xml:space="preserve">
+    <value>Поставете повдигача на височината на отдел.</value>
+  </data>
+  <data name="PositioningTemplate" xml:space="preserve">
+    <value>Позиционирайте шаблон в</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationLess" xml:space="preserve">
+    <value>В зависимост от резултата от калибрто можете да решите дали да завършите операцията с резултат по-малък от 1 мм.</value>
+  </data>
+  <data name="ProfileHeighCheckCalibrationMore" xml:space="preserve">
+    <value>Ако резултатът от калибрто надхвърля 1 мм приложете предложените промени и повторете измерването.</value>
+  </data>
+  <data name="ProfileHeighCheckDescription" xml:space="preserve">
+    <value>Заредете чекмедже за отдел или извикайте такова за да стартирате управл процедура за калибр отдел.</value>
+  </data>
+  <data name="ProfileHeighCheckProcedureDescription" xml:space="preserve">
+    <value>Поставете шаблона за регулиране в горния десен ъгъл на чекмедже на отдел като се уверите че сте разположили магнитите така че шаблона да остане здраво прикрепен към чекмеджето. Накрая отворете затвора.</value>
+  </data>
+  <data name="ProfileHeightCheckProcedureLeftUnitDescription" xml:space="preserve">
+    <value>Поставете шаблона за регулиране в горния ляв ъгъл на чекмеджето на отдел като се уверите че сте разположили магнитите така че той да остане здраво върху чекмеджето.</value>
+  </data>
+  <data name="RepeteCalibration" xml:space="preserve">
+    <value>Повтаряне калибрир</value>
+  </data>
+  <data name="Restoration" xml:space="preserve">
+    <value>Възстанов</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>отдясн</value>
+  </data>
+  <data name="RightSideMeasurement" xml:space="preserve">
+    <value>Измерване дясна страна</value>
+  </data>
+  <data name="RepositoryPath" xml:space="preserve">
+    <value>Маршрут хранилището</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="SystemError" xml:space="preserve">
+    <value>Системна грешка</value>
+  </data>
+  <data name="TemplateMeasurement" xml:space="preserve">
+    <value>След като шаблон е позицион отворете затвора и натиснете бутона ИЗМЕРВАНЕ с което ще започнете процедура.</value>
+  </data>
+  <data name="TestData" xml:space="preserve">
+    <value>Данни изпитв</value>
+  </data>
+  <data name="TolleranceRequired" xml:space="preserve">
+    <value>Изискван толеранс</value>
+  </data>
+  <data name="UnitBay" xml:space="preserve">
+    <value>Чекмедже в Отдел:</value>
+  </data>
+  <data name="UnitHightPosition" xml:space="preserve">
+    <value>Чекмедже във висок поз</value>
+  </data>
+  <data name="UnitLowPosition" xml:space="preserve">
+    <value>Чекмедже в ниска поз</value>
+  </data>
+  <data name="SoftwareUpdate" xml:space="preserve">
+    <value>Актуализация софтуер</value>
+  </data>
+  <data name="UserManagement" xml:space="preserve">
+    <value>Управл потребит</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Изчак...</value>
+  </data>
+  <data name="WaitAutomaticProcedureEnd" xml:space="preserve">
+    <value>Изчакайте да приключи автоматичната процедура.</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuDescription" xml:space="preserve">
+    <value>Вземане на проби от текущите стойности за получаване на тегло</value>
+  </data>
+  <data name="AnalysisWeightProfileMenuTitle" xml:space="preserve">
+    <value>Анал тегловн профил</value>
+  </data>
+  <data name="BarrierCalibrationMenuDescription" xml:space="preserve">
+    <value>Позволява регулиране на бариерата за откриване на височината на чекмеджето</value>
+  </data>
+  <data name="BarrierCalibrationMenuTitle" xml:space="preserve">
+    <value>калибр бариера</value>
+  </data>
+  <data name="BayControlMenuDescription" xml:space="preserve">
+    <value>Позволява да се провери и коригира височина на различни позиции на отдел</value>
+  </data>
+  <data name="BayControlMenuTitle" xml:space="preserve">
+    <value>Контрол отдел</value>
+  </data>
+  <data name="BeltBreakInMenuDescription" xml:space="preserve">
+    <value>Извършва серия от цикли на преместване на вертикалната ос</value>
+  </data>
+  <data name="BeltBreakInMenuTitle" xml:space="preserve">
+    <value>Навлизане ремък</value>
+  </data>
+  <data name="BypassTest" xml:space="preserve">
+    <value>Потвърж ли че искате да заобик изпълн на този тест?</value>
+  </data>
+  <data name="CarouselCalibrationMenuDescription" xml:space="preserve">
+    <value>извършв калибр въртележка</value>
+  </data>
+  <data name="CarouselCalibrationMenuTitle" xml:space="preserve">
+    <value>калибр въртележ</value>
+  </data>
+  <data name="CellManagerMenuTitle" xml:space="preserve">
+    <value>Управл клетки</value>
+  </data>
+  <data name="CellTestMenuDescription" xml:space="preserve">
+    <value>Зареж първо чекмедж и изпит клетки</value>
+  </data>
+  <data name="CellTestMenuTitle" xml:space="preserve">
+    <value>Изпит гран кл</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuDescription" xml:space="preserve">
+    <value>Прилагане на корекция към група клетки</value>
+  </data>
+  <data name="ChangeCellBlockObsoleteMenuTitle" xml:space="preserve">
+    <value>Редактир блок клетки (остаряло)</value>
+  </data>
+  <data name="CheckCellDimensionMenuDescription" xml:space="preserve">
+    <value>Проверете височината на клетките по панели като следите за извършените проверки</value>
+  </data>
+  <data name="CheckCellDimensionMenuTitle" xml:space="preserve">
+    <value>Контрол квота клетка</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuDescription" xml:space="preserve">
+    <value>Провер размер една или повече клетки</value>
+  </data>
+  <data name="CheckCellDimensionObsoleteMenuTitle" xml:space="preserve">
+    <value>Контрол квоти клетки (закрито)</value>
+  </data>
+  <data name="CompleteOtherBayTest" xml:space="preserve">
+    <value>Завършване тестове в други отдел</value>
+  </data>
+  <data name="CompleteTestMenuTitle" xml:space="preserve">
+    <value>Пълен тест</value>
+  </data>
+  <data name="ConfirmCompleteTest" xml:space="preserve">
+    <value>Искате ли да потвърдите завършването на теста?</value>
+  </data>
+  <data name="DateTimeMenuDescription" xml:space="preserve">
+    <value>Задаване на системната дата и час</value>
+  </data>
+  <data name="DateTimeMenuTitle" xml:space="preserve">
+    <value>Дата и час</value>
+  </data>
+  <data name="EmbarkDisembarkMenuTitle" xml:space="preserve">
+    <value>Качв/слиз кораб</value>
+  </data>
+  <data name="GateTestMenuDescription" xml:space="preserve">
+    <value>Позволява поредица от повтарящи се тестове на амортисьора</value>
+  </data>
+  <data name="GateTestMenuTitle" xml:space="preserve">
+    <value>Изпитв клапи</value>
+  </data>
+  <data name="InsertMenuDescription" xml:space="preserve">
+    <value>Процедура за поставяне на ново чекмедже</value>
+  </data>
+  <data name="InsertMenuTitle" xml:space="preserve">
+    <value>Вмъкване</value>
+  </data>
+  <data name="InverterParameterizationMenuDescription" xml:space="preserve">
+    <value>Зареждане на параметризирането на инвертора със стандартни параметри</value>
+  </data>
+  <data name="InverterParameterizationMenuTitle" xml:space="preserve">
+    <value>Параметризир инвертор</value>
+  </data>
+  <data name="manageUserMenuDescription" xml:space="preserve">
+    <value>Управл локални потреб</value>
+  </data>
+  <data name="ManageUserMenuTitle" xml:space="preserve">
+    <value>Управл Потреб</value>
+  </data>
+  <data name="MoveBayToBayMenuDescription" xml:space="preserve">
+    <value>Процедура преместв на чекмедже от отдел в отдел</value>
+  </data>
+  <data name="MoveBayToBayMenuTitle" xml:space="preserve">
+    <value>Преминава от отдел в отдел</value>
+  </data>
+  <data name="MoveCellToCellMenuDescription" xml:space="preserve">
+    <value>Процедура премества на чекмедже от клетка в клетка</value>
+  </data>
+  <data name="MoveCellToCellMenuTitle" xml:space="preserve">
+    <value>Преминава от клетка в клетка</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuDescription" xml:space="preserve">
+    <value>калибр на отмествто на вертикалната ос</value>
+  </data>
+  <data name="OffsetVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Отмества вертикал ос</value>
+  </data>
+  <data name="ParametersMenuDescription" xml:space="preserve">
+    <value>Редактиране импортиране и експортиране на машинни параметри</value>
+  </data>
+  <data name="ParametersMenuTitle" xml:space="preserve">
+    <value>Параметри</value>
+  </data>
+  <data name="RemoveMenuDescription" xml:space="preserve">
+    <value>Процедура отстранява чекмедже</value>
+  </data>
+  <data name="RemoveMenuTitle" xml:space="preserve">
+    <value>Премахва</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuDescription" xml:space="preserve">
+    <value>Калибрира разделителната способност на вертикалната ос</value>
+  </data>
+  <data name="ResolutionVerticalAxisMenuTitle" xml:space="preserve">
+    <value>Раздел способн вертикал ос</value>
+  </data>
+  <data name="UnitManageMenuTitle" xml:space="preserve">
+    <value>Управл Чекмеджета</value>
+  </data>
+  <data name="VerticalAxisOriginMenuDescription" xml:space="preserve">
+    <value>калибр на началото на вертикалната ос</value>
+  </data>
+  <data name="VerticalAxisOriginMenuTitle" xml:space="preserve">
+    <value>Начало вертикал ос</value>
+  </data>
+  <data name="WMSComunicationMenuDescription" xml:space="preserve">
+    <value>Задаване на параметрите за комуникация с WMS</value>
+  </data>
+  <data name="WMSComunicationMenuTitle" xml:space="preserve">
+    <value>WMS комуникация</value>
+  </data>
+  <data name="WmsOn" xml:space="preserve">
+    <value>Дост</value>
+  </data>
+  <data name="WmsOff" xml:space="preserve">
+    <value>Изключ</value>
+  </data>
+  <data name="BeltMustBeTight" xml:space="preserve">
+    <value>Натягане на ремъка при 56 Hz</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Проверка съст</value>
+  </data>
+  <data name="InstallationStateCompleted" xml:space="preserve">
+    <value>Стату инсталация е завършен.</value>
+  </data>
+  <data name="InstallationStateIncompleted" xml:space="preserve">
+    <value>Състояние инсталация незавършено. Извърш процедури {0}/{1}.</value>
+  </data>
+  <data name="CorrectDistance" xml:space="preserve">
+    <value>Правилно разстоян</value>
+  </data>
+  <data name="TemplateInclination" xml:space="preserve">
+    <value>Наклон на шаблона</value>
+  </data>
+  <data name="TemplateLenght" xml:space="preserve">
+    <value>Дължина профила</value>
+  </data>
+  <data name="SaveParameters" xml:space="preserve">
+    <value>Запаз параметри</value>
+  </data>
+  <data name="Installation" xml:space="preserve">
+    <value>Монтиране</value>
+  </data>
+  <data name="WmsSetting" xml:space="preserve">
+    <value>Задаване WMS</value>
+  </data>
+  <data name="WmsHostAddress" xml:space="preserve">
+    <value>Адрес на хоста</value>
+  </data>
+  <data name="HorizontalChainCalibration" xml:space="preserve">
+    <value>калибр хоризонтал верига</value>
+  </data>
+  <data name="HorizontalChainCalibrationDescription" xml:space="preserve">
+    <value>извършв на калибр хоризонтална верига </value>
+  </data>
+  <data name="HorizzontalChainCalibrationProcedureRequired" xml:space="preserve">
+    <value>Извършете процедурата за калибр верига. Хоризонталният сензор за нула трябва да е активен.</value>
+  </data>
+  <data name="HorizontalChainCalibratioDescription" xml:space="preserve">
+    <value>Функцията за калибр на хоризонтална верига позволява да се калибрира правилната стойност чрез собствена процедура. Процедурата се изпълнява на последователни етапи до успешното ѝ приключване.</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>хоризонтал калибр</value>
+  </data>
+  <data name="ConfirmProcedure" xml:space="preserve">
+    <value>Процедура потвържд</value>
+  </data>
+  <data name="MisurationDone" xml:space="preserve">
+    <value>Извършено измерване</value>
+  </data>
+  <data name="MisurationDoneDescription" xml:space="preserve">
+    <value>Извършете следното измерване на машината</value>
+  </data>
+  <data name="RetryProcedure" xml:space="preserve">
+    <value>Повторн изпъл проц</value>
+  </data>
+  <data name="ResetSession" xml:space="preserve">
+    <value>Нулиране сесия</value>
+  </data>
+  <data name="ResetTotal" xml:space="preserve">
+    <value>Общо нулиран</value>
+  </data>
+  <data name="StopTest" xml:space="preserve">
+    <value>Спир тест</value>
+  </data>
+  <data name="CallUnitDescription" xml:space="preserve">
+    <value>Изберете чекмедже за повикване в отдел</value>
+  </data>
+  <data name="CloseShutterCommand" xml:space="preserve">
+    <value>изпълн на команда за затваряне клапа</value>
+  </data>
+  <data name="OpenShutterCommand" xml:space="preserve">
+    <value>изпълн на команда за отваряне клапа</value>
+  </data>
+  <data name="DeposiAndPickUpDescription" xml:space="preserve">
+    <value>Функцията за зареждане/разтоварване чекмедже позволява да се тества правилно функциониране на движения чекмеджета чрез поредица от цикли. Процедура се изпълнява на последоват етапи до успешно ѝ приключване.</value>
+  </data>
+  <data name="TestDone" xml:space="preserve">
+    <value>Извършено изпит</value>
+  </data>
+  <data name="TestDoneDescription" xml:space="preserve">
+    <value>Тук е посочен броят извършен цикли</value>
+  </data>
+  <data name="Cycle" xml:space="preserve">
+    <value>Цикли</value>
+  </data>
+  <data name="CycleDescription" xml:space="preserve">
+    <value>Въведете броя цикли които искате да извършите</value>
+  </data>
+  <data name="WmsOffline" xml:space="preserve">
+    <value>WMS е офлайн</value>
+  </data>
+  <data name="WmsStatusCheckInProgress" xml:space="preserve">
+    <value>Проверка в изпълн</value>
+  </data>
+  <data name="WmsStatusOffline" xml:space="preserve">
+    <value>Разкачено</value>
+  </data>
+  <data name="WmsStatusOnline" xml:space="preserve">
+    <value>Свързано</value>
+  </data>
+  <data name="CompleteTest" xml:space="preserve">
+    <value>Попълнете теста</value>
+  </data>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Наб дан</value>
+  </data>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Стойн</value>
+  </data>
+  <data name="AddTestAllUnit" xml:space="preserve">
+    <value>Добавяне всички чекмеджета тест</value>
+  </data>
+  <data name="AddTestUnit" xml:space="preserve">
+    <value>Добавя чекмедже към тест</value>
+  </data>
+  <data name="RemoveTestAllUnits" xml:space="preserve">
+    <value>Премахва всички тест чекмеджета</value>
+  </data>
+  <data name="RemoveTestUnit" xml:space="preserve">
+    <value>Изваждане тест чекмедже</value>
+  </data>
+  <data name="InverterProgrammingStarted" xml:space="preserve">
+    <value>Програмиране на инвертора</value>
+  </data>
+  <data name="InverterProgrammingSuccessfullyEnded" xml:space="preserve">
+    <value>Програмиране инвертор успешно завършено</value>
+  </data>
+  <data name="InvertersProgrammingStopped" xml:space="preserve">
+    <value>Спиране програмиране инвертор</value>
+  </data>
+  <data name="InverterProgrammingEndedErrors" xml:space="preserve">
+    <value>Програмиране инвертор е прекратено с грешки</value>
+  </data>
+  <data name="InverterProgrammingNext" xml:space="preserve">
+    <value>Стартиране програмиране следващ инвертор</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Само четене</value>
+  </data>
+  <data name="ExtBayTowardMachine" xml:space="preserve">
+    <value>Премества в повдигача</value>
+  </data>
+  <data name="AccessoryEnabled" xml:space="preserve">
+    <value>Разрешено</value>
+  </data>
+  <data name="ConfigureDevice" xml:space="preserve">
+    <value>Конфигур устройство</value>
+  </data>
+  <data name="SystemPorts" xml:space="preserve">
+    <value>Системни портове</value>
+  </data>
+  <data name="NoSerialPortDetected" xml:space="preserve">
+    <value>Не е открит сериен порт. Уверете се че устройството е свързано към панела.</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderConfigurationInstructions" xml:space="preserve">
+    <value>Въведете тези баркодове за да конфигурирате четеца в серийна емулация.</value>
+  </data>
+  <data name="ConfigureBarcodeReaderHint" xml:space="preserve">
+    <value>Серийният порт който търсите не е сред изброените? конфиг на устройството.</value>
+  </data>
+  <data name="AccessoriesBarcodeEnableComEmulation" xml:space="preserve">
+    <value>Актив COM емулация</value>
+  </data>
+  <data name="AccessoriesBarcodeEnterSetup" xml:space="preserve">
+    <value>Начална конфигурация</value>
+  </data>
+  <data name="AccessoriesBarcodeExitSetup" xml:space="preserve">
+    <value>Конфигурация на края</value>
+  </data>
+  <data name="FirmwareVersion" xml:space="preserve">
+    <value>Версия на фърмуер</value>
+  </data>
+  <data name="ManufactureDate" xml:space="preserve">
+    <value>Дата Производство</value>
+  </data>
+  <data name="ModelNumber" xml:space="preserve">
+    <value>Номер на модел</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Фабр ном</value>
+  </data>
+  <data name="ExtBayTowardOperator" xml:space="preserve">
+    <value>Преминав към оператор</value>
+  </data>
+  <data name="ExtBayCalibration" xml:space="preserve">
+    <value>Калибр външ отделен</value>
+  </data>
+  <data name="LoadFile" xml:space="preserve">
+    <value>Импортиран в памет</value>
+  </data>
+  <data name="ImportSuccessful" xml:space="preserve">
+    <value>Успешен внос</value>
+  </data>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Импортиране конфигурац файлове</value>
+  </data>
+  <data name="DefaultConfigurationLoaded" xml:space="preserve">
+    <value>Зареждане конфигур по подразбиране</value>
+  </data>
+  <data name="BayHomingStarted" xml:space="preserve">
+    <value>Верига отдел насоч в изпълн</value>
+  </data>
+  <data name="UnitExternalPosition" xml:space="preserve">
+    <value>Чекмедже във външ полож</value>
+  </data>
+  <data name="UnitInternalPosition" xml:space="preserve">
+    <value>Чекмедже във вътреш полож</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuDescription" xml:space="preserve">
+    <value>извършв на калибр външ отдел</value>
+  </data>
+  <data name="ExternalBayCalibrationMenuTitle" xml:space="preserve">
+    <value>външ калибрир отдел</value>
+  </data>
+  <data name="CalibrationProcedureRequiredExternalBay" xml:space="preserve">
+    <value>извършв на процедура за калибр на отдел за позициониране на сензора</value>
+  </data>
+  <data name="MovementPerformed" xml:space="preserve">
+    <value>Извършени движения</value>
+  </data>
+  <data name="Run" xml:space="preserve">
+    <value>Ход (мм)</value>
+  </data>
+  <data name="StartProcedure" xml:space="preserve">
+    <value>Щракнете СТАРТ за старт процедура</value>
+  </data>
+  <data name="SystemPathNotFound" xml:space="preserve">
+    <value>Пътят '{0}' не е намерен</value>
+  </data>
+  <data name="AccessoriesCardReaderTokenRegex" xml:space="preserve">
+    <value>Разпознати последоват (regex)</value>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Започ тест</value>
+  </data>
+  <data name="AcquiredToken" xml:space="preserve">
+    <value>Придобита последов</value>
+  </data>
+  <data name="CodeRecognized" xml:space="preserve">
+    <value>Признат код.</value>
+  </data>
+  <data name="SaveChangesBeforeStartingTest" xml:space="preserve">
+    <value>Запазете промените преди да започнете теста.</value>
+  </data>
+  <data name="UseTheCardOnCardReader" xml:space="preserve">
+    <value>Прехвърле хартия върху четец.</value>
+  </data>
+  <data name="ReceivedBarcode" xml:space="preserve">
+    <value>Получен баркод</value>
+  </data>
+  <data name="CheckSerialPorts" xml:space="preserve">
+    <value>Контрол серийни портове</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Оператор</value>
+  </data>
+  <data name="PrinterName" xml:space="preserve">
+    <value>Име на принтер</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Височин</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Стат</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Тегл</value>
+  </data>
+  <data name="LoadingUnitStatus_InBay" xml:space="preserve">
+    <value>В отдел</value>
+  </data>
+  <data name="LoadingUnitStatus_InElevator" xml:space="preserve">
+    <value>В повдигача</value>
+  </data>
+  <data name="LoadingUnitStatus_InLocation" xml:space="preserve">
+    <value>На местопол</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToBay" xml:space="preserve">
+    <value>Движение в Отдел</value>
+  </data>
+  <data name="LoadingUnitStatus_OnMovementToLocation" xml:space="preserve">
+    <value>Трансф</value>
+  </data>
+  <data name="LoadingUnitStatus_Undefined" xml:space="preserve">
+    <value>Неопредел</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="GrossWeight" xml:space="preserve">
+    <value>Брут тегл (кг)</value>
+  </data>
+  <data name="IsIntoMachine" xml:space="preserve">
+    <value>На машина</value>
+  </data>
+  <data name="MaxNetWeight" xml:space="preserve">
+    <value>Макс нет тегл(кг)</value>
+  </data>
+  <data name="MissionsCount" xml:space="preserve">
+    <value>Мисии</value>
+  </data>
+  <data name="Tare" xml:space="preserve">
+    <value>Тара (кг)</value>
+  </data>
+  <data name="BlockLevel" xml:space="preserve">
+    <value>Ниво на блока</value>
+  </data>
+  <data name="ActiveSensor" xml:space="preserve">
+    <value>Активен сензор</value>
+  </data>
+  <data name="DeactivatedSensor" xml:space="preserve">
+    <value>Деактивиран сензор</value>
+  </data>
+  <data name="False" xml:space="preserve">
+    <value>Фалш</value>
+  </data>
+  <data name="Legend" xml:space="preserve">
+    <value>Легенда</value>
+  </data>
+  <data name="IsFree" xml:space="preserve">
+    <value>Безпл</value>
+  </data>
+  <data name="PanelId" xml:space="preserve">
+    <value>Панел</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Приорит</value>
+  </data>
+  <data name="True" xml:space="preserve">
+    <value>Исти</value>
+  </data>
+  <data name="BayChain" xml:space="preserve">
+    <value>Вериг отдел</value>
+  </data>
+  <data name="Horizontal" xml:space="preserve">
+    <value>Хоризонтал</value>
+  </data>
+  <data name="HorizontalAndVertical" xml:space="preserve">
+    <value>Хоризонтал и вертикал</value>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Никакъв</value>
+  </data>
+  <data name="Vertical" xml:space="preserve">
+    <value>Вертикал</value>
+  </data>
+  <data name="ElevatorBay" xml:space="preserve">
+    <value>Повдигач в отдел</value>
+  </data>
+  <data name="TotalLoadUnitsInBay1" xml:space="preserve">
+    <value>Общо чекмеджета в отдел 1</value>
+  </data>
+  <data name="TotalLoadUnitsInBay2" xml:space="preserve">
+    <value>Общо чекмеджета в отдел 2</value>
+  </data>
+  <data name="TotalLoadUnitsInBay3" xml:space="preserve">
+    <value>Общо чекмеджета в отдел 3</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Цикли</value>
+  </data>
+  <data name="MountCamera" xml:space="preserve">
+    <value>Монтиране камера</value>
+  </data>
+  <data name="MoveCamera" xml:space="preserve">
+    <value>Преместване на камерата в правилната поз</value>
+  </data>
+  <data name="SendScreenSnapshot" xml:space="preserve">
+    <value>Изпращане на снимки на екран</value>
+  </data>
+  <data name="SendLog" xml:space="preserve">
+    <value>Изпр дневн</value>
+  </data>
+  <data name="ScreenCast" xml:space="preserve">
+    <value>Предаване на екрана</value>
+  </data>
+  <data name="SaveCell" xml:space="preserve">
+    <value>Зап клетка</value>
+  </data>
+  <data name="HoursRefresh" xml:space="preserve">
+    <value>Час освеж</value>
+  </data>
+  <data name="RemovableDevicesCount" xml:space="preserve">
+    <value>Свързани сменяеми устройс</value>
+  </data>
+  <data name="AvailablePackages" xml:space="preserve">
+    <value>Налични пакети</value>
+  </data>
+  <data name="SaveLogs" xml:space="preserve">
+    <value>Зап днев</value>
+  </data>
+  <data name="SaveLogsFile" xml:space="preserve">
+    <value>Зап дневн</value>
+  </data>
+  <data name="LoadingLogsFromTelemetryService" xml:space="preserve">
+    <value>Качване дневници от услуга телеметрия..</value>
+  </data>
+  <data name="LogsFromTelemetryServiceCompleted" xml:space="preserve">
+    <value>Дневници качени услуга телеметрия</value>
+  </data>
+  <data name="Accessories" xml:space="preserve">
+    <value>Аксесоари</value>
+  </data>
+  <data name="WeightingScaleTare" xml:space="preserve">
+    <value>Тара</value>
+  </data>
+  <data name="NoDriveSelected" xml:space="preserve">
+    <value>Изберете устройство дестинация.</value>
+  </data>
+  <data name="ZeroChainCarousel" xml:space="preserve">
+    <value>Нула верига въртел</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Дистанц подпом</value>
+  </data>
+  <data name="DeleteUnitDialog" xml:space="preserve">
+    <value>Тази операция ще премахне чекмеджето от картата на склада</value>
+  </data>
+  <data name="ExtBayMovementForExtraction" xml:space="preserve">
+    <value>Допълн движение за оператора</value>
+  </data>
+  <data name="ExtBayMovementForInsertion" xml:space="preserve">
+    <value>Допълн движение към повдигача</value>
+  </data>
+  <data name="InverterInFault" xml:space="preserve">
+    <value>Дефектен инвертор</value>
+  </data>
+  <data name="ScreenCastDurationExpire" xml:space="preserve">
+    <value>Изт срок дейс огл видео</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Завършено</value>
+  </data>
+  <data name="AccessoriesBarcodeEnergySaving" xml:space="preserve">
+    <value>Пестене на енергия</value>
+  </data>
+  <data name="ExternalBayShort" xml:space="preserve">
+    <value>Вът</value>
+  </data>
+  <data name="InternalBayShort" xml:space="preserve">
+    <value>Вън</value>
+  </data>
+  <data name="TokenSerialNumber" xml:space="preserve">
+    <value>Сериен номер токен</value>
+  </data>
+  <data name="SelectModel" xml:space="preserve">
+    <value>Изберете модел</value>
+  </data>
+  <data name="BlockLU" xml:space="preserve">
+    <value>Заключ чекмедже</value>
+  </data>
+  <data name="UnlockLU" xml:space="preserve">
+    <value>Отключ чекмедже</value>
+  </data>
+  <data name="LoadingUnitStatus_Blocked" xml:space="preserve">
+    <value>Блокиран</value>
+  </data>
+  <data name="UpdateTare" xml:space="preserve">
+    <value>Актуал тарата</value>
+  </data>
+  <data name="UpdateTareProcedureHeader" xml:space="preserve">
+    <value>Процедура за актуализ на тарата на чекмедже</value>
+  </data>
+  <data name="UpdateTareProcedure" xml:space="preserve">
+    <value>Потв ли че избраното чекмедже е празно?</value>
+  </data>
+  <data name="WeightCalibration" xml:space="preserve">
+    <value>Калибр на тегло</value>
+  </data>
+  <data name="WeightCalibrationDescription" xml:space="preserve">
+    <value>Функц калибр на тегло позв регулиране алгоритъмът за отчитане на тегло като се използват еталонни тежести</value>
+  </data>
+  <data name="WeightCalibrationDescriptionProcedure" xml:space="preserve">
+    <value>Заредете чекмедже за отдел или извикай такова за да стартирате съветник калибр на теглото</value>
+  </data>
+  <data name="EmptyUnitWeighing" xml:space="preserve">
+    <value>Претегл с празно чекмедже</value>
+  </data>
+  <data name="UnitWeighingDescription" xml:space="preserve">
+    <value>Натиснете бутона за да получи текущи данни от движение на чекмеджето и да въведете нетното му тегло. Когато приключите натиснете Напред за да потвърдите операцията</value>
+  </data>
+  <data name="AbsorbedCurrent" xml:space="preserve">
+    <value>Консумиран ток</value>
+  </data>
+  <data name="OptionalWeighing1" xml:space="preserve">
+    <value>Първо претегляне междинно тегло</value>
+  </data>
+  <data name="FullUnitWeighing" xml:space="preserve">
+    <value>Претегля напълно заредено чекмедже</value>
+  </data>
+  <data name="ChangeUnit" xml:space="preserve">
+    <value>Чекмедже смяна</value>
+  </data>
+  <data name="ChangeMachineNumber" xml:space="preserve">
+    <value>Промяна номер машина</value>
+  </data>
+  <data name="NewMachineId" xml:space="preserve">
+    <value>Идент нова машина</value>
+  </data>
+  <data name="ChangeId" xml:space="preserve">
+    <value>Пром Id</value>
+  </data>
+  <data name="StartCalibrationButton" xml:space="preserve">
+    <value>Натиснете начало да започне калибрто</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Сваляне</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Заряд</value>
+  </data>
+  <data name="VerticalCalibration" xml:space="preserve">
+    <value>Калибр на повдигач</value>
+  </data>
+  <data name="SoftwareUpdateDescription" xml:space="preserve">
+    <value>Поставете USB стик</value>
+  </data>
+  <data name="InverterReadingSuccessfullyEnded" xml:space="preserve">
+    <value>Успешно завършено четене на инвертора</value>
+  </data>
+  <data name="InverterReadingEndedErrors" xml:space="preserve">
+    <value>Четене инвертор е прекратено с грешки</value>
+  </data>
+  <data name="InvertersReadingStopped" xml:space="preserve">
+    <value>Четене на инвертора стоп</value>
+  </data>
+  <data name="InverterReadingNext" xml:space="preserve">
+    <value>Започн да четете следващ инвертор</value>
+  </data>
+  <data name="WriteCode" xml:space="preserve">
+    <value>Писане на код</value>
+  </data>
+  <data name="ReadCode" xml:space="preserve">
+    <value>Четене на код</value>
+  </data>
+  <data name="DecimalCount" xml:space="preserve">
+    <value>Десетични числа</value>
+  </data>
+  <data name="InverterReadingStarted" xml:space="preserve">
+    <value>Отчитане на работещ инвертор</value>
+  </data>
+  <data name="ReadInverterParameter" xml:space="preserve">
+    <value>Проч повече</value>
+  </data>
+  <data name="OverwriteFile" xml:space="preserve">
+    <value>Презаписване файл местоназначение</value>
+  </data>
+  <data name="SaveInverterConfiguration" xml:space="preserve">
+    <value>Запазв конфигурация инвертор</value>
+  </data>
+  <data name="WriteSingle" xml:space="preserve">
+    <value>Напиш еднокр</value>
+  </data>
+  <data name="WriteAll" xml:space="preserve">
+    <value>Напиш всички</value>
+  </data>
+  <data name="CommandSent" xml:space="preserve">
+    <value>Изпрат команда</value>
+  </data>
+  <data name="ErrorAndActualValue" xml:space="preserve">
+    <value>Грешки и тек стойности</value>
+  </data>
+  <data name="Errors" xml:space="preserve">
+    <value>Грешки</value>
+  </data>
+  <data name="ActualValues" xml:space="preserve">
+    <value>Тек стойности</value>
+  </data>
+  <data name="ImportAndSave" xml:space="preserve">
+    <value>Импорт и запазв </value>
+  </data>
+  <data name="BeforeEnd" xml:space="preserve">
+    <value>Преди завършв</value>
+  </data>
+  <data name="MachineDatabaseBackupMode" xml:space="preserve">
+    <value>Арх базата данни на машина</value>
+  </data>
+  <data name="DatabaseBackupModeInternal" xml:space="preserve">
+    <value>Вътр копие</value>
+  </data>
+  <data name="DatabaseBackupModeOnServer" xml:space="preserve">
+    <value>На сървър</value>
+  </data>
+  <data name="DatabaseBackupModeOnTelemetry" xml:space="preserve">
+    <value>При телеметр</value>
+  </data>
+  <data name="DatabaseBackupMenuDescription" xml:space="preserve">
+    <value>Създ резерв копия бази данни</value>
+  </data>
+  <data name="ErrorActiveWarning" xml:space="preserve">
+    <value>Има активни грешки</value>
+  </data>
+  <data name="Manual2" xml:space="preserve">
+    <value>Ръковод2</value>
+  </data>
+  <data name="Manual3" xml:space="preserve">
+    <value>Ръковод3</value>
+  </data>
+  <data name="Test2" xml:space="preserve">
+    <value>Тест2</value>
+  </data>
+  <data name="Test3" xml:space="preserve">
+    <value>Тест3</value>
+  </data>
+  <data name="Compact2" xml:space="preserve">
+    <value>Компакт2</value>
+  </data>
+  <data name="Compact3" xml:space="preserve">
+    <value>Компакт3</value>
+  </data>
+  <data name="ModeLoadUnitOperations2" xml:space="preserve">
+    <value>Операции с чекмедже2</value>
+  </data>
+  <data name="ModeLoadUnitOperations3" xml:space="preserve">
+    <value>Операции с чекмедже3</value>
+  </data>
+  <data name="ShutterNotSpecifiedWarning" xml:space="preserve">
+    <value>Деактивиране на първите 30 клетки над съответния отдел</value>
+  </data>
+  <data name="RandomCells" xml:space="preserve">
+    <value>Случайно разпр на клетки</value>
+  </data>
+  <data name="UnitHightInternalPosition" xml:space="preserve">
+    <value>Чекмедже във високо вътр полож</value>
+  </data>
+  <data name="UnitLowInternalPosition" xml:space="preserve">
+    <value>Чекмедже в ниска вътр поз</value>
+  </data>
+  <data name="Bay1ExternalDouble" xml:space="preserve">
+    <value>Отдел 1 външ двоен</value>
+  </data>
+  <data name="Bay2ExternalDouble" xml:space="preserve">
+    <value>Отдел 2 открит двоен</value>
+  </data>
+  <data name="Bay3ExternalDouble" xml:space="preserve">
+    <value>Отдел 3 открит двоен</value>
+  </data>
+  <data name="MovingMachine" xml:space="preserve">
+    <value>Машина в движение</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>Лаз отмества (мм)</value>
+  </data>
+  <data name="Laser" xml:space="preserve">
+    <value>Лазер</value>
+  </data>
+  <data name="InvalidCurrentValues" xml:space="preserve">
+    <value>Грешни стойност на ток вс 3 стойности трябва да са различни!</value>
+  </data>
+  <data name="InvalidWeightValues" xml:space="preserve">
+    <value>Грешни ст на тегло вс 3 стойности трябва да са различни!</value>
+  </data>
+  <data name="ZeroChainUp" xml:space="preserve">
+    <value>Вис поз на нул верига</value>
+  </data>
+  <data name="ZeroChainDown" xml:space="preserve">
+    <value>Нул вер позиц. ниска</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Презареж</value>
+  </data>
+  <data name="CloseBrowser" xml:space="preserve">
+    <value>Затв браузъра</value>
+  </data>
+  <data name="OpenBrowser" xml:space="preserve">
+    <value>Отв браузъра</value>
+  </data>
+  <data name="WmsMissionActive" xml:space="preserve">
+    <value>Има активни мисии за това чекмедже от WMS</value>
+  </data>
+  <data name="BayTelescopic" xml:space="preserve">
+    <value>Телеск отдел на място</value>
+  </data>
+  <data name="MaxMessageLength" xml:space="preserve">
+    <value>Макс дължина на съобщто</value>
+  </data>
+  <data name="AntiIntrusionGateInternal" xml:space="preserve">
+    <value>вътр бариера срещу проникване</value>
+  </data>
+  <data name="SupportType" xml:space="preserve">
+    <value>Подкрепа</value>
+  </data>
+  <data name="Shutdown" xml:space="preserve">
+    <value>процедура за изключване</value>
+  </data>
+  <data name="ShutdownDescription" xml:space="preserve">
+    <value>Извършете калибр на повдигача и изключете панела</value>
+  </data>
+  <data name="ShutdownDescriptionNoCalibration" xml:space="preserve">
+    <value>Изключете панела (калибрто на повдигача вече не е възможно)</value>
+  </data>
+  <data name="HorizontalZeroOffset" xml:space="preserve">
+    <value>хоризонт отместв нулата на верига</value>
+  </data>
+  <data name="HorizontalZeroOffsetDescription" xml:space="preserve">
+    <value>извършв на измерване на нулевото отместв на верига</value>
+  </data>
+  <data name="HorizontalZeroOffsetHelp" xml:space="preserve">
+    <value>Функцията за измерване на хоризонталто изместване на верига позволява да се получи правилната стойност чрез подходяща процедура. Процедурата се извършва на последователни етапи до успешното ѝ приключване</value>
+  </data>
+  <data name="HorizontalZeroOffsetProcedure" xml:space="preserve">
+    <value>извършв измерване на изместването на нулата на верига. Хоризонталният сензор за нула трябва да е активен.</value>
+  </data>
+  <data name="HorizontalResolutionCalibration" xml:space="preserve">
+    <value>Раздел способ на хориз ос на верига</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationDescription" xml:space="preserve">
+    <value>извършв на хоризонтал калибр на резолюцията на верига</value>
+  </data>
+  <data name="HorizontalResolutionCalibrationHelp" xml:space="preserve">
+    <value>Функц за калибр на хоризонтална разделителна способност на верига позволява да се калибрира правилната стойност чрез собствена процедура. Процедурата се изпълнява на последователни етапи до успешното ѝ приключване.</value>
+  </data>
+  <data name="CheckEmptyBayAndCell" xml:space="preserve">
+    <value>Изберете местоположто на отдел. Отворете всяка щора и проверете дали няма чекмеджета нито в отдел нито в килията срещу него. Извършете калибр на верига. Щракнете върху СТАРТ за да стартирате процедурата</value>
+  </data>
+  <data name="SuspendOperation" xml:space="preserve">
+    <value>Спиране на текущата операция</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Пожарна аларма</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>предвар аларма за пожар</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтр на</value>
+  </data>
+  <data name="BeginTime" xml:space="preserve">
+    <value>Начален час</value>
+  </data>
+  <data name="EndTime" xml:space="preserve">
+    <value>Краен час</value>
+  </data>
+  <data name="AutoLogoutIsActive" xml:space="preserve">
+    <value>акт изл сист</value>
+  </data>
+  <data name="Timeout" xml:space="preserve">
+    <value>Врпрек (мин.)</value>
+  </data>
+  <data name="AutoLogoutSetings" xml:space="preserve">
+    <value>Автом изпис</value>
+  </data>
+  <data name="WrongDataSave" xml:space="preserve">
+    <value>Непра данни не могат да записан</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>потвърж на нова парола</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Нова парола</value>
+  </data>
+  <data name="EnabledWithWMS" xml:space="preserve">
+    <value>Активирано при активна WMS</value>
+  </data>
+  <data name="Multiselection" xml:space="preserve">
+    <value>Мултиизбор</value>
+  </data>
+  <data name="ServerPath" xml:space="preserve">
+    <value>Път на сървъра</value>
+  </data>
+  <data name="ResultOutOfStandard" xml:space="preserve">
+    <value>Нестандартен резултат. Ето няколко съвета:</value>
+  </data>
+  <data name="UseMachineFullStroke" xml:space="preserve">
+    <value>опитайте се да използвате пълния ход на машината</value>
+  </data>
+  <data name="AttachMeterToElevator" xml:space="preserve">
+    <value>прикрепете здраво ролетката към повдигача</value>
+  </data>
+  <data name="MetricCordPerpendicular" xml:space="preserve">
+    <value>метричната нишка трябва да бъде идеално перпендикулярна на повдигача и успоредна на лентата</value>
+  </data>
+  <data name="UseLaserLevelToGetValue" xml:space="preserve">
+    <value>помощ при използването на лазерен нивелир за създаване на повтаряема обратна връзка</value>
+  </data>
+  <data name="WantRepeatProcedure" xml:space="preserve">
+    <value>Искате ли да повтори процедура?</value>
+  </data>
+  <data name="TestBarcode" xml:space="preserve">
+    <value>Генер баркод</value>
+  </data>
+  <data name="ProxySaved" xml:space="preserve">
+    <value>Запаз прокси</value>
+  </data>
+  <data name="ProxyNotSaved" xml:space="preserve">
+    <value>Пълн не е запазен</value>
+  </data>
+  <data name="ProxyMissing" xml:space="preserve">
+    <value>Липсв данни</value>
+  </data>
+  <data name="SaveFailed" xml:space="preserve">
+    <value>Неуспешно спасяване</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+  <data name="ProxyPasswordConfirm" xml:space="preserve">
+    <value>потвърж на парола</value>
+  </data>
+  <data name="ProxyUser" xml:space="preserve">
+    <value>Потр име прок сър</value>
+  </data>
+  <data name="ProxyUrl" xml:space="preserve">
+    <value>Url прокс</value>
+  </data>
+  <data name="PasswordFailConfirm" xml:space="preserve">
+    <value>Неправ пароли</value>
+  </data>
+  <data name="ProfileResolutionCalibration" xml:space="preserve">
+    <value>Бариерен тест</value>
+  </data>
+  <data name="ProfileResolutionCalibrationHelp" xml:space="preserve">
+    <value>Функция изпитв на измервателна бариера позволява да се калибрира правилната стойност чрез съответната процедура. Процедурата се изпълнява на последователни етапи до успешното ѝ приключване.</value>
+  </data>
+  <data name="CurrentExit" xml:space="preserve">
+    <value>Токов изход</value>
+  </data>
+  <data name="ExitError" xml:space="preserve">
+    <value>Изход грешка</value>
+  </data>
+  <data name="CurrentExit1" xml:space="preserve">
+    <value>Токов изход 1:</value>
+  </data>
+  <data name="CurrentExit2" xml:space="preserve">
+    <value>Токов изход 2:</value>
+  </data>
+  <data name="CurrentExit3" xml:space="preserve">
+    <value>Токов изход 3:</value>
+  </data>
+  <data name="CurrentExit4" xml:space="preserve">
+    <value>Токов изход 4:</value>
+  </data>
+  <data name="CurrentExit5" xml:space="preserve">
+    <value>Токов изход 5:</value>
+  </data>
+  <data name="CurrentExit6" xml:space="preserve">
+    <value>Токов изход 6:</value>
+  </data>
+  <data name="CurrentExit7" xml:space="preserve">
+    <value>Токов изход 7:</value>
+  </data>
+  <data name="CurrentExit8" xml:space="preserve">
+    <value>Токов изход 8:</value>
+  </data>
+  <data name="ExitError1" xml:space="preserve">
+    <value>Изход грешка 1</value>
+  </data>
+  <data name="ExitError2" xml:space="preserve">
+    <value>Изход грешка 2</value>
+  </data>
+  <data name="ExitError3" xml:space="preserve">
+    <value>Изход грешка 3</value>
+  </data>
+  <data name="ExitError4" xml:space="preserve">
+    <value>Изход грешка 4</value>
+  </data>
+  <data name="ExitError5" xml:space="preserve">
+    <value>Изход грешка 5</value>
+  </data>
+  <data name="ExitError6" xml:space="preserve">
+    <value>Изход грешка 6</value>
+  </data>
+  <data name="ExitError7" xml:space="preserve">
+    <value>Изход грешка 7</value>
+  </data>
+  <data name="ExitError8" xml:space="preserve">
+    <value>Изход грешка 8</value>
+  </data>
+  <data name="DeviceIO1" xml:space="preserve">
+    <value>Платка IO (отдел 1)</value>
+  </data>
+  <data name="DeviceIO2" xml:space="preserve">
+    <value>Платка IO (отдел 2)</value>
+  </data>
+  <data name="DeviceIO3" xml:space="preserve">
+    <value>Платка IO (отдел 3)</value>
+  </data>
+  <data name="ProfileConst" xml:space="preserve">
+    <value>Констант измерване</value>
+  </data>
+  <data name="ProfileConst0" xml:space="preserve">
+    <value>Константа K0 мярка</value>
+  </data>
+  <data name="ProfileConst1" xml:space="preserve">
+    <value>Мярка константа K1</value>
+  </data>
+  <data name="ProfileSamples" xml:space="preserve">
+    <value>Отчита стойности</value>
+  </data>
+  <data name="ProfileSample" xml:space="preserve">
+    <value>Четене</value>
+  </data>
+  <data name="ProfileCalibrationDescription" xml:space="preserve">
+    <value>Повдигачът и отделто трябва да са празни. Необходимо е ръчно калибр на измервателната бариера преди да бъде извършена тази процедура</value>
+  </data>
+  <data name="ConfirmDifferentValue" xml:space="preserve">
+    <value>Стойностите са извън границата потвърдете все пак</value>
+  </data>
+  <data name="MovementEnabled" xml:space="preserve">
+    <value>Активир движението</value>
+  </data>
+  <data name="AutoCompactingIsActive" xml:space="preserve">
+    <value>актив уплътняване</value>
+  </data>
+  <data name="RemoveSuccessful" xml:space="preserve">
+    <value>Успешно премахнати</value>
+  </data>
+  <data name="FixBackDrawers" xml:space="preserve">
+    <value>Задно отместв</value>
+  </data>
+  <data name="FixBackDrawersDescription" xml:space="preserve">
+    <value>Коригира всички размери на задната клетка</value>
+  </data>
+  <data name="FixBackDrawersAsk" xml:space="preserve">
+    <value>Променете всички размери на гърба с {0}mm?</value>
+  </data>
+  <data name="ChangeWmsStatus" xml:space="preserve">
+    <value>Искате промени състояние WMS</value>
+  </data>
+  <data name="ClearAlphaBarOnCloseView" xml:space="preserve">
+    <value>Изтрив затваряне на изглед</value>
+  </data>
+  <data name="MissionActive" xml:space="preserve">
+    <value>Завършване на активни мисии</value>
+  </data>
+  <data name="TestSuccessful" xml:space="preserve">
+    <value>Успешен тест</value>
+  </data>
+  <data name="InformationFailedUpdated" xml:space="preserve">
+    <value>Информацията не е актуализирана.</value>
+  </data>
+  <data name="FixSupport" xml:space="preserve">
+    <value>Правилна подкрепа</value>
+  </data>
+  <data name="RotationClass" xml:space="preserve">
+    <value>Клас</value>
+  </data>
+  <data name="ChangeRotationClass" xml:space="preserve">
+    <value>Промяна на класа на въртене</value>
+  </data>
+  <data name="RotationClassFix" xml:space="preserve">
+    <value>Фикс завъртане</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="DeleteUserConfirm" xml:space="preserve">
+    <value>Тази операция ще премахне потребит продължете?</value>
+  </data>
+  <data name="IsLocal" xml:space="preserve">
+    <value>Място</value>
+  </data>
+  <data name="GuestEnabled" xml:space="preserve">
+    <value>Разреш за гости</value>
+  </data>
+  <data name="NameIsPresent" xml:space="preserve">
+    <value>Името вече присъства</value>
+  </data>
+  <data name="TokenIsPresent" xml:space="preserve">
+    <value>Кодът за четене вече е наличен</value>
+  </data>
+  <data name="PreferentialBay" xml:space="preserve">
+    <value>Предпоч отдел</value>
+  </data>
+  <data name="LocalAndWmsNotAllowed" xml:space="preserve">
+    <value>Локално не е налично с активна WMS</value>
+  </data>
+  <data name="UseGetMessage" xml:space="preserve">
+    <value>GET съобщ</value>
+  </data>
+  <data name="Field" xml:space="preserve">
+    <value>Лагер</value>
+  </data>
+  <data name="EmptyFields" xml:space="preserve">
+    <value>Празни полета вмъкнете поне 1 поле.</value>
+  </data>
+  <data name="StartLoop" xml:space="preserve">
+    <value>Начал цикъл</value>
+  </data>
+  <data name="StopLoop" xml:space="preserve">
+    <value>Спира тест цикъл</value>
+  </data>
+  <data name="LoopError" xml:space="preserve">
+    <value>Съобщ не е изпратено грешка GET</value>
+  </data>
+  <data name="FixedHeight" xml:space="preserve">
+    <value>Фикс Височина</value>
+  </data>
+  <data name="FixedCell" xml:space="preserve">
+    <value>Фикс клетка</value>
+  </data>
+  <data name="ChangeLoadUnitFixed" xml:space="preserve">
+    <value>управл фикс промени</value>
+  </data>
+</root>

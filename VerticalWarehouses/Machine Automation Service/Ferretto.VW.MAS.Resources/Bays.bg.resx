@@ -117,49 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="TheBayHeightMustBeInRange" xml:space="preserve">
+    <value>Височина на отдел {0}) трябва да бъде в интервала [\1}\2}].</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
+    <value>Посочената поз на отделто е невалидна.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>Посочено отделен не разпол с въртележ.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>В отдел има поне едно чекмедже.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>В горното си полож отделто съдържа чекмедже.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>верига на отделто не е в нулево полож.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="TheBayHorizontalAndVerticalNotValid" xml:space="preserve">
+    <value>Axis.HorizontalAndVertical не е валидна ос за метода GetInverterIndexByMovementType ()</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="TheBayLoadingMaxHeightNotValid" xml:space="preserve">
+    <value>максим височина на количка е невалидна.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="TheBayContainsALoadingUnitInItsExternalPosition" xml:space="preserve">
+    <value>отделто съдържа чекмедже във външто си полож</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TheSpecifiedBayIsNotAnExternalBay" xml:space="preserve">
+    <value>Посоченото отдел не е външ отдел</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="TheExtBayCannotPerformAnInvalidMovement" xml:space="preserve">
+    <value>външто отдел не може да извърши невалидно движение</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="TheBayPositionIsBlocked" xml:space="preserve">
+    <value>поз на отдел заключена</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Липсва сензор за наличие на чекмедже в отдел</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="TheBayContainsTwoLoadingUnits" xml:space="preserve">
+    <value>отдел съдържа две чекмедж.</value>
   </data>
 </root>

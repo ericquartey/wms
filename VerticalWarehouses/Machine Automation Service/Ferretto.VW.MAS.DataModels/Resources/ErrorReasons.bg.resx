@@ -1,0 +1,462 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConditionsNotMetForPositioning" xml:space="preserve">
+    <value>Проверете дали палчето е на нула или дали чекмеджето е напълно натоварено върху подемника.</value>
+  </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Проверете дали аварийните бутони са изключени и дали всички сензори за безопасност са деактивирани.</value>
+  </data>
+  <data name="CradleNotCompletelyLoaded" xml:space="preserve">
+    <value>Чекмеджето може да е заседнало.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>Изглежда че чекмеджето не е напълно вдигнато след фазата на зареждане.</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>Изглежда че чекмеджето не е напълно извадено от повдигача след фазата на разтоварване.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>Сензорът на палчето е неактивено след операция по депозиране.</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>Сензорите за наличие на повдигача са неактивни след операция по товарене.</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Ако проблем не изчезне се свърж с отдел обслуж клиенти</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Проверете дали аварийните бутони са изключени и дали всички сензори за безопасност са деактивирани.</value>
+  </data>
+  <data name="LoadUnitDestinationCell" xml:space="preserve">
+    <value>Проверете дали целевата клетка на чекмеджето в базата данни е правилно конфигурирана</value>
+  </data>
+  <data name="LoadUnitElevator" xml:space="preserve">
+    <value>Проверете дали люлката за повдигач е празна. Проверете правилно функциониране на сензори за наличие на чекмедж на люлката.</value>
+  </data>
+  <data name="LoadUnitSourceDb" xml:space="preserve">
+    <value>Проверете дали Изходта поз на чекмеджето в базата данни е правилно конфигурирана</value>
+  </data>
+  <data name="NoLoadUnitInSource" xml:space="preserve">
+    <value>Уверете се че в отделто има чекмедже и че сензорите за наличие функционират правилно</value>
+  </data>
+  <data name="LoadUnitNotRemoved" xml:space="preserve">
+    <value>Ако чекмедже е било извадено проверете сензори наличие чекмедже в отдел в противен случай извадете чекмедже от отдел.</value>
+  </data>
+  <data name="LoadUnitDestinationBay" xml:space="preserve">
+    <value>Проверете дали отделто за местоназначение чекмедже наистина е празно. Проверете дали сензори за наличие на чекмеджета в отдел функционират правилно.</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Избраното чекмедже не е налично. Проверете номера на поставеното чекмедже и логическата поз на чекмеджето.</value>
+  </data>
+  <data name="LoadUnitNotLoaded" xml:space="preserve">
+    <value>Избраното чекмедже се появява в базата данни но не се зарежда в склада. Проверете конфигурацията на базата данни.</value>
+  </data>
+  <data name="LoadUnitSourceBay" xml:space="preserve">
+    <value>Проверете дали чекмедже действително се намира в начално отдел. Проверете дали сензори за наличие на чекмеджета в отдел функционират правилно.</value>
+  </data>
+  <data name="LoadUnitSourceCell" xml:space="preserve">
+    <value>Проверете дали началната клетката на чекмеджета в базата данни е правилно конфигурирана</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>Ниско ниво натоварено отдел.</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Невалидни сензори присъствие</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>Наличие на борда на повдигач с логически разтоварен повдигач.</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>Несъгласувано състояние сензор. Сензор палче при нулева стойност е неактивено.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>Несъгласувано състояние сензор. Сензорът за нула на отделто не е активен.</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>Заето ниво високия отделен</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>Сензорът за нулево палче е активен заедно със сензорите за наличие на повдигач на борда.</value>
+  </data>
+  <data name="LoadUnitWeightExceeded" xml:space="preserve">
+    <value>Разтоварете чекмедж отдел и отстр излишна тежест. След това отново включете автоматичен режим.</value>
+  </data>
+  <data name="LoadUnitShutterClosed" xml:space="preserve">
+    <value>клапа не е в отворено полож. Проверете състояние на сензори.</value>
+  </data>
+  <data name="LoadUnitShutterOpen" xml:space="preserve">
+    <value>клапа не е в затворено полож. Проверете състояние сензори.</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>Грешка местоназначение на оста под минималното ниво. Проверете параметри на машината.</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>отделто вече има изпълнена команда и не може да приеме друга</value>
+  </data>
+  <data name="DestinationOverUpperBound" xml:space="preserve">
+    <value>Грешка на местоназначението на оста над максимално ниво. Проверете параметри машина.</value>
+  </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>Грешка работа с входно-изходно устройство или при изпълн на команда.</value>
+  </data>
+  <data name="LoadUnitPresentInCell" xml:space="preserve">
+    <value>Чекмедже вече налично в клетка.</value>
+  </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>Машината не може да приеме заявената мисия поради невалиден режим на машината.</value>
+  </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>Прекъсната е предпазната бариера. Изчистете района и опитайте отново.</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>Натиснат е авариен (гъбен) бутон. Проверете състояние и опитайте отново.</value>
+  </data>
+  <data name="LoadUnitOtherBay" xml:space="preserve">
+    <value>Чекмедже вече налично в друго отделен.</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>Ниво ниско отделен празно</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>Празно отдел на високо ниво. Проверете дали чекмеджето е правилно поставено и не се е преместило към машината. Проверете дали лостът на сензора за наличие на се е заклещил.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>За това отдел вече има стартирана мисия.</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>За това чекмедже вече има стартирана мисия.</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>Вече има мисия която се изпълнява за този вид мисия.</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>Няма открити грешки.</value>
+  </data>
+  <data name="LoadUnitWeightTooLow" xml:space="preserve">
+    <value>Теглот чекмедже по-ниско от очаквано. След това отново включете автом режим.</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>Превишена е граница общо тегло машина. Проверете състояние зареждане на машината и нейните чекмеджета.</value>
+  </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>Складът е пълен и не е възможно да се определи свободна клетка за избраното чекмедже.</value>
+  </data>
+  <data name="LoadUnitMissingOnBay" xml:space="preserve">
+    <value>Проверете идентифик чекмедже в отдел. Проверете дали сензори наличие чекмедже в отдел функционират правилно. Превключете машина в режим Автомат.</value>
+  </data>
+  <data name="LoadUnitMissingOnElevator" xml:space="preserve">
+    <value>Проверете идентификатора на чекмедже повдигач. Проверете дали сензорите за наличие на чекмеджетатна подемника функционират правилно. Превключете машинат режим Автом.</value>
+  </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>Проблем със свързването на един или повече инвертори. Проверете състояние на Ethernet връзките.</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>Грешка при свързването с I/O устройство. Проверете състояние на Ethernet връзките.</value>
+  </data>
+  <data name="LaserConnectionError" xml:space="preserve">
+    <value>Грешка при свързването на лазера. Проверете състояние на Ethernet връзките.</value>
+  </data>
+  <data name="InvalidAxisAccelerationConfiguration" xml:space="preserve">
+    <value>Ускорение на движение оста {0} \1} е невалидно: Ускорение празен товар по-ниско от ускорение при пълен товар</value>
+  </data>
+  <data name="InvalidAxisSpeedConfiguration" xml:space="preserve">
+    <value>Скор {0} движ оста {1} невалидна: Скорост празен товар по-ниска от скорост пълен товар</value>
+  </data>
+  <data name="AutomaticRestoreNotAllowed" xml:space="preserve">
+    <value>Проверка на сензорите за наличие на повдигача и отделто</value>
+  </data>
+  <data name="DestinationTypeNotValid" xml:space="preserve">
+    <value>Типът на местоназначение е невалиден</value>
+  </data>
+  <data name="LoadUnitUndefinedBottom" xml:space="preserve">
+    <value>поз долно отдел не е определена</value>
+  </data>
+  <data name="LoadUnitUndefinedUpper" xml:space="preserve">
+    <value>Не е определена поз горно отдел</value>
+  </data>
+  <data name="MissionTypeNotValid" xml:space="preserve">
+    <value>Типът на мисия е невалиден</value>
+  </data>
+  <data name="MoveBayChainNotAllowed" xml:space="preserve">
+    <value>Разтовар чекмедже отдел отстранете излишна тежест. След като приключите следвайте инструкции за аларма.</value>
+  </data>
+  <data name="ResumeCommandNotValid" xml:space="preserve">
+    <value>Команда повторно влизане от поемане невалидна</value>
+  </data>
+  <data name="CellLogicallyOccupied" xml:space="preserve">
+    <value>Грешка при актуализиране на архив клетка. Една или повече клетки местоназначение са логически заети</value>
+  </data>
+  <data name="ConditionsNotMetForHoming" xml:space="preserve">
+    <value>Проверете дали палчето е на нула или дали чекмеджето е напълно натоварено върху подемника. Също така проверете дали клапа е затворена.</value>
+  </data>
+  <data name="LoadUnitHeightFromBayExceeded" xml:space="preserve">
+    <value>Намалете височина материал в чекмедже. След това отново включете автоматичен режим.</value>
+  </data>
+  <data name="LoadUnitShutterInvalid" xml:space="preserve">
+    <value>Клапа не е в затворено или отворено полож. Проверете състояние сензори.</value>
+  </data>
+  <data name="DestinationBayNotCalibrated" xml:space="preserve">
+    <value>отдел за местоназн без калибр.</value>
+  </data>
+  <data name="FirstTestFailed" xml:space="preserve">
+    <value>Тестът с първото чекмедже не успя: не всички клетки бяха тествани.</value>
+  </data>
+  <data name="WarehouseNotEmpty" xml:space="preserve">
+    <value>Склад не е празен. Изпитване натоварване на първо чекмедже не е разрешено.</value>
+  </data>
+  <data name="SensorZeroBayNotActiveAtEnd" xml:space="preserve">
+    <value>Сензорът за нулевия отдел не е активен в края на позиционирането</value>
+  </data>
+  <data name="SecurityLeftSensorWasTriggered" xml:space="preserve">
+    <value>Левият страничен панел е отворен. Проверете дали панелите на машината са правилно поставени и затворени.</value>
+  </data>
+  <data name="SecurityRightSensorWasTriggered" xml:space="preserve">
+    <value>Десният страничен панел е отворен. Проверете дали панелите на машината са правилно поставени и затворени.</value>
+  </data>
+  <data name="VerticalPositionChanged" xml:space="preserve">
+    <value>вертикалто полож на повдигача се промени след стартирането на машината.</value>
+  </data>
+  <data name="FullTestFailed" xml:space="preserve">
+    <value>Пълният тест не е успешен: не са изпълнени всички очаквани цикли.</value>
+  </data>
+  <data name="InvalidBay" xml:space="preserve">
+    <value>Избраното отдел е невалидно</value>
+  </data>
+  <data name="InvalidPositionBay" xml:space="preserve">
+    <value>Избраната поз на отделто е невалидна</value>
+  </data>
+  <data name="ElevatorOverrunDetected" xml:space="preserve">
+    <value>Повдигач е достигнал сензор превишав на хода в горна част</value>
+  </data>
+  <data name="ExternalBayOccupied" xml:space="preserve">
+    <value>външто отдел е заето</value>
+  </data>
+  <data name="ExternalBayEmpty" xml:space="preserve">
+    <value>външ отдел празно</value>
+  </data>
+  <data name="InvalidAxisAccelerationRange" xml:space="preserve">
+    <value>Ускорен движен оста {0} \1} по-ниско от ускорение пълно натоварване или по-високо от ускорение празно натоварване</value>
+  </data>
+  <data name="InvalidAxisSpeedRange" xml:space="preserve">
+    <value>Скоро движ оста {0} \1} по-ниска от скор пълно натов или по-висок скорост празно натоварване</value>
+  </data>
+  <data name="WmsError" xml:space="preserve">
+    <value>WMS отговори с код за грешка</value>
+  </data>
+  <data name="LoadUnitHeightToBayExceeded" xml:space="preserve">
+    <value>Чекмед е или твърде високо или твърде ниско за това отдел. Вземете го с друго отдел или преместете ръчно</value>
+  </data>
+  <data name="ElevatorUnderrunDetected" xml:space="preserve">
+    <value>Повдигач е достигнал сензор превишаване хода в долна част</value>
+  </data>
+  <data name="BayPositionDisabled" xml:space="preserve">
+    <value>поз отдел е деактивирана</value>
+  </data>
+  <data name="MoveExtBayNotAllowed" xml:space="preserve">
+    <value>Грешка на сензор наличие в отдел</value>
+  </data>
+  <data name="StartPositioningBlocked" xml:space="preserve">
+    <value>Движен застой от твърде дълго време</value>
+  </data>
+  <data name="InverterCommandTimeout" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="IoDeviceCommandTimeout" xml:space="preserve">
+    <value>Осите не могат да се сменят</value>
+  </data>
+  <data name="InverterErrorSyntaxError2" xml:space="preserve">
+    <value>Моментна грешка. Ако проблемът продължава изключете машина и включете отново след 15 секунди.</value>
+  </data>
+  <data name="TelescopicBayError" xml:space="preserve">
+    <value>Телескопично отдел не е на мястото си. Позиционирай правилно за да възстановите автоматични движения</value>
+  </data>
+  <data name="LoadUnitTareError" xml:space="preserve">
+    <value>Коригиране параметър за тара на чекмедже</value>
+  </data>
+  <data name="VerticalZeroHighError" xml:space="preserve">
+    <value>Сензорът за нула на вертикалната ос е активен във висок поз. Необходимо е вертикал калибр</value>
+  </data>
+  <data name="VerticalZeroLowError" xml:space="preserve">
+    <value>Сензорът за нула на вертикалната ос не е активен в ниска поз. Необходимо е вертикал калибр</value>
+  </data>
+  <data name="LoadUnitHeightFromBayTooLow" xml:space="preserve">
+    <value>Измерена височина по-ниска от минимална. Проверка на подравняване и чистота на измервателните бариери</value>
+  </data>
+  <data name="PreFireAlarm" xml:space="preserve">
+    <value>Активен сензор предварит аларма пожар</value>
+  </data>
+  <data name="FireAlarm" xml:space="preserve">
+    <value>Активен сензор за пожарна аларма</value>
+  </data>
+  <data name="BackupDatabaseOnServer" xml:space="preserve">
+    <value>Грешка копиране на базата данни</value>
+  </data>
+  <data name="ZeroSensorErrorAfterHoming" xml:space="preserve">
+    <value>Сензорът за нула по хоризонталната ос не е активен по време на операцията за калибр</value>
+  </data>
+  <data name="IoResetSecurityTimeout" xml:space="preserve">
+    <value>Командата за запалване не може да бъде изпълнена. Проверка на устройствата за безопасност и сензорите на страничния панел</value>
+  </data>
+  <data name="ProfileResolutionFail" xml:space="preserve">
+    <value>Измервателна бариера не е калибрирана</value>
+  </data>
+</root>

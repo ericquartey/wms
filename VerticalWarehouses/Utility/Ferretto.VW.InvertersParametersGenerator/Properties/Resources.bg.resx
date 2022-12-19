@@ -117,49 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="Close" xml:space="preserve">
+    <value>Затвор</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="Next" xml:space="preserve">
+    <value>Следващ</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Отвори папка</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="VertimagConfigurationFile" xml:space="preserve">
+    <value>Конфиг файлове на Vertimag</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="OpenFile" xml:space="preserve">
+    <value>Отв файл</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="InvertersFolder" xml:space="preserve">
+    <value>Инвертори за папки</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="InvertersParametersGeneratorTitle" xml:space="preserve">
+    <value>Файл генериране параметри на инвертори</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Import" xml:space="preserve">
+    <value>Внос</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="NoParametersFilesFound" xml:space="preserve">
+    <value>Не е намерен файл с параметри</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="InverterTypeParametersConfiguration" xml:space="preserve">
+    <value>Инвертор [{0}] тип '{1}' конфигурация на параметри</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="TotalParameters" xml:space="preserve">
+    <value>общи параметри {0}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="InverterParametersId" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="ImportConfigurationFile" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="InverterParametersDataset" xml:space="preserve">
+    <value>Набданн</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="InverterParametersType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="InverterParametersValue" xml:space="preserve">
+    <value>Стойн</value>
+  </data>
+  <data name="IsReadOnly" xml:space="preserve">
+    <value>Само четене</value>
+  </data>
+  <data name="EsportConfiguration" xml:space="preserve">
+    <value>Експорт на конфигурация</value>
+  </data>
+  <data name="ExportFile" xml:space="preserve">
+    <value>Експ файлове</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>Без ред</value>
+  </data>
+  <data name="ExportedSuccessfully" xml:space="preserve">
+    <value>Експортът е завършен успешно.</value>
+  </data>
+  <data name="SaveFileConfiguration" xml:space="preserve">
+    <value>Записване конфигурацион файл</value>
+  </data>
+  <data name="ConfigurationFile" xml:space="preserve">
+    <value>Файлове конфиг</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Предишна</value>
+  </data>
+  <data name="ImportConfiguration" xml:space="preserve">
+    <value>Импортиране на конфигурация</value>
+  </data>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Избере един файл</value>
+  </data>
+  <data name="InvertersParametersFolder" xml:space="preserve">
+    <value>Папка с параметри инвертори</value>
+  </data>
+  <data name="ChooseConfigurationFile" xml:space="preserve">
+    <value>Избери файл за конфиг</value>
+  </data>
+  <data name="ConfigurationFolder" xml:space="preserve">
+    <value>Папка за конфиг</value>
+  </data>
+  <data name="FoldersDoesNotExist" xml:space="preserve">
+    <value>Папка не съществува</value>
+  </data>
+  <data name="FileNotValidOrNotInserted" xml:space="preserve">
+    <value>Невалиден или невмъкнат файл</value>
+  </data>
+  <data name="FileNotSaved" xml:space="preserve">
+    <value>Незаписан файл</value>
+  </data>
+  <data name="SearchPattern" xml:space="preserve">
+    <value>Файл с модели</value>
+  </data>
+  <data name="VertimagInverterConfigurationFile" xml:space="preserve">
+    <value>Конфигурационен файл инвертора Vertimag</value>
   </data>
 </root>

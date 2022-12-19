@@ -117,49 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="LowerBoundPositionOutOfRange" xml:space="preserve">
+    <value>Долната поз е извън минималната граница.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="TheNumberOfTestCyclesMustBeStrictlyPositive" xml:space="preserve">
+    <value>Броя цикли на изпитв трябва да бъде задълж положителна.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition" xml:space="preserve">
+    <value>Горната гранична поз трябва да бъде задълж по-голяма от долната гранична поз.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="UpperBoundPositionMustBeStrictlyPositive" xml:space="preserve">
+    <value>Горната гранична поз трябва да е задълж положителна.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
-  </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
-  </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
-  </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
-  </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
-  </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="UpperBoundPositionOutOfRange" xml:space="preserve">
+    <value>Горната поз е извън максимта граница.</value>
   </data>
 </root>

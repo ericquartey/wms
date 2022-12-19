@@ -117,49 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="Abort" xml:space="preserve">
+    <value>Отмяна</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="MainWindowTitle" xml:space="preserve">
+    <value>Инсталиране софтуера Vertimag</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="UnknownVersion" xml:space="preserve">
+    <value>Неизвестна</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="VertimagSoftwareInstallation" xml:space="preserve">
+    <value>Инсталиране софтуера Vertimag</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ServiceVersion" xml:space="preserve">
+    <value>Версия на фоновата услуга</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>Версия на потреб интерфейс</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="SelectVertimagConfigurationFile" xml:space="preserve">
+    <value>Изберете Конфигя файл на Vertimag</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="VertimagConfigurationFiles" xml:space="preserve">
+    <value>Конфиг файлове на Vertimag</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="AllFiles" xml:space="preserve">
+    <value>Всички файл</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="MasterBay" xml:space="preserve">
+    <value>Основен отдел</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="SlaveBay" xml:space="preserve">
+    <value>Вторичен отдел</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="SelectedConfigurationFile" xml:space="preserve">
+    <value>Файлове за конфиг</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="NoFileSelected" xml:space="preserve">
+    <value>Не е избран файл</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="SelectFile" xml:space="preserve">
+    <value>Изберете файл</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="MasterBayAddress" xml:space="preserve">
+    <value>Адрес Основно отдел</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Заряд</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Продълж</value>
+  </data>
+  <data name="BaySelection" xml:space="preserve">
+    <value>Избор на отдел</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Модел</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Сериен Номер</value>
+  </data>
+  <data name="MaximumGrossCapacity" xml:space="preserve">
+    <value>максим брутна товарон</value>
+  </data>
+  <data name="KilogramsValueFormat" xml:space="preserve">
+    <value>{0} kg</value>
+  </data>
+  <data name="SelectNumberOfThisBay" xml:space="preserve">
+    <value>Изберете номера на този отдел</value>
+  </data>
+  <data name="GoBack" xml:space="preserve">
+    <value>Вър се назад</value>
   </data>
 </root>

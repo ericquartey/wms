@@ -117,49 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Неправилно формулирана заявка.</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="InternalServerErrorTitle" xml:space="preserve">
+    <value>вътр грешка на сървър.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="MaintenanceStateExpired" xml:space="preserve">
+    <value>Изтекъл статус поддръжка</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="MaintenanceStateExpiring" xml:space="preserve">
+    <value>Изтичащ статус в поддръжка</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="NoEntityWithTheSpecifiedIdExists" xml:space="preserve">
+    <value>Няма субект с посочения идентификатор '{0}'.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Елемент не е намерен.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="ServiceIsInitializing" xml:space="preserve">
+    <value>Услугата е в начална фаза.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="ServiceStartupSequenceCompleted" xml:space="preserve">
+    <value>Услугата е завършила фазата на инициализация.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="UnprocessableEntityTitle" xml:space="preserve">
+    <value>Невъзможно да се обработи заявка предвид текущо състояние.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="ValueCannotBeNullOrWhiteSpace" xml:space="preserve">
+    <value>Стойн не може да бъде нула или съдържа само интервали.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="DataEntryError" xml:space="preserve">
+    <value>Грешка въвеждане данни</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="IntrusionDetected" xml:space="preserve">
+    <value>Намеса открита от бариера за контрол на височина</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>Невалидни сензори за присъствие: Нулев сензор: {0} напълно вграден: {1}</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="FindZeroFullElevator" xml:space="preserve">
+    <value>Не е възможно да се намери нулата с пълен повдигач</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="HomingShutterOpen" xml:space="preserve">
+    <value>калибрто при отворена клапа не е възможно</value>
+  </data>
+  <data name="FindZeroInvalidBayZero" xml:space="preserve">
+    <value>Не може да бъде намерена нула: Невалиден сензор за нулево отдел</value>
   </data>
 </root>

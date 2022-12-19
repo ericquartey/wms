@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,230 +117,229 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="Add" xml:space="preserve">
+    <value>Добавяне</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
-  </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Spegni</value>
+    <value>Назад</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Annulla</value>
+    <value>Отмяна</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Логв</value>
   </data>
   <data name="Next" xml:space="preserve">
-    <value>Successivo</value>
+    <value>Следващ</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Запаз</value>
+  </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>Изключ</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Errore</value>
+    <value>Грешка</value>
   </data>
   <data name="Debug" xml:space="preserve">
-    <value>Debug</value>
+    <value>ОтГр</value>
   </data>
   <data name="FilePath" xml:space="preserve">
-    <value>Percorso file</value>
+    <value>Път на файла</value>
   </data>
   <data name="ConfirmMachineRun" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in marcia?</value>
+    <value>Сигурни ли сте че искате да включите машината?</value>
   </data>
   <data name="MachineRun" xml:space="preserve">
-    <value>Marcia</value>
+    <value>Ход</value>
   </data>
   <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
-    <value>Sei sicuro di voler mettere la macchina in automatico e ripristinare i movimenti in corso?</value>
+    <value>Сигурни ли сте искате да включите машина на автомат режим и да нулирате текущи движения?</value>
   </data>
   <data name="Automatic" xml:space="preserve">
-    <value>Automatico</value>
+    <value>Автоматич</value>
   </data>
   <data name="ShuttingDown" xml:space="preserve">
-    <value>Spegnimento ...</value>
+    <value>Изключв на ...</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Не</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Sì</value>
+    <value>Да</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Chiudi</value>
+    <value>Затвор</value>
   </data>
   <data name="ChangeTheme" xml:space="preserve">
-    <value>Cambia tema</value>
+    <value>Промян тема</value>
   </data>
   <data name="BayNumber" xml:space="preserve">
-    <value>Baia</value>
+    <value>Отд</value>
   </data>
   <data name="DaysAgo" xml:space="preserve">
-    <value>{0:0} giorni fa</value>
+    <value>преди {0:0} дни</value>
   </data>
   <data name="ErrorCommunicatingWithServices" xml:space="preserve">
-    <value>Errore di comunicazione con i servizi.</value>
+    <value>Грешка в комуникацията с услугите.</value>
   </data>
   <data name="HoursAgo" xml:space="preserve">
-    <value>{0:0} ore fa</value>
+    <value>пр {0:0} час</value>
   </data>
   <data name="ManualMode" xml:space="preserve">
-    <value>Manuale</value>
+    <value>Ръчно</value>
   </data>
   <data name="MinutesAgo" xml:space="preserve">
-    <value>{0:0} minuti fa</value>
+    <value>{0:0} преди мин</value>
   </data>
   <data name="Now" xml:space="preserve">
-    <value>Adesso</value>
+    <value>Сега</value>
   </data>
   <data name="SerialNumber" xml:space="preserve">
-    <value>Numero Seriale:</value>
+    <value>Сериен номер:</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Versione {0}</value>
+    <value>Версия \{0\}</value>
   </data>
   <data name="WarehouseSide_Back" xml:space="preserve">
-    <value>Posteriore</value>
+    <value>Заден</value>
   </data>
   <data name="WarehouseSide_Front" xml:space="preserve">
-    <value>Anteriore</value>
+    <value>Преден</value>
   </data>
   <data name="Bay" xml:space="preserve">
-    <value>Baia</value>
+    <value>Отд</value>
   </data>
   <data name="BayOneName" xml:space="preserve">
-    <value>Uno</value>
+    <value>Едн</value>
   </data>
   <data name="BayThreeName" xml:space="preserve">
-    <value>Tre</value>
+    <value>Три</value>
   </data>
   <data name="BayTwoName" xml:space="preserve">
-    <value>Due</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Inizia</value>
-  </data>
-  <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>Две</value>
   </data>
   <data name="SwitchToAutomatic" xml:space="preserve">
-    <value>Passa in automatico</value>
+    <value>Автоматич превключв</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Старт</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Стоп</value>
   </data>
   <data name="TargetNullValue" xml:space="preserve">
     <value>-</value>
   </data>
   <data name="Devices" xml:space="preserve">
-    <value>Dispositivi</value>
+    <value>Устройства</value>
   </data>
   <data name="DiagnosticDetailTitle" xml:space="preserve">
     <value>DEBUG</value>
   </data>
   <data name="FiniteMachineState" xml:space="preserve">
-    <value>Macchina a stati finiti</value>
+    <value>Машина крайно състояние</value>
   </data>
   <data name="Inverter" xml:space="preserve">
-    <value>Inverter</value>
+    <value>Инвертор</value>
   </data>
   <data name="IODrive" xml:space="preserve">
     <value>IO Drive</value>
   </data>
   <data name="StatusDebug" xml:space="preserve">
-    <value>Stato:</value>
+    <value>Стат:</value>
   </data>
   <data name="NoRows" xml:space="preserve">
-    <value>Nessuna riga presente nell'elenco</value>
+    <value>В списъка няма ред</value>
   </data>
   <data name="WmsDisabled" xml:space="preserve">
-    <value>Disabilitato</value>
+    <value>Деактивирано</value>
   </data>
   <data name="WmsEnabled" xml:space="preserve">
-    <value>Abilitato WMS</value>
+    <value>Включено WMS</value>
   </data>
   <data name="DateFormatComplete" xml:space="preserve">
     <value>{0:dd.MM.yyyy HH:mm}</value>
   </data>
   <data name="AreaMachineUnknow" xml:space="preserve">
-    <value>L'area della macchina è sconosciuta</value>
+    <value>Районът на машината е неизвестен</value>
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+    <value>Този конвер може да конвертира само стойност от тип Visibility.</value>
   </data>
   <data name="IdLoadingUnitNotExists" xml:space="preserve">
-    <value>L'identificativo del cassetto non esiste.</value>
+    <value>Идентификатор на чекмедже не съществува.</value>
   </data>
   <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
-    <value>La proprietà '{0}' del modello di vista '{1}' deve contenere un identificativo cassetto valido.</value>
+    <value>Свойство "{0}" на шаблона на изгледа "\1}" трябва да съдържа валиден идентификатор на чекмедже.</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Синтаксис за NameOf е Type={x:Type className&gt;}.&lt;</value>
   </data>
   <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
-    <value>Il parametro non può essere nullo o vuoto.</value>
+    <value>Параметър не може нулев или празен.</value>
   </data>
   <data name="DateFormatDayNumber" xml:space="preserve">
     <value>{0: dd.MM.yyyy}</value>
   </data>
   <data name="SwitchToManual" xml:space="preserve">
-    <value>Passa in manuale</value>
+    <value>Превкл ръчно упр</value>
   </data>
   <data name="BackShutterTest" xml:space="preserve">
-    <value>Test in corso... Impossibile uscire dalla pagina</value>
+    <value>тест е в ход... Невъзм излизане от страница</value>
   </data>
   <data name="SocketLinkEnabled" xml:space="preserve">
-    <value>Abilitato Socket Link</value>
+    <value>Връзка Контакт актив</value>
   </data>
   <data name="SocketLinkPolling" xml:space="preserve">
-    <value>Intervallo di polling</value>
-    <comment>Intervallo di polling in secondi (0 = off)</comment>
+    <value>Интервал на допитване</value>
   </data>
   <data name="SocketLinkPort" xml:space="preserve">
-    <value>Porta</value>
+    <value>Врата</value>
   </data>
   <data name="Connectivity" xml:space="preserve">
-    <value>Connettività</value>
+    <value>Свързаност</value>
   </data>
   <data name="Present" xml:space="preserve">
-    <value>Presente</value>
+    <value>Налично</value>
   </data>
   <data name="NotPresent" xml:space="preserve">
-    <value>Non Presente</value>
+    <value>Неналично</value>
   </data>
   <data name="TokenStatus" xml:space="preserve">
-    <value>Stato Gettone</value>
-  </data>
-  <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>Sintassi per NameOf è Type={x:Type className&gt;}.&lt;</value>
+    <value>Статус Tокен</value>
   </data>
   <data name="ForbiddenOperation" xml:space="preserve">
-    <value>Operazione non permessa</value>
-  </data>
-  <data name="LotManagedProduct" xml:space="preserve">
-    <value>Specificare il lotto per questo articolo</value>
-  </data>
-  <data name="BadRequestTitle" xml:space="preserve">
-    <value>Errore WMS: Richiesta non corretta</value>
-  </data>
-  <data name="TimeoutMs" xml:space="preserve">
-    <value>Timeout (ms)</value>
-  </data>
-  <data name="SocketLinkEndOfLine" xml:space="preserve">
-    <value>Fine stringa LF</value>
-  </data>
-  <data name="Confirm" xml:space="preserve">
-    <value>Conferma</value>
-  </data>
-  <data name="FindZeroElevator" xml:space="preserve">
-    <value>Trova lo zero dell'elevatore</value>
-  </data>
-  <data name="DelayPutOperation" xml:space="preserve">
-    <value>Attesa dopo versamento (ms)</value>
-  </data>
-  <data name="PrinterTest" xml:space="preserve">
-    <value>Prova Stampante</value>
+    <value>Операция не е разрешена</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>ok</value>
   </data>
+  <data name="LotManagedProduct" xml:space="preserve">
+    <value>Посочете партида за този артикул</value>
+  </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Грешка WMS: Неправилно запитване</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>ВремПр (ms)</value>
+  </data>
   <data name="SocketLinkTimeout" xml:space="preserve">
-    <value>Timeout (ms)</value>
+    <value>ВремПр (ms)</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Потвържд</value>
+  </data>
+  <data name="SocketLinkEndOfLine" xml:space="preserve">
+    <value>Край на низ LF</value>
+  </data>
+  <data name="FindZeroElevator" xml:space="preserve">
+    <value>Намерете нулата на повдигача</value>
+  </data>
+  <data name="DelayPutOperation" xml:space="preserve">
+    <value>Изчакв след изливане (ms)</value>
+  </data>
+  <data name="PrinterTest" xml:space="preserve">
+    <value>Тест на принтер</value>
   </data>
 </root>

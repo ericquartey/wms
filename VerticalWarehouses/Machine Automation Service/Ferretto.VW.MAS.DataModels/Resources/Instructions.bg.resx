@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="AirFilters" xml:space="preserve">
+    <value>Въздуш филт</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="Bearings" xml:space="preserve">
+    <value>Лагери</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="Belt" xml:space="preserve">
+    <value>Ремък</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="CableChain" xml:space="preserve">
+    <value>Кабелна верига</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="Cables" xml:space="preserve">
+    <value>Управл кабел</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="Chain" xml:space="preserve">
+    <value>Верига</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="Contactors" xml:space="preserve">
+    <value>Контактори</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="FirstCell" xml:space="preserve">
+    <value>Контрол клетки</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="Guides" xml:space="preserve">
+    <value>Ръков</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="Lamps" xml:space="preserve">
+    <value>Ламп индикат</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="Link" xml:space="preserve">
+    <value>Съедин</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="MicroSwitches" xml:space="preserve">
+    <value>Микропревк</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="MotorChain" xml:space="preserve">
+    <value>Верига двигат</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="MotorGearOil" xml:space="preserve">
+    <value>Масло мотор предав</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="MotorGear" xml:space="preserve">
+    <value>Моторредуктор</value>
+  </data>
+  <data name="OpticalSensors" xml:space="preserve">
+    <value>Оптични сензор</value>
+  </data>
+  <data name="PinPawlFasteners" xml:space="preserve">
+    <value>Съединител щифтове палче</value>
+  </data>
+  <data name="PlasticCams" xml:space="preserve">
+    <value>Пластмасо ножчета</value>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Датчици</value>
+  </data>
+  <data name="Shaft" xml:space="preserve">
+    <value>Вал</value>
+  </data>
+  <data name="Supports" xml:space="preserve">
+    <value>Носачи</value>
+  </data>
+  <data name="Wheels" xml:space="preserve">
+    <value>Контрастни колела</value>
+  </data>
+  <data name="BayQuote" xml:space="preserve">
+    <value>Квоти отд</value>
+  </data>
+  <data name="Clean" xml:space="preserve">
+    <value>Чистота</value>
+  </data>
+  <data name="VaristorsAndRelays" xml:space="preserve">
+    <value>Варисто и релета</value>
+  </data>
+  <data name="MotorBelt" xml:space="preserve">
+    <value>Задвижващ ремък</value>
   </data>
 </root>

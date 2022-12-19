@@ -117,49 +117,82 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="BayLightActivation" xml:space="preserve">
+    <value>Активиране на осветл отдел</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="CarterSensorLeft" xml:space="preserve">
+    <value>Сензор на картера отляво</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="CarterSensorRight" xml:space="preserve">
+    <value>Десен сензор на картера</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="EmergencyPB" xml:space="preserve">
+    <value>Авариен бутон тип </value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="EnableRunConsole" xml:space="preserve">
+    <value>Разрешаване на стартирането от конзола</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="FeedbackElevatorChainMotorSelected" xml:space="preserve">
+    <value>Избор двиг люлка (обр връзка)</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="FeedbackElevatorMotorSelected" xml:space="preserve">
+    <value>Избор двиг повдигача (обратна връзка)</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="InnerLightCurtain" xml:space="preserve">
+    <value>вътр светлинна бариера</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="HeightReadingActivation" xml:space="preserve">
+    <value>Активиране на отчит височ (бариера за измерване)</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="InverterFaultSignal" xml:space="preserve">
+    <value>Кумулативна повреда инвертор</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="IODeviceByID" xml:space="preserve">
+    <value>IO устройс {0:00}</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="IODeviceName" xml:space="preserve">
+    <value>Име IO устройс</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="LightCurtain" xml:space="preserve">
+    <value>Оптична бариера срещу проникв</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="LightCurtainCalibration" xml:space="preserve">
+    <value>калибр бариера</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="LowerBayBoxSensorPresence" xml:space="preserve">
+    <value>Сензор за наличие на долното чекмедже/междинен отдел</value>
+  </data>
+  <data name="MachineSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Наличие чекмедже люлка страна машина</value>
+  </data>
+  <data name="MotorElevatorChainSelection" xml:space="preserve">
+    <value>Избор двигател люлка</value>
+  </data>
+  <data name="MotorElevatorSelection" xml:space="preserve">
+    <value>Избор двигател повдигач</value>
+  </data>
+  <data name="OperatorSideElevatorChainBoxPresence" xml:space="preserve">
+    <value>Наличие чекмедже люлка страната оператор</value>
+  </data>
+  <data name="ResetSafetyFunction" xml:space="preserve">
+    <value>Функция безопас нулиране (300 ms импулс)</value>
+  </data>
+  <data name="RobotEndPicking" xml:space="preserve">
+    <value>Опция робот -бутон крайно събиране (или крайно събиране робот)</value>
+  </data>
+  <data name="RobotOptionMissionCompletedWarhouse" xml:space="preserve">
+    <value>Опция за робот - Мисия завършена склад</value>
+  </data>
+  <data name="RobotOptionWarhouseReadyFault" xml:space="preserve">
+    <value>Опция за робот - Склад за готов/неготов</value>
+  </data>
+  <data name="SafetyStatus" xml:space="preserve">
+    <value>Съст функция сигурност</value>
+  </data>
+  <data name="TrolleyHook" xml:space="preserve">
+    <value>Опция количка Прикачване количка</value>
+  </data>
+  <data name="UpperBayBoxSensorPresence" xml:space="preserve">
+    <value>Сензор наличие чекмедже в отдел</value>
   </data>
 </root>

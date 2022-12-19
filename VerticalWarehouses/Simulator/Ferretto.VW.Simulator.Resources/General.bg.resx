@@ -117,49 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="ControlWord" xml:space="preserve">
+    <value>Контрол дума</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="Input" xml:space="preserve">
+    <value>Вход</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="Inputs" xml:space="preserve">
+    <value>Входове</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="Output" xml:space="preserve">
+    <value>Изход</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="Outputs" xml:space="preserve">
+    <value>Изходи</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="Safety" xml:space="preserve">
+    <value>Сработили</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="ImportConfigurationCommand" xml:space="preserve">
+    <value>Конфигурац зареждане</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="SimulatorStarted" xml:space="preserve">
+    <value>Симулатор стартир</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="StartSimulatorCommand" xml:space="preserve">
+    <value>Стартир симулац</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="StatusWord" xml:space="preserve">
+    <value>Дума съст</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="StopSimulatorCommand" xml:space="preserve">
+    <value>Спиране симулаци</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="Title" xml:space="preserve">
+    <value>Симулатор VW</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="StartErrorGeneratorInverter" xml:space="preserve">
+    <value>Грешки инвертор SI</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="StopErrorGeneratorInverter" xml:space="preserve">
+    <value>НЯМА грешки инверт</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="StartErrorGeneratorIODevice" xml:space="preserve">
+    <value>грешки SI борда IO</value>
+  </data>
+  <data name="StopErrorGeneratorIODevice" xml:space="preserve">
+    <value>НЯМА греш IO борда</value>
   </data>
 </root>

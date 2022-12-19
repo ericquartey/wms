@@ -117,49 +117,67 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="ConnectionEstablished" xml:space="preserve">
+    <value>Свързване с установени услуги</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Връзката с Automation Service е изгубена в ход е възстан връзка...</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="ConnectionNotPossible" xml:space="preserve">
+    <value>Невъзможно свързване с услугата за автоматизация</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Невалидни пълномощия.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="ModuleLoaded" xml:space="preserve">
+    <value>Заредена форма.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="PasswordEnter" xml:space="preserve">
+    <value>Въведете парола</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="PasswordIsTooShort" xml:space="preserve">
+    <value>Паролата е твърде кратка.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="PasswordMustBeSpecified" xml:space="preserve">
+    <value>Трябва да се посочи паролата.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="ServiceInitialization" xml:space="preserve">
+    <value>Услугите се инициализират</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="TempKey" xml:space="preserve">
+    <value>Временен ключ: {0}</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="UnableToAuthenticateWithTheBarcode" xml:space="preserve">
+    <value>Баркодът не съответства на регистриран потребител.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="UserNameMustBeSpecified" xml:space="preserve">
+    <value>Трябва да се посочи потребителско име.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="UnableToAuthenticateWithTheCard" xml:space="preserve">
+    <value>Картата не е свързана с регистриран потребител.</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="LoggingInUsingCard" xml:space="preserve">
+    <value>Влиза чрез четене на карти ...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="AuthenticatingUser" xml:space="preserve">
+    <value>Продълж удостов на потребителя ...</value>
+  </data>
+  <data name="TokenInserted" xml:space="preserve">
+    <value>Поставяне на токена. удостов е в ход ...</value>
+  </data>
+  <data name="TokenRemoved" xml:space="preserve">
+    <value>Токен премахнат.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheToken" xml:space="preserve">
+    <value>Неуспешно удостоверяване чрез токена.</value>
+  </data>
+  <data name="UnableToAuthenticateWithTheTokenBecauseWmsIsNotReachable" xml:space="preserve">
+    <value>Невъзможно е да се удостовери с токън тъй като WMS не е достъпна.</value>
+  </data>
+  <data name="AutoLogoutServiceUser" xml:space="preserve">
+    <value>Потребител сесия 'обслуж' изтекла</value>
+  </data>
+  <data name="NoAccessLevel" xml:space="preserve">
+    <value>Невалидно или неопределено ниво на достъп</value>
   </data>
 </root>

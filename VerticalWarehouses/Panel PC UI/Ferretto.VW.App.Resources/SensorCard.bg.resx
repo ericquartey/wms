@@ -117,49 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="Back" xml:space="preserve">
+    <value>Следв</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="Drawer" xml:space="preserve">
+    <value>Чекмедже</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="Elevator" xml:space="preserve">
+    <value>Повдигач</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="Extra" xml:space="preserve">
+    <value>Допъл</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="Front" xml:space="preserve">
+    <value>Пред</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="Height" xml:space="preserve">
+    <value>Височ</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="Horizontal" xml:space="preserve">
+    <value>хоризонтал (мм)</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="NetWeight" xml:space="preserve">
+    <value>Нетн тегло</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="Position" xml:space="preserve">
+    <value>поз</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="Vertical" xml:space="preserve">
+    <value>вертикал (мм)</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="Weight" xml:space="preserve">
+    <value>Тегл</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="Zero" xml:space="preserve">
+    <value>Нула</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="Internal" xml:space="preserve">
+    <value>Вътр</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="External" xml:space="preserve">
+    <value>Външ</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="ExternalBlock" xml:space="preserve">
+    <value>--вън-.</value>
+  </data>
+  <data name="InternalBlock" xml:space="preserve">
+    <value>--вътр.</value>
   </data>
 </root>

@@ -117,49 +117,145 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="AccessoriesAlphaNumBarMenuDescription" xml:space="preserve">
+    <value>конфиг и проверка на буквено-цифровата лента</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="AccessoriesAlphaNumBarMenuSection1" xml:space="preserve">
+    <value>Параметри на конфигурацията</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="AccessoriesAlphaNumBarMenuSection2" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarMenuTitle" xml:space="preserve">
+    <value>Буквцифрова лента</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestArrow" xml:space="preserve">
+    <value>Стрелка</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestLed" xml:space="preserve">
+    <value>Led</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessage" xml:space="preserve">
+    <value>съобщ</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestMessageDefault" xml:space="preserve">
+    <value>Ferretto Group - тестово съобщ -</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestOffset" xml:space="preserve">
+    <value>поз</value>
+  </data>
+  <data name="AccessoriesAlphaNumBarTestText" xml:space="preserve">
+    <value>Текст</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuDescription" xml:space="preserve">
+    <value>конфиг и проверка на четеца за баркодове</value>
+  </data>
+  <data name="AccessoriesBarcodeReaderMenuTitle" xml:space="preserve">
+    <value>Четец на баркодове</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuDescription" xml:space="preserve">
+    <value>конфиг и проверка на четеца на знаци</value>
+  </data>
+  <data name="AccessoriesCardReaderMenuTitle" xml:space="preserve">
+    <value>Четец значки</value>
+  </data>
+  <data name="AccessoriesIpAddress" xml:space="preserve">
+    <value>Адрес IP</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuDescription" xml:space="preserve">
+    <value>конфиг и проверка на принтера за етикети</value>
+  </data>
+  <data name="AccessoriesLabelPrinterMenuTitle" xml:space="preserve">
+    <value>Принтер за етикети</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuDescription" xml:space="preserve">
+    <value>управл на лазерната конфигурация и тест на функционалността</value>
+  </data>
+  <data name="AccessoriesLaserPointerMenuTitle" xml:space="preserve">
+    <value>Лазер показалка</value>
+  </data>
+  <data name="AccessoriesLaserPointerXOffset" xml:space="preserve">
+    <value>отм по оста X</value>
+  </data>
+  <data name="AccessoriesLaserPointerYOffset" xml:space="preserve">
+    <value>отм на оста Y</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetLowerPosition" xml:space="preserve">
+    <value>Изместв ос Z (ниско отдел)</value>
+  </data>
+  <data name="AccessoriesLaserPointerZOffsetUpperPosition" xml:space="preserve">
+    <value>Изместв ос Z (висок ред)</value>
+  </data>
+  <data name="AccessoriesMenuName" xml:space="preserve">
+    <value>Меню аксесоари</value>
+  </data>
+  <data name="AccessoriesOff" xml:space="preserve">
+    <value>Изключ</value>
+  </data>
+  <data name="AccessoriesOn" xml:space="preserve">
+    <value>Достъп</value>
+  </data>
+  <data name="AccessoriesPort" xml:space="preserve">
+    <value>Врата</value>
+  </data>
+  <data name="AccessoriesSize" xml:space="preserve">
+    <value>Измерване</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuDescription" xml:space="preserve">
+    <value>конфиг и проверка на четец токени</value>
+  </data>
+  <data name="AccessoriesTokenReaderMenuTitle" xml:space="preserve">
+    <value>Четене на токени</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuDescription" xml:space="preserve">
+    <value>конфиг и проверка на скалата за броене</value>
+  </data>
+  <data name="AccessoriesWeightingScaleMenuTitle" xml:space="preserve">
+    <value>Скали за броене</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Отд</value>
+  </data>
+  <data name="BaysMenuName" xml:space="preserve">
+    <value>Меню Отд</value>
+  </data>
+  <data name="CellsMenuName" xml:space="preserve">
+    <value>Клетк меню</value>
+  </data>
+  <data name="ConfirmTest" xml:space="preserve">
+    <value>потвърж Приемане</value>
+  </data>
+  <data name="ElevatorMenuName" xml:space="preserve">
+    <value>Меню асансьора</value>
   </data>
   <data name="Installation" xml:space="preserve">
     <value>Монтиране</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Състояние Инсталац</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Аксесоари</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Клетк</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Повдигач</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Чекмедже</value>
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Движения</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="Other" xml:space="preserve">
+    <value>Настройки</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="OtherMenuName" xml:space="preserve">
+    <value>Меню за настройки</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="UnitsMenuName" xml:space="preserve">
+    <value>Меню чекмедже</value>
   </data>
 </root>

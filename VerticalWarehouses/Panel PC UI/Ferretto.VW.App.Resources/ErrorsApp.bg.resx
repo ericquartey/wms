@@ -117,49 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="CalibrationBarierError" xml:space="preserve">
+    <value>Грешката не може да надвишава 1 мм</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="CheckUnit" xml:space="preserve">
+    <value>Проверка чекмедже:</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Подробност Код</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="DrawerIdentificationCompleted" xml:space="preserve">
+    <value>След прикл процедура идентиф чекмеджета се преминава към автом режим.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="DrawerIdentificationCompletedManual" xml:space="preserve">
+    <value>Когато процедура идентиф чекмедже прикл превключете ръчно управл.</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="DrawerSelection" xml:space="preserve">
+    <value>Избор на чекмедже</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="ErrorCode" xml:space="preserve">
+    <value>Код за грешка</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Описание на грешка</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="ErrorReason" xml:space="preserve">
+    <value>Възмож причини</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="ErrorRecoveryProcedure" xml:space="preserve">
+    <value>Нулиране грешка</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="FirstSeen" xml:space="preserve">
+    <value>Видим</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="Forwards" xml:space="preserve">
+    <value>Напред</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="HighPosition" xml:space="preserve">
+    <value>висок поз</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="InvalidUnit" xml:space="preserve">
+    <value>Невалидно чекмедже въведете: </value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Инвертор</value>
+  </data>
+  <data name="InverterFaultErrorRestore" xml:space="preserve">
+    <value>Нулиране грешка INVERTER FAULT</value>
+  </data>
+  <data name="LowPosition" xml:space="preserve">
+    <value>Ниска станция</value>
+  </data>
+  <data name="MarkAsResolved" xml:space="preserve">
+    <value>Марка като решение</value>
+  </data>
+  <data name="NoItemLoadedOnPage" xml:space="preserve">
+    <value>На страницата не са качвани артикули.</value>
+  </data>
+  <data name="SelectUnitOnElevator" xml:space="preserve">
+    <value>Изберете идентификац номер на чекмедже в подемника.</value>
+  </data>
+  <data name="UnitOnElevator" xml:space="preserve">
+    <value>Чекмедже на повдигача</value>
+  </data>
+  <data name="UnitSelectBay1" xml:space="preserve">
+    <value>Избор чекмедже (отдел 1):</value>
+  </data>
+  <data name="UnitSelectBay2" xml:space="preserve">
+    <value>Избор на чекмедже (отдел 2):</value>
+  </data>
+  <data name="UnitSelectBay3" xml:space="preserve">
+    <value>Избор на чекмедже (отдел 3):</value>
+  </data>
+  <data name="UnitSelectIdBay" xml:space="preserve">
+    <value>Изберете идентификатор чекмеджето(ата) в отдел.</value>
+  </data>
+  <data name="MarkAsResolvedAndFindZero" xml:space="preserve">
+    <value>Маркирай като решение търсете нула</value>
+  </data>
+  <data name="FindZeroElevator" xml:space="preserve">
+    <value>Намиране на хоризонталния сензор за нула на повдигач</value>
+  </data>
+  <data name="FindZeroStartConfirm" xml:space="preserve">
+    <value>Натиснете Старт за започнете процедура.</value>
+  </data>
+  <data name="FindZeroBay" xml:space="preserve">
+    <value>Търсене на сензор в нулевото отдел</value>
+  </data>
+  <data name="FindZeroSensor" xml:space="preserve">
+    <value>Търсене на нулев сензор</value>
+  </data>
+  <data name="PowerOnInstruction" xml:space="preserve">
+    <value>Натиснете деакт за започнете процедура</value>
   </data>
 </root>

@@ -117,49 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="All" xml:space="preserve">
+    <value>Всичк</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="AllDescription" xml:space="preserve">
+    <value>Позволява достъп до списъка с всички параметри независимо от категорията.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмяна</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="Empty" xml:space="preserve">
+    <value>Няма елементи отговарящи на критерия за навигация.</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Невалидна стойн</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="Machine" xml:space="preserve">
+    <value>Машина</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="MachineDescription" xml:space="preserve">
+    <value>Позволява достъп до списъка с всички параметри независимо от категорията.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="Root" xml:space="preserve">
+    <value>Кор</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="Save" xml:space="preserve">
+    <value>Запаз</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
-  </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
-  </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
-  </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
-  </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
-  </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="Search" xml:space="preserve">
+    <value>Изследв:</value>
   </data>
 </root>

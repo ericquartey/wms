@@ -117,49 +117,106 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФО</value>
+  <data name="AutomaticMissing" xml:space="preserve">
+    <value>Автоматична липс</value>
   </data>
-  <data name="About" xml:space="preserve">
-    <value>Информации</value>
+  <data name="BayCalibrationNotPerformed" xml:space="preserve">
+    <value>калибр отделт не извършено.</value>
   </data>
-  <data name="AboutDescription" xml:space="preserve">
-    <value>Статистика аларми диагностика</value>
+  <data name="CalibrationCarouselFailedChainNotZeroPosition" xml:space="preserve">
+    <value>Невъзможно е да се извърши калибр на въртележката. \верига на отделто не е в нулево полож.</value>
   </data>
-  <data name="Installation" xml:space="preserve">
-    <value>Монтиране</value>
+  <data name="CellBusy" xml:space="preserve">
+    <value>Заети</value>
   </data>
-  <data name="InstallationAbbreviation" xml:space="preserve">
-    <value>INST</value>
+  <data name="CellFree" xml:space="preserve">
+    <value>Безпл</value>
   </data>
-  <data name="InstallationDescription" xml:space="preserve">
-    <value>Процедури за инсталиране ръчни движения други</value>
+  <data name="HomingNotPerformed" xml:space="preserve">
+    <value>Не е извърш насочв.</value>
   </data>
-  <data name="Maintenance" xml:space="preserve">
-    <value>Извънредна</value>
+  <data name="InconsistencyShutterPresenceSensor" xml:space="preserve">
+    <value>Несъгласуваност сензори наличие чекмедж в отдел.</value>
   </data>
-  <data name="MaintenanceAbbreviation" xml:space="preserve">
-    <value>MAINT</value>
+  <data name="InconsistencyStateAndSensors" xml:space="preserve">
+    <value>Несъответст между съст товара и сензори.</value>
   </data>
-  <data name="MaintenanceDescription" xml:space="preserve">
-    <value>Поддръжка уплътняване на чекмеджета актуализиране</value>
+  <data name="InconsistencyZeroPawlSensor" xml:space="preserve">
+    <value>Сензор за палче и наличие на чекмедже.</value>
   </data>
-  <data name="Movements" xml:space="preserve">
-    <value>Движения</value>
+  <data name="LoadingUnitOnElevator" xml:space="preserve">
+    <value>Наличие на чекмедже в повдигача.</value>
   </data>
-  <data name="MovementsAbbreviation" xml:space="preserve">
-    <value>MOVE</value>
+  <data name="LoadingUnitReady" xml:space="preserve">
+    <value>Чекмеджето е готово за работа.</value>
   </data>
-  <data name="MovementsDescription" xml:space="preserve">
-    <value>Състояние сензор нулиран машина др</value>
+  <data name="LoadingUnitSuccessfullyRequested" xml:space="preserve">
+    <value>Заявката за чекмедже {0} е успешно завършена.</value>
   </data>
-  <data name="Operation" xml:space="preserve">
-    <value>Избиран</value>
+  <data name="LoadUnitOnBoardHasInvalidHeight" xml:space="preserve">
+    <value>Чекмеджето на подемника е с неправилна височина</value>
   </data>
-  <data name="OperationAbbreviation" xml:space="preserve">
-    <value>PICK</value>
+  <data name="MachineNotManual" xml:space="preserve">
+    <value>Машината не е в ръчен режим...</value>
   </data>
-  <data name="OperationDescription" xml:space="preserve">
-    <value>Теглене депозит инвентаризация</value>
+  <data name="MachineOff" xml:space="preserve">
+    <value>Изключ машина</value>
+  </data>
+  <data name="MissionInError" xml:space="preserve">
+    <value>Мисии в грешка...</value>
+  </data>
+  <data name="MissionsWmsNotActive" xml:space="preserve">
+    <value>Мисиите от Wms са налице но Wms не активен</value>
+  </data>
+  <data name="MovementBayChainInProgress" xml:space="preserve">
+    <value>Движение на верига отдел в ход...</value>
+  </data>
+  <data name="MovementElevatorInProgress" xml:space="preserve">
+    <value>Движение на повдигача в ход...</value>
+  </data>
+  <data name="MovementHorizontalInProgress" xml:space="preserve">
+    <value>хоризонтал движение в ход...</value>
+  </data>
+  <data name="MovementInProgress" xml:space="preserve">
+    <value>Движение в ход... {0}</value>
+  </data>
+  <data name="MovementInProgressExtended" xml:space="preserve">
+    <value>Движение в ход... (Мисия: {0} чекмедже: {1} Състояние: {2} Движение: от {3} {4} до {5} {6})</value>
+  </data>
+  <data name="MovementLoadingUnitInProgress" xml:space="preserve">
+    <value>Преместване чекмедж в ход...</value>
+  </data>
+  <data name="MovementShutterInProgress" xml:space="preserve">
+    <value>Движ клапа в процес изпълн...</value>
+  </data>
+  <data name="MovementVerticalInProgress" xml:space="preserve">
+    <value>вертикал движение в ход...</value>
+  </data>
+  <data name="NoLoadingUnitInBay" xml:space="preserve">
+    <value>Няма чекмеджета в отдел.</value>
+  </data>
+  <data name="NoZeroPawlSensor" xml:space="preserve">
+    <value>Няма сензор палче при нула или наличие на чекмедже.</value>
+  </data>
+  <data name="Position" xml:space="preserve">
+    <value>поз {0}</value>
+  </data>
+  <data name="ShutterOpenOrUnknowPosition" xml:space="preserve">
+    <value>клапа е отворена или в неизвестно полож.</value>
+  </data>
+  <data name="TestInProgress" xml:space="preserve">
+    <value>тест е в ход...</value>
+  </data>
+  <data name="ShutdownInProgress" xml:space="preserve">
+    <value>Изключване на панела в ход</value>
+  </data>
+  <data name="BayPositionsDisabled" xml:space="preserve">
+    <value>Всички позиции на отдел са деактивирани</value>
+  </data>
+  <data name="InconsistencyStateAndSensorsBay" xml:space="preserve">
+    <value>Несъответ състояние товара и сензорите отдел {0}</value>
+  </data>
+  <data name="LoadUnitNotFound" xml:space="preserve">
+    <value>Чекмедж не е намерено в WMS:</value>
   </data>
 </root>
