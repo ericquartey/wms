@@ -245,7 +245,7 @@
     <value>Скорость калибровки профиля</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Профили</value>
+    <value>Профиль {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Разрешение</value>
@@ -406,9 +406,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Измерить время</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>ПараметрыДвижения</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Длинный - укладка</value>
   </data>
@@ -555,5 +552,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>позиция</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>имя</value>
   </data>
 </root>

@@ -262,7 +262,7 @@
     <value>Velocità calibrazione sagoma</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profiles</value>
+    <value>Profilo {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Risoluzione</value>
@@ -416,9 +416,6 @@
   </data>
   <data name="MeasureTime" xml:space="preserve">
     <value>Tempo pesatura</value>
-  </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Lungo deposito</value>
@@ -644,5 +641,11 @@
   </data>
   <data name="NetWeight" xml:space="preserve">
     <value>Peso misurato</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
   </data>
 </root>

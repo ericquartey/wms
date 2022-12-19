@@ -34,6 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Id(2)]
             [Editable(false)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.BayPosition_Location))]
             public LoadingUnitLocation Location { get; set; }
 
             [ScaffoldColumn(false)]

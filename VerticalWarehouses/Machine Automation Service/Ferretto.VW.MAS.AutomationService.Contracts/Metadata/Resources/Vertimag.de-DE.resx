@@ -242,7 +242,7 @@
     <value>Kalibriergschw. Profil</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profiles</value>
+    <value>Profile {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Auflösung</value>
@@ -403,9 +403,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Wiegezeit</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Lange Ablage</value>
   </data>
@@ -540,5 +537,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>

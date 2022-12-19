@@ -259,7 +259,7 @@
     <value>Rychlost kalibrace šablony</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profily</value>
+    <value>Profil {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Rozlišení</value>
@@ -411,9 +411,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Doba vážení</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>Parametry pohybů</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Dlouhé uložení</value>
   </data>
@@ -560,5 +557,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>pozice</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Jméno</value>
   </data>
 </root>

@@ -120,9 +120,6 @@
   <data name="About" xml:space="preserve">
     <value>О</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>ИНФОРМАЦИЯ</value>
-  </data>
   <data name="AboutDescription" xml:space="preserve">
     <value>Статистика, сигналы тревоги, диагностика</value>
   </data>

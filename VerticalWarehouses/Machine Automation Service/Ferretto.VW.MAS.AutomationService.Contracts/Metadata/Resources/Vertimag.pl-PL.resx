@@ -245,7 +245,7 @@
     <value>Prędkość kalibracji profilu</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profile</value>
+    <value>Profil {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Rozdzielczość</value>
@@ -405,9 +405,6 @@
   </data>
   <data name="MeasureTime" xml:space="preserve">
     <value>Czas pomiaru</value>
-  </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>Parametry ruchu</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Długie odkładanie</value>
@@ -606,5 +603,11 @@
   </data>
   <data name="Bay_ProfileConst1" xml:space="preserve">
     <value>Profil K1 stały</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>pozycja</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nazwa</value>
   </data>
 </root>

@@ -120,9 +120,6 @@
   <data name="About" xml:space="preserve">
     <value>Hakkında</value>
   </data>
-  <data name="AboutAbbreviation" xml:space="preserve">
-    <value>BİLGİ</value>
-  </data>
   <data name="AboutDescription" xml:space="preserve">
     <value>İstatistikler, alarmlar, teşhis</value>
   </data>

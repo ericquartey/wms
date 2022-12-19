@@ -245,7 +245,7 @@
     <value>Vitesse de calibrage du gabarit</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profils</value>
+    <value>Profil {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Résolution</value>
@@ -405,9 +405,6 @@
   </data>
   <data name="MeasureTime" xml:space="preserve">
     <value>Temps de pesage</value>
-  </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>Paramètres de mouvement</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Long dépôt</value>
@@ -573,5 +570,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Longueur du code du contenant externe</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>position</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
   </data>
 </root>

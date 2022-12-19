@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             //[Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ElevatorAxis_ProfileCalibrateSpeed))]
             //public double ProfileCalibrateSpeed { get; set; }
 
-            [Category("Profilo {0}")]
+            [Category(ResourceType = typeof(Vertimag), Category = nameof(Vertimag.ElevatorAxis_Profiles))]
             [CategoryParameter(nameof(MovementProfile.Name), ValueStringifierType = typeof(EnumValueStringifier))]
             [Id(100)]
             [Offset(50)]

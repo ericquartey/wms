@@ -265,7 +265,7 @@
     <value>Скорост калибр профил</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Профили</value>
+    <value>Профил {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Решение</value>
@@ -425,9 +425,6 @@
   </data>
   <data name="MeasureTime" xml:space="preserve">
     <value>Време претегл</value>
-  </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>ДвиженияПараметри</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Дълго депо</value>
@@ -632,5 +629,11 @@
   </data>
   <data name="IsLoadUnitFixed" xml:space="preserve">
     <value>Чекмедж фиксирана асоциация</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>позиция</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>име</value>
   </data>
 </root>
