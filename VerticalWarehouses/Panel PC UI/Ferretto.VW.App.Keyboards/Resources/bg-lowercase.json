@@ -230,9 +230,16 @@
                         "CommandText": "ц"
                     }
                 }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "§"
+                    }
+                }
             }
         ],
-        "HorizontalAlignment": "Right"
+        "HorizontalAlignment": "Left"
     },
     {
       "Zone": "2ndRow",
