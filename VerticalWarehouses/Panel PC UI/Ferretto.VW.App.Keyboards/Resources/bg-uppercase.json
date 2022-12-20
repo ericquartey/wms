@@ -5,8 +5,9 @@
       "ColumnSpan": 2
     },
     {
-      "Id": "1stRow",
-      "Row": 1
+        "Id": "1stRow",
+        "Row": 1,
+        "Margin": 5
     },
     {
       "Id": "Enter",
@@ -151,94 +152,94 @@
       ]
     },
     {
-      "Zone": "1stRow",
-      "Cells": [
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Й"
+        "Zone": "1stRow",
+        "Cells": [
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "Ы"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "У"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "Е"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "И"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "Ш"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "Щ"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "К"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "С"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "Д"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "З"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "Ц"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "§"
+                    }
+                }
             }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Ц"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "У"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "К"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Е"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Н"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Г"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Ш"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Щ"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "З"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Х"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "Ъ"
-            }
-          }
-        }
-      ],
-      "HorizontalAlignment": "Left"
+        ],
+        "HorizontalAlignment": "Left"
     },
     {
       "Zone": "2ndRow",
@@ -246,77 +247,77 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "ф"
+                "CommandText": "Ь"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Ы"
+                "CommandText": "Я"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "В"
+                "CommandText": "А"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "А"
+              "CommandText": "O"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "П"
+                "CommandText": "Ж"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Р"
+                "CommandText": "Г"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "О"
+                "CommandText": "Т"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Л"
+                "CommandText": "Н"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Д"
+              "CommandText": "B"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Ж"
+                "CommandText": "М"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Э"
+                "CommandText": "Ч"
             }
           }
         },
@@ -362,70 +363,70 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "Я"
+                "CommandText": "Ю"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Ч"
+                "CommandText": "Й"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "С"
+                "CommandText": "Ъ"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "М"
+                "CommandText": "Э"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "И"
+                "CommandText": "Ф"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Т"
+                "CommandText": "Х"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Ь"
+                "CommandText": "П"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Б"
+              "CommandText": "P"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "Ю"
+                "CommandText": "Л"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "("
+                "CommandText": "Б"
             }
           },
           "Width": "Auto"
