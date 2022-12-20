@@ -237,6 +237,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                             var bytes = this.stream.Read(data, 0, data.Length);
                             response += Encoding.ASCII.GetString(data, 0, bytes);
                             this.logger.Debug($"SendCommandAsync();Received: {response.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
+                            Thread.Sleep(10);
                         } while (readTimeout > 0 && (DateTime.Now - startTime).TotalMilliseconds < readTimeout);
 
                         //switch (response)

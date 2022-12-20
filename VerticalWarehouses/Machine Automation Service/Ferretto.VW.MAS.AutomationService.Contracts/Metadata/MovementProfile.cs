@@ -16,6 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Editable(false)]
             [Id(8)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Name))]
             public MovementProfileType Name { get; set; }
 
             [Category("Step {0}")]

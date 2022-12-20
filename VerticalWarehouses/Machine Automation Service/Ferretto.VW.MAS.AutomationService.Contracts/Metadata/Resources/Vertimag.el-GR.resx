@@ -265,7 +265,7 @@
     <value>Ταχύτητα βαθμονόμησης προφίλ</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Προφίλ</value>
+    <value>Προφίλ {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Ανάλυση</value>
@@ -426,9 +426,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Χρόνος μέτρησης</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Εναπόθεση μεγάλης διάρκειας</value>
   </data>
@@ -575,5 +572,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>θέση</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Ονομα</value>
   </data>
 </root>

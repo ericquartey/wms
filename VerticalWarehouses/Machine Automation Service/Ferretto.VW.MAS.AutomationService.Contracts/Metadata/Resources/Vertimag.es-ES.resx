@@ -245,7 +245,7 @@
     <value>Velocidad de calibración del perfil</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Perfiles</value>
+    <value>Perfile {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Resolución</value>
@@ -406,9 +406,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Tiempo de pesaje</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Almacenamiento prolongado</value>
   </data>
@@ -564,5 +561,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>posición</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nombre</value>
   </data>
 </root>
