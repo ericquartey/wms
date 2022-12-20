@@ -98,11 +98,9 @@ namespace Ferretto.VW.Devices.TokenReader
                         this.RaiseTokenStatusChanged(false, null);
                     }
                 }
-            }
-            while (this.SerialPort.IsOpen)
-            {
                 await Task.Delay(10);
             }
+            while (this.SerialPort.IsOpen);
         }
 
         private void RaiseTokenStatusChanged(bool isInserted, string serialNumber)
