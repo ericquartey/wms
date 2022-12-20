@@ -5,8 +5,9 @@
       "ColumnSpan": 2
     },
     {
-      "Id": "1stRow",
-      "Row": 1
+        "Id": "1stRow",
+        "Row": 1,
+        "Margin": 5
     },
     {
       "Id": "Enter",
@@ -151,94 +152,87 @@
       ]
     },
     {
-      "Zone": "1stRow",
-      "Cells": [
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "й"
+        "Zone": "1stRow",
+        "Cells": [
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "ы"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "у"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "е"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "и"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "ш"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "щ"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "к"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "с"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "д"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "з"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "ц"
+                    }
+                }
             }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "ц"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "у"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "к"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "е"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "н"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "г"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "ш"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "щ"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "з"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "х"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "ъ"
-            }
-          }
-        }
-      ],
-      "HorizontalAlignment": "Left"
+        ],
+        "HorizontalAlignment": "Right"
     },
     {
       "Zone": "2ndRow",
@@ -246,77 +240,77 @@
         {
           "Key": {
             "Command": {
-              "CommandText": "ф"
+                "CommandText": "ь"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "ы"
+                "CommandText": "я"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "в"
+                "CommandText": "а"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "а"
+                "CommandText": "о"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "п"
+                "CommandText": "ж"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "р"
+                "CommandText": "г"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "о"
+                "CommandText": "т"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "л"
+                "CommandText": "н"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "д"
+                "CommandText": "в"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "ж"
+                "CommandText": "м"
             }
           }
         },
         {
           "Key": {
             "Command": {
-              "CommandText": "э"
+                "CommandText": "ч"
             }
           }
         },
@@ -348,107 +342,107 @@
     },
     {
       "Zone": "3rdRow",
-      "Cells": [
-        {
-          "KeyMinWidth": 60,
-          "KeyStyleResource": "AccentKeyboardButtonStyle",
-          "Key": {
-            "Command": {
-              "Caption": "{icon:CaretSquareUpRegular}",
-              "CommandText": "{layout:Uppercase}"
+        "Cells": [
+            {
+                "KeyMinWidth": 60,
+                "KeyStyleResource": "AccentKeyboardButtonStyle",
+                "Key": {
+                    "Command": {
+                        "Caption": "{icon:CaretSquareUpRegular}",
+                        "CommandText": "{layout:Uppercase}"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "ю"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "й"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "ъ"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "э"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "ф"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "х"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "п"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "р"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "л"
+                    }
+                }
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "б"
+                    }
+                },
+                "Width": "Auto"
+            },
+            {
+                "Key": {
+                    "Command": {
+                        "CommandText": "("
+                    }
+                },
+                "Width": "Auto"
+            },
+            {
+                "Width": "147",
+                "KeyStyleResource": "AccentKeyboardButtonStyle",
+                "Key": {
+                    "Command": {
+                        "Caption": "{icon:CaretSquareUpRegular}",
+                        "CommandText": "{layout:Uppercase}"
+                    }
+                }
             }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "я"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "ч"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "с"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "м"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "и"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "т"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "ь"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "б"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "ю"
-            }
-          }
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": "("
-            }
-          },
-          "Width": "Auto"
-        },
-        {
-          "Key": {
-            "Command": {
-              "CommandText": ")"
-            }
-          },
-          "Width": "Auto"
-        },
-        {
-          "Width": "147",
-          "KeyStyleResource": "AccentKeyboardButtonStyle",
-          "Key": {
-            "Command": {
-              "Caption": "{icon:CaretSquareUpRegular}",
-              "CommandText": "{layout:Uppercase}"
-            }
-          }
-        }
-      ],
+        ],
       "HorizontalAlignment": "Left"
     },
     {
