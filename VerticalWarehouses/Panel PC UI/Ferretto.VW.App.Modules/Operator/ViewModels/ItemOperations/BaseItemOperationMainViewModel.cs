@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isItemSerialNumberValid = true;
 
-        private bool? isNrLabelEditable;
+        private bool? isNrLabelsEditable;
 
         private bool isOperationCanceled;
 
@@ -542,10 +542,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public bool IsMinebeaScale { get; private set; }
 
-        public bool? IsNrLabelEditable
+        public bool? IsNrLabelsEditable
         {
-            get => this.isNrLabelEditable;
-            set => this.SetProperty(ref this.isNrLabelEditable, value);
+            get => this.isNrLabelsEditable;
+            set => this.SetProperty(ref this.isNrLabelsEditable, value);
         }
 
         public bool IsOperationCanceled

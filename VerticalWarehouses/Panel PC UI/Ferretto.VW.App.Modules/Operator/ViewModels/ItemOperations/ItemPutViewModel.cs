@@ -716,7 +716,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.ProductsDataGridViewVisibility = false;
             this.IsKeyboardButtonVisible = configuration.TouchHelper;
 
-            this.IsNrLabelEditable = this.MachineService.Bay.IsNrLabelEditable;
+            this.IsNrLabelsEditable = this.MachineService.Bay.IsNrLabelEditable;
             this.NrLabels = 1;
 
             await base.OnAppearedAsync();
@@ -730,7 +730,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             this.BarcodeImageExist = false;
 
-            if (this.IsNrLabelEditable is false) { 
+            if (this.IsNrLabelsEditable is false)
+            { 
                 this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
             }
 
