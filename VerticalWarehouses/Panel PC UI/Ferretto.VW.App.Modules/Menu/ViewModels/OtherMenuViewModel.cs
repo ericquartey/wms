@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuUsersCommand;
 
+        private DelegateCommand selectOperationOnBayCommand;
+
         #endregion
 
         #region Constructors
@@ -61,6 +63,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ErrorInverterParameters,
 
             LogoutSettings,
+
+            OperationOnBay,
         }
 
         #endregion
@@ -123,6 +127,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuUsersCommand = new DelegateCommand(
                 () => this.MenuCommandOther(MenuOther.Users),
+                this.CanExecute));
+
+        public ICommand SelectOperationOnBayCommand =>
+                                    this.selectOperationOnBayCommand
+            ??
+            (this.menuUsersCommand = new DelegateCommand(
+                () => this.MenuCommandOther(MenuOther.OperationOnBay),
                 this.CanExecute));
 
         #endregion
@@ -237,6 +248,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.LOGOUTSETTINGS,
                             data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case MenuOther.OperationOnBay:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.Others.OPERATIONONBAY,
+                            null,
                             trackCurrentView: true);
                         break;
 

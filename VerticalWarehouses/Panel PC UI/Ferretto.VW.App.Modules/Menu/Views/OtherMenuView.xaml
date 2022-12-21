@@ -124,9 +124,19 @@
                             Height="86"
                             Margin="0,0,30,30"
                             Padding="-2,1,0,0"
-                            Abbrevation="4.7.8"
+                            Abbrevation="4.7.9"
                             BorderBrush="{DynamicResource FerrettoRed}"
                             Command="{Binding LogoutSettingsCommand}"
+                            Kind="Account"
+                            Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+          <controls:PpcButton Title="{res:Loc OperatorApp.BayOperations}"
+                            Height="86"
+                            Margin="0,0,30,30"
+                            Padding="-2,1,0,0"
+                            Abbrevation="4.7.8"
+                            BorderBrush="{DynamicResource FerrettoRed}"
+                            Command="{Binding SelectOperationOnBayCommand}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
