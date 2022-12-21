@@ -424,7 +424,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 
-            this.IsNrLabelEditable = this.MachineService.Bay.IsNrLabelEditable;
+            this.IsNrLabelsEditable = this.MachineService.Bay.IsNrLabelEditable;
             this.NrLabels = 1;
 
             //this.CanInputAvailableQuantity = true;
@@ -449,7 +449,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.BarcodeImageExist = false;
 
-            if (this.IsNrLabelEditable is false)
+            if (this.IsNrLabelsEditable is false)
             {
                 this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
             }
