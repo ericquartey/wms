@@ -77,16 +77,9 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 !bay.IsExternal)
             {
                 // Handle only for BID
-                var waitMissions = this.MissionsDataProvider.GetAllMissions()
-                    .Where(
-                        m => m.LoadUnitId != this.Mission.LoadUnitId &&
-                        m.Id != this.Mission.Id &&
-                        m.Status == MissionStatus.Waiting &&
-                        m.Step == MissionStep.WaitPick &&
-                        bay.Positions.Any(p => p.LoadingUnit?.Id == m.LoadUnitId)
-                    );
+                var waitMissions = bay.Positions.Any(p => p.LoadingUnit != null && p.LoadingUnit?.Id != this.Mission.LoadUnitId);
 
-                if (waitMissions.Any())
+                if (waitMissions)
                 {
                     // There is another waiting mission in the bay, so the light is set to Off
                     this.BaysDataProvider.Light(this.Mission.TargetBay, false);
