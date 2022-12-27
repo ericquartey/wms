@@ -72,15 +72,23 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnPostStates(IServiceProvider serviceProvider)
         {
-            var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
-            await missionOperationProvider.PostStates(this.machineId);
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
+                await missionOperationProvider.PostStates(this.machineId);
+            }
         }
 
 
         private async Task OnErrorStatusChangedAsync(IServiceProvider serviceProvider)
         {
-            var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
-            await missionOperationProvider.PostAlarms(this.machineId);
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
+                await missionOperationProvider.PostAlarms(this.machineId);
+            }
         }
 
         private async Task OnBayOperationalStatusChangedAsync()
