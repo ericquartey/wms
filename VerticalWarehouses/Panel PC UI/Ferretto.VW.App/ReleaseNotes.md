@@ -25,22 +25,18 @@
 
 # Note di versione
 
-## Nuove Funzionalità 1.0.56 rispetto la 1.0.55
-- Ferretto Nuget Package 0.16.49
-- Aggiunto parametro: Liste in attesa solo su macchina locale
-- Aggiunto parametro: Numero di etichette editabile
-- Aggiunti dati pesatura nei parametri dell'asse verticale
+## Nuove Funzionalità 1.0.57 rispetto la 1.0.56
+- Aggiunta lingua Bulgara
+- Spostate Operazioni di Baia nel menu Parametri
 
 ## Bug Risolti
-- Chiamata cassetto: eliminati casi di interfaccia utente che non risponde ai comandi
-- Vista di prelievo: aumentato lo spazio per la descrizione della lista
-- Gestione missioni: corretti vari errori con Baia 3
-- BIS: corretto un caso di warning errato "Taratura baia non eseguita"
-- Socket link: eliminato picco di CPU in caso di disconnessione
-- Installer: non cancella più il database della telemetria
+- Movimenti guidati: corretta taratura baia in Baia 2
+- BED: corretta accensione luci di baia
 
-## Compatibile con adapter 0.4.43
+## Compatibile con adapter 0.4.44
 ***
+
+[Versione 1.0.56](#id1056)
 
 [Versione 1.0.55](#id1055)
 
@@ -154,6 +150,23 @@
 
 [Versione 1.0.0](#id100)
 ***
+
+<a id="id1056"></a>
+## Nuove Funzionalità 1.0.56 rispetto la 1.0.55
+- Ferretto Nuget Package 0.16.49
+- Aggiunto parametro: Liste in attesa solo su macchina locale
+- Aggiunto parametro: Numero di etichette editabile
+- Aggiunti dati pesatura nei parametri dell'asse verticale
+
+## Bug Risolti
+- Chiamata cassetto: eliminati casi di interfaccia utente che non risponde ai comandi
+- Vista di prelievo: aumentato lo spazio per la descrizione della lista
+- Gestione missioni: corretti vari errori con Baia 3
+- BIS: corretto un caso di warning errato "Taratura baia non eseguita"
+- Socket link: eliminato picco di CPU in caso di disconnessione
+- Installer: non cancella più il database della telemetria
+
+## Compatibile con adapter 0.4.43
 
 <a id="id1055"></a>
 ## Nuove Funzionalità 1.0.55 rispetto la 1.0.54
