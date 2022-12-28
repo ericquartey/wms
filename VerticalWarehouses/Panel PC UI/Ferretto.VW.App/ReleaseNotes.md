@@ -32,6 +32,7 @@
 ## Bug Risolti
 - Movimenti guidati: corretta taratura baia in Baia 2
 - BED: corretta accensione luci di baia
+- Baia 2: corretto ritardo dopo versamento
 
 ## Compatibile con adapter 0.4.44
 ***
