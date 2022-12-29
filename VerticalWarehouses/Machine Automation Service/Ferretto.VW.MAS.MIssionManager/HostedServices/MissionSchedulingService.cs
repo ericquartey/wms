@@ -35,9 +35,9 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
-        private readonly Timer RestartTimer1;
-        private readonly Timer RestartTimer2;
-        private readonly Timer RestartTimer3;
+        private readonly Timer DelayAfterPut1;
+        private readonly Timer DelayAfterPut2;
+        private readonly Timer DelayAfterPut3;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -70,9 +70,9 @@ namespace Ferretto.VW.MAS.MissionManager
             this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
-            this.RestartTimer1 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayOne, Timeout.Infinite, Timeout.Infinite);
-            this.RestartTimer2 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayTwo, Timeout.Infinite, Timeout.Infinite);
-            this.RestartTimer3 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayThree, Timeout.Infinite, Timeout.Infinite);
+            this.DelayAfterPut1 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayOne, Timeout.Infinite, Timeout.Infinite);
+            this.DelayAfterPut2 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayTwo, Timeout.Infinite, Timeout.Infinite);
+            this.DelayAfterPut3 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayThree, Timeout.Infinite, Timeout.Infinite);
 
             this.isDelayFinish = new Dictionary<BayNumber, bool>();
             this.isDelayFinish.Add(BayNumber.BayOne, false);
@@ -1781,13 +1781,13 @@ namespace Ferretto.VW.MAS.MissionManager
             switch((BayNumber)state)
             {
                 case BayNumber.BayOne:
-                    this.RestartTimer1.Change(-1, -1);
+                    this.DelayAfterPut1.Change(-1, -1);
                     break;
                 case BayNumber.BayTwo:
-                    this.RestartTimer2.Change(-1, -1);
+                    this.DelayAfterPut2.Change(-1, -1);
                     break;
                 case BayNumber.BayThree:
-                    this.RestartTimer3.Change(-1, -1);
+                    this.DelayAfterPut3.Change(-1, -1);
                     break;
             }
             this.isDelayFinish[(BayNumber)state] = true;
@@ -1889,7 +1889,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
-                        this.isDelayFinish[mission.TargetBay] = false;
+                        this.isDelayFinish[bayNumber] = false;
 
                         serviceProvider
                             .GetRequiredService<IBaysDataProvider>()
@@ -1915,21 +1915,21 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
-                    if (!this.isDelayFinish[mission.TargetBay]
+                    if (!this.isDelayFinish[bayNumber]
                         && wmsMission.Operations.Any(o => o.Type == WMS.Data.WebAPI.Contracts.MissionOperationType.Put))
                     {
                         this.DelayTimeout = this.wmsSettingsProvider.DelayTimeout;
-                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update");
-                        switch (mission.TargetBay)
+                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update after put operation in bay {bayNumber}");
+                        switch (bayNumber)
                         {
                             case BayNumber.BayOne:
-                                this.RestartTimer1.Change(this.DelayTimeout, -1);
+                                this.DelayAfterPut1.Change(this.DelayTimeout, -1);
                                 break;
                             case BayNumber.BayTwo:
-                                this.RestartTimer2.Change(this.DelayTimeout, -1);
+                                this.DelayAfterPut2.Change(this.DelayTimeout, -1);
                                 break;
                             case BayNumber.BayThree:
-                                this.RestartTimer3.Change(this.DelayTimeout, -1);
+                                this.DelayAfterPut3.Change(this.DelayTimeout, -1);
                                 break;
                         }
                     }

@@ -9,6 +9,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int ConnectionTimeout { get; set; }
 
+        /// <summary>
+        /// cannot be zero
+        /// </summary>
         int DelayTimeout { get; set; }
 
         bool IsConnected { get; set; }
