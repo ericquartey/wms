@@ -70,101 +70,106 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public async Task PostStates(int id)
         {
-            string myMachineModes = string.Empty;
-            string myMachinePower = string.Empty;
+            if (id > 0) { 
+                string myMachineModes = string.Empty;
+                string myMachinePower = string.Empty;
 
-            switch (this.machineVolatileDataProvider.Mode)
-            {
-                case MachineMode.Automatic:
-                    myMachineModes = "Automatico";
-                    break;
-                case MachineMode.Manual:
-                case MachineMode.Manual2:
-                case MachineMode.Manual3:
-                case MachineMode.LoadUnitOperations:
-                case MachineMode.LoadUnitOperations2:
-                case MachineMode.LoadUnitOperations3:
-                case MachineMode.Test:
-                case MachineMode.Test2:
-                case MachineMode.Test3:
-                case MachineMode.Compact:
-                case MachineMode.Compact2:
-                case MachineMode.Compact3:
-                case MachineMode.Shutdown:
-                case MachineMode.FullTest:
-                case MachineMode.FirstTest:
-                case MachineMode.FullTest2:
-                case MachineMode.FirstTest2:
-                case MachineMode.FullTest3:
-                case MachineMode.FirstTest3:
-                case MachineMode.SwitchingToAutomatic:
-                case MachineMode.SwitchingToManual:
-                case MachineMode.SwitchingToManual2:
-                case MachineMode.SwitchingToManual3:
-                case MachineMode.SwitchingToShutdown:
-                case MachineMode.SwitchingToLoadUnitOperations:
-                case MachineMode.SwitchingToCompact:
-                case MachineMode.SwitchingToFullTest:
-                case MachineMode.SwitchingToFirstTest:
-                case MachineMode.SwitchingToLoadUnitOperations2:
-                case MachineMode.SwitchingToCompact2:
-                case MachineMode.SwitchingToFullTest2:
-                case MachineMode.SwitchingToFirstTest2:
-                case MachineMode.SwitchingToLoadUnitOperations3:
-                case MachineMode.SwitchingToCompact3:
-                case MachineMode.SwitchingToFullTest3:
-                case MachineMode.SwitchingToFirstTest3:
-                    myMachineModes = "Manuale";
-                    break;
-                default:
-                    myMachineModes = string.Empty;
-                    break;
+                switch (this.machineVolatileDataProvider.Mode)
+                {
+                    case MachineMode.Automatic:
+                        myMachineModes = "Automatico";
+                        break;
+                    case MachineMode.Manual:
+                    case MachineMode.Manual2:
+                    case MachineMode.Manual3:
+                    case MachineMode.LoadUnitOperations:
+                    case MachineMode.LoadUnitOperations2:
+                    case MachineMode.LoadUnitOperations3:
+                    case MachineMode.Test:
+                    case MachineMode.Test2:
+                    case MachineMode.Test3:
+                    case MachineMode.Compact:
+                    case MachineMode.Compact2:
+                    case MachineMode.Compact3:
+                    case MachineMode.Shutdown:
+                    case MachineMode.FullTest:
+                    case MachineMode.FirstTest:
+                    case MachineMode.FullTest2:
+                    case MachineMode.FirstTest2:
+                    case MachineMode.FullTest3:
+                    case MachineMode.FirstTest3:
+                    case MachineMode.SwitchingToAutomatic:
+                    case MachineMode.SwitchingToManual:
+                    case MachineMode.SwitchingToManual2:
+                    case MachineMode.SwitchingToManual3:
+                    case MachineMode.SwitchingToShutdown:
+                    case MachineMode.SwitchingToLoadUnitOperations:
+                    case MachineMode.SwitchingToCompact:
+                    case MachineMode.SwitchingToFullTest:
+                    case MachineMode.SwitchingToFirstTest:
+                    case MachineMode.SwitchingToLoadUnitOperations2:
+                    case MachineMode.SwitchingToCompact2:
+                    case MachineMode.SwitchingToFullTest2:
+                    case MachineMode.SwitchingToFirstTest2:
+                    case MachineMode.SwitchingToLoadUnitOperations3:
+                    case MachineMode.SwitchingToCompact3:
+                    case MachineMode.SwitchingToFullTest3:
+                    case MachineMode.SwitchingToFirstTest3:
+                        myMachineModes = "Manuale";
+                        break;
+                    default:
+                        myMachineModes = string.Empty;
+                        break;
+                }
+
+                switch (this.machineVolatileDataProvider.MachinePowerState)
+                {
+                    case MachinePowerState.Powered:
+                        myMachinePower = "Accesa";
+                        break;
+                    default:
+                        myMachinePower = "Spenta";
+                        break;
+                }
+
+                await this.machinesWmsWebService.PostStatesAsync(id, new string[] { myMachinePower, myMachineModes });
             }
-
-            switch (this.machineVolatileDataProvider.MachinePowerState)
-            {
-                case MachinePowerState.Powered:
-                    myMachinePower = "Accesa";
-                    break;
-                default:
-                    myMachinePower = "Spenta";
-                    break;
-            }
-
-            await this.machinesWmsWebService.PostStatesAsync(id, new string[] { myMachinePower, myMachineModes });
         }
 
         public async Task PostAlarms(int id) {
-            List<string> errorsDescriptions = new List<string>();
+            if (id > 0) {
+            
+                List<string> errorsDescriptions = new List<string>();
 
-            var error = this.errorsProvider
-                .GetErrors().Where(e => !e.ResolutionDate.HasValue);
+                var error = this.errorsProvider
+                    .GetErrors().Where(e => !e.ResolutionDate.HasValue);
 
-            if (null != error && error.Any())
-            {
-                //errorsDescriptions.Clear();
-                foreach (var item in error)
+                if (null != error && error.Any())
                 {
-                    var description = "";
-
-                    if (item.Description != null)
+                    //errorsDescriptions.Clear();
+                    foreach (var item in error)
                     {
-                        description = $"{item?.Description} ";
-                    }
-                    if (item?.AdditionalText != null)
-                    {
-                        description += $"{item?.AdditionalText}";
-                    }
+                        var description = "";
 
-                    errorsDescriptions.Add(description);
+                        if (item.Description != null)
+                        {
+                            description = $"{item?.Description} ";
+                        }
+                        if (item?.AdditionalText != null)
+                        {
+                            description += $"{item?.AdditionalText}";
+                        }
+
+                        errorsDescriptions.Add(description);
+                    }
                 }
-            }
-            else
-            {
-                errorsDescriptions.Add(string.Empty);
-            }
+                else
+                {
+                    errorsDescriptions.Add(string.Empty);
+                }
 
-            await this.machinesWmsWebService.PostAlarmsAsync(id, errorsDescriptions);
+                await this.machinesWmsWebService.PostAlarmsAsync(id, errorsDescriptions);
+            }
         }
 
         public async Task AbortAsync(int wmsId, string userName = null)

@@ -53,6 +53,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.wmsSettingsProvider.DelayTimeout);
         }
 
+        [HttpGet("get-alarms-to-wms")]
+        public ActionResult<bool> GetAlarmsToWms()
+        {
+            return this.Ok(this.wmsSettingsProvider.AlarmsToWmsOn);
+        }
+
         [HttpGet("health")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -149,6 +155,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task UpdateDelayTimeout(int seconds)
         {
             this.wmsSettingsProvider.DelayTimeout = seconds;
+        }
+
+        [HttpPut("update-alarms-to-wms")]
+        public async Task UpdateAlarmsToWms(bool enabled)
+        {
+            this.wmsSettingsProvider.AlarmsToWmsOn = enabled;
         }
 
         [HttpPut("update-wms-time-settings")]

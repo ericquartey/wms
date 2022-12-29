@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int DelayTimeout { get; set; }
 
+        public bool AlarmsToWmsOn { get; set; }
+
         public bool IsConnected { get; set; }
 
         public bool IsEnabled { get; set; }

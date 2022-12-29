@@ -173,7 +173,15 @@
                              Margin="0,0,10,0"
                              InputText="{Binding DelayTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{res:Loc General.DelayPutOperation}" />
-      </StackPanel>
+
+                <controls:PpcCheckBox Margin="39,18,0,0"
+                            IsEnabled="True"
+                            IsChecked="{Binding IsAlarmsToWms, Mode=TwoWay}"
+                            LabelText="{res:Loc InstallationApp.AlarmsToWmsOn}" 
+                                      />
+
+
+            </StackPanel>
 
 
     </Grid>
