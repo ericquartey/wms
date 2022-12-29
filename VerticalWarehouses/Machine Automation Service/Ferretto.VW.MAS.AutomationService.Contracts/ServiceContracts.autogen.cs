@@ -3061,6 +3061,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<int> GetDelayTimeoutAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetAlarmsToWmsAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetAlarmsToWmsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<string> GetHealthAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3143,6 +3150,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateDelayTimeoutAsync(int seconds, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAlarmsToWmsAsync(bool enabled);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAlarmsToWmsAsync(bool enabled, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateIsTimeSyncEnabledAsync();
@@ -6432,6 +6446,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("DelayTimeout", Required = Newtonsoft.Json.Required.Always)]
         public int DelayTimeout { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("AlarmsToWmsOn", Required = Newtonsoft.Json.Required.Always)]
+        public bool AlarmsToWmsOn { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsConnected", Required = Newtonsoft.Json.Required.Always)]
         public bool IsConnected { get; set; }

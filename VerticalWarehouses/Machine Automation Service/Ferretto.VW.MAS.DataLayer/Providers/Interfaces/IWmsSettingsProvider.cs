@@ -35,6 +35,7 @@ namespace Ferretto.VW.MAS.DataLayer
         int SocketLinkTimeout { get; set; }
 
         int TimeSyncIntervalMilliseconds { get; }
+        bool AlarmsToWmsOn { get; set; }
 
         #endregion
 

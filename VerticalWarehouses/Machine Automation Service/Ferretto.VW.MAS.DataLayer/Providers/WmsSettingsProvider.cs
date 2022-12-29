@@ -82,6 +82,26 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
         }
 
+        public bool AlarmsToWmsOn
+        {
+            get
+            {
+                lock (this.dataContext)
+                {
+                    var isEnabled = this.dataContext.WmsSettings.AsNoTracking().Select(w => w.AlarmsToWmsOn).Single();
+                    return isEnabled;
+                }
+            }
+            set
+            {
+                lock (this.dataContext)
+                {
+                    this.dataContext.WmsSettings.Single().AlarmsToWmsOn = value;
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public int DelayTimeout
         {
             get

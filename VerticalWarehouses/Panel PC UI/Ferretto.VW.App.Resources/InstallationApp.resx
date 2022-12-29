@@ -2860,4 +2860,7 @@
   <data name="SuspendList" xml:space="preserve">
     <value>Suspend current list</value>
   </data>
+  <data name="AlarmsToWmsOn" xml:space="preserve">
+    <value>Alarms toward WMS</value>
+  </data>
 </root>

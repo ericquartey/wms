@@ -196,6 +196,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alarms toward WMS.
+        /// </summary>
+        public static string AlarmsToWmsOn {
+            get {
+                return ResourceManager.GetString("AlarmsToWmsOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to L.
         /// </summary>
         public static string AlphaNumericBarSizeL {
