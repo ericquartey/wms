@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public async Task PostStates(int id)
         {
-            if (id > 0) { 
+            if (id > 0 && this.wmsSettingsProvider.AlarmsToWmsOn) { 
                 string myMachineModes = string.Empty;
                 string myMachinePower = string.Empty;
 
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.MissionManager
         }
 
         public async Task PostAlarms(int id) {
-            if (id > 0) {
+            if (id > 0 && this.wmsSettingsProvider.AlarmsToWmsOn) {
             
                 List<string> errorsDescriptions = new List<string>();
 
