@@ -28,6 +28,7 @@
 ## Nuove Funzionalità 1.0.57 rispetto la 1.0.56
 - Aggiunta lingua Bulgara
 - Spostate Operazioni di Baia nel menu Impostazioni
+- 
 
 ## Bug Risolti
 - Movimenti guidati: corretta taratura baia in Baia 2
