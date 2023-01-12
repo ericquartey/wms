@@ -322,4 +322,7 @@
   <data name="TimeoutMs" xml:space="preserve">
     <value>Timeout (ms)</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
 </root>

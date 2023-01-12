@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private Senders currentGroup;
 
+        private List<Instruction> currentGroupList = new List<Instruction>();
+
         private DelegateCommand horizontalAxisCommand;
 
         private List<Instruction> instructions = new List<Instruction>();
@@ -83,15 +85,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOperator;
 
-        private bool isVisiblePopup;
+        private bool isVisibleConfirmService;
 
         private int lastInstruction = 0;
 
         private DelegateCommand machineCommand;
 
-        private string maintainerName;
+        private string maintenerName;
 
-        private string maintainerNote;
+        private string maintenerNote;
 
         private Instruction selectedInstruction;
 
@@ -99,7 +101,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int servicingInfoId = 0;
 
-        private DelegateCommand showNoteMenuCommand;
+        private DelegateCommand showConfirmServiceCommand;
 
         private DelegateCommand shutterBay1Command;
 
@@ -175,11 +177,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public ICommand CancelCommand =>
             this.cancelCommand ?? (this.cancelCommand = new DelegateCommand(() => { this.ClosePopup(); }));
 
-        public ICommand ConfirmInstructionCommand =>
-                                                                   this.confirmInstructionCommand
-           ??
-           (this.confirmInstructionCommand = new DelegateCommand(
-              async () => await this.ConfirmGroupAsync(), this.CanConfirmGroup));
+        public ICommand ConfirmInstructionCommand => this.confirmInstructionCommand ?? (this.confirmInstructionCommand = new DelegateCommand(async () => await this.ConfirmGroupAsync(), this.CanConfirmGroup));
 
         public ICommand ConfirmServiceCommand => this.confirmServiceAsync ?? (this.confirmServiceAsync = new DelegateCommand(async () => await this.ConfirmServiceAsync()));
 
@@ -308,31 +306,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isOperator, value);
         }
 
-        public bool IsVisiblePopup
+        public bool IsVisibleConfirmService
         {
-            get => this.isVisiblePopup;
-            set => this.SetProperty(ref this.isVisiblePopup, value);
+            get => this.isVisibleConfirmService;
+            set => this.SetProperty(ref this.isVisibleConfirmService, value);
         }
 
         public ICommand MachineCommand =>
             this.machineCommand ?? (this.machineCommand = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveMachine = true; this.FilterTable(Senders.Machine); }, this.CanFilterTable));
 
-        public string MaintainerName
+        public string MaintenerName
         {
-            get => this.maintainerName;
-            set => this.SetProperty(ref this.maintainerName, value, this.RaiseCanExecuteChanged);
+            get => this.maintenerName;
+            set => this.SetProperty(ref this.maintenerName, value, this.RaiseCanExecuteChanged);
         }
 
-        public string MaintainerNote
+        public string MaintenerNote
         {
-            get => this.maintainerNote;
-            set => this.SetProperty(ref this.maintainerNote, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool NameOp
-        {
-            get => this.isVisiblePopup;
-            set => this.SetProperty(ref this.isVisiblePopup, value);
+            get => this.maintenerNote;
+            set => this.SetProperty(ref this.maintenerNote, value, this.RaiseCanExecuteChanged);
         }
 
         public Instruction SelectedInstruction
@@ -347,11 +339,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.service, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand ShowNoteMenuCommand =>
-                                                                                                                                                                                                                                                           this.showNoteMenuCommand
-           ??
-           (this.showNoteMenuCommand = new DelegateCommand(
-              async () => this.ShowNoteMenu(), this.CanShowNoteMenu));
+        public ICommand ShowConfirmServiceCommand =>
+            this.showConfirmServiceCommand ?? (this.showConfirmServiceCommand = new DelegateCommand(async () => this.ShowConfirmService(), this.CanConfirmService));
 
         public ICommand ShutterBay1Command =>
             this.shutterBay1Command ?? (this.shutterBay1Command = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveShutterBay1 = true; this.FilterTable(Senders.ShutterBay1); }, this.CanFilterTable));
@@ -421,8 +410,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            this.showNoteMenuCommand?.RaiseCanExecuteChanged();
+            this.showConfirmServiceCommand?.RaiseCanExecuteChanged();
             this.confirmInstructionCommand?.RaiseCanExecuteChanged();
+
             this.bay1Command?.RaiseCanExecuteChanged();
             this.bay2Command?.RaiseCanExecuteChanged();
             this.bay3Command?.RaiseCanExecuteChanged();
@@ -440,8 +430,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                return this.Instructions.Any(x => x.IsDone == false)
-                    && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring);
+                return this.currentGroupList.Any(x => x.IsDone == false) && this.currentGroupList.Any() && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        private bool CanConfirmService()
+        {
+#if DEBUG
+            return true;
+#endif
+            try
+            {
+                var can = !this.allInstructions.Any(s => s.IsDone == false)
+                    && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring);
+                return can;
             }
             catch (Exception)
             {
@@ -451,24 +457,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanFilterTable()
         {
-            return this.allInstructions.Any()
-                && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring);
-        }
-
-        private bool CanShowNoteMenu()
-        {
-            try
-            {
-                var can = !this.allInstructions.Any(s => s.IsDone == false)
-                    && this.Service.ServiceStatus != MachineServiceStatus.Completed
-                    && this.Service.ServiceStatus != MachineServiceStatus.Valid;
-                //&& (DateTime.Now - this.Service.LastServiceDate.Value).Days > 0;
-                return can;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return true;
         }
 
         private void CheckCompletedGroup()
@@ -521,16 +510,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void ClosePopup()
         {
-            this.IsVisiblePopup = false;
-            this.MaintainerName = string.Empty;
-            this.MaintainerNote = string.Empty;
+            this.IsVisibleConfirmService = false;
+            this.MaintenerName = string.Empty;
+            this.MaintenerNote = string.Empty;
         }
 
         private async Task ConfirmGroupAsync()
         {
             try
             {
-                foreach (var instruction in this.Instructions)
+                foreach (var instruction in this.currentGroupList)
                 {
                     await this.machineServicingWebService.ConfirmInstructionAsync(instruction.Id);
                 }
@@ -553,9 +542,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    await this.machineServicingWebService.ConfirmServiceAsync(this.MaintainerName, this.MaintainerNote);
+                    await this.machineServicingWebService.ConfirmServiceAsync(this.MaintenerName, this.MaintenerNote);
 
                     this.ClosePopup();
+
+                    this.NavigationService.GoBack();
                 }
             }
             catch (Exception)
@@ -571,51 +562,51 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (sender)
             {
                 case Senders.VerticalAxis:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Vertical);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Vertical);
                     break;
 
                 case Senders.HorizontalAxis:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Horizontal);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Horizontal);
                     break;
 
                 case Senders.Bay1:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay1:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == true);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == true);
                     break;
 
                 case Senders.Bay2:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay2:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == true);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == true);
                     break;
 
                 case Senders.Bay3:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == false);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay3:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == true);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == true);
                     break;
 
                 case Senders.Machine:
-                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.IsSystem == true);
+                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.IsSystem == true);
                     break;
             }
 
             List<Instruction> tempList = new List<Instruction>();
 
-            foreach (var instruction in this.Instructions)
+            foreach (var instruction in this.currentGroupList)
             {
-                if (this.Instructions.Exists(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation == InstructionOperation.Substitute))
+                if (this.currentGroupList.Exists(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation == InstructionOperation.Substitute))
                 {
                     if (!tempList.Exists(x => x.Definition.Description == instruction.Definition.Description))
                     {
-                        tempList.Add(this.Instructions.Find(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation == InstructionOperation.Substitute));
+                        tempList.Add(this.currentGroupList.Find(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation == InstructionOperation.Substitute));
                     }
                 }
                 else
@@ -624,10 +615,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
             }
 
-            this.Instructions = tempList;
-            if (!this.Instructions.Any())
+            try
             {
-                this.CheckCompletedGroup();
+                this.Instructions = tempList;
+                if (!this.Instructions.Any() && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring))
+                {
+                    this.CheckCompletedGroup();
+                }
+            }
+            catch (Exception)
+            {
             }
 
             this.RaisePropertyChanged(nameof(this.Instructions));
@@ -641,20 +638,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.FilterTable(Senders.VerticalAxis);
 
                 this.RaisePropertyChanged(nameof(this.Instructions));
-
-                //if (this.instructions.Any())
-                //{
-                //    if (this.lastInstruction == this.instructions.FirstOrDefault().Id || this.lastInstruction == 0)
-                //    {
-                //        this.SelectedInstruction = this.instructions.ElementAtOrDefault(this.lastInstruction);
-                //        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
-                //    }
-                //    else
-                //    {
-                //        this.SelectedInstruction = this.instructions.FirstOrDefault(s => s.Id == this.lastInstruction);
-                //        this.RaisePropertyChanged(nameof(this.SelectedInstruction));
-                //    }
-                //}
             }
             catch (Exception)
             {
@@ -695,9 +678,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsActiveMachine = false;
         }
 
-        private void ShowNoteMenu()
+        private void ShowConfirmService()
         {
-            this.IsVisiblePopup = true;
+            this.IsVisibleConfirmService = true;
         }
 
         #endregion

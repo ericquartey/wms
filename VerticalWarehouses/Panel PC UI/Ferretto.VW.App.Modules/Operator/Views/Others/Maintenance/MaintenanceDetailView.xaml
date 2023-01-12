@@ -398,7 +398,7 @@
           Grid.Column="1">
       <controls:PpcButton HorizontalAlignment="Right"
                           VerticalAlignment="Center"
-                          Command="{Binding ShowNoteMenuCommand}"
+                          Command="{Binding ShowConfirmServiceCommand}"
                           Content="{res:Loc OperatorApp.ConfirmService}"
                           Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
 
@@ -413,7 +413,7 @@
     <Grid Grid.RowSpan="10"
           Grid.ColumnSpan="5"
           Background="Transparent"
-          Visibility="{Binding IsVisiblePopup, Converter={StaticResource BTVC}}">
+          Visibility="{Binding IsVisibleConfirmService, Converter={StaticResource BTVC}}">
       <Grid Width="600"
             Height="350"
             Background="{StaticResource GrayB}">
@@ -437,8 +437,8 @@
                              Margin="15"
                              HorizontalAlignment="Stretch"
                              FontSize="32"
-                             InputText="{Binding MaintainerName, Mode=TwoWay}"
-                             LabelText="{Resources:Loc OperatorApp.MaintainerName}" />
+                             InputText="{Binding MaintenerName, Mode=TwoWay}"
+                             LabelText="{Resources:Loc OperatorApp.MaintenerName}" />
 
 
         <controls:PpcTextBox Grid.Row="2"
@@ -446,7 +446,7 @@
                              Margin="15"
                              HorizontalAlignment="Stretch"
                              FontSize="32"
-                             InputText="{Binding MaintainerNote, Mode=TwoWay}"
+                             InputText="{Binding MaintenerNote, Mode=TwoWay}"
                              LabelText="{Resources:Loc OperatorApp.Note}" />
 
         <controls:PpcButton Grid.Row="3"
