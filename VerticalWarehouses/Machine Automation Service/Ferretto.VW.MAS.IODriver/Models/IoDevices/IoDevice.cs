@@ -586,7 +586,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 outputData,
                                 configurationData,
                                 errorCode);
-                            this.logger.LogInformation($"4:{messageData}: index {this.deviceIndex}");
+                            this.logger.LogTrace($"4:{messageData}: index {this.deviceIndex}");
 
                             this.CurrentStateMachine?.ProcessResponseMessage(messageData);
                             break;
