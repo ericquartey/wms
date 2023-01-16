@@ -2656,4 +2656,7 @@
   <data name="LabelsEditableCaption" xml:space="preserve">
     <value>Nr. Copies</value>
   </data>
+  <data name="IsOstec" xml:space="preserve">
+    <value>Ostec (WMS custom)</value>
+  </data>
 </root>

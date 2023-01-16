@@ -527,6 +527,31 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsOstecActive()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsOstec).First();
+            }
+        }
+
+        public bool IsSilenceSirenAlarm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.SilenceSirenAlarm).First();
+            }
+        }
+
+        public async Task SetSilenceSirenAlarm(bool silenceSirenAlarm)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().SilenceSirenAlarm = silenceSirenAlarm;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public bool IsHeartBeat()
         {
             lock (this.dataContext)
@@ -601,6 +626,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
+                machineDB.IsOstec = machine.IsOstec;
                 machineDB.IsQuantityLimited = machine.IsQuantityLimited;
                 machineDB.IsAddItemByList = machine.IsAddItemByList;
                 machineDB.WaitingListPriorityHighlighted = machine.WaitingListPriorityHighlighted;
@@ -1101,7 +1127,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.SaveChanges();
             }
         }
-
         #endregion
     }
 }

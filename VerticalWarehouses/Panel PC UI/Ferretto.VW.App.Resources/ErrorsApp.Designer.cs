@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ACK Alarm.
+        /// </summary>
+        public static string SilenceSirenAlarm {
+            get {
+                return ResourceManager.GetString("SilenceSirenAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit on elevator.
         /// </summary>
         public static string UnitOnElevator {

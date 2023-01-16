@@ -454,6 +454,64 @@ namespace Ferretto.VW.MAS.IODriver
                             // INFO The sensor presence in lower bay must be inverted (NOT for carousel or External bay)
                             inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || (this.isExternalBay && !this.isDoubleBay)) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
+
+                            var isOstec = false;
+
+
+
+                            using (var scope = this.serviceScopeFactory.CreateScope())
+                            {
+                                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+
+                                isOstec = machineProvider.IsOstecActive();
+
+                            }
+                            // Ostec Siren Control
+                            if (isOstec)
+                            {
+
+                                var silenceAlarm = false;
+                                var hasError = false;
+
+                                using (var scope = this.serviceScopeFactory.CreateScope())
+                                {
+                                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                    hasError = errorsProvider.HasActiveErrors();
+                                }
+
+                                using (var scope = this.serviceScopeFactory.CreateScope())
+                                {
+                                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+
+                                    silenceAlarm = machineProvider.IsSilenceSirenAlarm();
+
+                                }
+
+                                if (hasError && !silenceAlarm)
+                                {
+                                    outputData[6] = true;
+                                    outputData[7] = true;
+                                }
+                                else if (hasError && silenceAlarm)
+                                {
+                                    outputData[6] = true;
+                                    outputData[7] = false;
+                                }
+                                else
+                                {
+                                    outputData[6] = false;
+                                    outputData[7] = false;
+
+                                    using (var scope = this.serviceScopeFactory.CreateScope())
+                                    {
+                                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                                        await machineProvider.SetSilenceSirenAlarm(false);
+                                    }
+                                }
+                            }
+
+
+
                             if (this.ioStatus.UpdateInputStates(inputData)
                                 || this.forceIoStatusPublish)
                             {
@@ -528,7 +586,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 outputData,
                                 configurationData,
                                 errorCode);
-                            this.logger.LogTrace($"4:{messageData}: index {this.deviceIndex}");
+                            this.logger.LogInformation($"4:{messageData}: index {this.deviceIndex}");
 
                             this.CurrentStateMachine?.ProcessResponseMessage(messageData);
                             break;

@@ -2959,6 +2959,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ostec (WMS custom).
+        /// </summary>
+        public static string IsOstec {
+            get {
+                return ResourceManager.GetString("IsOstec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Limit quantity in pick and put.
         /// </summary>
         public static string IsQuantityLimited {

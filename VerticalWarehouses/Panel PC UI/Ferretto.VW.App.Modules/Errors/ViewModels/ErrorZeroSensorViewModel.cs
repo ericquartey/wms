@@ -52,6 +52,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private readonly IMachineIdentityWebService machineIdentity;
+
         private bool calibrateStepVisible;
 
         private object currentStep = default(ErrorZeroSensorStepStart);
@@ -102,6 +104,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             IMachineBaysWebService machineBaysWebService,
             IMachineCarouselWebService machineCarouselWebService,
             IMachineErrorsWebService machineErrorsWebService,
+            IMachineIdentityWebService machineIdentity,
             IMachineErrorsService machineErrorsService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
@@ -113,6 +116,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
+            this.machineIdentity = machineIdentity ?? throw new ArgumentNullException(nameof(machineIdentity));
 
             this.CurrentStep = default(ErrorZeroSensorStepStart);
         }
@@ -278,6 +282,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.ResetImageVisibility();
+
+            var isVisible = await this.machineIdentity.GetIsOstecEnableAsync();
+            var isEnabled = !await this.machineIdentity.IsSilenceSirenAlarmAsync();
+            this.ShowSilenceSiren(isVisible, isEnabled);
 
             this.SubscribeToEvents();
 

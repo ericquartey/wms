@@ -79,6 +79,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
             this.States.Add(this.GetInstance<PresentationAbort>());
             this.States.Add(this.GetInstance<PresentationBack>());
+            this.States.Add(this.GetInstance<PresentationSilenceSiren>());
         }
 
         public void NotificationChanged(PresentationNotificationMessage message)

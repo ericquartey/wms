@@ -2259,4 +2259,7 @@
   <data name="LabelsEditableCaption" xml:space="preserve">
     <value>Numero copie</value>
   </data>
+  <data name="IsOstec" xml:space="preserve">
+    <value>Ostec (WMS custom)</value>
+  </data>
 </root>

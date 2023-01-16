@@ -213,4 +213,7 @@
   <data name="PowerOnInstruction" xml:space="preserve">
     <value>Premi Spenta per iniziare la procedura</value>
   </data>
+  <data name="SilenceSirenAlarm" xml:space="preserve">
+    <value>Tacita allarme</value>
+  </data>
 </root>
