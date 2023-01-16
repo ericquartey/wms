@@ -39,8 +39,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.machineIdentity.SilenceSirenAlarmAsync();
 
             this.IsEnabled = false;
+            this.RaiseCanExecuteChanged();
 
             return Task.CompletedTask;
+        }
+        protected override bool CanExecute()
+        {
+            if (!this.IsEnabled.HasValue)
+            {
+                return false;
+            }
+
+            return this.IsEnabled.Value;
         }
 
         private void Update(PresentationChangedMessage message)
@@ -52,7 +62,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 SilenceSiren.IsVisible.HasValue)
             {
                 this.IsVisible = SilenceSiren.IsVisible;
+                this.IsEnabled = SilenceSiren.IsEnabled;
             }
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion
