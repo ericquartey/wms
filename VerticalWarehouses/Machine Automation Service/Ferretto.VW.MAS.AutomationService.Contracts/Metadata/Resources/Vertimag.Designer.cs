@@ -322,6 +322,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        public static string BayPosition_Location {
+            get {
+                return ResourceManager.GetString("BayPosition_Location", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum Double Height.
         /// </summary>
         public static string BayPosition_MaxDoubleHeight {
@@ -601,7 +610,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profiles.
+        ///   Looks up a localized string similar to Profile {0}.
         /// </summary>
         public static string ElevatorAxis_Profiles {
             get {
@@ -1258,15 +1267,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MovementParameters.
-        /// </summary>
-        public static string MovementParameters {
-            get {
-                return ResourceManager.GetString("MovementParameters", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Long Deposit.
         /// </summary>
         public static string MovementProfileType_LongDeposit {
@@ -1308,6 +1308,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         public static string MovementProfileType_Undefined {
             get {
                 return ResourceManager.GetString("MovementProfileType.Undefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         

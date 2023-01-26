@@ -265,7 +265,7 @@
     <value>Profile Calibration Speed</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profiles</value>
+    <value>Profile {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Resolution</value>
@@ -425,9 +425,6 @@
   </data>
   <data name="MeasureTime" xml:space="preserve">
     <value>Measure Time</value>
-  </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MovementParameters</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Long Deposit</value>
@@ -647,5 +644,11 @@
   </data>
   <data name="NetWeight" xml:space="preserve">
     <value>Net Weight</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
 </root>

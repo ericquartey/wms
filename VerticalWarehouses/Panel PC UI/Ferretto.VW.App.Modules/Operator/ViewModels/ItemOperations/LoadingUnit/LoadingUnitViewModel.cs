@@ -1071,6 +1071,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsBusyConfirmingRecallOperation = true;
                 this.IsWaitingForResponse = true;
 
+                await this.OnDataRefreshAsync();
+
                 var activeOperation = this.MissionOperationsService.ActiveWmsOperation;
                 this.Logger.Debug($"User requested recall of loading unit.");
 
@@ -1164,7 +1166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.maxKnownIndexSelection = 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //if (this.appear)
                 //{
@@ -2159,7 +2161,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
                     }

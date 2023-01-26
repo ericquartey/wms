@@ -303,10 +303,11 @@ namespace Ferretto.VW.MAS.SocketLink
 
             if (this.socketLinkTimeout > 0)
             {
+                // TODO - this test seems to be working as milliseconds!
                 if (DateTime.Now > lastActivity.AddSeconds(this.socketLinkTimeout))
                 {
                     timeout = true;
-                    this.logger.LogTrace("SocketLink socket Timeout " + this.socketLinkTimeout);
+                    this.logger.LogDebug("SocketLink socket Timeout " + this.socketLinkTimeout);
                 }
             }
 

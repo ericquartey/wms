@@ -265,7 +265,7 @@
     <value>Profil Kalibrasyon Hızı</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>profiller</value>
+    <value>profil {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Çözünürlük</value>
@@ -425,9 +425,6 @@
   </data>
   <data name="MeasureTime" xml:space="preserve">
     <value>Zamanı Ölçün</value>
-  </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>HareketParametreleri</value>
   </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Uzun Mevduat</value>
@@ -626,5 +623,11 @@
   </data>
   <data name="Bay_ProfileConst1" xml:space="preserve">
     <value>Profil K1 sabiti</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>konum</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>adı</value>
   </data>
 </root>

@@ -265,7 +265,7 @@
     <value>Keretkalibráció sebessége</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profilok</value>
+    <value>Profil {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Felbontás</value>
@@ -426,9 +426,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Súlymérés idő</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>MozgásiParaméterek</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Hosszú betárolás</value>
   </data>
@@ -581,5 +578,11 @@
   </data>
   <data name="BarcodeAutomaticPut" xml:space="preserve">
     <value>Automatikus utántöltés vonalkóddal</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>pozíció</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Neve</value>
   </data>
 </root>

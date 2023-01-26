@@ -242,7 +242,7 @@
     <value>Hitrost umerjanja modela</value>
   </data>
   <data name="ElevatorAxis_Profiles" xml:space="preserve">
-    <value>Profili</value>
+    <value>Profil {0}</value>
   </data>
   <data name="ElevatorAxis_Resolution" xml:space="preserve">
     <value>Odpravljan</value>
@@ -403,9 +403,6 @@
   <data name="MeasureTime" xml:space="preserve">
     <value>Čas tehtanja</value>
   </data>
-  <data name="MovementParameters" xml:space="preserve">
-    <value>ParametriPremika</value>
-  </data>
   <data name="MovementProfileType.LongDeposit" xml:space="preserve">
     <value>Dolgo odlag</value>
   </data>
@@ -528,5 +525,11 @@
   </data>
   <data name="ToteBarcodeLength" xml:space="preserve">
     <value>Tote barcode length</value>
+  </data>
+  <data name="BayPosition_Location" xml:space="preserve">
+    <value>položaj</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Ime</value>
   </data>
 </root>

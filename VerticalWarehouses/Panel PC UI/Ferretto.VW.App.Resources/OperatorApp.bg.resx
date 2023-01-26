@@ -1,0 +1,2229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Confirm" xml:space="preserve">
+    <value>потвърж</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Подробно</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Спис</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Машини</value>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Вид Опаковка</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Дата Производство</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Количест</value>
+  </data>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Изисква Колич [{0}]</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperation" xml:space="preserve">
+    <value>Дейности с чекмедже</value>
+  </data>
+  <data name="NavigationMainMenuLists" xml:space="preserve">
+    <value>Списъци чакащи</value>
+  </data>
+  <data name="NavigationMainMenuItems" xml:space="preserve">
+    <value>Търсене статии</value>
+  </data>
+  <data name="NavigationMainMenuOther" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="DrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Операция по изтегляне.</value>
+  </data>
+  <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
+    <value>Необход колич</value>
+  </data>
+  <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
+    <value>Изтегл колич</value>
+  </data>
+  <data name="DrawerWaitPageHeader" xml:space="preserve">
+    <value>Чака да пристигне ново чекмедже.</value>
+  </data>
+  <data name="DrawerWaitOperation" xml:space="preserve">
+    <value>Планирани операции:</value>
+  </data>
+  <data name="DrawerActivityPickingDetailHeader" xml:space="preserve">
+    <value>Подробно за елемента изтегляне.</value>
+  </data>
+  <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
+    <value>Дата производство</value>
+  </data>
+  <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
+    <value>Парт</value>
+  </data>
+  <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
+    <value>Съст материала</value>
+  </data>
+  <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
+    <value>Вид опаковка</value>
+  </data>
+  <data name="ListsInWaitHeader" xml:space="preserve">
+    <value>Спис които очакват изпълн</value>
+  </data>
+  <data name="ListsInWaitDetail" xml:space="preserve">
+    <value>Подробн списъка</value>
+  </data>
+  <data name="ListsInWaitExecute" xml:space="preserve">
+    <value>Спис изпълн</value>
+  </data>
+  <data name="ItemSearchHeader" xml:space="preserve">
+    <value>Търсене на статии по код и описание</value>
+  </data>
+  <data name="ItemSearchKeySearch" xml:space="preserve">
+    <value>Търсене</value>
+  </data>
+  <data name="AvailableQuantity" xml:space="preserve">
+    <value>Налично Колич [{0}]</value>
+  </data>
+  <data name="ItemSearchCall" xml:space="preserve">
+    <value>Заявка артикул</value>
+  </data>
+  <data name="ItemDetailHeader" xml:space="preserve">
+    <value>Подробност артикул</value>
+  </data>
+  <data name="ItemDetailManagement" xml:space="preserve">
+    <value>Вид управл</value>
+  </data>
+  <data name="ItemDetailPeriod" xml:space="preserve">
+    <value>Период FIFO [дни]</value>
+  </data>
+  <data name="ImmediateDrawerCallHeader" xml:space="preserve">
+    <value>Незабавна заявка за чекмедже</value>
+  </data>
+  <data name="ImmediateDrawerCallDrawerCall" xml:space="preserve">
+    <value>Чекмедже повикв</value>
+  </data>
+  <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
+    <value>Изисква чекмедже</value>
+  </data>
+  <data name="GeneralInfoHeader" xml:space="preserve">
+    <value>Обща информация</value>
+  </data>
+  <data name="GeneralInfoModel" xml:space="preserve">
+    <value>Модел</value>
+  </data>
+  <data name="GeneralInfoSerial" xml:space="preserve">
+    <value>Сериен номер</value>
+  </data>
+  <data name="GeneralInfoTotDrawers" xml:space="preserve">
+    <value>Брой чекмеджета</value>
+  </data>
+  <data name="GeneralInfoSwRelease" xml:space="preserve">
+    <value>Версия на софтуер</value>
+  </data>
+  <data name="GeneralInfoInstallationDate" xml:space="preserve">
+    <value>тест на</value>
+  </data>
+  <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
+    <value>Последна поддръжка</value>
+  </data>
+  <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
+    <value>Следваща поддръжка</value>
+  </data>
+  <data name="GeneralInfoOperativeStatus" xml:space="preserve">
+    <value>Съст на машина</value>
+  </data>
+  <data name="DrawerCompactingHeader" xml:space="preserve">
+    <value>Процедура уплътняване на чекмеджета.</value>
+  </data>
+  <data name="DrawerCompactingFront" xml:space="preserve">
+    <value>Данни предна страна.</value>
+  </data>
+  <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
+    <value>Брой фрагменти</value>
+  </data>
+  <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
+    <value>Макс възст пространство</value>
+  </data>
+  <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
+    <value>Място възстановяване</value>
+  </data>
+  <data name="DrawerCompactingAntCompact" xml:space="preserve">
+    <value>Комп предна част</value>
+  </data>
+  <data name="DrawerCompactingRearCompact" xml:space="preserve">
+    <value>Комп задна част</value>
+  </data>
+  <data name="OtherNavigationCompaction" xml:space="preserve">
+    <value>Уплътняване</value>
+  </data>
+  <data name="OtherNavigationStatistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="OtherNavigationMaintenance" xml:space="preserve">
+    <value>Извънредна</value>
+  </data>
+  <data name="StatisticsGeneralDataHeader" xml:space="preserve">
+    <value>Статистика: общи данни.</value>
+  </data>
+  <data name="MachineStatistics_TotalMovedTrays" xml:space="preserve">
+    <value>Преместване чекмедже</value>
+  </data>
+  <data name="MachineStatistics_TotalPowerOnTime" xml:space="preserve">
+    <value>Време запалв часове</value>
+  </data>
+  <data name="MachineStatistics_AreaFillPercentage" xml:space="preserve">
+    <value>Заета площ</value>
+  </data>
+  <data name="MachineStatistics_WeightCapacityPercentage" xml:space="preserve">
+    <value>Натов тегло</value>
+  </data>
+  <data name="MachineStatistics_AutomaticTimePercentage" xml:space="preserve">
+    <value>Време автомат режим</value>
+  </data>
+  <data name="MachineStatistics_UsageTimePercentage" xml:space="preserve">
+    <value>Коефициент на използване</value>
+  </data>
+  <data name="DrawerSpaceSaturazionHeader" xml:space="preserve">
+    <value>Статист насищане пространство в чекмедже.</value>
+  </data>
+  <data name="DrawerSpaceSaturazionTotalDrawers" xml:space="preserve">
+    <value>Общо чекмеджета</value>
+  </data>
+  <data name="DrawerSpaceSaturazionDrawerMeasure" xml:space="preserve">
+    <value>Размер на чекмедже (мм)</value>
+  </data>
+  <data name="DrawerSpaceSaturazionFillingMachine" xml:space="preserve">
+    <value>Машинно пълнене</value>
+  </data>
+  <data name="DrawerSpaceSaturazionWeightAnalisys" xml:space="preserve">
+    <value>Анализ простр</value>
+  </data>
+  <data name="DrawerWeightSaturationHeader" xml:space="preserve">
+    <value>Статист анализ теглото на чекмедже.</value>
+  </data>
+  <data name="DrawerWeightSaturationTotalDrawers" xml:space="preserve">
+    <value>Общо чекмеджета</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxGrossRange" xml:space="preserve">
+    <value>Макс брутен капац (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationMaxNetRange" xml:space="preserve">
+    <value>Макс нет капац нат(kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightGrossLoaded" xml:space="preserve">
+    <value>Натов брутно тегло (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationWeightNetLoaded" xml:space="preserve">
+    <value>Натовар нетно тегло (kg)</value>
+  </data>
+  <data name="DrawerWeightSaturationNetLoadedWeight" xml:space="preserve">
+    <value>Натовар нетно тегло (%)</value>
+  </data>
+  <data name="DetailListInWaitHeader" xml:space="preserve">
+    <value>Ред спис изпълн прогр</value>
+  </data>
+  <data name="CellsStatisticsHeader" xml:space="preserve">
+    <value>Статистика  клетки.</value>
+  </data>
+  <data name="CellsStatisticsCellsTotal" xml:space="preserve">
+    <value>Общо клетки</value>
+  </data>
+  <data name="CellsStatisticsFrontCellsTotal" xml:space="preserve">
+    <value>Общо предни клетки</value>
+  </data>
+  <data name="CellsStatisticsRearCellsTotal" xml:space="preserve">
+    <value>Общ брой задни клетки</value>
+  </data>
+  <data name="CellsStatisticsTotalUsedCells" xml:space="preserve">
+    <value>Обща заетост на клетките</value>
+  </data>
+  <data name="CellsStatisticsOther" xml:space="preserve">
+    <value>Друго</value>
+  </data>
+  <data name="ErrorsStatisticsHeader" xml:space="preserve">
+    <value>Статистика анализ на грешки.</value>
+  </data>
+  <data name="ErrorsStatisticsTotDrawersMoved" xml:space="preserve">
+    <value>Общо преместени чекмеджета</value>
+  </data>
+  <data name="ErrorsStatisticsTotErrors" xml:space="preserve">
+    <value>Общо грешки</value>
+  </data>
+  <data name="ErrorsStatisticsDrawersMovedWithoutError" xml:space="preserve">
+    <value>Безгрешни чекмеджета</value>
+  </data>
+  <data name="ErrorsStatisticsReliabilityIndex" xml:space="preserve">
+    <value>Индекс на надеждност</value>
+  </data>
+  <data name="ErrorsStatisticsErrorDescription" xml:space="preserve">
+    <value>Описание на грешка</value>
+  </data>
+  <data name="MaintenanceMainPageHeader" xml:space="preserve">
+    <value>Извънредна: Vertimag X</value>
+  </data>
+  <data name="MaintenanceMainPageModel" xml:space="preserve">
+    <value>Модел</value>
+  </data>
+  <data name="MaintenanceMainPageSerial" xml:space="preserve">
+    <value>Сериен</value>
+  </data>
+  <data name="MaintenanceMainPageInstallationDate" xml:space="preserve">
+    <value>Дата Монтиране</value>
+  </data>
+  <data name="MaintenanceMainPageLastMaintenanceDate" xml:space="preserve">
+    <value>Дата последна поддръжка</value>
+  </data>
+  <data name="MaintenanceMainPageNextMaintenanceDate" xml:space="preserve">
+    <value>Дата на следваща поддръжка</value>
+  </data>
+  <data name="MaintenanceMainPageStateMachine" xml:space="preserve">
+    <value>Съст машина</value>
+  </data>
+  <data name="MaintenanceDetailHeader" xml:space="preserve">
+    <value>Подробности поддръжка</value>
+  </data>
+  <data name="MaintenanceDetailTotalCycles" xml:space="preserve">
+    <value>Общо извършени цикли</value>
+  </data>
+  <data name="MaintenanceDetailCyclesBetweenTwoMaintenance" xml:space="preserve">
+    <value>Цикли между поддръжките</value>
+  </data>
+  <data name="MaintenanceDetailCyclesFromLastMaintenance" xml:space="preserve">
+    <value>Цикли от последна поддръжка</value>
+  </data>
+  <data name="MaintenanceDetailElementStatus" xml:space="preserve">
+    <value>Съст елемента</value>
+  </data>
+  <data name="MaintenanceDetailStopRequired" xml:space="preserve">
+    <value>Необх престой машина [часове]</value>
+  </data>
+  <data name="MaintenanceDetailPlatformRequired" xml:space="preserve">
+    <value>Подемна платформа</value>
+  </data>
+  <data name="MaintenanceDetailContactRequired" xml:space="preserve">
+    <value>Изпращ заявка за контакт</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCall" xml:space="preserve">
+    <value>Извиква чекмедже</value>
+  </data>
+  <data name="StatisticsNavigationDrawers" xml:space="preserve">
+    <value>Статистика чекмедже</value>
+  </data>
+  <data name="StatisticsNavigationCells" xml:space="preserve">
+    <value>Статистика клетки</value>
+  </data>
+  <data name="StatisticsNavigationErrors" xml:space="preserve">
+    <value>Статистика грешки</value>
+  </data>
+  <data name="DrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Операция по изливане.</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
+    <value>Колич изливане [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
+    <value>Излято колич [{0}]</value>
+  </data>
+  <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
+    <value>Надгражд максим капацитет</value>
+  </data>
+  <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
+    <value>Ред списък</value>
+  </data>
+  <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
+    <value>Изискв колич [бр.]</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
+    <value>Подробности операцията по депозита.</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Парт</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
+    <value>Съст материала</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
+    <value>Вид на опаковката</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
+    <value>Дата производство</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
+    <value>Колич да плати</value>
+  </data>
+  <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
+    <value>Ред списък</value>
+  </data>
+  <data name="CommonItemCode" xml:space="preserve">
+    <value>Код артикул</value>
+  </data>
+  <data name="CommonItemDescription" xml:space="preserve">
+    <value>Описание артикул</value>
+  </data>
+  <data name="CommonListCode" xml:space="preserve">
+    <value>Код списък</value>
+  </data>
+  <data name="CommonListDescription" xml:space="preserve">
+    <value>Описание списък</value>
+  </data>
+  <data name="CommonPackingListCode" xml:space="preserve">
+    <value>Код опаковка</value>
+  </data>
+  <data name="CommonPackingListDescription" xml:space="preserve">
+    <value>Описание опаковка</value>
+  </data>
+  <data name="CommonNote" xml:space="preserve">
+    <value>Забел</value>
+  </data>
+  <data name="CommonUp" xml:space="preserve">
+    <value>На</value>
+  </data>
+  <data name="CommonDown" xml:space="preserve">
+    <value>Над</value>
+  </data>
+  <data name="DrawerActivityInventoryHeader" xml:space="preserve">
+    <value>Работа с инвентар.</value>
+  </data>
+  <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
+    <value>Колич запас</value>
+  </data>
+  <data name="CommonCompartmentPosition" xml:space="preserve">
+    <value>Местопол</value>
+  </data>
+  <data name="CommonButtonConfirm" xml:space="preserve">
+    <value>потвърж</value>
+  </data>
+  <data name="CommonButtonDetail" xml:space="preserve">
+    <value>Подробно</value>
+  </data>
+  <data name="DrawerActivityInventoryDetailHeader" xml:space="preserve">
+    <value>Подробно операция инвентаризация.</value>
+  </data>
+  <data name="ItemDetailCategory" xml:space="preserve">
+    <value>Категория принадлежност</value>
+  </data>
+  <data name="ItemDetailClasse" xml:space="preserve">
+    <value>Клас A B C</value>
+  </data>
+  <data name="ItemDetailMeasurementUnity" xml:space="preserve">
+    <value>Измерв Единица</value>
+  </data>
+  <data name="ItemDetailWeight" xml:space="preserve">
+    <value>Сред тегло [гр]</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBack" xml:space="preserve">
+    <value>Общо Следв</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderBackPercentage" xml:space="preserve">
+    <value>% публ.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFront" xml:space="preserve">
+    <value>Общо.Пр.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderFrontPercentage" xml:space="preserve">
+    <value>% Пр.</value>
+  </data>
+  <data name="StatisticsCellsDataGridHeaderState" xml:space="preserve">
+    <value>Стату</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderCompartments" xml:space="preserve">
+    <value>Раздел</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderDrawerId" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFilling" xml:space="preserve">
+    <value>Пълнене</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderFillingPercentage" xml:space="preserve">
+    <value>Запъл.</value>
+  </data>
+  <data name="DrawerSaturationDataGridHeaderMissions" xml:space="preserve">
+    <value>Мисии</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderCell" xml:space="preserve">
+    <value>Клетк</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderDrawer" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderHeight" xml:space="preserve">
+    <value>Височин</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderSide" xml:space="preserve">
+    <value>Стр</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderState" xml:space="preserve">
+    <value>Стат</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderWeight" xml:space="preserve">
+    <value>Тегл</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderError" xml:space="preserve">
+    <value>Грешка</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotal" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="StatisticsErrorDataGridHeaderTotalPercentage" xml:space="preserve">
+    <value>% Общо</value>
+  </data>
+  <data name="WaitingListDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="WaitingListDataGridHeaderList" xml:space="preserve">
+    <value>Спис</value>
+  </data>
+  <data name="WaitingListDataGridHeaderMachines" xml:space="preserve">
+    <value>Машини</value>
+  </data>
+  <data name="WaitingListDataGridHeaderType" xml:space="preserve">
+    <value>Тип</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderKit" xml:space="preserve">
+    <value>Ком</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderRequest" xml:space="preserve">
+    <value>Запитване</value>
+  </data>
+  <data name="StatisticsMaintenanceDataGridHeaderState" xml:space="preserve">
+    <value>Стат</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderCurrentGrossWeight" xml:space="preserve">
+    <value>Текущо тегло</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderDrawer" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderHeight" xml:space="preserve">
+    <value>Височин</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxPercentage" xml:space="preserve">
+    <value>% макс</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderMaxWeight" xml:space="preserve">
+    <value>Нетна макс</value>
+  </data>
+  <data name="StatisticsDrawerWeightSaturationDataGridHeaderTare" xml:space="preserve">
+    <value>Тара</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderElement" xml:space="preserve">
+    <value>Елемент</value>
+  </data>
+  <data name="StatisticsMaintenanceDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Колич</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderItem" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderMachine" xml:space="preserve">
+    <value>Машина</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderQuantity" xml:space="preserve">
+    <value>Колич</value>
+  </data>
+  <data name="WaitingListDetailDataGridHeaderRow" xml:space="preserve">
+    <value>Ред</value>
+  </data>
+  <data name="StatisticsNavigationMachine" xml:space="preserve">
+    <value>Машинна статистика</value>
+  </data>
+  <data name="MachineStatisticsHeader" xml:space="preserve">
+    <value>Машинна статистика.</value>
+  </data>
+  <data name="MachineStatisticsSectionVertical" xml:space="preserve">
+    <value>Данни вертикална ос.</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>Общо изм Километри</value>
+  </data>
+  <data name="MachineStatistics_TotalVerticalAxisCycles" xml:space="preserve">
+    <value>Общо извършени цикли</value>
+  </data>
+  <data name="MachineStatisticsSectionShutters" xml:space="preserve">
+    <value>Данни за амор.</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter1Cycles" xml:space="preserve">
+    <value>Цикли на клапа 1</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter2Cycles" xml:space="preserve">
+    <value>Цикли на клапа 2</value>
+  </data>
+  <data name="MachineStatistics_TotalShutter3Cycles" xml:space="preserve">
+    <value>Цикли на клапа 3</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontal" xml:space="preserve">
+    <value>Данни оста вериг.</value>
+  </data>
+  <data name="MachineStatisticsSectionHorizontalTotalCycles" xml:space="preserve">
+    <value>Общо извършени цикли</value>
+  </data>
+  <data name="MachineStatisticsSectionBays" xml:space="preserve">
+    <value>Данни отд.</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay1" xml:space="preserve">
+    <value>Преместв чекмедже отдел 1</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay2" xml:space="preserve">
+    <value>Преместв чекмедже отдел 2</value>
+  </data>
+  <data name="MachineStatisticsSectionBaysBay3" xml:space="preserve">
+    <value>Подвижни чекмеджета 3</value>
+  </data>
+  <data name="ItemSearchGridItem" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="ItemSearchGridDescription" xml:space="preserve">
+    <value>Описание артикул</value>
+  </data>
+  <data name="ItemSearchGridMachine" xml:space="preserve">
+    <value>Машини</value>
+  </data>
+  <data name="DrawerCompactingRear" xml:space="preserve">
+    <value>Данни задната страна.</value>
+  </data>
+  <data name="CommonListType" xml:space="preserve">
+    <value>Тип списък</value>
+  </data>
+  <data name="GeneralInfoWmsStatus" xml:space="preserve">
+    <value>Стат WMS</value>
+  </data>
+  <data name="DrawerCompactingDetailHeader" xml:space="preserve">
+    <value>Вижте подробности за уплътняване.</value>
+  </data>
+  <data name="DrawerCompactingDetailDrawer" xml:space="preserve">
+    <value>Преместване чекмедже</value>
+  </data>
+  <data name="DrawerCompactingDetailSourceCell" xml:space="preserve">
+    <value>Източн клетки</value>
+  </data>
+  <data name="DrawerCompactingDetailDestinationCell" xml:space="preserve">
+    <value>Клетка местоназнач</value>
+  </data>
+  <data name="DrawerCompactingDetailActualStep" xml:space="preserve">
+    <value>Текуща фаза</value>
+  </data>
+  <data name="DrawerCompactingDetailVerticalPosition" xml:space="preserve">
+    <value>Ниво вертикална ос</value>
+  </data>
+  <data name="DrawerCompactingDetailOrizzontalPosition" xml:space="preserve">
+    <value>поз хоризонтална ос</value>
+  </data>
+  <data name="DrawerCompactingDetailRemainingFragment" xml:space="preserve">
+    <value>Остатъч фрагменти</value>
+  </data>
+  <data name="DrawerCompactingDetailRecoveredSpace" xml:space="preserve">
+    <value>Възстанов простр мм.</value>
+  </data>
+  <data name="DrawerCompactingDetailSpaceToRecover" xml:space="preserve">
+    <value>Място възстановяване мм.</value>
+  </data>
+  <data name="DrawerCompactingAntStop" xml:space="preserve">
+    <value>Прекрат уплътняване</value>
+  </data>
+  <data name="DrawerCompactingProcedureStatus" xml:space="preserve">
+    <value>Текущо съст</value>
+  </data>
+  <data name="BlockLevelNone" xml:space="preserve">
+    <value>Никаква</value>
+  </data>
+  <data name="BlockLevelUndefined" xml:space="preserve">
+    <value>Неопределено</value>
+  </data>
+  <data name="BlockLevelSpaceOnly" xml:space="preserve">
+    <value>Само простр</value>
+  </data>
+  <data name="BlockLevelBlocked" xml:space="preserve">
+    <value>Блокиран</value>
+  </data>
+  <data name="WmsServicesOffline" xml:space="preserve">
+    <value>Недостижим</value>
+  </data>
+  <data name="WmsServicesOnline" xml:space="preserve">
+    <value>Онлайн</value>
+  </data>
+  <data name="MachineServiceStatus_Expired" xml:space="preserve">
+    <value>ИзСрок </value>
+  </data>
+  <data name="MachineServiceStatus_Expiring" xml:space="preserve">
+    <value>ИзтСрок</value>
+  </data>
+  <data name="MachineServiceStatus_Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+  </data>
+  <data name="MachineServiceStatus_Valid" xml:space="preserve">
+    <value>Валид</value>
+  </data>
+  <data name="DrawerActivityLocalCallGoBack" xml:space="preserve">
+    <value>Повт влиз чекмед</value>
+  </data>
+  <data name="DrawerSpaceSaturazionAnalisys" xml:space="preserve">
+    <value>Анализ простр</value>
+  </data>
+  <data name="ItemManagementType_FIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementType_Volume" xml:space="preserve">
+    <value>Обем</value>
+  </data>
+  <data name="ItemManagementType_NotSpecified" xml:space="preserve">
+    <value>Не е посочено</value>
+  </data>
+  <data name="ItemListType_Inventory" xml:space="preserve">
+    <value>Инв книга</value>
+  </data>
+  <data name="ItemListType_Pick" xml:space="preserve">
+    <value>Изтегл</value>
+  </data>
+  <data name="ItemListType_Put" xml:space="preserve">
+    <value>Вкарване</value>
+  </data>
+  <data name="ItemListType_NotSpecified" xml:space="preserve">
+    <value>Не е посочено</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Колич което да се изт</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Взето Колич [{0}]</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Стат стоки</value>
+  </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Работа с инвентар.</value>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Открито количест [{0}]</value>
+  </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>Заявката за чертеж за артикул {0} (Колич \1}) е приета.</value>
+  </data>
+  <data name="ListAvailable" xml:space="preserve">
+    <value>Наличен</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Ред списък</value>
+  </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Иден чекмед</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>потвърж за празен</value>
+  </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Наличност на машините</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Операция отменена</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Операция потвърдена.</value>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>В отдел няма чекмеджета за преместване {0}</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Има {0} чекм които да се вземат в отдел {1}</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>Има едно чекм  да се вземе отдел {0}</value>
+  </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Отстранете всички разпилени предмети от отделто.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Отстранете всички разпилени предмети от отделто.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Отмяна на плащане</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Отмяна оттегляне</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>Потвърждава се отменената операция</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Операцията по инвентаризация е отменена.</value>
+  </data>
+  <data name="Missions" xml:space="preserve">
+    <value>Мисии</value>
+  </data>
+  <data name="MissionsList" xml:space="preserve">
+    <value>Списък мисии</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Създаване</value>
+  </data>
+  <data name="MissionStep" xml:space="preserve">
+    <value>Стъп</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>отд</value>
+  </data>
+  <data name="BayNumberAll" xml:space="preserve">
+    <value>Всичк</value>
+  </data>
+  <data name="BayNumberElevatorBay" xml:space="preserve">
+    <value>Повд отдел</value>
+  </data>
+  <data name="BayNumberBayThree" xml:space="preserve">
+    <value>ТретоОтд</value>
+  </data>
+  <data name="BayNumberBayTwo" xml:space="preserve">
+    <value>ВтороОтд</value>
+  </data>
+  <data name="BayNumberBayNone" xml:space="preserve">
+    <value>Без отдел</value>
+  </data>
+  <data name="StatusExecuting" xml:space="preserve">
+    <value>В изпълн</value>
+  </data>
+  <data name="StatusNew" xml:space="preserve">
+    <value>Ново</value>
+  </data>
+  <data name="StatusWaiting" xml:space="preserve">
+    <value>В очакван</value>
+  </data>
+  <data name="StatusCompleted" xml:space="preserve">
+    <value>Завършена</value>
+  </data>
+  <data name="StatusAborted" xml:space="preserve">
+    <value>Отхвърл</value>
+  </data>
+  <data name="StatusCompleting" xml:space="preserve">
+    <value>В процес завършв</value>
+  </data>
+  <data name="BayNumberBayOne" xml:space="preserve">
+    <value>ПървОтд</value>
+  </data>
+  <data name="MissionType" xml:space="preserve">
+    <value>Вид на мисия</value>
+  </data>
+  <data name="MissionStatus" xml:space="preserve">
+    <value>Състояние</value>
+  </data>
+  <data name="BayTarget" xml:space="preserve">
+    <value>отд</value>
+  </data>
+  <data name="MissionStateNew" xml:space="preserve">
+    <value>1.Нов</value>
+  </data>
+  <data name="MissionStateStart" xml:space="preserve">
+    <value>2.Начало</value>
+  </data>
+  <data name="MissionStateLoadElevator" xml:space="preserve">
+    <value>3.LЗарежд повдигач</value>
+  </data>
+  <data name="MissionStateToTarget" xml:space="preserve">
+    <value>4.A местоназн</value>
+  </data>
+  <data name="MissionStateDepositUnit" xml:space="preserve">
+    <value>5.Чекмедже съхран</value>
+  </data>
+  <data name="MissionStateWaitPick" xml:space="preserve">
+    <value>6.Изчакв дейст</value>
+  </data>
+  <data name="MissionStateBayChain" xml:space="preserve">
+    <value>7.Повд отдел</value>
+  </data>
+  <data name="MissionStateCloseShutter" xml:space="preserve">
+    <value>8.Затваряне клапа</value>
+  </data>
+  <data name="MissionStateEnd" xml:space="preserve">
+    <value>13.Край</value>
+  </data>
+  <data name="MissionStateError" xml:space="preserve">
+    <value>101.Грешка</value>
+  </data>
+  <data name="MissionTypeNoType" xml:space="preserve">
+    <value>Без тип</value>
+  </data>
+  <data name="MissionTypeManual" xml:space="preserve">
+    <value>Ръчно</value>
+  </data>
+  <data name="MissionTypeWms" xml:space="preserve">
+    <value>Wms</value>
+  </data>
+  <data name="MissionTypeIn" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="MissionTypeOut" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="MissionTypeCompact" xml:space="preserve">
+    <value>Уплътняване</value>
+  </data>
+  <data name="MisionStateNotDefined" xml:space="preserve">
+    <value>Неопределено</value>
+  </data>
+  <data name="LoadingUnitInBay" xml:space="preserve">
+    <value>в отдел</value>
+  </data>
+  <data name="RecallDrawer" xml:space="preserve">
+    <value>Повто влиз Чекм</value>
+  </data>
+  <data name="Pieces" xml:space="preserve">
+    <value>бройк</value>
+  </data>
+  <data name="Pick" xml:space="preserve">
+    <value>Изтеглян</value>
+  </data>
+  <data name="Put" xml:space="preserve">
+    <value>Вкарване</value>
+  </data>
+  <data name="Adjustment" xml:space="preserve">
+    <value>Редакт </value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Запас</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Описание артикул</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Код артикул</value>
+  </data>
+  <data name="Compartment" xml:space="preserve">
+    <value>Разделени</value>
+  </data>
+  <data name="AdjustmentQuantity" xml:space="preserve">
+    <value>Инвентар [{0}]</value>
+  </data>
+  <data name="PutQuantity" xml:space="preserve">
+    <value>Колич  да се излее [{0}]</value>
+  </data>
+  <data name="PickingQuantity" xml:space="preserve">
+    <value>Колич да се вземе [{0}]</value>
+  </data>
+  <data name="NewOperationsAvailable" xml:space="preserve">
+    <value>Налични са нови операции</value>
+  </data>
+  <data name="ConfirmAndNewOperationsAvailable" xml:space="preserve">
+    <value>Налични са потвърждения и нови операции</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Запас</value>
+  </data>
+  <data name="LoadingUnitPresenceId" xml:space="preserve">
+    <value>Представ чекмедже</value>
+  </data>
+  <data name="SelectCompartment" xml:space="preserve">
+    <value>Изберете отдел</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationAbbreviation" xml:space="preserve">
+    <value>PICK</value>
+  </data>
+  <data name="NavigationMainMenuDrawerOperationDescription" xml:space="preserve">
+    <value>Изтеглян</value>
+  </data>
+  <data name="NavigationMainMenuItemsAbbreviation" xml:space="preserve">
+    <value>ИЗД</value>
+  </data>
+  <data name="NavigationMainMenuItemsDescription" xml:space="preserve">
+    <value>Търсене и изтегляне статии</value>
+  </data>
+  <data name="NavigationMainMenuListsAbbreviation" xml:space="preserve">
+    <value>СПИС</value>
+  </data>
+  <data name="NavigationMainMenuListsDescription" xml:space="preserve">
+    <value>изпълн/прекратяване списъци</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallAbbreviation" xml:space="preserve">
+    <value>ИЗТ</value>
+  </data>
+  <data name="OtherNavigationImmediateDrawerCallDescription" xml:space="preserve">
+    <value>Дейности с чекмедже</value>
+  </data>
+  <data name="DrawerCompacting" xml:space="preserve">
+    <value>Уплътняване</value>
+  </data>
+  <data name="BlockLevelNeedsTest" xml:space="preserve">
+    <value>Необх тест</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="NoItemWithCodeIsAvailable" xml:space="preserve">
+    <value>Няма налична артикула с код '{0}'.</value>
+  </data>
+  <data name="StartUpdate" xml:space="preserve">
+    <value>Актуализация старта</value>
+  </data>
+  <data name="Alarms" xml:space="preserve">
+    <value>Аларми</value>
+  </data>
+  <data name="CompactionInProgres" xml:space="preserve">
+    <value>Уплътн процес изпълн</value>
+  </data>
+  <data name="Diagnostics" xml:space="preserve">
+    <value>Диагностика</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Общи</value>
+  </data>
+  <data name="GeneralInformations" xml:space="preserve">
+    <value>Обща информация</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Номер на машина</value>
+  </data>
+  <data name="Serial" xml:space="preserve">
+    <value>Сериен</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Статистика</value>
+  </data>
+  <data name="TotalKm" xml:space="preserve">
+    <value>Общо изм километри</value>
+  </data>
+  <data name="TotalMachineWeight" xml:space="preserve">
+    <value>Общо тегло на машина</value>
+  </data>
+  <data name="TotalMissions" xml:space="preserve">
+    <value>Цикли</value>
+  </data>
+  <data name="TotalUnits" xml:space="preserve">
+    <value>Общо чекмедже</value>
+  </data>
+  <data name="Waiting" xml:space="preserve">
+    <value>В очакван</value>
+  </data>
+  <data name="Counters" xml:space="preserve">
+    <value>Броячи</value>
+  </data>
+  <data name="NoItemOnSelectedCompartment" xml:space="preserve">
+    <value>Няма елементи в избраното отдел.</value>
+  </data>
+  <data name="MissionTypeFirstTest" xml:space="preserve">
+    <value>Първи тест</value>
+  </data>
+  <data name="MissionTypeFullTestIN" xml:space="preserve">
+    <value>Пълен тест IN</value>
+  </data>
+  <data name="MissionTypeFullTestOUT" xml:space="preserve">
+    <value>Пълен тест OUT</value>
+  </data>
+  <data name="MissionTypeLoadUnitOperation" xml:space="preserve">
+    <value>Работа с чекмедже</value>
+  </data>
+  <data name="CommonLot" xml:space="preserve">
+    <value>Парт</value>
+  </data>
+  <data name="AlarmsDescription" xml:space="preserve">
+    <value>Списък на алармите на машината</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Номер отдел</value>
+  </data>
+  <data name="DetailCode" xml:space="preserve">
+    <value>Подробности кода</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="InverterIndex" xml:space="preserve">
+    <value>Индекс инвертор</value>
+  </data>
+  <data name="OccurrenceDate" xml:space="preserve">
+    <value>Дата събит</value>
+  </data>
+  <data name="ResolutionDate" xml:space="preserve">
+    <value>Дата прекратяване</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Фабрномер</value>
+  </data>
+  <data name="FragmentBack" xml:space="preserve">
+    <value>Фрагментация отзад</value>
+  </data>
+  <data name="FragmentFront" xml:space="preserve">
+    <value>Фрагментация отпред</value>
+  </data>
+  <data name="FragmentTotal" xml:space="preserve">
+    <value>Обща фрагментация</value>
+  </data>
+  <data name="CannotExecuteList" xml:space="preserve">
+    <value>Не мога да изпълня списъка.</value>
+  </data>
+  <data name="InvalidOperation" xml:space="preserve">
+    <value>Операция {0} невалидна</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Потреб</value>
+  </data>
+  <data name="LoadingUnitOutBay" xml:space="preserve">
+    <value>извън отдел</value>
+  </data>
+  <data name="LoadingUnitIdInfo" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="AdditionalText" xml:space="preserve">
+    <value>Допълнителна Информация</value>
+  </data>
+  <data name="UnitId" xml:space="preserve">
+    <value>Чекмедже №</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Височин</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Тегл</value>
+  </data>
+  <data name="DrawerCompactingWarning" xml:space="preserve">
+    <value>Фрагментацията е прекомерна: препоръчва се уплътняване.</value>
+  </data>
+  <data name="CarouselCalibration" xml:space="preserve">
+    <value>калибр на въртележката в ход</value>
+  </data>
+  <data name="HorizontalCalibration" xml:space="preserve">
+    <value>хоризонтал калибр в ход</value>
+  </data>
+  <data name="AvailablesQuantity" xml:space="preserve">
+    <value>Налично Колич</value>
+  </data>
+  <data name="ItemsFilteredByCode" xml:space="preserve">
+    <value>Статии филтрирани по код.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemCode" xml:space="preserve">
+    <value>Баркодът "{0}" не съдържа код на артикул.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheItemQuantity" xml:space="preserve">
+    <value>Баркодът "{0}" не съдържа Количто на артикула.</value>
+  </data>
+  <data name="BarcodeDoesNotContainTheListId" xml:space="preserve">
+    <value>Баркодът "{0}" не съдържа идентификационния код на списъка.</value>
+  </data>
+  <data name="NoListWithIdWasFound" xml:space="preserve">
+    <value>Няма списък с идентификационен код "{0}".</value>
+  </data>
+  <data name="ExecutionOfListAccepted" xml:space="preserve">
+    <value>изпълнто на списъка '{0}' е прието.</value>
+  </data>
+  <data name="BusyCells" xml:space="preserve">
+    <value>Заети клетки</value>
+  </data>
+  <data name="FreeCells" xml:space="preserve">
+    <value>Своб клетки</value>
+  </data>
+  <data name="FreeCellsForSupport" xml:space="preserve">
+    <value>Безпл клетки поддръжка</value>
+  </data>
+  <data name="FreeCellsOnlySpace" xml:space="preserve">
+    <value>Свободни клетки простр</value>
+  </data>
+  <data name="LockedCells" xml:space="preserve">
+    <value>Блок клетки</value>
+  </data>
+  <data name="TotalCells" xml:space="preserve">
+    <value>Клетки Общо</value>
+  </data>
+  <data name="UnitsInBay" xml:space="preserve">
+    <value>Чекмедже отдел</value>
+  </data>
+  <data name="UnitsInCell" xml:space="preserve">
+    <value>Чекмедже килията</value>
+  </data>
+  <data name="UnitsInElevator" xml:space="preserve">
+    <value>Чекмедже повдигача</value>
+  </data>
+  <data name="ConfirmService" xml:space="preserve">
+    <value>потвърж услугата</value>
+  </data>
+  <data name="InstallationDate" xml:space="preserve">
+    <value>Място на монтаж</value>
+  </data>
+  <data name="LastServiceDate" xml:space="preserve">
+    <value>Дата последно обслуж</value>
+  </data>
+  <data name="NextServiceDate" xml:space="preserve">
+    <value>Дата на следващата услуга</value>
+  </data>
+  <data name="ServiceStatus" xml:space="preserve">
+    <value>Статус на услугата</value>
+  </data>
+  <data name="IsDone" xml:space="preserve">
+    <value>Напр</value>
+  </data>
+  <data name="IsToDo" xml:space="preserve">
+    <value>За напр</value>
+  </data>
+  <data name="MaxDays" xml:space="preserve">
+    <value>Макс бр дн</value>
+  </data>
+  <data name="MaxRelativeCount" xml:space="preserve">
+    <value>Макс бр ц</value>
+  </data>
+  <data name="MaxTotalCount" xml:space="preserve">
+    <value>MaxTotalCount</value>
+  </data>
+  <data name="TotalActiveMissionTime" xml:space="preserve">
+    <value>Общо време на активната мисия</value>
+  </data>
+  <data name="TotalBayKilometers1" xml:space="preserve">
+    <value>Км отдел1</value>
+  </data>
+  <data name="TotalBayKilometers2" xml:space="preserve">
+    <value>Km Отдел2</value>
+  </data>
+  <data name="TotalBayKilometers3" xml:space="preserve">
+    <value>Km Отдел3</value>
+  </data>
+  <data name="TotalHorizontalAxisKilometers" xml:space="preserve">
+    <value>Подемник с хоризонтална ос</value>
+  </data>
+  <data name="TotalVerticalAxisKilometers" xml:space="preserve">
+    <value>вертикал повдигане на осите</value>
+  </data>
+  <data name="UnitsInBay1" xml:space="preserve">
+    <value>Чекмедже отдел 1</value>
+  </data>
+  <data name="UnitsInBay2" xml:space="preserve">
+    <value>Чекмедже отдел 2</value>
+  </data>
+  <data name="UnitsInBay3" xml:space="preserve">
+    <value>Чекмедже отдел 3</value>
+  </data>
+  <data name="DiagnosticStatisticDesc" xml:space="preserve">
+    <value>(Данните са изчислени от последната поддръжка спрямо общата стойност)</value>
+  </data>
+  <data name="Maintenance" xml:space="preserve">
+    <value>Извънредна:</value>
+  </data>
+  <data name="ActiveMissionsTime" xml:space="preserve">
+    <value>Време активни мисии</value>
+  </data>
+  <data name="Bay1" xml:space="preserve">
+    <value>отдел1</value>
+  </data>
+  <data name="Bay2" xml:space="preserve">
+    <value>отдел2</value>
+  </data>
+  <data name="Bay3" xml:space="preserve">
+    <value>отдел3</value>
+  </data>
+  <data name="ElevatorHorizontalAxis" xml:space="preserve">
+    <value>Повдигач с хоризонтална ос</value>
+  </data>
+  <data name="ElevatorVerticalAxis" xml:space="preserve">
+    <value>Повдигач с вертикална ос</value>
+  </data>
+  <data name="KmBayTotal" xml:space="preserve">
+    <value>Километри отдел последна поддръжка/общо</value>
+  </data>
+  <data name="KmElevatorAxis" xml:space="preserve">
+    <value>Повдига оста км последно техническо обслуж/общо</value>
+  </data>
+  <data name="TotalMissionsTime" xml:space="preserve">
+    <value>Общо време на активна мисия от последната поддръжка / общо</value>
+  </data>
+  <data name="TotalUnitsInBay" xml:space="preserve">
+    <value>Чекмеджета в последните отделения за поддръжка/общо</value>
+  </data>
+  <data name="RequestedQuantityBase" xml:space="preserve">
+    <value>Необх Колич</value>
+  </data>
+  <data name="ConfirmInstruction" xml:space="preserve">
+    <value>потвърж група</value>
+  </data>
+  <data name="Axis" xml:space="preserve">
+    <value>Ос</value>
+  </data>
+  <data name="CounterName" xml:space="preserve">
+    <value>Име на брояча</value>
+  </data>
+  <data name="InstructionState" xml:space="preserve">
+    <value>Статус ред</value>
+  </data>
+  <data name="InstructionStatus" xml:space="preserve">
+    <value>Стат</value>
+  </data>
+  <data name="ExecuteRow" xml:space="preserve">
+    <value>Ред изпълн</value>
+  </data>
+  <data name="ConfirmServiceMessage" xml:space="preserve">
+    <value>Сигурни ли сте че искате да потв тази услуга?</value>
+  </data>
+  <data name="ElevatorCycles" xml:space="preserve">
+    <value>Цикли на повдигане след последната поддръжка / общо</value>
+  </data>
+  <data name="HorizontalAxis" xml:space="preserve">
+    <value>Хоризонтална ос</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Вертикална ос</value>
+  </data>
+  <data name="ConfirmPartial" xml:space="preserve">
+    <value>Редакт </value>
+  </data>
+  <data name="ConfirmPresent" xml:space="preserve">
+    <value>потвърж Присъств</value>
+  </data>
+  <data name="PresentQuantity" xml:space="preserve">
+    <value>Присъств колич</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Артикул: </value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="MachineServiceStatus_Completed" xml:space="preserve">
+    <value>Завършено</value>
+  </data>
+  <data name="BlockLevelUnderWeight" xml:space="preserve">
+    <value>Под тегло</value>
+  </data>
+  <data name="TotalMissionsHeader" xml:space="preserve">
+    <value>Цикли</value>
+  </data>
+  <data name="CloseLine" xml:space="preserve">
+    <value>Запеч ред</value>
+  </data>
+  <data name="UpdatedValue" xml:space="preserve">
+    <value>Актуализ стойност</value>
+  </data>
+  <data name="DeleteMission" xml:space="preserve">
+    <value>Изтриване мисия</value>
+  </data>
+  <data name="LoadUnitDestination" xml:space="preserve">
+    <value>Местоназнач чекмедже</value>
+  </data>
+  <data name="LoadUnitSource" xml:space="preserve">
+    <value>Произх чекмедже</value>
+  </data>
+  <data name="WmsId" xml:space="preserve">
+    <value>Id Wms</value>
+  </data>
+  <data name="CarouselBay1Down" xml:space="preserve">
+    <value>Въртел отдел 1 поз ниско</value>
+  </data>
+  <data name="CarouselBay1Up" xml:space="preserve">
+    <value>Въртел отдел 1 висок поз</value>
+  </data>
+  <data name="CarouselBay2Down" xml:space="preserve">
+    <value>Поз въртел отдел 2 ниска</value>
+  </data>
+  <data name="CarouselBay2Up" xml:space="preserve">
+    <value>Въртел отдел 2 висок поз</value>
+  </data>
+  <data name="CarouselBay3Down" xml:space="preserve">
+    <value>Въртел отдел 3 поз ниско</value>
+  </data>
+  <data name="CarouselBay3Up" xml:space="preserve">
+    <value>отдел 3 въртел висок поз</value>
+  </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Клетк</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Нисък</value>
+  </data>
+  <data name="Elevator" xml:space="preserve">
+    <value>Повдигач</value>
+  </data>
+  <data name="ExternalBay1Down" xml:space="preserve">
+    <value>отдел 1 извън ниско полож</value>
+  </data>
+  <data name="ExternalBay1Up" xml:space="preserve">
+    <value>отдел 1 външна поз висок</value>
+  </data>
+  <data name="ExternalBay2Down" xml:space="preserve">
+    <value>отдел 2 извън ниско полож</value>
+  </data>
+  <data name="ExternalBay2Up" xml:space="preserve">
+    <value>отдел 2 външна поз висок</value>
+  </data>
+  <data name="ExternalBay3Down" xml:space="preserve">
+    <value>отдел 3 външ ниско полож</value>
+  </data>
+  <data name="ExternalBay3Up" xml:space="preserve">
+    <value>отдел 3 външна поз висок</value>
+  </data>
+  <data name="InternalBay1Down" xml:space="preserve">
+    <value>отдел 1 вътр ниско</value>
+  </data>
+  <data name="InternalBay1Up" xml:space="preserve">
+    <value>отдел 1 вътр поз висок</value>
+  </data>
+  <data name="InternalBay2Down" xml:space="preserve">
+    <value>отдел 2 вътр ниско</value>
+  </data>
+  <data name="InternalBay2Up" xml:space="preserve">
+    <value>отдел 2 вътр поз висок</value>
+  </data>
+  <data name="InternalBay3Down" xml:space="preserve">
+    <value>отдел 3 вътр ниско</value>
+  </data>
+  <data name="InternalBay3Up" xml:space="preserve">
+    <value>отдел 3 вътр поз висок</value>
+  </data>
+  <data name="LoadUnit" xml:space="preserve">
+    <value>Чекмедже</value>
+  </data>
+  <data name="NoLocation" xml:space="preserve">
+    <value>Няма поз</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Неизвестно</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>вис</value>
+  </data>
+  <data name="MissionStateBackToBay" xml:space="preserve">
+    <value>Обрат отдел</value>
+  </data>
+  <data name="MissionStateErrorDeposit" xml:space="preserve">
+    <value>Грешка депоз</value>
+  </data>
+  <data name="MissionStateErrorLoad" xml:space="preserve">
+    <value>Грешка зареждане</value>
+  </data>
+  <data name="MissionStateExtBay" xml:space="preserve">
+    <value>външ отдел</value>
+  </data>
+  <data name="MissionStateWaitChain" xml:space="preserve">
+    <value>Верига изчакв</value>
+  </data>
+  <data name="UnitInBayWarning" xml:space="preserve">
+    <value>Не е разрешено наличието на чекмедже в отдел уплътн</value>
+  </data>
+  <data name="UpdateItemAverageUnitaryWeight" xml:space="preserve">
+    <value>Актуализ тегло единицата</value>
+  </data>
+  <data name="ActualAverageWeight" xml:space="preserve">
+    <value>Ефективно средно тегло един [g]</value>
+  </data>
+  <data name="OriginalAverageWeight" xml:space="preserve">
+    <value>Средно тегло оригин единица [гр]</value>
+  </data>
+  <data name="MeasureWeightAndCount" xml:space="preserve">
+    <value>Претегл и броене</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Нулиране</value>
+  </data>
+  <data name="MeasuredQuantity" xml:space="preserve">
+    <value>Открито колич</value>
+  </data>
+  <data name="UpdateAverageWeight" xml:space="preserve">
+    <value>Актуализ тегло единица</value>
+  </data>
+  <data name="ConfirmMeasuredQty" xml:space="preserve">
+    <value>потвърж открито Колич </value>
+  </data>
+  <data name="ConfirmRequestedQty" xml:space="preserve">
+    <value>потвърж заявено Колич</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Един тегло [g]</value>
+  </data>
+  <data name="BarcodeOperationConfirmed" xml:space="preserve">
+    <value>Транзакцията се потвърждава с баркод.</value>
+  </data>
+  <data name="BarcodeMismatch" xml:space="preserve">
+    <value>Някои полета на баркода "{0}" не съвпадат с артикула.</value>
+  </data>
+  <data name="BarcodeMismatchRestart" xml:space="preserve">
+    <value>Някои полета на баркода "{0}" не съвпадат с артикула. Започнете отново.</value>
+  </data>
+  <data name="BarcodeMissingQuantity" xml:space="preserve">
+    <value>Уточнете Количто преди да потвърдите.</value>
+  </data>
+  <data name="BarcodeNotRecognized" xml:space="preserve">
+    <value>Баркод '{0}' не е разпознат.</value>
+  </data>
+  <data name="PutRequestWasAccepted" xml:space="preserve">
+    <value>Заявката за плащане за артикул {0} (Колич \1}) е приета.</value>
+  </data>
+  <data name="IdDrawerActivityPickingPageHeader" xml:space="preserve">
+    <value>Операция по изтегляне на чекмедже №.</value>
+  </data>
+  <data name="IdDrawerActivityRefillingHeader" xml:space="preserve">
+    <value>Номер операция на депозитната кутия</value>
+  </data>
+  <data name="PickArticle" xml:space="preserve">
+    <value>Оттегляне артикул </value>
+  </data>
+  <data name="PutArticle" xml:space="preserve">
+    <value>Плащане по артикула </value>
+  </data>
+  <data name="ChargeItem" xml:space="preserve">
+    <value>Зарежд статии в процес разраб...</value>
+  </data>
+  <data name="BayOperations" xml:space="preserve">
+    <value>Опер в отдел</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Визия</value>
+  </data>
+  <data name="MaxSolidSpaceBack" xml:space="preserve">
+    <value>Макс последователно задно странично разстояние</value>
+  </data>
+  <data name="MaxSolidSpaceFront" xml:space="preserve">
+    <value>Максимален последователен преден просвет</value>
+  </data>
+  <data name="MarkAsResolvedAndGo" xml:space="preserve">
+    <value>Марк като решен и преминете към уплътн</value>
+  </data>
+  <data name="BoxCode" xml:space="preserve">
+    <value>Код на контейнера</value>
+  </data>
+  <data name="PickBox" xml:space="preserve">
+    <value>Извлич на контейнер</value>
+  </data>
+  <data name="PutBox" xml:space="preserve">
+    <value>Конт наливане</value>
+  </data>
+  <data name="Box" xml:space="preserve">
+    <value>Конт (персон WMS)</value>
+  </data>
+  <data name="InsertBox" xml:space="preserve">
+    <value>Поставете контейнер</value>
+  </data>
+  <data name="RemoveBox" xml:space="preserve">
+    <value>Извадете контейнера</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Заб</value>
+  </data>
+  <data name="SelectReasons" xml:space="preserve">
+    <value>Изберете причина</value>
+  </data>
+  <data name="MissionStateWaitDepositCell" xml:space="preserve">
+    <value>Депо клетки изчакв</value>
+  </data>
+  <data name="MissionStateWaitDepositBay" xml:space="preserve">
+    <value>Очакв депозит отдел</value>
+  </data>
+  <data name="NoteNotValid" xml:space="preserve">
+    <value>Невалидно поле бележка транзакция не потвърдена</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
+  <data name="LastOperationMessage" xml:space="preserve">
+    <value>Това е последната операция на това чекмедже поставете артикула и натиснете OK</value>
+  </data>
+  <data name="NetworkCards" xml:space="preserve">
+    <value>Мрежови карти</value>
+  </data>
+  <data name="IP_Additional" xml:space="preserve">
+    <value>Допълнит IP</value>
+  </data>
+  <data name="SubnetMask_Additional" xml:space="preserve">
+    <value>Допълнит SubnetMask</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавяне</value>
+  </data>
+  <data name="DraperyDefectPageHeader" xml:space="preserve">
+    <value>Доклад за дефект</value>
+  </data>
+  <data name="OtherDrawerDataGridHeaderLaser" xml:space="preserve">
+    <value>Лазер</value>
+  </data>
+  <data name="LaserOffset" xml:space="preserve">
+    <value>отмест лазер</value>
+  </data>
+  <data name="PresentQuantityDrapery" xml:space="preserve">
+    <value>Общо Колич парче</value>
+  </data>
+  <data name="GoodQuantityBeforeDefectDrapery" xml:space="preserve">
+    <value>Добро Колич плат преди дефект</value>
+  </data>
+  <data name="WastedQuantityDrapery" xml:space="preserve">
+    <value>Колич брак</value>
+  </data>
+  <data name="SignallingDefectDrapery" xml:space="preserve">
+    <value>Докладв дефект</value>
+  </data>
+  <data name="ConfirmDraperyPickingPageHeader" xml:space="preserve">
+    <value>потвърж за изтегл парче</value>
+  </data>
+  <data name="SignallingDefectFailed" xml:space="preserve">
+    <value>Неуспешен доклад за дефект</value>
+  </data>
+  <data name="ItemIsDeleted" xml:space="preserve">
+    <value>Артикула е изтрит</value>
+  </data>
+  <data name="SignallingDefectSuccess" xml:space="preserve">
+    <value>Успешно докладване на дефекти</value>
+  </data>
+  <data name="BarcodeLabel" xml:space="preserve">
+    <value>Бар код</value>
+  </data>
+  <data name="MissionStateDoubleExtBay" xml:space="preserve">
+    <value>Двойно открит отдел</value>
+  </data>
+  <data name="MissionStateWaitDepositExternalBay" xml:space="preserve">
+    <value>В очакване депоз външ отдел</value>
+  </data>
+  <data name="MissionStateWaitDepositInternalBay" xml:space="preserve">
+    <value>изчакв на депозит във вътр отдел</value>
+  </data>
+  <data name="EnableUwf" xml:space="preserve">
+    <value>Актив филтъра Uwf</value>
+  </data>
+  <data name="DisableUwf" xml:space="preserve">
+    <value>Деактив филтъра Uwf</value>
+  </data>
+  <data name="FullCompartment" xml:space="preserve">
+    <value>Пълен</value>
+  </data>
+  <data name="EmptyCompartment" xml:space="preserve">
+    <value>Празн</value>
+  </data>
+  <data name="CheckProduct" xml:space="preserve">
+    <value>Визия</value>
+  </data>
+  <data name="CheckOperationCancelled" xml:space="preserve">
+    <value>Операцията за преглед е отменена</value>
+  </data>
+  <data name="ItemListType_Check" xml:space="preserve">
+    <value>Визия</value>
+  </data>
+  <data name="CheckRequestWasAccepted" xml:space="preserve">
+    <value>Заявката за преглед на елемент {0} (чекмедже \1}) е приета.</value>
+  </data>
+  <data name="LoadingDraperyItemPageHeader" xml:space="preserve">
+    <value>Парче зареждане</value>
+  </data>
+  <data name="DraperyArticleCode" xml:space="preserve">
+    <value>Артикул/Код</value>
+  </data>
+  <data name="Drapery" xml:space="preserve">
+    <value>Парц</value>
+  </data>
+  <data name="DraperyItemLoaded" xml:space="preserve">
+    <value>Зареден кръпка</value>
+  </data>
+  <data name="DraperyItemNone" xml:space="preserve">
+    <value>Без кръпка</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>дейст</value>
+  </data>
+  <data name="BayNotifications" xml:space="preserve">
+    <value>Известия отдел</value>
+  </data>
+  <data name="CloseShutterBayNumber" xml:space="preserve">
+    <value>Затваряне клапа отдел</value>
+  </data>
+  <data name="CloseShutterPosition" xml:space="preserve">
+    <value>поз на затваряне на клапа</value>
+  </data>
+  <data name="DeviceNotifications" xml:space="preserve">
+    <value>Известия устройства </value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Посока</value>
+  </data>
+  <data name="EjectLoadUnit" xml:space="preserve">
+    <value>Изважд чекмедже</value>
+  </data>
+  <data name="ErrorMovements" xml:space="preserve">
+    <value>Грешка движение</value>
+  </data>
+  <data name="MissionTime" xml:space="preserve">
+    <value>Време на мисия</value>
+  </data>
+  <data name="NeedHomingAxis" xml:space="preserve">
+    <value>Оста се нуждае насочв</value>
+  </data>
+  <data name="OpenShutterPosition" xml:space="preserve">
+    <value>Отворена поз на клапа </value>
+  </data>
+  <data name="RestoreConditions" xml:space="preserve">
+    <value>Възстановяв статус</value>
+  </data>
+  <data name="RestoreStep" xml:space="preserve">
+    <value>Стъпка за нулир</value>
+  </data>
+  <data name="StopReason" xml:space="preserve">
+    <value>Причин спир</value>
+  </data>
+  <data name="StepTime" xml:space="preserve">
+    <value>Врем стъпк</value>
+  </data>
+  <data name="LoadUnitCellSourceId" xml:space="preserve">
+    <value>Иден източ клетка </value>
+  </data>
+  <data name="NeedMovingBackward" xml:space="preserve">
+    <value>Изисква движение назад</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Активир</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Пауза</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Резюме</value>
+  </data>
+  <data name="Intermediate" xml:space="preserve">
+    <value>Междинно</value>
+  </data>
+  <data name="Positioning" xml:space="preserve">
+    <value>Позициониране</value>
+  </data>
+  <data name="Homing" xml:space="preserve">
+    <value>Повикв</value>
+  </data>
+  <data name="CombinedMovements" xml:space="preserve">
+    <value>Комбинирани движен</value>
+  </data>
+  <data name="CheckIntrusion" xml:space="preserve">
+    <value>Контрол на проникван</value>
+  </data>
+  <data name="Backwards" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="NoReason" xml:space="preserve">
+    <value>Без причина</value>
+  </data>
+  <data name="RunningStateChanged" xml:space="preserve">
+    <value>Промяна на статус изпъл</value>
+  </data>
+  <data name="FaultStateChanged" xml:space="preserve">
+    <value>Промяна съст неизп</value>
+  </data>
+  <data name="RestartService" xml:space="preserve">
+    <value>Рестартир услуга</value>
+  </data>
+  <data name="IpReached" xml:space="preserve">
+    <value>Успешно достигнат IP адрес</value>
+  </data>
+  <data name="IpNotReached" xml:space="preserve">
+    <value>IP адресът НЕ е достижим</value>
+  </data>
+  <data name="UwfNotActive" xml:space="preserve">
+    <value>UWF филт НЕ активен</value>
+  </data>
+  <data name="UwfActive" xml:space="preserve">
+    <value>Активен UWF филт</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Получател</value>
+  </data>
+  <data name="ShipmentDay" xml:space="preserve">
+    <value>Ден на изпращане</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Ден</value>
+  </data>
+  <data name="MissionStateElevatorBayUp" xml:space="preserve">
+    <value>Повдигач висок отдел</value>
+  </data>
+  <data name="DraperyWithCodeAlreadyAvailable" xml:space="preserve">
+    <value>Вече има кръпка с код '{0}'.</value>
+  </data>
+  <data name="DraperyAvailable" xml:space="preserve">
+    <value>Налична е кръпка.</value>
+  </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Невалидна тема</value>
+  </data>
+  <data name="ItemLoaded" xml:space="preserve">
+    <value>Артикул зареден</value>
+  </data>
+  <data name="SupportType_Insert" xml:space="preserve">
+    <value>Вмъкнат</value>
+  </data>
+  <data name="SupportType_Above" xml:space="preserve">
+    <value>Над</value>
+  </data>
+  <data name="UpBlock" xml:space="preserve">
+    <value>--висок</value>
+  </data>
+  <data name="DownBlock" xml:space="preserve">
+    <value>--нисък</value>
+  </data>
+  <data name="ToteBarcodeAcquired" xml:space="preserve">
+    <value>Външният контейнер е придобит. Баркод: </value>
+  </data>
+  <data name="ItemBarcodeAcquired" xml:space="preserve">
+    <value>Артикула е придобит. Баркод: </value>
+  </data>
+  <data name="ItemAndToteInvalidPickOperation" xml:space="preserve">
+    <value>Невалидна операция. Трябва да бъдат закупени артикулът и външният контейнер.</value>
+  </data>
+  <data name="LoadUnitInBaySensorMissing" xml:space="preserve">
+    <value>Липсва сензор за наличие на чекмедже в отдел</value>
+  </data>
+  <data name="DraperyItemFullyRequested" xml:space="preserve">
+    <value>Изцяло необходима част</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Дни</value>
+  </data>
+  <data name="SignallingDefectError" xml:space="preserve">
+    <value>Грешка при сигнл операция неизправност.</value>
+  </data>
+  <data name="ToteBarcodeToAcquire" xml:space="preserve">
+    <value>Придобийте чанта ... </value>
+  </data>
+  <data name="BarcodeServiceError" xml:space="preserve">
+    <value>Грешка при обслужването на баркода</value>
+  </data>
+  <data name="GenericValidationError" xml:space="preserve">
+    <value>Невалидна стойн</value>
+  </data>
+  <data name="SignallingDefectOnProcess" xml:space="preserve">
+    <value>Съобщавайте за дефекти при обработта...</value>
+  </data>
+  <data name="ItemAddingFailed" xml:space="preserve">
+    <value>Добавян артикул неуспешно</value>
+  </data>
+  <data name="ItemAdding" xml:space="preserve">
+    <value>Добавен артикул ...</value>
+  </data>
+  <data name="AddingItemPageHeader" xml:space="preserve">
+    <value>Добавяне на артикул за чекмедж</value>
+  </data>
+  <data name="WaitingListEvadabilityModeSelectionPageHeader" xml:space="preserve">
+    <value>Избор на режим на изпълн за списъка</value>
+  </data>
+  <data name="PartiallyExecuteAndWaitLabel" xml:space="preserve">
+    <value>Частично изпълн и изчакв</value>
+  </data>
+  <data name="PartiallyExecuteAndCompleteLabel" xml:space="preserve">
+    <value>Частично изпълн и завършв</value>
+  </data>
+  <data name="PartiallyExecuteLabel" xml:space="preserve">
+    <value>Частично изпълн</value>
+  </data>
+  <data name="Suspending" xml:space="preserve">
+    <value>Окачване...</value>
+  </data>
+  <data name="SuspendOperationFailed" xml:space="preserve">
+    <value>Неуспешна операция по окачване</value>
+  </data>
+  <data name="SuspendOperationError" xml:space="preserve">
+    <value>Грешка в работата на окачване</value>
+  </data>
+  <data name="SuspendOperationSuccess" xml:space="preserve">
+    <value>Успешна работа на окачването</value>
+  </data>
+  <data name="SelectOrders" xml:space="preserve">
+    <value>Изберете работа</value>
+  </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Спиране</value>
+  </data>
+  <data name="InsufficientSpaceAvailable" xml:space="preserve">
+    <value>Недостатъчно пространство за съхран</value>
+  </data>
+  <data name="ScaleNotResponding" xml:space="preserve">
+    <value>Скалата не реагира.</value>
+  </data>
+  <data name="AverageHeight" xml:space="preserve">
+    <value>Средна височина</value>
+  </data>
+  <data name="AverageOccupiedSpace" xml:space="preserve">
+    <value>Средна вертик стъпка</value>
+  </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Операция</value>
+  </data>
+  <data name="OperationCheck" xml:space="preserve">
+    <value>Контрол</value>
+  </data>
+  <data name="OperationAdjust" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
+  <data name="OperationSubstitute" xml:space="preserve">
+    <value>Подмяна</value>
+  </data>
+  <data name="ChangingStock" xml:space="preserve">
+    <value>Промяна на запасите</value>
+  </data>
+  <data name="RetrievingItemFailed" xml:space="preserve">
+    <value>Извличане артикул неуспешно</value>
+  </data>
+  <data name="ProductNotAvailable" xml:space="preserve">
+    <value>Артикул не е наличен</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Операцията е извършена успешно</value>
+  </data>
+  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+    <value>Промяна на запасите за разлика</value>
+  </data>
+  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+    <value>Теглене и депозиране с баркод</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+    <value>потвърж на последната операция чекмедже</value>
+  </data>
+  <data name="MaintenerName" xml:space="preserve">
+    <value>Име Поддържащ</value>
+  </data>
+  <data name="ShutterBay1" xml:space="preserve">
+    <value>Клапа отдел 1</value>
+  </data>
+  <data name="ShutterBay2" xml:space="preserve">
+    <value>Клапа отдел 2</value>
+  </data>
+  <data name="ShutterBay3" xml:space="preserve">
+    <value>Клапа отдел 3</value>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Машина</value>
+  </data>
+  <data name="IsRequestConfirmForLastOperationOnList" xml:space="preserve">
+    <value>Списъкът {0} е приключил</value>
+  </data>
+  <data name="ItemsFilteredByTable" xml:space="preserve">
+    <value>Елементи намерени в таблицата за обмен</value>
+  </data>
+  <data name="BarcodeAutomaticPut" xml:space="preserve">
+    <value>Автоматичен депозит с баркод</value>
+  </data>
+  <data name="IsEnableAddItem" xml:space="preserve">
+    <value>Разрешав добавяне артикул</value>
+  </data>
+  <data name="IsDisableQtyItemEditingPick" xml:space="preserve">
+    <value>Не променяйте наличното Колич артикул при поемане</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePick" xml:space="preserve">
+    <value>Двойно потвърж с баркод за изтегляне</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodePut" xml:space="preserve">
+    <value>Двойно потвърж с баркод за депозит с</value>
+  </data>
+  <data name="IsEnabeNoteRules" xml:space="preserve">
+    <value>Задължит бележки</value>
+  </data>
+  <data name="IsLocalMachineItems" xml:space="preserve">
+    <value>Търсене на статии в тази област</value>
+  </data>
+  <data name="IsOrderList" xml:space="preserve">
+    <value>Списък задачи (персонал WMS)</value>
+  </data>
+  <data name="ItemUniqueIdLength" xml:space="preserve">
+    <value>Дължина уникал идент артикул (поръчка WMS)</value>
+  </data>
+  <data name="ToteBarcodeLength" xml:space="preserve">
+    <value>Дължина външния код контейнер (по поръчка на WMS)</value>
+  </data>
+  <data name="EnterBarcode" xml:space="preserve">
+    <value>Вмъкване на бар код</value>
+  </data>
+  <data name="IsDrapery" xml:space="preserve">
+    <value>управл платна (персонал WMS)</value>
+  </data>
+  <data name="OperationMultiMachineInfo" xml:space="preserve">
+    <value>Операцията продължава на други машини</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Приорит</value>
+  </data>
+  <data name="ShipmentUnitCode" xml:space="preserve">
+    <value>Вид носител</value>
+  </data>
+  <data name="ShipmentUnitDescription" xml:space="preserve">
+    <value>Описан носител</value>
+  </data>
+  <data name="SetPoint" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="NoMaintenerNameError" xml:space="preserve">
+    <value>Име на поддръжката необходимо за потвърж на услугата</value>
+  </data>
+  <data name="ExpirationDate" xml:space="preserve">
+    <value>Дата изтич валид</value>
+  </data>
+  <data name="Sscc" xml:space="preserve">
+    <value>Sscc</value>
+  </data>
+  <data name="BoxId" xml:space="preserve">
+    <value>Идентификация носител</value>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Код на клиента</value>
+  </data>
+  <data name="CustomerDescription" xml:space="preserve">
+    <value>Описание на клиента</value>
+  </data>
+  <data name="Dock" xml:space="preserve">
+    <value>Товарна рампа</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value>Поръчк</value>
+  </data>
+  <data name="BoxType" xml:space="preserve">
+    <value>Вид Носител</value>
+  </data>
+  <data name="Telescopic" xml:space="preserve">
+    <value>Телеск.</value>
+  </data>
+  <data name="IsCarrefour" xml:space="preserve">
+    <value>Carrefour (персон WMS)</value>
+  </data>
+  <data name="InventoryGap" xml:space="preserve">
+    <value>Потвърденото Колич е много различно от наличното</value>
+  </data>
+  <data name="IdDrawerActivityInventoryPageHeader" xml:space="preserve">
+    <value>Операция по инвентаризация чекмедже №.</value>
+  </data>
+  <data name="IdMachineNotDefined" xml:space="preserve">
+    <value>Идентификаторът машина не дефиниран</value>
+  </data>
+  <data name="BoxAssociateShelf" xml:space="preserve">
+    <value>Вратът {0} е свързан с рафта {1}</value>
+  </data>
+  <data name="BoxClosed" xml:space="preserve">
+    <value>Шията{0} е затворена</value>
+  </data>
+  <data name="StartAssociateBoxToShelf" xml:space="preserve">
+    <value>Започнете да свързвате пратка с рафт. Сканирайте рафта.</value>
+  </data>
+  <data name="StartMarkingFullBox" xml:space="preserve">
+    <value>Започнете пълно маркиране на врата. Сканирайте рафта.</value>
+  </data>
+  <data name="StartClosingBox" xml:space="preserve">
+    <value>Начало на затваряне на врата. Сканирайте рафта.</value>
+  </data>
+  <data name="BoxIsFull" xml:space="preserve">
+    <value>Вратът {0} е отбелязан като пълен.</value>
+  </data>
+  <data name="ScanActionCodeFirst" xml:space="preserve">
+    <value>Първо сканирайте баркода на дейст трябва да се извърши.</value>
+  </data>
+  <data name="ScanShelfFirst" xml:space="preserve">
+    <value>Първо сканирайте баркода на рафта.</value>
+  </data>
+  <data name="SelectedBox" xml:space="preserve">
+    <value>Избрано гърло {0}</value>
+  </data>
+  <data name="NoBoxCode" xml:space="preserve">
+    <value>В баркода не е открит код за врата</value>
+  </data>
+  <data name="SelectedShelf" xml:space="preserve">
+    <value>Избран е рафт {0}. Сканиране на врата.</value>
+  </data>
+  <data name="NoShelfCode" xml:space="preserve">
+    <value>В баркода не е открит код на рафта</value>
+  </data>
+  <data name="ShowBarcodeImage" xml:space="preserve">
+    <value>Показване на изображ баркод</value>
+  </data>
+  <data name="DialogGroupByLot" xml:space="preserve">
+    <value>Внимание артикула обработва партиди още ли потвърждава?</value>
+  </data>
+  <data name="CheckListContinueInOtherMachine" xml:space="preserve">
+    <value>Проверете дали списъкът продължава в друга машина</value>
+  </data>
+  <data name="ShowAutoCompactingSetting" xml:space="preserve">
+    <value>Настройки за автоматично уплътняване</value>
+  </data>
+  <data name="IsQuantityLimited" xml:space="preserve">
+    <value>Ограничено Колич за теглене и депозит</value>
+  </data>
+  <data name="StartCarToMachine" xml:space="preserve">
+    <value>Започнете асоциир колички в vertimag</value>
+  </data>
+  <data name="EndCarToMachine" xml:space="preserve">
+    <value>Количката {0} е свързана с въртящия се стол {1}</value>
+  </data>
+  <data name="SelectedCar" xml:space="preserve">
+    <value>Избрана е количка {0}.</value>
+  </data>
+  <data name="SelectedMachine" xml:space="preserve">
+    <value>Избран е Vertimag {0}.</value>
+  </data>
+  <data name="NoCarCode" xml:space="preserve">
+    <value>В баркода не е намерен код кошницата пазаруване</value>
+  </data>
+  <data name="NoMachineCode" xml:space="preserve">
+    <value>В баркода не е открит машинен код</value>
+  </data>
+  <data name="ScanCarFirst" xml:space="preserve">
+    <value>Първо сканирайте баркода на количка пазаруване</value>
+  </data>
+  <data name="StartClosingCar" xml:space="preserve">
+    <value>Начало на затваряне количка. Количка за сканиране</value>
+  </data>
+  <data name="CarToMachine" xml:space="preserve">
+    <value>Количката {0} е свързана с машината {1}</value>
+  </data>
+  <data name="CarClosed" xml:space="preserve">
+    <value>Количката пазар {0} затворена</value>
+  </data>
+  <data name="AddList" xml:space="preserve">
+    <value>Добавян списък</value>
+  </data>
+  <data name="isEnableAddItemByList" xml:space="preserve">
+    <value>Разрешаване добавяне артикул от списък</value>
+  </data>
+  <data name="DrawerBackToStorage" xml:space="preserve">
+    <value>Да преместите чекмеджето в склада?</value>
+  </data>
+  <data name="DrawerSorting" xml:space="preserve">
+    <value>Реорган</value>
+  </data>
+  <data name="DaysCountSettings" xml:space="preserve">
+    <value>Настройки за изчисл завъртане</value>
+  </data>
+  <data name="DaysCount" xml:space="preserve">
+    <value>Дни</value>
+  </data>
+  <data name="LastSchedule" xml:space="preserve">
+    <value>Последно изпълн</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтрива</value>
+  </data>
+  <data name="IsWaitingListPriorityHighlighted" xml:space="preserve">
+    <value>Списък чакащи с подчертан приоритет</value>
+  </data>
+  <data name="IsListPutConfirm" xml:space="preserve">
+    <value>потвърж на списъка с последните депозити</value>
+  </data>
+  <data name="IsListPickConfirm" xml:space="preserve">
+    <value>потвърж на последната операция от списъка за избор</value>
+  </data>
+  <data name="IsAggregateList" xml:space="preserve">
+    <value>Добав списъци</value>
+  </data>
+  <data name="BlockLevelReserved" xml:space="preserve">
+    <value>Резервир</value>
+  </data>
+</root>

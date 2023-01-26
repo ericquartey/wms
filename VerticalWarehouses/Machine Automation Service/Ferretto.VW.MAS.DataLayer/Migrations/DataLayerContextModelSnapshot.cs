@@ -2072,6 +2072,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("AlarmsToWmsOn");
+
                     b.Property<int>("ConnectionTimeout");
 
                     b.Property<int>("DelayTimeout");
@@ -2107,6 +2109,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = -1,
+                            AlarmsToWmsOn = false,
                             ConnectionTimeout = 5000,
                             DelayTimeout = 0,
                             IsConnected = false,
@@ -2710,7 +2713,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightData", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.WeightMeasurement")
-                        .WithMany("WeightData")
+                        .WithMany("WeightDatas")
                         .HasForeignKey("WeightMeasurementId");
                 });
 

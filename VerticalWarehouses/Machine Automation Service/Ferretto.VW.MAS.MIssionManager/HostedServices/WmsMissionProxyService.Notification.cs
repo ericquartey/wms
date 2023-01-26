@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -35,7 +38,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.MachineMode:
-                    await this.OnMachineModeChangedAsync();
+                    await this.OnMachineModeChangedAsync(serviceProvider);
                     break;
 
                 case MessageType.NewWmsMissionAvailable:
@@ -54,9 +57,37 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnWmsEnableChanged(serviceProvider);
                     break;
 
+                case MessageType.ErrorStatusChanged:
+                    await this.OnErrorStatusChangedAsync(serviceProvider);
+                    break;
+
                 case MessageType.SaveToWms:
                     await this.OnSaveToWms(message.Description, serviceProvider);
                     break;
+                case MessageType.ChangeRunningState:
+                    await this.OnPostStates(serviceProvider);
+                    break;
+            }
+        }
+
+        private async Task OnPostStates(IServiceProvider serviceProvider)
+        {
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
+                await missionOperationProvider.PostStates(this.machineId);
+            }
+        }
+
+
+        private async Task OnErrorStatusChangedAsync(IServiceProvider serviceProvider)
+        {
+            var wmsSettingsProvider = serviceProvider.GetRequiredService<IWmsSettingsProvider>();
+            if (wmsSettingsProvider.IsEnabled)
+            {
+                var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
+                await missionOperationProvider.PostAlarms(this.machineId);
             }
         }
 
@@ -82,8 +113,11 @@ namespace Ferretto.VW.MAS.MissionManager
             this.Logger.LogTrace("OnDataLayerReady end");
         }
 
-        private async Task OnMachineModeChangedAsync()
+        private async Task OnMachineModeChangedAsync(IServiceProvider serviceProvider)
         {
+            var missionOperationProvider = serviceProvider.GetRequiredService<IMissionOperationsProvider>();
+            await missionOperationProvider.PostStates(this.machineId);
+
             await this.RetrieveNewWmsMissionsAsync();
         }
 

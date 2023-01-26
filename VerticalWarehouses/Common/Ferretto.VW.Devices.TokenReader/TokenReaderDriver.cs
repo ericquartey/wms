@@ -98,6 +98,7 @@ namespace Ferretto.VW.Devices.TokenReader
                         this.RaiseTokenStatusChanged(false, null);
                     }
                 }
+                await Task.Delay(10);
             }
             while (this.SerialPort.IsOpen);
         }

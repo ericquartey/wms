@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -141,10 +143,22 @@ namespace Ferretto.VW.App.Services
         private async Task TelemetryLoginLogoutAsync(string action, string supportToken = "")
         {
             var bay = await this.bayManager.GetBayAsync();
+            var ip = "";
+
+            try
+            {
+                var allnetworkAdapter = NetworkInterface.GetAllNetworkInterfaces();
+                var networkInterface = allnetworkAdapter.Where(s => s.NetworkInterfaceType == NetworkInterfaceType.Ethernet).FirstOrDefault();
+                var properties = networkInterface.GetIPProperties();
+                var ipProp = properties.UnicastAddresses.FirstOrDefault(i => i.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+
+                ip = ipProp.Address.ToString();
+            }
+            catch (Exception) { }
 
             var errorLog = new ErrorLog
             {
-                AdditionalText = $"{action} {this.AccessLevel} {supportToken} {this.AccessLevel}",
+                AdditionalText = $"{action} {this.AccessLevel} {supportToken} {this.AccessLevel} (Ip: {ip})",
                 BayNumber = (int)bay.Number,
                 Code = 0,
                 DetailCode = (int)this.AccessLevel,

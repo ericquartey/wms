@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -52,6 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private Brush wmsServicesStatusBrush;
 
         private string wmsServicesStatusDescription;
+        private bool isAlarmsToWms;
 
         #endregion
 
@@ -113,6 +115,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.AreSettingsChanged = true;
                     this.RaiseCanExecuteChanged();
                 }
+            }
+        }
+
+        public bool IsAlarmsToWms {
+            get => this.isAlarmsToWms;
+            set {
+                if (this.SetProperty(ref this.isAlarmsToWms, value))
+                {
+                    this.AreSettingsChanged = true;
+                    this.RaiseCanExecuteChanged();
+                }
+
             }
         }
 
@@ -289,7 +303,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.WmsHttpUrl = await this.wmsStatusWebService.GetIpEndpointAsync();
                 this.ConnectionTimeout = await this.wmsStatusWebService.GetConnectionTimeoutAsync();
                 this.DelayTimeout = await this.wmsStatusWebService.GetDelayTimeoutAsync();
-                
+                this.IsAlarmsToWms = await this.wmsStatusWebService.GetAlarmsToWmsAsync();
+
 
                 this.SocketLinkIsEnabled = await this.wmsStatusWebService.SocketLinkIsEnabledAsync();
                 this.SocketLinkPort = await this.wmsStatusWebService.GetSocketLinkPortAsync();
@@ -400,6 +415,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.wmsStatusWebService.UpdateAsync(this.IsWmsEnabled, this.WmsHttpUrl, this.SocketLinkIsEnabled, this.SocketLinkPort, this.SocketLinkTimeout, this.SocketLinkPolling, this.ConnectionTimeout, this.SocketLinkEndOfLine);
                 await this.wmsStatusWebService.UpdateDelayTimeoutAsync(this.DelayTimeout);
+
+                await this.wmsStatusWebService.UpdateAlarmsToWmsAsync(this.IsAlarmsToWms);
+
                 this.ShowNotification(VW.App.Resources.Localized.Get("InstallationApp.InformationSuccessfullyUpdated"));
                 this.AreSettingsChanged = false;
 

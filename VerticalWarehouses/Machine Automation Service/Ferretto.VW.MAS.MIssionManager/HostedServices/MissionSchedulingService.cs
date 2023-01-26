@@ -35,7 +35,9 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
-        private readonly Timer RestartTimer;
+        private readonly Timer DelayAfterPut1;
+        private readonly Timer DelayAfterPut2;
+        private readonly Timer DelayAfterPut3;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -47,7 +49,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private bool firstCleanupExecuted;
 
-        private bool isDelayFinish;
+        private readonly Dictionary<BayNumber, bool> isDelayFinish;
 
         private LoadingUnitLocation loadUnitSource;
 
@@ -68,7 +70,14 @@ namespace Ferretto.VW.MAS.MissionManager
             this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
             this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
-            this.RestartTimer = new Timer(this.OnTimePeriodElapsed2, null, Timeout.Infinite, Timeout.Infinite);
+            this.DelayAfterPut1 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayOne, Timeout.Infinite, Timeout.Infinite);
+            this.DelayAfterPut2 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayTwo, Timeout.Infinite, Timeout.Infinite);
+            this.DelayAfterPut3 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayThree, Timeout.Infinite, Timeout.Infinite);
+
+            this.isDelayFinish = new Dictionary<BayNumber, bool>();
+            this.isDelayFinish.Add(BayNumber.BayOne, false);
+            this.isDelayFinish.Add(BayNumber.BayTwo, false);
+            this.isDelayFinish.Add(BayNumber.BayThree, false);
         }
 
         #endregion
@@ -1769,10 +1778,20 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private void OnTimePeriodElapsed2(object state)
         {
-            this.RestartTimer.Change(-1, -1);
-
-            this.isDelayFinish = true;
-            this.Logger.LogDebug("delay timer");
+            switch((BayNumber)state)
+            {
+                case BayNumber.BayOne:
+                    this.DelayAfterPut1.Change(-1, -1);
+                    break;
+                case BayNumber.BayTwo:
+                    this.DelayAfterPut2.Change(-1, -1);
+                    break;
+                case BayNumber.BayThree:
+                    this.DelayAfterPut3.Change(-1, -1);
+                    break;
+            }
+            this.isDelayFinish[(BayNumber)state] = true;
+            this.Logger.LogDebug($"delay timer {(BayNumber)state}");
 
             var notificationMessage = new NotificationMessage(
                 null,
@@ -1870,7 +1889,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         var newOperation = newOperations.OrderBy(o => o.Priority).First();
                         this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
-                        this.isDelayFinish = false;
+                        this.isDelayFinish[bayNumber] = false;
 
                         serviceProvider
                             .GetRequiredService<IBaysDataProvider>()
@@ -1896,12 +1915,23 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (mission.Status is MissionStatus.New || mission.Status is MissionStatus.Waiting)
                 {
-                    if (!this.isDelayFinish
+                    if (!this.isDelayFinish[bayNumber]
                         && wmsMission.Operations.Any(o => o.Type == WMS.Data.WebAPI.Contracts.MissionOperationType.Put))
                     {
                         this.DelayTimeout = this.wmsSettingsProvider.DelayTimeout;
-                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update");
-                        this.RestartTimer.Change(this.DelayTimeout, -1);
+                        this.Logger.LogDebug($"Mission closed for load unit {mission.LoadUnitId}: wait {this.DelayTimeout}ms for WMS to send an update after put operation in bay {bayNumber}");
+                        switch (bayNumber)
+                        {
+                            case BayNumber.BayOne:
+                                this.DelayAfterPut1.Change(this.DelayTimeout, -1);
+                                break;
+                            case BayNumber.BayTwo:
+                                this.DelayAfterPut2.Change(this.DelayTimeout, -1);
+                                break;
+                            case BayNumber.BayThree:
+                                this.DelayAfterPut3.Change(this.DelayTimeout, -1);
+                                break;
+                        }
                     }
                     else
                     {
@@ -1916,7 +1946,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         var missionSchedulingProvider = serviceProvider.GetRequiredService<IMissionSchedulingProvider>();
                         missionSchedulingProvider.QueueRecallMission(mission.LoadUnitId, bayNumber, MissionType.IN);
 
-                        this.isDelayFinish = false;
+                        this.isDelayFinish[bayNumber] = false;
                     }
                 }
             }

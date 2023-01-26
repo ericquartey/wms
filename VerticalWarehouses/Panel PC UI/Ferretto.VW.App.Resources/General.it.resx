@@ -337,4 +337,10 @@
   <data name="PrinterTest" xml:space="preserve">
     <value>Prova Stampante</value>
   </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ok</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>Timeout (ms)</value>
+  </data>
 </root>

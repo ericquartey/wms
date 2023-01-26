@@ -999,9 +999,9 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool GetIsExternal(BayNumber bayNumber)
         {
             bool isExternal = false;
-            if (!this.machineVolatileDataProvider.IsExternal.TryGetValue(bayNumber, out isExternal))
+            lock (this.dataContext)
             {
-                lock (this.dataContext)
+                if (!this.machineVolatileDataProvider.IsExternal.TryGetValue(bayNumber, out isExternal))
                 {
                     isExternal = this.dataContext.Bays.AsNoTracking()
                         .Select(b => new { b.Number, b.IsExternal })
@@ -1016,9 +1016,9 @@ namespace Ferretto.VW.MAS.DataLayer
         public bool GetIsTelescopic(BayNumber bayNumber)
         {
             bool isTelescopic = false;
-            if (!this.machineVolatileDataProvider.IsTelescopic.TryGetValue(bayNumber, out isTelescopic))
+            lock (this.dataContext)
             {
-                lock (this.dataContext)
+                if (!this.machineVolatileDataProvider.IsTelescopic.TryGetValue(bayNumber, out isTelescopic))
                 {
                     isTelescopic = this.dataContext.Bays.AsNoTracking()
                         .Select(b => new { b.Number, b.IsTelescopic })

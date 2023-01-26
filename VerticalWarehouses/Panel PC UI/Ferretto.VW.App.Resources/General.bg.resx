@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>Добавяне</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отмяна</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Логв</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Следващ</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Запаз</value>
+  </data>
+  <data name="SwitchOff" xml:space="preserve">
+    <value>Изключ</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Грешка</value>
+  </data>
+  <data name="Debug" xml:space="preserve">
+    <value>ОтГр</value>
+  </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Път на файла</value>
+  </data>
+  <data name="ConfirmMachineRun" xml:space="preserve">
+    <value>Сигурни ли сте че искате да включите машината?</value>
+  </data>
+  <data name="MachineRun" xml:space="preserve">
+    <value>Ход</value>
+  </data>
+  <data name="ConfirmMachineModeSwitchAutomatic" xml:space="preserve">
+    <value>Сигурни ли сте искате да включите машина на автомат режим и да нулирате текущи движения?</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Автоматич</value>
+  </data>
+  <data name="ShuttingDown" xml:space="preserve">
+    <value>Изключв на ...</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Не</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Затвор</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Промян тема</value>
+  </data>
+  <data name="BayNumber" xml:space="preserve">
+    <value>Отд</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>преди {0:0} дни</value>
+  </data>
+  <data name="ErrorCommunicatingWithServices" xml:space="preserve">
+    <value>Грешка в комуникацията с услугите.</value>
+  </data>
+  <data name="HoursAgo" xml:space="preserve">
+    <value>пр {0:0} час</value>
+  </data>
+  <data name="ManualMode" xml:space="preserve">
+    <value>Ръчно</value>
+  </data>
+  <data name="MinutesAgo" xml:space="preserve">
+    <value>{0:0} преди мин</value>
+  </data>
+  <data name="Now" xml:space="preserve">
+    <value>Сега</value>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Сериен номер:</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Версия {0}</value>
+  </data>
+  <data name="WarehouseSide_Back" xml:space="preserve">
+    <value>Заден</value>
+  </data>
+  <data name="WarehouseSide_Front" xml:space="preserve">
+    <value>Преден</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Отд</value>
+  </data>
+  <data name="BayOneName" xml:space="preserve">
+    <value>Едн</value>
+  </data>
+  <data name="BayThreeName" xml:space="preserve">
+    <value>Три</value>
+  </data>
+  <data name="BayTwoName" xml:space="preserve">
+    <value>Две</value>
+  </data>
+  <data name="SwitchToAutomatic" xml:space="preserve">
+    <value>Автоматич превключв</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Старт</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Стоп</value>
+  </data>
+  <data name="TargetNullValue" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>Устройства</value>
+  </data>
+  <data name="DiagnosticDetailTitle" xml:space="preserve">
+    <value>DEBUG</value>
+  </data>
+  <data name="FiniteMachineState" xml:space="preserve">
+    <value>Машина крайно състояние</value>
+  </data>
+  <data name="Inverter" xml:space="preserve">
+    <value>Инвертор</value>
+  </data>
+  <data name="IODrive" xml:space="preserve">
+    <value>IO Drive</value>
+  </data>
+  <data name="StatusDebug" xml:space="preserve">
+    <value>Стат:</value>
+  </data>
+  <data name="NoRows" xml:space="preserve">
+    <value>В списъка няма ред</value>
+  </data>
+  <data name="WmsDisabled" xml:space="preserve">
+    <value>Деактивирано</value>
+  </data>
+  <data name="WmsEnabled" xml:space="preserve">
+    <value>Включено WMS</value>
+  </data>
+  <data name="DateFormatComplete" xml:space="preserve">
+    <value>{0:dd.MM.yyyy HH:mm}</value>
+  </data>
+  <data name="AreaMachineUnknow" xml:space="preserve">
+    <value>Районът на машината е неизвестен</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Този конвер може да конвертира само стойност от тип Visibility.</value>
+  </data>
+  <data name="IdLoadingUnitNotExists" xml:space="preserve">
+    <value>Идентификатор на чекмедже не съществува.</value>
+  </data>
+  <data name="LoadingUnitViewModelPropertyIdentifier" xml:space="preserve">
+    <value>Свойство "{0}" на шаблона на изгледа "\1}" трябва да съдържа валиден идентификатор на чекмедже.</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Синтаксис за NameOf е Type={x:Type className&gt;}.&lt;</value>
+  </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Параметър не може нулев или празен.</value>
+  </data>
+  <data name="DateFormatDayNumber" xml:space="preserve">
+    <value>{0: dd.MM.yyyy}</value>
+  </data>
+  <data name="SwitchToManual" xml:space="preserve">
+    <value>Превкл ръчно упр</value>
+  </data>
+  <data name="BackShutterTest" xml:space="preserve">
+    <value>тест е в ход... Невъзм излизане от страница</value>
+  </data>
+  <data name="SocketLinkEnabled" xml:space="preserve">
+    <value>Връзка Контакт актив</value>
+  </data>
+  <data name="SocketLinkPolling" xml:space="preserve">
+    <value>Интервал на допитване</value>
+  </data>
+  <data name="SocketLinkPort" xml:space="preserve">
+    <value>Врата</value>
+  </data>
+  <data name="Connectivity" xml:space="preserve">
+    <value>Свързаност</value>
+  </data>
+  <data name="Present" xml:space="preserve">
+    <value>Налично</value>
+  </data>
+  <data name="NotPresent" xml:space="preserve">
+    <value>Неналично</value>
+  </data>
+  <data name="TokenStatus" xml:space="preserve">
+    <value>Статус Tокен</value>
+  </data>
+  <data name="ForbiddenOperation" xml:space="preserve">
+    <value>Операция не е разрешена</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ok</value>
+  </data>
+  <data name="LotManagedProduct" xml:space="preserve">
+    <value>Посочете партида за този артикул</value>
+  </data>
+  <data name="BadRequestTitle" xml:space="preserve">
+    <value>Грешка WMS: Неправилно запитване</value>
+  </data>
+  <data name="TimeoutMs" xml:space="preserve">
+    <value>ВремПр (ms)</value>
+  </data>
+  <data name="SocketLinkTimeout" xml:space="preserve">
+    <value>ВремПр (ms)</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Потвържд</value>
+  </data>
+  <data name="SocketLinkEndOfLine" xml:space="preserve">
+    <value>Край на низ LF</value>
+  </data>
+  <data name="FindZeroElevator" xml:space="preserve">
+    <value>Намерете нулата на повдигача</value>
+  </data>
+  <data name="DelayPutOperation" xml:space="preserve">
+    <value>Изчакв след изливане (ms)</value>
+  </data>
+  <data name="PrinterTest" xml:space="preserve">
+    <value>Тест на принтер</value>
+  </data>
+</root>

@@ -100,8 +100,14 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnWmsConnectionStatusChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
         {
             this.Logger.LogDebug("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
+
+            var scope = base.ServiceScopeFactory.CreateScope();
             if (e.IsConnected)
             {
+                var missionOperationProvider = scope.ServiceProvider.GetRequiredService<IMissionOperationsProvider>();
+                await missionOperationProvider.PostAlarms(this.machineId);
+                await missionOperationProvider.PostStates(this.machineId);
+
                 await this.OnWmsEntityChangedAsync(this, new EntityChangedEventArgs(
                     nameof(MissionOperation),
                     null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
@@ -109,8 +115,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     null));
             }
             else
-            {
-                var scope = base.ServiceScopeFactory.CreateScope();
+            {   
                 await this.OnWmsEnableChanged(scope.ServiceProvider);
             }
         }

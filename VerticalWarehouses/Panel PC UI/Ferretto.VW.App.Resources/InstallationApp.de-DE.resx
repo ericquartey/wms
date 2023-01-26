@@ -2427,4 +2427,8 @@
   <data name="OpenBrowser" xml:space="preserve">
     <value>Browser öffnen</value>
   </data>
+  <data name="FixedCell" xml:space="preserve">
+    <value>Impostazione WMS
+</value>
+  </data>
 </root>
