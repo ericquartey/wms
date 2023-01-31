@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.Devices.LaserPointer;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
@@ -166,7 +161,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.Data is SocketLinkOperation dataBundle)
             {
                 this.SocketLinkOperation = dataBundle;
-                this.InputQuantity = this.SocketLinkOperation.RequestedQuantity;
+                this.InputQuantity = this.SocketLinkOperation.RequestedQuantity ?? 0.0;//p
                 this.QuantityTolerance = 0;
                 this.OperationText = $"{this.SocketLinkOperation.OperationType} {this.SocketLinkOperation.Id}";
                 this.IsCompartmentValid = this.SocketLinkOperation.CompartmentX1Position.HasValue
