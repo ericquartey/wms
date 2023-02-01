@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.DataModels
             this.BayNumber = bayNumber;
         }
 
-        public InstructionDefinition(InstructionDevice device, InstructionOperation operation, string counterName, int? maxDays, int? maxRelativeCount, Axis axis, BayNumber bayNumber)
+        public InstructionDefinition(InstructionDevice device, InstructionOperation operation, string counterName, int? maxDays, int? maxRelativeCount, Axis axis, BayNumber bayNumber, int setPoint = 0)
         {
             this.Device = device;
             this.Operation = operation;
@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS.DataModels
             this.MaxRelativeCount = maxRelativeCount;
             this.Axis = axis;
             this.BayNumber = bayNumber;
+            this.SetPoint = setPoint;
         }
 
         #endregion
@@ -77,6 +78,8 @@ namespace Ferretto.VW.MAS.DataModels
         public int? MaxTotalCount { get; set; }
 
         public InstructionOperation Operation { get; set; }
+
+        public int SetPoint { get; set; }
 
         #endregion
 

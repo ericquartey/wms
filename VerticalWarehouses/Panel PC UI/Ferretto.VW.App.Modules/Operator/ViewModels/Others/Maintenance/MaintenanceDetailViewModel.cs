@@ -541,14 +541,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                if (!string.IsNullOrEmpty(this.Service.MaintainerName))
                 {
-                    await this.machineServicingWebService.ConfirmServiceAsync();
+                    var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult == DialogResult.Yes)
+                    {
+                        await this.machineServicingWebService.ConfirmServiceAsync();
 
-                    this.ClosePopup();
+                        this.ClosePopup();
 
-                    this.NavigationService.GoBack();
+                        this.NavigationService.GoBack();
+                    }
+                }
+                else
+                {
+                    this.dialogService.ShowMessage("Nome del manutentore Obbligatorio", Localized.Get("OperatorApp.ConfirmService"), DialogType.Exclamation, DialogButtons.OK);
                 }
             }
             catch (Exception)

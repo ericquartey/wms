@@ -1632,10 +1632,10 @@
     <value>IsToDo</value>
   </data>
   <data name="MaxDays" xml:space="preserve">
-    <value>MaxDays</value>
+    <value>Max Days</value>
   </data>
   <data name="MaxRelativeCount" xml:space="preserve">
-    <value>MaxRelativeCount</value>
+    <value>Max Cycles</value>
   </data>
   <data name="MaxTotalCount" xml:space="preserve">
     <value>MaxTotalCount</value>
@@ -2416,29 +2416,29 @@
   <data name="Machine" xml:space="preserve">
     <value>Machine</value>
   </data>
-  <data name="ChangingStock" xml:space="preserve">
+  <data name="ChangingStock_Duplicate[1]" xml:space="preserve">
     <value>Stock variation</value>
     <comment>Label</comment>
   </data>
-  <data name="RetrievingItemFailed" xml:space="preserve">
+  <data name="RetrievingItemFailed_Duplicate[1]" xml:space="preserve">
     <value>Retrieving item failed</value>
     <comment>Label Message</comment>
   </data>
-  <data name="ProductNotAvailable" xml:space="preserve">
+  <data name="ProductNotAvailable_Duplicate[1]" xml:space="preserve">
     <value>Item not available</value>
     <comment>Label Message</comment>
   </data>
-  <data name="OperationSuccess" xml:space="preserve">
+  <data name="OperationSuccess_Duplicate[1]" xml:space="preserve">
     <value>Operation successfully</value>
     <comment>Label Message</comment>
   </data>
-  <data name="IsUpdatingStockByDifference" xml:space="preserve">
+  <data name="IsUpdatingStockByDifference_Duplicate[1]" xml:space="preserve">
     <value>Edit Stock by difference</value>
   </data>
-  <data name="IsEnableHandlingItemOperations" xml:space="preserve">
+  <data name="IsEnableHandlingItemOperations_Duplicate[1]" xml:space="preserve">
     <value>Search item by barcode in exchange table (WMS custom)</value>
   </data>
-  <data name="IsRequestConfirmForLastOperationOnLoadingUnit" xml:space="preserve">
+  <data name="IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]" xml:space="preserve">
     <value>Request confirm for last operation on load unit</value>
   </data>
   <data name="ItemsFilteredByTable" xml:space="preserve">
@@ -2476,5 +2476,8 @@
   </data>
   <data name="IsDrapery" xml:space="preserve">
     <value>Drapery handling (WMS custom)</value>
+  </data>
+  <data name="SetPoint" xml:space="preserve">
+    <value>Set Point</value>
   </data>
 </root>

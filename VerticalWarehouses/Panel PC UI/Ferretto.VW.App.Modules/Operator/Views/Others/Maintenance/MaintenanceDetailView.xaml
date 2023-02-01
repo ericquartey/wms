@@ -252,6 +252,7 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
+
             <DataGridTextColumn x:Name="Column2"
                                 Width="auto"
                                 Binding="{Binding Path=Definition.Description}"
@@ -271,6 +272,7 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
+
             <DataGridTextColumn x:Name="Column3"
                                 Width="auto"
                                 Binding="{Binding Path=Definition.Operation, Converter={StaticResource EOTS}}"
@@ -283,7 +285,8 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column8"
+
+            <DataGridTextColumn x:Name="Column4"
                                 Width="auto"
                                 Binding="{Binding Path=InstructionStatus, Converter={StaticResource MSSEC}}"
                                 Header="{res:Loc OperatorApp.InstructionStatus}">
@@ -295,10 +298,11 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column9"
+
+            <DataGridTextColumn x:Name="Column5"
                                 Width="auto"
-                                Binding="{Binding Path=Definition.MaxDays}"
-                                Header="{res:Loc OperatorApp.MaxDays}">
+                                Binding="{Binding Path=Definition.SetPoint}"
+                                Header="{res:Loc OperatorApp.SetPoint}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="Margin" Value="10,0" />
@@ -307,32 +311,8 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column10"
-                                Width="auto"
-                                Binding="{Binding Path=Definition.MaxRelativeCount}"
-                                Header="{res:Loc OperatorApp.MaxRelativeCount}">
-              <DataGridTextColumn.ElementStyle>
-                <Style TargetType="TextBlock">
-                  <Setter Property="Margin" Value="10,0" />
-                  <Setter Property="HorizontalAlignment" Value="Center" />
-                  <Setter Property="VerticalAlignment" Value="Center" />
-                </Style>
-              </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column11"
-                                Width="auto"
-                                Binding="{Binding Path=Definition.MaxTotalCount}"
-                                Header="{res:Loc OperatorApp.MaxTotalCount}"
-                                Visibility="Collapsed">
-              <DataGridTextColumn.ElementStyle>
-                <Style TargetType="TextBlock">
-                  <Setter Property="Margin" Value="10,0" />
-                  <Setter Property="HorizontalAlignment" Value="Center" />
-                  <Setter Property="VerticalAlignment" Value="Center" />
-                </Style>
-              </DataGridTextColumn.ElementStyle>
-            </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column12"
+
+            <DataGridTextColumn x:Name="Column6"
                                 Width="auto"
                                 Binding="{Binding Path=Definition.CounterName, Converter={StaticResource CNC}}"
                                 Header="{res:Loc OperatorApp.CounterName}">
@@ -344,7 +324,34 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column13"
+
+            <DataGridTextColumn x:Name="Column7"
+                                Width="auto"
+                                Binding="{Binding Path=IntCounter}"
+                                Header="{res:Loc OperatorApp.Days}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="Column8"
+                                Width="auto"
+                                Binding="{Binding Path=Definition.MaxDays}"
+                                Header="{res:Loc OperatorApp.MaxDays}">
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="10,0" />
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="Column9"
                                 Width="auto"
                                 Binding="{Binding Path=DoubleCounter}"
                                 Header="{res:Loc OperatorApp.TotalMissions}">
@@ -356,10 +363,11 @@
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
-            <DataGridTextColumn x:Name="Column14"
+
+            <DataGridTextColumn x:Name="Column10"
                                 Width="auto"
-                                Binding="{Binding Path=IntCounter}"
-                                Header="{res:Loc OperatorApp.Days}">
+                                Binding="{Binding Path=Definition.MaxRelativeCount}"
+                                Header="{res:Loc OperatorApp.MaxRelativeCount}">
               <DataGridTextColumn.ElementStyle>
                 <Style TargetType="TextBlock">
                   <Setter Property="Margin" Value="10,0" />

@@ -691,6 +691,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stock variation.
+        /// </summary>
+        public static string ChangingStock_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("ChangingStock_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading articles....
         /// </summary>
         public static string ChargeItem {
@@ -2626,11 +2635,21 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search item by barcode in exchange table (WMS custom).
+        ///   Looks up a localized string similar to Pick and Put by barcode
+        ///.
         /// </summary>
         public static string IsEnableHandlingItemOperations {
             get {
                 return ResourceManager.GetString("IsEnableHandlingItemOperations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search item by barcode in exchange table (WMS custom).
+        /// </summary>
+        public static string IsEnableHandlingItemOperations_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("IsEnableHandlingItemOperations_Duplicate[1]", resourceCulture);
             }
         }
         
@@ -2662,6 +2681,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Request confirm for last operation on load unit.
+        /// </summary>
+        public static string IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsToDo.
         /// </summary>
         public static string IsToDo {
@@ -2676,6 +2704,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IsUpdatingStockByDifference {
             get {
                 return ResourceManager.GetString("IsUpdatingStockByDifference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Stock by difference.
+        /// </summary>
+        public static string IsUpdatingStockByDifference_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("IsUpdatingStockByDifference_Duplicate[1]", resourceCulture);
             }
         }
         
@@ -3643,7 +3680,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaxDays.
+        ///   Looks up a localized string similar to Max Days.
         /// </summary>
         public static string MaxDays {
             get {
@@ -3652,7 +3689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaxRelativeCount.
+        ///   Looks up a localized string similar to Max Cycles.
         /// </summary>
         public static string MaxRelativeCount {
             get {
@@ -4345,6 +4382,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation successfully.
+        /// </summary>
+        public static string OperationSuccess_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("OperationSuccess_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Original Average Unitary Weight [g].
         /// </summary>
         public static string OriginalAverageWeight {
@@ -4624,6 +4670,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item not available.
+        /// </summary>
+        public static string ProductNotAvailable_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("ProductNotAvailable_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Put.
         /// </summary>
         public static string Put {
@@ -4795,6 +4850,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Retrieving item failed.
+        /// </summary>
+        public static string RetrievingItemFailed_Duplicate_1_ {
+            get {
+                return ResourceManager.GetString("RetrievingItemFailed_Duplicate[1]", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running state changed.
         /// </summary>
         public static string RunningStateChanged {
@@ -4872,6 +4936,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ServiceStatus {
             get {
                 return ResourceManager.GetString("ServiceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Point.
+        /// </summary>
+        public static string SetPoint {
+            get {
+                return ResourceManager.GetString("SetPoint", resourceCulture);
             }
         }
         
