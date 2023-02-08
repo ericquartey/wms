@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.51" />
+    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.54" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>

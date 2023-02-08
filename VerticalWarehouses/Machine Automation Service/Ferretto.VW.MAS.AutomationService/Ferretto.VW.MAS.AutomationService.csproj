@@ -62,7 +62,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.51" />
+    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.16.54" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.6" />
