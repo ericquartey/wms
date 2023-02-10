@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -115,7 +114,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     null));
             }
             else
-            {   
+            {
                 await this.OnWmsEnableChanged(scope.ServiceProvider);
             }
         }

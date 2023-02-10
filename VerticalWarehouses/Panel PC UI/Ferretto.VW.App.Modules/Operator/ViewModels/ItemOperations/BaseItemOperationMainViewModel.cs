@@ -416,7 +416,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set
             {
                 if (value >= 0
-                    && value <= (double)this.MaxInputQuantity)
+                    && value <= (double)this.MaxInputQuantity
+                    || value == null)
                 {
                     this.SetProperty(ref this.inputQuantity, value);
                     this.CanInputAvailableQuantity = false;

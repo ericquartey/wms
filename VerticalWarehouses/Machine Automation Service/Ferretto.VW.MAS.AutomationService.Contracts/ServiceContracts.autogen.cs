@@ -9078,8 +9078,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTimeOffset LastModificationDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("listOrderBy", Required = Newtonsoft.Json.Required.Always)]
-        public int ListOrderBy { get; set; }
+        [Newtonsoft.Json.JsonProperty("listOrderBy", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListOrderBy { get; set; }
     
         [Newtonsoft.Json.JsonProperty("lot", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Lot { get; set; }
@@ -9117,8 +9117,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("requiresDestinationCode", Required = Newtonsoft.Json.Required.Always)]
         public bool RequiresDestinationCode { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("rowSeq", Required = Newtonsoft.Json.Required.Always)]
-        public int RowSeq { get; set; }
+        [Newtonsoft.Json.JsonProperty("rowSeq", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? RowSeq { get; set; }
     
         [Newtonsoft.Json.JsonProperty("serialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SerialNumber { get; set; }
