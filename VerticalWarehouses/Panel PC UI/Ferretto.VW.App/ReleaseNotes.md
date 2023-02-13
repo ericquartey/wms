@@ -35,7 +35,7 @@
 - BED: corretta accensione luci di baia
 - Baia 2: corretto ritardo dopo versamento
 
-## Compatibile con adapter 0.4.44
+## Compatibile con adapter 0.4.45
 ***
 
 [Versione 1.0.56](#id1056)
