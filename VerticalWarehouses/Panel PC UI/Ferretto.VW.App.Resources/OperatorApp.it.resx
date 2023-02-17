@@ -2259,4 +2259,13 @@
   <data name="LabelsEditableCaption" xml:space="preserve">
     <value>Numero copie</value>
   </data>
+  <data name="ListOrderByLight" xml:space="preserve">
+    <value>Leggero</value>
+  </data>
+  <data name="ListOrderByNormal" xml:space="preserve">
+    <value>Normale</value>
+  </data>
+  <data name="ListOrderBy" xml:space="preserve">
+    <value>Ordinamento</value>
+  </data>
 </root>

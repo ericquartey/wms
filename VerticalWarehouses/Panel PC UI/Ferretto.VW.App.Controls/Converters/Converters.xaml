@@ -20,6 +20,8 @@
     
     <conv:ClassToForegroundConverter x:Key="CTFC" />
 
+    <conv:ListsIdToListOrderConverter x:Key="LITLOC" />
+
     <conv:BoolToThicknessConverter x:Key="BTTC" />
   <conv:BoolToVisibilityConverter x:Key="BTVC" />
   <conv:BoolToVisibilityConverterHidden x:Key="BTVCH" />

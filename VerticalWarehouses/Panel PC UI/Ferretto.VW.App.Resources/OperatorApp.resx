@@ -2656,4 +2656,13 @@
   <data name="LabelsEditableCaption" xml:space="preserve">
     <value>Nr. Copies</value>
   </data>
+  <data name="ListOrderBy" xml:space="preserve">
+    <value>Sorting</value>
+  </data>
+  <data name="ListOrderByNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="ListOrderByLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
 </root>

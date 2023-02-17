@@ -28,14 +28,18 @@
 ## Nuove Funzionalità 1.0.57 rispetto la 1.0.56
 - Aggiunta lingua Bulgara
 - Spostate Operazioni di Baia nel menu Impostazioni
-- 
+- Denso ListOrderBy
 
 ## Bug Risolti
 - Movimenti guidati: corretta taratura baia in Baia 2
 - BED: corretta accensione luci di baia
 - Baia 2: corretto ritardo dopo versamento
+- Fix Denso ListOrderBy
+- Update Contract 0.16.55
+- Fix InventoryQuantity
 
-## Compatibile con adapter 0.4.44
+
+## Compatibile con adapter 0.4.45
 ***
 
 [Versione 1.0.56](#id1056)

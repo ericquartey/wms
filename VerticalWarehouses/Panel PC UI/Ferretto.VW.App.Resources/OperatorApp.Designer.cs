@@ -3409,6 +3409,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorting.
+        /// </summary>
+        public static string ListOrderBy {
+            get {
+                return ResourceManager.GetString("ListOrderBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string ListOrderByLight {
+            get {
+                return ResourceManager.GetString("ListOrderByLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Normal.
+        /// </summary>
+        public static string ListOrderByNormal {
+            get {
+                return ResourceManager.GetString("ListOrderByNormal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List details.
         /// </summary>
         public static string ListsInWaitDetail {
