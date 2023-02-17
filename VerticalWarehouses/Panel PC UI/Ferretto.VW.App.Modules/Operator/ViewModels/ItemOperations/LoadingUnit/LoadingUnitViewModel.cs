@@ -1917,6 +1917,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private async Task OnAppearItem()
         {
+            await this.GetSocketLinkOperation();
+
             this.tokenSource?.Cancel(false);
 
             this.tokenSource = new CancellationTokenSource();
@@ -2179,7 +2181,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void SocketLinkOperationChange(SocketLinkOperationChangeMessageData e)
         {
-            var isOperation = !string.IsNullOrEmpty(e.Id);
+            var loadingUnitId = this.MachineService.Bay?.CurrentMission?.LoadUnitId ?? 0;
+            var isOperation = !string.IsNullOrEmpty(e.Id) && loadingUnitId != 0;
 
             if ((BayNumber)e.BayNumber == this.MachineService.BayNumber)
             {

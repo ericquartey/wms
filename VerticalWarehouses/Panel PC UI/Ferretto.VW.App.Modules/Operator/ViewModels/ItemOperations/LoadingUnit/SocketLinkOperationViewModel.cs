@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             if (this.Data is SocketLinkOperation dataBundle)
             {
                 this.SocketLinkOperation = dataBundle;
-                this.InputQuantity = this.SocketLinkOperation.RequestedQuantity ?? 0.0;//p
+                this.InputQuantity = this.SocketLinkOperation.RequestedQuantity ?? 0.0;
                 this.QuantityTolerance = 0;
                 this.OperationText = $"{this.SocketLinkOperation.OperationType} {this.SocketLinkOperation.Id}";
                 this.IsCompartmentValid = this.SocketLinkOperation.CompartmentX1Position.HasValue

@@ -169,7 +169,7 @@
                            Increment="{Binding QuantityIncrement}"
                            IsEnabled="True"
                            LabelText="{resources:Loc OperatorApp.Quantity}"
-                           Mask="{Binding QuantityTolerance, StringFormat=#########.######}"
+                           Mask="#########0.0#########"
                            MinValue="0"/>
 
             <controls:PpcButton Grid.Column="1"

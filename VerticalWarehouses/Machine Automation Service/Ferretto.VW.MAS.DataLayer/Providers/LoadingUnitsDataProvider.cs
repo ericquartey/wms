@@ -141,6 +141,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                 }
             }
+#if DEBUG
+            check = MachineErrorCode.NoError;
+#endif
+
             return check;
         }
 
