@@ -9,12 +9,14 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DeviceManager.CombinedMovements;
 using Ferretto.VW.MAS.DeviceManager.CheckIntrusion;
+using Ferretto.VW.MAS.DeviceManager.CombinedMovements;
 using Ferretto.VW.MAS.DeviceManager.ExtBayPositioning;
+using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Positioning;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
+using Ferretto.VW.MAS.DeviceManager.ProfileResolution;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.RepetitiveHorizontalMovements;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
@@ -32,10 +34,6 @@ using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using Ferretto.VW.MAS.DeviceManager.InverterPogramming;
-using Ferretto.VW.MAS.DeviceManager.InverterReading;
-using Ferretto.VW.MAS.DeviceManager.HorizontalResolution;
-using Ferretto.VW.MAS.DeviceManager.ProfileResolution;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {

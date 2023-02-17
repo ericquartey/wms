@@ -382,6 +382,11 @@ namespace Ferretto.VW.App.Controls
             this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName);
         }
 
+        public void ShowSilenceSiren(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.SilenceSiren, isVisible, isEnabled, moduleName, viewName);
+        }
+
         public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
             this.IsBackNavigationAllowed = !isVisible;

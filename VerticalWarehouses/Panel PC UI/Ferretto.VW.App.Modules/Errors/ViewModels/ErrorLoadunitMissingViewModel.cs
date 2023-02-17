@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -57,6 +56,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         private readonly IMachineModeWebService machineModeWebService;
 
         private readonly ISessionService sessionService;
+
+        private readonly IMachineIdentityWebService machineIdentity;
 
         private DelegateCommand automaticCommand;
 
@@ -146,6 +147,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService machineIdentity,
             IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
@@ -155,6 +157,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineIdentity = machineIdentity ?? throw new ArgumentNullException(nameof(machineIdentity));
 
             this.CurrentStep = default(ErrorLoadunitMissingStepStart);
         }
@@ -599,6 +602,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.SubscribeToEvents();
+
+            var isVisible = await this.machineIdentity.GetIsOstecEnableAsync();
+            var isEnabled = !await this.machineIdentity.IsSilenceSirenAlarmAsync();
+            this.ShowSilenceSiren(isVisible, isEnabled);
 
             this.UpdateStatusButtonFooter();
 

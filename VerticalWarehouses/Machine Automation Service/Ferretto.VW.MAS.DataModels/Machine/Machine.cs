@@ -44,6 +44,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool FireAlarm { get; set; }
 
+        public bool IsOstec { get; set; }
+
+        public bool SilenceSirenAlarm { get; set; }
+
         /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
