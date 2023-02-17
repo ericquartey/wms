@@ -34,6 +34,8 @@
 
         NextStep,
 
-        Abort
+        Abort,
+
+        SilenceSiren
     }
 }

@@ -219,4 +219,7 @@
   <data name="PowerOnInstruction" xml:space="preserve">
     <value>Touch Off to begin the procedure</value>
   </data>
+  <data name="SilenceSirenAlarm" xml:space="preserve">
+    <value>ACK Alarm</value>
+  </data>
 </root>

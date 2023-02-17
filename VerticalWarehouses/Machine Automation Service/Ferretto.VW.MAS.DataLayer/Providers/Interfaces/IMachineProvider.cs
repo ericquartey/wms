@@ -34,6 +34,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool GetListPickConfirm();
 
+        bool IsSilenceSirenAlarm();
+
+        Task SetSilenceSirenAlarm(bool silenceSirenAlarm);
+
         bool GetListPutConfirm();
 
         Machine GetMinMaxHeight();
@@ -83,6 +87,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool IsEnableHandlingItemOperations();
 
         bool IsFireAlarmActive();
+
+        bool IsOstecActive();
 
         bool IsHeartBeat();
 

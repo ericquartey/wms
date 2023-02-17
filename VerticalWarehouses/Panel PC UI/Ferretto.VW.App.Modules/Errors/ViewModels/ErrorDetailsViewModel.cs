@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
+        private readonly IMachineIdentityWebService machineIdentity;
+
         private MachineError error;
 
         private string errorTime;
@@ -49,12 +51,14 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public ErrorDetailsViewModel(
             IMachineErrorsWebService machineErrorsWebService,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineCarouselWebService machineCarouselWebService)
+            IMachineCarouselWebService machineCarouselWebService,
+            IMachineIdentityWebService machineIdentity)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
+            this.machineIdentity = machineIdentity ?? throw new ArgumentNullException(nameof(machineIdentity));
 
             new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
@@ -127,6 +131,10 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.ResetImageVisibility();
+
+            var isVisible = await this.machineIdentity.GetIsOstecEnableAsync();
+            var isEnabled = !await this.machineIdentity.IsSilenceSirenAlarmAsync();
+            this.ShowSilenceSiren(isVisible, isEnabled);
 
             await base.OnAppearedAsync();
 

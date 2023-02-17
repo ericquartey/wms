@@ -279,6 +279,16 @@
                                     Style="{StaticResource PpcNext}" />
             </ctrls:PpcControl>
 
+            <ctrls:PpcControl PresentationType="{x:Static enums:PresentationTypes.SilenceSiren}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Content="{res:Loc ErrorsApp.SilenceSirenAlarm}"
+                                    IsEnabled="{Binding IsEnalbed}"
+                                    Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+            </ctrls:PpcControl>
+
             <ctrls:PpcControl Width="100"
                               PresentationType="{x:Static enums:PresentationTypes.Abort}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">

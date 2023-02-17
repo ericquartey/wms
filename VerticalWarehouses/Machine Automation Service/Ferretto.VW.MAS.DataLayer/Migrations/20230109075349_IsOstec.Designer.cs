@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20230109075349_IsOstec")]
+    partial class IsOstec
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1464,8 +1466,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<string>("SerialNumber");
 
-                    b.Property<bool>("SilenceSirenAlarm");
-
                     b.Property<bool>("Simulation");
 
                     b.Property<int>("ToteBarcodeLength");
@@ -2076,8 +2076,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("AlarmsToWmsOn");
-
                     b.Property<int>("ConnectionTimeout");
 
                     b.Property<int>("DelayTimeout");
@@ -2113,7 +2111,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = -1,
-                            AlarmsToWmsOn = false,
                             ConnectionTimeout = 5000,
                             DelayTimeout = 0,
                             IsConnected = false,

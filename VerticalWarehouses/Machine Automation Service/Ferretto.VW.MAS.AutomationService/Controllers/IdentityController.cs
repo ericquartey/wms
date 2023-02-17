@@ -149,6 +149,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsFireAlarmActive());
         }
 
+        [HttpPost("get/IsOstec/enable")]
+        public ActionResult<bool> GetIsOstecEnable()
+        {
+            return this.Ok(this.machineProvider.IsOstecActive());
+        }
+
         [HttpPost("get/IsLoadUnitFixed")]
         public ActionResult<bool> GetIsLoadUnitFixed()
         {
@@ -278,6 +284,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             await this.machineProvider.SetMachineId(newMachineId);
             return this.Ok();
+        }
+
+        [HttpPost("set/SilenceSirenAlarm")]
+        public async Task<IActionResult> SilenceSirenAlarmAsync()
+        {
+            await this.machineProvider.SetSilenceSirenAlarm(true);
+            return this.Ok();
+        }
+
+        [HttpPost("get/SilenceSirenAlarm")]
+        public ActionResult<bool> IsSilenceSirenAlarm()
+        {
+            return this.Ok(this.machineProvider.IsSilenceSirenAlarm());
         }
 
         #endregion

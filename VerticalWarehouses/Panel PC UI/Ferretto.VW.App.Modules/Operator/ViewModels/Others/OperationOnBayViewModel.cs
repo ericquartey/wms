@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCarrefour;
 
+        private bool isOstec;
+
         private bool isCheckListContinueInOtherMachine;
 
         private bool isDisableQtyItemEditingPick;
@@ -141,6 +143,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCarrefour;
             set => this.SetProperty(ref this.isCarrefour, value, this.CanExecute);
+        }
+
+        public bool IsOstec
+        {
+            get => this.isOstec;
+            set => this.SetProperty(ref this.isOstec, value, this.CanExecute);
         }
 
         public bool IsCheckListContinueInOtherMachine
@@ -366,6 +374,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItem = configuration.IsEnableAddItem;
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
+                this.IsOstec = configuration.IsOstec;
                 this.IsWaitingList = configuration.IsWaitingListFiltered is true;
                 this.IsDrapery = configuration.IsDrapery;
                 this.IsDisableQtyItemEditingPick = configuration.IsDisableQtyItemEditingPick;
@@ -413,6 +422,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsEnableAddItem = this.IsEnableAddItem;
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
+                machine.IsOstec = this.IsOstec;
                 machine.IsWaitingListFiltered = this.IsWaitingList;
                 machine.IsDisableQtyItemEditingPick = this.IsDisableQtyItemEditingPick;
                 machine.IsDoubleConfirmBarcodeInventory = this.IsDoubleConfirmBarcodeInventory;

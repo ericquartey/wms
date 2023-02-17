@@ -76,6 +76,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool HasActiveErrors()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Errors.Where(e => !e.ResolutionDate.HasValue).Any();
+            }
+        }
+
         public MachineError GetLast()
         {
             lock (this.dataContext)
