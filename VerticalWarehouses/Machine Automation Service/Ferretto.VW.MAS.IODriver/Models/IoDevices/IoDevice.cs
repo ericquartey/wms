@@ -487,6 +487,8 @@ namespace Ferretto.VW.MAS.IODriver
 
                                 }
 
+                                Array.Copy(this.ioStatus.OutputData, outputData, outputData.Length);
+
                                 if (hasError && !silenceAlarm)
                                 {
                                     outputData[6] = true;
@@ -508,9 +510,8 @@ namespace Ferretto.VW.MAS.IODriver
                                         await machineProvider.SetSilenceSirenAlarm(false);
                                     }
                                 }
+                                this.ioStatus.UpdateOutputStates(outputData);
                             }
-
-
 
                             if (this.ioStatus.UpdateInputStates(inputData)
                                 || this.forceIoStatusPublish)
