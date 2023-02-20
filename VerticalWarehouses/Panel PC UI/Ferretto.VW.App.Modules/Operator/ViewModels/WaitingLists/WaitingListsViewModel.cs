@@ -567,7 +567,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (this.isWaitingListLocal is true)
                 {
-                    foreach (var newList in newLists.Where(x => x.Machines?.Any(m => m.Id == this.machineId) == true))
+                    foreach (var newList in newLists.Where(x => x.Machines?.Any(m => m.Id == this.machineId) == true).OrderBy(l => l.IsDispatchable))
                     {
                         this.lists.Add(new ItemListExecution(newList, this.machineId, this.priorityHighlighted));
                     }

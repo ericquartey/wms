@@ -2271,4 +2271,7 @@
   <data name="IsOstec" xml:space="preserve">
     <value>Ostec (WMS custom)</value>
   </data>
+  <data name="DeleteAllMission" xml:space="preserve">
+    <value>Elimina Tutto</value>
+  </data>
 </root>

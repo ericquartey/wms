@@ -62,13 +62,23 @@
 
         </Border>
 
-        <controls:PpcButton Grid.Row="4"
-                            Margin="15,15,0,0"
+        <StackPanel Grid.Row="4" 
                             HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
+                    Orientation="Horizontal"
+                            VerticalAlignment="Bottom">
+            <controls:PpcButton Margin="15,15,0,0"
+                            Command="{Binding DeleteAllMissionCommand}"
+                            Content="{Resources:Loc OperatorApp.DeleteAllMission}"
+                            Style="{StaticResource ConfirmButton}"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcButton Margin="15,15,0,0"
                             Command="{Binding DeleteMissionCommand}"
                             Content="{Resources:Loc OperatorApp.DeleteMission}"
                             Style="{StaticResource ConfirmButton}"
                             Visibility="{Binding IsDeleteMissionCommand, Converter={StaticResource BTVC}}" />
+        </StackPanel>
+
+        
     </Grid>
 </ctrls:View>

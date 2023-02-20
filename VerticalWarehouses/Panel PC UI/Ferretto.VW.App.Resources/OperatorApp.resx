@@ -2668,4 +2668,7 @@
   <data name="ListOrderByLight" xml:space="preserve">
     <value>Light</value>
   </data>
+  <data name="DeleteAllMission" xml:space="preserve">
+    <value>Delete All</value>
+  </data>
 </root>
