@@ -26,11 +26,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand deleteMissionCommand;
 
+        private DelegateCommand deleteAllMissionCommand;
+
         private bool isDeleteMissionCommand;
 
         private ObservableCollection<Mission> missions = new ObservableCollection<Mission>();
 
         private Mission selectedMission;
+        private bool isAdmin;
 
         #endregion
 
@@ -60,6 +63,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.DeleteMissionAsync(),
                 this.CanDeleteMission));
 
+        public System.Windows.Input.ICommand DeleteAllMissionCommand =>
+            this.deleteAllMissionCommand
+            ??
+            (this.deleteAllMissionCommand = new DelegateCommand(
+                async () => await this.DeleteAllMissionAsync(),
+                this.CanDeleteMission));
+
         public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsDeleteMissionCommand
@@ -78,6 +88,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.selectedMission;
             set => this.SetProperty(ref this.selectedMission, value);
+        }
+
+        public bool IsAdmin
+        {
+            get => this.isAdmin;
+            set => this.SetProperty(ref this.isAdmin, value);
         }
 
         #endregion
@@ -122,6 +138,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task DeleteAllMissionAsync()
+        {
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                foreach (var mission in this.Missions)
+                {
+                    this.machineLoadingUnitsWebService.AbortAsync(mission.Id, mission.TargetBay);
+                }
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+
         public override void Disappear()
         {
             base.Disappear();
@@ -133,6 +172,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsDeleteMissionCommand = this.sessionService.UserAccessLevel >= UserAccessLevel.Movement;
+            this.IsAdmin = this.sessionService.UserAccessLevel >= UserAccessLevel.Admin;
 
             this.RaisePropertyChanged(nameof(this.IsDeleteMissionCommand));
 
