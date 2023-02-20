@@ -454,10 +454,7 @@ namespace Ferretto.VW.MAS.IODriver
                             // INFO The sensor presence in lower bay must be inverted (NOT for carousel or External bay)
                             inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || (this.isExternalBay && !this.isDoubleBay)) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
-
                             var isOstec = false;
-
-
 
                             using (var scope = this.serviceScopeFactory.CreateScope())
                             {
@@ -508,10 +505,9 @@ namespace Ferretto.VW.MAS.IODriver
                                         await machineProvider.SetSilenceSirenAlarm(false);
                                     }
                                 }
+                                this.ioStatus.UpdateOutputStates(outputData);
                             }
-
-
-
+                            
                             if (this.ioStatus.UpdateInputStates(inputData)
                                 || this.forceIoStatusPublish)
                             {
