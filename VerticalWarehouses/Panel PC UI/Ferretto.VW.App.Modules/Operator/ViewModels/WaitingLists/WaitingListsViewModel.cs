@@ -33,7 +33,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IMachineItemListsWebService itemListsWebService;
 
-        private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
+        private readonly List<ItemListExecution> lists = new List<ItemListExecution>();
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
@@ -580,6 +580,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.lists.Count > 0)
                 {
                     this.IsShipmentDayVisible = this.lists.Any(i => i.ShipmentUnitCode != null);
+
+                    this.lists.Sort((x, y) => x.ExecutionMode.CompareTo(y.ExecutionMode));
                 }
 
                 this.RaisePropertyChanged(nameof(this.Lists));
