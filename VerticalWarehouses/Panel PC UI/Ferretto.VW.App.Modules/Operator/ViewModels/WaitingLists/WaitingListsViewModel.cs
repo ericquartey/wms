@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private const int PollIntervalMilliseconds = 5000;
+        private const int PollIntervalMilliseconds = 60000;
 
         private readonly IMachineAreasWebService areasWebService;
 
