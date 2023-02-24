@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
-        private const int PollIntervalMilliseconds = 5000;
+        private const int PollIntervalMilliseconds = 60000;
 
         private readonly IMachineAreasWebService areasWebService;
 
@@ -581,7 +581,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 {
                     this.IsShipmentDayVisible = this.lists.Any(i => i.ShipmentUnitCode != null);
 
-                    this.lists.Sort((x, y) => x.ExecutionMode.CompareTo(y.ExecutionMode));
+                    this.lists.Sort((x, y) =>
+                    {
+                        var compare = x.ExecutionMode.CompareTo(y.ExecutionMode);
+                        return compare != 0 ? compare : x.Code.CompareTo(y.Code);
+                    });
                 }
 
                 this.RaisePropertyChanged(nameof(this.Lists));
