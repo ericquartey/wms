@@ -9,348 +9,373 @@
              xmlns:model="clr-namespace:Ferretto.VW.App.Modules.Operator.Models">
 
     <UserControl.Resources>
-    <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
-    <conv:MachinesToStringConverter x:Key="MTSC" />
-    <ControlTemplate x:Key="StateIndicatorControlControlTemplate1"
-                     TargetType="{x:Type dxga:StateIndicatorControl}">
-      <Border Padding="{TemplateBinding Padding}"
-              Background="{TemplateBinding Background}">
-        <Grid x:Name="PART_BaseLayoutElement">
-          <dxga:ElementInfoContainer Width="16"
-                                     Height="16"
-                                     ElementInfo="{Binding State.ElementInfo, RelativeSource={RelativeSource TemplatedParent}}"
-                                     StretchToAvailableSize="False" />
-        </Grid>
-      </Border>
-    </ControlTemplate>
-  </UserControl.Resources>
-
-  <DataGrid x:Name="DataGrid"
-            Width="auto"
-            Height="auto"
-            AutoGenerateColumns="False"
-            Background="{DynamicResource VWAPP_BACKGROUND}"
-            BorderThickness="0"
-            CanUserReorderColumns="False"
-            CanUserResizeColumns="False"
-            CanUserResizeRows="False"
-            CanUserSortColumns="True"
-            FontSize="{StaticResource FontSize_High}"
-            HeadersVisibility="Column"
-            HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-            IsReadOnly="True"
-            IsSynchronizedWithCurrentItem="True"
-            ItemsSource="{Binding Lists}"
-            Loaded="DataGrid_Loaded"
-            RowHeight="50"
-            SelectedItem="{Binding SelectedList}"
-            VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
-            VerticalScrollBarVisibility="Auto">
-
-    <DataGrid.Template>
-      <ControlTemplate TargetType="{x:Type DataGrid}">
-        <Border Padding="{TemplateBinding Padding}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                SnapsToDevicePixels="True">
-          <ScrollViewer x:Name="DG_ScrollViewer"
-                        Focusable="false">
-            <ScrollViewer.Template>
-              <ControlTemplate TargetType="{x:Type ScrollViewer}">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                  </Grid.ColumnDefinitions>
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                  </Grid.RowDefinitions>
-                  <Button Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
-                          Command="{x:Static DataGrid.SelectAllCommand}"
-                          Focusable="false"
-                          Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
-                                                                        TypeInTargetAssembly={x:Type DataGrid}}}"
-                          Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                  <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
-                                                  Grid.Column="1"
-                                                  Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                  <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
-                                          Grid.Row="1"
-                                          Grid.ColumnSpan="2"
-                                          CanContentScroll="{TemplateBinding CanContentScroll}" />
-                  <ScrollBar x:Name="PART_VerticalScrollBar"
-                             Grid.Row="1"
-                             Grid.Column="2"
-                             ContextMenuService.IsEnabled="False"
-                             Maximum="{TemplateBinding ScrollableHeight}"
-                             Orientation="Vertical"
-                             Style="{DynamicResource MyScrollBar}"
-                             ViewportSize="{TemplateBinding ViewportHeight}"
-                             Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
-                             Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                  <Grid Grid.Row="2"
-                        Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
-                      <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <ScrollBar x:Name="PART_HorizontalScrollBar"
-                               Grid.Column="1"
-                               ContextMenuService.IsEnabled="False"
-                               Maximum="{TemplateBinding ScrollableWidth}"
-                               Orientation="Horizontal"
-                               Style="{DynamicResource MyScrollBar}"
-                               ViewportSize="{TemplateBinding ViewportWidth}"
-                               Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                               Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                  </Grid>
+        <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
+        <conv:MachinesToStringConverter x:Key="MTSC" />
+        <ControlTemplate x:Key="StateIndicatorControlControlTemplate1"
+                         TargetType="{x:Type dxga:StateIndicatorControl}">
+            <Border Padding="{TemplateBinding Padding}"
+                    Background="{TemplateBinding Background}">
+                <Grid x:Name="PART_BaseLayoutElement">
+                    <dxga:ElementInfoContainer Width="16"
+                                               Height="16"
+                                               ElementInfo="{Binding State.ElementInfo, RelativeSource={RelativeSource TemplatedParent}}"
+                                               StretchToAvailableSize="False" />
                 </Grid>
-              </ControlTemplate>
-            </ScrollViewer.Template>
-            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-          </ScrollViewer>
-        </Border>
-      </ControlTemplate>
-    </DataGrid.Template>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
 
-    <DataGrid.Style>
-      <Style TargetType="DataGrid">
-        <EventSetter Event="MouseEnter"
-                     Handler="MouseEnterHandler" />
-        <EventSetter Event="PreviewMouseDown"
-                     Handler="PreviewMouseDownHandler" />
-        <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
-        <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
-      </Style>
-    </DataGrid.Style>
+    <DataGrid x:Name="DataGrid"
+              Width="auto"
+              Height="auto"
+              AutoGenerateColumns="False"
+              Background="{DynamicResource VWAPP_BACKGROUND}"
+              BorderThickness="0"
+              CanUserReorderColumns="False"
+              CanUserResizeColumns="False"
+              CanUserResizeRows="False"
+              CanUserSortColumns="True"
+              FontSize="{StaticResource FontSize_High}"
+              HeadersVisibility="Column"
+              HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+              IsReadOnly="True"
+              IsSynchronizedWithCurrentItem="True"
+              ItemsSource="{Binding Lists}"
+              Loaded="DataGrid_Loaded"
+              MinRowHeight="50"
+              SelectedItem="{Binding SelectedList}"
+              VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
+              VerticalScrollBarVisibility="Auto">
 
-    <DataGrid.Resources>
-      <ctrls:BindingProxy x:Key="proxy"
-                          Data="{Binding}" />
-    </DataGrid.Resources>
+        <DataGrid.Template>
+            <ControlTemplate TargetType="{x:Type DataGrid}">
+                <Border Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SnapsToDevicePixels="True">
+                    <ScrollViewer x:Name="DG_ScrollViewer"
+                                  Focusable="false">
+                        <ScrollViewer.Template>
+                            <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Button Width="{Binding CellsPanelHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"
+                                            Command="{x:Static DataGrid.SelectAllCommand}"
+                                            Focusable="false"
+                                            Style="{DynamicResource {ComponentResourceKey ResourceId=DataGridSelectAllButtonStyle,
+                                                                        TypeInTargetAssembly={x:Type DataGrid}}}"
+                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.All}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                    <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                                                    Grid.Column="1"
+                                                                    Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                            Grid.Row="1"
+                                                            Grid.ColumnSpan="2"
+                                                            CanContentScroll="{TemplateBinding CanContentScroll}" />
+                                    <ScrollBar x:Name="PART_VerticalScrollBar"
+                                               Grid.Row="1"
+                                               Grid.Column="2"
+                                               ContextMenuService.IsEnabled="False"
+                                               Maximum="{TemplateBinding ScrollableHeight}"
+                                               Orientation="Vertical"
+                                               Style="{DynamicResource MyScrollBar}"
+                                               ViewportSize="{TemplateBinding ViewportHeight}"
+                                               Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                               Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Grid Grid.Row="2"
+                                          Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                                   Grid.Column="1"
+                                                   ContextMenuService.IsEnabled="False"
+                                                   Maximum="{TemplateBinding ScrollableWidth}"
+                                                   Orientation="Horizontal"
+                                                   Style="{DynamicResource MyScrollBar}"
+                                                   ViewportSize="{TemplateBinding ViewportWidth}"
+                                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                                   Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    </Grid>
+                                </Grid>
+                            </ControlTemplate>
+                        </ScrollViewer.Template>
+                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </ScrollViewer>
+                </Border>
+            </ControlTemplate>
+        </DataGrid.Template>
 
-    <DataGrid.Columns>
+        <DataGrid.Style>
+            <Style TargetType="DataGrid">
+                <EventSetter Event="MouseEnter"
+                             Handler="MouseEnterHandler" />
+                <EventSetter Event="PreviewMouseDown"
+                             Handler="PreviewMouseDownHandler" />
+                <Setter Property="Background"
+                        Value="{DynamicResource VWAPP_BACKGROUND}" />
+                <Setter Property="FontFamily"
+                        Value="HelveticaNeue-LightCond" />
+            </Style>
+        </DataGrid.Style>
 
-      <DataGridTemplateColumn x:Name="Column0"
-                              Width="10"
-                              Header="">
-        <DataGridTemplateColumn.CellTemplate>
-          <DataTemplate>
-            <Rectangle Width="6"
-                       Height="15"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Visibility="{Binding IsColorTag, Converter={StaticResource BTVC}}">
-              <Rectangle.Style>
-                <Style TargetType="{x:Type Rectangle}">
-                  <Setter Property="Fill" Value="MediumPurple" />
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsSpecialPriority}"
-                                 Value="True">
-                      <Setter Property="Fill" Value="HotPink" />
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </Rectangle.Style>
-            </Rectangle>
-          </DataTemplate>
-        </DataGridTemplateColumn.CellTemplate>
-      </DataGridTemplateColumn>
+        <DataGrid.Resources>
+            <ctrls:BindingProxy x:Key="proxy"
+                                Data="{Binding}" />
+        </DataGrid.Resources>
 
-      <DataGridTextColumn x:Name="Column1"
-                          Width="90"
-                          Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
-                          Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
+        <DataGrid.Columns>
 
-        <DataGridTextColumn.CellStyle>
-          <Style TargetType="{x:Type DataGridCell}">
-            <Setter Property="BorderThickness" Value="0,0,0,0" />
-            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
-          </Style>
-        </DataGridTextColumn.CellStyle>
+            <DataGridTemplateColumn x:Name="Column0"
+                                    Width="10"
+                                    Header="">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Rectangle Width="6"
+                                   Height="15"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Visibility="{Binding IsColorTag, Converter={StaticResource BTVC}}">
+                            <Rectangle.Style>
+                                <Style TargetType="{x:Type Rectangle}">
+                                    <Setter Property="Fill"
+                                            Value="MediumPurple" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsSpecialPriority}"
+                                                     Value="True">
+                                            <Setter Property="Fill"
+                                                    Value="HotPink" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
 
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column1"
+                                Width="90"
+                                Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
 
-      <DataGridTextColumn x:Name="Column2"
-                          Width="120"
-                          Binding="{Binding Code}"
-                          Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Setter Property="BorderThickness"
+                                Value="0,0,0,0" />
+                        <Setter Property="BorderBrush"
+                                Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column2"
+                                Width="120"
+                                Binding="{Binding Code}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
 
-      <DataGridTextColumn x:Name="Column3"
-                          Width="*"
-                          MinWidth="150"
-                          Binding="{Binding Description}"
-                          Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="TextWrapping"
+                                Value="Wrap" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column3"
+                                Width="*"
+                                MinWidth="150"
+                                Binding="{Binding Description}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
 
-      <DataGridTextColumn x:Name="Column4"
-                          Width="100"
-                          Binding="{Binding ShipmentUnitCode}"
-                          Header="{Resources:Loc OperatorApp.ShipmentUnitCode}"
-                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="TextWrapping"
+                                Value="Wrap" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column4"
+                                Width="100"
+                                Binding="{Binding ShipmentUnitCode}"
+                                Header="{Resources:Loc OperatorApp.ShipmentUnitCode}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
 
-      <DataGridTextColumn x:Name="Column5"
-                          Width="100"
-                          Binding="{Binding ShipmentUnitDescription}"
-                          Header="{Resources:Loc OperatorApp.ShipmentUnitDescription}"
-                          Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-      <DataGridTextColumn x:Name="Column6"
-                          Width="50"
-                          Binding="{Binding Priority}"
-                          Header="{Resources:Loc OperatorApp.Priority}">
-        <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column5"
+                                Width="100"
+                                Binding="{Binding ShipmentUnitDescription}"
+                                Header="{Resources:Loc OperatorApp.ShipmentUnitDescription}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsCarrefour, Converter={StaticResource BTVC}}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-      <DataGridTextColumn x:Name="Column7"
-                          Width="70"
-                          Binding="{Binding Code, Converter={StaticResource LITLOC}}"
-                          Header="{Resources:Loc OperatorApp.ListOrderBy}">
-        <DataGridTextColumn.ElementStyle>
-          <Style TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-          </Style>
-        </DataGridTextColumn.ElementStyle>
-      </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column6"
+                                Width="50"
+                                Binding="{Binding Priority}"
+                                Header="{Resources:Loc OperatorApp.Priority}">
+                <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-      <DataGridTemplateColumn x:Name="Column9"
-                              Width="40"
-                              SortMemberPath="ExecutionMode"
-                              CanUserSort="True"
-                              Header="{Resources:Loc OperatorApp.ListAvailable}">
-        <DataGridTemplateColumn.CellTemplate>
-          <DataTemplate>
-            <dxga:StateIndicatorControl x:Name="stateIndicatorControl1"
-                                        Margin="0,0,0,2"
-                                        RenderOptions.EdgeMode="Aliased"
-                                        Template="{DynamicResource StateIndicatorControlControlTemplate1}">
-              <dxga:StateIndicatorControl.AdditionalStates>
-                <dxga:State>
-                  <dxga:State.Presentation>
-                    <dxga:CustomStatePresentation>
-                      <dxga:CustomStatePresentation.StateTemplate>
-                        <ControlTemplate>
-                          <Viewbox Stretch="Uniform">
-                            <Grid Width="8"
-                                  Height="8"
-                                  Margin="0">
-                              <Ellipse Width="8"
-                                       Height="8"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Fill="{DynamicResource FerrettoGreen}" />
-                            </Grid>
-                          </Viewbox>
-                        </ControlTemplate>
-                      </dxga:CustomStatePresentation.StateTemplate>
-                    </dxga:CustomStatePresentation>
-                  </dxga:State.Presentation>
-                </dxga:State>
-                <dxga:State>
-                  <dxga:State.Presentation>
-                    <dxga:CustomStatePresentation>
-                      <dxga:CustomStatePresentation.StateTemplate>
-                        <ControlTemplate>
-                          <Viewbox Stretch="Uniform">
-                            <Grid Width="8"
-                                  Height="8"
-                                  Margin="0">
-                              <Ellipse Width="8"
-                                       Height="8"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       Fill="{DynamicResource FerrettoYellow}" />
-                            </Grid>
-                          </Viewbox>
-                        </ControlTemplate>
-                      </dxga:CustomStatePresentation.StateTemplate>
-                    </dxga:CustomStatePresentation>
-                  </dxga:State.Presentation>
-                </dxga:State>
-              </dxga:StateIndicatorControl.AdditionalStates>
-              <dxga:StateIndicatorControl.Model>
-                <dxga:LampStateIndicatorModel />
-              </dxga:StateIndicatorControl.Model>
-              <dxga:StateIndicatorControl.Style>
-                <Style TargetType="{x:Type dxga:StateIndicatorControl}">
-                  <Style.Triggers>
-                    <DataTrigger Binding="{Binding ExecutionMode}">
-                      <DataTrigger.Value>
-                        <model:ListExecutionMode>SomeRows</model:ListExecutionMode>
-                      </DataTrigger.Value>
-                      <Setter Property="StateIndex" Value="5" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ExecutionMode}">
-                      <DataTrigger.Value>
-                        <model:ListExecutionMode>AllRows</model:ListExecutionMode>
-                      </DataTrigger.Value>
-                      <Setter Property="StateIndex" Value="4" />
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding ExecutionMode}">
-                      <DataTrigger.Value>
-                        <model:ListExecutionMode>None</model:ListExecutionMode>
-                      </DataTrigger.Value>
-                      <Setter Property="Visibility" Value="Hidden" />
-                    </DataTrigger>
-                  </Style.Triggers>
-                </Style>
-              </dxga:StateIndicatorControl.Style>
-            </dxga:StateIndicatorControl>
-          </DataTemplate>
-        </DataGridTemplateColumn.CellTemplate>
-      </DataGridTemplateColumn>
+            <DataGridTextColumn x:Name="Column7"
+                                Width="70"
+                                Binding="{Binding Code, Converter={StaticResource LITLOC}}"
+                                Header="{Resources:Loc OperatorApp.ListOrderBy}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
 
-    </DataGrid.Columns>
-
-  </DataGrid>
-
+            <DataGridTemplateColumn x:Name="Column9"
+                                    Width="40"
+                                    SortMemberPath="ExecutionMode"
+                                    CanUserSort="True"
+                                    Header="{Resources:Loc OperatorApp.ListAvailable}">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <dxga:StateIndicatorControl x:Name="stateIndicatorControl1"
+                                                    Margin="0,0,0,2"
+                                                    RenderOptions.EdgeMode="Aliased"
+                                                    Template="{DynamicResource StateIndicatorControlControlTemplate1}">
+                            <dxga:StateIndicatorControl.AdditionalStates>
+                                <dxga:State>
+                                    <dxga:State.Presentation>
+                                        <dxga:CustomStatePresentation>
+                                            <dxga:CustomStatePresentation.StateTemplate>
+                                                <ControlTemplate>
+                                                    <Viewbox Stretch="Uniform">
+                                                        <Grid Width="8"
+                                                              Height="8"
+                                                              Margin="0">
+                                                            <Ellipse Width="8"
+                                                                     Height="8"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"
+                                                                     Fill="{DynamicResource FerrettoGreen}" />
+                                                        </Grid>
+                                                    </Viewbox>
+                                                </ControlTemplate>
+                                            </dxga:CustomStatePresentation.StateTemplate>
+                                        </dxga:CustomStatePresentation>
+                                    </dxga:State.Presentation>
+                                </dxga:State>
+                                <dxga:State>
+                                    <dxga:State.Presentation>
+                                        <dxga:CustomStatePresentation>
+                                            <dxga:CustomStatePresentation.StateTemplate>
+                                                <ControlTemplate>
+                                                    <Viewbox Stretch="Uniform">
+                                                        <Grid Width="8"
+                                                              Height="8"
+                                                              Margin="0">
+                                                            <Ellipse Width="8"
+                                                                     Height="8"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center"
+                                                                     Fill="{DynamicResource FerrettoYellow}" />
+                                                        </Grid>
+                                                    </Viewbox>
+                                                </ControlTemplate>
+                                            </dxga:CustomStatePresentation.StateTemplate>
+                                        </dxga:CustomStatePresentation>
+                                    </dxga:State.Presentation>
+                                </dxga:State>
+                            </dxga:StateIndicatorControl.AdditionalStates>
+                            <dxga:StateIndicatorControl.Model>
+                                <dxga:LampStateIndicatorModel />
+                            </dxga:StateIndicatorControl.Model>
+                            <dxga:StateIndicatorControl.Style>
+                                <Style TargetType="{x:Type dxga:StateIndicatorControl}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ExecutionMode}">
+                                            <DataTrigger.Value>
+                                                <model:ListExecutionMode>SomeRows</model:ListExecutionMode>
+                                            </DataTrigger.Value>
+                                            <Setter Property="StateIndex"
+                                                    Value="5" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}">
+                                            <DataTrigger.Value>
+                                                <model:ListExecutionMode>AllRows</model:ListExecutionMode>
+                                            </DataTrigger.Value>
+                                            <Setter Property="StateIndex"
+                                                    Value="4" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ExecutionMode}">
+                                            <DataTrigger.Value>
+                                                <model:ListExecutionMode>None</model:ListExecutionMode>
+                                            </DataTrigger.Value>
+                                            <Setter Property="Visibility"
+                                                    Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxga:StateIndicatorControl.Style>
+                        </dxga:StateIndicatorControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
 </UserControl>
