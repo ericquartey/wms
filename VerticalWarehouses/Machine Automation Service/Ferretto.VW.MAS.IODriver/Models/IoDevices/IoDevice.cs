@@ -487,22 +487,20 @@ namespace Ferretto.VW.MAS.IODriver
 
                                 }
 
-                                Array.Copy(this.ioStatus.OutputData, outputData, outputData.Length);
-
                                 if (hasError && !silenceAlarm)
                                 {
-                                    outputData[6] = true;
-                                    outputData[7] = true;
+                                    this.ioStatus.OutputData[6] = true;
+                                    this.ioStatus.OutputData[7] = true;
                                 }
                                 else if (hasError && silenceAlarm)
                                 {
-                                    outputData[6] = true;
-                                    outputData[7] = false;
+                                    this.ioStatus.OutputData[6] = true;
+                                    this.ioStatus.OutputData[7] = false;
                                 }
                                 else
                                 {
-                                    outputData[6] = false;
-                                    outputData[7] = false;
+                                    this.ioStatus.OutputData[6] = false;
+                                    this.ioStatus.OutputData[7] = false;
 
                                     using (var scope = this.serviceScopeFactory.CreateScope())
                                     {
@@ -510,7 +508,11 @@ namespace Ferretto.VW.MAS.IODriver
                                         await machineProvider.SetSilenceSirenAlarm(false);
                                     }
                                 }
-                                this.ioStatus.UpdateOutputStates(outputData);
+
+                                lock (this.ioStatus)
+                                {
+                                    this.ioStatus.UpdateOutputStates(this.ioStatus.OutputData);
+                                }
                             }
 
                             if (this.ioStatus.UpdateInputStates(inputData)
