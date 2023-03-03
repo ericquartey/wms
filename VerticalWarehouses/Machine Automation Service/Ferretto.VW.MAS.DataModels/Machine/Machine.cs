@@ -66,6 +66,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsCarrefour { get; set; }
 
+        public bool ShowQuantityOnInventory { get; set; }
+
         public bool IsDbSaveOnServer { get; set; }
 
         public bool IsDbSaveOnTelemetry { get; set; }

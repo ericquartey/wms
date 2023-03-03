@@ -142,6 +142,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyLoading;
 
+        private bool isCarrefour;
+
         private bool isCurrentDraperyItem;
 
         private bool isDoubleConfirmBarcodePick;
@@ -250,6 +252,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
 
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
+
+            var configuration = this.machineConfigurationWebService.GetConfigAsync().Result;
+            this.IsCarrefour = configuration.IsCarrefour;
         }
 
         #endregion
@@ -485,6 +490,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isBusyLoading;
             set => this.SetProperty(ref this.isBusyLoading, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarrefour
+        {
+            get => this.isCarrefour;
+            set => this.SetProperty(ref this.isCarrefour, value);
         }
 
         public bool IsCurrentDraperyItem

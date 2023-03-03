@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
+        private readonly IMachineConfigurationWebService machineConfiguration;
+
         private readonly INavigationService navigationService;
 
         private DelegateCommand addItemOperationCommand;
@@ -84,6 +86,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.barcodeReaderService = barcodeReaderService;
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.machineConfiguration = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -235,9 +238,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.RaisePropertyChanged(nameof(this.MeasureUnitDescription));
         }
 
-        public override void OnMisionOperationRetrieved()
+        public override async void OnMisionOperationRetrieved()
         {
-            this.InputQuantity = null;
+            var configuration = await this.machineConfiguration.GetConfigAsync();
+            if (configuration.ShowQuantityOnInventory)
+            {
+                this.InputQuantity = this.MissionOperation.RequestedQuantity;
+            }
+            else
+            {
+                this.InputQuantity = null;
+            }
+
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
         }
 
