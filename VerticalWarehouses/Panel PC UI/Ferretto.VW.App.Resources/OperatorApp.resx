@@ -2671,4 +2671,7 @@
   <data name="DeleteAllMission" xml:space="preserve">
     <value>Delete All</value>
   </data>
+  <data name="ShowQuantityOnInventory" xml:space="preserve">
+    <value>Show Quantity On Inventory Operation</value>
+  </data>
 </root>

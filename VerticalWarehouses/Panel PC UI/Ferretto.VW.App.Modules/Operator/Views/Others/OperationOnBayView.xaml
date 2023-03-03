@@ -11,53 +11,55 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-  <Grid Margin="15,0,0,0">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="*" />
-      <ColumnDefinition Width="Auto" />
-    </Grid.ColumnDefinitions>
+    <Grid Margin="15,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
-    <Grid.RowDefinitions>
+        <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
-    </Grid.RowDefinitions>
+        </Grid.RowDefinitions>
 
-    <StackPanel Orientation="Vertical">
-      <!--  titolo  -->
-      <TextBlock VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{res:Loc OperatorApp.BayOperations}" />
-      <!--  descrizione  -->
-      <TextBlock VerticalAlignment="Top"
-                 FontSize="{DynamicResource FontSize_Small}"
-                 Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                 Text="{res:Loc HelpDescriptions.BayOperationsDescription}"
-                 TextWrapping="Wrap" />
+        <StackPanel Orientation="Vertical">
+            <!--  titolo  -->
+            <TextBlock VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{res:Loc OperatorApp.BayOperations}" />
+            <!--  descrizione  -->
+            <TextBlock VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_Small}"
+                       Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                       Text="{res:Loc HelpDescriptions.BayOperationsDescription}"
+                       TextWrapping="Wrap" />
 
-      <TextBlock VerticalAlignment="Top"
-                 FontSize="{DynamicResource FontSize_Small}"
-                 Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                 Text="{res:Loc HelpDescriptions.BayOperationsDescriptionWarning}"
-                 TextWrapping="Wrap" />
-    </StackPanel>
+            <TextBlock VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_Small}"
+                       Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                       Text="{res:Loc HelpDescriptions.BayOperationsDescriptionWarning}"
+                       TextWrapping="Wrap" />
+        </StackPanel>
 
-        <ScrollViewer Margin="0,0,15,0" Grid.ColumnSpan="2" Grid.Row="1" >
+        <ScrollViewer Margin="0,0,15,0"
+                      Grid.ColumnSpan="2"
+                      Grid.Row="1">
             <StackPanel Grid.Row="1"
-                Grid.Column="0"
-                Orientation="Vertical">
+                        Grid.Column="0"
+                        Orientation="Vertical">
                 <controls:PpcCheckBox Margin="0,15,0,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Pick, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.Pick}"
                                       Visibility="Collapsed" />
-                
+
                 <controls:PpcCheckBox Margin="0,15,0,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Put, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.Put}"
                                       Visibility="Collapsed" />
-                
+
                 <controls:PpcCheckBox Margin="0,15,0,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding View, Mode=TwoWay}"
@@ -168,17 +170,17 @@
                 <StackPanel Orientation="Horizontal">
 
                     <controls:PpcCheckBox Margin="0,10,15,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsWaitingListPriorityHighlighted, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.IsWaitingListPriorityHighlighted}" />
-                    
-                     <controls:PpcTextBox Margin="0,10,15,0"
                                           VerticalAlignment="Center"
-                                          Width="100"
-                                          IsEnabled="{Binding IsWaitingListPriorityHighlighted}"
-                                          InputText="{Binding WaitingListPriorityHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          IsChecked="{Binding IsWaitingListPriorityHighlighted, Mode=TwoWay}"
+                                          LabelText="{res:Loc OperatorApp.IsWaitingListPriorityHighlighted}" />
+
+                    <controls:PpcTextBox Margin="0,10,15,0"
+                                         VerticalAlignment="Center"
+                                         Width="100"
+                                         IsEnabled="{Binding IsWaitingListPriorityHighlighted}"
+                                         InputText="{Binding WaitingListPriorityHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
-                
+
                 <controls:PpcCheckBox Margin="0,10,15,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsListPutConfirm, Mode=TwoWay}"
@@ -198,15 +200,21 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsWaitingList, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsWaitingList}" />
-                
+
                 <controls:PpcCheckBox Margin="0,10,15,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsNrLabelsEditable, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsNrLabelsEditable}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding ShowQuantityOnInventory, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.ShowQuantityOnInventory}" />
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal">
             <controls:PpcTextBox Margin="0,10,15,0"
                                  VerticalAlignment="Center"
                                  InputText="{Binding ToteBarcodeLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -216,28 +224,21 @@
                                  VerticalAlignment="Center"
                                  InputText="{Binding ItemUniqueIdLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{res:Loc OperatorApp.ItemUniqueIdLength}" />
-
         </StackPanel>
-      
-    
-    <StackPanel Grid.Row="1"
-                Grid.Column="1"
-                Orientation="Vertical">
 
-      
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Orientation="Vertical">
+        </StackPanel>
 
-
-
-    </StackPanel>
-
-    <controls:PpcButton Grid.Row="1"
-                        Grid.RowSpan="2"
-                        Grid.Column="2"
-                        Margin="15,10,15,0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Command="{Binding SaveSettingsCommand}"
-                        Content="{res:Loc General.Save}"
-                        Style="{StaticResource ConfirmButton}" />
-  </Grid>
+        <controls:PpcButton Grid.Row="1"
+                            Grid.RowSpan="2"
+                            Grid.Column="2"
+                            Margin="15,10,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding SaveSettingsCommand}"
+                            Content="{res:Loc General.Save}"
+                            Style="{StaticResource ConfirmButton}" />
+    </Grid>
 </ctrls:View>

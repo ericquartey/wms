@@ -627,6 +627,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
                 machineDB.IsOstec = machine.IsOstec;
+                machineDB.ShowQuantityOnInventory = machine.ShowQuantityOnInventory;
                 machineDB.IsQuantityLimited = machine.IsQuantityLimited;
                 machineDB.IsAddItemByList = machine.IsAddItemByList;
                 machineDB.WaitingListPriorityHighlighted = machine.WaitingListPriorityHighlighted;

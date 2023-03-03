@@ -5470,6 +5470,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Quantity On Inventory Operation.
+        /// </summary>
+        public static string ShowQuantityOnInventory {
+            get {
+                return ResourceManager.GetString("ShowQuantityOnInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Bay 1.
         /// </summary>
         public static string ShutterBay1 {

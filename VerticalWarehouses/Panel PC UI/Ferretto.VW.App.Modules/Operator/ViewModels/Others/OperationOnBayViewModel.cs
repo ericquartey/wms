@@ -33,8 +33,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCarrefour;
 
-        private bool isOstec;
-
         private bool isCheckListContinueInOtherMachine;
 
         private bool isDisableQtyItemEditingPick;
@@ -65,6 +63,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isOrderList;
 
+        private bool isOstec;
+
         private bool isQuantityLimited;
 
         private bool isRequestConfirmForLastOperationOnLoadingUnit;
@@ -84,6 +84,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool put;
 
         private DelegateCommand saveSettingsCommand;
+
+        private bool showQuantityOnInventory;
 
         private int toteBarcodeLength;
 
@@ -143,12 +145,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCarrefour;
             set => this.SetProperty(ref this.isCarrefour, value, this.CanExecute);
-        }
-
-        public bool IsOstec
-        {
-            get => this.isOstec;
-            set => this.SetProperty(ref this.isOstec, value, this.CanExecute);
         }
 
         public bool IsCheckListContinueInOtherMachine
@@ -242,6 +238,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isOrderList, value, this.CanExecute);
         }
 
+        public bool IsOstec
+        {
+            get => this.isOstec;
+            set => this.SetProperty(ref this.isOstec, value, this.CanExecute);
+        }
+
         public bool IsQuantityLimited
         {
             get => this.isQuantityLimited;
@@ -301,6 +303,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.saveSettingsCommand = new DelegateCommand(
                 async () => await this.SaveSettingsAsync(),
                 this.CanSave));
+
+        public bool ShowQuantityOnInventory
+        {
+            get => this.showQuantityOnInventory;
+            set => this.SetProperty(ref this.showQuantityOnInventory, value, this.CanExecute);
+        }
 
         public int ToteBarcodeLength
         {
@@ -388,6 +396,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsQuantityLimited = configuration.IsQuantityLimited;
                 this.ItemUniqueIdLength = configuration.ItemUniqueIdLength;
                 this.ToteBarcodeLength = configuration.ToteBarcodeLength;
+                this.ShowQuantityOnInventory = configuration.ShowQuantityOnInventory;
 
                 this.WaitingListPriorityHighlighted = configuration.WaitingListPriorityHighlighted.Value;
                 this.IsListPickConfirm = configuration.ListPickConfirm;
@@ -436,6 +445,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.ToteBarcodeLength = this.ToteBarcodeLength;
                 machine.IsDrapery = this.IsDrapery;
                 machine.IsQuantityLimited = this.IsQuantityLimited;
+                machine.ShowQuantityOnInventory = this.ShowQuantityOnInventory;
 
                 machine.WaitingListPriorityHighlighted = this.IsWaitingListPriorityHighlighted && this.WaitingListPriorityHighlighted >= 0 ? this.WaitingListPriorityHighlighted : -1;
                 machine.ListPutConfirm = this.IsListPutConfirm;
