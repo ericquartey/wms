@@ -29,6 +29,8 @@
 - Aggiunta lingua Bulgara
 - Spostate Operazioni di Baia nel menu Impostazioni
 - Denso ListOrderBy
+- fixsocketlink "Aggiornamento Quantita inserita"
+- OStec - Brach - Sirena + Allarme - taccita 
 
 ## Bug Risolti
 - Movimenti guidati: corretta taratura baia in Baia 2
@@ -37,9 +39,10 @@
 - Fix Denso ListOrderBy
 - Update Contract 0.16.55
 - Fix InventoryQuantity
+- fix socketlink "Aggiornamento Quantita inserita"
+- Fix liste Attesa Autosize
 
-
-## Compatibile con adapter 0.4.45
+## Compatibile con adapter 0.4.47
 ***
 
 [Versione 1.0.56](#id1056)
