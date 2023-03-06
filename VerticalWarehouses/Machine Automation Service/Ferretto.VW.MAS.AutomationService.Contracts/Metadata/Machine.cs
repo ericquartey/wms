@@ -146,6 +146,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(2)]
             public string SerialNumber { get; set; }
 
+            [Unit("ms")]
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.ServiceDelay))]
+            [Id(33)]
+            public int ServiceDelay { get; set; }
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_Simulation))]
             [Id(13)]
             public bool Simulation { get; set; }

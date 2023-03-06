@@ -7,6 +7,8 @@ namespace Ferretto.VW.Devices.WeightingScale
     {
         #region Properties
 
+        int Delay { get; set; }
+
         bool ShowScaleNotResponding { get; }
 
         #endregion

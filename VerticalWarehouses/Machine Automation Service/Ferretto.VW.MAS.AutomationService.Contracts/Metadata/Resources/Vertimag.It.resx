@@ -648,4 +648,7 @@
   <data name="Name" xml:space="preserve">
     <value>Nome</value>
   </data>
+  <data name="ServiceDelay" xml:space="preserve">
+    <value>Ritardo compensazione Accessori</value>
+  </data>
 </root>

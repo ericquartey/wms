@@ -44,10 +44,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool FireAlarm { get; set; }
 
-        public bool IsOstec { get; set; }
-
-        public bool SilenceSirenAlarm { get; set; }
-
         /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
@@ -65,8 +61,6 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsAxisChanged { get; set; }
 
         public bool IsCarrefour { get; set; }
-
-        public bool ShowQuantityOnInventory { get; set; }
 
         public bool IsDbSaveOnServer { get; set; }
 
@@ -124,6 +118,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// The reason view shows order list besides reason list (SIDERPOL)
         /// </summary>
         public bool IsOrderList { get; set; }
+
+        public bool IsOstec { get; set; }
 
         public bool IsQuantityLimited { get; set; }
 
@@ -210,6 +206,12 @@ namespace Ferretto.VW.MAS.DataModels
         /// Gets or sets the machine's serial number.
         /// </summary>
         public string SerialNumber { get; set; }
+
+        public int ServiceDelay { get; set; }
+
+        public bool ShowQuantityOnInventory { get; set; }
+
+        public bool SilenceSirenAlarm { get; set; }
 
         public bool Simulation { get; set; }
 

@@ -37,6 +37,7 @@ namespace Ferretto.VW.App.Accessories
             IMachineAccessoriesWebService accessoriesWebService,
             ITokenReaderDriver deviceDriver,
             IAuthenticationService authenticationService,
+            IMachineIdentityWebService identityService,
             INavigationService navigationService)
         {
             this.accessoriesWebService = accessoriesWebService;
@@ -44,6 +45,7 @@ namespace Ferretto.VW.App.Accessories
             this.authenticationService = authenticationService;
             this.navigationService = navigationService;
 
+            this.deviceDriver.Delay = identityService.GetServiceDelayAsync().Result;
             this.deviceDriver.TokenStatusChanged += this.OnTokenStatusChanged;
         }
 

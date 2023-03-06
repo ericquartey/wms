@@ -149,16 +149,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsFireAlarmActive());
         }
 
-        [HttpPost("get/IsOstec/enable")]
-        public ActionResult<bool> GetIsOstecEnable()
-        {
-            return this.Ok(this.machineProvider.IsOstecActive());
-        }
-
         [HttpPost("get/IsLoadUnitFixed")]
         public ActionResult<bool> GetIsLoadUnitFixed()
         {
             return this.Ok(this.machineProvider.GetIsLoadUnitFixed());
+        }
+
+        [HttpPost("get/IsOstec/enable")]
+        public ActionResult<bool> GetIsOstecEnable()
+        {
+            return this.Ok(this.machineProvider.IsOstecActive());
         }
 
         [HttpPost("get/is/rotation/class")]
@@ -183,6 +183,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetListPutConfirm()
         {
             return this.Ok(this.machineProvider.GetListPutConfirm());
+        }
+
+        [HttpGet("get/service/delay")]
+        public ActionResult<int> GetServiceDelay()
+        {
+            return this.Ok(this.machineProvider.GetServiceDelay());
         }
 
         [HttpGet("statistics")]
@@ -264,6 +270,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsRequestConfirmForLastOperationOnLoadingUnit());
         }
 
+        [HttpPost("get/SilenceSirenAlarm")]
+        public ActionResult<bool> IsSilenceSirenAlarm()
+        {
+            return this.Ok(this.machineProvider.IsSilenceSirenAlarm());
+        }
+
         [HttpPost("get/IsUpdatingStockByDifference")]
         public ActionResult<bool> IsUpdatingStockByDifference()
         {
@@ -291,12 +303,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             await this.machineProvider.SetSilenceSirenAlarm(true);
             return this.Ok();
-        }
-
-        [HttpPost("get/SilenceSirenAlarm")]
-        public ActionResult<bool> IsSilenceSirenAlarm()
-        {
-            return this.Ok(this.machineProvider.IsSilenceSirenAlarm());
         }
 
         #endregion

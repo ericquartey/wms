@@ -49,6 +49,8 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         #region Properties
 
+        public int Delay { get; set; }
+
         public IPAddress IpAddress => this.ipAddress;
 
         public bool IsConnected => this.client?.Connected ?? false;
@@ -210,7 +212,8 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
         {
-            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            while (concurrentQueure.TryDequeue(out var sendMessage))
+            { }
             return true;
         }
 

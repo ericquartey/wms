@@ -1411,6 +1411,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accessory Compensation Delay.
+        /// </summary>
+        public static string ServiceDelay {
+            get {
+                return ResourceManager.GetString("ServiceDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shaft Diameter.
         /// </summary>
         public static string ShaftDiameter {

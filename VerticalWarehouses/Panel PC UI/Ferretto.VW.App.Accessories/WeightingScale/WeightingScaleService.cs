@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories.Interfaces.WeightingScale;
@@ -52,6 +51,7 @@ namespace Ferretto.VW.App.Accessories
             IWeightingScaleDriverMinebea deviceDriverMinebea,
             IMachineAccessoriesWebService accessoriesWebService,
             IMachineItemsWebService machineItemsWebService,
+            IMachineIdentityWebService machineIdentity,
             IEventAggregator eventAggregator)
         {
             this.deviceDriverDini = deviceDriverDini;
@@ -60,6 +60,11 @@ namespace Ferretto.VW.App.Accessories
             this.accessoriesWebService = accessoriesWebService;
             this.machineItemsWebService = machineItemsWebService;
             this.eventAggregator = eventAggregator;
+
+            var delay = machineIdentity.GetServiceDelayAsync().Result;
+
+            this.deviceDriverDini.Delay = delay;
+            this.deviceDriver.Delay = delay;
 
             this.weightPollTimer = new Timer(async s => await this.OnWeightPollTimerTickAsync());
         }

@@ -19,6 +19,7 @@ namespace Ferretto.VW.Devices.TokenReader
 
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
+        public int Delay { get; set; }
         #endregion
 
         #region Events
@@ -98,7 +99,9 @@ namespace Ferretto.VW.Devices.TokenReader
                         this.RaiseTokenStatusChanged(false, null);
                     }
                 }
-                await Task.Delay(10);
+
+
+                await Task.Delay(this.Delay);
             }
             while (this.SerialPort.IsOpen);
         }

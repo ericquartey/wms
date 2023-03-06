@@ -651,4 +651,7 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="ServiceDelay" xml:space="preserve">
+    <value>Accessory Compensation Delay</value>
+  </data>
 </root>

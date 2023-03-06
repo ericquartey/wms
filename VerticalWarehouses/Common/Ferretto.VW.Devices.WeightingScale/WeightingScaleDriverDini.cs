@@ -40,6 +40,8 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         private NetworkStream stream = null;
 
+        public int Delay { get; set; }
+
         #endregion
 
         #region Properties
@@ -192,7 +194,8 @@ namespace Ferretto.VW.Devices.WeightingScale
 
         private bool ClearConcurrentQueue(ConcurrentQueue<string> concurrentQueure)
         {
-            while (concurrentQueure.TryDequeue(out var sendMessage)) { }
+            while (concurrentQueure.TryDequeue(out var sendMessage))
+            { }
             return true;
         }
 
@@ -237,7 +240,7 @@ namespace Ferretto.VW.Devices.WeightingScale
                             var bytes = this.stream.Read(data, 0, data.Length);
                             response += Encoding.ASCII.GetString(data, 0, bytes);
                             this.logger.Debug($"SendCommandAsync();Received: {response.Replace("\r", "<CR>").Replace("\n", "<LF>")}");
-                            Thread.Sleep(10);
+                            Thread.Sleep(this.Delay);
                         } while (readTimeout > 0 && (DateTime.Now - startTime).TotalMilliseconds < readTimeout);
 
                         //switch (response)

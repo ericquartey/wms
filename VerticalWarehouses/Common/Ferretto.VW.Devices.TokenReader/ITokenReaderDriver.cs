@@ -2,6 +2,8 @@
 {
     public interface ITokenReaderDriver
     {
+        int Delay { get; set; }
+
         #region Events
 
         event System.EventHandler<TokenStatusChangedEventArgs> TokenStatusChanged;
