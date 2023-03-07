@@ -913,15 +913,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
                         this.IsItemSerialNumberValid = this.InputSerialNumber is null || this.MissionOperation?.SerialNumber is null || this.InputSerialNumber == this.MissionOperation?.SerialNumber;
 
-                        this.InputLot = e.GetItemLot() ?? this.InputLot;
+                        this.InputLot = e.GetItemLot() ?? this.InputItemCode;
                         this.IsItemLotValid = this.InputLot is null || this.MissionOperation?.Lot is null || this.InputLot == this.MissionOperation?.Lot;
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
-                        if (!this.IsItemCodeValid
+
+                        if ((!this.IsItemCodeValid
                             && e.GetItemCode() != null
-                            && this.MissionOperation?.ItemCode != null)
+                            && this.MissionOperation?.ItemCode != null) || this.IsItemLotValid)
                         {
-                            if (this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght)
+                            if ((this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght) || this.IsItemLotValid)
                             {
                                 e.HasMismatch = false;
                             }

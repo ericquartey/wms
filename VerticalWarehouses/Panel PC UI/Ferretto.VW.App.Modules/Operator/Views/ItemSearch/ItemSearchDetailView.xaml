@@ -19,253 +19,233 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-  <Grid Margin="15,0,0,0">
+    <Grid Margin="15,0,0,0">
 
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-
-    <StackPanel Grid.ColumnSpan="2"
-                Orientation="Horizontal">
-      <TextBlock Grid.ColumnSpan="2"
-                 Margin="0,10,15,10"
-                 VerticalAlignment="Top"
-                 Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                 Text="{Resources:Loc OperatorApp.ItemDetailHeader}" />
-    </StackPanel>
-
-    <Grid Grid.Row="1">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="Auto" />
-        <RowDefinition Height="*" />
-      </Grid.RowDefinitions>
-
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
-      </Grid.ColumnDefinitions>
-
-      <TextBlock Grid.Row="0"
-                 Grid.ColumnSpan="2"
-                 Height="Auto"
-                 Margin="0"
-                 VerticalAlignment="Top"
-                 FontSize="{DynamicResource FontSize_Small}"
-                 Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                 Text="{Resources:Loc HelpDescriptions.HelpItemSearchDescription}"
-                 TextWrapping="Wrap" />
-
-      <Border Grid.Row="1"
-              Margin="0,15,0,0"
-              Background="{DynamicResource PpcBackground}"
-              BorderBrush="{DynamicResource PpcBorderBrush}"
-              BorderThickness="{DynamicResource PpcBorderThickness}"
-              CornerRadius="0">
-        <Grid Margin="20">
-
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-          </Grid.ColumnDefinitions>
-
-          <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-          </Grid.RowDefinitions>
-
-          <ctrls:PpcImage Grid.Row="0"
-                          Grid.RowSpan="4"
-                          Grid.Column="0"
-                          Width="180"
-                          Height="180"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Top"
-                          Path="{Binding Item.Id}"
-                          Stretch="Uniform" />
-
-          <controls:PpcLabeledText Grid.Row="0"
-                                   Grid.Column="1"
-                                   Grid.ColumnSpan="2"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.Description}"
-                                   LabelText="{Resources:Loc OperatorApp.CommonItemDescription}" />
-
-          <controls:PpcLabeledText Grid.Row="1"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.ManagementType, Converter={StaticResource EIMTC}}"
-                                   LabelText="{Resources:Loc OperatorApp.ItemDetailManagement}" />
-
-          <controls:PpcLabeledText Grid.Row="1"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.FifoTimePick}"
-                                   LabelText="{Resources:Loc OperatorApp.ItemDetailPeriod}" />
-
-          <controls:PpcLabeledText Grid.Row="2"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.ItemCategoryDescription}"
-                                   LabelText="{Resources:Loc OperatorApp.ItemDetailCategory}" />
-
-          <controls:PpcLabeledText Grid.Row="2"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.MeasureUnitDescription}"
-                                   LabelText="{Resources:Loc OperatorApp.ItemDetailMeasurementUnity}" />
-
-          <controls:PpcLabeledText Grid.Row="3"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.AbcClassDescription}"
-                                   LabelText="{Resources:Loc OperatorApp.ItemDetailClasse}" />
-
-          <controls:PpcLabeledText Grid.Row="3"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   ContentText="{Binding Item.AverageWeight}"
-                                   LabelText="{Resources:Loc OperatorApp.ItemDetailWeight}" />
-
-        </Grid>
-
-      </Border>
-
-      <Grid Grid.Row="1"
-            Grid.Column="1"
-            Margin="0,15,0,0">
         <Grid.RowDefinitions>
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="Auto" />
-          <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-                Width="230"
-                Height="90"
-                MinHeight="90"
-                Margin="15,0"
-                Background="{DynamicResource PpcBackground}">
-          <Border BorderBrush="{DynamicResource FerrettoBlue}"
-                  BorderThickness="{DynamicResource PpcBorderThickness}">
-            <Grid Grid.Column="8"
-                  Grid.ColumnSpan="4">
-
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-              </Grid.RowDefinitions>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
-
-              <TextBlock Margin="8,4"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Center"
-                         FontSize="{StaticResource FontSize_Normal}"
-                         FontWeight="Normal"
-                         Foreground="{DynamicResource Text_Foreground}"
-                         Text="{Resources:Loc OperatorApp.CommonItemCode}" />
-
-              <TextBlock Grid.Row="1"
-                         Margin="4,0,4,4"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         FontSize="{StaticResource FontSize_Very_High}"
-                         Foreground="{DynamicResource PpcForeground}"
-                         Text="{Binding Item.Code, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
-                         TextWrapping="Wrap" />
-
-            </Grid>
-          </Border>
-        </Border>
-
-        <Border Grid.Row="1"
-                Height="90"
-                MinHeight="90"
-                Margin="15,15,15,0"
-                Background="{DynamicResource PpcBackground}">
-          <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                  BorderThickness="{DynamicResource PpcBorderThickness}">
-
-            <Grid Grid.Column="8"
-                  Grid.ColumnSpan="4">
-
-              <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-              </Grid.RowDefinitions>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-              </Grid.ColumnDefinitions>
-
-              <TextBlock Margin="8,4"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Center"
-                         FontSize="{StaticResource FontSize_Normal}"
-                         FontWeight="Normal"
-                         Foreground="{DynamicResource Text_Foreground}">
-                <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}" /> <Run Text="{Binding Item.MeasureUnit, Mode=OneWay}" />
-              </TextBlock>
-
-              <TextBlock Grid.Row="1"
-                         Margin="4,0,4,4"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         FontSize="{StaticResource FontSize_Very_High}"
-                         Foreground="{DynamicResource PpcForeground}"
-                         Text="{Binding Item.AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
-                         TextWrapping="Wrap" />
-
-            </Grid>
-          </Border>
-        </Border>
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Width="230"
-                           Height="90"
-                           Margin="15,15,15,0"
-                           EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           Increment="{Binding Item.PickIncrement}"
-                           LabelText="{Binding ItemTxt, TargetNullValue={x:Static Resources:OperatorApp.RequestedQuantityBase}}"
-                           Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
-                           MinValue="0"/>
-
-        <StackPanel Grid.Row="3"
-                    VerticalAlignment="Bottom"
-                    Orientation="Vertical">
-          <controls:PpcButton Margin="15,7,15,0"
-                              HorizontalAlignment="Right"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding RequestItemPickCommandDetail}"
-                              Content="{Resources:Loc OperatorApp.Pick}"
-                              IsBusy="{Binding IsBusyRequestingItemPick}"
-                              Style="{StaticResource ConfirmButton}" />
-
-          <controls:PpcButton Margin="7,7,15,0"
-                              HorizontalAlignment="Right"
-                              VerticalAlignment="Bottom"
-                              Command="{Binding RequestItemPutCommandDetail}"
-                              Content="{Resources:Loc OperatorApp.Put}"
-                              IsBusy="{Binding IsBusyRequestingItemPut}"
-                              Style="{StaticResource ConfirmButton}" />
+        <StackPanel Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Resources:Loc OperatorApp.ItemDetailHeader}" />
         </StackPanel>
 
-      </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Height="Auto"
+                       Margin="0"
+                       VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_Small}"
+                       Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                       Text="{Resources:Loc HelpDescriptions.HelpItemSearchDescription}"
+                       TextWrapping="Wrap" />
+
+            <Border Grid.Row="1"
+                    Margin="0,15,0,0"
+                    Background="{DynamicResource PpcBackground}"
+                    BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                    CornerRadius="0">
+                <Grid Margin="20">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <ctrls:PpcImage Grid.Row="0"
+                                    Grid.RowSpan="4"
+                                    Grid.Column="0"
+                                    Width="180"
+                                    Height="180"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Path="{Binding Item.Id}"
+                                    Stretch="Uniform" />
+
+                    <controls:PpcLabeledText Grid.Row="0"
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="2"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             ContentText="{Binding Item.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
+                                             LabelText="{Resources:Loc OperatorApp.CommonItemDescription}" />
+
+                    <controls:PpcLabeledText Grid.Row="1"
+                                             Grid.Column="1"
+                                             Grid.ColumnSpan="2"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             ContentText="{Binding Item.Note, TargetNullValue={x:Static Resources:General.TargetNullValue}}"
+                                             LabelText="{Resources:Loc OperatorApp.CommonItemDescription2}" />
+
+                    <!--#region Peso -->
+                    <!--#endregion-->
+                    <controls:PpcLabeledText Grid.Row="2"
+                                             Grid.Column="1"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             ContentText="{Binding Item.UnitWeight, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                             LabelText="{Resources:Loc OperatorApp.Weight}" />
+
+                    <!--#region Altezza -->
+                    <!--#endregion-->
+                    <controls:PpcLabeledText Grid.Row="2"
+                                             Grid.Column="2"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             ContentText="{Binding Item.Height, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                             LabelText="{Resources:Loc OperatorApp.Height}" />
+
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1"
+                  Grid.Column="1"
+                  Margin="0,15,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        Width="230"
+                        Height="90"
+                        MinHeight="90"
+                        Margin="15,0"
+                        Background="{DynamicResource PpcBackground}">
+                    <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
+                        <Grid Grid.Column="8"
+                              Grid.ColumnSpan="4">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="8,4"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSize_Normal}"
+                                       FontWeight="Normal"
+                                       Foreground="{DynamicResource Text_Foreground}"
+                                       Text="{Resources:Loc OperatorApp.CommonItemCode}" />
+
+                            <TextBlock Grid.Row="1"
+                                       Margin="4,0,4,4"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSize_Very_High}"
+                                       Foreground="{DynamicResource PpcForeground}"
+                                       Text="{Binding Item.Code, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Height="90"
+                        MinHeight="90"
+                        Margin="15,15,15,0"
+                        Background="{DynamicResource PpcBackground}">
+                    <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                        <Grid Grid.Column="8"
+                              Grid.ColumnSpan="4">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Margin="8,4"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSize_Normal}"
+                                       FontWeight="Normal"
+                                       Foreground="{DynamicResource Text_Foreground}">
+                <Run Text="{Resources:Loc OperatorApp.AvailablesQuantity}" /> <Run Text="{Binding Item.MeasureUnit, Mode=OneWay}" />
+                            </TextBlock>
+
+                            <TextBlock Grid.Row="1"
+                                       Margin="4,0,4,4"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSize_Very_High}"
+                                       Foreground="{DynamicResource PpcForeground}"
+                                       Text="{Binding Item.AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                       TextWrapping="Wrap" />
+                        </Grid>
+                    </Border>
+                </Border>
+
+                <ctrls:PpcSpinEdit Grid.Row="2"
+                                   Width="230"
+                                   Height="90"
+                                   Margin="15,15,15,0"
+                                   EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Increment="{Binding Item.PickIncrement}"
+                                   LabelText="{Binding ItemTxt, TargetNullValue={x:Static Resources:OperatorApp.RequestedQuantityBase}}"
+                                   Mask="{Binding Item.PickTolerance, StringFormat=F{0}}"
+                                   MinValue="0" />
+
+                <StackPanel Grid.Row="3"
+                            VerticalAlignment="Bottom"
+                            Orientation="Vertical">
+                    <controls:PpcButton Margin="15,7,15,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding RequestItemPickCommandDetail}"
+                                        Content="{Resources:Loc OperatorApp.Pick}"
+                                        IsBusy="{Binding IsBusyRequestingItemPick}"
+                                        Style="{StaticResource ConfirmButton}" />
+
+                    <controls:PpcButton Margin="7,7,15,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding RequestItemPutCommandDetail}"
+                                        Content="{Resources:Loc OperatorApp.Put}"
+                                        IsBusy="{Binding IsBusyRequestingItemPut}"
+                                        Style="{StaticResource ConfirmButton}" />
+                </StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
-  </Grid>
 </ctrls:View>

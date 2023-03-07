@@ -2277,4 +2277,7 @@
   <data name="ShowQuantityOnInventory" xml:space="preserve">
     <value>Mosta quantita sulle operazioni di inventario</value>
   </data>
+  <data name="CommonItemDescription2" xml:space="preserve">
+    <value>Descrizione articolo 2</value>
+  </data>
 </root>

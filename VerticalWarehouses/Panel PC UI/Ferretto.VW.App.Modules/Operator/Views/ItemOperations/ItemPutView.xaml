@@ -69,6 +69,7 @@
                FontSize="{DynamicResource FontSize_Small}"
                Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
                Text="{resources:Loc HelpDescriptions.HelpDrawerActivityRefillingDescription}"
+               Visibility="Collapsed"
                TextWrapping="Wrap" />
 
     <Border Grid.Row="2"
