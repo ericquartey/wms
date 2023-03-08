@@ -934,6 +934,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item description 2.
+        /// </summary>
+        public static string CommonItemDescription2 {
+            get {
+                return ResourceManager.GetString("CommonItemDescription2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List code.
         /// </summary>
         public static string CommonListCode {

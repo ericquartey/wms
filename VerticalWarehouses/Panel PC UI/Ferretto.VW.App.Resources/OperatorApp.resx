@@ -2674,4 +2674,7 @@
   <data name="ShowQuantityOnInventory" xml:space="preserve">
     <value>Show Quantity On Inventory Operation</value>
   </data>
+  <data name="CommonItemDescription2" xml:space="preserve">
+    <value>Item description 2</value>
+  </data>
 </root>
