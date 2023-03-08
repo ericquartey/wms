@@ -28,7 +28,11 @@
 ## Nuove Funzionalità 1.0.57 rispetto la 1.0.56
 - Aggiunta lingua Bulgara
 - Spostate Operazioni di Baia nel menu Impostazioni
-- Denso ListOrderBy
+- Denso Ordinamento liste Custom
+- OStec - Brach - Sirena + Allarme - taccita
+- Aggiunto parametro per mostrare la quantita rilevata nelle operazione di inventario
+- Aggiunta conferma Barcode tramite il lotto articolo
+- Sistemata grafica dettagli ricerca articolo 
 
 ## Bug Risolti
 - Movimenti guidati: corretta taratura baia in Baia 2
@@ -37,6 +41,8 @@
 - Fix Denso ListOrderBy
 - Update Contract 0.16.55
 - Fix InventoryQuantity
+- fix socketlink "Aggiornamento Quantita inserita"
+- Fix liste Attesa Autosize
 
 
 ## Compatibile con adapter 0.4.45
