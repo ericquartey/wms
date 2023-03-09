@@ -580,10 +580,13 @@ namespace Ferretto.VW.App.Modules.Operator
                             .ThenBy(o => (this.ActiveWmsOperation?.Id == 0 || o.Id == this.ActiveWmsOperation?.Id) ? 0 : 1)
                             .ThenBy(o => o.RowSeq)
                             .ThenBy(o => o.Priority)
-                            .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition)
-                            .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition);
+                            .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : o.CompartmentId);
+
+                        // .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition)
+                        // .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition);
 
                         newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
+
                         if (newWmsOperationInfo is null)
                         {
                             newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.New);
