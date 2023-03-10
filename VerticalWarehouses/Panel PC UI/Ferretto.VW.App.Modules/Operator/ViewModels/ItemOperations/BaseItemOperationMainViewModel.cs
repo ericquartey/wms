@@ -913,16 +913,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.InputSerialNumber = e.GetItemSerialNumber() ?? this.InputSerialNumber;
                         this.IsItemSerialNumberValid = this.InputSerialNumber is null || this.MissionOperation?.SerialNumber is null || this.InputSerialNumber == this.MissionOperation?.SerialNumber;
 
-                        this.InputLot = e.GetItemLot() ?? this.InputItemCode;
+                        this.InputLot = e.GetItemLot() ?? this.InputLot;
                         this.IsItemLotValid = this.InputLot is null || this.MissionOperation?.Lot is null || this.InputLot == this.MissionOperation?.Lot;
+
+                        // 20145292
+
+                        // ItemCode : True
+                        // ItemSerialNumber : True
+                        // ItemLot : False
+
+                        // ItemCode : False
+                        // ItemSerialNumber : True
+                        // ItemLot : True
 
                         e.HasMismatch = !this.IsItemCodeValid || !this.IsItemLotValid || !this.IsItemSerialNumberValid;
 
-                        if ((!this.IsItemCodeValid
+                        if (!this.IsItemCodeValid
                             && e.GetItemCode() != null
-                            && this.MissionOperation?.ItemCode != null) || this.IsItemLotValid)
+                            && this.MissionOperation?.ItemCode != null)
                         {
-                            if ((this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght) || this.IsItemLotValid)
+                            if ((this.BarcodeLenght > 0 && e.GetItemCode().Length == this.BarcodeLenght))
                             {
                                 e.HasMismatch = false;
                             }
@@ -939,8 +949,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                 }
                                 catch (Exception)
                                 {
-                                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
-                                    this.ResetInputFields();
+                                    e.HasMismatch = this.InputItemCode != this.MissionOperation.Lot;
+
+                                    if (e.HasMismatch)
+                                    {
+                                        this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
+                                        this.ResetInputFields();
+                                    }
                                 }
                             }
                         }
