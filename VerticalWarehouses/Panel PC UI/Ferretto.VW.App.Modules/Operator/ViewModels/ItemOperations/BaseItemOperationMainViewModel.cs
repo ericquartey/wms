@@ -2003,8 +2003,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MissionOperation != null
                 &&
                 !this.IsBusyAbortingOperation
-                //&&
-                //!this.IsBusyConfirmingOperation
                 &&
                 !this.IsOperationConfirmed
                 &&
@@ -2116,7 +2114,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 //this.IsWaitingForResponse = true;
                 this.ClearNotifications();
 
-                this.IsOperationConfirmed = true;
+                //this.IsOperationConfirmed = true;
 
                 //var canComplete = await this.MissionOperationsService.PartiallyCompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
                 var reasons = await this.missionOperationsWebService.GetAllReasonsAsync(MissionOperationType.Inventory);
