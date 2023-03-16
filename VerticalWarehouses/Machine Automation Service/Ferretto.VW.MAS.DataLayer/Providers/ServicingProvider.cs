@@ -131,7 +131,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     this.logger.LogError(ex, ex.Message);
                 }
-
             }
         }
 
@@ -476,6 +475,44 @@ namespace Ferretto.VW.MAS.DataLayer
             catch (Exception)
             {
                 return 0;
+            }
+        }
+
+        public void FixServicingInfo()
+        {
+            lock (this.dataContext)
+            {
+                try
+                {
+                    // Sql Quary used on machine DB
+                    // update instructions set instructionStatus = 86, isTodo = 0 where servicingInfoId = "LastServicingID";
+                    // update instructions set isDone = 1 where servicingInfoId = "SecondLastServicingID";
+                    // Es:
+                    // update instructions set instructionStatus = 86, isTodo = 0 where servicingInfoId = 3;
+                    // update instructions set isDone = 1 where servicingInfoId = 2;
+
+                    var last = this.dataContext.ServicingInfo.Reverse().FirstOrDefault();
+                    var sndLast = this.dataContext.ServicingInfo.Reverse().Skip(1).FirstOrDefault();
+
+                    last.ServiceStatus = MachineServiceStatus.Valid;
+
+                    foreach (var instruction in last.Instructions)
+                    {
+                        instruction.InstructionStatus = MachineServiceStatus.Valid;
+                        instruction.IsToDo = false;
+                    }
+
+                    foreach (var instruction in sndLast.Instructions)
+                    {
+                        instruction.IsDone = true;
+                    }
+
+                    this.dataContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, ex.Message);
+                }
             }
         }
 

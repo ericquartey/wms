@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private DelegateCommand allCommand;
+
         private List<Instruction> allInstructions = new List<Instruction>();
 
         private DelegateCommand bay1Command;
@@ -41,11 +43,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private Senders currentGroup;
 
-        private List<Instruction> currentGroupList = new List<Instruction>();
-
         private DelegateCommand horizontalAxisCommand;
 
         private List<Instruction> instructions = new List<Instruction>();
+
+        private bool isActiveAll;
 
         private bool isActiveBay1;
 
@@ -66,6 +68,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isActiveVerticalAxis;
 
         private bool isAdmin;
+
+        private bool isCompletedAll;
 
         private bool isCompletedBay1;
 
@@ -151,14 +155,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             ShutterBay3 = 8,
 
             Machine = 9,
+
+            All = 10,
         }
 
         #endregion
 
         #region Properties
 
+        public ICommand AllCommand =>
+            this.allCommand ?? (this.allCommand = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveAll = true; this.FilterTable(Senders.All); }, this.CanFilterTable));
+
         public ICommand Bay1Command =>
-                this.bay1Command ?? (this.bay1Command = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveBay1 = true; this.FilterTable(Senders.Bay1); }, this.CanFilterTable));
+                        this.bay1Command ?? (this.bay1Command = new DelegateCommand(() => { this.IsActiveChange(); this.IsActiveBay1 = true; this.FilterTable(Senders.Bay1); }, this.CanFilterTable));
 
         public bool Bay1HasShutter => this.MachineService.Bays.SingleOrDefault(x => x.Number == BayNumber.BayOne)?.Shutter != null;
 
@@ -192,6 +201,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.instructions;
             set => this.SetProperty(ref this.instructions, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsActiveAll
+        {
+            get => this.isActiveAll;
+            set => this.SetProperty(ref this.isActiveAll, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsActiveBay1
@@ -252,6 +267,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAdmin;
             set => this.SetProperty(ref this.isAdmin, value);
+        }
+
+        public bool IsCompletedAll
+        {
+            get => this.isCompletedAll;
+            set => this.SetProperty(ref this.isCompletedAll, value);
         }
 
         public bool IsCompletedBay1
@@ -395,30 +416,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsActiveVerticalAxis = true;
 
-            if (!this.allInstructions.Any() && this.Service.ServiceStatus != MachineServiceStatus.Valid)
-            {
-                this.IsCompletedBay1 = true;
-                this.IsCompletedBay2 = true;
-                this.IsCompletedBay3 = true;
-                this.IsCompletedShutterBay1 = true;
-                this.IsCompletedShutterBay2 = true;
-                this.IsCompletedShutterBay3 = true;
-                this.IsCompletedVerticalAxis = true;
-                this.IsCompletedHorizontalAxis = true;
-                this.IsCompletedMachine = true;
-            }
-            else
-            {
-                this.IsCompletedBay1 = false;
-                this.IsCompletedBay2 = false;
-                this.IsCompletedBay3 = false;
-                this.IsCompletedShutterBay1 = false;
-                this.IsCompletedShutterBay2 = false;
-                this.IsCompletedShutterBay3 = false;
-                this.IsCompletedVerticalAxis = false;
-                this.IsCompletedHorizontalAxis = false;
-                this.IsCompletedMachine = false;
-            }
+            this.CheckGroup();
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -444,8 +442,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                return this.currentGroupList.Any(x => !x.IsDone)
-                       && this.currentGroupList.Any()
+                return this.Instructions.Any(x => !x.IsDone)
+                       && this.Instructions.Any()
                        && (this.Service.ServiceStatus == MachineServiceStatus.Expired || this.Service.ServiceStatus == MachineServiceStatus.Expiring || this.IsAdmin);
             }
             catch (Exception)
@@ -476,52 +474,37 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return true;
         }
 
-        private void CheckCompletedGroup()
+        private void CheckGroup()
         {
-            try
-            {
-                switch (this.currentGroup)
-                {
-                    case Senders.VerticalAxis:
-                        this.IsCompletedVerticalAxis = true;
-                        break;
+            // case Senders.VerticalAxis:
+            this.IsCompletedVerticalAxis = !this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Vertical)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.HorizontalAxis:
-                        this.IsCompletedHorizontalAxis = true;
-                        break;
+            // case Senders.HorizontalAxis:
+            this.IsCompletedHorizontalAxis = !this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Horizontal)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.Bay1:
-                        this.IsCompletedBay1 = true;
-                        break;
+            // case Senders.Bay1:
+            this.IsCompletedBay1 = !this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.ShutterBay1:
-                        this.IsCompletedShutterBay1 = true;
-                        break;
+            // case Senders.ShutterBay1:
+            this.IsCompletedShutterBay1 = !this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == true)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.Bay2:
-                        this.IsCompletedBay2 = true;
-                        break;
+            // case Senders.Bay2:
+            this.IsCompletedBay2 = !this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == false)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.ShutterBay2:
-                        this.IsCompletedShutterBay2 = true;
-                        break;
+            // case Senders.ShutterBay2:
+            this.IsCompletedShutterBay2 = !this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == true)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.Bay3:
-                        this.IsCompletedBay3 = true;
-                        break;
+            // case Senders.Bay3:
+            this.IsCompletedBay3 = !this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == false)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.ShutterBay3:
-                        this.IsCompletedShutterBay3 = true;
-                        break;
+            // case Senders.ShutterBay3:
+            this.IsCompletedShutterBay3 = !this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == true)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
 
-                    case Senders.Machine:
-                        this.IsCompletedMachine = true;
-                        break;
-                }
-            }
-            catch (Exception)
-            {
-            }
+            // case Senders.Machine:
+            this.IsCompletedMachine = !this.allInstructions.FindAll(x => x.Definition.IsSystem == true)?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
+
+            // case Senders.All:
+            this.IsCompletedAll = !this.allInstructions?.Any(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) ?? false;
         }
 
         private void ClosePopup()
@@ -533,7 +516,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                foreach (var instruction in this.currentGroupList)
+                foreach (var instruction in this.Instructions)
                 {
                     if (instruction.InstructionStatus == MachineServiceStatus.Expired
                         || instruction.InstructionStatus == MachineServiceStatus.Expiring
@@ -545,7 +528,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                this.CheckCompletedGroup();
+                this.CheckGroup();
             }
             catch (Exception)
             {
@@ -560,7 +543,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                if (!string.IsNullOrEmpty(this.Service.MaintainerName))
+                if (!string.IsNullOrEmpty(this.Service.MaintainerName) || this.IsAdmin)
                 {
                     var messageBoxResult = this.dialogService.ShowMessage(Localized.Get("OperatorApp.ConfirmServiceMessage"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Question, DialogButtons.YesNo);
                     if (messageBoxResult == DialogResult.Yes)
@@ -590,58 +573,62 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             switch (sender)
             {
                 case Senders.VerticalAxis:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Vertical);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Vertical);
                     break;
 
                 case Senders.HorizontalAxis:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Horizontal);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.Axis == Axis.Horizontal);
                     break;
 
                 case Senders.Bay1:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay1:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == true);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayOne && x.Definition.IsShutter == true);
                     break;
 
                 case Senders.Bay2:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == false);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay2:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == true);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayTwo && x.Definition.IsShutter == true);
                     break;
 
                 case Senders.Bay3:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == false);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == false);
                     break;
 
                 case Senders.ShutterBay3:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == true);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.BayNumber == BayNumber.BayThree && x.Definition.IsShutter == true);
                     break;
 
                 case Senders.Machine:
-                    this.currentGroupList = this.allInstructions.FindAll(x => x.Definition.IsSystem == true);
+                    this.Instructions = this.allInstructions.FindAll(x => x.Definition.IsSystem == true);
+                    break;
+
+                case Senders.All:
+                    this.Instructions = this.allInstructions;
                     break;
             }
 
-            List<Instruction> tempList = new List<Instruction>();
+            //List<Instruction> tempList = new List<Instruction>();
 
-            foreach (var instruction in this.currentGroupList.OrderByDescending(o => o.Definition.Operation))
-            {
-                if (!tempList.Any(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation >= instruction.Definition.Operation))
-                {
-                    tempList.Add(instruction);
-                }
-            }
+            //foreach (var instruction in this.currentGroupList.OrderByDescending(o => o.Definition.Operation))
+            //{
+            //    if (!tempList.Any(x => x.Definition.Description == instruction.Definition.Description && x.Definition.Operation >= instruction.Definition.Operation))
+            //    {
+            //        tempList.Add(instruction);
+            //    }
+            //}
 
             try
             {
-                this.Instructions = tempList.OrderBy(o => o.Id).ToList();
+                //this.Instructions = sender != Senders.All ? tempList.OrderBy(o => o.Id).ToList() : this.allInstructions;
                 if (!this.Instructions.Exists(x => x.InstructionStatus == MachineServiceStatus.Expiring || x.InstructionStatus == MachineServiceStatus.Expired) && (this.Service?.ServiceStatus == MachineServiceStatus.Expired || this.Service?.ServiceStatus == MachineServiceStatus.Expiring))
                 {
-                    this.CheckCompletedGroup();
+                    this.CheckGroup();
                 }
             }
             catch (Exception)
@@ -707,6 +694,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsActiveShutterBay3 = false;
 
             this.IsActiveMachine = false;
+
+            this.IsActiveAll = false;
         }
 
         private async void SetNote()

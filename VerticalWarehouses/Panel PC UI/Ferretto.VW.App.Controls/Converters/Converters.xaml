@@ -14,6 +14,8 @@
 
     <conv:LoadingUnitLocationConverter x:Key="LULC" />
     
+    <conv:MaintenanceServiceToDescriptionConverter x:Key="MSTDC" />
+    
     <conv:NotificationSeverityToBrushConverter x:Key="NSTBC" />
     <conv:NotificationSeverityToForegroundConverter x:Key="NSTFC" />
     <conv:NotificationSeverityToIconNameConverter x:Key="NSTINC" />

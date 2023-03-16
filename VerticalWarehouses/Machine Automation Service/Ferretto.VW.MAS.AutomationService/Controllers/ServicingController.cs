@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -110,6 +107,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult SetNote(string maintainerName, string note, int ID)
         {
             this.servicingProvider.SetNote(maintainerName, note, ID);
+            return this.Ok();
+        }
+
+        [HttpPost("fix-servicingInfo")]
+        public IActionResult FixServicingInfo()
+        {
+            this.servicingProvider.FixServicingInfo();
             return this.Ok();
         }
 

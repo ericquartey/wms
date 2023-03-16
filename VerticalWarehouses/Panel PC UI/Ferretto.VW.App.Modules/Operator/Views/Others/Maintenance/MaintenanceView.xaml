@@ -200,12 +200,21 @@
                                Visibility="{Binding IsBay3, Converter={StaticResource BTVC}}" />
     </Grid>
 
-    <controls:PpcButton Grid.Row="2"
+        <StackPanel Grid.Row="2"
                         Grid.Column="2"
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
+                        VerticalAlignment="Bottom">
+            <controls:PpcButton 
+                        Command="{Binding FixServicingInfoCommand}"
+                        Visibility="{Binding IsAdmin, Converter={StaticResource BTVC}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Content="{Resources:Loc OperatorApp.FixServicingInfo}" />
+
+            <controls:PpcButton Margin="0,10,0,0"
                         Command="{Binding MaintenanceDetailButtonCommand}"
                         Content="{Resources:Loc OperatorApp.CommonButtonDetail}" />
+        </StackPanel>
+
+        
 
     <!--<controls:PpcButton Grid.Row="2"
                             Grid.Column="2"
