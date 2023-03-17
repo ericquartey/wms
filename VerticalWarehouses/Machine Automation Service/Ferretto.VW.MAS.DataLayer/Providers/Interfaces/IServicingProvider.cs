@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -37,6 +36,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void RefreshDescription(int servicingInfoId);
 
         void SetNote(string maintainerName, string note, int ID);
+
+        void FixServicingInfo();
 
         void UpdateServiceStatus();
 

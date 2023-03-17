@@ -2677,4 +2677,10 @@
   <data name="CommonItemDescription2" xml:space="preserve">
     <value>Item description 2</value>
   </data>
+  <data name="MaintenanceArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="FixServicingInfo" xml:space="preserve">
+    <value>Fix Maintenance</value>
+  </data>
 </root>

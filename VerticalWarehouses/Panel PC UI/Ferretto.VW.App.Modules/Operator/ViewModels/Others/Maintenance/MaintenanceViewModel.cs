@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
@@ -24,6 +25,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly ISessionService sessionService;
 
         private DelegateCommand confirmServiceCommand;
+
+        private DelegateCommand fixServicingInfoCommand;
+
+        private bool isAdmin;
 
         private bool isBay2;
 
@@ -74,7 +79,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
            (this.confirmServiceCommand = new DelegateCommand(
               async () => await this.ConfirmServiceAsync(), this.CanConfirmService));
 
+        public ICommand FixServicingInfoCommand =>
+           this.fixServicingInfoCommand
+           ??
+           (this.fixServicingInfoCommand = new DelegateCommand(
+              async () => await this.FixServicingInfo(), this.CanFixServicingInfo));
+
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsAdmin
+        {
+            get => this.isAdmin;
+            set => this.SetProperty(ref this.isAdmin, value);
+        }
 
         public bool IsBay2
         {
@@ -166,6 +183,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.IsAdmin = this.CanFixServicingInfo();
+            this.RaisePropertyChanged(nameof(this.IsAdmin));
+
             this.IsOperatorOrMovement = this.sessionService.UserAccessLevel <= UserAccessLevel.Movement;
             var bays = await this.machineBaysWebService.GetAllAsync();
 
@@ -201,6 +221,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         protected override void RaiseCanExecuteChanged()
         {
             this.maintenanceDetailButtonCommand?.RaiseCanExecuteChanged();
+            this.fixServicingInfoCommand?.RaiseCanExecuteChanged();
+
+            this.IsAdmin = this.CanFixServicingInfo();
+            this.RaisePropertyChanged(nameof(this.IsAdmin));
 
             base.RaiseCanExecuteChanged();
         }
@@ -241,6 +265,45 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private async Task FixServicingInfo()
+        {
+            try
+            {
+                await this.machineServicingWebService.FixServicingInfoAsync();
+
+                this.Logger.Debug("Force Fix Maintenance");
+
+                this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private bool CanFixServicingInfo()
+        {
+            var lastServicing = this.ServicingInfo?.Reverse().FirstOrDefault();
+            var sndLastServicing = this.ServicingInfo?.Reverse().Skip(1).FirstOrDefault();
+
+            if (lastServicing == null || sndLastServicing == null)
+            {
+                return false;
+            }
+
+            return this.sessionService.UserAccessLevel > UserAccessLevel.Installer
+                   &&
+                   lastServicing.ServiceStatus == MachineServiceStatus.Expired
+                   &&
+                   sndLastServicing.ServiceStatus == MachineServiceStatus.Completed
+                   &&
+                   lastServicing.Instructions.Any(i => i.IsToDo || i.InstructionStatus != MachineServiceStatus.Valid)
+                   &&
+                   sndLastServicing.Instructions.Any(i => !i.IsDone)
+                   &&
+                   DateTime.Now <= lastServicing.LastServiceDate;
         }
 
         private async void GetStatistics()

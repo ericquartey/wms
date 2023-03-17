@@ -2311,6 +2311,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fix Maintenance.
+        /// </summary>
+        public static string FixServicingInfo {
+            get {
+                return ResourceManager.GetString("FixServicingInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fragment back.
         /// </summary>
         public static string FragmentBack {
@@ -3891,6 +3900,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Maintenance {
             get {
                 return ResourceManager.GetString("Maintenance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string MaintenanceArea {
+            get {
+                return ResourceManager.GetString("MaintenanceArea", resourceCulture);
             }
         }
         

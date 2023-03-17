@@ -217,6 +217,15 @@
                           IsActive="{Binding IsActiveMachine, UpdateSourceTrigger=PropertyChanged}"
                           IsCompleted="{Binding IsCompletedMachine, UpdateSourceTrigger=PropertyChanged}"
                           Style="{DynamicResource PpcButtonMaintenanceTabStyle}" />
+
+      <controls:PpcButton Margin="5,0"
+                          Command="{Binding AllCommand}"
+                          Content="{Resources:Loc OperatorApp.BayNumberAll}"
+                          FontSize="17"
+                          IsActive="{Binding IsActiveAll, UpdateSourceTrigger=PropertyChanged}"
+                          IsCompleted="{Binding IsCompletedAll, UpdateSourceTrigger=PropertyChanged}"
+                          Visibility="{Binding IsAdmin, Converter={StaticResource BTVC}}"
+                          Style="{DynamicResource PpcButtonMaintenanceTabStyle}" />
     </StackPanel>
 
     <Border Grid.Row="3"
@@ -233,6 +242,7 @@
                   HorizontalScrollBarVisibility="Auto"
                   ItemsSource="{Binding Instructions}"
                   RowHeight="40"
+                      AutoGenerateColumns="False"
                   SelectedItem="{Binding SelectedInstruction}">
           <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
@@ -250,6 +260,27 @@
                   <Setter Property="Margin" Value="10,0" />
                   <Setter Property="HorizontalAlignment" Value="Center" />
                   <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+              </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="ColumnAll"
+                                Width="auto"
+                                Visibility="{Binding DataContext.IsActiveAll, Source={x:Reference dummyElement}, Converter={StaticResource BTVC}}"
+                                Binding="{Binding ., Converter={StaticResource MSTDC}}"
+                                Header="{res:Loc OperatorApp.MaintenanceArea}">
+              <DataGridTextColumn.CellStyle>
+                <Style TargetType="DataGridCell">
+                  <Setter Property="BorderThickness" Value="1,0,0,0" />
+                  <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                </Style>
+              </DataGridTextColumn.CellStyle>
+              <DataGridTextColumn.ElementStyle>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Margin" Value="2,0" />
+                  <Setter Property="HorizontalAlignment" Value="Center" />
+                  <Setter Property="VerticalAlignment" Value="Center" />
+                  <Setter Property="TextWrapping" Value="Wrap" />
                 </Style>
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
@@ -426,9 +457,9 @@
                           Content="{res:Loc OperatorApp.ConfirmInstruction}"
                           Visibility="{Binding IsOperator, Converter={StaticResource BTVIC}}" />
 
-                <controls:PpcButton Width="60"
+      <controls:PpcButton Width="60"
                           Height="50"
-                          Margin="0,0,10,10"
+                          Margin="0,0,0,10"
                           HorizontalAlignment="Right"
                           VerticalAlignment="top"
                           Command="{Binding ShowSetNoteCommand}"
