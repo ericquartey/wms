@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
-        private const int ResponseTimeoutMilliseconds = 2000;
+        private const int ResponseTimeoutMilliseconds = 5000;
 
         private readonly Axis axisToSwitchOn;
 
