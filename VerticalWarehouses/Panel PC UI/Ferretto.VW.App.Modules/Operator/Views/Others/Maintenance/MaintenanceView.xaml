@@ -206,7 +206,7 @@
                         VerticalAlignment="Bottom">
             <controls:PpcButton 
                         Command="{Binding FixServicingInfoCommand}"
-                        Visibility="{Binding IsAdmin, Converter={StaticResource BTVC}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Visibility="{Binding CanFix, Converter={StaticResource BTVC}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         Content="{Resources:Loc OperatorApp.FixServicingInfo}" />
 
             <controls:PpcButton Margin="0,10,0,0"

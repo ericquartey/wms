@@ -28,7 +28,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand fixServicingInfoCommand;
 
-        private bool isAdmin;
+        private bool canFix;
 
         private bool isBay2;
 
@@ -87,10 +87,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsAdmin
+        public bool CanFix
         {
-            get => this.isAdmin;
-            set => this.SetProperty(ref this.isAdmin, value);
+            get => this.canFix;
+            set => this.SetProperty(ref this.canFix, value);
         }
 
         public bool IsBay2
@@ -183,8 +183,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsAdmin = this.CanFixServicingInfo();
-            this.RaisePropertyChanged(nameof(this.IsAdmin));
+            this.CanFix = this.CanFixServicingInfo();
+            this.RaisePropertyChanged(nameof(this.CanFix));
 
             this.IsOperatorOrMovement = this.sessionService.UserAccessLevel <= UserAccessLevel.Movement;
             var bays = await this.machineBaysWebService.GetAllAsync();
@@ -223,8 +223,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.maintenanceDetailButtonCommand?.RaiseCanExecuteChanged();
             this.fixServicingInfoCommand?.RaiseCanExecuteChanged();
 
-            this.IsAdmin = this.CanFixServicingInfo();
-            this.RaisePropertyChanged(nameof(this.IsAdmin));
+            this.CanFix = this.CanFixServicingInfo();
+            this.RaisePropertyChanged(nameof(this.CanFix));
 
             base.RaiseCanExecuteChanged();
         }
