@@ -130,6 +130,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.loadingUnitsDataProvider.GetAll());
         }
 
+        [HttpGet("{id}/operational-info")]
+        public async Task<ActionResult<IEnumerable<MissionOperation>>> GetAllMissionOperationsByIdUdc(int id, [FromServices] ILoadingUnitsWmsWebService loadingUnitsWmsWebService)
+        {
+            if (loadingUnitsWmsWebService is null)
+            {
+                throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
+            }
+
+            try
+            {
+                return this.Ok(await loadingUnitsWmsWebService.GetAllMissionOperationsByIdUdcAsync(id));
+            }
+            catch (WmsWebApiException ex)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+            }
+            return this.Ok();
+        }
+
         [HttpGet("get-all-not-test-units")]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAllNotTestUnits()
         {

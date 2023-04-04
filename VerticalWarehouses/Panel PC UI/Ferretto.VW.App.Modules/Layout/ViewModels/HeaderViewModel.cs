@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Modules.Layout.Presentation;
-using Ferretto.VW.App.Modules.Login;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.Utils.Maths;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
@@ -19,6 +17,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         private readonly IAuthenticationService authenticationService;
 
         private readonly IBarcodeReaderService barcodeReaderService;
+
+        private readonly IMachineLoadingUnitsWebService loadingUnitsWebService;
 
         private readonly IMachineErrorsService machineErrorsService;
 
@@ -35,6 +35,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         public HeaderViewModel(
             ISessionService sessionService,
             IMachineErrorsService machineErrorsService,
+            IMachineLoadingUnitsWebService loadingUnitsWebService,
             IAuthenticationService authenticationService,
             IBarcodeReaderService barcodeReaderService)
         {
@@ -43,6 +44,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.authenticationService.UserAuthenticated += this.AuthenticationService_UserAuthenticated;
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
+            this.loadingUnitsWebService = loadingUnitsWebService ?? throw new ArgumentNullException(nameof(loadingUnitsWebService));
         }
 
         #endregion
@@ -214,6 +216,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             //var measureConst0 = solvr.cTerm();
 
             //string text = $"{measureConst2}, {measureConst1}, {measureConst0}";
+            try
+            {
+                var a = this.loadingUnitsWebService.GetAllMissionOperationsByIdUdcAsync(2);
+            }
+            catch (Exception)
+            {
+            }
+
+            return;
 
             // NO TEST
             this.NavigationService.Appear(
