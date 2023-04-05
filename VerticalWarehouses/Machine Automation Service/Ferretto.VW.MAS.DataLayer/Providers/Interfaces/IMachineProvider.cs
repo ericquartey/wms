@@ -28,6 +28,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetHeight();
 
+        bool GetSimulation();
+
         int GetIdentity();
         bool GetIsLoadUnitFixed();
         int GetItemUniqueIdLength();

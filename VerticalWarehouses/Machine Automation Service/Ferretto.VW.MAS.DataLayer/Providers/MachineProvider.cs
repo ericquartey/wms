@@ -196,6 +196,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool GetSimulation()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.Simulation).First();
+            }
+        }
+
         public string GetBackupServer()
         {
             lock (this.dataContext)

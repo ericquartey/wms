@@ -165,4 +165,16 @@
   <data name="StopErrorGeneratorIODevice" xml:space="preserve">
     <value>errors OFF IO device</value>
   </data>
+  <data name="SimulateErrorsOn" xml:space="preserve">
+    <value>Simulate Error : ON</value>
+  </data>
+  <data name="SimulateErrorsOff" xml:space="preserve">
+    <value>Simulate Error : OFF</value>
+  </data>
+  <data name="SimulateSpeedDescription" xml:space="preserve">
+    <value>Range (1 - 50)</value>
+  </data>
+  <data name="SimulateSpeed" xml:space="preserve">
+    <value>Simulate Speed </value>
+  </data>
 </root>

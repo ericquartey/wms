@@ -476,6 +476,8 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
@@ -524,48 +526,67 @@
                     Width="100"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorInverterCommand}"
-                    Content="{x:Static res:General.StartErrorGeneratorInverter}"
+                    Command="{Binding SimulateErrorCommand}"
+                    Content="{x:Static res:General.SimulateErrorsOn}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    IsEnabled="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BNC}}"
+                    IsEnabled="{Binding MachineService.IsSimulateError}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BTVIC}}" />
+                    Visibility="{Binding MachineService.IsSimulateError, Converter={StaticResource BTVC}}" />
 
             <Button Grid.Column="3"
-                    Margin="10,10,5,10"
-                    Width="100"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorInverterCommand}"
-                    Content="{x:Static res:General.StopErrorGeneratorInverter}"
-                    FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    IsEnabled="{Binding MachineService.IsErrorGeneratorInverter}"
-                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGeneratorInverter, Converter={StaticResource BTVC}}" />
-
-            <Button Grid.Column="4"
                     Margin="5,10,5,10"
                     Width="100"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorIODeviceCommand}"
-                    Content="{x:Static res:General.StartErrorGeneratorIODevice}"
+                    Command="{Binding SimulateErrorCommand}"
+                    Content="{x:Static res:General.SimulateErrorsOff}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    IsEnabled="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BNC}}"
+                    IsEnabled="{Binding MachineService.IsSimulateError, Converter={StaticResource BNC}}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BTVIC}}" />
+                    Visibility="{Binding MachineService.IsSimulateError, Converter={StaticResource BTVIC}}" />
 
-            <Button Grid.Column="4"
-                    Margin="10,10,5,10"
-                    Width="100"
+            <!--<Button Grid.Column="4"
+                    Margin="5,10,5,10"
+                    Width="120"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ErrorGeneratorIODeviceCommand}"
-                    Content="{x:Static res:General.StopErrorGeneratorIODevice}"
+                    Command="{Binding SimulateSpeedCommand}"
+                    Content="{x:Static res:General.SimulateSpeedOn}"
                     FontFamily="{DynamicResource VWAPP_TitleFont}"
-                    IsEnabled="{Binding MachineService.IsErrorGeneratorIODevice}"
+                    IsEnabled="{Binding MachineService.IsSimulateSpeed}"
                     Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
-                    Visibility="{Binding MachineService.IsErrorGeneratorIODevice, Converter={StaticResource BTVC}}" />
+                    Visibility="{Binding MachineService.IsSimulateSpeed, Converter={StaticResource BTVC}}" />
+
+            <Button Grid.Column="4"
+                    Margin="5,10,5,10"
+                    Width="120"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding SimulateSpeedCommand}"
+                    Content="{x:Static res:General.SimulateSpeedOff}"
+                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                    IsEnabled="{Binding MachineService.IsSimulateSpeed, Converter={StaticResource BNC}}"
+                    Template="{StaticResource VWSIM_ActionButton_ControlTemplate}"
+                    Visibility="{Binding MachineService.IsSimulateSpeed, Converter={StaticResource BTVIC}}" />-->
+
+            <StackPanel Grid.Column="5"
+                        Margin="5,10,5,10"
+                        Orientation="Horizontal"
+                        ToolTip="{x:Static res:General.SimulateSpeedDescription}">
+                <TextBlock Margin="0,5"
+                           FontSize="15"
+                           Text="{x:Static res:General.SimulateSpeed}"
+                           Style="{StaticResource PpcSensorControlLabelStyle}" />
+                <TextBox Width="auto"
+                         MinWidth="40"
+                         Padding="5,0"
+                         HorizontalContentAlignment="Center"
+                         Text="{Binding SimulateSpeed}"
+                         FontSize="20"
+                         Style="{StaticResource VWAPP_PpcTextBox_WmsStyle}"
+                         VerticalAlignment="Center"/>
+            </StackPanel>
+            
 
         </Grid>
 
@@ -578,7 +599,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBlock VerticalAlignment="Center"
-                       Foreground="White"
+                       Style="{StaticResource PpcSensorControlLabelStyle}"
                        Text="{Binding ConfigurationName}" />
 
             <Button Grid.Column="1"
