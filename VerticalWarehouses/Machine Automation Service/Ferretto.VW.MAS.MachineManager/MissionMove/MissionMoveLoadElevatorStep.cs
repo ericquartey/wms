@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -56,7 +54,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     {
                         var cell = this.CellsProvider.GetById(this.Mission.LoadUnitCellSourceId.Value);
 
-                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: true, this.Mission.LoadUnitId))
+                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: true, this.Mission.LoadUnitId) && !this.MachineProvider.GetSimulation())
                         {
                             this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                             this.MissionsDataProvider.Update(this.Mission);
@@ -97,7 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                             throw new StateMachineException(ErrorDescriptions.LoadUnitSourceBay, this.Mission.TargetBay, MessageActor.MachineManager);
                         }
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitSource);
-                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: true, this.Mission.LoadUnitId))
+                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: true, this.Mission.LoadUnitId) && !this.MachineProvider.GetSimulation())
                         {
                             this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                             this.MissionsDataProvider.Update(this.Mission);
