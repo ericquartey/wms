@@ -3,13 +3,13 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Converters;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.Simulator.Services.Interfaces;
 using Ferretto.VW.Simulator.Services.Models;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
+using VertimagConfiguration = Ferretto.VW.MAS.DataModels.VertimagConfiguration;
 
 namespace Ferretto.VW.Simulator
 {
@@ -34,6 +34,10 @@ namespace Ferretto.VW.Simulator
         private bool isBusy;
 
         private IMachineService machineService;
+
+        private ICommand simulateErrorCommand;
+
+        private int simulateSpeed = 1;
 
         private ICommand startSimulatorCommand;
 
@@ -107,8 +111,26 @@ namespace Ferretto.VW.Simulator
             set => this.SetProperty(ref this.machineService, value);
         }
 
+        public ICommand SimulateErrorCommand =>
+            this.simulateErrorCommand
+            ??
+            (this.simulateErrorCommand = new DelegateCommand(async () =>
+            {
+                await this.machineService.SimulateErrorAsync();
+            }));
+
+        public int SimulateSpeed
+        {
+            get => this.simulateSpeed;
+            set
+            {
+                this.SetProperty(ref this.simulateSpeed, value);
+                this.machineService.SimulateSpeedAsync(this.SimulateSpeed);
+            }
+        }
+
         public ICommand StartSimulatorCommand =>
-                    this.startSimulatorCommand
+            this.startSimulatorCommand
             ??
             (this.startSimulatorCommand = new DelegateCommand(async () => await this.machineService.ProcessStartSimulatorAsync()));
 

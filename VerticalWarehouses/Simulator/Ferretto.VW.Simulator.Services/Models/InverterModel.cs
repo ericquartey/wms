@@ -292,11 +292,15 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private bool isExternal = false;
 
+        private bool isSimulateError;
+
         private MAS.DataModels.Machine machine;
 
         private InverterOperationMode operationMode;
 
         private bool shutterTimerActive;
+
+        private int simulateSpeed = 1;
 
         private int statusWord;
 
@@ -558,6 +562,12 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public bool IsShutterOpened => !this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorA].Value && this.DigitalIO[(int)InverterSensors.AGL_ShutterSensorB].Value;
 
+        public bool IsSimulateError
+        {
+            get => this.IsSimulateError;
+            set => this.SetProperty(ref this.isSimulateError, value);
+        }
+
         public bool IsStartedOnBoard { get; set; }
 
         public bool IsSwitchedOn
@@ -687,6 +697,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             set => this.SetProperty(ref this.operationMode, value);
         }
 
+        public int SimulateSpeed
+        {
+            get => this.simulateSpeed;
+            set => this.SetProperty(ref this.simulateSpeed, value);
+        }
+
         public int SpeedRate { get; set; }
 
         public Dictionary<Axis, double> StartPosition { get; set; }
@@ -742,7 +758,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         //this.TargetPosition[Axis.Horizontal] += new Random().Next(-5, 15);
                     }
                     this.homingTimerActive = true;
-                    this.homingTimer.Change(0, 500);
+                    this.homingTimer.Change(0, 500 / this.SimulateSpeed);
                 }
             }
             else
@@ -764,7 +780,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 if (!this.targetTimerActive && (this.StatusWord & 0x1000) == 0)
                 {
-                    this.targetTimer.Change(0, 50);
+                    this.targetTimer.Change(0, 50 / this.SimulateSpeed);
                     this.targetTimerActive = true;
                 }
             }
@@ -786,7 +802,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.statusWord |= 0x0100;  // motion block in progress on
                 if (!this.targetTimerActive)
                 {
-                    this.targetTimer.Change(0, 50);
+                    this.targetTimer.Change(0, 50 / this.SimulateSpeed);
                     this.targetTimerActive = true;
                 }
             }
@@ -809,7 +825,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 this.StatusWord |= 0x0004;
                 if (!this.shutterTimerActive && !this.IsTargetReached)
                 {
-                    this.shutterTimer.Change(0, 1000);
+                    this.shutterTimer.Change(0, 500 / this.SimulateSpeed);
                     this.shutterTimerActive = true;
                 }
             }
@@ -1145,11 +1161,11 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void InverterInFault()
         {
             this.IsFault = true;
-            if (this.IsFault)
+            if (this.IsFault && this.IsSimulateError)
             {
                 this.ioDeviceMain[(int)IoPorts.NormalState].Value = false;
                 this.IsReadyToSwitchOn = false;
-                this.IsSwitchedOn = false;
+                //this.IsSwitchedOn = false;
                 this.IsVoltageEnabled = false;
                 this.IsOperationEnabled = false;
             }

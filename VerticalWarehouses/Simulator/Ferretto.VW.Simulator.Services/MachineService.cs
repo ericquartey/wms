@@ -131,6 +131,8 @@ namespace Ferretto.VW.Simulator.Services
 
         public bool IsErrorGeneratorIODevice { get; set; }
 
+        public bool IsSimulateError { get; set; } = true;
+
         public bool IsStartedSimulator { get; private set; }
 
         public Machine Machine
@@ -229,6 +231,8 @@ namespace Ferretto.VW.Simulator.Services
 
         public IODeviceModel RemoteIOs03
         { get => this.remoteIOs[2]; set { var ios = this.remoteIOs[2]; this.SetProperty(ref ios, value); } }
+
+        public int SimulateSpeed { get; set; } = 1;
 
         #endregion
 
@@ -346,6 +350,23 @@ namespace Ferretto.VW.Simulator.Services
             this.IsStartedSimulator = false;
 
             this.RaisePropertyChanged(nameof(this.IsStartedSimulator));
+        }
+
+        public async Task SimulateErrorAsync()
+        {
+            this.Inverters00.IsSimulateError = this.IsSimulateError = !this.IsSimulateError;
+            this.Logger.Trace($"SimulateErrors: {this.IsSimulateError}");
+
+            this.RaisePropertyChanged(nameof(this.IsSimulateError));
+        }
+
+        public async Task SimulateSpeedAsync(int simulateSpeed)
+        {
+            this.Inverters00.SimulateSpeed = this.SimulateSpeed = simulateSpeed;
+
+            this.Logger.Trace($"SimulateSpeed: {this.SimulateSpeed}");
+
+            this.RaisePropertyChanged(nameof(this.SimulateSpeed));
         }
 
         private void AcceptClient(TcpListener listener, CancellationToken token, Action<TcpClient, byte[]> messageHandler)

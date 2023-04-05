@@ -53,6 +53,10 @@ namespace Ferretto.VW.Simulator.Services.Interfaces
 
         Task ProcessStopSimulatorAsync();
 
+        Task SimulateErrorAsync();
+
+        Task SimulateSpeedAsync(int simulateSpeed);
+
         #endregion
     }
 }

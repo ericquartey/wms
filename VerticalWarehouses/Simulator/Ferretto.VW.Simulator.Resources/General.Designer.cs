@@ -124,6 +124,42 @@ namespace Ferretto.VW.Simulator.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulate Error : OFF.
+        /// </summary>
+        public static string SimulateErrorsOff {
+            get {
+                return ResourceManager.GetString("SimulateErrorsOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate Error : ON.
+        /// </summary>
+        public static string SimulateErrorsOn {
+            get {
+                return ResourceManager.GetString("SimulateErrorsOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulate Speed .
+        /// </summary>
+        public static string SimulateSpeed {
+            get {
+                return ResourceManager.GetString("SimulateSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Range (1 - 50).
+        /// </summary>
+        public static string SimulateSpeedDescription {
+            get {
+                return ResourceManager.GetString("SimulateSpeedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulator started.
         /// </summary>
         public static string SimulatorStarted {

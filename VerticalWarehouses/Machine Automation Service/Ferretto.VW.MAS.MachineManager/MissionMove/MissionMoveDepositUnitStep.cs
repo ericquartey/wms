@@ -1,15 +1,13 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.MachineManager.MissionMove
 {
@@ -80,7 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
 
                     var cell = this.CellsProvider.GetById(this.Mission.DestinationCellId.Value);
-                    if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: false, this.Mission.LoadUnitId))
+                    if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(cell.Position, isEmpty: false, this.Mission.LoadUnitId) && !this.MachineProvider.GetSimulation())
                     {
                         this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                         this.MissionsDataProvider.Update(this.Mission);
@@ -103,7 +101,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         this.Mission.Direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         bayNumber = bay.Number;
                         var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == this.Mission.LoadUnitDestination);
-                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: false, this.Mission.LoadUnitId))
+                        if (this.LoadingUnitMovementProvider.IsVerticalPositionChanged(bayPosition.Height, isEmpty: false, this.Mission.LoadUnitId) && !this.MachineProvider.GetSimulation())
                         {
                             this.Mission.NeedHomingAxis = Axis.HorizontalAndVertical;
                             this.MissionsDataProvider.Update(this.Mission);
