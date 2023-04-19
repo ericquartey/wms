@@ -1662,7 +1662,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.ItemsFilteredByCode")), Services.Models.NotificationSeverity.Info);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), itemCode), Services.Models.NotificationSeverity.Warning);
                     }
