@@ -65,6 +65,8 @@
   <conv:LoadingUnitStatusEnumConverter x:Key="LUSEC" />
   <!--<conv:LoadingUnitStatusListEnumConverter x:Key="LUSLEC" />-->
 
+  <conv:MachinesInfoToShortTextConverter x:Key="MITSTC" />
+
   <conv:MachinesMatchConverter x:Key="MMC" />
   <conv:MachinesToStringConverter x:Key="MTSC" />
   <conv:MultiValueConverterAdapter x:Key="MVC" />

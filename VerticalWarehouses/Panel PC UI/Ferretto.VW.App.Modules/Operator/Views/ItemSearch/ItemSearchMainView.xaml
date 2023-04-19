@@ -317,7 +317,7 @@
                                        VerticalAlignment="Center"
                                        FontSize="{StaticResource FontSize_Very_High}"
                                        Foreground="{DynamicResource PpcForeground}"
-                                       Text="{Binding SelectedItem.MachinesInfo, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                       Text="{Binding SelectedItem.MachinesInfo, Converter={StaticResource MITSTC}, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                        TextWrapping="Wrap" />
                         </Grid>
                     </Border>
