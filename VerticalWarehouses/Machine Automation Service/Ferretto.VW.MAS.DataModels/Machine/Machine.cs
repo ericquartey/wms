@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool ShowQuantityOnInventory { get; set; }
 
+        public bool OperationRightToLeft { get; set; }
+
         public bool IsDbSaveOnServer { get; set; }
 
         public bool IsDbSaveOnTelemetry { get; set; }

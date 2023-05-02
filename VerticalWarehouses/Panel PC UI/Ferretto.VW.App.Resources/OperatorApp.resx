@@ -1078,7 +1078,7 @@
     <comment>Label</comment>
   </data>
   <data name="LoadingUnit" xml:space="preserve">
-    <value>Loading unit</value>
+    <value> </value>
     <comment>Label</comment>
   </data>
   <data name="ConfirmOnEmpty" xml:space="preserve">
@@ -2682,5 +2682,8 @@
   </data>
   <data name="FixServicingInfo" xml:space="preserve">
     <value>Fix Maintenance</value>
+  </data>
+  <data name="OperationRightToLeft" xml:space="preserve">
+    <value>Sequence of operations on loading unit from right to left</value>
   </data>
 </root>

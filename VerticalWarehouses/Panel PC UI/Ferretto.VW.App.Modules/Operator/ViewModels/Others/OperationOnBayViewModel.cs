@@ -87,6 +87,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool showQuantityOnInventory;
 
+        private bool operationRightToLeft;
+
         private int toteBarcodeLength;
 
         private bool view;
@@ -310,6 +312,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.showQuantityOnInventory, value, this.CanExecute);
         }
 
+        public bool OperationRightToLeft
+        {
+            get => this.operationRightToLeft;
+            set => this.SetProperty(ref this.operationRightToLeft, value, this.CanExecute);
+        }
+
         public int ToteBarcodeLength
         {
             get => this.toteBarcodeLength;
@@ -397,6 +405,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ItemUniqueIdLength = configuration.ItemUniqueIdLength;
                 this.ToteBarcodeLength = configuration.ToteBarcodeLength;
                 this.ShowQuantityOnInventory = configuration.ShowQuantityOnInventory;
+                this.OperationRightToLeft = configuration.OperationRightToLeft;
 
                 this.WaitingListPriorityHighlighted = configuration.WaitingListPriorityHighlighted.Value;
                 this.IsListPickConfirm = configuration.ListPickConfirm;
@@ -446,6 +455,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsDrapery = this.IsDrapery;
                 machine.IsQuantityLimited = this.IsQuantityLimited;
                 machine.ShowQuantityOnInventory = this.ShowQuantityOnInventory;
+                machine.OperationRightToLeft = this.OperationRightToLeft;
 
                 machine.WaitingListPriorityHighlighted = this.IsWaitingListPriorityHighlighted && this.WaitingListPriorityHighlighted >= 0 ? this.WaitingListPriorityHighlighted : -1;
                 machine.ListPutConfirm = this.IsListPutConfirm;

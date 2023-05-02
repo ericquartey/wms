@@ -3508,7 +3508,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit.
+        ///   Looks up a localized string similar to  .
         /// </summary>
         public static string LoadingUnit {
             get {
@@ -4818,6 +4818,15 @@ namespace Ferretto.VW.App.Resources {
         public static string OperationMultiMachineInfo {
             get {
                 return ResourceManager.GetString("OperationMultiMachineInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sequence of operations on loading unit from right to left.
+        /// </summary>
+        public static string OperationRightToLeft {
+            get {
+                return ResourceManager.GetString("OperationRightToLeft", resourceCulture);
             }
         }
         
