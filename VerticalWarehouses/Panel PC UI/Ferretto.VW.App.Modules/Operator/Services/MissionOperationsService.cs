@@ -575,7 +575,10 @@ namespace Ferretto.VW.App.Modules.Operator
                         this.logger.Debug($"Active mission has WMS id '{newMachineMission.WmsId}'.");
 
                         newWmsMission = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);
-                        ;
+
+                        var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+                        var OperationRightToLeft = configuration.OperationRightToLeft;
+
                         // Order the WMS operations:
                         // 1. By type, putting Pick and Put operations first
                         // 2. By ActiveWmsOperation.Id (if present), putting it first in the list
@@ -589,8 +592,19 @@ namespace Ferretto.VW.App.Modules.Operator
                                 .ThenBy(o => o.RowSeq)
                                 .ThenBy(o => o.Priority)
                                 //.ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : o.CompartmentId);
-                                .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition)
-                                .ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition);
+                                .ThenBy(o => newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition)
+                                .ThenBy(o => newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition);
+
+                        if (OperationRightToLeft)
+                        {
+                            sortedOperations = newWmsMission.Operations.OrderBy(o => o.Type is MissionOperationType.Pick || o.Type is MissionOperationType.Put ? 0 : 1)
+                                //.ThenBy(o => (this.ActiveWmsOperation?.Id == 0 || o.Id == this.ActiveWmsOperation?.Id) ? 0 : 1)
+                                .ThenBy(o => o.RowSeq)
+                                .ThenBy(o => o.Priority)
+                                //.ThenBy(o => o.Status is MissionOperationStatus.Completed || newWmsMission.LoadingUnit == null ? 0 : o.CompartmentId);
+                                .ThenByDescending(o => newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.XPosition)
+                                .ThenBy(o => newWmsMission.LoadingUnit.Compartments.FirstOrDefault(c => c.Id == o.CompartmentId)?.YPosition);
+                        }
 
                         // ONLY FOR DEBUG
                         //var newWmsMission2 = await this.missionsWebService.GetWmsDetailsByIdAsync(newMachineMission.WmsId.Value);

@@ -210,6 +210,13 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding ShowQuantityOnInventory, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.ShowQuantityOnInventory}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding OperationRightToLeft, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.OperationRightToLeft }" />
+
+                
             </StackPanel>
         </ScrollViewer>
 

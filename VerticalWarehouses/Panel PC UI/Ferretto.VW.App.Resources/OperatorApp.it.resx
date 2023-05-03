@@ -2286,4 +2286,7 @@
   <data name="FixServicingInfo" xml:space="preserve">
     <value>Sistema Manutenzioni</value>
   </data>
+  <data name="OperationRightToLeft" xml:space="preserve">
+    <value>Sequenza operazioni su cassetto da destra a sinistra</value>
+  </data>
 </root>

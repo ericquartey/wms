@@ -5417,6 +5417,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ShowQuantityOnInventory", Required = Newtonsoft.Json.Required.Always)]
         public bool ShowQuantityOnInventory { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("OperationRightToLeft", Required = Newtonsoft.Json.Required.Always)]
+        public bool OperationRightToLeft { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsDbSaveOnServer", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDbSaveOnServer { get; set; }
     

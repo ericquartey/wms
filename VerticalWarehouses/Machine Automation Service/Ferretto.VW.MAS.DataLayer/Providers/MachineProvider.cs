@@ -643,6 +643,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ListPutConfirm = machine.ListPutConfirm;
                 machineDB.AggregateList = machine.AggregateList;
                 machineDB.IsWaitingListFiltered = machine.IsWaitingListFiltered;
+                machineDB.OperationRightToLeft = machine.OperationRightToLeft;
 
                 this.dataContext.SaveChanges();
             }
