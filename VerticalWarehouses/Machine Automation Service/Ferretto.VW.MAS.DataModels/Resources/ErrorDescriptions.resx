@@ -468,4 +468,10 @@
   <data name="ProfileResolutionFail" xml:space="preserve">
     <value>Profile resolution not completed</value>
   </data>
+  <data name="SensitiveCarpetsAlarm" xml:space="preserve">
+    <value>Sensitive carpet control unit alarm</value>
+  </data>
+  <data name="SensitiveEdgeAlarm" xml:space="preserve">
+    <value>Sensitive edge control unit alarm</value>
+  </data>
 </root>

@@ -3022,6 +3022,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spea (WMS Custom).
+        /// </summary>
+        public static string IsSpea {
+            get {
+                return ResourceManager.GetString("IsSpea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IsToDo.
         /// </summary>
         public static string IsToDo {

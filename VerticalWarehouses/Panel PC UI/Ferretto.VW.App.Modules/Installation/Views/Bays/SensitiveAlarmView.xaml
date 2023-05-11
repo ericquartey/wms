@@ -1,0 +1,63 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.SensitiveAlarmView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            IsEnabled="True"
+            mc:Ignorable="d">
+    <Grid Margin="15,0,0,0">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="4"
+                    Margin="15,0,0,0"
+            IsEnabled="True"
+                    Orientation="Horizontal">
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}">
+                <Run Text="{res:Loc InstallationApp.SensitiveAlarm}" /> <Run Text="{Binding BayNumber, Mode=OneWay}" />
+            </TextBlock>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="15,0,15,0"
+                   VerticalAlignment="Top"
+                   Style="{DynamicResource VWAPP_ViewTitleDescriptionTextBlockStyle}"
+                   Text="{res:Loc HelpDescriptions.HelpSensitiveAlarmDescription}" />
+
+        <Border Grid.Row="2" Margin="0,25,15,0" HorizontalAlignment="Center" Background="{DynamicResource PpcBackground}" BorderBrush="{DynamicResource PpcBorderBrush}" BorderThickness="2" Style="{StaticResource IconButtonBorderStyle}" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="15,10" Orientation="Vertical" HorizontalAlignment="Center" >
+                    <controls:PpcSensorControl SensorState="{Binding SensitiveEdgeSensor}"
+                                    Text="{res:Loc InstallationApp.ExclusionSensitiveEdge}" />
+                    <controls:PpcButton IsEnabled="True" Content="{Binding SensitiveEdgeText}" Command="{Binding SensitiveEdgeCommand}" />
+                </StackPanel>
+
+                <StackPanel Margin="15,10" Orientation="Vertical" HorizontalAlignment="Center" >
+                    <controls:PpcSensorControl SensorState="{Binding SensitiveCarpetSensor}"
+                                    Text="{res:Loc InstallationApp.ExclusionSensitiveCarpet}" />
+                    <controls:PpcButton Content="{Binding SensitiveCarpetText}" Command="{Binding SensitiveCarpetCommand}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        
+    </Grid>
+</ctrls:View>

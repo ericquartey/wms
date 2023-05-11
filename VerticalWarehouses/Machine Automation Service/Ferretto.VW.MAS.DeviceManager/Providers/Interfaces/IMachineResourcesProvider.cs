@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool[] DisplayedInputs { get; }
 
+        bool FireAlarm { get; }
+
         bool IsAntiIntrusionBarrier2Bay1 { get; }
 
         bool IsAntiIntrusionBarrier2Bay2 { get; }
@@ -76,6 +78,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsMachineInRunningState { get; }
 
+        bool IsMicroCarterLeftSideBay1 { get; }
+
+        bool IsMicroCarterLeftSideBay2 { get; }
+
+        bool IsMicroCarterLeftSideBay3 { get; }
+
+        bool IsMicroCarterRightSideBay1 { get; }
+
+        bool IsMicroCarterRightSideBay2 { get; }
+
+        bool IsMicroCarterRightSideBay3 { get; }
+
         bool IsMushroomEmergencyButtonBay1 { get; }
 
         bool IsMushroomEmergencyButtonBay2 { get; }
@@ -98,27 +112,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsSensorZeroTopOnBay3 { get; }
 
+        bool PreFireAlarm { get; }
+
+        bool SensitiveCarpetsAlarm { get; }
+
+        bool SensitiveEdgeAlarm { get; }
+
         bool TeleOkBay1 { get; }
 
         bool TeleOkBay2 { get; }
 
         bool TeleOkBay3 { get; }
-
-        bool PreFireAlarm { get; }
-
-        bool FireAlarm { get; }
-
-        bool IsMicroCarterLeftSideBay1 { get; }
-
-        bool IsMicroCarterRightSideBay1 { get; }
-
-        bool IsMicroCarterLeftSideBay2 { get; }
-
-        bool IsMicroCarterRightSideBay2 { get; }
-
-        bool IsMicroCarterLeftSideBay3 { get; }
-
-        bool IsMicroCarterRightSideBay3 { get; }
 
         #endregion
 
@@ -152,10 +156,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void OnFaultStateChanged(StatusUpdateEventArgs e);
 
-        bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
+        bool UpdateDiagOutCurrent(byte ioIndex, int[] newOutCurrent);
 
         bool UpdateDiagOutFault(byte ioIndex, bool[] newOutFault);
-        bool UpdateDiagOutCurrent(byte ioIndex, int[] newOutCurrent);
+
+        bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);
 
         #endregion
     }

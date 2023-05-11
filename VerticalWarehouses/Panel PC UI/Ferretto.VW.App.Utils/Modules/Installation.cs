@@ -69,6 +69,8 @@
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
 
+        public const string SENSITIVEALAMR = "SensitiveAlarmViewModel";
+
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";

@@ -301,6 +301,14 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ProfileResolutionFail), (int)MachineErrorSeverity.Normal)]
         ProfileResolutionFail,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensitiveEdgeAlarm), (int)MachineErrorSeverity.High)]
+        [ErrorCondition(typeof(ISensitiveEdgeConditionEvaluator))]
+        SensitiveEdgeAlarm,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensitiveCarpetsAlarm), (int)MachineErrorSeverity.High)]
+        [ErrorCondition(typeof(ISensitiveCarpetsConditionEvaluator))]
+        SensitiveCarpetsAlarm,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 

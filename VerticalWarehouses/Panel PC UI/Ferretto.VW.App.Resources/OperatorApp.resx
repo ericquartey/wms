@@ -2686,4 +2686,7 @@
   <data name="OperationRightToLeft" xml:space="preserve">
     <value>Sequence of operations on loading unit from right to left</value>
   </data>
+  <data name="IsSpea" xml:space="preserve">
+    <value>Spea (WMS Custom)</value>
+  </data>
 </root>

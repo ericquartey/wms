@@ -462,4 +462,10 @@
   <data name="ProfileResolutionFail" xml:space="preserve">
     <value>La barriera di misura non è calibrata</value>
   </data>
+  <data name="SensitiveCarpetsAlarm" xml:space="preserve">
+    <value>Chiamare assistenza tecnica</value>
+  </data>
+  <data name="SensitiveEdgeAlarm" xml:space="preserve">
+    <value>Chiamare assistenza tecnica</value>
+  </data>
 </root>

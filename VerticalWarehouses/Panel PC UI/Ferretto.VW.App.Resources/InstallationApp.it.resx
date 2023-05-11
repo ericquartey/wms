@@ -2778,4 +2778,22 @@
   <data name="AlarmsToWmsOn" xml:space="preserve">
     <value>Allarmi verso WMS</value>
   </data>
+  <data name="SensitiveAlarm" xml:space="preserve">
+    <value>Sensori allarmi centralina</value>
+  </data>
+  <data name="SensitiveAlarmDescription" xml:space="preserve">
+    <value>Sensori degli allarmi centralina tappeti sensibili e centralina bordo sensibile</value>
+  </data>
+  <data name="ExclusionSensitiveEdge" xml:space="preserve">
+    <value>Esclusione bordo sensibile</value>
+  </data>
+  <data name="ExclusionSensitiveCarpet" xml:space="preserve">
+    <value>Esclusione tappeti sensibili</value>
+  </data>
+  <data name="SensitiveCarpetsAlarm" xml:space="preserve">
+    <value>Allarme centralina tappeti sensibili</value>
+  </data>
+  <data name="SensitiveEdgeAlarm" xml:space="preserve">
+    <value>Allarme centralina bordo sensibile</value>
+  </data>
 </root>

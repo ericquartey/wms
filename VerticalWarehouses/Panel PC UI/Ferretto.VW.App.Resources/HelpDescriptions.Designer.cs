@@ -2797,6 +2797,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The procedure allows you to bypass the Sensitive carpet control unit alarm and Sensitive edge control unit alarm.
+        /// </summary>
+        public static string HelpSensitiveAlarmDescription {
+            get {
+                return ResourceManager.GetString("HelpSensitiveAlarmDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The procedure allows you to save or recover configuration files on the external device..
         /// </summary>
         public static string HelpSRCDescription {
