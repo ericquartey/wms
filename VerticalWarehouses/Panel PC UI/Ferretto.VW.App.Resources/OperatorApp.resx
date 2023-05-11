@@ -2686,4 +2686,7 @@
   <data name="OperationRightToLeft" xml:space="preserve">
     <value>Sequence of operations on loading unit from right to left</value>
   </data>
+  <data name="FixedPick" xml:space="preserve">
+    <value>Pick Confirm with barcode set to 1</value>
+  </data>
 </root>

@@ -5444,6 +5444,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsEnableAddItem", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableAddItem { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("FixedPick", Required = Newtonsoft.Json.Required.Always)]
+        public bool FixedPick { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsEnableHandlingItemOperations", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableHandlingItemOperations { get; set; }
     

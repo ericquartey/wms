@@ -105,6 +105,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsEnableAddItem { get; set; }
 
         /// <summary>
+        /// Get/set a value indicating if add item operation is enabled.
+        /// </summary>
+        public bool FixedPick { get; set; }
+
+        /// <summary>
         /// Get/set a value indicating if the pick operation and put operation for a given item can
         /// be performed in the loading unit view (IDROINOX)
         /// </summary>

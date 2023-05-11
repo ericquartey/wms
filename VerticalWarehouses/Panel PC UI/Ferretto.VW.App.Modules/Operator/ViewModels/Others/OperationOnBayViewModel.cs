@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool canSave;
 
+        private bool fixedPick;
+
         private bool inventory;
 
         private bool isAggregateList;
@@ -79,6 +81,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int itemUniqueIdLength;
 
+        private bool operationRightToLeft;
+
         private bool pick;
 
         private bool put;
@@ -86,8 +90,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private DelegateCommand saveSettingsCommand;
 
         private bool showQuantityOnInventory;
-
-        private bool operationRightToLeft;
 
         private int toteBarcodeLength;
 
@@ -123,6 +125,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.bay;
             set => this.SetProperty(ref this.bay, value, this.CanExecute);
+        }
+
+        public bool FixedPick
+        {
+            get => this.fixedPick;
+            set => this.SetProperty(ref this.fixedPick, value, this.CanExecute);
         }
 
         public bool Inventory
@@ -288,6 +296,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.itemUniqueIdLength, value, this.CanExecute);
         }
 
+        public bool OperationRightToLeft
+        {
+            get => this.operationRightToLeft;
+            set => this.SetProperty(ref this.operationRightToLeft, value, this.CanExecute);
+        }
+
         public bool Pick
         {
             get => this.pick;
@@ -310,12 +324,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.showQuantityOnInventory;
             set => this.SetProperty(ref this.showQuantityOnInventory, value, this.CanExecute);
-        }
-
-        public bool OperationRightToLeft
-        {
-            get => this.operationRightToLeft;
-            set => this.SetProperty(ref this.operationRightToLeft, value, this.CanExecute);
         }
 
         public int ToteBarcodeLength
@@ -406,6 +414,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ToteBarcodeLength = configuration.ToteBarcodeLength;
                 this.ShowQuantityOnInventory = configuration.ShowQuantityOnInventory;
                 this.OperationRightToLeft = configuration.OperationRightToLeft;
+                this.FixedPick = configuration.FixedPick;
 
                 this.WaitingListPriorityHighlighted = configuration.WaitingListPriorityHighlighted.Value;
                 this.IsListPickConfirm = configuration.ListPickConfirm;
@@ -456,6 +465,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsQuantityLimited = this.IsQuantityLimited;
                 machine.ShowQuantityOnInventory = this.ShowQuantityOnInventory;
                 machine.OperationRightToLeft = this.OperationRightToLeft;
+                machine.FixedPick = this.FixedPick;
 
                 machine.WaitingListPriorityHighlighted = this.IsWaitingListPriorityHighlighted && this.WaitingListPriorityHighlighted >= 0 ? this.WaitingListPriorityHighlighted : -1;
                 machine.ListPutConfirm = this.IsListPutConfirm;

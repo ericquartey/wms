@@ -216,6 +216,11 @@
                                       IsChecked="{Binding OperationRightToLeft, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.OperationRightToLeft }" />
 
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding FixedPick, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.FixedPick }" />
+
                 
             </StackPanel>
         </ScrollViewer>

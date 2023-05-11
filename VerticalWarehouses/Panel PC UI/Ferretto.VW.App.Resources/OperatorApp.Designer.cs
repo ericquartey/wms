@@ -2311,6 +2311,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick Confirm with barcode set to 1.
+        /// </summary>
+        public static string FixedPick {
+            get {
+                return ResourceManager.GetString("FixedPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fix Maintenance.
         /// </summary>
         public static string FixServicingInfo {

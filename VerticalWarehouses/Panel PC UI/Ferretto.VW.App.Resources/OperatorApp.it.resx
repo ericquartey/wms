@@ -2289,4 +2289,7 @@
   <data name="OperationRightToLeft" xml:space="preserve">
     <value>Sequenza operazioni su cassetto da destra a sinistra</value>
   </data>
+  <data name="FixedPick" xml:space="preserve">
+    <value>Conferma prelievo con barcode fissa a 1</value>
+  </data>
 </root>
