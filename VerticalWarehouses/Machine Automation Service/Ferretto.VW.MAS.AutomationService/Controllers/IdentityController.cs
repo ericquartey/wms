@@ -149,22 +149,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsFireAlarmActive());
         }
 
-        [HttpPost("get/IsOstec/enable")]
-        public ActionResult<bool> GetIsOstecEnable()
-        {
-            return this.Ok(this.machineProvider.IsOstecActive());
-        }
-
         [HttpPost("get/IsLoadUnitFixed")]
         public ActionResult<bool> GetIsLoadUnitFixed()
         {
             return this.Ok(this.machineProvider.GetIsLoadUnitFixed());
         }
 
+        [HttpPost("get/IsOstec/enable")]
+        public ActionResult<bool> GetIsOstecEnable()
+        {
+            return this.Ok(this.machineProvider.IsOstecActive());
+        }
+
         [HttpPost("get/is/rotation/class")]
         public ActionResult<bool> GetIsRotationClass()
         {
             return this.Ok(this.machineProvider.IsRotationClassEnabled());
+        }
+
+        [HttpPost("get/IsSpea/enable")]
+        public ActionResult<bool> GetIsSpeaEnable()
+        {
+            return this.Ok(this.machineProvider.IsSpeaActive());
         }
 
         [HttpPost("get/ItemUniqueIdLength")]
@@ -183,6 +189,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetListPutConfirm()
         {
             return this.Ok(this.machineProvider.GetListPutConfirm());
+        }
+
+        [HttpPost("get/SensitiveCarpetsAlarm/enable")]
+        public ActionResult<bool> GetSensitiveCarpetsAlarmEnable()
+        {
+            return this.Ok(this.machineProvider.IsSensitiveCarpetsBypass());
+        }
+
+        [HttpPost("get/SensitiveEdgeAlarm/enable")]
+        public ActionResult<bool> GetSensitiveEdgeAlarmEnable()
+        {
+            return this.Ok(this.machineProvider.IsSensitiveEdgeBypass());
         }
 
         [HttpGet("statistics")]
@@ -264,6 +282,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsRequestConfirmForLastOperationOnLoadingUnit());
         }
 
+        [HttpPost("get/SilenceSirenAlarm")]
+        public ActionResult<bool> IsSilenceSirenAlarm()
+        {
+            return this.Ok(this.machineProvider.IsSilenceSirenAlarm());
+        }
+
         [HttpPost("get/IsUpdatingStockByDifference")]
         public ActionResult<bool> IsUpdatingStockByDifference()
         {
@@ -286,17 +310,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("set/SensitiveCarpetsBypass")]
+        public async Task<IActionResult> SetSensitiveCarpetsBypassAsync(bool value)
+        {
+            await this.machineProvider.SetSensitiveCarpetsBypass(value);
+            return this.Ok();
+        }
+
+        [HttpPost("set/SensitiveEdgeBypass")]
+        public async Task<IActionResult> SetSensitiveEdgeBypassAsync(bool value)
+        {
+            await this.machineProvider.SetSensitiveEdgeBypass(value);
+            return this.Ok();
+        }
+
         [HttpPost("set/SilenceSirenAlarm")]
         public async Task<IActionResult> SilenceSirenAlarmAsync()
         {
             await this.machineProvider.SetSilenceSirenAlarm(true);
             return this.Ok();
-        }
-
-        [HttpPost("get/SilenceSirenAlarm")]
-        public ActionResult<bool> IsSilenceSirenAlarm()
-        {
-            return this.Ok(this.machineProvider.IsSilenceSirenAlarm());
         }
 
         #endregion

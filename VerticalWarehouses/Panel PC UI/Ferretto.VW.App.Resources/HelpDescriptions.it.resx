@@ -1278,4 +1278,7 @@
   <data name="HelpFBDDescription" xml:space="preserve">
     <value>Questa operazione permette di aggiornare tutte le quote delle celle del lato posteriore, il salvataggio può impiegare qualche secondo.</value>
   </data>
+  <data name="HelpSensitiveAlarmDescription" xml:space="preserve">
+    <value>La procedure consente di bypassare gli allarmi centralina tappeti sensibili e centralina bordo sensibile</value>
+  </data>
 </root>

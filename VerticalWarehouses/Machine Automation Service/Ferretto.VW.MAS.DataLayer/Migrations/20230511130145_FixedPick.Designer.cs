@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20230511130145_FixedPick")]
+    partial class FixedPick
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -975,16 +977,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Code = 96,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 97,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
                             Code = 1000,
                             TotalErrors = 0
                         },
@@ -1446,8 +1438,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsRotationClass");
 
-                    b.Property<bool>("IsSpea");
-
                     b.Property<bool>("IsUpdatingStockByDifference");
 
                     b.Property<bool?>("IsWaitingListFiltered");
@@ -1477,10 +1467,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<string>("ModelName");
 
                     b.Property<bool>("OperationRightToLeft");
-
-                    b.Property<bool>("SensitiveCarpetsAlarm");
-
-                    b.Property<bool>("SensitiveEdgeAlarm");
 
                     b.Property<string>("SerialNumber");
 

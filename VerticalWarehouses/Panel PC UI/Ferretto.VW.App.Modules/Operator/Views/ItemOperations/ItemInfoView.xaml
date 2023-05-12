@@ -92,11 +92,11 @@
                   Grid.ColumnSpan="2"
                   Margin="0,0,0,5"
                   Orientation="Horizontal">
-        <controls:PpcLabeledText HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding MissionOperation.Lot}"
-                                 LabelText="{resources:Loc OperatorApp.CommonLot}" />
-        <Border Visibility="{Binding MissionOperation.Lot, Converter={StaticResource RTVC}}">
+                <controls:PpcLabeledText HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         ContentText="{Binding MissionOperation.Lot}"
+                                         LabelText="{resources:Loc OperatorApp.CommonLot}" />
+                <Border Visibility="{Binding MissionOperation.Lot, Converter={StaticResource RTVC}}">
           <iconPacks:PackIconMaterial Width="18"
                                       Height="18"
                                       Margin="5"
@@ -131,7 +131,7 @@
       </StackPanel>
 
       <controls:PpcLabeledText Grid.Row="2"
-                               Grid.Column="2"
+                               Grid.Column="1"
                                Margin="0,0,0,5"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"

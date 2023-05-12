@@ -134,6 +134,18 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 reason.Append("Fire alarm active; ");
             }
 
+            if (!this.machineData.MachineSensorStatus.SensitiveEdgeAlarm)
+            {
+                isMarchPossible = false;
+                reason.Append("Sensitive Edge Alarm active; ");
+            }
+
+            if (!this.machineData.MachineSensorStatus.SensitiveCarpetsAlarm)
+            {
+                isMarchPossible = false;
+                reason.Append("Sensitive Carpets Alarm active; ");
+            }
+
             foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
             {
                 switch (bayNumber)

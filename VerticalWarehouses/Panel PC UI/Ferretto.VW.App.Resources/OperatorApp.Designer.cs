@@ -2311,6 +2311,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick Confirm with barcode set to 1.
+        /// </summary>
+        public static string FixedPick {
+            get {
+                return ResourceManager.GetString("FixedPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fix Maintenance.
         /// </summary>
         public static string FixServicingInfo {
@@ -3018,6 +3027,15 @@ namespace Ferretto.VW.App.Resources {
         public static string IsRequestConfirmForLastOperationOnLoadingUnit {
             get {
                 return ResourceManager.GetString("IsRequestConfirmForLastOperationOnLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spea (WMS Custom).
+        /// </summary>
+        public static string IsSpea {
+            get {
+                return ResourceManager.GetString("IsSpea", resourceCulture);
             }
         }
         

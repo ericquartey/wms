@@ -511,6 +511,27 @@ namespace Ferretto.VW.MAS.IODriver
                                         this.ioStatus.UpdateOutputStates(this.ioStatus.OutputData);
                                     }
                                 }
+
+                                var isSpea = false;
+                                var isSensitiveCapetsBypass = false;
+                                var isSensitiveEdgeBypass = false;
+
+                                using (var scope = this.serviceScopeFactory.CreateScope())
+                                {
+                                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                                    isSpea = machineProvider.IsSpeaActive();
+                                    isSensitiveCapetsBypass = machineProvider.IsSensitiveCarpetsBypass();
+                                    isSensitiveEdgeBypass = machineProvider.IsSensitiveEdgeBypass();
+                                }
+
+                                if (isSpea)
+                                {
+                                    this.ioStatus.OutputData[6] = isSensitiveEdgeBypass;
+                                    this.ioStatus.OutputData[7] = isSensitiveCapetsBypass;
+
+                                    this.ioStatus.UpdateOutputStates(this.ioStatus.OutputData);
+                                }
+
                             }
                             catch (Exception)
                             {

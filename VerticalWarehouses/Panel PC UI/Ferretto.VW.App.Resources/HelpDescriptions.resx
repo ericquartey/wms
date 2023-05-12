@@ -1660,4 +1660,7 @@
     <value>This operation allows you to update all the positions of the cells on the back side, the saving may take a few seconds</value>
     
   </data>
+  <data name="HelpSensitiveAlarmDescription" xml:space="preserve">
+    <value>The procedure allows you to bypass the Sensitive carpet control unit alarm and Sensitive edge control unit alarm</value>
+  </data>
 </root>

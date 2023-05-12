@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Accessories.Interfaces;
@@ -303,13 +302,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.CanPartiallyCompleteOnEmptyCompartment();
                 if (this.CanConfirm || this.CanConfirmPartialOperation)
                 {
+                    var config = await this.machineConfigurationWebService.GetConfigAsync();
+
+                    if (config.FixedPick)
+                    {
+                        this.MissionOperation.MaximumQuantity = decimal.One;
+                    }
+
                     if (userAction.UserAction == UserAction.VerifyItem)
                     {
                         if (this.IsCarrefour)
                         {
                             // test begin
-                            //this.MissionOperation.MaximumQuantity = decimal.One;
-                            //this.MissionOperation.ItemDetails.BoxId = "box";
+                            // this.MissionOperation.MaximumQuantity = decimal.One;
+                            // this.MissionOperation.ItemDetails.BoxId = "box";
                             // test end
                             if (userAction.Code == this.MissionOperation?.ItemCode)
                             {
@@ -338,7 +344,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                                         return;
                                     }
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
                                     this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
                                     return;

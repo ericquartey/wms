@@ -40,6 +40,9 @@ namespace Ferretto.VW.MAS.IODriver
 
             var fireAlarm = this.machineProvider.IsFireAlarmActive() ? !mainDevice.PreFireAlarm && !mainDevice.FireAlarm : true;
 
+            var sensitiveEdgeAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveEdgeAlarm : true;
+            var sensitiveCarpetsAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveCarpetsAlarm : true;
+
             return !mainDevice.ResetSecurity
                 &&
                 !mainDevice.MushroomEmergency
@@ -50,7 +53,11 @@ namespace Ferretto.VW.MAS.IODriver
                 &&
                 !mainDevice.MicroCarterRightSideBay
                 &&
-                fireAlarm;
+                fireAlarm
+                &&
+                sensitiveEdgeAlarm
+                &&
+                sensitiveCarpetsAlarm;
         }
 
         #endregion

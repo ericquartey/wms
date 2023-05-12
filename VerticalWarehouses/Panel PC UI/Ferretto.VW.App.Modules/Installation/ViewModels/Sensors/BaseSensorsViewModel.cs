@@ -194,6 +194,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isFireAlarmActive;
 
+        private bool isSpeaActive;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -384,6 +386,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsOneTonMachine => this.bayManager.Identity.IsOneTonMachine;
 
+        public bool IsSpeaActive { get => this.isSpeaActive; private set => this.SetProperty(ref this.isSpeaActive, value); }
+
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 
         public int OutPerDevice => this.OUT_PER_DEVICE;
@@ -486,13 +490,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsFireAlarmActive = await this.machineIdentityWebService.GetFireAlarmEnableAsync();
 
+            this.IsSpeaActive = await this.machineIdentityWebService.GetIsSpeaEnableAsync();
+
             this.sensors.Update(sensorsStates.ToArray());
 
             var current = await this.machineSensorsWebService.GetOutCurrentAsync();
             this.DiagOutCurrent = current.ToList();
 
             var fault = await this.machineSensorsWebService.GetOutFaultAsync();
-            this.DiagOutFault= fault.ToList();
+            this.DiagOutFault = fault.ToList();
 
             this.DiagOutUpdate();
         }
@@ -561,7 +567,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception)
             {
-
             }
 
             try
@@ -593,7 +598,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception)
             {
-
             }
         }
 

@@ -44,10 +44,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool FireAlarm { get; set; }
 
-        public bool IsOstec { get; set; }
-
-        public bool SilenceSirenAlarm { get; set; }
-
         /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
@@ -65,10 +61,6 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsAxisChanged { get; set; }
 
         public bool IsCarrefour { get; set; }
-
-        public bool ShowQuantityOnInventory { get; set; }
-
-        public bool OperationRightToLeft { get; set; }
 
         public bool IsDbSaveOnServer { get; set; }
 
@@ -105,6 +97,11 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsEnableAddItem { get; set; }
 
         /// <summary>
+        /// Get/set a value indicating if add item operation is enabled.
+        /// </summary>
+        public bool FixedPick { get; set; }
+
+        /// <summary>
         /// Get/set a value indicating if the pick operation and put operation for a given item can
         /// be performed in the loading unit view (IDROINOX)
         /// </summary>
@@ -127,6 +124,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool IsOrderList { get; set; }
 
+        public bool IsOstec { get; set; }
+
         public bool IsQuantityLimited { get; set; }
 
         /// <summary>
@@ -139,6 +138,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// enable the ABC rotation class handling
         /// </summary>
         public bool IsRotationClass { get; set; }
+
+        public bool IsSpea { get; set; }
 
         /// <summary>
         /// Get/set a value indicating if the stock value is updating by difference (IDROINOX)
@@ -203,15 +204,25 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public string ModelName { get; set; }
 
+        public bool OperationRightToLeft { get; set; }
+
         /// <summary>
         /// Gets or sets the panels on which the cells are mounted.
         /// </summary>
         public IEnumerable<CellPanel> Panels { get; set; }
 
+        public bool SensitiveCarpetsAlarm { get; set; }
+
+        public bool SensitiveEdgeAlarm { get; set; }
+
         /// <summary>
         /// Gets or sets the machine's serial number.
         /// </summary>
         public string SerialNumber { get; set; }
+
+        public bool ShowQuantityOnInventory { get; set; }
+
+        public bool SilenceSirenAlarm { get; set; }
 
         public bool Simulation { get; set; }
 

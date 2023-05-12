@@ -197,6 +197,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool PreFireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : false;
 
+        public bool SensitiveCarpetsAlarm => this.IsSpeaActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : true;
+
+        public bool SensitiveEdgeAlarm => this.IsSpeaActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : true;
+
         public bool TeleOkBay1 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1];
 
         public bool TeleOkBay2 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay2];
@@ -578,6 +582,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     reason.Append("FireAlarm Active; ");
                     errorCode = MachineErrorCode.FireAlarm;
                 }
+
+                if (!this.SensitiveEdgeAlarm)
+                {
+                    isMarchPossible = false;
+                    reason.Append("SensitiveEdgeAlarm Active; ");
+                    errorCode = MachineErrorCode.SensitiveEdgeAlarm;
+                }
+
+                if (!this.SensitiveCarpetsAlarm)
+                {
+                    isMarchPossible = false;
+                    reason.Append("SensitiveCarpetsAlarm Active; ");
+                    errorCode = MachineErrorCode.SensitiveCarpetsAlarm;
+                }
             }
 
             errorText = reason.ToString();
@@ -804,9 +822,42 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         }
                                     }
 
+                                    var isSpeaActive = this.IsSpeaActive();
+                                    if (isSpeaActive && !newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1])
+                                    {
+                                        using (var scope = this.serviceScopeFactory.CreateScope())
+                                        {
+                                            var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                            errorProvider.RecordNew(MachineErrorCode.SensitiveEdgeAlarm);
+                                        }
+
+                                        if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
+                                        {
+                                            var args = new StatusUpdateEventArgs();
+                                            args.NewState = false;
+                                            this.OnRunningStateChanged(args);
+                                        }
+                                    }
+
+                                    if (isSpeaActive && !newSensorStatus[(int)IOMachineSensors.RobotOptionBay1])
+                                    {
+                                        using (var scope = this.serviceScopeFactory.CreateScope())
+                                        {
+                                            var errorProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                            errorProvider.RecordNew(MachineErrorCode.SensitiveCarpetsAlarm);
+                                        }
+
+                                        if (this.machineVolatileDataProvider.MachinePowerState > MachinePowerState.Unpowered)
+                                        {
+                                            var args = new StatusUpdateEventArgs();
+                                            args.NewState = false;
+                                            this.OnRunningStateChanged(args);
+                                        }
+                                    }
+
                                     if (this.enableNotificatons
-                                        && ioRunningStateChange
-                                        )
+                                    && ioRunningStateChange
+                                    )
                                     {
                                         //During Fault Handling running status will be set off. This prevents double firing the power off procedure
                                         if (!this.IsInverterInFault)
@@ -921,6 +972,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                 return machineProvider.IsFireAlarmActive();
+            }
+        }
+
+        private bool IsSpeaActive()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                return machineProvider.IsSpeaActive();
             }
         }
 
