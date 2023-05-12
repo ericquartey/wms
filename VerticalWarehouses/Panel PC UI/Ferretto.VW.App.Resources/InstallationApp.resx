@@ -2863,4 +2863,22 @@
   <data name="AlarmsToWmsOn" xml:space="preserve">
     <value>Alarms toward WMS</value>
   </data>
+  <data name="SensitiveAlarm" xml:space="preserve">
+    <value>Control unit alarm sensor</value>
+  </data>
+  <data name="SensitiveAlarmDescription" xml:space="preserve">
+    <value>Sensor for Sensitive carpet control unit alarm and Sensitive edge control unit alarm</value>
+  </data>
+  <data name="ExclusionSensitiveEdge" xml:space="preserve">
+    <value>Exclusion sensitive edge</value>
+  </data>
+  <data name="ExclusionSensitiveCarpet" xml:space="preserve">
+    <value>Exclusion sensitive carpets</value>
+  </data>
+  <data name="SensitiveCarpetsAlarm" xml:space="preserve">
+    <value>Sensitive carpet control unit alarm</value>
+  </data>
+  <data name="SensitiveEdgeAlarm" xml:space="preserve">
+    <value>Sensitive edge control unit alarm</value>
+  </data>
 </root>

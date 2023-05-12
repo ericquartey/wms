@@ -110,6 +110,12 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ResetSecurity => this.outputs[(int)IoPorts.ResetSecurity];
 
+        [Column(Order = (int)IoPorts.FinePickingRobot)]
+        public bool SensitiveCarpetsAlarm => this.inputs[(int)IoPorts.FinePickingRobot];
+
+        [Column(Order = (int)IoPorts.HookTrolley)]
+        public bool SensitiveEdgeAlarm => this.inputs[(int)IoPorts.HookTrolley];
+
         public byte SetupOutputLines { get; set; }
 
         public bool UseSetupOutputLines { get; set; }

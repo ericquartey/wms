@@ -28,17 +28,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetHeight();
 
-        bool GetSimulation();
-
         int GetIdentity();
+
         bool GetIsLoadUnitFixed();
+
         int GetItemUniqueIdLength();
 
         bool GetListPickConfirm();
-
-        bool IsSilenceSirenAlarm();
-
-        Task SetSilenceSirenAlarm(bool silenceSirenAlarm);
 
         bool GetListPutConfirm();
 
@@ -59,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
         string GetSerialNumber();
 
         IEnumerable<ServicingInfo> GetServicingInfo();
+
+        bool GetSimulation();
 
         IEnumerable<MachineStatistics> GetStatistics();
 
@@ -90,15 +88,23 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsFireAlarmActive();
 
-        bool IsOstecActive();
-
         bool IsHeartBeat();
 
         bool IsOneTonMachine();
 
+        bool IsOstecActive();
+
         bool IsRequestConfirmForLastOperationOnLoadingUnit();
 
         bool IsRotationClassEnabled();
+
+        bool IsSensitiveCarpetsBypass();
+
+        bool IsSensitiveEdgeBypass();
+
+        bool IsSilenceSirenAlarm();
+
+        bool IsSpeaActive();
 
         bool IsTouchHelperEnabled();
 
@@ -107,6 +113,12 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetBayOperationParams(Machine machine);
 
         Task SetMachineId(int newMachineId);
+
+        Task SetSilenceSirenAlarm(bool silenceSirenAlarm);
+
+        Task SetSensitiveCarpetsBypass(bool value);
+
+        Task SetSensitiveEdgeBypass(bool value);
 
         void Update(Machine machine, DataLayerContext context);
 

@@ -2554,6 +2554,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exclusion sensitive carpets.
+        /// </summary>
+        public static string ExclusionSensitiveCarpet {
+            get {
+                return ResourceManager.GetString("ExclusionSensitiveCarpet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exclusion sensitive edge.
+        /// </summary>
+        public static string ExclusionSensitiveEdge {
+            get {
+                return ResourceManager.GetString("ExclusionSensitiveEdge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Perform a cell measurement.
         /// </summary>
         public static string ExecuteCellMeasurement {
@@ -6501,6 +6519,42 @@ namespace Ferretto.VW.App.Resources {
         public static string SendScreenSnapshot {
             get {
                 return ResourceManager.GetString("SendScreenSnapshot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Control unit alarm sensor.
+        /// </summary>
+        public static string SensitiveAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensor for Sensitive carpet control unit alarm and Sensitive edge control unit alarm.
+        /// </summary>
+        public static string SensitiveAlarmDescription {
+            get {
+                return ResourceManager.GetString("SensitiveAlarmDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensitive carpet control unit alarm.
+        /// </summary>
+        public static string SensitiveCarpetsAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveCarpetsAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensitive edge control unit alarm.
+        /// </summary>
+        public static string SensitiveEdgeAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveEdgeAlarm", resourceCulture);
             }
         }
         

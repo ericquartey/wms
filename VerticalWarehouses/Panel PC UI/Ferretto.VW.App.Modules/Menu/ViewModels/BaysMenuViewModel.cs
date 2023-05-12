@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineIdentityWebService machineIdentityWebService;
+
         private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
 
         private DelegateCommand bayControlCommand;
@@ -29,6 +31,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand externalBayCalibrationCommand;
 
+        private bool isSpeaActive;
+
+        private DelegateCommand sensitiveSensorCommand;
+
         private DelegateCommand testShutterCommand;
 
         #endregion
@@ -36,10 +42,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public BaysMenuViewModel(
-            IMachineSetupStatusWebService machineSetupStatusWebService)
+            IMachineSetupStatusWebService machineSetupStatusWebService,
+            IMachineIdentityWebService machineIdentityWebService)
             : base()
         {
             this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.SetupStatusCapabilities = new SetupStatusCapabilities();
         }
@@ -61,6 +69,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             TestShutter,
 
             BEDTest,
+
+            SensitiveSensor
         }
 
         #endregion
@@ -93,7 +103,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 ));
 
         public ICommand DoubleExternalBayTestCommand =>
-                                                                                                                                    this.doubleExternalBayTestCommand
+                    this.doubleExternalBayTestCommand
             ??
             (this.doubleExternalBayTestCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.BEDTest),
@@ -134,12 +144,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public bool IsExternalBayCalibrationVisible => this.MachineService.Bays.Any(f => f.IsExternal && !f.IsDouble);
 
+        public bool IsSpeaActive
+        {
+            get => this.isSpeaActive;
+            set => this.SetProperty(ref this.isSpeaActive, value);
+        }
+
         public bool IsTestShutterBypassed => this.BayShutter.IsBypassed;
 
         // TODO - decide how to perform an external bay calibration test
         public bool IsTestShutterCompleted => this.BayShutter.IsCompleted && !this.BayShutter.IsBypassed;
 
         public bool IsTestShutterVisible => this.MachineService.HasShutter;
+
+        public ICommand SensitiveSensorCommand =>
+                                                                                                                                                                            this.sensitiveSensorCommand
+                    ??
+                    (this.sensitiveSensorCommand = new DelegateCommand(
+                        () => this.ExecuteCommand(Menu.SensitiveSensor),
+                        () => (true || ConfigurationManager.AppSettings.GetOverrideSetupStatus())));
 
         public SetupStatusCapabilities SetupStatusCapabilities { get; private set; }
 
@@ -202,6 +225,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.RaisePropertyChanged(nameof(this.IsTestShutterCompleted));
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationBypassed));
             this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationCompleted));
+
+            this.IsSpeaActive = await this.machineIdentityWebService.GetIsSpeaEnableAsync();
 
             //this.RaisePropertyChanged(nameof(this.IsCarouselCalibrationVisible));
             //this.RaisePropertyChanged(nameof(this.IsExternalBayCalibrationVisible));
@@ -283,6 +308,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
                         Utils.Modules.Installation.BEDTEST,
+                        data: null,
+                        trackCurrentView: true);
+                    break;
+
+                case Menu.SensitiveSensor:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Installation),
+                        Utils.Modules.Installation.SENSITIVEALAMR,
                         data: null,
                         trackCurrentView: true);
                     break;

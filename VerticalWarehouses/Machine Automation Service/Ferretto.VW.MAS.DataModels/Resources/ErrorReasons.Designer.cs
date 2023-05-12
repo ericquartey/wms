@@ -952,6 +952,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call for assistance.
+        /// </summary>
+        public static string SensitiveCarpetsAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveCarpetsAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Call for assistance.
+        /// </summary>
+        public static string SensitiveEdgeAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveEdgeAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Bay Zero Sensor is not active at the end of positioning..
         /// </summary>
         public static string SensorZeroBayNotActiveAtEnd {

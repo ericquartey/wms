@@ -1414,13 +1414,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetFireAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> GetIsOstecEnableAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> GetIsOstecEnableAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsLoadUnitFixedAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1428,11 +1421,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetIsLoadUnitFixedAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsOstecEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsOstecEnableAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsRotationClassAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsRotationClassAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsSpeaEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetIsSpeaEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetItemUniqueIdLengthAsync();
@@ -1454,6 +1461,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetListPutConfirmAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetSensitiveCarpetsAlarmEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetSensitiveCarpetsAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetSensitiveEdgeAlarmEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetSensitiveEdgeAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync();
@@ -1519,6 +1540,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> IsRequestConfirmForLastOperationOnLoadingUnitAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsSilenceSirenAlarmAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> IsSilenceSirenAlarmAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> IsUpdatingStockByDifferenceAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1540,18 +1568,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> SetMachineIdAsync(int newMachineId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetSensitiveCarpetsBypassAsync(bool value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetSensitiveCarpetsBypassAsync(bool value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetSensitiveEdgeBypassAsync(bool value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetSensitiveEdgeBypassAsync(bool value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SilenceSirenAlarmAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SilenceSirenAlarmAsync(System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsSilenceSirenAlarmAsync();
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsSilenceSirenAlarmAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -4249,6 +4284,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ProfileResolutionFail = 95,
     
+        SensitiveEdgeAlarm = 96,
+    
+        SensitiveCarpetsAlarm = 97,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -5390,12 +5429,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("FireAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool FireAlarm { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("IsOstec", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsOstec { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("SilenceSirenAlarm", Required = Newtonsoft.Json.Required.Always)]
-        public bool SilenceSirenAlarm { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
@@ -5413,12 +5446,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsCarrefour", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCarrefour { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("ShowQuantityOnInventory", Required = Newtonsoft.Json.Required.Always)]
-        public bool ShowQuantityOnInventory { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("OperationRightToLeft", Required = Newtonsoft.Json.Required.Always)]
-        public bool OperationRightToLeft { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsDbSaveOnServer", Required = Newtonsoft.Json.Required.Always)]
         public bool IsDbSaveOnServer { get; set; }
@@ -5462,6 +5489,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsOrderList", Required = Newtonsoft.Json.Required.Always)]
         public bool IsOrderList { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsOstec", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsOstec { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsQuantityLimited", Required = Newtonsoft.Json.Required.Always)]
         public bool IsQuantityLimited { get; set; }
     
@@ -5470,6 +5500,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRotationClass", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRotationClass { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsSpea", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsSpea { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsUpdatingStockByDifference", Required = Newtonsoft.Json.Required.Always)]
         public bool IsUpdatingStockByDifference { get; set; }
@@ -5513,11 +5546,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("ModelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ModelName { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("OperationRightToLeft", Required = Newtonsoft.Json.Required.Always)]
+        public bool OperationRightToLeft { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Panels", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<CellPanel> Panels { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("SensitiveCarpetsAlarm", Required = Newtonsoft.Json.Required.Always)]
+        public bool SensitiveCarpetsAlarm { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SensitiveEdgeAlarm", Required = Newtonsoft.Json.Required.Always)]
+        public bool SensitiveEdgeAlarm { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("SerialNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string SerialNumber { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ShowQuantityOnInventory", Required = Newtonsoft.Json.Required.Always)]
+        public bool ShowQuantityOnInventory { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("SilenceSirenAlarm", Required = Newtonsoft.Json.Required.Always)]
+        public bool SilenceSirenAlarm { get; set; }
     
         [Newtonsoft.Json.JsonProperty("Simulation", Required = Newtonsoft.Json.Required.Always)]
         public bool Simulation { get; set; }

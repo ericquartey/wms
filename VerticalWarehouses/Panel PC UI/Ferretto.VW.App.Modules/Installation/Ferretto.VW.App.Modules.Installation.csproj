@@ -40,6 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\Bays\SensitiveAlarmView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\Cells\FixBackDrawersView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

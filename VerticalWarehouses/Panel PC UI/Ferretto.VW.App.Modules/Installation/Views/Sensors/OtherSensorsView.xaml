@@ -56,8 +56,15 @@
                                    Text="{res:Loc InstallationApp.FireAlarm}"
                                    Visibility="{Binding IsFireAlarmActive, Converter={StaticResource BTVC}}" />
 
+        <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
+                                    Visibility="{Binding IsSpeaActive, Converter={StaticResource BTVC}}"
+                                    Text="{res:Loc InstallationApp.ExclusionSensitiveEdge}" />
 
-      </StackPanel>
+        <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay1}"
+                                    Visibility="{Binding IsSpeaActive, Converter={StaticResource BTVC}}"
+                                    Text="{res:Loc InstallationApp.ExclusionSensitiveCarpet}" />
+
+            </StackPanel>
 
       <StackPanel Grid.Row="2"
                   Margin="0,15,0,0"

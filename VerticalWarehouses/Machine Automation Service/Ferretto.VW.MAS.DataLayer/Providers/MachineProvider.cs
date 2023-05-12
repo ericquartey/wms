@@ -196,14 +196,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool GetSimulation()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.Simulation).First();
-            }
-        }
-
         public string GetBackupServer()
         {
             lock (this.dataContext)
@@ -391,6 +383,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool GetSimulation()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.Simulation).First();
+            }
+        }
+
         public IEnumerable<MachineStatistics> GetStatistics()
         {
             lock (this.dataContext)
@@ -535,31 +535,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public bool IsOstecActive()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsOstec).First();
-            }
-        }
-
-        public bool IsSilenceSirenAlarm()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.SilenceSirenAlarm).First();
-            }
-        }
-
-        public async Task SetSilenceSirenAlarm(bool silenceSirenAlarm)
-        {
-            lock (this.dataContext)
-            {
-                this.dataContext.Machines.First().SilenceSirenAlarm = silenceSirenAlarm;
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public bool IsHeartBeat()
         {
             lock (this.dataContext)
@@ -581,6 +556,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsOstecActive()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsOstec).First();
+            }
+        }
+
         public bool IsRequestConfirmForLastOperationOnLoadingUnit()
         {
             lock (this.dataContext)
@@ -594,6 +577,38 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.IsRotationClass).First();
+            }
+        }
+
+        public bool IsSensitiveCarpetsBypass()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.SensitiveCarpetsAlarm).First();
+            }
+        }
+
+        public bool IsSensitiveEdgeBypass()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.SensitiveEdgeAlarm).First();
+            }
+        }
+
+        public bool IsSilenceSirenAlarm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.SilenceSirenAlarm).First();
+            }
+        }
+
+        public bool IsSpeaActive()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsSpea).First();
             }
         }
 
@@ -635,6 +650,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
                 machineDB.IsOstec = machine.IsOstec;
+                machineDB.IsSpea = machine.IsSpea;
                 machineDB.ShowQuantityOnInventory = machine.ShowQuantityOnInventory;
                 machineDB.IsQuantityLimited = machine.IsQuantityLimited;
                 machineDB.IsAddItemByList = machine.IsAddItemByList;
@@ -664,6 +680,33 @@ namespace Ferretto.VW.MAS.DataLayer
             int count2 = await dataContext.Database.ExecuteSqlCommandAsync($"update machines set Id = {newMachineId};");
             int count3 = await dataContext.Database.ExecuteSqlCommandAsync($"update cellpanels set MachineId = {newMachineId};");
             int count4 = await dataContext.Database.ExecuteSqlCommandAsync($"update bays set MachineId = {newMachineId};");
+        }
+
+        public async Task SetSilenceSirenAlarm(bool silenceSirenAlarm)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().SilenceSirenAlarm = silenceSirenAlarm;
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public async Task SetSensitiveCarpetsBypass(bool value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().SensitiveCarpetsAlarm = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public async Task SetSensitiveEdgeBypass(bool value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().SensitiveEdgeAlarm = value;
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void Update(Machine machine, DataLayerContext dataContext)
@@ -1138,6 +1181,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 dataContext.SaveChanges();
             }
         }
+
         #endregion
     }
 }

@@ -468,4 +468,10 @@
   <data name="ProfileResolutionFail" xml:space="preserve">
     <value>Calcolo della risoluzione della barriera di misura non completato</value>
   </data>
+  <data name="SensitiveCarpetsAlarm" xml:space="preserve">
+    <value>Allarme centralina tappeti sensibili</value>
+  </data>
+  <data name="SensitiveEdgeAlarm" xml:space="preserve">
+    <value>Allarme centralina bordo sensibile</value>
+  </data>
 </root>

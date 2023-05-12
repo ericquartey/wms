@@ -970,6 +970,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sensitive carpet control unit alarm.
+        /// </summary>
+        public static string SensitiveCarpetsAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveCarpetsAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensitive edge control unit alarm.
+        /// </summary>
+        public static string SensitiveEdgeAlarm {
+            get {
+                return ResourceManager.GetString("SensitiveEdgeAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Positioning error.
         /// </summary>
         public static string SensorZeroBayNotActiveAtEnd {

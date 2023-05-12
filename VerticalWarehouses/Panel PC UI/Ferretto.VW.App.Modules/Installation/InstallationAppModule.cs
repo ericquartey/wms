@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Modules.Installation.Views;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Unity;
@@ -90,6 +89,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<ProfileResolutionCalibrationView>();
 
             containerRegistry.RegisterForNavigation<ShutterEnduranceTestView>();
+            containerRegistry.RegisterForNavigation<SensitiveAlarmView>();
 
             containerRegistry.RegisterForNavigation<BeltBurnishingView>();
 
