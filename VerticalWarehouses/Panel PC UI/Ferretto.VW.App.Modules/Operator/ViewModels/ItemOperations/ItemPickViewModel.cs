@@ -314,8 +314,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         if (this.IsCarrefour)
                         {
                             // test begin
-                            //
-                            //this.MissionOperation.ItemDetails.BoxId = "box";
+                            // this.MissionOperation.MaximumQuantity = decimal.One;
+                            // this.MissionOperation.ItemDetails.BoxId = "box";
                             // test end
                             if (userAction.Code == this.MissionOperation?.ItemCode)
                             {
