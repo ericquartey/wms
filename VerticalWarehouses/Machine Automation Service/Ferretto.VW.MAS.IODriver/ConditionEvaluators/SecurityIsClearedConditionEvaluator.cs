@@ -43,6 +43,8 @@ namespace Ferretto.VW.MAS.IODriver
             var sensitiveEdgeAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveEdgeAlarm : true;
             var sensitiveCarpetsAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveCarpetsAlarm : true;
 
+            var heightAlarm = this.machineProvider.IsHeightAlarmActive();
+
             return !mainDevice.ResetSecurity
                 &&
                 !mainDevice.MushroomEmergency
@@ -57,7 +59,9 @@ namespace Ferretto.VW.MAS.IODriver
                 &&
                 sensitiveEdgeAlarm
                 &&
-                sensitiveCarpetsAlarm;
+                sensitiveCarpetsAlarm
+                &&
+                !heightAlarm;
         }
 
         #endregion

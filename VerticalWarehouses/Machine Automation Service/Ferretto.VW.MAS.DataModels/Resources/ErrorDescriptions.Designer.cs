@@ -331,6 +331,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Height Alarm.
+        /// </summary>
+        public static string HeightAlarm {
+            get {
+                return ResourceManager.GetString("HeightAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The configuration of the acceleration of the axis {0} movement is not correct: empty load acceleration less than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils.Attributes;
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private readonly IMachineIdentityWebService machineIdentity;
 
+        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
         private MachineError error;
 
         private string errorTime;
@@ -34,9 +37,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private bool findZeroElevator;
 
-        private bool isVisibleGoTo;
-
         private bool isErrorTopLevelBayOccupiedEmpty;
+
+        private bool isHeightAlarm;
+
+        private bool isVisibleGoTo;
 
         private SubscriptionToken machineModeChangedToken;
 
@@ -87,6 +92,12 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.isErrorTopLevelBayOccupiedEmpty, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsHeightAlarm
+        {
+            get => this.isHeightAlarm;
+            set => this.SetProperty(ref this.isHeightAlarm, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsVisibleGoTo
         {
             get => this.isVisibleGoTo;
@@ -110,6 +121,8 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 this.CanMarkAsResolved)
             .ObservesProperty(() => this.Error)
             .ObservesProperty(() => this.IsWaitingForResponse));
+
+        protected bool IsInstaller => this.sessionService.UserAccessLevel >= UserAccessLevel.Installer;
 
         #endregion
 
@@ -150,7 +163,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                    this.OnMachineModeChanged,
                    ThreadOption.UIThread,
                    false);
-
 
             try
             {
@@ -484,6 +496,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
                 }
             }
             catch (Exception) { }
+
+            if (this.error.Code == (int)MachineErrorCode.HeightAlarm)
+            {
+                await this.MachineService.StopMovingByAllAsync();
+            }
         }
 
         public void ResetImageVisibility()
@@ -496,7 +513,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             return
                 this.Error != null
                 &&
-                !this.IsWaitingForResponse;
+                !this.IsWaitingForResponse
+                &&
+                (!this.IsHeightAlarm || this.IsInstaller);
         }
 
         private async Task MarkAsResolvedAndGoAsync()
@@ -537,6 +556,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             if (this.Error is null)
             {
                 return;
+            }
+
+            if (this.IsHeightAlarm)
+            {
+                this.machineIdentity.SetHeightAlarmAsync(false);
             }
 
             try

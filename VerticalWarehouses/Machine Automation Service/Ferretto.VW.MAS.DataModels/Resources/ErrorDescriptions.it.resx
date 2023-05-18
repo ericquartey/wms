@@ -474,4 +474,7 @@
   <data name="SensitiveEdgeAlarm" xml:space="preserve">
     <value>Allarme centralina bordo sensibile</value>
   </data>
+  <data name="HeightAlarm" xml:space="preserve">
+    <value>Allarme Altezza</value>
+  </data>
 </root>

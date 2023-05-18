@@ -468,4 +468,7 @@
   <data name="SensitiveEdgeAlarm" xml:space="preserve">
     <value>Chiamare assistenza tecnica</value>
   </data>
+  <data name="HeightAlarm" xml:space="preserve">
+    <value>Errore nella lettura dell'altezza</value>
+  </data>
 </root>

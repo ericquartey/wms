@@ -286,9 +286,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanFixServicingInfo()
         {
             var lastServicing = this.ServicingInfo?.Reverse().FirstOrDefault();
-            var sndLastServicing = this.ServicingInfo?.Reverse().Skip(1).FirstOrDefault();
 
-            if (lastServicing == null || sndLastServicing == null)
+            if (lastServicing == null)
             {
                 return false;
             }
@@ -297,13 +296,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                    &&
                    lastServicing.ServiceStatus == MachineServiceStatus.Expired
                    &&
-                   sndLastServicing.ServiceStatus == MachineServiceStatus.Completed
-                   &&
-                   lastServicing.Instructions.Any(i => i.IsToDo || i.InstructionStatus != MachineServiceStatus.Valid)
-                   &&
-                   sndLastServicing.Instructions.Any(i => !i.IsDone)
-                   &&
-                   DateTime.Now <= lastServicing.LastServiceDate;
+                   DateTime.Now <= lastServicing.NextServiceDate;
         }
 
         private async void GetStatistics()

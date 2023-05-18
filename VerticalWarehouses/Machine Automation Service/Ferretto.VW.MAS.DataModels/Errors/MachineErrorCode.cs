@@ -309,6 +309,10 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorCondition(typeof(ISensitiveCarpetsConditionEvaluator))]
         SensitiveCarpetsAlarm,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(HeightAlarm), (int)MachineErrorSeverity.High)]
+        [ErrorCondition(typeof(IHeightAlarmConditionEvaluator))]
+        HeightAlarm,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), (int)MachineErrorSeverity.Normal)]
         InverterErrorBaseCode = 1000,
 

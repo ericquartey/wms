@@ -1414,6 +1414,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetFireAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetHeightAlarmEnableAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> GetHeightAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsLoadUnitFixedAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1587,6 +1594,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SilenceSirenAlarmAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetHeightAlarmAsync(bool value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetHeightAlarmAsync(bool value, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -4288,6 +4302,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         SensitiveCarpetsAlarm = 97,
     
+        HeightAlarm = 98,
+    
         InverterErrorBaseCode = 1000,
     
         InverterErrorInvalidParameter = 1001,
@@ -5429,8 +5445,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("FireAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool FireAlarm { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("FixedPick", Required = Newtonsoft.Json.Required.Always)]
+        public bool FixedPick { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("Height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("HeightAlarm", Required = Newtonsoft.Json.Required.Always)]
+        public bool HeightAlarm { get; set; }
     
         [Newtonsoft.Json.JsonProperty("HorizontalCyclesToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalCyclesToCalibrate { get; set; }
@@ -5470,9 +5492,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsEnableAddItem", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableAddItem { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("FixedPick", Required = Newtonsoft.Json.Required.Always)]
-        public bool FixedPick { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsEnableHandlingItemOperations", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableHandlingItemOperations { get; set; }

@@ -1,2 +1,2 @@
-dotnet ef migrations add WeightData --verbose
+dotnet ef migrations add HeightAlarm --verbose
 pause

@@ -146,6 +146,12 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 reason.Append("Sensitive Carpets Alarm active; ");
             }
 
+            if (this.machineData.MachineSensorStatus.HeightAlarm)
+            {
+                isMarchPossible = false;
+                reason.Append("Height Alarm active; ");
+            }
+
             foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
             {
                 switch (bayNumber)
