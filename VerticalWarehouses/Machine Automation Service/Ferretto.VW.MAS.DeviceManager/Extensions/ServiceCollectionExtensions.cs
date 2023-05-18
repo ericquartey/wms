@@ -27,7 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 .AddScoped<IPreFireAlarmConditionEvaluator, PreFireAlarmConditionEvaluator>()
                 .AddScoped<IFireAlarmConditionEvaluator, FireAlarmConditionEvaluator>()
                 .AddScoped<ISensitiveEdgeConditionEvaluator, SensitiveEdgeConditionEvaluator>()
-                .AddScoped<ISensitiveCarpetsConditionEvaluator, SensitiveCarpetsConditionEvaluator>();
+                .AddScoped<ISensitiveCarpetsConditionEvaluator, SensitiveCarpetsConditionEvaluator>()
+                .AddScoped<IHeightAlarmConditionEvaluator, HeightAlarmConditionEvaluator>();
 
             services
                 .AddSingleton<IMachineResourcesProvider, MachineResourcesProvider>()

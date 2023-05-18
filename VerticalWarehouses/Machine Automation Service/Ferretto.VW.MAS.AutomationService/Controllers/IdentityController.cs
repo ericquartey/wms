@@ -149,6 +149,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsFireAlarmActive());
         }
 
+        [HttpPost("get/HeightAlarm/enable")]
+        public ActionResult<bool> GetHeightAlarmEnable()
+        {
+            return this.Ok(this.machineProvider.IsHeightAlarmActive());
+        }
+
         [HttpPost("get/IsLoadUnitFixed")]
         public ActionResult<bool> GetIsLoadUnitFixed()
         {
@@ -328,6 +334,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<IActionResult> SilenceSirenAlarmAsync()
         {
             await this.machineProvider.SetSilenceSirenAlarm(true);
+            return this.Ok();
+        }
+
+        [HttpPost("set/HeightAlarm")]
+        public async Task<IActionResult> SetHeightAlarmAsync(bool value)
+        {
+            await this.machineProvider.SetHeightAlarm(value);
             return this.Ok();
         }
 

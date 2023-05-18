@@ -72,6 +72,10 @@ namespace Ferretto.VW.MAS.IODriver
 
         private bool forceIoStatusPublish;
 
+        private Timer heighhtTimer;
+
+        private int heightCurrent;
+
         private bool isDisposed;
 
         private Timer pollIoTimer;
@@ -113,6 +117,8 @@ namespace Ferretto.VW.MAS.IODriver
 
             this.mainIoDevice = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == IoIndex.IoDevice1);
             this.ioStatus = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
+
+            this.heighhtTimer = new Timer(this.CheckHeightAlarm, null, 1000, Timeout.Infinite);
         }
 
         #endregion
@@ -166,6 +172,29 @@ namespace Ferretto.VW.MAS.IODriver
         #endregion
 
         #region Methods
+
+        public void CheckHeightAlarm(int diagOutCurrent)
+        {
+            if (this.ioStatus.OutputData[3] && diagOutCurrent <= 0)
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                    string message = "Fault detected in out signal 4: ";
+
+                    this.logger.LogError(message);
+                    errorsProvider.RecordNew(MachineErrorCode.HeightAlarm, this.bayNumber);
+                }
+
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+
+                    machineProvider.SetHeightAlarm(true);
+                }
+            }
+        }
 
         public void DestroyStateMachine()
         {
@@ -532,6 +561,11 @@ namespace Ferretto.VW.MAS.IODriver
                                     this.ioStatus.UpdateOutputStates(this.ioStatus.OutputData);
                                 }
 
+                                if (this.ioStatus.OutputData[3])
+                                {
+                                    this.heightCurrent = diagOutCurrent[3];
+                                    this.heighhtTimer.Change(1000, Timeout.Infinite);
+                                }
                             }
                             catch (Exception)
                             {
@@ -862,6 +896,29 @@ namespace Ferretto.VW.MAS.IODriver
 
                 throw new IOException($"Exception: {ex.Message} Timer Creation Failed", ex);
             }
+        }
+
+        private void CheckHeightAlarm(object state)
+        {
+            if (this.ioStatus.OutputData[3] && this.heightCurrent <= 0) //|| true)
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                    errorsProvider.RecordNew(MachineErrorCode.HeightAlarm);
+                }
+
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+
+                    //machineProvider.SetHeightAlarm(true);
+                }
+            }
+
+            // suspend timer at every call
+            this.heighhtTimer?.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void Dispose(bool disposing)

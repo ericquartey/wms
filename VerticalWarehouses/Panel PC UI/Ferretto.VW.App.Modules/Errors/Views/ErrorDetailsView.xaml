@@ -200,14 +200,14 @@
                          VerticalAlignment="Top"
                          Command="{Binding MarkAsResolvedCommand}"
                          Content="{res:Loc ErrorsApp.MarkAsResolved}" />
-        <local:PpcButton Margin="10,0,0,0"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Top"
-                         Background="{StaticResource FerrettoOrange}"
-                         Command="{Binding MarkAsResolvedAndGoCommand}"
-                         Content="{res:Loc OperatorApp.MarkAsResolvedAndGo}"
-                         Visibility="{Binding IsVisibleGoTo, Converter={StaticResource BTVC}}" />
-        <!--<local:PpcButton Margin="10,0,0,0"
+                <local:PpcButton Margin="10,0,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 Background="{StaticResource FerrettoOrange}"
+                                 Command="{Binding MarkAsResolvedAndGoCommand}"
+                                 Content="{res:Loc OperatorApp.MarkAsResolvedAndGo}"
+                                 Visibility="{Binding IsVisibleGoTo, Converter={StaticResource BTVC}}" />
+                <!--<local:PpcButton Margin="10,0,0,0"
                          HorizontalAlignment="Left"
                          VerticalAlignment="Top"
                          Background="{StaticResource FerrettoOrange}"

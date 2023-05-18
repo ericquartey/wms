@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool FireAlarm { get; }
 
+        bool HeightAlarm { get; }
+
         bool IsAntiIntrusionBarrier2Bay1 { get; }
 
         bool IsAntiIntrusionBarrier2Bay2 { get; }

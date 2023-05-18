@@ -412,8 +412,6 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         }
                         else
                         {
-                            // Use a flag to prompt showing the MachineErrorCode.LoadUnitWeightExceeded condition
-                            var bShowErrorCondition = true;
                             if (this.Mission.MissionType == MissionType.IN && this.Mission.ErrorCode != MachineErrorCode.NoError)
                             {
                                 if (this.Mission.ErrorCode != MachineErrorCode.NoError)

@@ -543,6 +543,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsHeightAlarmActive()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.HeightAlarm).First();
+            }
+        }
+
+        public async Task SetHeightAlarm(bool value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().HeightAlarm = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public bool IsOneTonMachine()
         {
             lock (this.dataContext)
@@ -595,6 +612,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.SensitiveEdgeAlarm).First();
             }
         }
+
+        //public bool IsHeightAlarm()
+        //{
+        //    lock (this.dataContext)
+        //    {
+        //        return this.dataContext.Machines.AsNoTracking().Select(m => m.HeightAlarm).First();
+        //    }
+        //}
 
         public bool IsSilenceSirenAlarm()
         {
@@ -682,15 +707,6 @@ namespace Ferretto.VW.MAS.DataLayer
             int count4 = await dataContext.Database.ExecuteSqlCommandAsync($"update bays set MachineId = {newMachineId};");
         }
 
-        public async Task SetSilenceSirenAlarm(bool silenceSirenAlarm)
-        {
-            lock (this.dataContext)
-            {
-                this.dataContext.Machines.First().SilenceSirenAlarm = silenceSirenAlarm;
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public async Task SetSensitiveCarpetsBypass(bool value)
         {
             lock (this.dataContext)
@@ -705,6 +721,15 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.Machines.First().SensitiveEdgeAlarm = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public async Task SetSilenceSirenAlarm(bool silenceSirenAlarm)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().SilenceSirenAlarm = silenceSirenAlarm;
                 this.dataContext.SaveChanges();
             }
         }

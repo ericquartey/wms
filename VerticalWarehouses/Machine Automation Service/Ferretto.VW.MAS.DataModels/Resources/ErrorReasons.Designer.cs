@@ -304,6 +304,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error in height reading.
+        /// </summary>
+        public static string HeightAlarm {
+            get {
+                return ResourceManager.GetString("HeightAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The {0} Axis movement Acceleration {1} is invalid: Empty load acceleration lower than full load acceleration.
         /// </summary>
         public static string InvalidAxisAccelerationConfiguration {

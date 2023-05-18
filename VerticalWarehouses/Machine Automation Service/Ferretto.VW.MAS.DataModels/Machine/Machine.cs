@@ -45,9 +45,16 @@ namespace Ferretto.VW.MAS.DataModels
         public bool FireAlarm { get; set; }
 
         /// <summary>
+        /// Get/set a value indicating if add item operation is enabled.
+        /// </summary>
+        public bool FixedPick { get; set; }
+
+        /// <summary>
         /// Gets or sets the machine height, in millimeters.
         /// </summary>
         public double Height { get; set; }
+
+        public bool HeightAlarm { get; set; }
 
         public int HorizontalCyclesToCalibrate { get; set; } = 10;
 
@@ -95,11 +102,6 @@ namespace Ferretto.VW.MAS.DataModels
         /// Get/set a value indicating if add item operation is enabled.
         /// </summary>
         public bool IsEnableAddItem { get; set; }
-
-        /// <summary>
-        /// Get/set a value indicating if add item operation is enabled.
-        /// </summary>
-        public bool FixedPick { get; set; }
 
         /// <summary>
         /// Get/set a value indicating if the pick operation and put operation for a given item can

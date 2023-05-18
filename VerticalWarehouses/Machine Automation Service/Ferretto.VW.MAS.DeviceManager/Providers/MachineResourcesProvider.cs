@@ -84,6 +84,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool FireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
 
+        public bool HeightAlarm => this.IsHeightAlarmActive();
+
         public bool IsAntiIntrusionBarrier2Bay1 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay1];
 
         public bool IsAntiIntrusionBarrier2Bay2 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrier2Bay2];
@@ -583,6 +585,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     errorCode = MachineErrorCode.FireAlarm;
                 }
 
+                if (this.IsHeightAlarmActive())// 
+                {
+                    isMarchPossible = false;
+                    reason.Append("HeightAlarm Active; ");
+                    errorCode = MachineErrorCode.HeightAlarm;
+                }
+
                 if (!this.SensitiveEdgeAlarm)
                 {
                     isMarchPossible = false;
@@ -972,6 +981,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                 return machineProvider.IsFireAlarmActive();
+            }
+        }
+
+        private bool IsHeightAlarmActive()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                return machineProvider.IsHeightAlarmActive();
             }
         }
 

@@ -90,6 +90,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsHeartBeat();
 
+        bool IsHeightAlarmActive();
+
         bool IsOneTonMachine();
 
         bool IsOstecActive();
@@ -114,11 +116,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Task SetMachineId(int newMachineId);
 
-        Task SetSilenceSirenAlarm(bool silenceSirenAlarm);
-
         Task SetSensitiveCarpetsBypass(bool value);
 
         Task SetSensitiveEdgeBypass(bool value);
+
+        Task SetSilenceSirenAlarm(bool silenceSirenAlarm);
+
+        Task SetHeightAlarm(bool value);
 
         void Update(Machine machine, DataLayerContext context);
 
