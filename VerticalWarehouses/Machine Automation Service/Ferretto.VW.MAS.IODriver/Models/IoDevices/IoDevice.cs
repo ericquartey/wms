@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.mainIoDevice = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == IoIndex.IoDevice1);
             this.ioStatus = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
 
-            this.heighhtTimer = new Timer(this.CheckHeightAlarm, null, 1000, Timeout.Infinite);
+            this.heighhtTimer = new Timer(this.CheckHeightAlarm, null, 2000, Timeout.Infinite);
         }
 
         #endregion
@@ -564,7 +564,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 if (this.ioStatus.OutputData[3])
                                 {
                                     this.heightCurrent = diagOutCurrent[3];
-                                    this.heighhtTimer.Change(1000, Timeout.Infinite);
+                                    this.heighhtTimer.Change(2000, Timeout.Infinite);
                                 }
                             }
                             catch (Exception)
