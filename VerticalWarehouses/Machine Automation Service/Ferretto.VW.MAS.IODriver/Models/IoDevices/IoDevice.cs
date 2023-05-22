@@ -672,110 +672,97 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
-        public async Task SendIoCommandTaskFunction()
+       // Function to send an IO command.
+public async Task SendIoCommandTaskFunction()
+{
+    // Continue running until a stop is requested or disposed.
+    do
+    {
+        try
         {
-            do
+            // Attempt to peek at the next message in the IO command queue.
+            // If the message exists, log a trace.
+            if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out var shdMessage) && shdMessage != null)
             {
-                try
+                this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
+            }
+
+            // If the write enable signal is not set within 1 second, or the IO transport is not connected,
+            // then wait for 100 milliseconds and try again.
+            if (!this.writeEnableEvent.Wait(1000, this.stoppingToken) || !this.ioTransport.IsConnected)
+            {
+                Thread.Sleep(100);
+                continue;
+            }
+
+            // If we've reached this point, the write enable signal is set and the IO transport is connected.
+            // So we reset the write enable signal and prepare a telegram to be sent.
+            this.writeEnableEvent.Reset();
+            var isWriteSuccessful = false;
+            var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+
+            try
+            {
+                // Send the telegram based on the message's code operation.
+                // If the code operation is Data or Configuration, then send the telegram.
+                // If the code operation is SetIP, throw an exception to indicate it's not implemented.
+                // Otherwise, if the debugger is attached, break execution.
+                if (shdMessage.CodeOperation == ShdCodeOperation.Data || shdMessage.CodeOperation == ShdCodeOperation.Configuration)
                 {
-                    if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out var shdMessage)
-                         &&
-                         shdMessage != null)
-                    {
-                        this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
-                    }
-
-                    if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
-                    {
-                        if (this.ioTransport.IsConnected)
-                        {
-                            this.writeEnableEvent.Reset();
-
-                            var isWriteSuccessful = false;
-
-                            try
-                            {
-                                switch (shdMessage.CodeOperation)
-                                {
-                                    case ShdCodeOperation.Data:
-                                        {
-                                            var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                            isWriteSuccessful = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
-
-                                            this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
-
-                                            break;
-                                        }
-
-                                    case ShdCodeOperation.Configuration:
-                                        {
-                                            var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                            isWriteSuccessful = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
-
-                                            this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
-
-                                            break;
-                                        }
-
-                                    case ShdCodeOperation.SetIP:
-                                        throw new NotImplementedException();
-
-                                    default:
-                                        if (Debugger.IsAttached)
-                                        {
-                                            Debugger.Break();
-                                        }
-
-                                        break;
-                                }
-                            }
-                            catch (IoDriverException ex)
-                            {
-                                // connection error
-                                this.logger.LogError(ex, $"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
-                                using (var scope = this.serviceScopeFactory.CreateScope())
-                                {
-                                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-
-                                    errorsProvider.RecordNew(MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
-                                }
-                                this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                                Thread.Sleep(100);
-                                continue;
-                            }
-
-                            if (isWriteSuccessful)
-                            {
-                                this.ioCommandQueue.Dequeue(out _);
-                            }
-                            else
-                            {
-                                this.writeEnableEvent.Set();
-                            }
-                        }
-                        else
-                        {
-                            Thread.Sleep(100);
-                        }
-                    }
+                    isWriteSuccessful = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                    this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
                 }
-                catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+                else if (shdMessage.CodeOperation == ShdCodeOperation.SetIP)
                 {
-                    this.logger.LogDebug("Terminating I/O device write thread.");
-
-                    return;
+                    throw new NotImplementedException();
                 }
-                catch (Exception ex)
+                else if (Debugger.IsAttached)
                 {
-                    this.SendOperationErrorMessage(
-                        new IoExceptionFieldMessageData(ex, "IO Driver Fatal Error", (int)IoDriverExceptionCode.DeviceNotConnected),
-                        isFatalError: true);
-
-                    return;
+                    Debugger.Break();
                 }
             }
-            while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
+            catch (IoDriverException ex)
+            {
+                // Handles a connection error.
+                // Log an error in the logger, record the error in the errors provider,
+                // send an error message, and then wait for 100 milliseconds before trying again.
+                this.logger.LogError(ex, $"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
+
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                    errorsProvider.RecordNew(MachineErrorCode.IoDeviceConnectionError, this.bayNumber, ex.Message);
+                }
+
+                this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                Thread.Sleep(100);
+                continue;
+            }
+
+            // If the write was successful, dequeue the message from the IO command queue.
+            // If not, set the write enable signal again.
+            if (isWriteSuccessful)
+            {
+                this.ioCommandQueue.Dequeue(out _);
+            }
+            else
+            {
+                this.writeEnableEvent.Set();
+            }
         }
+        catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+        {
+            // Handles any other unexpected exceptions.
+            // Log a fatal error and send an error message.
+            this.SendOperationErrorMessage(
+                new IoExceptionFieldMessageData(ex, "IO Driver Fatal Error", (int)IoDriverExceptionCode.DeviceNotConnected),
+                isFatalError: true);
+            return;
+        }
+    }
+    while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
+}
+
 
         public void SendIoMessageData(object state)
         {
