@@ -757,7 +757,11 @@ public async Task SendIoCommandTaskFunction()
             // Log a fatal error and send an error message.
             this.SendOperationErrorMessage(
                 new IoExceptionFieldMessageData(ex, "IO Driver Fatal Error", (int)IoDriverExceptionCode.DeviceNotConnected),
-               
+               isFatalError: true);
+            return;
+        }
+    }
+    while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
 
 
         public void SendIoMessageData(object state)
