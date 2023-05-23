@@ -672,8 +672,7 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
-
-// Function to send an IO command.
+       // Function to send an IO command.
 public async Task SendIoCommandTaskFunction()
 {
     // Continue running until a stop is requested or disposed.
@@ -688,17 +687,16 @@ public async Task SendIoCommandTaskFunction()
                 this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
             }
 
-            // Wait for the write enable event to occur with a timeout of 1000 milliseconds (1 second)
-            await this.writeEnableEvent.WaitAsync(1000, this.stoppingToken);
-
-            // If the IO transport is not connected, sleep for 100 milliseconds and continue to the next iteration
-            if (!this.ioTransport.IsConnected)
+            // If the write enable signal is not set within 1 second, or the IO transport is not connected,
+            // then wait for 100 milliseconds and try again.
+            if (!this.writeEnableEvent.Wait(1000, this.stoppingToken) || !this.ioTransport.IsConnected)
             {
                 Thread.Sleep(100);
                 continue;
             }
 
-            // Reset the write enable signal and prepare a telegram to be sent
+            // If we've reached this point, the write enable signal is set and the IO transport is connected.
+            // So we reset the write enable signal and prepare a telegram to be sent.
             this.writeEnableEvent.Reset();
             var isWriteSuccessful = false;
             var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
@@ -758,12 +756,13 @@ public async Task SendIoCommandTaskFunction()
             // Log a fatal error and send an error message.
             this.SendOperationErrorMessage(
                 new IoExceptionFieldMessageData(ex, "IO Driver Fatal Error", (int)IoDriverExceptionCode.DeviceNotConnected),
-               isFatalError: true);
+                isFatalError: true);
             return;
         }
     }
     while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
-        }
+}
+
 
         public void SendIoMessageData(object state)
         {
