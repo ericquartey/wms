@@ -672,7 +672,9 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
-       // Function to send an IO command.
+       Sure! Here are the comments added above each code block:
+
+// Function to send an IO command.
 public async Task SendIoCommandTaskFunction()
 {
     // Continue running until a stop is requested or disposed.
@@ -762,7 +764,7 @@ public async Task SendIoCommandTaskFunction()
         }
     }
     while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
-
+        }
 
         public void SendIoMessageData(object state)
         {
