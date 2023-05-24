@@ -672,7 +672,7 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
-    // Function to send an IO command.
+   // Function to send an IO command.
 public async Task SendIoCommandTaskFunction()
 {
     // Continue running until a stop is requested or disposed.
@@ -687,7 +687,7 @@ public async Task SendIoCommandTaskFunction()
                 this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
             }
 
-      this.writeEnableEvent.Wait(1000, this.stoppingToken)
+       this.writeEnableEvent.Wait(1000, this.stoppingToken);
             if (!this.ioTransport.IsConnected)
             {
                 Thread.Sleep(100);
@@ -761,7 +761,6 @@ public async Task SendIoCommandTaskFunction()
     }
     while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
 }
-
 
         public void SendIoMessageData(object state)
         {
