@@ -40,8 +40,8 @@ namespace Ferretto.VW.MAS.IODriver
 
             var fireAlarm = this.machineProvider.IsFireAlarmActive() ? !mainDevice.PreFireAlarm && !mainDevice.FireAlarm : true;
 
-            var sensitiveEdgeAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveEdgeAlarm : true;
-            var sensitiveCarpetsAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveCarpetsAlarm : true;
+            var sensitiveEdgeAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveEdgeAlarm : false;
+            var sensitiveCarpetsAlarm = this.machineProvider.IsSpeaActive() ? mainDevice.SensitiveCarpetsAlarm : false;
 
             var heightAlarm = this.machineProvider.IsHeightAlarmActive();
 
@@ -57,9 +57,9 @@ namespace Ferretto.VW.MAS.IODriver
                 &&
                 fireAlarm
                 &&
-                sensitiveEdgeAlarm
+                !sensitiveEdgeAlarm
                 &&
-                sensitiveCarpetsAlarm
+                !sensitiveCarpetsAlarm
                 &&
                 !heightAlarm;
         }

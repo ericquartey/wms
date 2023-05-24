@@ -199,9 +199,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool PreFireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : false;
 
-        public bool SensitiveCarpetsAlarm => this.IsSpeaActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : true;
+        public bool SensitiveCarpetsAlarm => this.IsSpeaActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
 
-        public bool SensitiveEdgeAlarm => this.IsSpeaActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : true;
+        public bool SensitiveEdgeAlarm => this.IsSpeaActive() ? this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1] : false;
 
         public bool TeleOkBay1 => this.sensorStatus[(int)IOMachineSensors.TrolleyOptionBay1];
 
@@ -592,14 +592,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     errorCode = MachineErrorCode.HeightAlarm;
                 }
 
-                if (!this.SensitiveEdgeAlarm)
+                if (this.SensitiveEdgeAlarm)
                 {
                     isMarchPossible = false;
                     reason.Append("SensitiveEdgeAlarm Active; ");
                     errorCode = MachineErrorCode.SensitiveEdgeAlarm;
                 }
 
-                if (!this.SensitiveCarpetsAlarm)
+                if (this.SensitiveCarpetsAlarm)
                 {
                     isMarchPossible = false;
                     reason.Append("SensitiveCarpetsAlarm Active; ");
@@ -832,7 +832,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                     }
 
                                     var isSpeaActive = this.IsSpeaActive();
-                                    if (isSpeaActive && !newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1])
+                                    if (isSpeaActive && newSensorStatus[(int)IOMachineSensors.TrolleyOptionBay1])
                                     {
                                         using (var scope = this.serviceScopeFactory.CreateScope())
                                         {
@@ -848,7 +848,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                                         }
                                     }
 
-                                    if (isSpeaActive && !newSensorStatus[(int)IOMachineSensors.RobotOptionBay1])
+                                    if (isSpeaActive && newSensorStatus[(int)IOMachineSensors.RobotOptionBay1])
                                     {
                                         using (var scope = this.serviceScopeFactory.CreateScope())
                                         {
