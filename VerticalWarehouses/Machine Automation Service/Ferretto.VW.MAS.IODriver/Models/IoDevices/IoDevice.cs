@@ -672,7 +672,7 @@ namespace Ferretto.VW.MAS.IODriver
             while (!this.stoppingToken.IsCancellationRequested && !this.isDisposed);
         }
 
-       // Function to send an IO command.
+    // Function to send an IO command.
 public async Task SendIoCommandTaskFunction()
 {
     // Continue running until a stop is requested or disposed.
@@ -687,9 +687,8 @@ public async Task SendIoCommandTaskFunction()
                 this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
             }
 
-            // If the write enable signal is not set within 1 second, or the IO transport is not connected,
-            // then wait for 100 milliseconds and try again.
-            if (!this.writeEnableEvent.Wait(1000, this.stoppingToken) || !this.ioTransport.IsConnected)
+      this.writeEnableEvent.Wait(1000, this.stoppingToken)
+            if (!this.ioTransport.IsConnected)
             {
                 Thread.Sleep(100);
                 continue;
