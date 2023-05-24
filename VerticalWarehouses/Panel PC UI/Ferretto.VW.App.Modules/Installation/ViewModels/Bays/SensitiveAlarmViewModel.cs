@@ -64,7 +64,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand SensitiveCarpetCommand =>
                             this.sensitiveCarpetCommand
             ??
-            (this.sensitiveCarpetCommand = new DelegateCommand(async () => await this.ChangeSensorAsync(SensType.SensitiveCarpetSensor), () => !this.IsMoving));
+            (this.sensitiveCarpetCommand = new DelegateCommand(async () => await this.ChangeSensorAsync(SensType.SensitiveCarpetSensor), () => true));
 
         public bool SensitiveCarpetSensor
         {

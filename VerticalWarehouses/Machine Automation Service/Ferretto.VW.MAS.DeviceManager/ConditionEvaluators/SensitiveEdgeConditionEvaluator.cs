@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public bool IsSatisfied(BayNumber bayNumber)
         {
-            return this.machineResourcesProvider.SensitiveEdgeAlarm;
+            return !this.machineResourcesProvider.SensitiveEdgeAlarm;
         }
 
         #endregion

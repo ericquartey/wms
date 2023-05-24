@@ -54,7 +54,7 @@
                 <StackPanel Margin="15,10" Orientation="Vertical" HorizontalAlignment="Center" >
                     <controls:PpcSensorControl SensorState="{Binding SensitiveCarpetSensor}"
                                     Text="{res:Loc InstallationApp.ExclusionSensitiveCarpet}" />
-                    <controls:PpcButton Content="{Binding SensitiveCarpetText}" Command="{Binding SensitiveCarpetCommand}" />
+                    <controls:PpcButton IsEnabled="True" Content="{Binding SensitiveCarpetText}" Command="{Binding SensitiveCarpetCommand}" />
                 </StackPanel>
             </StackPanel>
         </Border>
