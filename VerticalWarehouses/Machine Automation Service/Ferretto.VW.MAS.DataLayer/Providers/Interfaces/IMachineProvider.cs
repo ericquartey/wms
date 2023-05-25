@@ -124,6 +124,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Task SetHeightAlarm(bool value);
 
+        Task SetResponseTimeoutMilliseconds(int value);
+
+        int GetResponseTimeoutMilliseconds();
+
         void Update(Machine machine, DataLayerContext context);
 
         void UpdateBayChainStatistics(double distance, BayNumber bayNumber);

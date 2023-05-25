@@ -1177,6 +1177,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Response Timeout Milliseconds.
+        /// </summary>
+        public static string Machine_ResponseTimeoutMilliseconds {
+            get {
+                return ResourceManager.GetString("Machine_ResponseTimeoutMilliseconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Serial Number.
         /// </summary>
         public static string Machine_SerialNumber {

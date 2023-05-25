@@ -648,4 +648,7 @@
   <data name="Name" xml:space="preserve">
     <value>Nome</value>
   </data>
+  <data name="Machine_ResponseTimeoutMilliseconds" xml:space="preserve">
+    <value>Risposta Timeout Millisecondi</value>
+  </data>
 </root>

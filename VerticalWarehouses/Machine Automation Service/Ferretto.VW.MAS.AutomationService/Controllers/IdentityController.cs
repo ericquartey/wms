@@ -179,6 +179,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsSpeaActive());
         }
 
+        [HttpPost("get/ResponseTimeoutMilliseconds")]
+        public ActionResult<int> GetResponseTimeoutMilliseconds()
+        {
+            return this.Ok(this.machineProvider.GetResponseTimeoutMilliseconds());
+        }
+
+        [HttpPost("set/ResponseTimeoutMilliseconds")]
+        public ActionResult<IActionResult> SetResponseTimeoutMilliseconds(int value)
+        {
+            this.machineProvider.SetResponseTimeoutMilliseconds(value);
+            return this.Ok();
+        }
+
         [HttpPost("get/ItemUniqueIdLength")]
         public ActionResult<int> GetItemUniqueIdLength()
         {

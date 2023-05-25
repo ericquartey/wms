@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
     {
         #region Fields
 
-        private const int ResponseTimeoutMilliseconds = 5000;
-
         private readonly Axis axisToSwitchOn;
 
         private readonly BayNumber bayNumber;
@@ -21,7 +19,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         private readonly IoIndex index;
 
-        private readonly Timer responseTimer = new Timer(ResponseTimeoutMilliseconds) { AutoReset = false };
+        private readonly IMachineProvider machineProvider;
+
+        private readonly int ResponseTimeoutMilliseconds = 5000;
+
+        private readonly Timer responseTimer;
 
         private readonly IoStatus status;
 
@@ -42,6 +44,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             IIoStateMachine parentStateMachine)
             : base(parentStateMachine, logger)
         {
+            this.machineProvider = this.ParentStateMachine.GetRequiredService<IMachineProvider>();
+            this.ResponseTimeoutMilliseconds = this.machineProvider.GetResponseTimeoutMilliseconds();
+            this.responseTimer = new Timer(this.ResponseTimeoutMilliseconds) { AutoReset = false };
+
             this.axisToSwitchOn = axisToSwitchOn;
             this.status = status;
             this.index = index;
@@ -80,7 +86,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     this.Logger.LogTrace("2b:Axis switched on");
 
                     var feedback = (this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn) ? this.status.InputData[(int)IoPorts.CradleMotorFeedback] : this.status.InputData[(int)IoPorts.ElevatorMotorFeedback];
-                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > ResponseTimeoutMilliseconds
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.ResponseTimeoutMilliseconds
                         || feedback)
                     {
                         this.Logger.LogDebug($"3:Change State to EndState: feedback {feedback}, delay {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds:0.0000}");
