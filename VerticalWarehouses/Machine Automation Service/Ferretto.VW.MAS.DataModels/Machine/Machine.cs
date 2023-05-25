@@ -213,9 +213,9 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public IEnumerable<CellPanel> Panels { get; set; }
 
-        public bool SensitiveCarpetsAlarm { get; set; }
-
         public int ResponseTimeoutMilliseconds { get; set; }
+
+        public bool SensitiveCarpetsAlarm { get; set; }
 
         public bool SensitiveEdgeAlarm { get; set; }
 
@@ -238,6 +238,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool TouchHelper { get; set; }
 
         public int VerticalCyclesToCalibrate { get; set; } = 50;
+
+        public int VerticalPositionToCalibrate { get; set; }
 
         public int? WaitingListPriorityHighlighted { get; set; }
 

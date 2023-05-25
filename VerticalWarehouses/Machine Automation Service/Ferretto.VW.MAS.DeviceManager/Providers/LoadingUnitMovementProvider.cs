@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IShutterProvider shutterProvider;
 
+        private readonly IMachineProvider machine;
+
         #endregion
 
         #region Constructors
@@ -57,6 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IEventAggregator eventAggregator,
             IInvertersProvider invertersProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineProvider machine,
             ILogger<LoadingUnitMovementProvider> logger)
             : base(eventAggregator)
         {
@@ -70,6 +73,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
             this.invertersProvider = invertersProvider ?? throw new ArgumentNullException(nameof(invertersProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.machine = machine ?? throw new ArgumentNullException(nameof(machine));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -501,7 +505,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.externalBayProvider.Homing(calibration, loadingUnitId, showErrors, turnBack, requestingBay, sender);
                 }
             }
-            else
+            else if (this.GetCurrentVerticalPosition() <= this.machine.GetVerticalPositionToCalibrate())
             {
                 this.elevatorProvider.Homing(axis, calibration, loadingUnitId, showErrors, requestingBay, sender);
             }

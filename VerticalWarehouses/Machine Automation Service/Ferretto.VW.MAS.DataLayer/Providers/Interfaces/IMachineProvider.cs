@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </returns>
         byte[] GetRawDatabaseContent();
 
+        int GetResponseTimeoutMilliseconds();
+
         string GetSecondaryDatabase();
 
         string GetSerialNumber();
@@ -61,6 +63,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<MachineStatistics> GetStatistics();
 
         int GetToteBarcodeLength();
+
+        int GetVerticalPositionToCalibrate();
 
         int? GetWaitingListPriorityHighlighted();
 
@@ -114,19 +118,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetBayOperationParams(Machine machine);
 
+        Task SetHeightAlarm(bool value);
+
         Task SetMachineId(int newMachineId);
+
+        Task SetResponseTimeoutMilliseconds(int value);
 
         Task SetSensitiveCarpetsBypass(bool value);
 
         Task SetSensitiveEdgeBypass(bool value);
 
         Task SetSilenceSirenAlarm(bool silenceSirenAlarm);
-
-        Task SetHeightAlarm(bool value);
-
-        Task SetResponseTimeoutMilliseconds(int value);
-
-        int GetResponseTimeoutMilliseconds();
 
         void Update(Machine machine, DataLayerContext context);
 

@@ -179,19 +179,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsSpeaActive());
         }
 
-        [HttpPost("get/ResponseTimeoutMilliseconds")]
-        public ActionResult<int> GetResponseTimeoutMilliseconds()
-        {
-            return this.Ok(this.machineProvider.GetResponseTimeoutMilliseconds());
-        }
-
-        [HttpPost("set/ResponseTimeoutMilliseconds")]
-        public ActionResult<IActionResult> SetResponseTimeoutMilliseconds(int value)
-        {
-            this.machineProvider.SetResponseTimeoutMilliseconds(value);
-            return this.Ok();
-        }
-
         [HttpPost("get/ItemUniqueIdLength")]
         public ActionResult<int> GetItemUniqueIdLength()
         {
@@ -208,6 +195,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetListPutConfirm()
         {
             return this.Ok(this.machineProvider.GetListPutConfirm());
+        }
+
+        [HttpPost("get/ResponseTimeoutMilliseconds")]
+        public ActionResult<int> GetResponseTimeoutMilliseconds()
+        {
+            return this.Ok(this.machineProvider.GetResponseTimeoutMilliseconds());
         }
 
         [HttpPost("get/SensitiveCarpetsAlarm/enable")]
@@ -263,6 +256,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<bool> GetTouchHelperEnable()
         {
             return this.Ok(this.machineProvider.IsTouchHelperEnabled());
+        }
+
+        [HttpPost("get/VerticalPositionToCalibrate")]
+        public ActionResult<int> GetVerticalPositionToCalibrate()
+        {
+            return this.Ok(this.machineProvider.GetVerticalPositionToCalibrate());
         }
 
         [HttpPost("get/Waiting/List/Priority/Highlighted")]
@@ -322,10 +321,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("set/HeightAlarm")]
+        public async Task<IActionResult> SetHeightAlarmAsync(bool value)
+        {
+            await this.machineProvider.SetHeightAlarm(value);
+            return this.Ok();
+        }
+
         [HttpPost("set/machine/id")]
         public async Task<IActionResult> SetMachineIdAsync(int newMachineId)
         {
             await this.machineProvider.SetMachineId(newMachineId);
+            return this.Ok();
+        }
+
+        [HttpPost("set/ResponseTimeoutMilliseconds")]
+        public ActionResult<IActionResult> SetResponseTimeoutMilliseconds(int value)
+        {
+            this.machineProvider.SetResponseTimeoutMilliseconds(value);
             return this.Ok();
         }
 
@@ -347,13 +360,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<IActionResult> SilenceSirenAlarmAsync()
         {
             await this.machineProvider.SetSilenceSirenAlarm(true);
-            return this.Ok();
-        }
-
-        [HttpPost("set/HeightAlarm")]
-        public async Task<IActionResult> SetHeightAlarmAsync(bool value)
-        {
-            await this.machineProvider.SetHeightAlarm(value);
             return this.Ok();
         }
 
