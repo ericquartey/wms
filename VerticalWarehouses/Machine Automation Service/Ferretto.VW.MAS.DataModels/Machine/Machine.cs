@@ -215,6 +215,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool SensitiveCarpetsAlarm { get; set; }
 
+        public int ResponseTimeoutMilliseconds { get; set; }
+
         public bool SensitiveEdgeAlarm { get; set; }
 
         /// <summary>

@@ -154,6 +154,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(31)]
             public bool TouchHelper { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ResponseTimeoutMilliseconds))]
+            [Unit("ms")]
+            [Range(1000, 15000, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Id(33)]
+            public int ResponseTimeoutMilliseconds { get; set; }
+
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
             [Id(23)]

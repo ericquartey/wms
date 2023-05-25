@@ -1449,6 +1449,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetIsSpeaEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetResponseTimeoutMillisecondsAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetResponseTimeoutMillisecondsAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetResponseTimeoutMillisecondsAsync(int value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetResponseTimeoutMillisecondsAsync(int value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> GetItemUniqueIdLengthAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5573,6 +5587,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("SensitiveCarpetsAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool SensitiveCarpetsAlarm { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ResponseTimeoutMilliseconds", Required = Newtonsoft.Json.Required.Always)]
+        public int ResponseTimeoutMilliseconds { get; set; }
     
         [Newtonsoft.Json.JsonProperty("SensitiveEdgeAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool SensitiveEdgeAlarm { get; set; }

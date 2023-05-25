@@ -605,6 +605,26 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public async Task SetResponseTimeoutMilliseconds(int value)
+        {
+            lock (this.dataContext)
+            {
+
+                this.dataContext.Machines.First().ResponseTimeoutMilliseconds = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
+
+
+        public int GetResponseTimeoutMilliseconds()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ResponseTimeoutMilliseconds).First();
+            }
+        }
+
         public bool IsSensitiveEdgeBypass()
         {
             lock (this.dataContext)
