@@ -152,7 +152,7 @@
                               Command="{Binding SensitiveSensorCommand}"
                               Content="{res:Loc InstallationApp.SensitiveAlarmDescription}"
                               Style="{DynamicResource PpcButtonMenuCardStyle}"
-                              Visibility="{Binding IsSpea, Converter={StaticResource BTVC}}"/>
+                              Visibility="{Binding IsSpeaActive, Converter={StaticResource BTVC}}"/>
 
 
                 </WrapPanel>
