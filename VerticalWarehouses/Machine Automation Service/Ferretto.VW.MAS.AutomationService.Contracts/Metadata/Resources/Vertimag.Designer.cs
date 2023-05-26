@@ -1222,6 +1222,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vertical Position To Calibrate.
+        /// </summary>
+        public static string Machine_VerticalPositionToCalibrate {
+            get {
+                return ResourceManager.GetString("Machine_VerticalPositionToCalibrate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual Movements.
         /// </summary>
         public static string ManualMovements {

@@ -362,6 +362,14 @@ namespace Ferretto.VW.MAS.DataLayer
             return rawDatabase;
         }
 
+        public int GetResponseTimeoutMilliseconds()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ResponseTimeoutMilliseconds).First();
+            }
+        }
+
         public string GetSecondaryDatabase()
         {
             return GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
@@ -404,6 +412,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.ToteBarcodeLength).First();
+            }
+        }
+
+        public int GetVerticalPositionToCalibrate()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.VerticalPositionToCalibrate).First();
             }
         }
 
@@ -551,15 +567,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public async Task SetHeightAlarm(bool value)
-        {
-            lock (this.dataContext)
-            {
-                this.dataContext.Machines.First().HeightAlarm = value;
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public bool IsOneTonMachine()
         {
             lock (this.dataContext)
@@ -605,31 +612,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public async Task SetResponseTimeoutMilliseconds(int value)
-        {
-            lock (this.dataContext)
-            {
-
-                this.dataContext.Machines.First().ResponseTimeoutMilliseconds = value;
-                this.dataContext.SaveChanges();
-            }
-        }
-
-
-
-        public int GetResponseTimeoutMilliseconds()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.ResponseTimeoutMilliseconds).First();
-            }
-        }
-
         public bool IsSensitiveEdgeBypass()
         {
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.SensitiveEdgeAlarm).First();
+            }
+        }
+
+        public bool IsSilenceSirenAlarm()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.SilenceSirenAlarm).First();
             }
         }
 
@@ -640,15 +635,6 @@ namespace Ferretto.VW.MAS.DataLayer
         //        return this.dataContext.Machines.AsNoTracking().Select(m => m.HeightAlarm).First();
         //    }
         //}
-
-        public bool IsSilenceSirenAlarm()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.SilenceSirenAlarm).First();
-            }
-        }
-
         public bool IsSpeaActive()
         {
             lock (this.dataContext)
@@ -711,6 +697,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public async Task SetHeightAlarm(bool value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().HeightAlarm = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;
@@ -725,6 +720,15 @@ namespace Ferretto.VW.MAS.DataLayer
             int count2 = await dataContext.Database.ExecuteSqlCommandAsync($"update machines set Id = {newMachineId};");
             int count3 = await dataContext.Database.ExecuteSqlCommandAsync($"update cellpanels set MachineId = {newMachineId};");
             int count4 = await dataContext.Database.ExecuteSqlCommandAsync($"update bays set MachineId = {newMachineId};");
+        }
+
+        public async Task SetResponseTimeoutMilliseconds(int value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().ResponseTimeoutMilliseconds = value;
+                this.dataContext.SaveChanges();
+            }
         }
 
         public async Task SetSensitiveCarpetsBypass(bool value)
