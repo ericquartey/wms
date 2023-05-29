@@ -58,11 +58,11 @@
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.TrolleyOptionBay1}"
                                     Visibility="{Binding IsSpeaActive, Converter={StaticResource BTVC}}"
-                                    Text="{res:Loc InstallationApp.ExclusionSensitiveEdge}" />
+                                    Text="{res:Loc InstallationApp.SensitiveEdgeAlarm}" />
 
         <controls:PpcSensorControl SensorState="{Binding Sensors.RobotOptionBay1}"
                                     Visibility="{Binding IsSpeaActive, Converter={StaticResource BTVC}}"
-                                    Text="{res:Loc InstallationApp.ExclusionSensitiveCarpet}" />
+                                    Text="{res:Loc InstallationApp.SensitiveCarpetsAlarm}" />
 
             </StackPanel>
 

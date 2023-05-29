@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.SetProperty(ref this.sensitiveCarpetSensor, value);
 
-                this.SensitiveCarpetText = value ? General.WmsEnabled : General.WmsDisabled;
+                this.SensitiveCarpetText = value ? InstallationApp.AccessoryEnabled : General.WmsDisabled;
             }
         }
 

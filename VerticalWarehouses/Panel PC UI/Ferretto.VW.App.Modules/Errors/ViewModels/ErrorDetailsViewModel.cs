@@ -497,10 +497,17 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             catch (Exception) { }
 
-            if (this.error.Code == (int)MachineErrorCode.HeightAlarm)
+            try
             {
-                await this.MachineService.StopMovingByAllAsync();
+                if (this.error?.Code == (int)MachineErrorCode.HeightAlarm)
+                {
+                    await this.MachineService.StopMovingByAllAsync();
+                }
             }
+            catch (Exception)
+            {
+            }
+
         }
 
         public void ResetImageVisibility()
