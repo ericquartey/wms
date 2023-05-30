@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -122,10 +121,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                var sens = await this.machineSensorsWebService.GetOutFaultAsync();
-
-                this.SensitiveEdgeSensor = sens.ElementAt(6);
-                this.SensitiveCarpetSensor = sens.ElementAt(7);
+                this.SensitiveEdgeSensor = await this.machineIdentityWebService.GetSensitiveEdgeAlarmEnableAsync();
+                this.SensitiveCarpetSensor = await this.machineIdentityWebService.GetSensitiveCarpetsAlarmEnableAsync();
             }
             catch (Exception)
             {
