@@ -505,7 +505,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.externalBayProvider.Homing(calibration, loadingUnitId, showErrors, turnBack, requestingBay, sender);
                 }
             }
-            else if (this.GetCurrentVerticalPosition() <= this.machine.GetVerticalPositionToCalibrate())
+            else //if (this.GetCurrentVerticalPosition() <= this.machine.GetVerticalPositionToCalibrate())
             {
                 this.elevatorProvider.Homing(axis, calibration, loadingUnitId, showErrors, requestingBay, sender);
             }
