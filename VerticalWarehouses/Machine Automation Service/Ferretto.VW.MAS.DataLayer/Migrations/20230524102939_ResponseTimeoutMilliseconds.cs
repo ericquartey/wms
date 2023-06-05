@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "ResponseTimeoutMilliseconds",
                 table: "Machines",
                 nullable: false,
-                defaultValue: 5000);
+                defaultValue: 10000);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
