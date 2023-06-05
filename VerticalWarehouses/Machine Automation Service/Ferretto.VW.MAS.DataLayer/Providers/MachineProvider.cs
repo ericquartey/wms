@@ -370,6 +370,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetInverterResponseTimeout()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.InverterResponseTimeout).First();
+            }
+        }
+
         public string GetSecondaryDatabase()
         {
             return GetDBFilePath(this.configuration.GetDataLayerSecondaryConnectionString());
@@ -727,6 +735,15 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.Machines.First().ResponseTimeoutMilliseconds = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public async Task SetInverterResponseTimeout(int value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().InverterResponseTimeout = value;
                 this.dataContext.SaveChanges();
             }
         }

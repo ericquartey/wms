@@ -1421,6 +1421,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<bool> GetHeightAlarmEnableAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetInverterResponseTimeoutAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> GetInverterResponseTimeoutAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<bool> GetIsLoadUnitFixedAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1587,6 +1594,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetHeightAlarmAsync(bool value, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetInverterResponseTimeoutAsync(int value);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SetInverterResponseTimeoutAsync(int value, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SetMachineIdAsync(int newMachineId);
@@ -5594,6 +5608,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ResponseTimeoutMilliseconds", Required = Newtonsoft.Json.Required.Always)]
         public int ResponseTimeoutMilliseconds { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("InverterResponseTimeout", Required = Newtonsoft.Json.Required.Always)]
+        public int InverterResponseTimeout { get; set; }
     
         [Newtonsoft.Json.JsonProperty("SensitiveCarpetsAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool SensitiveCarpetsAlarm { get; set; }

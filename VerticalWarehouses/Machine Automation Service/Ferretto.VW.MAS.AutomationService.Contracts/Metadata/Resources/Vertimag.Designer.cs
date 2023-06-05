@@ -1006,6 +1006,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter Response Timeout.
+        /// </summary>
+        public static string Machine_InverterResponseTimeout {
+            get {
+                return ResourceManager.GetString("Machine_InverterResponseTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Axis Changed in inverter communication.
         /// </summary>
         public static string Machine_IsAxisChanged {

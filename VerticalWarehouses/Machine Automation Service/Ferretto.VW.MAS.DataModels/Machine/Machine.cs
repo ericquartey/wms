@@ -215,6 +215,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int ResponseTimeoutMilliseconds { get; set; }
 
+        /// <summary>
+        /// Inverter response timeout
+        /// </summary>
+        public int InverterResponseTimeout { get; set; }
+
         public bool SensitiveCarpetsAlarm { get; set; }
 
         public bool SensitiveEdgeAlarm { get; set; }

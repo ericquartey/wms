@@ -515,7 +515,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 if (user.AccessLevel == 99)
                 {
-                    var expectedPassword = $"Ferretto{31 - DateTime.Now.Day:00}";
+                    var expectedPassword = Decrypt(user.PasswordHash, user.PasswordSalt) + (DateTime.Now.Day != 31 ? 31 - DateTime.Now.Day : "00");
                     return expectedPassword == password;
                 }
                 else

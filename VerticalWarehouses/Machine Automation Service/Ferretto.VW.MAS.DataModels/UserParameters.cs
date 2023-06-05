@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -51,7 +50,7 @@ namespace Ferretto.VW.MAS.DataModels
                 Id = -99,
                 Name = "admin",
                 AccessLevel = 99,
-                PasswordHash = "8k2DQfWKVZ2FAX+miwsVYN+RSiQZ/dxRO1IcRAC+TvA=",
+                PasswordHash = "cbRN86CITnhRJ0jen38G9s9KZf7YNHirJfI0FP6qDbo=",
                 PasswordSalt = "7T4XrBJfRzWtyFNGrXFlsw==",
                 Language = "it-IT",
                 Validity = DateTime.Now,
@@ -75,7 +74,7 @@ namespace Ferretto.VW.MAS.DataModels
                 Id = -2,
                 Name = "installer",
                 AccessLevel = 3,
-                PasswordHash = "RFzfGJR1H1hAi+t4eamhB1O0saoZkbKg3tWLkhlWiqs=",
+                PasswordHash = "L3I3og8ZVak4fQVi8LRyXld3kKH+TK5TJ5/usnNXij4=",
                 PasswordSalt = "obChaz6W7brGMtT7Dn7TAw==",
                 Language = "it-IT",
                 Validity = DateTime.Now,

@@ -19,6 +19,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         private readonly IErrorsProvider errorProvider;
 
+        private readonly int inverterResponseTimeout;
+
+        private readonly IMachineProvider machineProvider;
+
         private bool isAxisChanged;
 
         private int minTimeout = 500;
@@ -40,6 +44,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         {
             this.axisToSwitchOn = axisToSwitchOn;
             this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
+            this.machineProvider = this.ParentStateMachine.GetRequiredService<IMachineProvider>();
+
+            this.inverterResponseTimeout = this.machineProvider.GetInverterResponseTimeout();
         }
 
         #endregion
@@ -240,7 +247,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                     this.ParentStateMachine.ChangeState(new SwitchOnEndState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
-                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.inverterResponseTimeout)
                 {
                     this.Logger.LogError($"2:SwitchOnStartState timeout, inverter {this.InverterStatus.SystemIndex}, waitAck {this.waitAck}");
                     this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Switch On Inverter {this.InverterStatus.SystemIndex}");

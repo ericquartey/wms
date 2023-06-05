@@ -18,6 +18,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         private readonly IErrorsProvider errorProvider;
 
+        private readonly int inverterResponseTimeout;
+
+        private readonly IMachineProvider machineProvider;
+
         private DateTime startTime;
 
         #endregion
@@ -31,6 +35,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
+            this.machineProvider = this.ParentStateMachine.GetRequiredService<IMachineProvider>();
+
+            this.inverterResponseTimeout = this.machineProvider.GetInverterResponseTimeout();
         }
 
         #endregion
@@ -100,7 +107,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
                     this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
-                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.inverterResponseTimeout)
                 {
                     this.Logger.LogError($"2:PowerOffStartState timeout, inverter {this.InverterStatus.SystemIndex}");
                     this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Power Off Inverter {this.InverterStatus.SystemIndex}");
