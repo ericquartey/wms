@@ -148,6 +148,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(33)]
             public int ResponseTimeoutMilliseconds { get; set; }
 
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_InverterResponseTimeout))]
+            [Unit("ms")]
+            [Range(1000, 15000, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
+            [Id(35)]
+            public int InverterResponseTimeout { get; set; }
+
+
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_SerialNumber))]
             [Id(2)]
             public string SerialNumber { get; set; }

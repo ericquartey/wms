@@ -155,6 +155,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsHeightAlarmActive());
         }
 
+        [HttpPost("get/InverterResponseTimeout")]
+        public ActionResult<int> GetInverterResponseTimeout()
+        {
+            return this.Ok(this.machineProvider.GetInverterResponseTimeout());
+        }
+
         [HttpPost("get/IsLoadUnitFixed")]
         public ActionResult<bool> GetIsLoadUnitFixed()
         {
@@ -325,6 +331,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<IActionResult> SetHeightAlarmAsync(bool value)
         {
             await this.machineProvider.SetHeightAlarm(value);
+            return this.Ok();
+        }
+
+        [HttpPost("set/InverterResponseTimeout")]
+        public ActionResult<IActionResult> SetInverterResponseTimeout(int value)
+        {
+            this.machineProvider.SetInverterResponseTimeout(value);
             return this.Ok();
         }
 

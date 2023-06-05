@@ -20,6 +20,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         private readonly InverterIndex inverterIndex;
 
+        private readonly int inverterResponseTimeout;
+
+        private readonly IMachineProvider machineProvider;
+
         private DateTime startTime;
 
         #endregion
@@ -35,6 +39,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         {
             this.inverterIndex = inverterIndex;
             this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
+            this.machineProvider = this.ParentStateMachine.GetRequiredService<IMachineProvider>();
+
+            this.inverterResponseTimeout = this.machineProvider.GetInverterResponseTimeout();
         }
 
         #endregion
@@ -110,7 +117,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                     this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
                 }
                 else if (!this.InverterStatus.CommonStatusWord.IsFault
-                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
+                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.inverterResponseTimeout)
                 {
                     if (this.InverterStatus.CommonStatusWord.IsFault)
                     {

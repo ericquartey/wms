@@ -654,4 +654,7 @@
   <data name="Machine_VerticalPositionToCalibrate" xml:space="preserve">
     <value>Posizione dell'asse verticale per la calibrazione</value>
   </data>
+  <data name="Machine_InverterResponseTimeout" xml:space="preserve">
+    <value>Timeout risposta inverter</value>
+  </data>
 </root>

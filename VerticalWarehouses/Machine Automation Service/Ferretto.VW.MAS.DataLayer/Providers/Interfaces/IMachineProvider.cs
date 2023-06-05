@@ -52,6 +52,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetResponseTimeoutMilliseconds();
 
+
+        int GetInverterResponseTimeout();
+        Task SetInverterResponseTimeout(int value);
+
         string GetSecondaryDatabase();
 
         string GetSerialNumber();

@@ -18,6 +18,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly IErrorsProvider errorProvider;
 
+        private readonly int inverterResponseTimeout;
+
+        private readonly IMachineProvider machineProvider;
+
         private int CheckDelayTime = 300;
 
         private DateTime enableTime;
@@ -39,6 +43,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
             this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
+            this.machineProvider = this.ParentStateMachine.GetRequiredService<IMachineProvider>();
+
+            this.inverterResponseTimeout = this.machineProvider.GetInverterResponseTimeout();
         }
 
         #endregion
@@ -124,7 +131,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                         returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
                     }
                 }
-                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.inverterResponseTimeout)
                 {
                     this.Logger.LogError($"2:CalibrateAxisEnableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
                     this.errorProvider.RecordNew(MachineErrorCode.InverterCommandTimeout, additionalText: $"Calibrate Axis Enable Operation Inverter {this.InverterStatus.SystemIndex}");
