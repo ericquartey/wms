@@ -511,13 +511,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static bool IsPasswordValid(UserParameters user, string password, string supportToken, TimeSpan validity)
         {
-            if (!user.IsService)
-            {
-                if (user.AccessLevel == 99)
-                {
-                    var expectedPassword = Decrypt(user.PasswordHash, user.PasswordSalt) + (DateTime.Now.Day != 31 ? 31 - DateTime.Now.Day : "00");
-                    return expectedPassword == password;
-                }
+           if (user.AccessLevel == 99)
+{
+    var expectedPassword = Decrypt(user.PasswordHash, user.PasswordSalt) + (31 - DateTime.Now.Day).ToString("D2");
+    return expectedPassword == password;
+}
                 else
                 {
                     var providedPasswordHash = GeneratePasswordHash(password, user.PasswordSalt);
