@@ -19,11 +19,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand generalCommand;
 
+        private DelegateCommand inverterDiagnosticsCommand;
+
         private bool isAlarmActive;
 
         private bool isDiagnosticsActive;
 
         private bool isGeneralActive;
+
+        private bool isInverterDiagnosticsActive;
 
         private bool isNetworkAdaptersActive;
 
@@ -64,6 +68,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             User,
 
             NetworkAdapters,
+
+            InverterDiagnostics,
         }
 
         #endregion
@@ -93,6 +99,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.generalCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.General)));
 
+        public ICommand InverterDiagnosticsCommand =>
+            this.inverterDiagnosticsCommand
+            ??
+            (this.inverterDiagnosticsCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.InverterDiagnostics),
+                this.CanExecuteCommand));
+
         public bool IsAlarmActive
         {
             get => this.isAlarmActive;
@@ -109,6 +122,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isGeneralActive;
             set => this.SetProperty(ref this.isGeneralActive, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsInverterDiagnosticsActive
+        {
+            get => this.isInverterDiagnosticsActive;
+            set => this.SetProperty(ref this.isInverterDiagnosticsActive, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsNetworkAdaptersActive
@@ -171,6 +190,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.IsGeneralActive = false;
             this.IsStatisticsActive = false;
             this.IsNetworkAdaptersActive = false;
+            this.IsInverterDiagnosticsActive = false;
 
             switch ((Menu)(this.Data ?? Menu.General))
             {
@@ -197,6 +217,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 case Menu.NetworkAdapters:
                     this.IsNetworkAdaptersActive = true;
                     break;
+
+                case Menu.InverterDiagnostics:
+                    this.IsInverterDiagnosticsActive = true;
+                    break;
             }
 
             await base.OnAppearedAsync();
@@ -212,6 +236,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.generalCommand?.RaiseCanExecuteChanged();
             this.statisticsCommand?.RaiseCanExecuteChanged();
             this.networkAdaptersCommand?.RaiseCanExecuteChanged();
+            this.inverterDiagnosticsCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteCommand()
@@ -277,6 +302,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.About.NETWORKADAPTERS,
+                        data: menu,
+                        trackCurrentView: false);
+                    break;
+
+                case Menu.InverterDiagnostics:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.About.INVERTERDIAGNOSTICS,
                         data: menu,
                         trackCurrentView: false);
                     break;

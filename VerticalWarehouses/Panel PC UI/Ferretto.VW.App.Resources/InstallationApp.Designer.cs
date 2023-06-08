@@ -2635,7 +2635,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error1.
+        ///   Looks up a localized string similar to Reset security function.
         /// </summary>
         public static string ExitError1 {
             get {
@@ -2644,7 +2644,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 2.
+        ///   Looks up a localized string similar to Vertical elevator axis motor (does not exist on 1000kg machines).
         /// </summary>
         public static string ExitError2 {
             get {
@@ -2653,7 +2653,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 3.
+        ///   Looks up a localized string similar to Motore asse orizzontale elevatore (non esiste su macchine 1000kg).
         /// </summary>
         public static string ExitError3 {
             get {
@@ -2662,7 +2662,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 4.
+        ///   Looks up a localized string similar to Height reading activation.
         /// </summary>
         public static string ExitError4 {
             get {
@@ -2671,7 +2671,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 5.
+        ///   Looks up a localized string similar to Bay lighting activation.
         /// </summary>
         public static string ExitError5 {
             get {
@@ -2680,7 +2680,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 6.
+        ///   Looks up a localized string similar to Enabling gear.
         /// </summary>
         public static string ExitError6 {
             get {
@@ -2689,7 +2689,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 7.
+        ///   Looks up a localized string similar to External options.
         /// </summary>
         public static string ExitError7 {
             get {
@@ -2698,7 +2698,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exit Error 8.
+        ///   Looks up a localized string similar to External options.
         /// </summary>
         public static string ExitError8 {
             get {
