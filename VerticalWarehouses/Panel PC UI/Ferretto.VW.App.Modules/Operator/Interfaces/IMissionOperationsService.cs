@@ -15,6 +15,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         MissionOperation ActiveWmsOperation { get; }
 
+        int MaxOperation { get; }
+
+        int CurrentOperation { get; }
+
         #endregion
 
         #region Methods
@@ -46,6 +50,8 @@ namespace Ferretto.VW.App.Modules.Operator
         int RecallLoadingUnitId();
 
         Task<IEnumerable<Mission>> RefreshAsync(bool force = false);
+
+        Task SetCurrentOperation(int add);
 
         Task StartAsync();
 

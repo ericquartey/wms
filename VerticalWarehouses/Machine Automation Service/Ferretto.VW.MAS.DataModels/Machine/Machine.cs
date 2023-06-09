@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string BackupServerUsername { get; set; }
 
+        public bool MissionOperationSkipable { get; set; }
+
         /// <summary>
         /// Gets or sets the bays of the machine.
         /// </summary>

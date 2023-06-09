@@ -120,6 +120,10 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public MissionOperation ActiveWmsOperation { get; private set; }
 
+        public int MaxOperation { get; private set; }
+
+        public int CurrentOperation { get; private set; } = 1;
+
         #endregion
 
         #region Methods
@@ -432,6 +436,11 @@ namespace Ferretto.VW.App.Modules.Operator
             return this.machineMissions;
         }
 
+        public async Task SetCurrentOperation(int value)
+        {
+            this.CurrentOperation = value;
+        }
+
         public async Task StartAsync()
         {
             this.loadingUnitToken = this.loadingUnitToken
@@ -619,7 +628,9 @@ namespace Ferretto.VW.App.Modules.Operator
                         //{
                         //}
 
-                        newWmsOperationInfo = sortedOperations.FirstOrDefault(o => o.Status is MissionOperationStatus.Executing);
+                        this.MaxOperation = sortedOperations.Count(o => o.Status == MissionOperationStatus.Executing || o.Status == MissionOperationStatus.New);
+
+                        newWmsOperationInfo = sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing).Skip(this.CurrentOperation - 1).FirstOrDefault();
 
                         if (newWmsOperationInfo is null)
                         {

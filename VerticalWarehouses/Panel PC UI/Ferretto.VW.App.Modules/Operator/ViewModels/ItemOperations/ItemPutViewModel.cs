@@ -60,6 +60,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand confirmPartialOperationCommand;
 
+        private int currentOperation = 1;
+
         private DelegateCommand fullOperationCommand;
 
         private bool isAddItemVisible;
@@ -78,6 +80,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCurrentDraperyItemFullyRequested;
 
+        private bool isMissionOperationSkipable;
+
         private bool isOperationVisible;
 
         private bool isPickVisible;
@@ -87,6 +91,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isVisibleBarcodeReader;
 
         private string itemSearchKeyTitleName = OperatorApp.ItemSearchKeySearch;
+
+        private int maxOperation;
+
+        private DelegateCommand nextOperationCommand;
+
+        private DelegateCommand prevOperationCommand;
 
         private bool productsDataGridViewVisibility;
 
@@ -238,6 +248,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 async () => await this.ConfirmPartialOperationAsync(),
                 this.CanConfirmPartialOperationPut));
 
+        public int CurrentOperation
+        {
+            get => this.currentOperation;
+            set => this.SetProperty(ref this.currentOperation, value);
+        }
+
         public ICommand FullOperationCommand =>
                     this.fullOperationCommand
             ??
@@ -302,6 +318,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isCurrentDraperyItemFullyRequested, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsMissionOperationSkipable
+        {
+            get => this.isMissionOperationSkipable;
+            set => this.SetProperty(ref this.isMissionOperationSkipable, value);
+        }
+
         public bool IsOperationVisible
         {
             get => this.isOperationVisible;
@@ -331,6 +353,22 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             get => this.itemSearchKeyTitleName;
             set => this.SetProperty(ref this.itemSearchKeyTitleName, value);
         }
+
+        public int MaxOperation
+        {
+            get => this.maxOperation;
+            set => this.SetProperty(ref this.maxOperation, value);
+        }
+
+        public ICommand NextOperationCommand => this.nextOperationCommand
+                    ??
+                    (this.nextOperationCommand = new DelegateCommand(
+                        async () => this.NextOperation(), this.CanNextOperation));
+
+        public ICommand PrevOperationCommand => this.prevOperationCommand
+             ??
+            (this.prevOperationCommand = new DelegateCommand(
+                async () => this.PrevOperation(), this.CanPrevOperation));
 
         public bool ProductsDataGridViewVisibility
         {
@@ -682,6 +720,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public override void Disappear()
         {
+            if (this.missionOperationsService.CurrentOperation <= this.missionOperationsService.MaxOperation && this.IsMissionOperationSkipable)
+            {
+                this.CurrentOperation = this.missionOperationsService.CurrentOperation;
+            }
+            else
+            {
+                this.CurrentOperation = 1;
+                this.missionOperationsService.SetCurrentOperation(this.CurrentOperation);
+            }
+
             this.IsVisibleBarcodeReader = false;
             this.BarcodeString = string.Empty;
 
@@ -702,6 +750,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsCarrefour = configuration.IsCarrefour;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
+            this.IsMissionOperationSkipable = configuration.MissionOperationSkipable;
+
+            if (this.missionOperationsService.CurrentOperation <= this.missionOperationsService.MaxOperation && this.IsMissionOperationSkipable)
+            {
+                this.CurrentOperation = this.missionOperationsService.CurrentOperation;
+            }
+            else
+            {
+                this.CurrentOperation = 1;
+                await this.missionOperationsService.SetCurrentOperation(this.CurrentOperation);
+            }
+
             this.IsQuantityLimited = configuration.IsQuantityLimited;
 
             this.IsAddListItemVisible = !this.IsAddEnabled;
@@ -731,7 +791,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.BarcodeImageExist = false;
 
             if (this.IsNrLabelsEditable is false)
-            { 
+            {
                 this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
             }
 
@@ -792,6 +852,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.putBoxCommand.RaiseCanExecuteChanged();
             this.showPutListsCommand?.RaiseCanExecuteChanged();
             this.confirmListOperationCommand?.RaiseCanExecuteChanged();
+
+            this.MaxOperation = this.missionOperationsService.MaxOperation;
+
+            this.prevOperationCommand.RaiseCanExecuteChanged();
+            this.nextOperationCommand.RaiseCanExecuteChanged();
         }
 
         protected void ShowBarcodeReader()
@@ -829,6 +894,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             return retValue;
         }
 
+        private bool CanNextOperation()
+        {
+            return this.MissionOperationsService.CurrentOperation < this.MissionOperationsService.MaxOperation && !this.IsWaitingForResponse;
+        }
+
         private bool CanPartiallyCompleteOnFullCompartment()
         {
             if (this.IsDoubleConfirmBarcodePut && string.IsNullOrEmpty(this.barcodeOk))
@@ -856,6 +926,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
             this.RaisePropertyChanged(nameof(this.CanConfirmPartialOperation));
             return this.CanConfirmPartialOperation;
+        }
+
+        private bool CanPrevOperation()
+        {
+            return this.MissionOperationsService.CurrentOperation > 1 && !this.IsWaitingForResponse;
         }
 
         private bool CanPutBoxes()
@@ -940,6 +1015,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.ShowNotification(string.Format(Localized.Get("OperatorApp.InvalidOperation"), " "), Services.Models.NotificationSeverity.Error);
             }
 
+            this.IsWaitingForResponse = false;
+        }
+
+        private async void NextOperation()
+        {
+            this.IsWaitingForResponse = true;
+            this.CurrentOperation++;
+            this.RaiseCanExecuteChanged();
+            await this.MissionOperationsService.SetCurrentOperation(this.CurrentOperation);
+            await this.missionOperationsService.RefreshAsync(true);
+            this.IsWaitingForResponse = false;
+        }
+
+        private async Task PrevOperation()
+        {
+            this.IsWaitingForResponse = true;
+            this.CurrentOperation--;
+            this.RaiseCanExecuteChanged();
+            await this.MissionOperationsService.SetCurrentOperation(this.CurrentOperation);
+            await this.missionOperationsService.RefreshAsync(true);
             this.IsWaitingForResponse = false;
         }
 

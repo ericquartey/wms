@@ -2692,4 +2692,7 @@
   <data name="FixedPick" xml:space="preserve">
     <value>Pick Confirm with barcode set to 1</value>
   </data>
+  <data name="MissionOperationSkipable" xml:space="preserve">
+    <value>Activate buttons select operation on loading unit</value>
+  </data>
 </root>

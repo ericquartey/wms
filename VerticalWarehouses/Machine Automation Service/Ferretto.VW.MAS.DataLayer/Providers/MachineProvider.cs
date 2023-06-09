@@ -650,6 +650,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.IsSpea).First();
             }
         }
+        public bool GetMissionOperationSkipable()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.MissionOperationSkipable).First();
+            }
+        }
 
         public bool IsTouchHelperEnabled()
         {
@@ -700,6 +707,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.IsWaitingListFiltered = machine.IsWaitingListFiltered;
                 machineDB.OperationRightToLeft = machine.OperationRightToLeft;
                 machineDB.FixedPick = machine.FixedPick;
+                machineDB.MissionOperationSkipable = machine.MissionOperationSkipable;
 
                 this.dataContext.SaveChanges();
             }
