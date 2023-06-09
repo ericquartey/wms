@@ -185,6 +185,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.machineProvider.IsSpeaActive());
         }
 
+        [HttpGet("get/MissionOperationSkipable")]
+        public ActionResult<bool> GetMissionOperationSkipable()
+        {
+            return this.Ok(this.machineProvider.GetMissionOperationSkipable());
+        }
+
         [HttpPost("get/ItemUniqueIdLength")]
         public ActionResult<int> GetItemUniqueIdLength()
         {

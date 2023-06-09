@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetIdentity();
 
+        int GetInverterResponseTimeout();
+
         bool GetIsLoadUnitFixed();
 
         int GetItemUniqueIdLength();
@@ -39,6 +41,8 @@ namespace Ferretto.VW.MAS.DataLayer
         bool GetListPutConfirm();
 
         Machine GetMinMaxHeight();
+
+        bool GetMissionOperationSkipable();
 
         MachineStatistics GetPresentStatistics();
 
@@ -51,10 +55,6 @@ namespace Ferretto.VW.MAS.DataLayer
         byte[] GetRawDatabaseContent();
 
         int GetResponseTimeoutMilliseconds();
-
-
-        int GetInverterResponseTimeout();
-        Task SetInverterResponseTimeout(int value);
 
         string GetSecondaryDatabase();
 
@@ -123,6 +123,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void SetBayOperationParams(Machine machine);
 
         Task SetHeightAlarm(bool value);
+
+        Task SetInverterResponseTimeout(int value);
 
         Task SetMachineId(int newMachineId);
 

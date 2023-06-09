@@ -4174,6 +4174,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate buttons select operation on loading unit.
+        /// </summary>
+        public static string MissionOperationSkipable {
+            get {
+                return ResourceManager.GetString("MissionOperationSkipable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missions.
         /// </summary>
         public static string Missions {

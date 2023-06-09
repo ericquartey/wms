@@ -2292,4 +2292,7 @@
   <data name="FixedPick" xml:space="preserve">
     <value>Conferma prelievo con barcode fissa a 1</value>
   </data>
+  <data name="MissionOperationSkipable" xml:space="preserve">
+    <value>Attiva pulsanti seleziona operazione su cassetto</value>
+  </data>
 </root>

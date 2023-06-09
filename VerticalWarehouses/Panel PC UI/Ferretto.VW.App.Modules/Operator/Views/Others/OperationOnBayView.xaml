@@ -226,7 +226,10 @@
                                       IsChecked="{Binding FixedPick, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.FixedPick }" />
 
-                
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding MissionOperationSkipable, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.MissionOperationSkipable }" />
             </StackPanel>
         </ScrollViewer>
 
