@@ -165,4 +165,10 @@
   <data name="ExternalBlock" xml:space="preserve">
     <value>--ext.</value>
   </data>
+  <data name="SensorB" xml:space="preserve">
+    <value>Sen. B</value>
+  </data>
+  <data name="SensorA" xml:space="preserve">
+    <value>Sen. A</value>
+  </data>
 </root>

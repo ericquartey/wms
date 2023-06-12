@@ -178,6 +178,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sen. A.
+        /// </summary>
+        public static string SensorA {
+            get {
+                return ResourceManager.GetString("SensorA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sen. B.
+        /// </summary>
+        public static string SensorB {
+            get {
+                return ResourceManager.GetString("SensorB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical (mm).
         /// </summary>
         public static string Vertical {

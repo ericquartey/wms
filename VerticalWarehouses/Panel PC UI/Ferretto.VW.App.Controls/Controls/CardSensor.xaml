@@ -1873,6 +1873,82 @@
             </Style>
           </TextBlock.Style>
         </TextBlock>
+
+          <StackPanel Grid.RowSpan="3"
+                    Grid.Column="2"
+                    VerticalAlignment="Center">
+          <StackPanel.Style>
+            <Style>
+              <Setter Property="StackPanel.MinWidth" Value="45" />
+              <Setter Property="StackPanel.Visibility" Value="Visible" />
+              <Style.Triggers>
+                <MultiDataTrigger>
+                  <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=Card, Path=CardBadge1}" Value="" />
+                    <Condition Binding="{Binding ElementName=Card, Path=CardSensorLabel1}" Value="{x:Null}" />
+                  </MultiDataTrigger.Conditions>
+                  <MultiDataTrigger.Setters>
+                    <Setter Property="StackPanel.MinWidth" Value="0" />
+                    <Setter Property="StackPanel.Visibility" Value="Collapsed" />
+                  </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+              </Style.Triggers>
+            </Style>
+          </StackPanel.Style>
+
+          <Border Margin="4"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel1}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor1}"
+                               Value="false">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
+          </Border>
+
+          <Border Margin="4"
+                  CornerRadius="4">
+            <Border.Style>
+              <Style TargetType="{x:Type Border}">
+                <Setter Property="Visibility" Value="Visible" />
+                <Setter Property="Background" Value="{DynamicResource FerrettoGreen}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=CardSensorLabel2}"
+                               Value="{x:Null}">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                  </DataTrigger>
+                  <DataTrigger Binding="{Binding ElementName=Card, Path=Sensor2}"
+                               Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SensorColor}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </Border.Style>
+            <TextBlock Margin="4,0"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="{StaticResource FontSize_Very_Small}"
+                       Foreground="{DynamicResource PpcForeground}"
+                       Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
+          </Border>
+              
+        </StackPanel>
       </Grid>
     </DataTemplate>
 

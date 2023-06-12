@@ -11,10 +11,14 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-  <local:CardSensor x:Name="CardSensor"
-                    Background="{DynamicResource PpcBackground}"
-                    CardText="{res:Loc InstallationApp.Shutter}"
-                    CardValue="{Binding Status}"
-                    Type="Shutter" />
-  <!--  CardValue="{Binding Status, diag:PresentationTraceSources.TraceLevel=High, Converter={StaticResource DEBUG}}"  -->
+    <local:CardSensor x:Name="CardSensor"
+                      Background="{DynamicResource PpcBackground}"
+                      CardText="{res:Loc InstallationApp.Shutter}"
+                      CardValue="{Binding Status}"
+                      CardSensorLabel1="{res:Loc SensorCard.SensorA}"
+                      CardSensorLabel2="{res:Loc SensorCard.SensorB}"
+                      Sensor1="{Binding SensorA}"
+                      Sensor2="{Binding SensorB}"
+                      Type="Shutter" />
+    <!--  CardValue="{Binding Status, diag:PresentationTraceSources.TraceLevel=High, Converter={StaticResource DEBUG}}"  -->
 </UserControl>
