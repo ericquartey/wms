@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using Ferretto.ServiceDesk.Telemetry;
 using Ferretto.VW.App.Accessories.Interfaces;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
@@ -12,6 +13,7 @@ using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Devices.TokenReader;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Telemetry.Contracts.Hub;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
@@ -45,6 +47,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         private readonly ITokenReaderService tokenReaderService;
 
         private readonly ILocalizationService localizationService;
+
+        private readonly ITelemetryHubClient telemetryHubClient;
+
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private DelegateCommand loginCommand;
 
@@ -84,7 +90,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IBarcodeReaderService barcodeReaderService,
             IMachineBaysWebService machineBaysWebService,
             IMachineIdentityWebService machineIdentityWebService,
-            ILocalizationService localizationService)
+            ILocalizationService localizationService,
+            ITelemetryHubClient telemetryHubClient,
+            IMachineSensorsWebService machineSensorsWebService)
             : base(PresentationMode.Login)
         {
             this.usersService = usersService ?? throw new ArgumentNullException(nameof(usersService));
@@ -100,6 +108,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
             this.localizationService = localizationService ?? throw new ArgumentNullException(nameof(localizationService));
+            this.telemetryHubClient = telemetryHubClient ?? throw new ArgumentNullException(nameof(telemetryHubClient));
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
 
             this.Users = new ObservableCollection<string>();
 #if DEBUG
@@ -279,7 +289,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #region Methods
 
-        public override void Disappear()
+        public override async void Disappear()
         {
             base.Disappear();
 
@@ -297,6 +307,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 this.subscriptionToken = null;
             }
+
+            // TEST 
+            var faultOut = await this.machineSensorsWebService.GetOutFaultAsync();
+            var DiagOutFault = faultOut.ToList();
+
+            var ioLog = new IOLog();
+
+            DiagOutFault.Take(8).ForEach(d => ioLog.Output += $"{d} ");
+
+            await this.telemetryHubClient.SendIOLogAsync(ioLog);
         }
 
         private void SetBaseUser()
