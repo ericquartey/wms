@@ -811,8 +811,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         {
                             var msgData = new SensorsChangedMessageData
                             {
-                                SensorsStatesInput = this.machineResourcesProvider.DisplayedInputs,
-                                SensorsStatesOutput = this.machineResourcesProvider.DisplayedOutput
+                                SensorsStatesInput = this.machineResourcesProvider.DisplayedInputs
                             };
 
                             var msg1 = new NotificationMessage(
