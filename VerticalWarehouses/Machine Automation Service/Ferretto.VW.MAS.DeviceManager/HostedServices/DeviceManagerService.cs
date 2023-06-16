@@ -853,6 +853,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     case FieldMessageType.InverterException:
                     case FieldMessageType.InverterError:
                         var exceptionMessage = new InverterExceptionMessageData(null, receivedMessage.Description, 0);
+                        
 
                         this.EventAggregator
                             .GetEvent<NotificationEvent>()
