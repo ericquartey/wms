@@ -679,8 +679,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             {
                                 var msgData = new SensorsChangedMessageData
                                 {
-                                    SensorsStatesInput = this.machineResourcesProvider.DisplayedInputs,
-                                    SensorsStatesOutput = this.machineResourcesProvider.DisplayedOutput
+                                    SensorsStatesInput = this.machineResourcesProvider.DisplayedInputs
                                 };
 
                                 this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
