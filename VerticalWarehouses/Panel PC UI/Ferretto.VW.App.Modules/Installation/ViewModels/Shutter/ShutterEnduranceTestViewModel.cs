@@ -289,7 +289,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data.SensorsStates);
+            this.sensors.Update(message.Data.SensorsStatesInput);
         }
 
         private void OnShutterTestStatusChanged(NotificationMessageUI<ShutterPositioningMessageData> message)

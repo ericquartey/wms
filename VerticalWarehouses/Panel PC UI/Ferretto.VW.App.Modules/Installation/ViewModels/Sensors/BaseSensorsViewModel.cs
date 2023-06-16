@@ -668,7 +668,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data.SensorsStates);
+            this.sensors.Update(message.Data.SensorsStatesInput);
         }
 
         private void SubscribeToEvents()
@@ -681,7 +681,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.OnSensorsChanged,
                         ThreadOption.UIThread,
                         false,
-                        m => m.Data?.SensorsStates != null);
+                        m => m.Data?.SensorsStatesInput != null);
 
             this.diagOutToken = this.diagOutToken
                 ??

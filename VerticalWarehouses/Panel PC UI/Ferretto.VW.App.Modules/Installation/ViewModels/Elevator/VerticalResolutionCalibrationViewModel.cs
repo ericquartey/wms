@@ -674,8 +674,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.luPresentInOperatorSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
-            this.luPresentInMachineSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+            this.luPresentInOperatorSide = message?.Data.SensorsStatesInput[(int)IOMachineSensors.RunningState];
+            this.luPresentInMachineSide = message?.Data.SensorsStatesInput[(int)IOMachineSensors.RunningState];
         }
 
         private async void RetrieveNewResolutionAsync()
@@ -809,8 +809,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             return !this.luPresentInOperatorSide.HasValue ||
                                    !this.luPresentInMachineSide.HasValue ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
+                                   (m.Data.SensorsStatesInput[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
+                                   (m.Data.SensorsStatesInput[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
                         });
 
             this.themeChangedToken = this.themeChangedToken
