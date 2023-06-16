@@ -256,7 +256,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     BayNumber = (int)receivedMessage.RequestingBay,
                     Description = receivedMessage.Description,
                     Input = NotificationTelemetryService.ConvertBoolArrayToStringOfBit(messageData.SensorsStatesInput),
-                    Output = null,
+                    Output = NotificationTelemetryService.ConvertBoolArrayToStringOfBit(messageData.SensorsStatesOutput),
                     TimeStamp = DateTimeOffset.Now
                 };
 
