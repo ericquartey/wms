@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data.SensorsStates);
+            this.sensors.Update(message.Data.SensorsStatesInput);
         }
 
         private void SubscribeToEvents()
@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         this.OnSensorsChanged,
                         ThreadOption.UIThread,
                         false,
-                        m => m.Data?.SensorsStates != null);
+                        m => m.Data?.SensorsStatesInput != null);
 
             this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
               ??

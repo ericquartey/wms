@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         #region Properties
 
         bool[] DisplayedInputs { get; }
+        bool[] DisplayedOutput { get; }
 
         bool FireAlarm { get; }
 

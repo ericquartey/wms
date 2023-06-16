@@ -493,26 +493,26 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            if (message?.Data?.SensorsStates != null)
+            if (message?.Data?.SensorsStatesInput != null)
             {
-                this.sensors.Update(message.Data.SensorsStates);
+                this.sensors.Update(message.Data.SensorsStatesInput);
                 if (this.Bay == null)
                 {
                     await this.GetBayAsync().ContinueWith((m) =>
                     {
                         if (this.IsHealthy)
                         {
-                            this.shutterSensorsBay1.Update(message.Data.SensorsStates, (int)BayNumber.BayOne);
-                            this.shutterSensorsBay2.Update(message.Data.SensorsStates, (int)BayNumber.BayTwo);
-                            this.shutterSensorsBay3.Update(message.Data.SensorsStates, (int)BayNumber.BayThree);
+                            this.shutterSensorsBay1.Update(message.Data.SensorsStatesInput, (int)BayNumber.BayOne);
+                            this.shutterSensorsBay2.Update(message.Data.SensorsStatesInput, (int)BayNumber.BayTwo);
+                            this.shutterSensorsBay3.Update(message.Data.SensorsStatesInput, (int)BayNumber.BayThree);
                         }
                     });
                 }
                 else
                 {
-                    this.shutterSensorsBay1.Update(message.Data.SensorsStates, (int)BayNumber.BayOne);
-                    this.shutterSensorsBay2.Update(message.Data.SensorsStates, (int)BayNumber.BayTwo);
-                    this.shutterSensorsBay3.Update(message.Data.SensorsStates, (int)BayNumber.BayThree);
+                    this.shutterSensorsBay1.Update(message.Data.SensorsStatesInput, (int)BayNumber.BayOne);
+                    this.shutterSensorsBay2.Update(message.Data.SensorsStatesInput, (int)BayNumber.BayTwo);
+                    this.shutterSensorsBay3.Update(message.Data.SensorsStatesInput, (int)BayNumber.BayThree);
                 }
 
                 this.OnUpdateSensors?.Invoke(this, EventArgs.Empty);
