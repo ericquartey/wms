@@ -81,6 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Properties
 
         public bool[] DisplayedInputs => this.sensorStatus;
+        public bool[] DisplayedOutput => this.outFault;
 
         public bool FireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
 

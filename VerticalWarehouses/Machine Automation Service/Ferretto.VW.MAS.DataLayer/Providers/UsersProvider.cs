@@ -158,25 +158,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         this.dataContext.Users.Find(UserParameters.Values.Installer.Id).PasswordHash = UserParameters.Values.Installer.PasswordHash;
                         this.dataContext.Users.Find(UserParameters.Values.Installer.Id).PasswordSalt = UserParameters.Values.Installer.PasswordSalt;
                     }
-
-                    if (this.dataContext.Users.Find(UserParameters.Values.Movement.Id).PasswordHash != UserParameters.Values.Movement.PasswordHash)
-                    {
-                        this.dataContext.Users.Find(UserParameters.Values.Movement.Id).PasswordHash = UserParameters.Values.Movement.PasswordHash;
-                        this.dataContext.Users.Find(UserParameters.Values.Movement.Id).PasswordSalt = UserParameters.Values.Movement.PasswordSalt;
-                    }
-
-                    if (this.dataContext.Users.Find(UserParameters.Values.Operator.Id).PasswordHash != UserParameters.Values.Operator.PasswordHash)
-                    {
-                        this.dataContext.Users.Find(UserParameters.Values.Operator.Id).PasswordHash = UserParameters.Values.Operator.PasswordHash;
-                        this.dataContext.Users.Find(UserParameters.Values.Operator.Id).PasswordSalt = UserParameters.Values.Operator.PasswordSalt;
-                    }
-
-                    if (this.dataContext.Users.Find(UserParameters.Values.Guest.Id).PasswordHash != UserParameters.Values.Guest.PasswordHash)
-                    {
-                        this.dataContext.Users.Find(UserParameters.Values.Guest.Id).PasswordHash = UserParameters.Values.Guest.PasswordHash;
-                        this.dataContext.Users.Find(UserParameters.Values.Guest.Id).PasswordSalt = UserParameters.Values.Guest.PasswordSalt;
-                    }
-
                 }
                 foreach (var item in this.dataContext.Users)
                 {

@@ -20,7 +20,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             "Performance",
             "CA1819:Properties should not return arrays",
             Justification = "Review the code to see if it is really necessary to return a plain array.")]
-        public bool[] SensorsStates { get; set; }
+        public bool[] SensorsStatesInput { get; set; }
+        public bool[] SensorsStatesOutput { get; set; }
 
         public MessageVerbosity Verbosity => MessageVerbosity.Info;
 
@@ -31,7 +32,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public override string ToString()
         {
             var sb = new StringBuilder();
-            foreach (var b in this.SensorsStates)
+            foreach (var b in this.SensorsStatesInput)
             {
                 sb.AppendFormat("{0:x2};", b);
             }
