@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double invSyncTemp;
 
+        private int testValue;
+
         #endregion
 
         #region Constructors
@@ -61,6 +63,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.invSyncTemp, value);
         }
 
+        public int TestValue
+        {
+            get => this.testValue;
+            set => this.SetProperty(ref this.testValue, value);
+        }
+
         #endregion
 
         #region Methods
@@ -77,6 +85,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 await base.OnAppearedAsync();
 
                 this.IsBackNavigationAllowed = true;
+
+                var r = new Random();
+
+                this.InvSerialNumber = "ANG-410193FASBRSW0";
+                this.InvSoftwareVersion = "8.1.6.0";
+                this.InvEnergy = r.Next(0, 101);
+                this.InvInsideTemp = r.Next(0, 101);
+                this.InvSyncTemp = r.Next(0, 101);
+
+                this.TestValue = r.Next(0, 101);
             }
             catch
             {
@@ -89,8 +107,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 await base.OnDataRefreshAsync();
-
-                this.InvSerialNumber = "#123-ABC";
             }
             catch (Exception ex)
             {

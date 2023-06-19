@@ -115,7 +115,6 @@
                                                Style="{DynamicResource VWAPP_CardSensor_Data}"
                                                Text="{Binding InvSoftwareVersion}" />
                                 </Grid>
-
                             </Grid>
                         </Border>
                     </Border>
@@ -180,7 +179,6 @@
                                                 BorderThickness="1"
                                                 Visibility="Hidden" />
                                     </Grid>
-
                                 </Grid>
                             </Border>
                         </Border>
@@ -238,7 +236,6 @@
                                                 VerticalAlignment="Stretch"
                                                 BorderBrush="{DynamicResource FerrettoMediumGray}"
                                                 BorderThickness="1" />
-
                                     </Grid>
 
                                     <Grid Grid.Column="3"
@@ -265,16 +262,16 @@
                                                    VerticalAlignment="Top"
                                                    Style="{DynamicResource VWAPP_CardSensor_Data}"
                                                    Text="{Binding InvSyncTemp}" />
-
                                     </Grid>
-
                                 </Grid>
                             </Border>
                         </Border>
                     </Grid>
-
                 </Grid>
 
+                <controls:PpcGauge MinValue="0"
+                                   MaxValue="100"
+                                   Value="{Binding TestValue}" />
             </StackPanel>
         </Grid>
     </Grid>
