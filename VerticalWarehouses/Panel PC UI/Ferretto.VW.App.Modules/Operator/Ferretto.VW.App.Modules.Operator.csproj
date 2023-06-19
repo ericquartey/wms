@@ -46,6 +46,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\About\InverterDiagnosticsView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\ItemOperations\ItemWeightView.xaml">
       <SubType>Designer</SubType>
     </Page>

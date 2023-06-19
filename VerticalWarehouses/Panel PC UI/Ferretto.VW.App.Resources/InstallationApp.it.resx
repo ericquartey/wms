@@ -2617,28 +2617,28 @@
     <value>Corrente uscita 1:</value>
   </data>
   <data name="ExitError8" xml:space="preserve">
-    <value>Errore uscita 8</value>
+    <value>Opzioni esterne</value>
   </data>
   <data name="ExitError6" xml:space="preserve">
-    <value>Errore uscita 6</value>
+    <value>Abilitazione marcia</value>
   </data>
   <data name="ExitError5" xml:space="preserve">
-    <value>Errore uscita 5</value>
+    <value>Attivazione illuminazione baia</value>
   </data>
   <data name="ExitError4" xml:space="preserve">
-    <value>Errore uscita 4</value>
+    <value>Attivazione lettura altezza</value>
   </data>
   <data name="ExitError3" xml:space="preserve">
-    <value>Errore uscita 3</value>
+    <value>Motore asse orizzontale elevatore (non esiste su macchine 1000kg)</value>
   </data>
   <data name="ExitError2" xml:space="preserve">
-    <value>Errore uscita 2</value>
+    <value>Motore asse verticale elevatore (non esiste su macchine 1000kg)</value>
   </data>
   <data name="ExitError1" xml:space="preserve">
-    <value>Errore uscita 1</value>
+    <value>Reset funzione sicurezza</value>
   </data>
   <data name="ExitError7" xml:space="preserve">
-    <value>Errore uscita 7</value>
+    <value>Opzioni esterne</value>
   </data>
   <data name="DeviceIO1" xml:space="preserve">
     <value>Scheda IO  (Baia 1)</value>

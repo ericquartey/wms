@@ -2295,4 +2295,28 @@
   <data name="MissionOperationSkipable" xml:space="preserve">
     <value>Attiva pulsanti seleziona operazione su cassetto</value>
   </data>
+  <data name="InvDiagnostics" xml:space="preserve">
+    <value>Diagnostica inverter</value>
+  </data>
+  <data name="InvSerialNumber" xml:space="preserve">
+    <value>Numero seriale</value>
+  </data>
+  <data name="InvSoftwareVersion" xml:space="preserve">
+    <value>Versione software</value>
+  </data>
+  <data name="InvEnergyConsumed" xml:space="preserve">
+    <value>Energia consumata (kWh)</value>
+  </data>
+  <data name="InvSyncTemp" xml:space="preserve">
+    <value>Temperatura Sync (°C)</value>
+  </data>
+  <data name="InvInsideTemp" xml:space="preserve">
+    <value>Temperatura interna (°C)</value>
+  </data>
+  <data name="InvEnergy" xml:space="preserve">
+    <value>Energia</value>
+  </data>
+  <data name="InvTemperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
 </root>

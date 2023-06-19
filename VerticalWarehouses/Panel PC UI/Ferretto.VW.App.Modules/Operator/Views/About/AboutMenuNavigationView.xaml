@@ -20,6 +20,7 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
@@ -86,6 +87,17 @@
                         Command="{Binding NetworkAdaptersCommand}"
                         Content="{resources:Loc OperatorApp.NetworkCards}"
                         IsActive="{Binding IsNetworkAdaptersActive}"
+                        Kind="Account"
+                        Style="{DynamicResource PpcButtonMenuStyle}" />
+
+    <controls:PpcButton Grid.Row="7"
+                        Margin="0,0,15,15"
+                        Padding="-1,1,0,0"
+                        Abbrevation="3.7"
+                        BorderBrush="{DynamicResource FerrettoGreen}"
+                        Command="{Binding InverterDiagnosticsCommand}"
+                        Content="{resources:Loc OperatorApp.InvDiagnostics}"
+                        IsActive="{Binding IsInverterDiagnosticsActive}"
                         Kind="Account"
                         Style="{DynamicResource PpcButtonMenuStyle}" />
 

@@ -20,10 +20,11 @@
     <views:SensorsNavigationView />
 
     <Grid Grid.Column="1"
-          Margin="5,0,15,0">
+          Margin="5,0,15,0"
+          Grid.ColumnSpan="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*" />
-        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="0.5*" />
         <ColumnDefinition Width="auto" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
@@ -165,7 +166,7 @@
       </StackPanel>
     </Grid>
 
-    <StackPanel Grid.Column="2">
+    <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
       <Border Margin="0,0,15,0"
               VerticalAlignment="Top"
               Background="{DynamicResource PpcBackground}">

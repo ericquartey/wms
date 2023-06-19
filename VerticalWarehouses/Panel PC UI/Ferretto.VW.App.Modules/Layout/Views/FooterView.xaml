@@ -285,7 +285,7 @@
                                     VerticalAlignment="Center"
                                     Command="{Binding ExecuteCommand}"
                                     Content="{res:Loc ErrorsApp.SilenceSirenAlarm}"
-                                    IsEnabled="{Binding IsEnalbed}"
+                                    IsEnabled="{Binding IsEnabled}"
                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
             </ctrls:PpcControl>
 
