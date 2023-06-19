@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -81,7 +82,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Properties
 
         public bool[] DisplayedInputs => this.sensorStatus;
-        public bool[] DisplayedOutput => this.outFault;
+
+        public bool[] DisplayedOutput => this.outFault.Take(8).ToArray();
 
         public bool FireAlarm => this.IsFireAlarmActive() ? this.sensorStatus[(int)IOMachineSensors.RobotOptionBay1] : false;
 
@@ -586,7 +588,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     errorCode = MachineErrorCode.FireAlarm;
                 }
 
-                if (this.IsHeightAlarmActive())// 
+                if (this.IsHeightAlarmActive())//
                 {
                     isMarchPossible = false;
                     reason.Append("HeightAlarm Active; ");
@@ -994,15 +996,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        private bool IsSpeaActive()
-        {
-            using (var scope = this.serviceScopeFactory.CreateScope())
-            {
-                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                return machineProvider.IsSpeaActive();
-            }
-        }
-
         private bool IsSensitiveCarpetsBypass()
         {
             using (var scope = this.serviceScopeFactory.CreateScope())
@@ -1018,6 +1011,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                 return machineProvider.IsSensitiveEdgeBypass();
+            }
+        }
+
+        private bool IsSpeaActive()
+        {
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                return machineProvider.IsSpeaActive();
             }
         }
 
