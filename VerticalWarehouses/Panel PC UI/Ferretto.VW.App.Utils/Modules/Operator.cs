@@ -26,6 +26,8 @@
 
             public const string GENERAL = "GeneralViewModel";
 
+            public const string INVERTERDIAGNOSTICS = "InverterDiagnosticsViewModel";
+
             public const string LOGSEXPORT = "LogsExportViewModel";
 
             public const string NAVIGATION = "AboutMenuNavigationViewModel";

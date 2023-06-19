@@ -2779,6 +2779,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inverter diagnostics.
+        /// </summary>
+        public static string InvDiagnostics {
+            get {
+                return ResourceManager.GetString("InvDiagnostics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Energy.
+        /// </summary>
+        public static string InvEnergy {
+            get {
+                return ResourceManager.GetString("InvEnergy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Energy consumed (kWh).
+        /// </summary>
+        public static string InvEnergyConsumed {
+            get {
+                return ResourceManager.GetString("InvEnergyConsumed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The confirmed quantity is very different from the stock.
         /// </summary>
         public static string InventoryGap {
@@ -2820,6 +2847,51 @@ namespace Ferretto.VW.App.Resources {
         public static string InverterIndex {
             get {
                 return ResourceManager.GetString("InverterIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inside Temp (°C).
+        /// </summary>
+        public static string InvInsideTemp {
+            get {
+                return ResourceManager.GetString("InvInsideTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serial number.
+        /// </summary>
+        public static string InvSerialNumber {
+            get {
+                return ResourceManager.GetString("InvSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Software version.
+        /// </summary>
+        public static string InvSoftwareVersion {
+            get {
+                return ResourceManager.GetString("InvSoftwareVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sync Temp (°C).
+        /// </summary>
+        public static string InvSyncTemp {
+            get {
+                return ResourceManager.GetString("InvSyncTemp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature.
+        /// </summary>
+        public static string InvTemperature {
+            get {
+                return ResourceManager.GetString("InvTemperature", resourceCulture);
             }
         }
         

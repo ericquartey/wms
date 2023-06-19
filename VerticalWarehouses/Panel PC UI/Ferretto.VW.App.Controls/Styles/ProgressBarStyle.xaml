@@ -5,8 +5,10 @@
 
     <Style x:Key="{x:Type controls:PpcProgressBar}"
            TargetType="{x:Type ProgressBar}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Background" Value="{DynamicResource ProgresBarBackground}" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Background"
+                Value="{DynamicResource ProgresBarBackground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:PpcProgressBar}">
@@ -34,11 +36,18 @@
                                            SnapsToDevicePixels="True"
                                            StrokeThickness="0">
                                     <Rectangle.Fill>
-                                        <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
-                                            <GradientStop Offset="0" Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
-                                            <GradientStop Offset="0.5" Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
-                                            <GradientStop Offset="0.5" Color="{Binding Color2.Color, RelativeSource={RelativeSource TemplatedParent}}" />
-                                            <GradientStop Offset="1" Color="{Binding Color2.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        <LinearGradientBrush MappingMode="Absolute"
+                                                             SpreadMethod="Repeat"
+                                                             StartPoint="0,0"
+                                                             EndPoint="10,10">
+                                            <GradientStop Offset="0"
+                                                          Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <GradientStop Offset="0.5"
+                                                          Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <GradientStop Offset="0.5"
+                                                          Color="{Binding Color2.Color, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <GradientStop Offset="1"
+                                                          Color="{Binding Color2.Color, RelativeSource={RelativeSource TemplatedParent}}" />
                                         </LinearGradientBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
@@ -49,10 +58,11 @@
                                 BorderThickness="{TemplateBinding BorderThickness}" />
                     </Grid>
 
-
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Orientation" Value="Vertical">
-                            <Setter TargetName="TemplateRoot" Property="LayoutTransform">
+                        <Trigger Property="Orientation"
+                                 Value="Vertical">
+                            <Setter TargetName="TemplateRoot"
+                                    Property="LayoutTransform">
                                 <Setter.Value>
                                     <RotateTransform Angle="-90" />
                                 </Setter.Value>
@@ -62,5 +72,35 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type controls:PpcGauge}">
+        <Setter Property="GaugeLayoutMode"
+                Value="ThreeQuarters" />
+        <Setter Property="MajorIntervalVisible"
+                Value="False" />
+        <Setter Property="MinorIntervalVisible"
+                Value="False" />
+        <Setter Property="NeedleVisible"
+                Value="False" />
+        <Setter Property="MarkerVisible"
+                Value="False" />
+        <Setter Property="RangeVisible"
+                Value="False" />
+        <Setter Property="RangeBarVisible"
+                Value="True" />
+        <Setter Property="RangeBarBackgroundVisible"
+                Value="True" />
+        <Setter Property="RangeBarThickness"
+                Value="10" />
+        <Setter Property="RangeBarBackgroundFill"
+                Value="{DynamicResource PpcBackground}" />
+        <Setter Property="RangeBarFill"
+                Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="LabelVisible"
+                Value="True" />
+
+        <Setter Property="OffsetRangeBar"
+                Value="-25" />
     </Style>
 </ResourceDictionary>

@@ -2705,28 +2705,28 @@
     <value>Current Exit 8:</value>
   </data>
   <data name="ExitError1" xml:space="preserve">
-    <value>Exit Error1</value>
+    <value>Reset security function</value>
   </data>
   <data name="ExitError2" xml:space="preserve">
-    <value>Exit Error 2</value>
+    <value>Vertical elevator axis motor (does not exist on 1000kg machines)</value>
   </data>
   <data name="ExitError3" xml:space="preserve">
-    <value>Exit Error 3</value>
+    <value>Motore asse orizzontale elevatore (non esiste su macchine 1000kg)</value>
   </data>
   <data name="ExitError4" xml:space="preserve">
-    <value>Exit Error 4</value>
+    <value>Height reading activation</value>
   </data>
   <data name="ExitError5" xml:space="preserve">
-    <value>Exit Error 5</value>
+    <value>Bay lighting activation</value>
   </data>
   <data name="ExitError6" xml:space="preserve">
-    <value>Exit Error 6</value>
+    <value>Enabling gear</value>
   </data>
   <data name="ExitError7" xml:space="preserve">
-    <value>Exit Error 7</value>
+    <value>External options</value>
   </data>
   <data name="ExitError8" xml:space="preserve">
-    <value>Exit Error 8</value>
+    <value>External options</value>
   </data>
   <data name="DeviceIO1" xml:space="preserve">
     <value>IO Device (Bay 1)</value>
