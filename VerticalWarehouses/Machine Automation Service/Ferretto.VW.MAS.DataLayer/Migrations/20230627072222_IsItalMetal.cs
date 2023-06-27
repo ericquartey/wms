@@ -2,21 +2,21 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class ResponseTimeoutMilliseconds : Migration
+    public partial class IsItalMetal : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "ResponseTimeoutMilliseconds",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsItalMetal",
                 table: "Machines",
                 nullable: false,
-                defaultValue: 8000);
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ResponseTimeoutMilliseconds",
+                name: "IsItalMetal",
                 table: "Machines");
         }
     }

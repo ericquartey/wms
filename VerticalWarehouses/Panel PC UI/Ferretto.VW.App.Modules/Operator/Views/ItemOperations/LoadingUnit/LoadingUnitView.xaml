@@ -135,6 +135,17 @@
                                         TextBlock.TextAlignment="Center"
                                         Visibility="{Binding IsLaserOffEnabled, Converter={StaticResource BTVC}}" />
 
+                    
+                    <controls:PpcButton Margin="15,0,15,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Command="{Binding ShowAddMatrixCommand}"
+                                        Content="{res:Loc OperatorApp.AddMatrix}"
+                                        Foreground="{DynamicResource FerrettoPureWhite}"
+                                        KindMaterial="Stamper"
+                                        TextBlock.TextAlignment="Right"
+                                        Visibility="{Binding IsItalMetal, Converter={StaticResource BTVC}}" />
+
                 </StackPanel>
 
                 <StackPanel Grid.Row="1"

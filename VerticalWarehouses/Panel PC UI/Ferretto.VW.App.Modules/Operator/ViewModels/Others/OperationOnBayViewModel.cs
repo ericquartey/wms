@@ -99,6 +99,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool view;
 
+        private bool isItalMetal;
+
         private int waitingListPriorityHighlighted;
 
         #endregion
@@ -147,6 +149,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAggregateList;
             set => this.SetProperty(ref this.isAggregateList, value, this.CanExecute);
+        }
+
+        public bool IsItalMetal
+        {
+            get => this.isItalMetal;
+            set => this.SetProperty(ref this.isItalMetal, value, this.CanExecute);
         }
 
         public bool IsBox
@@ -433,6 +441,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.OperationRightToLeft = configuration.OperationRightToLeft;
                 this.FixedPick = configuration.FixedPick;
                 this.MissionOperationSkipable = configuration.MissionOperationSkipable;
+                this.IsItalMetal = configuration.IsItalMetal;
 
                 this.WaitingListPriorityHighlighted = configuration.WaitingListPriorityHighlighted.Value;
                 this.IsListPickConfirm = configuration.ListPickConfirm;
@@ -486,6 +495,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.OperationRightToLeft = this.OperationRightToLeft;
                 machine.FixedPick = this.FixedPick;
                 machine.MissionOperationSkipable = this.MissionOperationSkipable;
+                machine.IsItalMetal = this.IsItalMetal;
 
                 machine.WaitingListPriorityHighlighted = this.IsWaitingListPriorityHighlighted && this.WaitingListPriorityHighlighted >= 0 ? this.WaitingListPriorityHighlighted : -1;
                 machine.ListPutConfirm = this.IsListPutConfirm;

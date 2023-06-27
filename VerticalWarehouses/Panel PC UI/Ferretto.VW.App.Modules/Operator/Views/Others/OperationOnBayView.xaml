@@ -48,6 +48,42 @@
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
                         Orientation="Vertical">
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsCarrefour, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsCarrefour}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsOstec, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsOstec}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsSpea, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsSpea}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsItalMetal, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsItalMetal}" />
+                
+                <controls:PpcCheckBox Margin="0,10,0,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsDrapery, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsDrapery}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsBox, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.Box}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsOrderList, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsOrderList}" />
+
+                
                 <controls:PpcCheckBox Margin="0,15,0,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Pick, Mode=TwoWay}"
@@ -107,10 +143,6 @@
                                       IsChecked="{Binding IsDisableQtyItemEditingPick, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsDisableQtyItemEditingPick}" />
 
-                <controls:PpcCheckBox Margin="0,10,0,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsDrapery, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.IsDrapery}" />
 
                 <controls:PpcCheckBox Margin="0,10,0,0"
                                       VerticalAlignment="Center"
@@ -134,11 +166,6 @@
 
                 <controls:PpcCheckBox Margin="0,10,15,0"
                                       VerticalAlignment="Center"
-                                      IsChecked="{Binding IsBox, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.Box}" />
-
-                <controls:PpcCheckBox Margin="0,10,15,0"
-                                      VerticalAlignment="Center"
                                       IsChecked="{Binding IsEnabeNoteRules, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsEnabeNoteRules}" />
 
@@ -146,26 +173,6 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsLocalMachineItems, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsLocalMachineItems}" />
-
-                <controls:PpcCheckBox Margin="0,10,15,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsOrderList, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.IsOrderList}" />
-
-                <controls:PpcCheckBox Margin="0,10,15,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsCarrefour, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.IsCarrefour}" />
-
-                <controls:PpcCheckBox Margin="0,10,15,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsOstec, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.IsOstec}" />
-
-                <controls:PpcCheckBox Margin="0,10,15,0"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding IsSpea, Mode=TwoWay}"
-                                      LabelText="{res:Loc OperatorApp.IsSpea}" />
 
                 <controls:PpcCheckBox Margin="0,10,15,0"
                                       VerticalAlignment="Center"

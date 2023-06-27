@@ -1832,6 +1832,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task SaveLoadUnitAsync(LoadingUnit loadingUnit, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SendMatrixRequestAsync(int? id, int? compartmentId, int destinatinoGroupId, int itemId, double quantity, double occupation, bool type);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SendMatrixRequestAsync(int? id, int? compartmentId, int destinatinoGroupId, int itemId, double quantity, double occupation, bool type, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetLoadingUnitOffsetAsync(int loadingUnitId, double laserOffset);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5463,9 +5470,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("BackupServerUsername", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string BackupServerUsername { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("MissionOperationSkipable", Required = Newtonsoft.Json.Required.Always)]
-        public bool MissionOperationSkipable { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("Bays", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<Bay> Bays { get; set; }
     
@@ -5505,6 +5509,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("InverterResponseTimeout", Required = Newtonsoft.Json.Required.Always)]
+        public int InverterResponseTimeout { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsAddItemByList", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAddItemByList { get; set; }
     
@@ -5543,6 +5550,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsItalMetal", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsItalMetal { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsLoadUnitFixed", Required = Newtonsoft.Json.Required.Always)]
         public bool IsLoadUnitFixed { get; set; }
@@ -5607,6 +5617,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("MaxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("MissionOperationSkipable", Required = Newtonsoft.Json.Required.Always)]
+        public bool MissionOperationSkipable { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("ModelName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ModelName { get; set; }
     
@@ -5618,9 +5631,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ResponseTimeoutMilliseconds", Required = Newtonsoft.Json.Required.Always)]
         public int ResponseTimeoutMilliseconds { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("InverterResponseTimeout", Required = Newtonsoft.Json.Required.Always)]
-        public int InverterResponseTimeout { get; set; }
     
         [Newtonsoft.Json.JsonProperty("SensitiveCarpetsAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool SensitiveCarpetsAlarm { get; set; }

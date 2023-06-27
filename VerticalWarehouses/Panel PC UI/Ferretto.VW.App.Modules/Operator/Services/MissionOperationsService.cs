@@ -120,9 +120,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public MissionOperation ActiveWmsOperation { get; private set; }
 
-        public int MaxOperation { get; private set; }
-
         public int CurrentOperation { get; private set; } = 1;
+
+        public int MaxOperation { get; private set; }
 
         #endregion
 

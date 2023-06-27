@@ -47,6 +47,8 @@
 
             public const string ADD_DRAPERYITEM_INTO_LOADINGUNIT = "AddingItemDraperyToLoadingUnitViewModel";
 
+            public const string ADD_MATRIX = "AddMatrixViewModel";
+
             public const string ADDITEMINTOLOADINGUNIT = "AddingItemToLoadingUnitViewModel";
 
             public const string DRAPERYCONFIRM = "ItemDraperyConfirmViewModel";
