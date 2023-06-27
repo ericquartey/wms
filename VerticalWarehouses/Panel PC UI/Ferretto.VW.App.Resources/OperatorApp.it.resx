@@ -2319,4 +2319,19 @@
   <data name="InvTemperature" xml:space="preserve">
     <value>Temperature</value>
   </data>
+  <data name="ItemOccupiedSpace" xml:space="preserve">
+    <value>Spazio occupato (mm)</value>
+  </data>
+  <data name="MatrixType" xml:space="preserve">
+    <value>Tipologia Stampo</value>
+  </data>
+  <data name="AddMatrix" xml:space="preserve">
+    <value>Stampo</value>
+  </data>
+  <data name="AddMatrixHeader" xml:space="preserve">
+    <value>Aggiungi Stampo</value>
+  </data>
+  <data name="IsItalMetal" xml:space="preserve">
+    <value>ItalMetal (WMS custom)</value>
+  </data>
 </root>

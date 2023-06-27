@@ -73,6 +73,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<ItemAddView>();
 
             containerRegistry.RegisterForNavigation<AddingItemDraperyToLoadingUnitView>();
+            containerRegistry.RegisterForNavigation<AddMatrixView>();
 
             containerRegistry.RegisterForNavigation<AddingItemToLoadingUnitView>();
             containerRegistry.RegisterForNavigation<SocketLinkOperationView>();

@@ -133,6 +133,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Matrix.
+        /// </summary>
+        public static string AddMatrix {
+            get {
+                return ResourceManager.GetString("AddMatrix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Matrix .
+        /// </summary>
+        public static string AddMatrixHeader {
+            get {
+                return ResourceManager.GetString("AddMatrixHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adjustment.
         /// </summary>
         public static string Adjustment {
@@ -3022,6 +3040,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ItalMetal (WMS custom).
+        /// </summary>
+        public static string IsItalMetal {
+            get {
+                return ResourceManager.GetString("IsItalMetal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm last operation PickList .
         /// </summary>
         public static string IsListPickConfirm {
@@ -3360,6 +3387,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ItemManagementType_Volume {
             get {
                 return ResourceManager.GetString("ItemManagementType_Volume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Occupied Space (mm).
+        /// </summary>
+        public static string ItemOccupiedSpace {
+            get {
+                return ResourceManager.GetString("ItemOccupiedSpace", resourceCulture);
             }
         }
         
@@ -4161,6 +4197,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MaterialStatus {
             get {
                 return ResourceManager.GetString("MaterialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matrix Type.
+        /// </summary>
+        public static string MatrixType {
+            get {
+                return ResourceManager.GetString("MatrixType", resourceCulture);
             }
         }
         

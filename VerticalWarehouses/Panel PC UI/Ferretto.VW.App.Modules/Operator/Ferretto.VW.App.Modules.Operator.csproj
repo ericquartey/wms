@@ -52,6 +52,9 @@
     <Page Update="Views\ItemOperations\ItemWeightView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\AddMatrixView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Views\ItemOperations\LoadingUnit\SocketLinkOperationView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>

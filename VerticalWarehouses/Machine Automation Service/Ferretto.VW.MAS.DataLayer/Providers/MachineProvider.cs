@@ -249,6 +249,14 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.machineVolatile.MachineId.Value;
         }
 
+        public int GetInverterResponseTimeout()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.InverterResponseTimeout).First();
+            }
+        }
+
         public bool GetIsLoadUnitFixed()
         {
             if (this.machineVolatile.IsLoadUnitFixed is null)
@@ -290,6 +298,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().First();
+            }
+        }
+
+        public bool GetMissionOperationSkipable()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.MissionOperationSkipable).First();
             }
         }
 
@@ -367,14 +383,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.ResponseTimeoutMilliseconds).First();
-            }
-        }
-
-        public int GetInverterResponseTimeout()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.InverterResponseTimeout).First();
             }
         }
 
@@ -650,13 +658,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.IsSpea).First();
             }
         }
-        public bool GetMissionOperationSkipable()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.MissionOperationSkipable).First();
-            }
-        }
 
         public bool IsTouchHelperEnabled()
         {
@@ -695,6 +696,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
+                machineDB.IsItalMetal = machine.IsItalMetal;
                 machineDB.IsOstec = machine.IsOstec;
                 machineDB.IsSpea = machine.IsSpea;
                 machineDB.ShowQuantityOnInventory = machine.ShowQuantityOnInventory;
@@ -722,6 +724,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public async Task SetInverterResponseTimeout(int value)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.First().InverterResponseTimeout = value;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public async Task SetMachineId(int newMachineId)
         {
             DataLayerContext dataContext;
@@ -743,15 +754,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.Machines.First().ResponseTimeoutMilliseconds = value;
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public async Task SetInverterResponseTimeout(int value)
-        {
-            lock (this.dataContext)
-            {
-                this.dataContext.Machines.First().InverterResponseTimeout = value;
                 this.dataContext.SaveChanges();
             }
         }

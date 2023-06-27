@@ -2719,4 +2719,19 @@
   <data name="MissionOperationSkipable" xml:space="preserve">
     <value>Activate buttons select operation on loading unit</value>
   </data>
+  <data name="ItemOccupiedSpace" xml:space="preserve">
+    <value>Occupied Space (mm)</value>
+  </data>
+  <data name="MatrixType" xml:space="preserve">
+    <value>Matrix Type</value>
+  </data>
+  <data name="AddMatrix" xml:space="preserve">
+    <value>Matrix</value>
+  </data>
+  <data name="AddMatrixHeader" xml:space="preserve">
+    <value>Add Matrix </value>
+  </data>
+  <data name="IsItalMetal" xml:space="preserve">
+    <value>ItalMetal (WMS custom)</value>
+  </data>
 </root>

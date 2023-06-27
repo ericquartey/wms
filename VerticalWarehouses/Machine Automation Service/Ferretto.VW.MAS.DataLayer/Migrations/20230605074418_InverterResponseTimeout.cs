@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "InverterResponseTimeout",
                 table: "Machines",
                 nullable: false,
-                defaultValue: 10000);
+                defaultValue: 8000);
         }
 
         #endregion

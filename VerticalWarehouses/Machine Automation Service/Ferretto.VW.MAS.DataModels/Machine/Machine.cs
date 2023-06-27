@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string BackupServerUsername { get; set; }
 
-        public bool MissionOperationSkipable { get; set; }
-
         /// <summary>
         /// Gets or sets the bays of the machine.
         /// </summary>
@@ -61,6 +59,11 @@ namespace Ferretto.VW.MAS.DataModels
         public int HorizontalCyclesToCalibrate { get; set; } = 10;
 
         public int HorizontalPositionToCalibrate { get; set; } = 10000;
+
+        /// <summary>
+        /// Inverter response timeout
+        /// </summary>
+        public int InverterResponseTimeout { get; set; }
 
         /// <summary>
         /// Get a value indicating if add item by list operation is enabled.
@@ -112,6 +115,8 @@ namespace Ferretto.VW.MAS.DataModels
         public bool IsEnableHandlingItemOperations { get; set; }
 
         public bool IsHeartBeat { get; set; }
+
+        public bool IsItalMetal { get; set; }
 
         /// <summary>
         /// The load units can have fixed cell and fixed height.
@@ -203,6 +208,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double MaxGrossWeight { get; set; }
 
+        public bool MissionOperationSkipable { get; set; }
+
         /// <summary>
         /// Gets or sets the machine's model name.
         /// </summary>
@@ -216,11 +223,6 @@ namespace Ferretto.VW.MAS.DataModels
         public IEnumerable<CellPanel> Panels { get; set; }
 
         public int ResponseTimeoutMilliseconds { get; set; }
-
-        /// <summary>
-        /// Inverter response timeout
-        /// </summary>
-        public int InverterResponseTimeout { get; set; }
 
         public bool SensitiveCarpetsAlarm { get; set; }
 

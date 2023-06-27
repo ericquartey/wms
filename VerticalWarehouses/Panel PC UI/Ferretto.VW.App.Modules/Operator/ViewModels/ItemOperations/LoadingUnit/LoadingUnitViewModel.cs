@@ -46,6 +46,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionsWebService machineMissionsWebService;
@@ -57,6 +59,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private readonly INavigationService navigationService;
 
         private readonly IOperatorNavigationService operatorNavigationService;
+
+        private readonly IWmsDataProvider wmsDataProvider;
 
         private DelegateCommand addItemOperationCommand;
 
@@ -108,6 +112,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyLoading;
 
+        private bool isItalMetal;
+
         private bool isOperationVisible;
 
         private bool isOrderVisible;
@@ -119,6 +125,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool isReasonVisible;
 
         private bool isSearching;
+
+        private bool isWmsEnabled;
 
         private string itemBarcode;
 
@@ -182,6 +190,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private ItemInfo selectedProduct;
 
+        private DelegateCommand showAddMatrixCommand;
+
         private object socketLinkOperationToken;
 
         private double? stockDifferenceQty;
@@ -239,6 +249,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
@@ -429,6 +441,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isBusyLoading, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsItalMetal
+        {
+            get => this.isItalMetal;
+            set => this.SetProperty(ref this.isItalMetal, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsItemStockVisible => this.isPickVisible || this.isPutVisible;
 
         public bool IsOperationVisible
@@ -486,6 +504,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         }
 
         public bool IsWaitingForReason { get; private set; }
+
+        public bool IsWmsEnabled
+        {
+            get => this.isWmsEnabled;
+            private set => this.SetProperty(ref this.isWmsEnabled, value, this.RaiseCanExecuteChanged);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating the barcode for an item for the picking/filling
@@ -692,6 +716,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public ICommand ShowAddMatrixCommand =>
+            this.showAddMatrixCommand
+           ??
+           (this.showAddMatrixCommand = new DelegateCommand(
+               () => this.ShowAddMatrix(), this.CanShowAddMatrix));
+
         public double? StockDifferenceQty
         {
             get => this.stockDifferenceQty;
@@ -741,6 +771,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return this.MachineService.Bay.Accessories?.WeightingScale is null ? false : this.MachineService.Bay.Accessories.WeightingScale.IsEnabledNew &&
                 this.MissionOperationsService.ActiveWmsOperation != null;
+        }
+
+        public bool CanShowAddMatrix()
+        {
+            return this.IsWmsEnabled && this.IsWmsHealthy;
         }
 
         public async Task<bool> CheckReasonsAsync()
@@ -972,6 +1007,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.loadingUnitId = loadingUnitId;
             }
 
+            var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+
+            this.IsItalMetal = configuration.IsItalMetal;
+
+            this.IsWmsEnabled = this.wmsDataProvider.IsEnabled;
+
             this.SelectedCompartment = null;
 
             this.ClearNotifications();
@@ -1198,6 +1239,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
+        public async Task ShowAddMatrix()
+        {
+            var data = new List<int?>();
+
+            data.Add(this.LoadingUnit?.Id);
+            data.Add(this.SelectedCompartment?.Id);
+
+            this.navigationService.Appear(
+                   nameof(Utils.Modules.Operator),
+                   Utils.Modules.Operator.ItemOperations.ADD_MATRIX,
+                   data,
+                   trackCurrentView: true);
+        }
+
         protected override async Task OnMachineModeChangedAsync(MAS.AutomationService.Contracts.Hubs.MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
@@ -1224,6 +1279,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.confirmReasonCommand?.RaiseCanExecuteChanged();
             this.insertOperationCommand?.RaiseCanExecuteChanged();
             this.removeOperationCommand?.RaiseCanExecuteChanged();
+            this.showAddMatrixCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task AddItemOperationAsync()
