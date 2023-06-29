@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly IWmsDataProvider wmsDataProvider;
 
+        private readonly IMachineErrorsService errorsService;
+
         private bool appear;
 
         private int? areaId;
@@ -91,7 +93,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isSsccEnabled;
 
-        private double itemOccupiedSpaceValue;
+        private double? itemOccupiedSpaceValue;
 
         private List<ItemInfo> items = new List<ItemInfo>();
 
@@ -127,8 +129,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private CancellationTokenSource tokenSource;
 
-        private bool type300;
-
         private bool type350 = true;
 
         #endregion
@@ -141,6 +141,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IBayManager bayManager,
             IMachineAreasWebService areasWebService,
             IDialogService dialogService,
+            IMachineErrorsService errorsService,
             IMachineItemsWebService itemsWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IBarcodeReaderService barcodeReaderService,
@@ -164,6 +165,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.errorsService = errorsService ?? throw new ArgumentNullException(nameof(errorsService));
         }
 
         #endregion
@@ -346,7 +348,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
         }
 
-        public double ItemOccupiedSpaceValue
+        public double? ItemOccupiedSpaceValue
         {
             get => this.itemOccupiedSpaceValue;
             set => this.SetProperty(ref this.itemOccupiedSpaceValue, value, this.RaiseCanExecuteChanged);
@@ -476,7 +478,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ConfirmMatrix()
         {
-            await this.machineLoadingUnitsWebService.SendMatrixRequestAsync(this.LoadingUnitId, this.SelectedCompartmentId, 10, this.SelectedItem.Id, this.QuantityIncrement, this.ItemOccupiedSpaceValue, this.Type350);
+            try
+            {
+                await this.machineLoadingUnitsWebService.SendMatrixRequestAsync(this.LoadingUnitId, this.SelectedCompartmentId, 10, this.SelectedItem.Id, this.QuantityIncrement, this.ItemOccupiedSpaceValue.Value, this.Type350);
+
+                this.NavigationService.GoBack();
+
+                this.ShowNotification(OperatorApp.OperationSuccess);
+            }
+            catch (Exception)
+            {
+                this.ShowNotification(OperatorApp.MatrixExeptionCode403, Services.Models.NotificationSeverity.Warning);
+            }
+
+
         }
 
         public override void Disappear()
@@ -486,8 +501,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.currentItemIndex = 0;
             this.maxKnownIndexSelection = 0;
             this.items = new List<ItemInfo>();
-            this.selectedItem = null;
-            this.quantityValue = null;
+            this.SelectedItem = null;
+            this.QuantityValue = null;
+            this.ItemOccupiedSpaceValue = null;
             this.AvailableQuantity = null;
 
             this.productsChangedToken?.Dispose();
@@ -715,14 +731,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.areaId = machineIdentity.AreaId;
                 }
 
-                var totalProducts = await this.areasWebService.GetProductsAsync(
-                    this.areaId.Value,
-                    0,
-                    0,
-                    searchItem,
-                    this.IsGroupbyLot,
-                    this.isDistinctBySerialNumber,
-                    cancellationToken);
+                var totalProducts = await this.areasWebService.GetAllProductsAsync(searchItem, cancellationToken);
 
                 var model = this.sessionService.MachineIdentity;
 
@@ -736,20 +745,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     foreach (var item in totalProducts.ToList())
                     {
-                        foreach (var machine in item.Machines.Where(m => m.Id == this.bayManager.Identity.Id))
+                        var newItem = new ProductInMachine()
                         {
-                            var newMachine = new List<MachineItemInfo>();
-                            newMachine.Add(machine);
-                            var newItem = new ProductInMachine()
-                            {
-                                Machines = newMachine,
-                                Lot = item.Lot,
-                                SerialNumber = item.SerialNumber,
-                                Sscc = item.Sscc,
-                                Item = item.Item,
-                            };
-                            this.productsInCurrentMachine.Add(newItem);
-                        }
+                            Machines = item.Machines,
+                            Lot = item.Lot,
+                            SerialNumber = item.SerialNumber,
+                            Sscc = item.Sscc,
+                            Item = item.Item,
+                        };
+                        this.productsInCurrentMachine.Add(newItem);
                     }
                 }
             }

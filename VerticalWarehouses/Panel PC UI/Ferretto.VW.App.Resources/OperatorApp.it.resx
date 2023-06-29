@@ -2334,4 +2334,7 @@
   <data name="IsItalMetal" xml:space="preserve">
     <value>ItalMetal (WMS custom)</value>
   </data>
+  <data name="MatrixExeptionCode403" xml:space="preserve">
+    <value>Supporto con dimensioni non adeguate per il deposito dello stampo</value>
+  </data>
 </root>

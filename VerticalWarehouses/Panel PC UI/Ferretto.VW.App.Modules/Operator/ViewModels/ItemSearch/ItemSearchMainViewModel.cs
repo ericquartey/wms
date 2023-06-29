@@ -64,6 +64,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private double? availableQuantity;
 
+        private bool isItalMetal;
+
+        private DelegateCommand showAddMatrixCommand;
+
         private DelegateCommand cancelReasonCommand;
 
         private DelegateCommand confirmReasonCommand;
@@ -217,6 +221,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
               (this.cancelReasonCommand = new DelegateCommand(
                   this.CancelReason));
 
+        public ICommand ShowAddMatrixCommand =>
+              this.showAddMatrixCommand
+              ??
+              (this.showAddMatrixCommand = new DelegateCommand(async () => await this.ShowAddMatrix()));
+
         public ICommand ConfirmReasonCommand =>
           this.confirmReasonCommand
           ??
@@ -236,6 +245,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
                 }
             }
+        }
+
+        public bool IsItalMetal
+        {
+            get => this.isItalMetal;
+            set => this.SetProperty(ref this.isItalMetal, value);
         }
 
         public bool IsBusyConfirmingOperation
@@ -797,6 +812,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         //    }
         //}
 
+        public async Task ShowAddMatrix()
+        {
+            var data = new List<int?>();
+
+            data.Add(null);
+            data.Add(null);
+
+            this.NavigationService.Appear(
+                   nameof(Utils.Modules.Operator),
+                   Utils.Modules.Operator.ItemOperations.ADD_MATRIX,
+                   data,
+                   trackCurrentView: true);
+        }
+
         public async Task ExecuteItemPickAsync(int itemId, string itemCode, string lot, string serialNumber)
         {
             try
@@ -975,6 +1004,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsCarrefour = configuration.IsCarrefour;
             this.isLocalMachineItems = configuration.IsLocalMachineItems;
+            this.IsItalMetal = configuration.IsItalMetal;
 
             this.Appear = false;
             this.InputQuantity = 0;

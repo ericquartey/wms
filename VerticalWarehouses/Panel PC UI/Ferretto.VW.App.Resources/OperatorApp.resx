@@ -2734,4 +2734,7 @@
   <data name="IsItalMetal" xml:space="preserve">
     <value>ItalMetal (WMS custom)</value>
   </data>
+  <data name="MatrixExeptionCode403" xml:space="preserve">
+    <value>Support with unsuitable dimensions for placing the Matrix</value>
+  </data>
 </root>

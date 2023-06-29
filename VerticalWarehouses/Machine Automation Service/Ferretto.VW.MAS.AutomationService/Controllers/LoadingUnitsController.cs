@@ -532,14 +532,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
             }
 
-            try
-            {
-                await loadingUnitsWmsWebService.SendMatrixRequestAsync(id, compartmentId, itemId, destinatinoGroupId, quantity, occupation, type);
-            }
-            catch (WmsWebApiException ex)
-            {
-                this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
-            }
+            // NORMAL i want the exeption get cathed by ppc
+            //try
+            //{
+            await loadingUnitsWmsWebService.SendMatrixRequestAsync(id, compartmentId, itemId, destinatinoGroupId, quantity, occupation, type);
+            //}
+            //catch (WmsWebApiException ex)
+            //{
+            //this.errorsProvider.RecordNew(MachineErrorCode.WmsError, BayNumber.None, ex.Message.Replace("\n", " ").Replace("\r", " "));
+            //}
 
             return this.Ok();
         }

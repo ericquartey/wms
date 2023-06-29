@@ -1015,7 +1015,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.SelectedCompartment = null;
 
-            this.ClearNotifications();
             this.IsBusyLoading = false;
             this.ProductsDataGridViewVisibility = this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
             this.PutListDataGridViewVisibility = this.isBusyLoading && !this.IsAddItemFeatureForDraperyManagementAvailable;
@@ -1243,7 +1242,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var data = new List<int?>();
 
-            data.Add(this.LoadingUnit?.Id);
+            var mission = this.MissionOperationsService.ActiveWmsMission;
+
+            data.Add(mission?.LoadingUnit?.Id);
             data.Add(this.SelectedCompartment?.Id);
 
             this.navigationService.Appear(
