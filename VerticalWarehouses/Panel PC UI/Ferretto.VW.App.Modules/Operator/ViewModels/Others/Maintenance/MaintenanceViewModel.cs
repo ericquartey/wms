@@ -273,6 +273,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.machineServicingWebService.FixServicingInfoAsync();
 
+                await this.OnAppearedAsync();
+
                 this.Logger.Debug("Force Fix Maintenance");
 
                 this.ShowNotification(Localized.Get("OperatorApp.OperationConfirmed"));

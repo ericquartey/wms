@@ -482,37 +482,30 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                try
+                // Sql Quary used on machine DB
+                // update instructions set instructionStatus = 86, isTodo = 0 where servicingInfoId = "LastServicingID";
+                // update instructions set isDone = 1 where servicingInfoId = "SecondLastServicingID";
+                // Es:
+                // update instructions set instructionStatus = 86, isTodo = 0 where servicingInfoId = 3;
+                // update instructions set isDone = 1 where servicingInfoId = 2;
+
+                var last = this.dataContext.ServicingInfo.Include(s => s.Instructions).ToList().LastOrDefault();
+                var sndLast = this.dataContext.ServicingInfo.Include(s => s.Instructions).ToList().SkipLast(1).LastOrDefault();
+
+                last.ServiceStatus = MachineServiceStatus.Valid;
+
+                foreach (var instruction in last.Instructions)
                 {
-                    // Sql Quary used on machine DB
-                    // update instructions set instructionStatus = 86, isTodo = 0 where servicingInfoId = "LastServicingID";
-                    // update instructions set isDone = 1 where servicingInfoId = "SecondLastServicingID";
-                    // Es:
-                    // update instructions set instructionStatus = 86, isTodo = 0 where servicingInfoId = 3;
-                    // update instructions set isDone = 1 where servicingInfoId = 2;
-
-                    var last = this.dataContext.ServicingInfo.Reverse().FirstOrDefault();
-                    var sndLast = this.dataContext.ServicingInfo.Reverse().Skip(1).FirstOrDefault();
-
-                    last.ServiceStatus = MachineServiceStatus.Valid;
-
-                    foreach (var instruction in last.Instructions)
-                    {
-                        instruction.InstructionStatus = MachineServiceStatus.Valid;
-                        instruction.IsToDo = false;
-                    }
-
-                    foreach (var instruction in sndLast.Instructions)
-                    {
-                        instruction.IsDone = true;
-                    }
-
-                    this.dataContext.SaveChanges();
+                    instruction.InstructionStatus = MachineServiceStatus.Valid;
+                    instruction.IsToDo = false;
                 }
-                catch (Exception ex)
+
+                foreach (var instruction in sndLast.Instructions)
                 {
-                    this.logger.LogError(ex, ex.Message);
+                    instruction.IsDone = true;
                 }
+
+                this.dataContext.SaveChanges();
             }
         }
 
