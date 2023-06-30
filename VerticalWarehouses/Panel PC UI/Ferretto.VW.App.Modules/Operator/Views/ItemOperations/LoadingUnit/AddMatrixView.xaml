@@ -226,26 +226,26 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
+
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox Margin="15,0,0,5"
-                                  Content="{Resources:Loc OperatorApp.Lot}"
-                                  Foreground="{DynamicResource CheckBoxDescription}"
-                                  IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
-                                  VerticalAlignment="Top"
-                                  Height="40"
-                                  IsEnabled="{Binding IsGroupbyLotEnabled}"
-                                  Style="{StaticResource PpcCheckBoxStyle}" />
+                    <CheckBox Margin="15,0,0,5"
+                              Content="{Resources:Loc OperatorApp.Lot}"
+                              Foreground="{DynamicResource CheckBoxDescription}"
+                              IsChecked="{Binding IsGroupbyLot, Mode=TwoWay}"
+                              VerticalAlignment="Top"
+                              Height="40"
+                              IsEnabled="{Binding IsGroupbyLotEnabled}"
+                              Style="{StaticResource PpcCheckBoxStyle}" />
 
-                        <CheckBox Margin="15,0,15,5"
-                                  Content="{Resources:Loc OperatorApp.SerialNumber}"
-                                  Height="40"
-                                  Foreground="{DynamicResource CheckBoxDescription}"
-                                  IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
-                                  IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
-                                  Style="{StaticResource PpcCheckBoxStyle}"
-                                  Visibility="{Binding IsCarrefour, Converter={StaticResource BTVIC}}" />
+                    <CheckBox Margin="15,0,15,5"
+                              Content="{Resources:Loc OperatorApp.SerialNumber}"
+                              Height="40"
+                              Foreground="{DynamicResource CheckBoxDescription}"
+                              IsChecked="{Binding IsDistinctBySerialNumber, Mode=TwoWay}"
+                              IsEnabled="{Binding IsDistinctBySerialNumberEnabled}"
+                              Style="{StaticResource PpcCheckBoxStyle}"
+                              Visibility="{Binding IsCarrefour, Converter={StaticResource BTVIC}}" />
 
                     </StackPanel>
                     <CheckBox Margin="15,0,0,5"
@@ -267,48 +267,47 @@
                                    Mask="{Binding QuantityTolerance, StringFormat=F{0}}"
                                    MinValue="0" />
 
-
                 <ctrls:PpcSpinEdit Grid.Row="2"
                                    Height="80"
                                    Margin="15,7,15,0"
                                    EditValue="{Binding ItemOccupiedSpaceValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                   Increment=".5"
+                                   Increment="1"
                                    LabelText="{Resources:Loc OperatorApp.ItemOccupiedSpace}"
+                                   Mask="{Binding QuantityTolerance, StringFormat=D{0}}"
                                    MinValue="0" />
 
                 <StackPanel  Grid.Row="3"
-                            Margin="15,0"
-                            HorizontalAlignment="Center"
-                            Orientation="Vertical">
+                             Margin="15,0"
+                             HorizontalAlignment="Center"
+                             Orientation="Vertical">
 
                     <TextBlock Grid.ColumnSpan="2"
-                       Margin="20"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                       Text="{Resources:Loc OperatorApp.MatrixType}" />
+                               Margin="20"
+                               VerticalAlignment="Top"
+                               Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                               Text="{Resources:Loc OperatorApp.MatrixType}" />
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <controls:PpcCheckBox IsChecked="{Binding Type350, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" LabelText="350" Margin="0,0,10,0" />
-                        <controls:PpcCheckBox IsChecked="{Binding Type350, Converter={StaticResource BNC}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" LabelText="300" Margin="10,0,0,0"/>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <controls:PpcCheckBox IsChecked="{Binding Type350, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              LabelText="350"
+                                              Margin="0,0,10,0" />
+                        <controls:PpcCheckBox IsChecked="{Binding Type350, Converter={StaticResource BNC}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                              LabelText="300"
+                                              Margin="10,0,0,0" />
                     </StackPanel>
-
                 </StackPanel>
 
-                
                 <StackPanel Grid.Row="6"
                             Margin="15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Orientation="Vertical">
 
-                        <controls:PpcButton Command="{Binding ConfirmMatrixCommand}"
-                                            Content="{Resources:Loc OperatorApp.Confirm}" />
-
-                        
-
+                    <controls:PpcButton Command="{Binding ConfirmMatrixCommand}"
+                                        Content="{Resources:Loc OperatorApp.Confirm}" />
                 </StackPanel>
             </Grid>
         </Grid>
-
     </Grid>
 </ctrls:View>

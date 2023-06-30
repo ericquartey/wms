@@ -4201,6 +4201,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Support with unsuitable dimensions for placing the Matrix.
+        /// </summary>
+        public static string MatrixExeptionCode403 {
+            get {
+                return ResourceManager.GetString("MatrixExeptionCode403", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Matrix Type.
         /// </summary>
         public static string MatrixType {
