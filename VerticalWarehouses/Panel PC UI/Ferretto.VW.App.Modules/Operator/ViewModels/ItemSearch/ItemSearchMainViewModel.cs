@@ -745,6 +745,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ExecuteItemAsync()
         {
+            this.IsWaitingForResponse = true;
+
             var noteEnabled = await this.machineMissionsWebService.IsEnabeNoteRulesAsync();
             if (noteEnabled
                 && (string.IsNullOrEmpty(this.reasonNotes)
@@ -773,6 +775,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
+
+            this.IsWaitingForResponse = false;
         }
 
         //public async Task ExecuteItemPickAsync()
@@ -1067,6 +1071,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
+
+            this.IsWaitingForResponse = false;
         }
 
         public async Task RequestItemPutAsync(int itemId, string itemCode)
@@ -1097,6 +1103,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 this.RaisePropertyChanged(nameof(this.SelectedItem));
             }
+
+            this.IsWaitingForResponse = false;
         }
 
         public async Task SearchItemAsync(int skip, CancellationToken cancellationToken)
@@ -1314,7 +1322,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanExecuteItemPick()
         {
-            return !(this.reasonId is null);
+            return !(this.reasonId is null) && !this.IsWaitingForResponse;
         }
 
         private bool CanRequestItemPick()
