@@ -18,9 +18,21 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty GaugeStartAngleProperty = DependencyProperty.Register(nameof(GaugeStartAngle), typeof(double?), typeof(PpcGauge), new PropertyMetadata(null));
 
-        public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(nameof(LabelText), typeof(string), typeof(PpcGauge), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty LabelHeadFontSizeProperty = DependencyProperty.Register(nameof(LabelHeadFontSize), typeof(double), typeof(PpcGauge), new PropertyMetadata(10.0));
 
-        public static readonly DependencyProperty LabelVisibleProperty = DependencyProperty.Register(nameof(LabelVisible), typeof(bool), typeof(PpcGauge));
+        public static readonly DependencyProperty LabelFontSizeProperty = DependencyProperty.Register(nameof(LabelFontSize), typeof(double), typeof(PpcGauge), new PropertyMetadata(10.0));
+
+        public static readonly DependencyProperty LabelHeadProperty = DependencyProperty.Register(nameof(LabelHead), typeof(string), typeof(PpcGauge), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty LabelUnitsTypeFontSizeProperty = DependencyProperty.Register(nameof(LabelUnitsTypeFontSize), typeof(double), typeof(PpcGauge), new PropertyMetadata(10.0));
+
+        public static readonly DependencyProperty LabelUnitsTypeProperty = DependencyProperty.Register(nameof(LabelUnitsType), typeof(string), typeof(PpcGauge), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty LabelValueFontSizeProperty = DependencyProperty.Register(nameof(LabelValueFontSize), typeof(double), typeof(PpcGauge), new PropertyMetadata(10.0));
+
+        public static readonly DependencyProperty LabelVisibleType1Property = DependencyProperty.Register(nameof(LabelVisibleType1), typeof(bool), typeof(PpcGauge));
+
+        public static readonly DependencyProperty LabelVisibleType2Property = DependencyProperty.Register(nameof(LabelVisibleType2), typeof(bool), typeof(PpcGauge));
 
         public static readonly DependencyProperty MajorIntervalCountProperty = DependencyProperty.Register(nameof(MajorIntervalCount), typeof(int), typeof(PpcGauge), new PropertyMetadata(10));
 
@@ -32,13 +44,13 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty MarkerFillProperty = DependencyProperty.Register(nameof(MarkerFill), typeof(SolidColorBrush), typeof(PpcGauge));
 
-        public static readonly DependencyProperty MarkerHeightProperty = DependencyProperty.Register(nameof(MarkerHeight), typeof(double), typeof(PpcGauge));
+        public static readonly DependencyProperty MarkerHeightProperty = DependencyProperty.Register(nameof(MarkerHeight), typeof(double), typeof(PpcGauge), new PropertyMetadata(1.0));
 
         public static readonly DependencyProperty MarkerOrientationProperty = DependencyProperty.Register(nameof(MarkerOrientation), typeof(ArcScaleMarkerOrientation), typeof(PpcGauge));
 
         public static readonly DependencyProperty MarkerVisibleProperty = DependencyProperty.Register(nameof(MarkerVisible), typeof(bool), typeof(PpcGauge));
 
-        public static readonly DependencyProperty MarkerWidthProperty = DependencyProperty.Register(nameof(MarkerWidth), typeof(double), typeof(PpcGauge));
+        public static readonly DependencyProperty MarkerWidthProperty = DependencyProperty.Register(nameof(MarkerWidth), typeof(double), typeof(PpcGauge), new PropertyMetadata(1.0));
 
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(PpcGauge));
 
@@ -70,13 +82,13 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty RangeBarFillProperty = DependencyProperty.Register(nameof(RangeBarFill), typeof(SolidColorBrush), typeof(PpcGauge));
 
-        public static readonly DependencyProperty RangeBarThicknessProperty = DependencyProperty.Register(nameof(RangeBarThickness), typeof(double), typeof(PpcGauge));
+        public static readonly DependencyProperty RangeBarThicknessProperty = DependencyProperty.Register(nameof(RangeBarThickness), typeof(double), typeof(PpcGauge), new PropertyMetadata(1.0));
 
         public static readonly DependencyProperty RangeBarVisibleProperty = DependencyProperty.Register(nameof(RangeBarVisible), typeof(bool), typeof(PpcGauge));
 
         public static readonly DependencyProperty RangeFillProperty = DependencyProperty.Register(nameof(RangeFill), typeof(SolidColorBrush), typeof(PpcGauge));
 
-        public static readonly DependencyProperty RangeThicknessProperty = DependencyProperty.Register(nameof(RangeThickness), typeof(double), typeof(PpcGauge));
+        public static readonly DependencyProperty RangeThicknessProperty = DependencyProperty.Register(nameof(RangeThickness), typeof(double), typeof(PpcGauge), new PropertyMetadata(1.0));
 
         public static readonly DependencyProperty RangeVisibleProperty = DependencyProperty.Register(nameof(RangeVisible), typeof(bool), typeof(PpcGauge));
 
@@ -122,16 +134,52 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(GaugeStartAngleProperty, value);
         }
 
-        public string LabelText
+        public string LabelHead
         {
-            get => (string)this.GetValue(LabelTextProperty);
-            set => this.SetValue(LabelTextProperty, value);
+            get => (string)this.GetValue(LabelHeadProperty);
+            set => this.SetValue(LabelHeadProperty, value);
         }
 
-        public bool LabelVisible
+        public double LabelHeadFontSize
         {
-            get => (bool)this.GetValue(LabelVisibleProperty);
-            set => this.SetValue(LabelVisibleProperty, value);
+            get => (double)this.GetValue(LabelHeadFontSizeProperty);
+            set => this.SetValue(LabelHeadFontSizeProperty, value);
+        }
+
+        public string LabelUnitsType
+        {
+            get => (string)this.GetValue(LabelUnitsTypeProperty);
+            set => this.SetValue(LabelUnitsTypeProperty, value);
+        }
+
+        public double LabelUnitsTypeFontSize
+        {
+            get => (double)this.GetValue(LabelUnitsTypeFontSizeProperty);
+            set => this.SetValue(LabelUnitsTypeFontSizeProperty, value);
+        }
+
+        public double LabelValueFontSize
+        {
+            get => (double)this.GetValue(LabelValueFontSizeProperty);
+            set => this.SetValue(LabelValueFontSizeProperty, value);
+        }
+
+        public double LabelFontSize
+        {
+            get => (double)this.GetValue(LabelFontSizeProperty);
+            set => this.SetValue(LabelFontSizeProperty, value);
+        }
+
+        public bool LabelVisibleType1
+        {
+            get => (bool)this.GetValue(LabelVisibleType1Property);
+            set => this.SetValue(LabelVisibleType1Property, value);
+        }
+
+        public bool LabelVisibleType2
+        {
+            get => (bool)this.GetValue(LabelVisibleType2Property);
+            set => this.SetValue(LabelVisibleType2Property, value);
         }
 
         public int MajorIntervalCount

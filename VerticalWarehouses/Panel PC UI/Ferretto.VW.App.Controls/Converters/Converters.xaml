@@ -39,7 +39,7 @@
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
                                      Inverse="True" />
 
-    <conv:ObjectNullOrEmptyConverter x:Key="ONREC" />
+    <conv:ObjectNullOrEmptyConverter x:Key="ONOEC" />
 
     <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"

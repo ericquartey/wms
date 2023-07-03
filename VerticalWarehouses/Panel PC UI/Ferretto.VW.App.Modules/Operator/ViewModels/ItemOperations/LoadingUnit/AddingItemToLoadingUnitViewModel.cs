@@ -477,6 +477,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 await this.ExecuteOperationAsync();
             }
+
+            this.IsWaitingForResponse = false;
         }
 
         private bool CanAddItemButton()
@@ -496,13 +498,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool CanExecuteItemPick()
         {
-            return !(this.reasonId is null);
+            return !(this.reasonId is null) && !this.IsWaitingForResponse;
         }
 
         private async Task ExecuteOperationAsync()
         {
             this.ClearNotifications();
-
+            this.IsWaitingForResponse = true;
             try
             {
                 this.ShowNotification(Localized.Get("OperatorApp.ItemAdding"), Services.Models.NotificationSeverity.Info);
@@ -542,6 +544,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} failed. Error: {exc}");
                 this.ShowNotification(Localized.Get("OperatorApp.ItemAddingFailed"), Services.Models.NotificationSeverity.Error);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
