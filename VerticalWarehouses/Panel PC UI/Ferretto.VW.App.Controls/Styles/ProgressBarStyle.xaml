@@ -97,10 +97,32 @@
                 Value="{DynamicResource PpcBackground}" />
         <Setter Property="RangeBarFill"
                 Value="{DynamicResource FerrettoGreen}" />
-        <Setter Property="LabelVisible"
+        <Setter Property="LabelHeadFontSize"
+                Value="18" />
+        <Setter Property="LabelVisibleType1"
+                Value="False" />
+        <Setter Property="LabelVisibleType2"
                 Value="True" />
 
         <Setter Property="OffsetRangeBar"
                 Value="-25" />
+
+        <Style.Triggers>
+            <Trigger Property="LabelVisibleType1"
+                     Value="True">
+                <Setter Property="LabelValueFontSize"
+                        Value="18" />
+                <Setter Property="LabelUnitsTypeFontSize"
+                        Value="12" />
+            </Trigger>
+
+            <Trigger Property="LabelVisibleType2"
+                     Value="True">
+                <Setter Property="LabelValueFontSize"
+                        Value="35" />
+                <Setter Property="LabelUnitsTypeFontSize"
+                        Value="15" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

@@ -35,6 +35,7 @@
 
         <Grid Grid.Row="1"
               Grid.Column="1">
+
             <StackPanel Orientation="Vertical">
 
                 <Grid>
@@ -268,11 +269,49 @@
                         </Border>
                     </Grid>
                 </Grid>
-
-                <controls:PpcGauge MinValue="0"
-                                   MaxValue="100"
-                                   Value="{Binding TestValue}" />
             </StackPanel>
+
+            <controls:PpcGauge MinValue="0"
+                               MaxValue="100"
+
+                               Margin="0,0,250,0"
+                               Grid.Row="3"
+
+                               LabelHead="Motore 1"
+                               LabelUnitsType="m/s"
+
+                               LabelHeadFontSize="18"
+                               LabelUnitsTypeFontSize="10"
+                               LabelValueFontSize="30"
+                               LabelFontSize="10"
+
+                               Height="175"
+                               VerticalAlignment="Bottom"
+                               HorizontalAlignment="Left"
+
+                               Value="{Binding TestValue}" />
+
+            <controls:PpcGauge MinValue="0"
+                               MaxValue="100"
+
+                               Margin="250,0,0,0"
+                               Grid.Row="3"
+
+                               LabelHead="Motore 2"
+                               LabelUnitsType="m/s"
+
+                               LabelHeadFontSize="24"
+                               LabelUnitsTypeFontSize="15"
+                               LabelValueFontSize="50"
+                               LabelFontSize="14"
+
+                               Height="250"
+                               VerticalAlignment="Bottom"
+                               HorizontalAlignment="Left"
+
+                               Value="{Binding TestValue}" />
+
+            
         </Grid>
     </Grid>
 </ctrls:View>
