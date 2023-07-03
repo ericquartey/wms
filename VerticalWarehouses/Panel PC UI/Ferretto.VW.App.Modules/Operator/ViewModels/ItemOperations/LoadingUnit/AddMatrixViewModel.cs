@@ -480,7 +480,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                await this.machineLoadingUnitsWebService.SendMatrixRequestAsync(this.LoadingUnitId, this.SelectedCompartmentId, 10, this.SelectedItem.Id, this.QuantityIncrement, this.ItemOccupiedSpaceValue.Value, this.Type350);
+                await this.machineLoadingUnitsWebService.SendMatrixRequestAsync(this.LoadingUnitId, this.SelectedCompartmentId, 10, this.SelectedItem.Id, this.QuantityValue.Value, this.ItemOccupiedSpaceValue.Value, this.Type350);
 
                 this.NavigationService.GoBack();
 
