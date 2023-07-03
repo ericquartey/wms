@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand inverterDiagnosticsCommand;
 
+        private bool isAdmin;
+
         private bool isAlarmActive;
 
         private bool isDiagnosticsActive;
@@ -118,6 +120,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isDiagnosticsActive, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsAdmin
+        {
+            get => this.isAdmin;
+            set => this.SetProperty(ref this.isAdmin, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsGeneralActive
         {
             get => this.isGeneralActive;
@@ -181,6 +189,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
+
+            var accessLevel = this.sessionService.UserAccessLevel;
+
+            this.IsAdmin = accessLevel >= MAS.AutomationService.Contracts.UserAccessLevel.Admin;
 
             this.IsBackNavigationAllowed = true;
 
