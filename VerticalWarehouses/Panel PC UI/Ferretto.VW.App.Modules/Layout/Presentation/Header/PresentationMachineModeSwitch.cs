@@ -49,6 +49,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachineInCompact3;
 
+        private bool isMachineInFastCompact;
+
+        private bool isMachineInFastCompact2;
+
+        private bool isMachineInFastCompact3;
+
         private bool isMachineInFirstTest;
 
         private bool isMachineInLoadUnitOperations;
@@ -168,6 +174,24 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             get => this.isMachineInCompact3;
             set => this.SetProperty(ref this.isMachineInCompact3, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMachineInFastCompact
+        {
+            get => this.isMachineInFastCompact;
+            set => this.SetProperty(ref this.isMachineInFastCompact, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMachineInFastCompact2
+        {
+            get => this.isMachineInFastCompact2;
+            set => this.SetProperty(ref this.isMachineInFastCompact2, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMachineInFastCompact3
+        {
+            get => this.isMachineInFastCompact3;
+            set => this.SetProperty(ref this.isMachineInFastCompact3, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInFirstTest
@@ -455,6 +479,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.IsMachineInCompact = this.MachineMode is MachineMode.Compact;
             this.IsMachineInCompact2 = this.MachineMode is MachineMode.Compact2;
             this.IsMachineInCompact3 = this.MachineMode is MachineMode.Compact3;
+            this.IsMachineInFastCompact = this.MachineMode is MachineMode.FastCompact;
+            this.IsMachineInFastCompact2 = this.MachineMode is MachineMode.FastCompact2;
+            this.IsMachineInFastCompact3 = this.MachineMode is MachineMode.FastCompact3;
             this.IsMachineInFirstTest = this.MachineMode is MachineMode.FirstTest || this.MachineMode is MachineMode.FirstTest2 || this.MachineMode is MachineMode.FirstTest3;
             this.IsMachineInShutdown = this.MachineMode is MachineMode.Shutdown;
 

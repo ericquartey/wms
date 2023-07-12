@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public int? FixedCell { get; set; }
 
+        public int? StartingCellId { get; set; }
+
         /// <summary>
         /// the load unit cannot be higher than this, and when it is lower it will be forced to this height
         /// </summary>

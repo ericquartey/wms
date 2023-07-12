@@ -57,7 +57,9 @@ namespace Ferretto.VW.MAS.DataLayer
         int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting, bool isCellTest = false, bool randomCells = false);
 
         int FindTopCell(LoadingUnit loadingUnit);
+
         void FreeReservedCells(LoadingUnit luDb);
+
         IEnumerable<Cell> GetAll();
 
         Cell GetById(int cellId);

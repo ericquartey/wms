@@ -92,6 +92,7 @@ namespace Ferretto.VW.MAS.DataModels
                 || this.MissionType is MissionType.LoadUnitOperation
                 || this.MissionType is MissionType.OUT
                 || this.MissionType is MissionType.Compact
+                || this.MissionType is MissionType.FastCompact
                 || this.MissionType is MissionType.FullTestIN
                 || this.MissionType is MissionType.FullTestOUT;
         }

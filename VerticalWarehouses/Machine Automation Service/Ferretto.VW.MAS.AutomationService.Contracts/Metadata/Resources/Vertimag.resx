@@ -628,10 +628,10 @@
     <value>Can User Enable Wms</value>
   </data>
   <data name="IsRotationClass" xml:space="preserve">
-    <value>Rotation Class</value>
+    <value>Elevator Logic with Rotation Class</value>
   </data>
   <data name="IsLoadUnitFixed" xml:space="preserve">
-    <value>Is Load Unit Fixed</value>
+    <value>Elevator Logic Load Unit Fixed</value>
   </data>
   <data name="WeightData" xml:space="preserve">
     <value>Step {0}</value>
@@ -659,5 +659,11 @@
   </data>
   <data name="Machine_InverterResponseTimeout" xml:space="preserve">
     <value>Inverter Response Timeout</value>
+  </data>
+  <data name="IsBackToStartCell" xml:space="preserve">
+    <value>Elevator Logic Returns to the starting Cell</value>
+  </data>
+  <data name="IsFindMinHeight" xml:space="preserve">
+    <value>Elevator Logic Returns to the cell with the minimum height</value>
   </data>
 </root>

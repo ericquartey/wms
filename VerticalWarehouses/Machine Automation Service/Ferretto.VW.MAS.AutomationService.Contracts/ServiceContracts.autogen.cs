@@ -482,6 +482,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task CompactingAsync(bool optimizeRotationClass, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FastCompactingAsync(bool optimizeRotationClass);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FastCompactingAsync(bool optimizeRotationClass, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1851,6 +1858,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task SetLoadingUnitWeightAsync(int id, double loadingUnitGrossWeight, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetStartingCellAsync(int id, int cellId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetStartingCellAsync(int id, int cellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
@@ -4492,6 +4506,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         ScaleCalibration = 10,
     
+        FastCompact = 11,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.1.23.0 (Newtonsoft.Json v11.0.0.0)")]
@@ -4911,6 +4927,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("FixedCell", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? FixedCell { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("StartingCellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? StartingCellId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("FixedHeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public double? FixedHeight { get; set; }
@@ -5574,6 +5593,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRotationClass", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRotationClass { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsBackToStartCell", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsBackToStartCell { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsFindMinHeight", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFindMinHeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsSpea", Required = Newtonsoft.Json.Required.Always)]
         public bool IsSpea { get; set; }
@@ -8269,6 +8294,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         SwitchingToFirstTest3 = 36,
     
         SwitchingToShutdown = 37,
+    
+        FastCompact = 38,
+    
+        FastCompact2 = 39,
+    
+        FastCompact3 = 40,
+    
+        SwitchingToFastCompact = 41,
+    
+        SwitchingToFastCompact2 = 42,
+    
+        SwitchingToFastCompact3 = 43,
     
     }
     

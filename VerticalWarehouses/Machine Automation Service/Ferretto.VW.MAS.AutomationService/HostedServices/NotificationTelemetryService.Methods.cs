@@ -202,6 +202,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 if ((messageData.MissionType == MissionType.IN
                     || messageData.MissionType == MissionType.FullTestIN
                     || messageData.MissionType == MissionType.Compact
+                    || messageData.MissionType == MissionType.FastCompact
                     || messageData.MissionType == MissionType.LoadUnitOperation
                     ) &&
                     messageData.MissionStep == MissionStep.End &&

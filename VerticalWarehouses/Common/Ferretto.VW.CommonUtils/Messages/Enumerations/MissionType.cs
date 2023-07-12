@@ -22,6 +22,8 @@
 
         Compact,
 
-        ScaleCalibration
+        ScaleCalibration,
+
+        FastCompact
     }
 }

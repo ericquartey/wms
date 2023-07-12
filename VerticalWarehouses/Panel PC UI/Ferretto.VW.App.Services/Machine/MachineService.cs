@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services.Models;
@@ -452,7 +451,7 @@ namespace Ferretto.VW.App.Services
                             lu.Description = luDetails.Note;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         this.ShowNotification($"{Resources.Localized.Get("ServiceMachine.LoadUnitNotFound")} {lu.Id}", NotificationSeverity.Error);
                     }
@@ -491,10 +490,14 @@ namespace Ferretto.VW.App.Services
         {
             switch (this.Bay.Number)
             {
-                case MAS.AutomationService.Contracts.BayNumber.BayOne: return !this.LUPresentInBay1 && this.Bay.CurrentMission != null;
-                case MAS.AutomationService.Contracts.BayNumber.BayTwo: return !this.LUPresentInBay2 && this.Bay.CurrentMission != null;
-                case MAS.AutomationService.Contracts.BayNumber.BayThree: return !this.LUPresentInBay3 && this.Bay.CurrentMission != null;
-                default: return false;
+                case MAS.AutomationService.Contracts.BayNumber.BayOne:
+                    return !this.LUPresentInBay1 && this.Bay.CurrentMission != null;
+                case MAS.AutomationService.Contracts.BayNumber.BayTwo:
+                    return !this.LUPresentInBay2 && this.Bay.CurrentMission != null;
+                case MAS.AutomationService.Contracts.BayNumber.BayThree:
+                    return !this.LUPresentInBay3 && this.Bay.CurrentMission != null;
+                default:
+                    return false;
             }
         }
 
@@ -1867,10 +1870,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.InsufficientSpaceAvailable"), NotificationSeverity.Warning);
                         }
-                        else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
-                        {
-                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
-                        }
+                        //else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
+                        //{
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
+                        //}
                         //else if (this.FragmentTotalPercent > MaximumFragmentation)
                         //{
                         //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
@@ -1920,10 +1923,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.InsufficientSpaceAvailable"), NotificationSeverity.Warning);
                         }
-                        else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
-                        {
-                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
-                        }
+                        //else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
+                        //{
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
+                        //}
                         //else if (this.FragmentTotalPercent > MaximumFragmentation)
                         //{
                         //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
@@ -1972,10 +1975,10 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification(Resources.Localized.Get("OperatorApp.InsufficientSpaceAvailable"), NotificationSeverity.Warning);
                         }
-                        else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
-                        {
-                            this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
-                        }
+                        //else if (this.MaxSolidSpace < this.loadUnitMaxHeight)
+                        //{
+                        //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);
+                        //}
                         //else if (this.FragmentTotalPercent > MaximumFragmentation)
                         //{
                         //    this.ShowNotification(Resources.Localized.Get("OperatorApp.DrawerCompactingWarning"), NotificationSeverity.Warning);

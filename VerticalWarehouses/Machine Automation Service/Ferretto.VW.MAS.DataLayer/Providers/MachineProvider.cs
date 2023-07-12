@@ -620,6 +620,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsBackToStartCellEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsBackToStartCell).First();
+            }
+        }
+
+        public bool IsFindMinHeightEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsFindMinHeight).First();
+            }
+        }
+
         public bool IsSensitiveCarpetsBypass()
         {
             lock (this.dataContext)

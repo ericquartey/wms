@@ -596,6 +596,21 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
                 <Setter Property="Content" Value="{res:Loc InstallationApp.Compact3}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInFastCompact}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.FastCompact}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInFastCompact2}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.FastCompact2}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInFastCompact3}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="Content" Value="{res:Loc InstallationApp.FastCompact3}" />
+            </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInFirstTest}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />

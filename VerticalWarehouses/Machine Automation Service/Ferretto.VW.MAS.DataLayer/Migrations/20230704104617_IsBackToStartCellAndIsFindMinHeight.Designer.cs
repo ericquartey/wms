@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20230704104617_IsBackToStartCellAndIsFindMinHeight")]
+    partial class IsBackToStartCellAndIsFindMinHeight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1313,8 +1315,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("MissionsCountRotation");
 
                     b.Property<string>("RotationClass");
-
-                    b.Property<int?>("StartingCellId");
 
                     b.Property<string>("Status")
                         .IsRequired()

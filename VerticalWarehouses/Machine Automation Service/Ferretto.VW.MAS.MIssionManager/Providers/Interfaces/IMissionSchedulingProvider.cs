@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -20,6 +19,8 @@ namespace Ferretto.VW.MAS.MissionManager
         bool QueueFirstTestMission(int loadUnitId, BayNumber sourceBayNumber, int cycle, IServiceProvider serviceProvider);
 
         bool QueueLoadingUnitCompactingMission(IServiceProvider serviceProvider);
+
+        bool QueueLoadingUnitFastCompactingMission(IServiceProvider serviceProvider);
 
         void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType);
 

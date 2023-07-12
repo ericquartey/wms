@@ -625,10 +625,10 @@
     <value>L'utente può abilitare il Wms</value>
   </data>
   <data name="IsRotationClass" xml:space="preserve">
-    <value>Classe di rotazione</value>
+    <value>Logica Elevatore con Classe di rotazione</value>
   </data>
   <data name="IsLoadUnitFixed" xml:space="preserve">
-    <value>Cassetti ad associazione fissa</value>
+    <value>Logica Elevatore Cassetti ad associazione fissa</value>
   </data>
   <data name="WeightData" xml:space="preserve">
     <value>Step {0}</value>
@@ -656,5 +656,11 @@
   </data>
   <data name="Machine_InverterResponseTimeout" xml:space="preserve">
     <value>Timeout risposta inverter</value>
+  </data>
+  <data name="IsBackToStartCell" xml:space="preserve">
+    <value>Logica Elevatore Torna alla cella di partenza</value>
+  </data>
+  <data name="IsFindMinHeight" xml:space="preserve">
+    <value>Logica Elevatore Torna alla cella con l'altezza minima</value>
   </data>
 </root>

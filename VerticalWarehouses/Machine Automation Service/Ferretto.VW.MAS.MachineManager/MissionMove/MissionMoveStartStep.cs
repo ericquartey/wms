@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -156,7 +155,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
                 }
 
-                if (this.Mission.MissionType == MissionType.Compact)
+                if (this.Mission.MissionType == MissionType.Compact || this.Mission.MissionType == MissionType.FastCompact)
                 {
                     if (this.BaysDataProvider.CheckIntrusion(this.Mission.TargetBay, false))
                     {

@@ -2842,6 +2842,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fast Compact.
+        /// </summary>
+        public static string FastCompact {
+            get {
+                return ResourceManager.GetString("FastCompact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fast Compact 2.
+        /// </summary>
+        public static string FastCompact2 {
+            get {
+                return ResourceManager.GetString("FastCompact2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fast Compact 3.
+        /// </summary>
+        public static string FastCompact3 {
+            get {
+                return ResourceManager.GetString("FastCompact3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field.
         /// </summary>
         public static string Field {
