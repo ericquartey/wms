@@ -33,11 +33,15 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly Timer CleanupTimer;
 
-        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
-
         private readonly Timer DelayAfterPut1;
+
         private readonly Timer DelayAfterPut2;
+
         private readonly Timer DelayAfterPut3;
+
+        private readonly Dictionary<BayNumber, bool> isDelayFinish;
+
+        private readonly IMachineVolatileDataProvider machineVolatileDataProvider;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -48,8 +52,6 @@ namespace Ferretto.VW.MAS.MissionManager
         private int DelayTimeout = 3000;
 
         private bool firstCleanupExecuted;
-
-        private readonly Dictionary<BayNumber, bool> isDelayFinish;
 
         private LoadingUnitLocation loadUnitSource;
 
@@ -69,6 +71,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.machineVolatileDataProvider = machineVolatileDataProvider ?? throw new ArgumentNullException(nameof(machineVolatileDataProvider));
             this.servicingProvider = servicingProvider ?? throw new ArgumentNullException(nameof(servicingProvider));
             this.wmsSettingsProvider = wmsSettingsProvider ?? throw new ArgumentNullException(nameof(wmsSettingsProvider));
+
             this.CleanupTimer = new Timer(this.OnTimePeriodElapsed, null, Timeout.Infinite, Timeout.Infinite);
             this.DelayAfterPut1 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayOne, Timeout.Infinite, Timeout.Infinite);
             this.DelayAfterPut2 = new Timer(this.OnTimePeriodElapsed2, BayNumber.BayTwo, Timeout.Infinite, Timeout.Infinite);
@@ -91,6 +94,20 @@ namespace Ferretto.VW.MAS.MissionManager
             if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
             {
                 return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
+            }
+            // no more compacting is possible. Exit from compact mode
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            this.machineVolatileDataProvider.IsOptimizeRotationClass = machineProvider.GetMinMaxHeight().IsRotationClass;
+            return false;
+        }
+
+        public bool ScheduleFastCompactingMissions(IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+            if (!missionsDataProvider.GetAllActiveMissions().Any(m => m.Status != MissionStatus.New && m.Status != MissionStatus.Waiting))
+            {
+                return serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitFastCompactingMission(serviceProvider);
             }
             // no more compacting is possible. Exit from compact mode
             var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
@@ -829,12 +846,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 case MachineMode.SwitchingToLoadUnitOperations2:
                 case MachineMode.SwitchingToLoadUnitOperations3:
                 case MachineMode.SwitchingToCompact:
+                case MachineMode.SwitchingToFastCompact:
                 case MachineMode.SwitchingToFirstTest:
                 case MachineMode.SwitchingToFullTest:
                 case MachineMode.SwitchingToCompact2:
+                case MachineMode.SwitchingToFastCompact2:
                 case MachineMode.SwitchingToFirstTest2:
                 case MachineMode.SwitchingToFullTest2:
                 case MachineMode.SwitchingToCompact3:
+                case MachineMode.SwitchingToFastCompact3:
                 case MachineMode.SwitchingToFirstTest3:
                 case MachineMode.SwitchingToFullTest3:
                     {
@@ -882,6 +902,29 @@ namespace Ferretto.VW.MAS.MissionManager
 
                                         default:
                                             this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToCompact;
+                                            break;
+                                    }
+
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                                }
+                                else if (activeMissions.Any(m => m.MissionType == MissionType.FastCompact))
+                                {
+                                    switch (activeMissions.FirstOrDefault(m => m.MissionType == MissionType.FastCompact).TargetBay)
+                                    {
+                                        case BayNumber.BayOne:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact;
+                                            break;
+
+                                        case BayNumber.BayTwo:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact2;
+                                            break;
+
+                                        case BayNumber.BayThree:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact3;
+                                            break;
+
+                                        default:
+                                            this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact;
                                             break;
                                     }
 
@@ -987,6 +1030,24 @@ namespace Ferretto.VW.MAS.MissionManager
                                     )
                                 {
                                     this.machineVolatileDataProvider.Mode = MachineMode.Compact3;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFastCompact
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FastCompact;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFastCompact2
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FastCompact2;
+                                }
+                                else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFastCompact3
+                                    || activeMissions.Any(m => m.MissionType == MissionType.Compact && m.Status == MissionStatus.Executing)
+                                    )
+                                {
+                                    this.machineVolatileDataProvider.Mode = MachineMode.FastCompact3;
                                 }
                                 else if (this.machineVolatileDataProvider.Mode == MachineMode.SwitchingToFirstTest
                                     || activeMissions.Any(m => m.MissionType == MissionType.FirstTest && m.Status == MissionStatus.Executing)
@@ -1117,6 +1178,38 @@ namespace Ferretto.VW.MAS.MissionManager
                         {
                             this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
                             this.Logger.LogInformation($"Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.FastCompact:
+                    {
+                        if (!this.ScheduleFastCompactingMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual;
+                            this.Logger.LogInformation($"Fast Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                            //var missionType = (source == LoadingUnitLocation.Elevator) ? MissionType.Manual : MissionType.LoadUnitOperation;
+                            // this.moveLoadUnitProvider.InsertToCell(missionType, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+                        }
+                    }
+                    break;
+
+                case MachineMode.FastCompact2:
+                    {
+                        if (!this.ScheduleFastCompactingMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual2;
+                            this.Logger.LogInformation($"Fast Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
+                        }
+                    }
+                    break;
+
+                case MachineMode.FastCompact3:
+                    {
+                        if (!this.ScheduleFastCompactingMissions(serviceProvider))
+                        {
+                            this.machineVolatileDataProvider.Mode = MachineMode.Manual3;
+                            this.Logger.LogInformation($"Fast Compacting terminated. Scheduling Machine status switched to {this.machineVolatileDataProvider.Mode}");
                         }
                     }
                     break;
@@ -1778,14 +1871,16 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private void OnTimePeriodElapsed2(object state)
         {
-            switch((BayNumber)state)
+            switch ((BayNumber)state)
             {
                 case BayNumber.BayOne:
                     this.DelayAfterPut1.Change(-1, -1);
                     break;
+
                 case BayNumber.BayTwo:
                     this.DelayAfterPut2.Change(-1, -1);
                     break;
+
                 case BayNumber.BayThree:
                     this.DelayAfterPut3.Change(-1, -1);
                     break;
@@ -1925,9 +2020,11 @@ namespace Ferretto.VW.MAS.MissionManager
                             case BayNumber.BayOne:
                                 this.DelayAfterPut1.Change(this.DelayTimeout, -1);
                                 break;
+
                             case BayNumber.BayTwo:
                                 this.DelayAfterPut2.Change(this.DelayTimeout, -1);
                                 break;
+
                             case BayNumber.BayThree:
                                 this.DelayAfterPut3.Change(this.DelayTimeout, -1);
                                 break;

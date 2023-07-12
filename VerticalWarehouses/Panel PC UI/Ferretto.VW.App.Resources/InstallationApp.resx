@@ -2881,4 +2881,13 @@
   <data name="SensitiveEdgeAlarm" xml:space="preserve">
     <value>Sensitive edge control unit alarm</value>
   </data>
+  <data name="FastCompact3" xml:space="preserve">
+    <value>Fast Compact 3</value>
+  </data>
+  <data name="FastCompact2" xml:space="preserve">
+    <value>Fast Compact 2</value>
+  </data>
+  <data name="FastCompact" xml:space="preserve">
+    <value>Fast Compact</value>
+  </data>
 </root>

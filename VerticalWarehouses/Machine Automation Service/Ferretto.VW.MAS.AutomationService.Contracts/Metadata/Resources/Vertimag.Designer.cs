@@ -862,7 +862,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is Load Unit Fixed.
+        ///   Looks up a localized string similar to Elevator Logic Returns to the starting Cell.
+        /// </summary>
+        public static string IsBackToStartCell {
+            get {
+                return ResourceManager.GetString("IsBackToStartCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator Logic Returns to the cell with the minimum height.
+        /// </summary>
+        public static string IsFindMinHeight {
+            get {
+                return ResourceManager.GetString("IsFindMinHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator Logic Load Unit Fixed.
         /// </summary>
         public static string IsLoadUnitFixed {
             get {
@@ -871,7 +889,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rotation Class.
+        ///   Looks up a localized string similar to Elevator Logic with Rotation Class.
         /// </summary>
         public static string IsRotationClass {
             get {

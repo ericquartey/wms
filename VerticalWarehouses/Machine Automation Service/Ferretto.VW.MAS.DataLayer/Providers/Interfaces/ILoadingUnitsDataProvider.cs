@@ -64,6 +64,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetRotationClassFromUI(int id, string rotationClass);
 
+        void SetStartingCell(int id, int? cellId);
+
         void SetStatus(int id, LoadingUnitStatus status);
 
         /// <summary>

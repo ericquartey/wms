@@ -92,6 +92,21 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
                     break;
 
+                case MachineMode.FastCompact:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact;
+                    this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
+                    break;
+
+                case MachineMode.FastCompact2:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact;
+                    this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
+                    break;
+
+                case MachineMode.FastCompact3:
+                    this.machineVolatileDataProvider.Mode = MachineMode.SwitchingToFastCompact;
+                    this.machineVolatileDataProvider.IsOptimizeRotationClass = optimizeRotationClass;
+                    break;
+
                 case MachineMode.FullTest:
                     this.machineVolatileDataProvider.LoadUnitsToTest = loadUnits;
                     this.machineVolatileDataProvider.RequiredCycles = cycles;

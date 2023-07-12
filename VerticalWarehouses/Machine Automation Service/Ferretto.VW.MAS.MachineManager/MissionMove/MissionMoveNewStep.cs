@@ -914,6 +914,19 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                         );
                     break;
 
+                case MissionType.FastCompact:
+                    returnValue = (this.MachineVolatileDataProvider.Mode == MachineMode.FastCompact
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFastCompact
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.FastCompact2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFastCompact2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.FastCompact3
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToFastCompact3
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual2
+                        || this.MachineVolatileDataProvider.Mode == MachineMode.SwitchingToManual3
+                        );
+                    break;
+
                 case MissionType.WMS:
                 case MissionType.OUT:
                 case MissionType.IN:

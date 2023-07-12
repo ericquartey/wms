@@ -58,6 +58,31 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("FastCompacting")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult FastCompacting(bool optimizeRotationClass)
+        {
+            switch (this.BayNumber)
+            {
+                case BayNumber.BayOne:
+                default:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FastCompact, optimizeRotationClass: optimizeRotationClass);
+                    break;
+
+                case BayNumber.BayTwo:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FastCompact2, optimizeRotationClass: optimizeRotationClass);
+                    break;
+
+                case BayNumber.BayThree:
+                    this.machineModeProvider.RequestChange(CommonUtils.Messages.MachineMode.FastCompact3, optimizeRotationClass: optimizeRotationClass);
+                    break;
+            }
+
+            return this.Accepted();
+        }
+
         [HttpPost("stop")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

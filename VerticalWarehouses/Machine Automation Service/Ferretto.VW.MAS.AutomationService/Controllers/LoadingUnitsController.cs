@@ -420,6 +420,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new ArgumentNullException(nameof(loadingUnitsWmsWebService));
             }
 
+
+            var loadUnit = this.loadingUnitsDataProvider.GetById(id);
+            this.loadingUnitsDataProvider.SetStartingCell(id, loadUnit.CellId);
+
             if (wmsSettingsProvider.IsEnabled)
             {
                 try
@@ -561,6 +565,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.logger.LogInformation($"Update load unit {id} weight {loadingUnitGrossWeight:0.00} kg");
             this.loadingUnitsDataProvider.SetWeightFromUI(id, loadingUnitGrossWeight);
+
+            return this.Accepted();
+        }
+
+        [HttpGet("setStartingCell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult SetStartingCell(int id, int cellId)
+        {
+            this.logger.LogInformation($"Set Loading Unit {id}, Starting Cell {cellId}");
+
+            this.loadingUnitsDataProvider.SetStartingCell(id, cellId);
 
             return this.Accepted();
         }

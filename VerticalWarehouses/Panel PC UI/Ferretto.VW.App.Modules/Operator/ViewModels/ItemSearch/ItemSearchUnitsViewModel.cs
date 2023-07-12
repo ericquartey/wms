@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -118,6 +117,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                var loadingUnit = await this.machineLoadingUnitsWebService.GetByIdAsync(this.SelectedItemUnits.LoadingUnitId);
 
                 await this.machineLoadingUnitsWebService.MoveToBayAsync(this.SelectedItemUnits.LoadingUnitId, this.authenticationService.UserName);
 

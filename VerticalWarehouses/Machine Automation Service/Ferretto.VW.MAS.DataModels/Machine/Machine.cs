@@ -148,6 +148,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool IsRotationClass { get; set; }
 
+        public bool IsBackToStartCell { get; set; }
+
+        public bool IsFindMinHeight { get; set; }
+
         public bool IsSpea { get; set; }
 
         /// <summary>

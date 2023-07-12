@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Migrations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -88,9 +87,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 return false;
             }
 
-            if (cell.BlockLevel != BlockLevel.None
-                && (!isCellTest || cell.BlockLevel != BlockLevel.NeedsTest)
-                )
+            if (cell.BlockLevel != BlockLevel.None && (!isCellTest || cell.BlockLevel != BlockLevel.NeedsTest))
             {
                 reason = Resources.Cells.ResourceManager.GetString("TheTargetCellIsBlocked", CommonUtils.Culture.Actual);
                 return false;
@@ -290,29 +287,37 @@ namespace Ferretto.VW.MAS.DataLayer
                 .Include(i => i.Cell)
                     .ThenInclude(c => c.Panel)
                 .SingleOrDefault(l => l.Id == loadingUnitId);
+
             if (loadUnit is null)
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
+
             if (compactingType != CompactingType.NoCompacting && loadUnit.Cell is null)
             {
                 this.logger.LogError($"FindEmptyCell for compacting: LU {loadingUnitId} not in cell! ");
                 throw new EntityNotFoundException(loadingUnitId);
             }
+
             var machineStatistics = this.machineProvider.GetPresentStatistics();
+
             if (machineStatistics is null)
             {
                 throw new EntityNotFoundException();
             }
+
             var machine = this.machineProvider.GetMinMaxHeight();
+
             if (machine is null)
             {
                 throw new EntityNotFoundException();
             }
+
             if (!machine.IsRotationClass && this.machineVolatileDataProvider.IsOptimizeRotationClass)
             {
                 this.machineVolatileDataProvider.IsOptimizeRotationClass = false;
             }
+
             if (machineStatistics.TotalWeightFront + machineStatistics.TotalWeightBack + loadUnit.GrossWeight > machine.MaxGrossWeight)
             {
                 this.logger.LogError($"FindEmptyCell: total weight exceeded for LU {loadingUnitId}; weight {loadUnit.GrossWeight:0.00}; " +
@@ -321,7 +326,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     $"MaxGrossWeight {machine.MaxGrossWeight} ");
                 throw new InvalidOperationException(Resources.Cells.ResourceManager.GetString("NoEmptyCellsAvailable", CommonUtils.Culture.Actual));
             }
+
+            // inizio logica cella di deposito
+
             var preferredSide = WarehouseSide.NotSpecified;
+
             if (machineStatistics.TotalWeightFront + loadUnit.GrossWeight < machineStatistics.TotalWeightBack)
             {
                 preferredSide = WarehouseSide.Front;
@@ -331,14 +340,16 @@ namespace Ferretto.VW.MAS.DataLayer
                 preferredSide = WarehouseSide.Back;
             }
 
-            double loadUnitHeight;
+            double loadUnitHeight; // altezza della loading unit
+
             if (loadUnit.Height == 0 || loadUnit.Height > machine.LoadUnitMaxHeight)
             {
                 if (machine.LoadUnitMaxHeight == 0)
                 {
                     throw new InvalidOperationException(Resources.Bays.ResourceManager.GetString("TheBayLoadingMaxHeightNotValid", CommonUtils.Culture.Actual));
                 }
-                loadUnitHeight = (isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight);
+
+                loadUnitHeight = isCellTest ? machine.LoadUnitMinHeight : machine.LoadUnitMaxHeight;
                 this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; height is {loadUnitHeight} (as configured for {(isCellTest ? "min" : "max")});");
             }
             else
@@ -346,9 +357,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 loadUnitHeight = loadUnit.Height;
             }
 
-            if (!isCellTest
-                && loadUnit.IsCellFixed
-                && loadUnit.FixedCell.HasValue)
+            if (!isCellTest && loadUnit.IsCellFixed && loadUnit.FixedCell.HasValue)
             {
                 return this.FindEmptyFixedCell(loadUnit, machine, loadUnitHeight);
             }
@@ -361,6 +370,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.logger.LogDebug($"FindEmptyCell: height extended to {loadUnitHeight} for heavy LU {loadingUnitId}, weight {loadUnit.NetWeight}");
                 }
             }
+            // fine altezza, in loadUnitHeight hai l'altezza del cassetto totale
 
             using (var availableCell = new BlockingCollection<AvailableCell>())
             {
@@ -504,11 +514,34 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (!randomCells)
                 {
                     // sort cells from bottom to top, optimizing free space
-                    foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
-                        .ThenBy(t => (machine.IsRotationClass && !string.IsNullOrEmpty(t.Cell.RotationClass) && !string.IsNullOrEmpty(loadUnit.RotationClass)) ? Math.Abs(t.Cell.RotationClass[0] - loadUnit.RotationClass[0]) : 0)
-                        .ThenBy(t => (isCellTest) ? 0 : t.Height)          // minimize free space
-                        .ThenBy(t => t.Cell.Priority)   // start from bottom to top
-                        .First();
+
+                    // la gestione "loadUnitFixed" viene gestita prima con la funzione *FindEmptyFixedCell*
+                    //var loadUnitFixed = this.machineProvider.GetIsLoadUnitFixed();
+                    var backToStart = this.machineProvider.IsBackToStartCellEnabled();
+                    var findMinHeight = this.machineProvider.IsFindMinHeightEnabled();
+                    var rotationClass = this.machineProvider.IsRotationClassEnabled();
+
+                    var backid = loadUnit.StartingCellId; // controllare se e la vecchia cella
+
+                    // se è attiva la gestione "backToStart" e la cella di partenza è presente nelle celle disponiboli usiamo quella altrimenti
+                    if (backToStart && availableCell.Any(c => c.Cell.Id == loadUnit.StartingCellId))
+                    {
+                        foundCell = availableCell.FirstOrDefault(c => c.Cell.Id == loadUnit.StartingCellId);
+                    }
+                    else if (findMinHeight) // se è attiva la gestione "findMinHeight" cerchiamo la cella con l'altezza minima richiesta dal cassetto
+                    {
+                        foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
+                                                 .ThenBy(t => (isCellTest) ? 0 : t.Height) // minimize free space
+                                                 .First();
+                    }
+                    else // gestione di default
+                    {
+                        foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1)
+                                                 .ThenBy(t => (machine.IsRotationClass && !string.IsNullOrEmpty(t.Cell.RotationClass) && !string.IsNullOrEmpty(loadUnit.RotationClass)) ? Math.Abs(t.Cell.RotationClass[0] - loadUnit.RotationClass[0]) : 0)
+                                                 .ThenBy(t => (isCellTest) ? 0 : t.Height)          // minimize free space
+                                                 .ThenBy(t => t.Cell.Priority)   // start from bottom to top
+                                                 .First();
+                    }
                 }
                 else
                 {

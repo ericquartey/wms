@@ -7,10 +7,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Migrations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -70,7 +68,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public async Task PostStates(int id)
         {
-            if (id > 0 && this.wmsSettingsProvider.AlarmsToWmsOn) { 
+            if (id > 0 && this.wmsSettingsProvider.AlarmsToWmsOn)
+            {
                 string myMachineModes = string.Empty;
                 string myMachinePower = string.Empty;
 
@@ -91,6 +90,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     case MachineMode.Compact:
                     case MachineMode.Compact2:
                     case MachineMode.Compact3:
+                    case MachineMode.FastCompact:
+                    case MachineMode.FastCompact2:
+                    case MachineMode.FastCompact3:
                     case MachineMode.Shutdown:
                     case MachineMode.FullTest:
                     case MachineMode.FirstTest:
@@ -105,14 +107,17 @@ namespace Ferretto.VW.MAS.MissionManager
                     case MachineMode.SwitchingToShutdown:
                     case MachineMode.SwitchingToLoadUnitOperations:
                     case MachineMode.SwitchingToCompact:
+                    case MachineMode.SwitchingToFastCompact:
                     case MachineMode.SwitchingToFullTest:
                     case MachineMode.SwitchingToFirstTest:
                     case MachineMode.SwitchingToLoadUnitOperations2:
                     case MachineMode.SwitchingToCompact2:
+                    case MachineMode.SwitchingToFastCompact2:
                     case MachineMode.SwitchingToFullTest2:
                     case MachineMode.SwitchingToFirstTest2:
                     case MachineMode.SwitchingToLoadUnitOperations3:
                     case MachineMode.SwitchingToCompact3:
+                    case MachineMode.SwitchingToFastCompact3:
                     case MachineMode.SwitchingToFullTest3:
                     case MachineMode.SwitchingToFirstTest3:
                         myMachineModes = "Manuale";
@@ -136,9 +141,11 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        public async Task PostAlarms(int id) {
-            if (id > 0 && this.wmsSettingsProvider.AlarmsToWmsOn) {
-            
+        public async Task PostAlarms(int id)
+        {
+            if (id > 0 && this.wmsSettingsProvider.AlarmsToWmsOn)
+            {
+
                 List<string> errorsDescriptions = new List<string>();
 
                 var error = this.errorsProvider

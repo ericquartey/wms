@@ -36,7 +36,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand compactingStopCommand;
 
+        private DelegateCommand daysCountCommand;
+
         private DelegateCommand detailButtonCommand;
+
+        private DelegateCommand fastCompactingStartCommand;
 
         private double fragmentBackPercent;
 
@@ -45,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private double fragmentTotalPercent;
 
         private bool isEnabledReorder;
+
+        private bool isInstaller;
 
         private bool isReorder;
 
@@ -60,11 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand settingsButtonCommand;
 
-        private DelegateCommand daysCountCommand;
-
         private bool showAutoCompactingSettings;
-
-        private bool isInstaller;
 
         private int totalDrawers;
 
@@ -109,6 +111,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     async () => await this.StopAsync(),
                     this.CanCompactingStop));
 
+        public ICommand DaysCountCommand =>
+            this.daysCountCommand
+            ??
+            (this.daysCountCommand =
+                new DelegateCommand(
+                    () => this.DaysCount(),
+                    this.CanDaysCountCommand));
+
         public ICommand DetailButtonCommand =>
             this.detailButtonCommand
             ??
@@ -118,6 +128,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     this.CanDetailCommand));
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand FastCompactingStartCommand =>
+                                            this.fastCompactingStartCommand
+            ??
+            (this.fastCompactingStartCommand =
+                new DelegateCommand(
+                    async () => await this.FastStartAsync(),
+                    this.CanCompactingStart));
 
         public double FragmentBackPercent
         {
@@ -141,6 +159,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isEnabledReorder;
             set => this.SetProperty(ref this.isEnabledReorder, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsInstallerAndRotationClassEnable
+        {
+            get => this.isInstaller;
+            set => this.SetProperty(ref this.isInstaller, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsReorder
@@ -181,23 +205,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     () => this.Settings(),
                     this.CanSettingsCommand));
 
-        public ICommand DaysCountCommand =>
-            this.daysCountCommand
-            ??
-            (this.daysCountCommand =
-                new DelegateCommand(
-                    () => this.DaysCount(),
-                    this.CanDaysCountCommand));
-
         public bool ShowAutoCompactingSettings
         {
             get => this.showAutoCompactingSettings;
             set => this.SetProperty(ref this.showAutoCompactingSettings, value, this.RaiseCanExecuteChanged);
-        }
-        public bool IsInstallerAndRotationClassEnable
-        {
-            get => this.isInstaller;
-            set => this.SetProperty(ref this.isInstaller, value, this.RaiseCanExecuteChanged);
         }
 
         public int TotalDrawers
@@ -295,6 +306,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.detailButtonCommand?.RaiseCanExecuteChanged();
             this.compactingStartCommand?.RaiseCanExecuteChanged();
             this.compactingStopCommand?.RaiseCanExecuteChanged();
+            this.fastCompactingStartCommand?.RaiseCanExecuteChanged();
             this.daysCountCommand?.RaiseCanExecuteChanged();
             this.settingsButtonCommand?.RaiseCanExecuteChanged();
 
@@ -343,6 +355,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                    !this.IsStopPressed;
         }
 
+        private bool CanDaysCountCommand()
+        {
+            return !this.IsWaitingForResponse;
+        }
+
         private bool CanDetailCommand()
         {
             return !this.IsWaitingForResponse;
@@ -352,10 +369,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             return !this.IsWaitingForResponse;
         }
-        private bool CanDaysCountCommand()
+
+        private void DaysCount()
         {
-            return !this.IsWaitingForResponse;
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.Others.DrawerCompacting.DAYSCOUNT,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
+
         private void Detail()
         {
             this.IsWaitingForResponse = true;
@@ -369,6 +405,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     trackCurrentView: true);
             }
             catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task FastStartAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineCompactingWebService.FastCompactingAsync(this.IsReorder);
+            }
+            catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
                 this.ShowNotification(ex);
             }
@@ -425,27 +479,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsWaitingForResponse = false;
             }
         }
-        private void DaysCount()
-        {
-            this.IsWaitingForResponse = true;
 
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.Others.DrawerCompacting.DAYSCOUNT,
-                    null,
-                    trackCurrentView: true);
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
         //private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<MissionOperationCompletedMessageData> message)
         //{
         //    switch (message.Status)

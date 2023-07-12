@@ -77,5 +77,17 @@
         SwitchingToFirstTest3,
 
         SwitchingToShutdown,
+
+        FastCompact,
+
+        FastCompact2,
+
+        FastCompact3,
+
+        SwitchingToFastCompact,
+
+        SwitchingToFastCompact2,
+
+        SwitchingToFastCompact3,
     }
 }

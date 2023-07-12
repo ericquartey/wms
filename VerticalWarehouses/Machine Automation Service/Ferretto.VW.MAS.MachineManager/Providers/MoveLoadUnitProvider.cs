@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly ICellsProvider cellsProvider;
 
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
         #endregion
 
         #region Constructors
@@ -24,11 +26,13 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         public MoveLoadUnitProvider(
             ICellsProvider cellsProvider,
             IBaysDataProvider baysDataProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
         }
 
         #endregion
@@ -190,6 +194,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 loadUnitId = this.cellsProvider.GetById(sourceCellId.Value)?.LoadingUnit?.Id;
             }
+
+            this.loadingUnitsDataProvider.SetStartingCell(loadUnitId.Value, sourceCellId);
+
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,

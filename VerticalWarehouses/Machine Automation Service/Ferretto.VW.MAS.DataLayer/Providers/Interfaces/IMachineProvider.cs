@@ -108,6 +108,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsRotationClassEnabled();
 
+        bool IsBackToStartCellEnabled();
+
+        bool IsFindMinHeightEnabled();
+
         bool IsSensitiveCarpetsBypass();
 
         bool IsSensitiveEdgeBypass();

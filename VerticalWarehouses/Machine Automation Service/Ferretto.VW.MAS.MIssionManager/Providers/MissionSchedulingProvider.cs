@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.Events;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using Prism.Events;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -219,6 +218,75 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
+        /// <summary>
+        /// Search for a single compacting mission and activate it.
+        /// This method will be repeated after each mission has finished when machine is in Compact mode.
+        /// When no compacting mission is available machine returns to manual mode
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        public bool QueueLoadingUnitFastCompactingMission(IServiceProvider serviceProvider)
+        {
+
+            var loadUnits = this.loadingUnitsDataProvider.GetAllCompacting()
+                .OrderByDescending(l => l.Cell.Position)
+                .ToList();
+
+            var loadUnitsInBays = this.loadingUnitsDataProvider.GetAll().ToList().FindAll(l => l.Status == DataModels.Enumerations.LoadingUnitStatus.InBay).ToList();
+
+            int? cellId;
+            LoadingUnit loadUnit;
+
+            this.cellsProvider.CleanUnderWeightCells();
+
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadUnitProvider>();
+
+            foreach (var loadingUnit in loadUnitsInBays)
+            {
+                var needCompacting = false;
+
+                try
+                {
+                    // empty cell found no need for compacting
+                    var foundCell = this.cellsProvider.FindEmptyCell(loadingUnit.Id);
+                    this.logger.LogInformation($"Empty cell found LoadingUnit {loadingUnit.Id} - {foundCell}");
+                    needCompacting = false;
+                }
+                catch (Exception)
+                {
+                    // no empty cell found procede with compacting until we find an empty cell
+                    this.logger.LogError($"No Empty cell found LoadingUnit {loadingUnit.Id}, Start Fast Compact");
+                    needCompacting = true;
+                }
+
+                if (needCompacting  // then we try to move away the load units in wrong rotation class
+                                    && (this.CompactRotationClass(loadUnits, out loadUnit, out cellId)
+                                    // then we try to find a lower place for each load unit
+                                    || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId)
+                                    // then we try to send a load unit in top cells
+                                    || this.CompactTopCell(loadUnits, out loadUnit, out cellId)
+                                    // then we try to shift down the load units
+                                    || this.CompactDownCell(loadUnits, out loadUnit, out cellId)))
+                {
+                    this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} Compact");
+                    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FastCompact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
+                    return true;
+                }
+            }
+
+            //if (loadUnitsInBays.Any() && !this.cellsProvider.CheckLoadUnitHaveSpace(loadUnitsInBays.First().Id) && this.CompactLoadInBayToEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnit, out cellId))
+            //{
+            //    this.logger.LogInformation($"Move from cell {loadUnit.Cell.Id} to cell {cellId} Compact");
+            //    moveLoadingUnitProvider.MoveFromCellToCell(MissionType.FastCompact, loadUnit.Cell.Id, cellId, BayNumber.BayOne, MessageActor.MissionManager);
+            //    return true;
+            //}
+
+            // no more compacting is possible. Exit from compact mode
+            var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
+            this.machineVolatileDataProvider.IsOptimizeRotationClass = machineProvider.GetMinMaxHeight().IsRotationClass;
+
+            return false;
+        }
+
         public void QueueRecallMission(int loadingUnitId, BayNumber sourceBayNumber, MissionType missionType)
         {
             var bay = this.baysDataProvider.GetByNumberPositions(sourceBayNumber);
@@ -301,6 +369,37 @@ namespace Ferretto.VW.MAS.MissionManager
                 return false;
             }
             this.logger.LogDebug($"Compacting empty cells {compactingType}");
+            foreach (var loadUnit in loadUnits.OrderByDescending(o => string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
+                .ThenByDescending(l => l.Cell.Position))
+            {
+                try
+                {
+                    if (loadUnit.IsIntoMachineOK)
+                    {
+                        cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
+                        loadUnitOut = loadUnit;
+                        return true;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    // continue with next Load Unit
+                }
+            }
+            return false;
+        }
+
+        private bool CompactLoadInBayToEmptyCell(List<LoadingUnit> loadUnits, CompactingType compactingType, out LoadingUnit loadUnitOut, out int? cellId)
+        {
+            loadUnitOut = null;
+            cellId = null;
+
+            if (!loadUnits.Any())
+            {
+                return false;
+            }
+            this.logger.LogDebug($"Compacting empty cells {compactingType}");
+
             foreach (var loadUnit in loadUnits.OrderByDescending(o => string.IsNullOrEmpty(o.RotationClass) ? 0 : o.RotationClass[0] - ROTATION_CLASS_A)
                 .ThenByDescending(l => l.Cell.Position))
             {
