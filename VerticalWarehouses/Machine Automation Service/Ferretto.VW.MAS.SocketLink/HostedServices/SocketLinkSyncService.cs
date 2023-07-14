@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -208,13 +207,14 @@ namespace Ferretto.VW.MAS.SocketLink
                                 this.logger.LogTrace("SocketLink Received " + msgReceived);
 
                                 var msgResponse = "";
+
                                 msgResponse = socketLinkSyncProvider.ProcessCommands(msgReceived, this.socketLinkEndOfLine);
 
                                 if (!string.IsNullOrEmpty(msgResponse))
                                 {
                                     var outStream = Encoding.ASCII.GetBytes(msgResponse);
                                     socket.Send(outStream);
-                                    this.logger.LogTrace("SocketLink Send " + msgResponse);
+                                    this.logger.LogInformation("SocketLink Response " + msgResponse);
                                     lastActivity = DateTime.Now;
                                 }
                             }

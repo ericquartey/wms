@@ -11,17 +11,20 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public SocketLinkAlphaNumericBarChangeMessageData(int commandCode, int x, string textMessage, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public SocketLinkAlphaNumericBarChangeMessageData(int commandCode, int x, string textMessage, BayNumber bayNumber, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.CommandCode = commandCode;
             this.X = x;
             this.TextMessage = textMessage;
             this.Verbosity = verbosity;
+            this.BayNumber = bayNumber;
         }
 
         #endregion
 
         #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         public int CommandCode { get; set; }
 

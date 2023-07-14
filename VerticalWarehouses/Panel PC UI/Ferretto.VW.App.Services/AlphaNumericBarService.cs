@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.Devices;
 using Ferretto.VW.Devices.AlphaNumericBar;
@@ -389,6 +388,12 @@ namespace Ferretto.VW.App.Services
                 var offsetArrow = 0;
                 var offsetMessage = 0;
                 string message;
+
+                if (this.bayNumber.ToString() != socketLinkMessage.Data.BayNumber.ToString())
+                {
+                    return;
+                }
+
                 switch (socketLinkMessage.Data.CommandCode)
                 {
                     case 0: // switch off
