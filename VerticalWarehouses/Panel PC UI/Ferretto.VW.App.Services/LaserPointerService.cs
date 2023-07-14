@@ -335,6 +335,11 @@ namespace Ferretto.VW.App.Services
                     return;
                 }
 
+                if (this.bayNumber.ToString() != message.Data.BayNumber.ToString())
+                {
+                    return;
+                }
+
                 switch (message.Data.CommandCode)
                 {
                     case 0: // switch off

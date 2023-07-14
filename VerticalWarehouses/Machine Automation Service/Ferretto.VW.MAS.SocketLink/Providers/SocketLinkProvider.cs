@@ -569,7 +569,7 @@ namespace Ferretto.VW.MAS.SocketLink
                             this.GetAlphaNumericBarCommandCode(cmdReceived.GetPayloadByPosition(2), ref commandCode) &&
                             this.GetAxisValue(cmdReceived.GetPayloadByPosition(3), ref x))
                         {
-                            var data = new SocketLinkAlphaNumericBarChangeMessageData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4), this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber()).Number);
+                            var data = new SocketLinkAlphaNumericBarChangeMessageData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4), cmdReceived.GetBayNumber());
 
                             this.eventAggregator
                                 .GetEvent<NotificationEvent>()
@@ -807,7 +807,7 @@ namespace Ferretto.VW.MAS.SocketLink
                             this.GetAxisValue(cmdReceived.GetPayloadByPosition(4), ref y) &&
                             this.GetAxisValue(cmdReceived.GetPayloadByPosition(5), ref z))
                         {
-                            var data = new SocketLinkLaserPointerChangeMessageData((int)commandCode, x, y, z);
+                            var data = new SocketLinkLaserPointerChangeMessageData((int)commandCode, x, y, z, cmdReceived.GetBayNumber());
 
                             this.eventAggregator
                                 .GetEvent<NotificationEvent>()
