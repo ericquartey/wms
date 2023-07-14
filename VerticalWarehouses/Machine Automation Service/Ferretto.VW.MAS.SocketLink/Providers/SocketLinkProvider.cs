@@ -8,11 +8,11 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
+using Ferretto.VW.MAS.TimeManagement.Models;
 using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using static Ferretto.VW.MAS.SocketLink.SocketLinkCommand;
-using Ferretto.VW.MAS.TimeManagement.Models;
-using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.SocketLink
 {
@@ -125,6 +125,8 @@ namespace Ferretto.VW.MAS.SocketLink
             var response = "";
             var commandsResponse = new List<SocketLinkCommand>();
             var commandsReceived = ParseReceivedCommands(buffer, isLineFeed);
+
+            this.logger.LogInformation("SocketLink Received " + buffer);
 
             foreach (var cmdReceived in commandsReceived)
             {
@@ -567,7 +569,7 @@ namespace Ferretto.VW.MAS.SocketLink
                             this.GetAlphaNumericBarCommandCode(cmdReceived.GetPayloadByPosition(2), ref commandCode) &&
                             this.GetAxisValue(cmdReceived.GetPayloadByPosition(3), ref x))
                         {
-                            var data = new SocketLinkAlphaNumericBarChangeMessageData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4));
+                            var data = new SocketLinkAlphaNumericBarChangeMessageData((int)commandCode, x, cmdReceived.GetPayloadByPosition(4), this.baysDataProvider.GetByNumber(cmdReceived.GetBayNumber()).Number);
 
                             this.eventAggregator
                                 .GetEvent<NotificationEvent>()
