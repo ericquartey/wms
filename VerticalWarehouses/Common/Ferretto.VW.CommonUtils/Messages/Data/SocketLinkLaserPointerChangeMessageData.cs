@@ -11,12 +11,13 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         {
         }
 
-        public SocketLinkLaserPointerChangeMessageData(int commandCode, int x, int y, int z, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public SocketLinkLaserPointerChangeMessageData(int commandCode, int x, int y, int z, BayNumber bayNumber, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.CommandCode = commandCode;
             this.X = x;
             this.Y = y;
             this.Z = z;
+            this.BayNumber = bayNumber;
             this.Verbosity = verbosity;
         }
 
@@ -33,6 +34,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int Y { get; set; }
 
         public int Z { get; set; }
+        public BayNumber BayNumber { get; set; }
 
         #endregion
     }
