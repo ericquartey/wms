@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.SocketLink
             var commandsResponse = new List<SocketLinkCommand>();
             var commandsReceived = ParseReceivedCommands(buffer, isLineFeed);
 
-            this.logger.LogInformation("SocketLink Received " + buffer);
+            this.logger.LogInformation("SocketLink Received " + buffer.Trim());
 
             foreach (var cmdReceived in commandsReceived)
             {
