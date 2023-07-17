@@ -246,8 +246,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     var newWmsMissions = wmsMissions
                         .Where(m => m.BayId.HasValue)
                         .Where(m => localMissions.All(lm => lm.WmsId != m.Id))
-                        .Where(m => m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.New)
-                        .OrderByDescending(m => m.Priority);
+                        .Where(m => m.Status == WMS.Data.WebAPI.Contracts.MissionStatus.New);
 
                     if (newWmsMissions.Any())
                     {
@@ -255,9 +254,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
 
                     foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Executing))
-                                                                .OrderByDescending(m => m.Priority)
-                                                                .ThenByDescending(m => m.Operations != null ? m.Operations.Max(o => o.Priority) : 0)
-                                                                .ThenBy(m => m.CreationDate))
+                                                             .OrderByDescending(m => m.Operations != null ? m.Operations.Max(o => o.Priority) : 0)
+                                                             .ThenBy(m => m.CreationDate))
                     {
                         var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
                         try
