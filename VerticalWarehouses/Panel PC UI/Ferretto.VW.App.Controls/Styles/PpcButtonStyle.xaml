@@ -725,6 +725,17 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="PpcButtonTabStyleMenu"
+           BasedOn="{StaticResource PpcButtonTabStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderBrush" Value="{DynamicResource GrayD}" />
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
   <Style x:Key="PpcButtonMaintenanceTabStyle"
          BasedOn="{StaticResource PpcButtonTabStyle}"
          TargetType="{x:Type controls:PpcButton}">

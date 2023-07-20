@@ -169,6 +169,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        /// <summary>
+        /// Sospende l'operazione
+        /// </summary>
+        /// <param name="id">Id della singola operazione che si vuole sospendere</param>
+        /// <param name="userName">nome utente</param>
+        /// <returns></returns>
         [HttpPost("{id}/suspend")]
         public async Task<ActionResult<MissionOperation>> SuspendAsync(int id, string userName = null)
         {

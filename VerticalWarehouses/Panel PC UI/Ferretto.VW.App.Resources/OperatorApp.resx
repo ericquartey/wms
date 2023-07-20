@@ -210,7 +210,7 @@
     <comment>Label text</comment>
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
-    <value>Waiting for execution lists</value>
+    <value>Waiting/Execution lists</value>
     <comment>Label</comment>
   </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
@@ -2736,5 +2736,20 @@
   </data>
   <data name="MatrixExeptionCode403" xml:space="preserve">
     <value>Support with unsuitable dimensions for placing the Matrix</value>
+  </data>
+  <data name="ShowOnlyExecutingList" xml:space="preserve">
+    <value>Show Executing List</value>
+  </data>
+  <data name="SuspendOfListAccepted" xml:space="preserve">
+    <value>Suspension of list '{0}' was accepted.</value>
+  </data>
+  <data name="CannotSuspendList" xml:space="preserve">
+    <value>Cannot suspend the List.</value>
+  </data>
+  <data name="WaitingList" xml:space="preserve">
+    <value>Waiting List</value>
+  </data>
+  <data name="ExecutingList" xml:space="preserve">
+    <value>Executing List</value>
   </data>
 </root>

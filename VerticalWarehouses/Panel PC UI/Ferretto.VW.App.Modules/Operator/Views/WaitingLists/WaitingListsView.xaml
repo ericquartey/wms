@@ -53,10 +53,41 @@
                    FontSize="{DynamicResource FontSize_Small}"
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
                    Text="{Resources:Loc HelpDescriptions.HelpListsInWaitDescription}"
-                   TextWrapping="Wrap" />
+                   TextWrapping="Wrap"
+                   Visibility="Hidden" />
+
+        <Grid  Grid.Row="1"
+               Grid.ColumnSpan="2"
+               Height="auto"
+               Margin="0,0,15,0"
+               Background="Transparent"
+               VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <controls:PpcButton Grid.Column="0"
+                                Command="{Binding ShowWaitingListCommand}"
+                                Content="{Resources:Loc OperatorApp.WaitingList}"
+                                FontSize="20"
+                                Margin="0,0,7.5,0"
+                                HorizontalContentAlignment="Center"
+                                IsActive="{Binding ShowOnlyExecutingList, Converter={StaticResource BNC}, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{DynamicResource PpcButtonTabStyleMenu}" />
+
+            <controls:PpcButton Grid.Column="1"
+                                Margin="7.5,0,0,0"
+                                Command="{Binding ShowExecutingListCommand}"
+                                Content="{Resources:Loc OperatorApp.ExecutingList}"
+                                HorizontalContentAlignment="Center"
+                                FontSize="20"
+                                IsActive="{Binding ShowOnlyExecutingList, UpdateSourceTrigger=PropertyChanged}"
+                                Style="{DynamicResource PpcButtonTabStyleMenu}" />
+        </Grid>
 
         <Border Grid.Row="2"
-                Margin="0,15,0,0"
+                Margin="0,0,0,0"
                 Background="{DynamicResource PpcBackground}"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
                 BorderThickness="{DynamicResource PpcBorderThickness}"
@@ -165,7 +196,7 @@
 
         <Grid Grid.Row="2"
               Grid.Column="1"
-              Margin="0,15,0,0">
+              Margin="0,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -215,6 +246,12 @@
             </Border>
             <StackPanel Grid.Row="3"
                         Orientation="Vertical">
+                <controls:PpcCheckBox Margin="15,15,15,0"
+                                      MaxWidth="230"
+                                      Visibility="Collapsed"
+                                      LabelText="{Resources:Loc OperatorApp.ShowOnlyExecutingList}"
+                                      IsChecked="{Binding ShowOnlyExecutingList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
                 <controls:PpcButton Grid.Row="3"
                                     Margin="15,15,15,0"
                                     HorizontalAlignment="Right"
@@ -230,14 +267,27 @@
                                     Visibility="Collapsed" />
             </StackPanel>
 
-            <controls:PpcButton Grid.Row="4"
-                                Margin="15,15,15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                Command="{Binding ListExecuteCommand}"
-                                Content="{Resources:Loc OperatorApp.ListsInWaitExecute}"
-                                IsBusy="{Binding IsWaitingForResponse}"
-                                Style="{StaticResource ConfirmButton}" />
+            <StackPanel Grid.Row="4"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom">
+
+                <controls:PpcButton Grid.Row="4"
+                                    Margin="15,15,15,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding SuspendCommand}"
+                                    Content="{Resources:Loc OperatorApp.SuspendList}"
+                                    IsBusy="{Binding IsWaitingForResponse}" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Margin="15,15,15,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Command="{Binding ListExecuteCommand}"
+                                    Content="{Resources:Loc OperatorApp.ListsInWaitExecute}"
+                                    IsBusy="{Binding IsWaitingForResponse}"
+                                    Style="{StaticResource ConfirmButton}" />
+            </StackPanel>
         </Grid>
     </Grid>
 </ctrls:View>
