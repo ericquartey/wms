@@ -187,7 +187,7 @@
     <value>Tipo di confezione</value>
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
-    <value>Liste in attesa esecuzione</value>
+    <value>Liste in attesa/esecuzione</value>
   </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
     <value>Dettaglio lista</value>
@@ -1165,7 +1165,7 @@
     <value>Frammentazione totale</value>
   </data>
   <data name="CannotExecuteList" xml:space="preserve">
-    <value>Non posso eseguire l'elenco.</value>
+    <value>Non è possibile eseguire la lista.</value>
   </data>
   <data name="InvalidOperation" xml:space="preserve">
     <value>Operazione {0} non valida</value>
@@ -2336,5 +2336,20 @@
   </data>
   <data name="MatrixExeptionCode403" xml:space="preserve">
     <value>Supporto con dimensioni non adeguate per il deposito dello stampo</value>
+  </data>
+  <data name="ShowOnlyExecutingList" xml:space="preserve">
+    <value>Mostra Liste in esecuzione</value>
+  </data>
+  <data name="SuspendOfListAccepted" xml:space="preserve">
+    <value>Sospensione della lista '{0}' è stata accettata.</value>
+  </data>
+  <data name="CannotSuspendList" xml:space="preserve">
+    <value>Non è possibile sospendere la lista</value>
+  </data>
+  <data name="WaitingList" xml:space="preserve">
+    <value>Liste in attesa</value>
+  </data>
+  <data name="ExecutingList" xml:space="preserve">
+    <value>Liste in Esecuzione</value>
   </data>
 </root>

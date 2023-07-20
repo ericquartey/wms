@@ -69,6 +69,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand selectOperationOnBayCommand;
 
+        private DelegateCommand showExecutingListCommand;
+
+        private bool showOnlyExecutingList;
+
+        private DelegateCommand showWaitingListCommand;
+
+        private DelegateCommand suspendCommand;
+
         private CancellationTokenSource tokenSource;
 
         #endregion
@@ -160,7 +168,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public List<ItemListExecution> SelectedLists
         {
             get => this.selectedLists;
-            set => this.SetProperty(ref this.selectedLists, value);
+            set => this.SetProperty(ref this.selectedLists, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand SelectOperationOnBayCommand =>
@@ -169,6 +177,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             (this.selectOperationOnBayCommand = new DelegateCommand(
                 () => this.ShowOperationOnBay(),
                 this.CanSelectOperationOnBay));
+
+        public ICommand ShowExecutingListCommand => this.showExecutingListCommand
+            ??
+            (this.showExecutingListCommand = new DelegateCommand(async () => await this.ChangeActiveList(true), this.CanChangeActiveList));
+
+        public bool ShowOnlyExecutingList
+        {
+            get => this.showOnlyExecutingList;
+            set => this.SetProperty(ref this.showOnlyExecutingList, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand ShowWaitingListCommand => this.showWaitingListCommand
+            ??
+            (this.showWaitingListCommand = new DelegateCommand(async () => await this.ChangeActiveList(false), this.CanChangeActiveList));
+
+        public ICommand SuspendCommand => this.suspendCommand
+                    ??
+            (this.suspendCommand = new DelegateCommand(
+                async () => await this.SuspendListAsync(this.SelectedLists), this.CanSuspendList));
 
         #endregion
 
@@ -220,6 +247,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.lists.Clear();
             this.RaisePropertyChanged(nameof(this.Lists));
             this.IsWaitingForResponse = false;
+            this.ShowOnlyExecutingList = false;
         }
 
         public async Task ExecuteListAsync(List<ItemListExecution> SelectedCells)
@@ -319,6 +347,40 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.SelectedLists.Clear();
         }
 
+        public async Task SuspendListAsync(List<ItemListExecution> SelectedCells)
+        {
+            foreach (var itemList in SelectedCells)
+            {
+                if (!this.areaId.HasValue)
+                {
+                    return;
+                }
+
+                if (itemList == null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    await this.itemListsWebService.SuspendAsync(itemList.Id, this.authenticationService.UserName);
+                    await this.LoadListsAsync();
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.SuspendOfListAccepted"), itemList.Code), Services.Models.NotificationSeverity.Success);
+                }
+                catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
+                {
+                    if (ex is MasWebApiException webEx && webEx.StatusCode == StatusCodes.Status403Forbidden)
+                    {
+                        this.ShowNotification(Localized.Get("General.ForbiddenOperation"), Services.Models.NotificationSeverity.Error);
+                    }
+                    else
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.CannotSuspendList"), Services.Models.NotificationSeverity.Warning);
+                    }
+                }
+            }
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -326,6 +388,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.listExecuteCommand?.RaiseCanExecuteChanged();
             this.listDetailButtonCommand.RaiseCanExecuteChanged();
             this.selectOperationOnBayCommand?.RaiseCanExecuteChanged();
+            this.suspendCommand?.RaiseCanExecuteChanged();
+            this.showWaitingListCommand?.RaiseCanExecuteChanged();
+            this.showExecutingListCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanChangeActiveList()
+        {
+            return !this.IsWaitingForResponse;
         }
 
         private bool CanExecuteList()
@@ -335,7 +405,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 &&
                 this.SelectedLists.Any()
                 &&
-                !this.SelectedLists.Exists(x => x.ExecutionMode == ListExecutionMode.None);
+                !this.SelectedLists.Exists(x => x.ExecutionMode == ListExecutionMode.None)
+                &&
+                !this.ShowOnlyExecutingList;
         }
 
         private bool CanSelectOperationOnBay()
@@ -346,6 +418,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private bool CanShowDetailCommand()
         {
             return this.SelectedLists.Count == 1;
+        }
+
+        private bool CanSuspendList()
+        {
+            return
+                this.areaId.HasValue
+                &&
+                this.SelectedLists.Any()
+                &&
+                !this.SelectedLists.Exists(x => x.ExecutionMode == ListExecutionMode.None)
+                &&
+                this.ShowOnlyExecutingList;
+        }
+
+        private async Task ChangeActiveList(bool showExecuting)
+        {
+            this.ShowOnlyExecutingList = showExecuting;
+            await this.LoadListsAsync();
         }
 
         /// <summary>
@@ -554,7 +644,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var bay = this.MachineService.Bay;
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, false, this.authenticationService.UserName);
+                var newLists = await this.areasWebService.GetItemListsAsync(this.areaId.Value, this.machineId, bay.Id, this.ShowOnlyExecutingList, this.authenticationService.UserName);
 
                 // check upcoming lists retrieved from EjLog
                 if (this.CheckUpcomingItemLists(newLists))

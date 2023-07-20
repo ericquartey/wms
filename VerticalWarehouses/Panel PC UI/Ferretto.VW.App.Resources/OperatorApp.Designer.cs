@@ -637,6 +637,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot suspend the List..
+        /// </summary>
+        public static string CannotSuspendList {
+            get {
+                return ResourceManager.GetString("CannotSuspendList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The car {0} has been closed.
         /// </summary>
         public static string CarClosed {
@@ -2248,6 +2257,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Executing List.
+        /// </summary>
+        public static string ExecutingList {
+            get {
+                return ResourceManager.GetString("ExecutingList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execution of list &apos;{0}&apos; was accepted..
         /// </summary>
         public static string ExecutionOfListAccepted {
@@ -3616,7 +3634,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Waiting for execution lists.
+        ///   Looks up a localized string similar to Waiting/Execution lists.
         /// </summary>
         public static string ListsInWaitHeader {
             get {
@@ -5659,6 +5677,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Executing List.
+        /// </summary>
+        public static string ShowOnlyExecutingList {
+            get {
+                return ResourceManager.GetString("ShowOnlyExecutingList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Quantity On Inventory Operation.
         /// </summary>
         public static string ShowQuantityOnInventory {
@@ -6181,6 +6208,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Suspension of list &apos;{0}&apos; was accepted..
+        /// </summary>
+        public static string SuspendOfListAccepted {
+            get {
+                return ResourceManager.GetString("SuspendOfListAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error on suspend operation.
         /// </summary>
         public static string SuspendOperationError {
@@ -6573,6 +6609,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Waiting {
             get {
                 return ResourceManager.GetString("Waiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting List.
+        /// </summary>
+        public static string WaitingList {
+            get {
+                return ResourceManager.GetString("WaitingList", resourceCulture);
             }
         }
         
