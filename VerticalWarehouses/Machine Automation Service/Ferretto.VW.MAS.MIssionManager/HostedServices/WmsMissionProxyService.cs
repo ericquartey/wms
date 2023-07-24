@@ -254,7 +254,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
 
                     foreach (var wmsMission in newWmsMissions.Where(m => m.Operations.Any(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.Executing))
-                                                             .OrderByDescending(m => m.Operations != null ? m.Operations.Max(o => o.Priority) : 0)
+                                                             .OrderBy(m => m.Operations != null ? m.Operations.Min(o => o.Priority) : 0)
                                                              .ThenBy(m => m.CreationDate))
                     {
                         var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
