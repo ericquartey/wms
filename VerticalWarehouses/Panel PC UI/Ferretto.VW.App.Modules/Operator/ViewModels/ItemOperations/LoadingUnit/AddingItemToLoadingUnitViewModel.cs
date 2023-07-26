@@ -359,7 +359,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             var readValue = userAction.Code;
-            var readLot = userAction.Parameters["ItemCode"];
+            var readLot = userAction.Parameters["ItemLot"];
 
             // Check and update: first Lot, then SerialNumber. Be careful about the order: do not
             // change it
