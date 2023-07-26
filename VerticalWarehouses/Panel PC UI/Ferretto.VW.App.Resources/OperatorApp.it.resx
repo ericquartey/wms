@@ -2248,7 +2248,7 @@
     <value>Commessa</value>
   </data>
   <data name="SuspendList" xml:space="preserve">
-    <value>Sospendi Lista</value>
+    <value>Metti lista in attesa</value>
   </data>
   <data name="IsWaitingList" xml:space="preserve">
     <value>Lista sulla sola macchina locale</value>

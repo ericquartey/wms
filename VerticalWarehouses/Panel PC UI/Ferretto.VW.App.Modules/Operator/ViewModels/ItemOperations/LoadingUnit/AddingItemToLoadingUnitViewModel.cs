@@ -114,7 +114,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
+        public string ActiveContextName => OperationalContext.AddItem.ToString();
 
         public ICommand AddItemCommand =>
                   this.addItemCommand
@@ -359,6 +359,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             var readValue = userAction.Code;
+            var readLot = userAction.Parameters["ItemCode"];
 
             // Check and update: first Lot, then SerialNumber. Be careful about the order: do not
             // change it
@@ -381,14 +382,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 if (!this.acquiredLotValue)
                 {
-                    this.Lot = readValue;
+                    this.Lot = readLot;
                     this.acquiredLotValue = true;
                 }
             }
 
             if (this.lotVisibility && !this.serialNumberVisibility)
             {
-                this.Lot = readValue;
+                this.Lot = readLot;
                 this.acquiredLotValue = true;
                 this.acquiredSerialNumberValue = false;
             }
