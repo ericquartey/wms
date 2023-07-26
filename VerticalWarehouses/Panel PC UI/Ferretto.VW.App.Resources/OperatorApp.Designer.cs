@@ -6199,7 +6199,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Suspend List.
+        ///   Looks up a localized string similar to Hold List.
         /// </summary>
         public static string SuspendList {
             get {
