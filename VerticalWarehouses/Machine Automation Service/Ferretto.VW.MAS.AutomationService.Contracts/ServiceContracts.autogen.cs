@@ -5544,6 +5544,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsAxisChanged", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAxisChanged { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsBackToStartCell", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsBackToStartCell { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsCarrefour", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCarrefour { get; set; }
     
@@ -5574,6 +5577,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsEnableHandlingItemOperations", Required = Newtonsoft.Json.Required.Always)]
         public bool IsEnableHandlingItemOperations { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsFindMinHeight", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsFindMinHeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("IsHeartBeat", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHeartBeat { get; set; }
     
@@ -5600,12 +5606,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsRotationClass", Required = Newtonsoft.Json.Required.Always)]
         public bool IsRotationClass { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsBackToStartCell", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsBackToStartCell { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("IsFindMinHeight", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsFindMinHeight { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsSpea", Required = Newtonsoft.Json.Required.Always)]
         public bool IsSpea { get; set; }
@@ -5675,6 +5675,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("ShowQuantityOnInventory", Required = Newtonsoft.Json.Required.Always)]
         public bool ShowQuantityOnInventory { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ShowWaitListInOperation", Required = Newtonsoft.Json.Required.Always)]
+        public bool ShowWaitListInOperation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("SilenceSirenAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool SilenceSirenAlarm { get; set; }

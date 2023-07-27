@@ -5695,6 +5695,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Waiting List In Operation.
+        /// </summary>
+        public static string ShowWaitListInOperation {
+            get {
+                return ResourceManager.GetString("ShowWaitListInOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Bay 1.
         /// </summary>
         public static string ShutterBay1 {

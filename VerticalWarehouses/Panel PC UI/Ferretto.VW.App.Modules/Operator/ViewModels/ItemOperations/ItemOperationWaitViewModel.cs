@@ -15,7 +15,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IMachineAreasWebService areasWebService;
+
+        private readonly IAuthenticationService authenticationService;
+
         private readonly List<LoadingUnit> loadingUnits;
+
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
@@ -31,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly ISessionService sessionService;
 
+        private readonly List<ItemList> waitingList;
+
         private int count;
 
         private bool isGridVisible;
@@ -45,12 +53,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int pendingMissionOperationsCount;
 
+        private bool showWaitList;
+
+        private int waitingListCount;
+
         #endregion
 
         #region Constructors
 
         public ItemOperationWaitViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineAreasWebService areasWebService,
+            IMachineConfigurationWebService machineConfigurationWebService,
+            IAuthenticationService authenticationService,
             ISessionService sessionService,
             IOperatorNavigationService operatorNavigationService,
             IMachineMissionsWebService machineMissionsWebService,
@@ -64,9 +79,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.machineMissionsWebService = machineMissionsWebService ?? throw new ArgumentNullException(nameof(machineMissionsWebService));
             this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.areasWebService = areasWebService ?? throw new ArgumentNullException(nameof(areasWebService));
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
 
             this.loadingUnits = new List<LoadingUnit>();
             this.moveUnits = new List<LoadingUnit>();
+            this.waitingList = new List<ItemList>();
             this.moveUnitId = new List<int>();
             this.moveUnitIdToCell = new List<int>();
         }
@@ -115,6 +134,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.pendingMissionOperationsCount, value);
         }
 
+        public bool ShowWaitList
+        {
+            get => this.showWaitList;
+            set => this.SetProperty(ref this.showWaitList, value);
+        }
+
+        public List<ItemList> WaitingList => new List<ItemList>(this.waitingList);
+
+        public int WaitingListCount
+        {
+            get => this.waitingListCount;
+            set => this.SetProperty(ref this.waitingListCount, value);
+        }
+
         #endregion
 
         #region Methods
@@ -131,6 +164,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             try
             {
                 var missions = await this.missionOperationsService.RefreshAsync();
+
+                var machineIdentity = this.sessionService.MachineIdentity;
+
+                var waitlist = await this.areasWebService.GetItemListsAsync(machineIdentity.AreaId.Value, machineIdentity.Id, this.MachineService.Bay.Id, false, this.authenticationService.UserName);
+
+                this.waitingList.Clear();
+
+                this.waitingList.AddRange(waitlist);
+
+                this.WaitingListCount = this.waitingList.Count;
+
+                var configuration = this.machineConfigurationWebService.GetConfigAsync().Result;
+
+                this.ShowWaitList = configuration.ShowWaitListInOperation && this.WaitingListCount > 0;
 
                 this.count = 0;
 
@@ -170,6 +217,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             {
                 this.loadingUnits.Clear();
                 this.moveUnits.Clear();
+                this.waitingList.Clear();
             }
             finally
             {
@@ -183,6 +231,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.MoveUnits));
 
+                this.RaisePropertyChanged(nameof(this.WaitingList));
+
                 this.RaisePropertyChanged(nameof(this.IsGridVisible));
             }
         }
@@ -190,6 +240,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            var configuration = this.machineConfigurationWebService.GetConfigAsync().Result;
+
+            this.ShowWaitList = configuration.ShowWaitListInOperation && this.WaitingListCount > 0;
 
             this.RaisePropertyChanged(nameof(this.MoveVisible));
 

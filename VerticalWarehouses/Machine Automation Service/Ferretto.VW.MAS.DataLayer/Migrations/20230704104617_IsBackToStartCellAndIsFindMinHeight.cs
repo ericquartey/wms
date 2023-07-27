@@ -4,20 +4,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     public partial class IsBackToStartCellAndIsFindMinHeight : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsBackToStartCell",
-                table: "Machines",
-                nullable: false,
-                defaultValue: false);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsFindMinHeight",
-                table: "Machines",
-                nullable: false,
-                defaultValue: false);
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -29,5 +16,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IsFindMinHeight",
                 table: "Machines");
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AddColumn<bool>(
+                name: "IsBackToStartCell",
+                table: "Machines",
+                nullable: false,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsFindMinHeight",
+                table: "Machines",
+                nullable: false,
+                defaultValue: false);
+        }
+
+        #endregion
     }
 }

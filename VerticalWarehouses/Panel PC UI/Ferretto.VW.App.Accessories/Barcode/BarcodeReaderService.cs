@@ -406,8 +406,6 @@ namespace Ferretto.VW.App.Accessories
             var activeViewModel = this.GetActiveContext();
             var activeContext = activeViewModel as IOperationalContextViewModel;
 
-            var at = activeContext.ActiveContextName;
-
             this.logger.Debug(
                 $"Barcode '{code}': active context is '{activeContext?.GetType().Name ?? "<global>"}'.");
 

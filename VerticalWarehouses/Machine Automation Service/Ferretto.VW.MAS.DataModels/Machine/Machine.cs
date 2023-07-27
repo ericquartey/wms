@@ -72,6 +72,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsAxisChanged { get; set; }
 
+        public bool IsBackToStartCell { get; set; }
+
         public bool IsCarrefour { get; set; }
 
         public bool IsDbSaveOnServer { get; set; }
@@ -114,6 +116,8 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool IsEnableHandlingItemOperations { get; set; }
 
+        public bool IsFindMinHeight { get; set; }
+
         public bool IsHeartBeat { get; set; }
 
         public bool IsItalMetal { get; set; }
@@ -147,10 +151,6 @@ namespace Ferretto.VW.MAS.DataModels
         /// enable the ABC rotation class handling
         /// </summary>
         public bool IsRotationClass { get; set; }
-
-        public bool IsBackToStartCell { get; set; }
-
-        public bool IsFindMinHeight { get; set; }
 
         public bool IsSpea { get; set; }
 
@@ -238,6 +238,8 @@ namespace Ferretto.VW.MAS.DataModels
         public string SerialNumber { get; set; }
 
         public bool ShowQuantityOnInventory { get; set; }
+
+        public bool ShowWaitListInOperation { get; set; }
 
         public bool SilenceSirenAlarm { get; set; }
 
