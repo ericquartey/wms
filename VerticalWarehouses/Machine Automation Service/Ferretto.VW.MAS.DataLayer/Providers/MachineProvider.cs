@@ -503,6 +503,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsBackToStartCellEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsBackToStartCell).First();
+            }
+        }
+
         public bool IsCanUserEnableWmsEnabled()
         {
             lock (this.dataContext)
@@ -556,6 +564,14 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.IsEnableHandlingItemOperations).First();
+            }
+        }
+
+        public bool IsFindMinHeightEnabled()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsFindMinHeight).First();
             }
         }
 
@@ -617,22 +633,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Machines.AsNoTracking().Select(m => m.IsRotationClass).First();
-            }
-        }
-
-        public bool IsBackToStartCellEnabled()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsBackToStartCell).First();
-            }
-        }
-
-        public bool IsFindMinHeightEnabled()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Machines.AsNoTracking().Select(m => m.IsFindMinHeight).First();
             }
         }
 
@@ -712,6 +712,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
+                machineDB.ShowWaitListInOperation = machine.ShowWaitListInOperation;
                 machineDB.IsItalMetal = machine.IsItalMetal;
                 machineDB.IsOstec = machine.IsOstec;
                 machineDB.IsSpea = machine.IsSpea;

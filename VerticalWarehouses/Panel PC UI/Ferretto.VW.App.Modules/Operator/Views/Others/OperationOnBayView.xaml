@@ -237,6 +237,11 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding MissionOperationSkipable, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.MissionOperationSkipable }" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding ShowWaitListInOperation, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.ShowWaitListInOperation }" />
             </StackPanel>
         </ScrollViewer>
 

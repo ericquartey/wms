@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isEnableNoteRules;
 
+        private bool isItalMetal;
+
         private bool isListPickConfirm;
 
         private bool isListPutConfirm;
@@ -95,11 +97,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool showQuantityOnInventory;
 
+        private bool showWaitListInOperation;
+
         private int toteBarcodeLength;
 
         private bool view;
-
-        private bool isItalMetal;
 
         private int waitingListPriorityHighlighted;
 
@@ -149,12 +151,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAggregateList;
             set => this.SetProperty(ref this.isAggregateList, value, this.CanExecute);
-        }
-
-        public bool IsItalMetal
-        {
-            get => this.isItalMetal;
-            set => this.SetProperty(ref this.isItalMetal, value, this.CanExecute);
         }
 
         public bool IsBox
@@ -228,6 +224,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isEnableHandlingItemOperations;
             set => this.SetProperty(ref this.isEnableHandlingItemOperations, value, this.CanExecute);
+        }
+
+        public bool IsItalMetal
+        {
+            get => this.isItalMetal;
+            set => this.SetProperty(ref this.isItalMetal, value, this.CanExecute);
         }
 
         public bool IsListPickConfirm
@@ -350,6 +352,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.showQuantityOnInventory, value, this.CanExecute);
         }
 
+        public bool ShowWaitListInOperation
+        {
+            get => this.showWaitListInOperation;
+            set => this.SetProperty(ref this.showWaitListInOperation, value, this.CanExecute);
+        }
+
         public int ToteBarcodeLength
         {
             get => this.toteBarcodeLength;
@@ -422,6 +430,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItem = configuration.IsEnableAddItem;
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
+                this.ShowWaitListInOperation = configuration.ShowWaitListInOperation;
                 this.IsOstec = configuration.IsOstec;
                 this.IsSpea = configuration.IsSpea;
                 this.IsWaitingList = configuration.IsWaitingListFiltered is true;
@@ -476,6 +485,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsEnableAddItem = this.IsEnableAddItem;
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
+                machine.ShowWaitListInOperation = this.ShowWaitListInOperation;
                 machine.IsOstec = this.IsOstec;
                 machine.IsSpea = this.IsSpea;
                 machine.IsWaitingListFiltered = this.IsWaitingList;

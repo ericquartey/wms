@@ -208,6 +208,122 @@
         </Border>
       </StackPanel>
 
+      <StackPanel Margin="0,0,0,20"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Orientation="Vertical"
+                  Visibility="{Binding ShowWaitList, Converter={StaticResource BTVC}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+
+                <TextBlock Height="Auto"
+                           Margin="0,10,0,20"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           TextWrapping="Wrap">
+                    <Run Text="{Resources:Loc OperatorApp.WaitingList}" />
+                    <Run Text="{Binding WaitingListCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                </TextBlock>
+
+        <Border Grid.Row="2"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{DynamicResource PpcBackground}"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}">
+          <DataGrid Name="DataGrid3"
+                    Width="630"
+                    Height="auto"
+                    MaxHeight="200"
+                    ItemsSource="{Binding WaitingList}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <DataGrid.Columns>
+            <DataGridTextColumn x:Name="Column12"
+                                Width="120"
+                                Binding="{Binding Code}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderList}">
+
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="TextWrapping"
+                                Value="Wrap" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+                
+            <DataGridTextColumn x:Name="Column11"
+                                Width="90"
+                                Binding="{Binding ItemListType, Converter={StaticResource ILTEC}}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderType}">
+
+                <DataGridTextColumn.CellStyle>
+                    <Style TargetType="{x:Type DataGridCell}">
+                        <Setter Property="BorderThickness"
+                                Value="0,0,0,0" />
+                        <Setter Property="BorderBrush"
+                                Value="{DynamicResource PpcButtonBorderBrush}" />
+                    </Style>
+                </DataGridTextColumn.CellStyle>
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="Column13"
+                                Width="*"
+                                MinWidth="150"
+                                Binding="{Binding Description}"
+                                Header="{Resources:Loc OperatorApp.WaitingListDataGridHeaderDescription}">
+
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="TextWrapping"
+                                Value="Wrap" />
+                        <Setter Property="Margin"
+                                Value="5" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+
+            <DataGridTextColumn x:Name="Column14"
+                                Width="70"
+                                Binding="{Binding Priority}"
+                                Header="{Resources:Loc OperatorApp.Priority}">
+                
+                <!--  Visibility="{Binding Source={StaticResource proxy}, Path=Data.IsShipmentDayVisible, Converter={StaticResource BTVC}}">  -->
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+                
+            </DataGrid.Columns>
+          </DataGrid>
+        </Border>
+      </StackPanel>
+
+        
+
     </StackPanel>
 
     <Image Grid.Row="1"

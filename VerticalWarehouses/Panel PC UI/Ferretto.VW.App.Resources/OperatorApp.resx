@@ -2752,4 +2752,7 @@
   <data name="ExecutingList" xml:space="preserve">
     <value>Executing List</value>
   </data>
+  <data name="ShowWaitListInOperation" xml:space="preserve">
+    <value>Show Waiting List In Operation</value>
+  </data>
 </root>

@@ -2352,4 +2352,7 @@
   <data name="ExecutingList" xml:space="preserve">
     <value>Liste in Esecuzione</value>
   </data>
+  <data name="ShowWaitListInOperation" xml:space="preserve">
+    <value>Mostra liste in attesa nelle operazioni</value>
+  </data>
 </root>
