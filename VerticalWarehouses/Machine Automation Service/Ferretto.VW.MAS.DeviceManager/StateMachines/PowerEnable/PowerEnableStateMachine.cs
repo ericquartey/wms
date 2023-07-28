@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         private readonly IPowerEnableMachineData machineData;
 
+        private readonly ILogger logger;
+
         #endregion
 
         #region Constructors
@@ -30,11 +32,14 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             CommandMessage receivedMessage,
             IMachineResourcesProvider machineResourcesProvider,
             IBaysDataProvider baysDataProvider,
-            IEventAggregator eventAggregator,
             ILogger logger,
+            IEventAggregator eventAggregator,
             IServiceScopeFactory serviceScopeFactory)
             : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
         {
+
+            this.logger = logger;
+
             this.baysDataProvider = baysDataProvider;
 
             if (receivedMessage.Data is IPowerEnableMessageData data)
@@ -153,6 +158,8 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 isMarchPossible = false;
                 reason.Append("Height Alarm active; ");
             }
+
+            this.logger.LogInformation($"Test1 PowerEnable: {isMarchPossible} - {reason.ToString()}");
 
             foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
             {

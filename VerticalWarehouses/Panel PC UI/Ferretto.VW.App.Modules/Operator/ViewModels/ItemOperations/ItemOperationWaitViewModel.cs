@@ -243,6 +243,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var configuration = this.machineConfigurationWebService.GetConfigAsync().Result;
 
+            this.WaitingListCount = this.waitingList.Count;
+
             this.ShowWaitList = configuration.ShowWaitListInOperation && this.WaitingListCount > 0;
 
             this.RaisePropertyChanged(nameof(this.MoveVisible));

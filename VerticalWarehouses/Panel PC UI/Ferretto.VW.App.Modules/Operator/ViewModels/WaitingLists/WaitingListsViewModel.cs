@@ -252,7 +252,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         public async Task ExecuteListAsync(List<ItemListExecution> SelectedCells)
         {
-            foreach (var itemList in SelectedCells)
+            foreach (var itemList in SelectedCells.OrderBy(c => c.Priority))
             {
                 if (!this.areaId.HasValue)
                 {
@@ -291,9 +291,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     var bay = this.MachineService.Bay;
                     await this.itemListsWebService.ExecuteAsync(itemList.Id, this.areaId.Value, ItemListEvadabilityType.Execute, bay.Id, this.authenticationService.UserName);
                     await this.LoadListsAsync();
-                    this.ShowNotification(
-                        string.Format(Resources.Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code),
-                        Services.Models.NotificationSeverity.Success);
+                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.ExecutionOfListAccepted"), itemList.Code), Services.Models.NotificationSeverity.Success);
                 }
                 catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
                 {
