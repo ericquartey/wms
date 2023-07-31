@@ -535,8 +535,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                         message,
                         this.machineResourcesProvider,
                         serviceProvider.GetRequiredService<IBaysDataProvider>(),
-                        this.EventAggregator,
                         this.Logger,
+                        this.EventAggregator,
                         this.ServiceScopeFactory);
 
                     this.currentStateMachines.Add(currentStateMachine);
