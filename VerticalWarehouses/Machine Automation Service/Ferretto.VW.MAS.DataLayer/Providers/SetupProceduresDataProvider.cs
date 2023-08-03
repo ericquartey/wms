@@ -1,9 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Storage;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using System.Linq;
+using System;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -430,21 +432,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(procedure.Id);
                 }
-            }
-        }
-
-        public void SetBayShutterRequiredCycles(BayNumber bayNumber, int value)
-        {
-            lock (this.dataContext)
-            {
-                var test = this.dataContext.SetupProceduresSets.AsNoTracking()
-                    .Select(s => bayNumber == BayNumber.BayOne ? s.Bay1ShutterTest : bayNumber == BayNumber.BayTwo ? s.Bay2ShutterTest : s.Bay3ShutterTest)
-                    .Single();
-                test.RequiredCycles = value;
-
-                this.dataContext.AddOrUpdate(test, (e) => e.Id);
-
-                this.dataContext.SaveChanges();
             }
         }
 

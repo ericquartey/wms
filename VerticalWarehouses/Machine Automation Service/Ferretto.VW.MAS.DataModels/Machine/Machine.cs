@@ -70,8 +70,6 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public bool IsAddItemByList { get; set; }
 
-        public bool IsAsendia { get; set; }
-
         public bool IsAxisChanged { get; set; }
 
         public bool IsBackToStartCell { get; set; }

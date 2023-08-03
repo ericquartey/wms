@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -56,8 +57,6 @@ namespace Ferretto.VW.MAS.DataLayer
         SetupProcedure MarkAsCompleted(SetupProcedure procedure, bool bypassed = false);
 
         RepeatedTestProcedure ResetPerformedCycles(RepeatedTestProcedure procedure);
-
-        void SetBayShutterRequiredCycles(BayNumber bayNumber, int value);
 
         void Update(SetupProceduresSet setupProceduresSet, DataLayerContext dataContext);
 

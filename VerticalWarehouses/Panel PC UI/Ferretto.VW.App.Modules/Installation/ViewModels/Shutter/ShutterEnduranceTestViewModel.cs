@@ -129,11 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputRequiredCycles
         {
             get => this.inputRequiredCycles;
-            set
-            {
-                this.SetProperty(ref this.inputRequiredCycles, value);
-                this.shuttersWebService.SetBayShutterRequiredCyclesAsync(value.Value);
-            }
+            set => this.SetProperty(ref this.inputRequiredCycles, value);
         }
 
         public bool IsExecutingProcedure
