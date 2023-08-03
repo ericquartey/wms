@@ -23,13 +23,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IsBackToStartCell",
                 table: "Machines",
                 nullable: false,
-                defaultValue: true);
+                defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
                 name: "IsFindMinHeight",
                 table: "Machines",
                 nullable: false,
-                defaultValue: false);
+                defaultValue: true);
         }
 
         #endregion
