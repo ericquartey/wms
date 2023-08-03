@@ -64,8 +64,21 @@
                            MinValue="0"
                            WidthNumber="230" />
 
-        <Border Grid.Row="2"
-                Grid.Column="2"
+        <ctrls:PpcSpinEdit Grid.Row="2"
+                           Grid.Column="2"
+                           Height="90"
+                           VerticalAlignment="Top"
+                           Margin="0,30,15,0"
+                           EditValue="{Binding InputRequiredCycles, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="Cicli Richiesti"
+                           MinValue="60"
+                           WidthNumber="230" />
+
+        <Border Grid.Row="3"
+                Grid.Column="0"
+                           Height="90"
+                           VerticalAlignment="Top"
                 Margin="0,30,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -100,9 +113,10 @@
             </Border>
         </Border>
 
-        <Border Grid.Row="2"
-                Grid.Column="3"
+        <Border Grid.Row="3"
+                Grid.Column="1"
                 Height="90"
+                VerticalAlignment="Top"
                 Margin="0,30,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
