@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpGet("shutter-")]
+        [HttpGet("shutter-requiredcycles")]
         public ActionResult SetBayShutterRequiredCycles(int value)
         {
             this.setupProceduresDataProvider.SetBayShutterRequiredCycles(this.BayNumber, value);
