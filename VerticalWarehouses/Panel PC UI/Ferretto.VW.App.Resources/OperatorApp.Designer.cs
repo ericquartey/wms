@@ -2968,6 +2968,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Asendia (WMS Custom).
+        /// </summary>
+        public static string IsAsendia {
+            get {
+                return ResourceManager.GetString("IsAsendia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carrefour (WMS custom).
         /// </summary>
         public static string IsCarrefour {

@@ -228,6 +228,7 @@
                                  Margin="0,5,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
+                                 Visibility="{Binding IsAsendia, Converter={StaticResource BTVIC}}"
                                  ContentText="{Binding MissionOperation.ItemNotes}"
                                  LabelText="{resources:Loc OperatorApp.CommonNote}" />
 
@@ -277,6 +278,49 @@
                                FontSize="{StaticResource FontSize_Very_High}"
                                Foreground="{DynamicResource PpcForeground}"
                                Text="{Binding SelectedCompartment.Barcode, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
+                               TextWrapping="Wrap" />
+                </Grid>
+            </Border>
+        </Border>
+
+        
+
+        <Border  Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                 Margin="0,5,0,0"
+                 Width="auto"
+                 Height="95"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="{DynamicResource PpcBackground}"
+                Visibility="{Binding IsAsendia, Converter={StaticResource BTVC}}">
+            <Border BorderBrush="{DynamicResource FerrettoBlue}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                               Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource Text_Foreground}"
+                               Text="{resources:Loc OperatorApp.BoxCode}" />
+
+                    <TextBlock
+                               Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding MissionOperation.ItemNotes, TargetNullValue={x:Static resources:General.TargetNullValue}, FallbackValue={x:Static resources:General.TargetNullValue}}"
                                TextWrapping="Wrap" />
                 </Grid>
             </Border>

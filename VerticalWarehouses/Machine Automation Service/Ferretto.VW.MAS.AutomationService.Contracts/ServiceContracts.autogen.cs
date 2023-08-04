@@ -3142,6 +3142,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> PartiallyCompleteAsync(int id, double quantity, double wastedQuantity, string printerName, bool? emptyCompartment, bool? fullCompartment, string userName, int? nrLabels, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SendIdOperationAsync(int id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> SendIdOperationAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="MasWebApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> SocketLinkCompleteAsync(string id, double quantity, System.DateTimeOffset completedTime);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -5553,6 +5560,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("IsBackToStartCell", Required = Newtonsoft.Json.Required.Always)]
         public bool IsBackToStartCell { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("IsAsendia", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAsendia { get; set; }
     
         [Newtonsoft.Json.JsonProperty("IsCarrefour", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCarrefour { get; set; }

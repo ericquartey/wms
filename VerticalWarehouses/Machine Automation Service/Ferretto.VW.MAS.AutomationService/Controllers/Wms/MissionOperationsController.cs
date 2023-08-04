@@ -150,6 +150,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("{id}/send-id-operation")]
+        public async Task<ActionResult> SendIdOperationAsync(int id)
+        {
+            await this.missionOperationsWmsWebService.SendIdOperationAsync(id);
+            return this.Ok();
+        }
+
         [HttpPost("{id}/socket-link-complete")]
         public async Task<ActionResult> SocketLinkCompleteAsync(string id, double quantity, DateTimeOffset completedTime)
         {

@@ -2755,4 +2755,7 @@
   <data name="ShowWaitListInOperation" xml:space="preserve">
     <value>Show Waiting List In Operation</value>
   </data>
+  <data name="IsAsendia" xml:space="preserve">
+    <value>Asendia (WMS Custom)</value>
+  </data>
 </root>

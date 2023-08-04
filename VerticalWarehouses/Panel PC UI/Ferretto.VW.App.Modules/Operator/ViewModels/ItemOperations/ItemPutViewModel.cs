@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAdjustmentVisible;
 
+        private bool isAsendia;
+
         private bool isBarcodeActive;
 
         private bool isBoxOperationVisible;
@@ -286,6 +288,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAdjustmentVisible;
             set => this.SetProperty(ref this.isAdjustmentVisible, value);
+        }
+
+        public bool IsAsendia
+        {
+            get => this.isAsendia;
+            set => this.SetProperty(ref this.isAsendia, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsBarcodeActive
@@ -749,6 +757,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsCarrefour = configuration.IsCarrefour;
+            this.IsAsendia = configuration.IsAsendia;
             this.IsCarrefourOrDraperyItem = this.IsCarrefour || this.IsCurrentDraperyItem;
             this.IsMissionOperationSkipable = configuration.MissionOperationSkipable;
 
@@ -835,7 +844,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.MaxInputQuantity = (decimal)this.MissionRequestedQuantity;
             }
             this.InputQuantity = this.MissionRequestedQuantity;
+
             base.InitializeInputQuantity();
+
             this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
         }
 
