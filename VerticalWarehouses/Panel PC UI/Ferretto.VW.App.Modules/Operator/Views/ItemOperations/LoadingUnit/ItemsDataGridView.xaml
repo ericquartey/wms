@@ -6,6 +6,7 @@
 
     <DataGrid ItemsSource="{Binding Items}"
               RowHeight="50"
+              HorizontalScrollBarVisibility="Auto"
               SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
 
     <DataGrid.Resources>
@@ -15,7 +16,8 @@
 
         <DataGrid.Columns>
             <DataGridTextColumn x:Name="Column1"
-                                Width="2*"
+                                Width="121"
+                                MinWidth="121"
                                 Binding="{Binding Path=ItemCode}"
                                 Header="{Resources:Loc OperatorApp.ItemSearchGridItem}">
                 <DataGridTextColumn.CellStyle>
@@ -32,7 +34,8 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="Column2"
-                                Width="5*"
+                                Width="auto"
+                                MinWidth="300"
                                 Binding="{Binding Path=ItemDescription}"
                                 Header="{Resources:Loc OperatorApp.ItemSearchGridDescription}">
                 <DataGridTextColumn.ElementStyle>
@@ -45,7 +48,8 @@
                 </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn x:Name="StockColumn"
-                          Width="100"
+                                Width="auto"
+                                MinWidth="100"
                                 Header="{Resources:Loc OperatorApp.CompartmentStock}">
                 <DataGridTextColumn.Binding>
                     <MultiBinding StringFormat="{}{0} {1}">
@@ -61,24 +65,26 @@
           </Style>
         </DataGridTextColumn.ElementStyle>
       </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column4"
-                        Width="2.2*"
-                        Binding="{Binding Path=Lot}"
-                        Header="{Resources:Loc OperatorApp.Lot}"
-                        Visibility="{Binding Source={StaticResource proxy}, Path=Data.ItemSerialNumberVisibility, Converter={StaticResource BTVC}}">
-            <DataGridTextColumn.ElementStyle>
-                <Style TargetType="TextBlock">
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="Margin" Value="5,0,5,0" />
-                </Style>
-            </DataGridTextColumn.ElementStyle>
-        </DataGridTextColumn>
-        <DataGridTextColumn x:Name="Column5"
-                        Width="2.2*"
-                        Binding="{Binding Path=ItemSerialNumber}"
-                        Header="{Resources:Loc OperatorApp.SerialNumber}"
-                        Visibility="{Binding Source={StaticResource proxy}, Path=Data.ItemSerialNumberVisibility, Converter={StaticResource BTVC}}">
+            <DataGridTextColumn x:Name="Column4"
+                            Width="auto"
+                            MinWidth="100"
+                            Binding="{Binding Path=Lot}"
+                            Header="{Resources:Loc OperatorApp.Lot}"
+                            Visibility="{Binding Source={StaticResource proxy}, Path=Data.ItemSerialNumberVisibility, Converter={StaticResource BTVC}}">
+                <DataGridTextColumn.ElementStyle>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="Padding" Value="5,0" />
+                    </Style>
+                </DataGridTextColumn.ElementStyle>
+            </DataGridTextColumn>
+            <DataGridTextColumn x:Name="Column5"
+                                Width="auto"
+                                MinWidth="150"
+                                Binding="{Binding Path=ItemSerialNumber}"
+                                Header="{Resources:Loc OperatorApp.SerialNumber}"
+                                Visibility="{Binding Source={StaticResource proxy}, Path=Data.ItemSerialNumberVisibility, Converter={StaticResource BTVC}}">
             <DataGridTextColumn.ElementStyle>
             <Style TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
