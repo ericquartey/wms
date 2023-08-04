@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusy;
 
+        private bool isAsendia;
+
         private bool isCarrefour;
 
         private bool isCheckListContinueInOtherMachine;
@@ -163,6 +165,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCarrefour;
             set => this.SetProperty(ref this.isCarrefour, value, this.CanExecute);
+        }
+
+        public bool IsAsendia
+        {
+            get => this.isAsendia;
+            set => this.SetProperty(ref this.isAsendia, value, this.CanExecute);
         }
 
         public bool IsCheckListContinueInOtherMachine
@@ -430,6 +438,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItem = configuration.IsEnableAddItem;
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
+                this.IsAsendia = configuration.IsAsendia;
                 this.ShowWaitListInOperation = configuration.ShowWaitListInOperation;
                 this.IsOstec = configuration.IsOstec;
                 this.IsSpea = configuration.IsSpea;
@@ -485,6 +494,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsEnableAddItem = this.IsEnableAddItem;
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
+                machine.IsAsendia = this.IsAsendia;
                 machine.ShowWaitListInOperation = this.ShowWaitListInOperation;
                 machine.IsOstec = this.IsOstec;
                 machine.IsSpea = this.IsSpea;

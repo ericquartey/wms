@@ -650,6 +650,11 @@ namespace Ferretto.VW.App.Modules.Operator
                         }
                         else
                         {
+                            if (configuration.IsAsendia)
+                            {
+                                _ = await this.missionOperationsWebService.SendIdOperationAsync(newWmsOperationInfo.Id);
+                            }
+
                             this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");
 
                             try

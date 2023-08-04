@@ -74,6 +74,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsBackToStartCell { get; set; }
 
+        public bool IsAsendia { get; set; }
+
         public bool IsCarrefour { get; set; }
 
         public bool IsDbSaveOnServer { get; set; }

@@ -712,6 +712,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.ToteBarcodeLength = machine.ToteBarcodeLength;
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
+                machineDB.IsAsendia = machine.IsAsendia;
                 machineDB.ShowWaitListInOperation = machine.ShowWaitListInOperation;
                 machineDB.IsItalMetal = machine.IsItalMetal;
                 machineDB.IsOstec = machine.IsOstec;
