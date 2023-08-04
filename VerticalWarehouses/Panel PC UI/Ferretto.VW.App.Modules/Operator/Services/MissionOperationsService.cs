@@ -630,14 +630,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                         this.MaxOperation = sortedOperations.Count(o => o.Status == MissionOperationStatus.Executing || o.Status == MissionOperationStatus.New);
 
-                        foreach (var operation in sortedOperations)
-                        {
-                            this.logger.Info($"TEST WMS sortedOperations: {operation?.Id},{operation?.ItemListCode}, {operation?.CompartmentId}, {operation?.ItemCode}");
-                        }
-
                         newWmsOperationInfo = sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing).Skip(this.CurrentOperation - 1).FirstOrDefault();
-
-                        this.logger.Info($"TEST WMS newWmsOperationInfo: {newWmsOperationInfo?.Id},{newWmsOperationInfo?.ItemListCode}, {newWmsOperationInfo?.CompartmentId}, {newWmsOperationInfo?.ItemCode}");
 
                         if (newWmsOperationInfo is null)
                         {
