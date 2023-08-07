@@ -406,6 +406,65 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             await base.CommandUserActionAsync(userAction);
                         }
                     }
+                    else if (userAction.UserAction == UserAction.VerifyItemNote)
+                    {
+                        if (this.IsCarrefour)
+                        {
+                            // test begin
+                            // this.MissionOperation.MaximumQuantity = decimal.One;
+                            // this.MissionOperation.ItemDetails.BoxId = "box";
+                            // test end
+                            if (userAction.Code == this.MissionOperation?.ItemCode)
+                            {
+                                this.barcodeItem = userAction.Code;
+                                this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + this.barcodeItem);
+                            }
+                            else if (userAction.Code == this.MissionOperation?.ItemDetails?.BoxId)
+                            {
+                                this.toteBarcode = userAction.Code;
+                                this.ShowNotification(Localized.Get("OperatorApp.ToteBarcodeAcquired") + this.toteBarcode);
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var barcodeItemService = await this.ItemsWebService.GetByBarcodeAsync(userAction.Code);
+
+                                    if (barcodeItemService?.Code == this.MissionOperation?.ItemCode)
+                                    {
+                                        this.barcodeItem = userAction.Code;
+                                        this.ShowNotification(Localized.Get("OperatorApp.ItemBarcodeAcquired") + this.barcodeItem);
+                                    }
+                                    else
+                                    {
+                                        this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                        return;
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                    this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), userAction.Code), Services.Models.NotificationSeverity.Error);
+                                    return;
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(this.barcodeItem))
+                            {
+                                if (!string.IsNullOrEmpty(this.toteBarcode)
+                                    || string.IsNullOrEmpty(this.MissionOperation?.ItemDetails?.BoxId)
+                                    || !await this.MissionOperationsService.MustCheckToteBarcode())
+                                {
+                                    await this.ConfirmOperationAsync(this.barcodeItem);
+                                    this.barcodeItem = string.Empty;
+                                    this.toteBarcode = string.Empty;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            await base.CommandUserActionAsync(userAction);
+                        }
+                    }
                     else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
                     {
                         await this.ConfirmOperationAsync(this.barcodeOk, !string.IsNullOrEmpty(this.InputSerialNumber));

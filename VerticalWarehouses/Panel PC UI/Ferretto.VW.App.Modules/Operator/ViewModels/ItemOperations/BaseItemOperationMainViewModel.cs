@@ -1041,6 +1041,53 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     break;
 
+                case UserAction.VerifyItemNote:
+                    {
+                        var itemNote = e.Code; // UDC40196997
+
+                        e.HasMismatch = itemNote is null || this.MissionOperation?.ItemNotes != itemNote;
+
+                        if (!this.IsItemCodeValid && e.Code != null && this.MissionOperation?.ItemNotes != null)
+                        {
+                            if ((this.BarcodeLenght > 0 && e.Code.Length == this.BarcodeLenght))
+                            {
+                                e.HasMismatch = false;
+                            }
+                            else
+                            {
+                                if (e.HasMismatch)
+                                {
+                                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
+                                    this.ResetInputFields();
+                                }
+                            }
+                        }
+                        else if (!this.IsItemLotValid || !this.IsItemSerialNumberValid)
+                        {
+                            this.ResetInputFields();
+                        }
+
+                        if (e.HasMismatch)
+                        {
+                            this.barcodeOk = string.Empty;
+                            if (e.RestartOnMismatch)
+                            {
+                                this.resetFieldsOnNextAction = true;
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatchRestart"), e.Code), Services.Models.NotificationSeverity.Warning);
+                            }
+                            else
+                            {
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Error);
+                            }
+                        }
+                        else
+                        {
+                            this.ShowNotification((Localized.Get("OperatorApp.BoxUdcOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
+                        }
+                    }
+
+                    break;
+
                 case UserAction.FilterItems:
                     await this.ShowItemDetailsByBarcodeAsync(e);
 
