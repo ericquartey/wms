@@ -6,8 +6,6 @@
 
         FilterItems,
 
-        FilterLot,
-
         PickItem,
 
         FilterLists,
@@ -42,8 +40,6 @@
 
         SelectMachine,
 
-        CarComplete,
-
-        VerifyItemNote
+        CarComplete
     }
 }

@@ -652,14 +652,7 @@ namespace Ferretto.VW.App.Modules.Operator
                         {
                             if (configuration.IsAsendia)
                             {
-                                try
-                                {
-                                    await this.missionOperationsWebService.SendIdOperationAsync(newWmsOperationInfo.Id);
-                                }
-                                catch (Exception)
-                                {
-                                }
-
+                                _ = await this.missionOperationsWebService.SendIdOperationAsync(newWmsOperationInfo.Id);
                             }
 
                             this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");

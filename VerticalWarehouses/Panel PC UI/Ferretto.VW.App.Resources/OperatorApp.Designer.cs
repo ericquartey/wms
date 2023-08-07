@@ -601,15 +601,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Box UDC Confirmed By Barcode Reader.
-        /// </summary>
-        public static string BoxUdcOperationConfirmed {
-            get {
-                return ResourceManager.GetString("BoxUdcOperationConfirmed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Busy cells.
         /// </summary>
         public static string BusyCells {

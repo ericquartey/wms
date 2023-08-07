@@ -298,7 +298,8 @@ namespace Ferretto.VW.App.Accessories
         /// <returns>The barcode rule that best matches the specified barcode and context, or <c>null</c> if no match was found.</returns>
         private BarcodeRule GetActiveContextRule(string barcode, string activeContextName)
         {
-            foreach (var rule in this.ruleSet.Where(r => r.ContextName != null && r.ContextName.Equals(activeContextName, StringComparison.InvariantCultureIgnoreCase)).OrderBy(r => r.Priority))
+            foreach (var rule in this.ruleSet
+                .Where(r => r.ContextName != null && r.ContextName.Equals(activeContextName, StringComparison.InvariantCultureIgnoreCase)))
             {
                 var pattern = new Regex(rule.Pattern);
                 if (pattern.IsMatch(barcode))
@@ -337,7 +338,7 @@ namespace Ferretto.VW.App.Accessories
 
                     foreach (var rule in this.ruleSet)
                     {
-                        this.logger.Trace($"Id: {rule.Id}; Action: {rule.Action}; ContextName: {rule.ContextName}; Pattern: {rule.Pattern}; Priority: {rule.Priority}");
+                        this.logger.Trace($"Id: {rule.Id}; Action: {rule.Action}; ContextName: {rule.ContextName}; Pattern: {rule.Pattern}");
                     }
                 }
             }
