@@ -210,6 +210,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private DelegateCommand weightCommand;
 
+        private bool isAsendia;
+
+        private string toteBarcode;
+
         #endregion
 
         #region Constructors
@@ -262,6 +266,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         #region Properties
 
         public abstract string ActiveContextName { get; }
+
+        public bool IsAsendia
+        {
+            get => this.isAsendia;
+            set => this.SetProperty(ref this.isAsendia, value, this.RaiseCanExecuteChanged);
+        }
+
+        public string ToteBarcode
+        {
+            get => this.toteBarcode;
+            set => this.SetProperty(ref this.toteBarcode, value, this.RaiseCanExecuteChanged);
+        }
 
         public ICommand AddItemCommand =>
                     this.addItemCommand
@@ -1041,6 +1057,53 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                     break;
 
+                case UserAction.VerifyItemNote:
+                    {
+                        var itemNote = e.Code;
+
+                        e.HasMismatch = itemNote is null || this.MissionOperation?.ItemNotes != itemNote;
+
+                        if (!this.IsItemCodeValid && e.Code != null && this.MissionOperation?.ItemNotes != null)
+                        {
+                            if ((this.BarcodeLenght > 0 && e.Code.Length == this.BarcodeLenght))
+                            {
+                                e.HasMismatch = false;
+                            }
+                            else
+                            {
+                                if (e.HasMismatch)
+                                {
+                                    this.ShowNotification(string.Format(Resources.Localized.Get("OperatorApp.NoItemWithCodeIsAvailable"), e.GetItemCode()), Services.Models.NotificationSeverity.Warning);
+                                    this.ResetInputFields();
+                                }
+                            }
+                        }
+                        else if (!this.IsItemLotValid || !this.IsItemSerialNumberValid)
+                        {
+                            this.ResetInputFields();
+                        }
+
+                        if (e.HasMismatch)
+                        {
+                            this.barcodeOk = string.Empty;
+                            if (e.RestartOnMismatch)
+                            {
+                                this.resetFieldsOnNextAction = true;
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatchRestart"), e.Code), Services.Models.NotificationSeverity.Warning);
+                            }
+                            else
+                            {
+                                this.ShowNotification(string.Format(Localized.Get("OperatorApp.BarcodeMismatch"), e.Code), Services.Models.NotificationSeverity.Error);
+                            }
+                        }
+                        else
+                        {
+                            this.ShowNotification((Localized.Get("OperatorApp.BoxUdcOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
+                        }
+                    }
+
+                    break;
+
                 case UserAction.FilterItems:
                     await this.ShowItemDetailsByBarcodeAsync(e);
 
@@ -1139,9 +1202,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     }
                 }
 
-                if ((barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght)
-                    || this.MissionOperation.MaximumQuantity == decimal.One
-                    || isSerialNumber)
+                if (this.IsAsendia)
+                {
+                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, barcode, 0, this.ToteBarcode, this.nrLabels);
+                }
+                else if ((barcode != null && this.BarcodeLenght > 0 && barcode.Length == this.BarcodeLenght) || this.MissionOperation.MaximumQuantity == decimal.One || isSerialNumber)
                 {
                     this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
                     canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, 1, barcode, 0, null, this.nrLabels);

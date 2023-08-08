@@ -76,6 +76,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsAsendia { get; set; }
 
+        public bool LotFilter { get; set; }
+
         public bool IsCarrefour { get; set; }
 
         public bool IsDbSaveOnServer { get; set; }

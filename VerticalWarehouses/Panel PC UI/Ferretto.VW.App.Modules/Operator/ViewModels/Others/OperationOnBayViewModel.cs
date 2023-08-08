@@ -103,6 +103,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private int toteBarcodeLength;
 
+        private bool lotFilter;
+
         private bool view;
 
         private int waitingListPriorityHighlighted;
@@ -129,6 +131,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.barcodeAutomaticPut;
             set => this.SetProperty(ref this.barcodeAutomaticPut, value, this.CanExecute);
+        }
+
+        public bool LotFilter
+        {
+            get => this.lotFilter;
+            set => this.SetProperty(ref this.lotFilter, value, this.CanExecute);
         }
 
         public Bay Bay
@@ -439,6 +447,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
                 this.IsAsendia = configuration.IsAsendia;
+                this.LotFilter = configuration.LotFilter;
                 this.ShowWaitListInOperation = configuration.ShowWaitListInOperation;
                 this.IsOstec = configuration.IsOstec;
                 this.IsSpea = configuration.IsSpea;
@@ -495,6 +504,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
                 machine.IsAsendia = this.IsAsendia;
+                machine.LotFilter = this.LotFilter;
                 machine.ShowWaitListInOperation = this.ShowWaitListInOperation;
                 machine.IsOstec = this.IsOstec;
                 machine.IsSpea = this.IsSpea;

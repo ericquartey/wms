@@ -601,6 +601,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box UDC Confirmed By Barcode Reader.
+        /// </summary>
+        public static string BoxUdcOperationConfirmed {
+            get {
+                return ResourceManager.GetString("BoxUdcOperationConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Busy cells.
         /// </summary>
         public static string BusyCells {
@@ -3792,6 +3801,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Lot {
             get {
                 return ResourceManager.GetString("Lot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Lot Filter With Barcode.
+        /// </summary>
+        public static string LotFilter {
+            get {
+                return ResourceManager.GetString("LotFilter", resourceCulture);
             }
         }
         
