@@ -3805,6 +3805,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use Lot Filter With Barcode.
+        /// </summary>
+        public static string LotFilter {
+            get {
+                return ResourceManager.GetString("LotFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {

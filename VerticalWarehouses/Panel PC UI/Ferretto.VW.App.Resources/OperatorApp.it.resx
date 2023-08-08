@@ -2358,4 +2358,7 @@
   <data name="BoxUdcOperationConfirmed" xml:space="preserve">
     <value>Contenitore UDC Confermato tramite codice a barre.</value>
   </data>
+  <data name="LotFilter" xml:space="preserve">
+    <value>Utilizza Filtro lotto con barcode</value>
+  </data>
 </root>

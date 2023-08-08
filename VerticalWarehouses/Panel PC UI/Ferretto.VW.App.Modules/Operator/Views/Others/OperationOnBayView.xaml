@@ -247,6 +247,11 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding ShowWaitListInOperation, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.ShowWaitListInOperation }" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding LotFilter, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.LotFilter }" />
             </StackPanel>
         </ScrollViewer>
 

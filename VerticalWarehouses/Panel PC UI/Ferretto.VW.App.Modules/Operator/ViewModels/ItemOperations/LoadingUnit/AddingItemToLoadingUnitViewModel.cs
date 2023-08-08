@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private readonly INavigationService navigationService;
 
+        private readonly IMachineConfigurationWebService machineConfigurationWebService;
+
         private bool acquiredLotValue;
 
         private bool acquiredSerialNumberValue;
@@ -60,6 +62,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         private int loadingUnitId;
 
         private string lot;
+
+        private bool isLotFilter;
 
         private bool lotVisibility;
 
@@ -97,6 +101,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             IMachineMissionOperationsWebService missionOperationsWebService,
             INavigationService navigationService,
             IDialogService dialogService,
+            IMachineConfigurationWebService machineConfigurationWebService,
             IAuthenticationService authenticationService)
            : base(PresentationMode.Operator)
         {
@@ -108,13 +113,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
 
         #endregion
 
         #region Properties
 
-        public string ActiveContextName => OperationalContext.AddItem.ToString();
+        public string ActiveContextName => this.IsLotFilter ? OperationalContext.ItemInventory.ToString() : OperationalContext.AddItem.ToString();
 
         public ICommand AddItemCommand =>
                   this.addItemCommand
@@ -152,6 +158,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.expireDateVisibility;
             set => this.SetProperty(ref this.expireDateVisibility, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsLotFilter
+        {
+            get => this.isLotFilter;
+            set => this.SetProperty(ref this.isLotFilter, value, this.RaiseCanExecuteChanged);
         }
 
         public double InputQuantity
@@ -359,7 +371,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             var readValue = userAction.Code;
-            var readLot = userAction.Parameters["ItemLot"];
+            var readLot = true ? readValue : userAction.Parameters["ItemLot"];
 
             // Check and update: first Lot, then SerialNumber. Be careful about the order: do not
             // change it
@@ -412,6 +424,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.acquiredLotValue = false;
             this.acquiredSerialNumberValue = false;
+
+            var config = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsLotFilter = config.LotFilter;
 
             this.InputQuantity = 1;
             this.QuantityTolerance = 0;
