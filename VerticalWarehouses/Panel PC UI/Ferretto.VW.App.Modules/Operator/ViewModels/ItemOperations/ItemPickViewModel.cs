@@ -406,6 +406,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             await base.CommandUserActionAsync(userAction);
                         }
                     }
+                    else if (userAction.UserAction == UserAction.VerifyItemNote)
+                    {
+                        await base.CommandUserActionAsync(userAction);
+                        this.ToteBarcode = userAction.Code;
+                    }
                     else if (userAction.UserAction == UserAction.ConfirmKey && this.barcodeOk?.Length > 0)
                     {
                         await this.ConfirmOperationAsync(this.barcodeOk, !string.IsNullOrEmpty(this.InputSerialNumber));
@@ -468,6 +473,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsCarrefour = configuration.IsCarrefour;
+            this.IsAsendia = configuration.IsAsendia;
             this.IsQuantityLimited = configuration.IsQuantityLimited;
             this.IsMissionOperationSkipable = configuration.MissionOperationSkipable;
 
@@ -852,12 +858,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             // - acquisition of item barcode (first)
                             // - acquisition of tote barcode
                             // - complete the operation
-                            canComplete = await this.MissionOperationsService.CompleteAsync(
-                                this.MissionOperation.Id,
-                                this.InputQuantity.Value,
-                                this.barcodeItem,
-                                0,
-                                toteBarcode);
+                            if (this.IsAsendia)
+                            {
+                                canComplete = await this.MissionOperationsService.CompleteAsync(
+                                                                this.MissionOperation.Id,
+                                                                this.InputQuantity.Value,
+                                                                this.barcodeItem,
+                                                                0,
+                                                                this.ToteBarcode);
+                            }
+                            else
+                            {
+                                canComplete = await this.MissionOperationsService.CompleteAsync(
+                                                                this.MissionOperation.Id,
+                                                                this.InputQuantity.Value,
+                                                                this.barcodeItem,
+                                                                0,
+                                                                toteBarcode);
+                            }
+
 
                             this.barcodeItem = string.Empty;
 
@@ -907,7 +926,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         var itemId = this.MissionOperation.Id;
 
                         this.ShowNotification((Localized.Get("OperatorApp.BarcodeOperationConfirmed") + barcode), Services.Models.NotificationSeverity.Success);
-                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem, this.nrLabels);
+                        if (this.IsAsendia)
+                        {
+                            canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem, this.nrLabels, this.ToteBarcode);
+
+                        }
+                        else
+                        {
+                            canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, this.barcodeItem, this.nrLabels);
+                        }
+
 
                         if (canComplete)
                         {
@@ -926,7 +954,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     var itemId = this.MissionOperation.Id;
-                    canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+
+                    if (this.IsAsendia)
+                    {
+                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value, toteBarcode: this.ToteBarcode);
+
+                    }
+                    else
+                    {
+                        canComplete = await this.MissionOperationsService.CompleteAsync(this.MissionOperation.Id, this.InputQuantity.Value);
+                    }
 
                     if (canComplete)
                     {

@@ -2758,4 +2758,7 @@
   <data name="IsAsendia" xml:space="preserve">
     <value>Asendia (WMS Custom)</value>
   </data>
+  <data name="BoxUdcOperationConfirmed" xml:space="preserve">
+    <value>Box UDC Confirmed By Barcode Reader</value>
+  </data>
 </root>
