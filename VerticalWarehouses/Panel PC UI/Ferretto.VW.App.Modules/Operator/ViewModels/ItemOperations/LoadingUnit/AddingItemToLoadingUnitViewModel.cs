@@ -120,7 +120,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => this.IsLotFilter ? OperationalContext.ItemInventory.ToString() : OperationalContext.AddItem.ToString();
+        public string ActiveContextName => !this.IsLotFilter ? OperationalContext.ItemInventory.ToString() : OperationalContext.AddItem.ToString();
 
         public ICommand AddItemCommand =>
                   this.addItemCommand
