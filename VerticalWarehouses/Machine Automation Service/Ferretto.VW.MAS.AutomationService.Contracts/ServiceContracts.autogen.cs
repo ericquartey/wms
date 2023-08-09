@@ -5534,6 +5534,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("FireAlarm", Required = Newtonsoft.Json.Required.Always)]
         public bool FireAlarm { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("IsBypassReason", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsBypassReason { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("FixedPick", Required = Newtonsoft.Json.Required.Always)]
         public bool FixedPick { get; set; }
     

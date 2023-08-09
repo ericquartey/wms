@@ -49,6 +49,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isAddItemButtonEnabled;
 
+        private bool isBypassReason;
+
         private bool isFromList;
 
         private bool isOrderVisible;
@@ -158,6 +160,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.expireDateVisibility;
             set => this.SetProperty(ref this.expireDateVisibility, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBypassReason
+        {
+            get => this.isBypassReason;
+            set => this.SetProperty(ref this.isBypassReason, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsLotFilter
@@ -427,6 +435,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var config = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsLotFilter = config.LotFilter;
+            this.IsBypassReason = config.IsBypassReason;
 
             this.InputQuantity = 1;
             this.QuantityTolerance = 0;
@@ -485,7 +494,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsWaitingForResponse = true;
             this.NoteEnabled = true;
-            var waitForReason = await this.CheckReasonsAsync();
+            var waitForReason = this.IsBypassReason ? false : await this.CheckReasonsAsync();
 
             this.IsWaitingForReason = waitForReason;
 

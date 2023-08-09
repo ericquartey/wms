@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool FireAlarm { get; set; }
 
+        public bool IsBypassReason { get; set; }
+
         /// <summary>
         /// Get/set a value indicating if add item operation is enabled.
         /// </summary>

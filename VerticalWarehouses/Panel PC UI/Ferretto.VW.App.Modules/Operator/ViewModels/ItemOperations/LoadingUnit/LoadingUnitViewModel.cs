@@ -184,6 +184,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string searchItem;
 
+        private bool isBypassReason;
+
         private string selectedItemTxt;
 
         private MissionOperation selectedList;
@@ -745,6 +747,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.unitHeight, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsBypassReason
+        {
+            get => this.isBypassReason;
+            set => this.SetProperty(ref this.isBypassReason, value, this.RaiseCanExecuteChanged);
+        }
+
         public int? UnitNumber
         {
             get => this.unitNumber;
@@ -1008,6 +1016,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             }
 
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
+            this.IsBypassReason = configuration.IsBypassReason;
 
             this.IsItalMetal = configuration.IsItalMetal;
 
@@ -1680,7 +1689,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             this.IsWaitingForResponse = true;
 
-            var waitForReason = await this.CheckReasonsAsync();
+            var waitForReason = this.IsBypassReason ? false : await this.CheckReasonsAsync();
 
             this.IsWaitingForReason = waitForReason;
 

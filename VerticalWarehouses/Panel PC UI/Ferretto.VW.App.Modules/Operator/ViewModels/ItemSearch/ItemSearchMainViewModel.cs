@@ -154,6 +154,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private string selectedItemTxt;
 
+        private bool isBypassReason;
+
         private DelegateCommand showItemDetailsCommand;
 
         private CancellationTokenSource tokenSource;
@@ -411,6 +413,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isSsccEnabled;
             set => this.SetProperty(ref this.isSsccEnabled, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBypassReason
+        {
+            get => this.isBypassReason;
+            set => this.SetProperty(ref this.isBypassReason, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsWaitingForReason { get; private set; }
@@ -1007,6 +1015,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsCarrefour = configuration.IsCarrefour;
+            this.IsBypassReason = configuration.IsBypassReason;
             this.isLocalMachineItems = configuration.IsLocalMachineItems;
             this.IsItalMetal = configuration.IsItalMetal;
 
@@ -1056,9 +1065,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NoteEnabled = true;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
-            var waitForReason = await this.CheckReasonsAsync();
+            var waitForReason = this.IsBypassReason ? false : await this.CheckReasonsAsync();
 
             this.IsWaitingForReason = waitForReason;
+
 
             if (!waitForReason)
             {
@@ -1088,7 +1098,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             this.NoteEnabled = true;
             this.RaisePropertyChanged(nameof(this.NoteEnabled));
 
-            var waitForReason = await this.CheckReasonsAsync();
+            var waitForReason = this.IsBypassReason ? false : await this.CheckReasonsAsync();
 
             this.IsWaitingForReason = waitForReason;
 
