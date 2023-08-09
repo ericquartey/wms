@@ -28,31 +28,31 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         #region Constructors
 
-  public PowerEnableStateMachine(
-    CommandMessage receivedMessage,
-    IMachineResourcesProvider machineResourcesProvider,
-    IBaysDataProvider baysDataProvider,
-    ILogger logger,
-    IEventAggregator eventAggregator,
-    IServiceScopeFactory serviceScopeFactory)
-    : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
-{
+        public PowerEnableStateMachine(
+          CommandMessage receivedMessage,
+          IMachineResourcesProvider machineResourcesProvider,
+          IBaysDataProvider baysDataProvider,
+          ILogger logger,
+          IEventAggregator eventAggregator,
+          IServiceScopeFactory serviceScopeFactory)
+          : base(receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory)
+        {
 
-    this.logger = logger;
+            this.logger = logger;
 
-    this.baysDataProvider = baysDataProvider;
+            this.baysDataProvider = baysDataProvider;
 
-    if (receivedMessage.Data is IPowerEnableMessageData data)
-    {
-        this.machineData = new PowerEnableMachineData(data.Enable,
-            receivedMessage.RequestingBay,
-            receivedMessage.TargetBay,
-            machineResourcesProvider,
-            eventAggregator,
-            logger,
-            serviceScopeFactory);
-    }
-}
+            if (receivedMessage.Data is IPowerEnableMessageData data)
+            {
+                this.machineData = new PowerEnableMachineData(data.Enable,
+                    receivedMessage.RequestingBay,
+                    receivedMessage.TargetBay,
+                    machineResourcesProvider,
+                    eventAggregator,
+                    logger,
+                    serviceScopeFactory);
+            }
+        }
 
         #endregion
 
@@ -158,8 +158,6 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 isMarchPossible = false;
                 reason.Append("Height Alarm active; ");
             }
-
-            this.logger.LogInformation($"Test1 PowerEnable: {isMarchPossible} - {reason.ToString()}");
 
             foreach (var bayNumber in this.baysDataProvider.GetBayNumbers())
             {
