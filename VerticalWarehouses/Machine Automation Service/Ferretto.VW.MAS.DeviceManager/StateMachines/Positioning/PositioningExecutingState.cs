@@ -1089,13 +1089,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.TableTarget:
                     {
-                        if (this.IsLoadingErrorDuringPickup())
-                        {
-                            this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
+                        //if (this.IsLoadingErrorDuringPickup())
+                        //{
+                        //    this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
-                            this.Stop(StopRequestReason.Stop);
-                        }
-                        else if (this.IsUnloadingErrorDuringDeposit())
+                        //    this.Stop(StopRequestReason.Stop);
+                        //}
+                        //else
+                        if (this.IsUnloadingErrorDuringDeposit())
                         {
                             this.errorsProvider.RecordNew(MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                             this.Stop(StopRequestReason.Stop);
