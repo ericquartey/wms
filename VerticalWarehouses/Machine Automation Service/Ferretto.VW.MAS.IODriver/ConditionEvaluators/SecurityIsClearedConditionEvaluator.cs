@@ -70,9 +70,8 @@ namespace Ferretto.VW.MAS.IODriver
                     &&
                     !heightAlarm;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this.logger.LogError("Test1 ResetSecurity " + ex.Message);
                 return false;
             }
         }
