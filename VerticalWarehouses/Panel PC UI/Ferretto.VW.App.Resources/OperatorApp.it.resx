@@ -2361,4 +2361,7 @@
   <data name="LotFilter" xml:space="preserve">
     <value>Utilizza Filtro lotto con barcode</value>
   </data>
+  <data name="IsBypassReason" xml:space="preserve">
+    <value>Disattiva causale e ragioni</value>
+  </data>
 </root>

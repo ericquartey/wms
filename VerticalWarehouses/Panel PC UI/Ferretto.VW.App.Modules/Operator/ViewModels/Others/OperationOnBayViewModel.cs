@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCarrefour;
 
+        private bool isBypassReason;
+
         private bool isCheckListContinueInOtherMachine;
 
         private bool isDisableQtyItemEditingPick;
@@ -137,6 +139,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.lotFilter;
             set => this.SetProperty(ref this.lotFilter, value, this.CanExecute);
+        }
+
+        public bool IsBypassReason
+        {
+            get => this.isBypassReason;
+            set => this.SetProperty(ref this.isBypassReason, value, this.CanExecute);
         }
 
         public Bay Bay
@@ -447,6 +455,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
                 this.IsAsendia = configuration.IsAsendia;
+                this.IsBypassReason = configuration.IsBypassReason;
                 this.LotFilter = configuration.LotFilter;
                 this.ShowWaitListInOperation = configuration.ShowWaitListInOperation;
                 this.IsOstec = configuration.IsOstec;
@@ -504,6 +513,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
                 machine.IsAsendia = this.IsAsendia;
+                machine.IsBypassReason = this.IsBypassReason;
                 machine.LotFilter = this.LotFilter;
                 machine.ShowWaitListInOperation = this.ShowWaitListInOperation;
                 machine.IsOstec = this.IsOstec;

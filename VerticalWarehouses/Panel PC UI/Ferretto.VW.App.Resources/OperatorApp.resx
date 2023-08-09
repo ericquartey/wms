@@ -2764,4 +2764,7 @@
   <data name="LotFilter" xml:space="preserve">
     <value>Use Lot Filter With Barcode</value>
   </data>
+  <data name="IsBypassReason" xml:space="preserve">
+    <value>Disable Order and reason</value>
+  </data>
 </root>

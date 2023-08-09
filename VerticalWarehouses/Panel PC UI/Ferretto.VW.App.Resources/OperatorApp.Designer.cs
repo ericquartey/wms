@@ -2986,6 +2986,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Disable Order and reason.
+        /// </summary>
+        public static string IsBypassReason {
+            get {
+                return ResourceManager.GetString("IsBypassReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Carrefour (WMS custom).
         /// </summary>
         public static string IsCarrefour {
