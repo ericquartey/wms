@@ -92,9 +92,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                 this.Mission.Status = MissionStatus.New;
                 this.Mission.ErrorCode = MachineErrorCode.NoError;
 
-                if (command != null
-                    && command.Data is IMoveLoadingUnitMessageData messageData
-                    )
+                if (command != null && command.Data is IMoveLoadingUnitMessageData messageData)
                 {
                     this.Mission.Action = messageData.CommandAction;
                     this.Mission.TargetBay = command.RequestingBay;
@@ -347,8 +345,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         {
             bool returnValue;
 
-            if (commandMessage != null
-                && commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+            if (commandMessage != null && commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
                 returnValue = this.IsMachineOk(messageData, showErrors);
 
@@ -383,54 +380,57 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:
-                    var reason = string.Empty;
-                    if (messageData.DestinationCellId != null)
                     {
-                        returnValue = this.CellsProvider.CanFitLoadingUnit(messageData.DestinationCellId.Value, this.Mission.LoadUnitId, (this.Mission.MissionType == MissionType.FirstTest), out reason);
-                        mission.DestinationCellId = messageData.DestinationCellId;
-                        mission.LoadUnitDestination = LoadingUnitLocation.Cell;
-                    }
-                    else if (messageData.LoadUnitId.HasValue)
-                    {
-                        try
+                        var reason = string.Empty;
+                        if (messageData.DestinationCellId != null)
                         {
-                            mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadUnitId.Value, Utils.Enumerations.CompactingType.NoCompacting, false, this.MachineVolatileDataProvider.RandomCells);
-                            returnValue = true;
+                            returnValue = this.CellsProvider.CanFitLoadingUnit(messageData.DestinationCellId.Value, this.Mission.LoadUnitId, (this.Mission.MissionType == MissionType.FirstTest), out reason);
+                            mission.DestinationCellId = messageData.DestinationCellId;
                             mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                         }
-                        catch (Exception ex)
+                        else if (messageData.LoadUnitId.HasValue)
                         {
-                            if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
-                                || this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator
-                                )
+                            try
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay, ex.Message);
-                            }
-                            else
-                            {
+                                mission.DestinationCellId = this.CellsProvider.FindEmptyCell(messageData.LoadUnitId.Value, Utils.Enumerations.CompactingType.NoCompacting, false, this.MachineVolatileDataProvider.RandomCells);
                                 returnValue = true;
                                 mission.LoadUnitDestination = LoadingUnitLocation.Cell;
                             }
+                            catch (Exception ex)
+                            {
+                                if (this.Mission.LoadUnitSource == LoadingUnitLocation.Cell
+                                    || this.Mission.LoadUnitSource == LoadingUnitLocation.Elevator
+                                    )
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull, this.Mission.TargetBay, ex.Message);
+                                }
+                                else
+                                {
+                                    returnValue = true;
+                                    mission.LoadUnitDestination = LoadingUnitLocation.Cell;
+                                }
+                            }
+                        }
+
+                        if (!returnValue)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay, reason);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationCell + $" Id={this.Mission.Id}");
+                            }
                         }
                     }
-
-                    if (!returnValue)
-                    {
-                        if (showErrors)
-                        {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationCell, this.Mission.TargetBay, reason);
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationCell + $" Id={this.Mission.Id}");
-                        }
-                    }
-
                     break;
 
                 case LoadingUnitLocation.Elevator:
-                    mission.LoadUnitDestination = LoadingUnitLocation.Elevator;
-                    returnValue = true;
+                    {
+                        mission.LoadUnitDestination = LoadingUnitLocation.Elevator;
+                        returnValue = true;
+                    }
                     break;
 
                 case LoadingUnitLocation.LoadUnit:
@@ -440,184 +440,111 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     }
 
                 default:
-                    // destination is bay, but first we must decide which position to use
-                    var bay = this.BaysDataProvider.GetByNumberCarousel(requestingBay);
-                    var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
-
-                    if (destinationBay != null && destinationBay.Number != bay.Number)
                     {
-                        // bay to bay movement
-                        bay = destinationBay;
-                    }
+                        // destination is bay, but first we must decide which position to use
+                        var bay = this.BaysDataProvider.GetByNumberCarousel(requestingBay);
+                        var destinationBay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
 
-                    if (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic)
-                    {
-                        foreach (var position in bay.Positions.Where(p => p.LoadingUnit is null && !p.IsBlocked))
+                        if (destinationBay != null && destinationBay.Number != bay.Number)
                         {
-                            if (this.SensorsProvider.IsLoadingUnitInLocation(position.Location)
-                                || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay))
-                                || (bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
+                            // bay to bay movement
+                            bay = destinationBay;
+                        }
+
+                        if (this.MachineVolatileDataProvider.Mode == MachineMode.Automatic)
+                        {
+                            foreach (var position in bay.Positions.Where(p => p.LoadingUnit is null && !p.IsBlocked))
                             {
-                                this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
-                                this.Logger.LogInformation($"Scheduling Machine status switched to {this.MachineVolatileDataProvider.Mode}");
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, bay.Number);
-                                return false;
+                                if (this.SensorsProvider.IsLoadingUnitInLocation(position.Location)
+                                    || (!bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay))
+                                    || (bay.IsDouble && bay.IsExternal && this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, position.Location)))
+                                {
+                                    this.MachineVolatileDataProvider.Mode = MachineMode.Manual;
+                                    this.Logger.LogInformation($"Scheduling Machine status switched to {this.MachineVolatileDataProvider.Mode}");
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitMissingOnBay, bay.Number);
+                                    return false;
+                                }
                             }
                         }
-                    }
 
-                    if ((bay.Carousel != null || bay.IsExternal)
-                        && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number]
-                        && bay.Positions.Any(p => p.LoadingUnit != null)
-                        )
-                    {
-                        if (showErrors)
-                        {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated + $" Id={this.Mission.Id}");
-                        }
-                        return false;
-                    }
-
-                    if (bay.Positions.All(b => b.IsBlocked))
-                    {
-                        this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
-                    }
-                    else if (bay.Positions.Count(b => !b.IsBlocked) == 1)
-                    {
-                        // always check first position
-                        returnValue = this.CheckBayDestination(messageData, bay.Number, bay.Positions.First(b => !b.IsBlocked).Location, mission, showErrors);
-                        if (returnValue)
-                        {
-                            mission.LoadUnitDestination = bay.Positions.First(b => !b.IsBlocked).Location;
-                        }
-                    }
-                    else if (this.MachineVolatileDataProvider.RandomCells
-                        && this.MachineVolatileDataProvider.LoadUnitsToTest?.Count == 1
-                        && bay.IsDouble)
-                    {
-                        // Random DestinationBay (BIG, BID, BED)
-                        var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                        if (upper is LoadingUnitLocation.NoLocation)
+                        if ((bay.Carousel != null || bay.IsExternal) && !this.MachineVolatileDataProvider.IsBayHomingExecuted[bay.Number] && !bay.Positions.Any(p => p.LoadingUnit == null))
                         {
                             if (showErrors)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.DestinationBayNotCalibrated, this.Mission.TargetBay);
                             }
                             else
                             {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper + $" Id={this.Mission.Id}");
-                            }
-                            return false;
-                        }
-                        var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                        if (bottom is LoadingUnitLocation.NoLocation)
-                        {
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom + $" Id={this.Mission.Id}");
+                                this.Logger.LogInformation(ErrorDescriptions.DestinationBayNotCalibrated + $" Id={this.Mission.Id}");
                             }
                             return false;
                         }
 
-                        var randIdex = new Random().Next(2);
-
-                        var destinationBay1 = randIdex == 0 ? upper : bottom;
-                        var destinationBay2 = randIdex == 0 ? bottom : upper;
-
-                        returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay1, mission, false);
-
-                        if (returnValue)
+                        if (bay.Positions.All(b => b.IsBlocked))
                         {
-                            mission.LoadUnitDestination = destinationBay1;
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
                         }
-                        else
+                        else if (bay.Positions.Count(b => !b.IsBlocked) == 1)
                         {
-                            returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay2, mission, false);
-
+                            // always check first position
+                            returnValue = this.CheckBayDestination(messageData, bay.Number, bay.Positions.First(b => !b.IsBlocked).Location, mission, showErrors);
                             if (returnValue)
                             {
-                                mission.LoadUnitDestination = destinationBay2;
+                                mission.LoadUnitDestination = bay.Positions.First(b => !b.IsBlocked).Location;
                             }
-                            else
+                        }
+                        else if (this.MachineVolatileDataProvider.RandomCells && this.MachineVolatileDataProvider.LoadUnitsToTest?.Count == 1 && bay.IsDouble)
+                        {
+                            // Random DestinationBay (BIG, BID, BED)
+                            var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                            if (upper is LoadingUnitLocation.NoLocation)
                             {
-                                if (showErrors || !bay.Positions.Any(p => p.LoadingUnit is null))
+                                if (showErrors)
                                 {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
                                 }
                                 else
                                 {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper + $" Id={this.Mission.Id}");
                                 }
                                 return false;
                             }
-                        }
-                    }
-                    else
-                    {
-                        // Standard DestinationBay
-                        var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                        if (upper is LoadingUnitLocation.NoLocation)
-                        {
-                            if (showErrors)
+                            var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                            if (bottom is LoadingUnitLocation.NoLocation)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom + $" Id={this.Mission.Id}");
+                                }
+                                return false;
                             }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper + $" Id={this.Mission.Id}");
-                            }
-                            return false;
-                        }
-                        var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                        if (bottom is LoadingUnitLocation.NoLocation)
-                        {
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom + $" Id={this.Mission.Id}");
-                            }
-                            return false;
-                        }
 
-                        if (!bay.IsDouble ||
-                            bay.Carousel != null)
-                        {
-                            // If bay is not double or bay is carousel (BIS, BES, BIG)
-                            // always check upper position first
-                            returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false /*|| messageData.Destination == upper*/);
+                            var randIdex = new Random().Next(2);
+
+                            var destinationBay1 = randIdex == 0 ? upper : bottom;
+                            var destinationBay2 = randIdex == 0 ? bottom : upper;
+
+                            returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay1, mission, false);
+
                             if (returnValue)
                             {
-                                // upper position is empty. we can use it only if bottom is also free
-                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
+                                mission.LoadUnitDestination = destinationBay1;
+                            }
+                            else
+                            {
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, destinationBay2, mission, false);
+
                                 if (returnValue)
                                 {
-                                    returnValue = true;
-                                    // both positions are free: choose upper if not fixed by message
-                                    if (messageData.Destination == bottom)
-                                    {
-                                        mission.LoadUnitDestination = bottom;
-                                    }
-                                    else
-                                    {
-                                        mission.LoadUnitDestination = upper;
-                                    }
+                                    mission.LoadUnitDestination = destinationBay2;
                                 }
                                 else
                                 {
-                                    if (showErrors
-                                        || !bay.Positions.Any(p => p.LoadingUnit is null)
-                                        )
+                                    if (showErrors || !bay.Positions.Any(p => p.LoadingUnit is null))
                                     {
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
                                     }
@@ -628,88 +555,77 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     return false;
                                 }
                             }
-                            else
-                            {
-                                if (messageData.Destination == upper)
-                                {
-                                    if (showErrors)
-                                    {
-                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                                    }
-                                    else
-                                    {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
-                                    }
-                                    return false;
-                                }
-                                // if upper position is not empty we can try lower position
-                                returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                                if (returnValue)
-                                {
-                                    // upper is occupied and bottom is free: choose bottom
-                                    mission.LoadUnitDestination = bottom;
-                                }
-                            }
                         }
-
-                        if (bay.IsDouble &&
-                            bay.IsExternal)
+                        else
                         {
-                            // If bay is double and bay is external we choose automatically the destination (BED)
-                            returnValue = true;
-                            // Always check bottom position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
-                            if (bValue)
+                            // Standard DestinationBay
+                            var upper = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                            if (upper is LoadingUnitLocation.NoLocation)
                             {
-                                // bottom position is empty.
-                                mission.LoadUnitDestination = bottom;
-                            }
-                            else
-                            {
-                                // bottom position is occupied
-                                // We check the upper position of bay
-                                bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
-                                if (bValue)
+                                if (showErrors)
                                 {
-                                    // upper position is empty
-                                    mission.LoadUnitDestination = upper;
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedUpper, this.Mission.TargetBay);
                                 }
                                 else
                                 {
-                                    // all positions are occupied
-                                    returnValue = false;
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedUpper + $" Id={this.Mission.Id}");
                                 }
+                                return false;
                             }
-                        }
-
-                        if (bay.IsDouble &&
-                            !bay.IsExternal &&
-                            bay.Carousel == null)
-                        {
-                            // If bay is double and bay is not carousel (BID)
-                            returnValue = true;
-                            // Always check upper position first
-                            var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
-                            if (bValue)
+                            var bottom = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                            if (bottom is LoadingUnitLocation.NoLocation)
                             {
-                                // Upper position is empty.
-                                // We check the lower position of bay
-                                bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                                if (bValue)
+                                if (showErrors)
                                 {
-                                    // Lower position is empty
-                                    // Both positions are free: choose bottom if it is not fixed by message
-                                    mission.LoadUnitDestination = bottom;
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitUndefinedBottom, this.Mission.TargetBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitUndefinedBottom + $" Id={this.Mission.Id}");
+                                }
+                                return false;
+                            }
 
+                            if (!bay.IsDouble || bay.Carousel != null)
+                            {
+                                // If bay is not double or bay is carousel (BIS, BES, BIG)
+                                // always check upper position first
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false /*|| messageData.Destination == upper*/);
+                                if (returnValue)
+                                {
+                                    // upper position is empty. we can use it only if bottom is also free
+                                    returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
+                                    if (returnValue)
+                                    {
+                                        returnValue = true;
+                                        // both positions are free: choose upper if not fixed by message
+                                        if (messageData.Destination == bottom)
+                                        {
+                                            mission.LoadUnitDestination = bottom;
+                                        }
+                                        else
+                                        {
+                                            mission.LoadUnitDestination = upper;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (showErrors
+                                            || !bay.Positions.Any(p => p.LoadingUnit is null)
+                                            )
+                                        {
+                                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                        }
+                                        else
+                                        {
+                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
+                                        }
+                                        return false;
+                                    }
+                                }
+                                else
+                                {
                                     if (messageData.Destination == upper)
-                                    {
-                                        mission.LoadUnitDestination = upper;
-                                    }
-                                }
-                                else
-                                {
-                                    // Lower position is occupied
-                                    if (messageData.Destination == bottom)
                                     {
                                         if (showErrors)
                                         {
@@ -719,14 +635,76 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         {
                                             this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
                                         }
-                                        returnValue = false;
+                                        return false;
+                                    }
+                                    // if upper position is not empty we can try lower position
+                                    returnValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                    if (returnValue)
+                                    {
+                                        // upper is occupied and bottom is free: choose bottom
+                                        mission.LoadUnitDestination = bottom;
+                                    }
+                                }
+                            }
+
+                            if (bay.IsDouble &&
+                                bay.IsExternal)
+                            {
+                                // If bay is double and bay is external we choose automatically the destination (BED)
+                                returnValue = true;
+                                // Always check bottom position first
+                                var bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, false);
+                                if (bValue)
+                                {
+                                    // bottom position is empty.
+                                    mission.LoadUnitDestination = bottom;
+                                }
+                                else
+                                {
+                                    // bottom position is occupied
+                                    // We check the upper position of bay
+                                    bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, showErrors);
+                                    if (bValue)
+                                    {
+                                        // upper position is empty
+                                        mission.LoadUnitDestination = upper;
                                     }
                                     else
                                     {
-                                        // check if bottom position has a high LU
-                                        var lu = this.BaysDataProvider.GetLoadingUnitByDestination(bottom);
-                                        var maxHeight = bay.Positions.First(p => !p.IsUpper).MaxSingleHeight;
-                                        if (lu != null && lu.Height > maxHeight)
+                                        // all positions are occupied
+                                        returnValue = false;
+                                    }
+                                }
+                            }
+
+                            if (bay.IsDouble &&
+                                !bay.IsExternal &&
+                                bay.Carousel == null)
+                            {
+                                // If bay is double and bay is not carousel (BID)
+                                returnValue = true;
+                                // Always check upper position first
+                                var bValue = this.CheckBayDestination(messageData, requestingBay, upper, mission, false);
+                                if (bValue)
+                                {
+                                    // Upper position is empty.
+                                    // We check the lower position of bay
+                                    bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                    if (bValue)
+                                    {
+                                        // Lower position is empty
+                                        // Both positions are free: choose bottom if it is not fixed by message
+                                        mission.LoadUnitDestination = bottom;
+
+                                        if (messageData.Destination == upper)
+                                        {
+                                            mission.LoadUnitDestination = upper;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Lower position is occupied
+                                        if (messageData.Destination == bottom)
                                         {
                                             if (showErrors)
                                             {
@@ -740,41 +718,34 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         }
                                         else
                                         {
-                                            // We choose definitely the upper position
-                                            mission.LoadUnitDestination = upper;
+                                            // check if bottom position has a high LU
+                                            var lu = this.BaysDataProvider.GetLoadingUnitByDestination(bottom);
+                                            var maxHeight = bay.Positions.First(p => !p.IsUpper).MaxSingleHeight;
+                                            if (lu != null && lu.Height > maxHeight)
+                                            {
+                                                if (showErrors)
+                                                {
+                                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                                }
+                                                else
+                                                {
+                                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
+                                                }
+                                                returnValue = false;
+                                            }
+                                            else
+                                            {
+                                                // We choose definitely the upper position
+                                                mission.LoadUnitDestination = upper;
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                // Upper position is occupied
-                                if (messageData.Destination == upper)
-                                {
-                                    if (showErrors)
-                                    {
-                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
-                                    }
-                                    else
-                                    {
-                                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
-                                    }
-                                    returnValue = false;
-                                }
                                 else
                                 {
-                                    // We can use it only if bottom is also free
-                                    bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
-                                    if (bValue)
+                                    // Upper position is occupied
+                                    if (messageData.Destination == upper)
                                     {
-                                        // Lower position is empty
-                                        // We choose definitely the lower position
-                                        mission.LoadUnitDestination = bottom;
-                                    }
-                                    else
-                                    {
-                                        // Lower position is occupied
-                                        // Error is raised
                                         if (showErrors)
                                         {
                                             this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
@@ -785,11 +756,35 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                         }
                                         returnValue = false;
                                     }
+                                    else
+                                    {
+                                        // We can use it only if bottom is also free
+                                        bValue = this.CheckBayDestination(messageData, requestingBay, bottom, mission, showErrors);
+                                        if (bValue)
+                                        {
+                                            // Lower position is empty
+                                            // We choose definitely the lower position
+                                            mission.LoadUnitDestination = bottom;
+                                        }
+                                        else
+                                        {
+                                            // Lower position is occupied
+                                            // Error is raised
+                                            if (showErrors)
+                                            {
+                                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitDestinationBay, this.Mission.TargetBay);
+                                            }
+                                            else
+                                            {
+                                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitDestinationBay + $" Id={this.Mission.Id}");
+                                            }
+                                            returnValue = false;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-
                     break;
             }
 
@@ -872,6 +867,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
         private bool IsMachineOk(IMoveLoadingUnitMessageData messageData, bool showErrors)
         {
             var returnValue = false;
+
             switch (messageData.MissionType)
             {
                 case MissionType.Manual:
@@ -963,9 +959,11 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                     break;
 
                 default:
+
                     this.ErrorsProvider.RecordNew(MachineErrorCode.MissionTypeNotValid, this.Mission.TargetBay);
                     break;
             }
+
             if (!returnValue)
             {
                 this.Logger.LogDebug($"IsMachineOk: Machine Mode {this.MachineVolatileDataProvider.Mode} not valid for mission type {messageData.MissionType}");
@@ -975,11 +973,7 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
 
             var activeMissions = this.MissionsDataProvider.GetAllActiveMissions();
 
-            if (activeMissions.Any(x => x.Status == MissionStatus.Executing)
-                || activeMissions.Any(x => x.Status == MissionStatus.New
-                    && x.MissionType == this.Mission.MissionType
-                    && x.TargetBay == this.Mission.TargetBay
-                    && (x.Priority < this.Mission.Priority || x.CreationDate < this.Mission.CreationDate)))
+            if (activeMissions.Any(x => x.Status == MissionStatus.Executing))
             {
                 if (showErrors)
                 {
@@ -1033,103 +1027,255 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
             switch (messageData.Source)
             {
                 case LoadingUnitLocation.Cell:
-                    if (messageData.SourceCellId != null)
                     {
-                        var sourceCell = this.CellsProvider.GetById(messageData.SourceCellId.Value);
-                        if (sourceCell.BlockLevel != BlockLevel.Blocked)
+                        if (messageData.SourceCellId != null)
                         {
-                            unitToMove = sourceCell.LoadingUnit;
-                            if (unitToMove != null
-                                && !unitToMove.IsIntoMachineOK
-                                )
+                            var sourceCell = this.CellsProvider.GetById(messageData.SourceCellId.Value);
+                            if (sourceCell.BlockLevel != BlockLevel.Blocked)
                             {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
-                                return false;
-                            }
-                            mission.LoadUnitSource = LoadingUnitLocation.Cell;
-                            mission.LoadUnitCellSourceId = sourceCell.Id;
-
-                            bay = this.BaysDataProvider.GetByCell(sourceCell);
-                            if (bay != null
-                                && bay.Shutter != null
-                                && bay.Shutter.Type != ShutterType.NotSpecified
-                                )
-                            {
-                                var shutterInverter = bay.Shutter.Inverter.Index;
-                                var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
-                                if (shutterPosition != ShutterPosition.Closed
-                                    && shutterPosition != ShutterPosition.Half
+                                unitToMove = sourceCell.LoadingUnit;
+                                if (unitToMove != null
+                                    && !unitToMove.IsIntoMachineOK
                                     )
                                 {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
+                                    return false;
+                                }
+                                mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                                mission.LoadUnitCellSourceId = sourceCell.Id;
+
+                                bay = this.BaysDataProvider.GetByCell(sourceCell);
+                                if (bay != null
+                                    && bay.Shutter != null
+                                    && bay.Shutter.Type != ShutterType.NotSpecified
+                                    )
+                                {
+                                    var shutterInverter = bay.Shutter.Inverter.Index;
+                                    var shutterPosition = this.SensorsProvider.GetShutterPosition(shutterInverter);
+                                    if (shutterPosition != ShutterPosition.Closed
+                                        && shutterPosition != ShutterPosition.Half
+                                        )
+                                    {
+                                        if (showErrors)
+                                        {
+                                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bay.Number);
+                                        }
+                                        else
+                                        {
+                                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen + $" Id={this.Mission.Id}");
+                                        }
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (unitToMove == null)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell + $" Id={this.Mission.Id}");
+                            }
+                            return false;
+                        }
+                    }
+                    break;
+
+                case LoadingUnitLocation.LoadUnit:
+                    {
+                        if (messageData.LoadUnitId != null)
+                        {
+                            unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadUnitId.Value);
+                        }
+
+                        if (unitToMove != null)
+                        {
+                            var sourceCell = this.CellsProvider.GetByLoadingUnitId(unitToMove.Id);
+
+                            if (sourceCell != null)
+                            {
+                                if (!messageData.InsertLoadUnit)
+                                {
+                                    if (sourceCell.BlockLevel == BlockLevel.Blocked)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
+                                        return false;
+                                    }
+                                    else if (!unitToMove.IsIntoMachineOK)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
+                                        return false;
+                                    }
+                                    else
+                                    {
+                                        mission.LoadUnitSource = LoadingUnitLocation.Cell;
+                                        mission.LoadUnitCellSourceId = sourceCell.Id;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                var sourceBay = this.BaysDataProvider.GetLoadingUnitLocationByLoadingUnit(unitToMove.Id);
+
+                                if (sourceBay != LoadingUnitLocation.NoLocation)
+                                {
+                                    bay = this.BaysDataProvider.GetByLoadingUnitLocation(sourceBay);
+                                    if (bay != null &&
+                                        bay.Positions.FirstOrDefault(b => b.Location == sourceBay).IsBlocked)
+                                    {
+                                        if (showErrors)
+                                        {
+                                            this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
+                                        }
+                                        else
+                                        {
+                                            this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled + $" Id={this.Mission.Id}");
+                                        }
+                                        return false;
+                                    }
+                                    mission.LoadUnitSource = sourceBay;
+                                }
+                                else
+                                {
+                                    // it is not in bay and not in cell, maybe it is on the elevator?
+                                    var elevatorLoadUnit = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
+                                    if (elevatorLoadUnit is null
+                                        || unitToMove.Id != elevatorLoadUnit.Id)
+                                    {
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
+                                        unitToMove = null;
+                                    }
+                                    else
+                                    {
+                                        mission.LoadUnitSource = LoadingUnitLocation.Elevator;
+                                    }
+                                }
+                            }
+
+                            if (mission.LoadUnitSource == LoadingUnitLocation.NoLocation)
+                            {
+                                unitToMove = null;
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew((messageData.InsertLoadUnit) ? MachineErrorCode.LoadUnitNotFound : MachineErrorCode.LoadUnitNotLoaded, requestingBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation((messageData.InsertLoadUnit) ? ErrorDescriptions.LoadUnitNotFound : ErrorDescriptions.LoadUnitNotLoaded);
+                                }
+                            }
+                        }
+                        else if (showErrors)
+                        {
+                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound + $" Id={this.Mission.Id}");
+                        }
+                        if (unitToMove == null)
+                        {
+                            return false;
+                        }
+                    }
+                    break;
+
+                default:
+                    {
+                        if (messageData.InsertLoadUnit)
+                        {
+                            if (messageData.LoadUnitId.HasValue)
+                            {
+                                var bayPosition = this.BaysDataProvider.GetLoadingUnitLocationByLoadingUnit(messageData.LoadUnitId.Value);
+                                if (bayPosition == LoadingUnitLocation.NoLocation
+                                    || bayPosition == messageData.Source
+                                    )
+                                {
+                                    unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadUnitId.Value);
+                                }
+                                else if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitOtherBay, requestingBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitOtherBay + $" Id={this.Mission.Id}");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            unitToMove = this.BaysDataProvider.GetLoadingUnitByDestination(messageData.Source);
+                        }
+
+                        if (unitToMove == null)
+                        {
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound + $" Id={this.Mission.Id}");
+                            }
+                        }
+                        else if (unitToMove.CellId.HasValue)
+                        {
+                            unitToMove = null;
+                            if (showErrors)
+                            {
+                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentInCell, requestingBay);
+                            }
+                            else
+                            {
+                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentInCell + $" Id={this.Mission.Id}");
+                            }
+                        }
+                        else
+                        {
+                            bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
+#if CHECK_BAY_SENSOR
+                            if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
+                                && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)))
+                                && !(bay != null && bay.IsExternal && bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source))))
+                            {
+                                unitToMove = null;
+                                if (showErrors)
+                                {
+                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, requestingBay);
+                                }
+                                else
+                                {
+                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay + $" Id={this.Mission.Id}");
+                                }
+                            }
+#endif
+                            if (unitToMove != null && bay != null)
+                            {
+                                if (bay.Shutter != null
+                                    && bay.Shutter.Type != ShutterType.NotSpecified
+                                    && messageData.InsertLoadUnit
+                                    && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
+                                    && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Half
+                                    )
+                                {
+                                    unitToMove = null;
                                     if (showErrors)
                                     {
-                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, bay.Number);
+                                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
                                     }
                                     else
                                     {
                                         this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen + $" Id={this.Mission.Id}");
                                     }
-                                    return false;
                                 }
-                            }
-                        }
-                    }
-
-                    if (unitToMove == null)
-                    {
-                        if (showErrors)
-                        {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceCell + $" Id={this.Mission.Id}");
-                        }
-                        return false;
-                    }
-                    break;
-
-                case LoadingUnitLocation.LoadUnit:
-                    if (messageData.LoadUnitId != null)
-                    {
-                        unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadUnitId.Value);
-                    }
-
-                    if (unitToMove != null)
-                    {
-                        var sourceCell = this.CellsProvider.GetByLoadingUnitId(unitToMove.Id);
-
-                        if (sourceCell != null)
-                        {
-                            if (!messageData.InsertLoadUnit)
-                            {
-                                if (sourceCell.BlockLevel == BlockLevel.Blocked)
+                                else if (bay.Positions.FirstOrDefault(b => b.Location == messageData.Source).IsBlocked)
                                 {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceCell, requestingBay);
-                                    return false;
-                                }
-                                else if (!unitToMove.IsIntoMachineOK)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
-                                    return false;
-                                }
-                                else
-                                {
-                                    mission.LoadUnitSource = LoadingUnitLocation.Cell;
-                                    mission.LoadUnitCellSourceId = sourceCell.Id;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            var sourceBay = this.BaysDataProvider.GetLoadingUnitLocationByLoadingUnit(unitToMove.Id);
-
-                            if (sourceBay != LoadingUnitLocation.NoLocation)
-                            {
-                                bay = this.BaysDataProvider.GetByLoadingUnitLocation(sourceBay);
-                                if (bay != null &&
-                                    bay.Positions.FirstOrDefault(b => b.Location == sourceBay).IsBlocked)
-                                {
+                                    unitToMove = null;
                                     if (showErrors)
                                     {
                                         this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
@@ -1138,164 +1284,17 @@ namespace Ferretto.VW.MAS.MachineManager.MissionMove
                                     {
                                         this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled + $" Id={this.Mission.Id}");
                                     }
-                                    return false;
-                                }
-                                mission.LoadUnitSource = sourceBay;
-                            }
-                            else
-                            {
-                                // it is not in bay and not in cell, maybe it is on the elevator?
-                                var elevatorLoadUnit = this.ElevatorDataProvider.GetLoadingUnitOnBoard();
-                                if (elevatorLoadUnit is null
-                                    || unitToMove.Id != elevatorLoadUnit.Id)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotLoaded, requestingBay, $"{ErrorDescriptions.LoadUnitNumber} {unitToMove.Id}");
-                                    unitToMove = null;
-                                }
-                                else
-                                {
-                                    mission.LoadUnitSource = LoadingUnitLocation.Elevator;
                                 }
                             }
                         }
 
-                        if (mission.LoadUnitSource == LoadingUnitLocation.NoLocation)
+                        if (unitToMove == null)
                         {
-                            unitToMove = null;
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew((messageData.InsertLoadUnit) ? MachineErrorCode.LoadUnitNotFound : MachineErrorCode.LoadUnitNotLoaded, requestingBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation((messageData.InsertLoadUnit) ? ErrorDescriptions.LoadUnitNotFound : ErrorDescriptions.LoadUnitNotLoaded);
-                            }
+                            return false;
                         }
-                    }
-                    else if (showErrors)
-                    {
-                        this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
-                    }
-                    else
-                    {
-                        this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound + $" Id={this.Mission.Id}");
-                    }
-                    if (unitToMove == null)
-                    {
-                        return false;
-                    }
 
-                    break;
-
-                default:
-                    if (messageData.InsertLoadUnit)
-                    {
-                        if (messageData.LoadUnitId.HasValue)
-                        {
-                            var bayPosition = this.BaysDataProvider.GetLoadingUnitLocationByLoadingUnit(messageData.LoadUnitId.Value);
-                            if (bayPosition == LoadingUnitLocation.NoLocation
-                                || bayPosition == messageData.Source
-                                )
-                            {
-                                unitToMove = this.LoadingUnitsDataProvider.GetById(messageData.LoadUnitId.Value);
-                            }
-                            else if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitOtherBay, requestingBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitOtherBay + $" Id={this.Mission.Id}");
-                            }
-                        }
+                        mission.LoadUnitSource = messageData.Source;
                     }
-                    else
-                    {
-                        unitToMove = this.BaysDataProvider.GetLoadingUnitByDestination(messageData.Source);
-                    }
-
-                    if (unitToMove == null)
-                    {
-                        if (showErrors)
-                        {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitNotFound, requestingBay);
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitNotFound + $" Id={this.Mission.Id}");
-                        }
-                    }
-                    else if (unitToMove.CellId.HasValue)
-                    {
-                        unitToMove = null;
-                        if (showErrors)
-                        {
-                            this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentInCell, requestingBay);
-                        }
-                        else
-                        {
-                            this.Logger.LogInformation(ErrorDescriptions.LoadUnitPresentInCell + $" Id={this.Mission.Id}");
-                        }
-                    }
-                    else
-                    {
-                        bay = this.BaysDataProvider.GetByLoadingUnitLocation(messageData.Source);
-#if CHECK_BAY_SENSOR
-                        if (!this.SensorsProvider.IsLoadingUnitInLocation(messageData.Source)
-                            && !(bay != null && bay.IsExternal && !bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay)))
-                            && !(bay != null && bay.IsExternal && bay.IsDouble && (this.LoadingUnitMovementProvider.IsInternalPositionOccupied(bay.Number, messageData.Source) != this.LoadingUnitMovementProvider.IsExternalPositionOccupied(bay.Number, messageData.Source))))
-                        {
-                            unitToMove = null;
-                            if (showErrors)
-                            {
-                                this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitSourceBay, requestingBay);
-                            }
-                            else
-                            {
-                                this.Logger.LogInformation(ErrorDescriptions.LoadUnitSourceBay + $" Id={this.Mission.Id}");
-                            }
-                        }
-#endif
-                        if (unitToMove != null && bay != null)
-                        {
-                            if (bay.Shutter != null
-                                && bay.Shutter.Type != ShutterType.NotSpecified
-                                && messageData.InsertLoadUnit
-                                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Closed
-                                && this.SensorsProvider.GetShutterPosition(bay.Shutter.Inverter.Index) != ShutterPosition.Half
-                                )
-                            {
-                                unitToMove = null;
-                                if (showErrors)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.LoadUnitShutterOpen, requestingBay);
-                                }
-                                else
-                                {
-                                    this.Logger.LogInformation(ErrorDescriptions.LoadUnitShutterOpen + $" Id={this.Mission.Id}");
-                                }
-                            }
-                            else if (bay.Positions.FirstOrDefault(b => b.Location == messageData.Source).IsBlocked)
-                            {
-                                unitToMove = null;
-                                if (showErrors)
-                                {
-                                    this.ErrorsProvider.RecordNew(MachineErrorCode.BayPositionDisabled, requestingBay);
-                                }
-                                else
-                                {
-                                    this.Logger.LogInformation(ErrorDescriptions.BayPositionDisabled + $" Id={this.Mission.Id}");
-                                }
-                            }
-                        }
-                    }
-
-                    if (unitToMove == null)
-                    {
-                        return false;
-                    }
-
-                    mission.LoadUnitSource = messageData.Source;
                     break;
             }
 
