@@ -46,6 +46,7 @@
 
         <Grid Grid.Row="0"
               Grid.Column="1"
+              Margin="2,0,0,0"
               VerticalAlignment="Top">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -87,9 +88,9 @@
                                      ContentText="{Binding MissionOperation.ItemListRowCode}"
                                      LabelText="{resources:Loc OperatorApp.CommonListRow}" />
 
-            <StackPanel Grid.Row="2"
-                        Grid.Column="2"
-                        Grid.ColumnSpan="2"
+            <StackPanel Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="4"
                         Margin="0,0,0,5"
                         Orientation="Horizontal">
                 <controls:PpcLabeledText HorizontalAlignment="Left"
@@ -140,8 +141,8 @@
                                      Visibility="{Binding IsCarrefour, Converter={StaticResource BTVC}}" />
             <!--  Only reserved for Carrefour  -->
 
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="0"
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="2"
                                      Margin="0,0,0,5"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
@@ -167,7 +168,7 @@
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.Column="0"
-                                     Grid.ColumnSpan="2"
+                                     Grid.ColumnSpan="4"
                                      Margin="0,0,5,0"
                                      MaxHeight="40"
                                      HorizontalAlignment="Stretch"
@@ -193,8 +194,8 @@
                                      LabelText="{resources:Loc OperatorApp.BarcodeLabel}"
                                      Visibility="{Binding IsCurrentDraperyItem, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="0"
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.Column="2"
                                      MaxHeight="40"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
