@@ -62,6 +62,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int HorizontalPositionToCalibrate { get; set; } = 10000;
 
+        public bool ActiveVerticalCalibratePosition { get; set; }
+
         /// <summary>
         /// Inverter response timeout
         /// </summary>

@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int GetInverterResponseTimeout();
 
+        bool GetActiveVerticalCalibratePosition();
+
         bool GetIsLoadUnitFixed();
 
         int GetItemUniqueIdLength();

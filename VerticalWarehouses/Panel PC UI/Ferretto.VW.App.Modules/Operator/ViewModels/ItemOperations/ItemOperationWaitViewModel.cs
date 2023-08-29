@@ -167,13 +167,20 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 var machineIdentity = this.sessionService.MachineIdentity;
 
-                if (this.IsWmsHealthy)
+                try
                 {
-                    var waitlist = await this.areasWebService.GetItemListsAsync(machineIdentity.AreaId.Value, machineIdentity.Id, this.MachineService.Bay.Id, false, this.authenticationService.UserName);
+                    if (this.IsWmsHealthy)
+                    {
+                        var waitlist = await this.areasWebService.GetItemListsAsync(machineIdentity.AreaId.Value, machineIdentity.Id, this.MachineService.Bay.Id, false, this.authenticationService.UserName);
 
-                    this.waitingList.Clear();
+                        this.waitingList.Clear();
 
-                    this.waitingList.AddRange(waitlist);
+                        this.waitingList.AddRange(waitlist);
+                    }
+                }
+                catch (Exception)
+                {
+
                 }
 
                 this.WaitingListCount = this.waitingList.Count;
