@@ -494,6 +494,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Homing(Axis axis, Calibration calibration, int loadingUnitId, bool showErrors, bool turnBack, BayNumber requestingBay, MessageActor sender)
         {
+            var verticalPosition = this.GetCurrentVerticalPosition();
+            var homingPosition = this.machine.GetVerticalPositionToCalibrate();
+            var isActiveHomingFix = this.machine.GetActiveVerticalCalibratePosition();
+
             if (axis == Axis.BayChain)
             {
                 if (!this.baysDataProvider.GetIsExternal(requestingBay))
@@ -505,9 +509,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.externalBayProvider.Homing(calibration, loadingUnitId, showErrors, turnBack, requestingBay, sender);
                 }
             }
-            else //if (this.GetCurrentVerticalPosition() <= this.machine.GetVerticalPositionToCalibrate())
+            else if (!isActiveHomingFix || verticalPosition - homingPosition <= 5)
             {
                 this.elevatorProvider.Homing(axis, calibration, loadingUnitId, showErrors, requestingBay, sender);
+            }
+            else
+            {
+                this.elevatorProvider.MoveToAbsoluteVerticalPosition(false, homingPosition, false, false, null, null, true, false, false, null, requestingBay, sender);
             }
         }
 

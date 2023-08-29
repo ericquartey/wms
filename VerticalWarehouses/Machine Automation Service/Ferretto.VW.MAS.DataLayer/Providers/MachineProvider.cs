@@ -439,6 +439,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool GetActiveVerticalCalibratePosition()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.AsNoTracking().Select(m => m.ActiveVerticalCalibratePosition).First();
+            }
+        }
+
         public int? GetWaitingListPriorityHighlighted()
         {
             lock (this.dataContext)

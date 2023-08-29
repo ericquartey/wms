@@ -961,6 +961,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Metadata.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Vertical Calibration Position.
+        /// </summary>
+        public static string Machine_ActiveVerticalCalibratePosition {
+            get {
+                return ResourceManager.GetString("Machine_ActiveVerticalCalibratePosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allows you to modify the structural parameters of the machine..
         /// </summary>
         public static string Machine_CategoryDescription {

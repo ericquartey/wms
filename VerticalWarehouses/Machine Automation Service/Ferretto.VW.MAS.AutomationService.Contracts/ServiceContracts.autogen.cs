@@ -5552,6 +5552,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("HorizontalPositionToCalibrate", Required = Newtonsoft.Json.Required.Always)]
         public int HorizontalPositionToCalibrate { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("ActiveVerticalCalibratePosition", Required = Newtonsoft.Json.Required.Always)]
+        public bool ActiveVerticalCalibratePosition { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("InverterResponseTimeout", Required = Newtonsoft.Json.Required.Always)]
         public int InverterResponseTimeout { get; set; }
     

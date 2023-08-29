@@ -186,6 +186,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Id(25)]
             public int VerticalPositionToCalibrate { get; set; }
 
+            [Editable(true)]
+            [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ActiveVerticalCalibratePosition))]
+            [Id(31)]
+            public bool ActiveVerticalCalibratePosition { get; set; }
+
             #endregion
         }
 

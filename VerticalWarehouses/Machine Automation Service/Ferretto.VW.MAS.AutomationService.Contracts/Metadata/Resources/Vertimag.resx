@@ -666,4 +666,7 @@
   <data name="IsFindMinHeight" xml:space="preserve">
     <value>Elevator Logic Returns to the cell with the minimum height</value>
   </data>
+  <data name="Machine_ActiveVerticalCalibratePosition" xml:space="preserve">
+    <value>Enable Vertical Calibration Position</value>
+  </data>
 </root>
