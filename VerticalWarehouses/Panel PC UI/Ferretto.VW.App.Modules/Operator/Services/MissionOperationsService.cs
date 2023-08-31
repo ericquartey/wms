@@ -773,7 +773,8 @@ namespace Ferretto.VW.App.Modules.Operator
                             m.ErrorCode == MachineErrorCode.NoError
                             &&
                             m.Id == missionId.Value)
-                        .OrderBy(o => o.LoadUnitDestination);
+                        .OrderBy(o => o.LoadUnitDestination)
+                        .ThenBy(o => o.Priority);
                 }
                 else
                 {
@@ -787,7 +788,8 @@ namespace Ferretto.VW.App.Modules.Operator
                         &&
                         m.ErrorCode == MachineErrorCode.NoError
                         )
-                        .OrderBy(o => o.LoadUnitDestination);
+                        .OrderBy(o => o.LoadUnitDestination)
+                        .ThenBy(o => o.Priority);
 
                     //else
                     //{
