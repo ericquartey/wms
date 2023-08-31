@@ -260,6 +260,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         var bayNumber = (CommonUtils.Messages.Enumerations.BayNumber)wmsMission.BayId.Value;
                         try
                         {
+                            wmsMission.Priority = wmsMission.Operations.Select(o => o.Priority).Min();
                             //var bay = baysDataProvider.GetByNumber(bayNumber);
 
                             //if (!bay.Inventory && (wmsMission.Operations.Count() == wmsMission.Operations.Where(s => s.Type == MissionOperationType.Inventory).Count()))
