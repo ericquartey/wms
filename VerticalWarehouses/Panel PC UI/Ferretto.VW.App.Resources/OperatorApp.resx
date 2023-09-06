@@ -2767,4 +2767,7 @@
   <data name="IsBypassReason" xml:space="preserve">
     <value>Disable Order and reason</value>
   </data>
+  <data name="RefreshWaitPage" xml:space="preserve">
+    <value>Refresh wait page on completed operation</value>
+  </data>
 </root>

@@ -515,7 +515,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             else
             {
-                this.elevatorProvider.MoveToAbsoluteVerticalPosition(false, homingPosition, false, false, null, null, true, false, false, null, requestingBay, sender);
+                this.elevatorProvider.MoveToAbsoluteVerticalPosition(false, homingPosition, false, false, null, null, true, true, false, null, requestingBay, sender);
             }
         }
 
