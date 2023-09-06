@@ -240,7 +240,7 @@
                 Background="White"
                 Visibility="{Binding BarcodeImageExist, Converter={StaticResource BTVC}}">
             <Image MaxHeight="120"
-                   Margin="2,5,2,5"
+                   Margin="5,5,2,5"
                    Source="{Binding BarcodeImageSource}"
                    Stretch="Uniform" />
         </Border>
