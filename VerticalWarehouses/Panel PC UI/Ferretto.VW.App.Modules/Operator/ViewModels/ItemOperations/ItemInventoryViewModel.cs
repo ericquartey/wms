@@ -231,7 +231,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.BarcodeImageExist = false;
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
+
+            this.BarcodeImageSource = this.IsAsendia ? this.GenerateBarcodeSource(this.MissionOperation.ItemNotes) : this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
 
             this.MeasureUnitDescription = string.Format(Resources.Localized.Get("OperatorApp.InventoryQuantityDetected"), this.MeasureUnit);
 
@@ -250,7 +251,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.InputQuantity = null;
             }
 
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+            this.BarcodeImageSource = this.IsAsendia ? this.GenerateBarcodeSource(this.MissionOperation.ItemNotes) : this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
         }
 
         protected override void RaiseCanExecuteChanged()

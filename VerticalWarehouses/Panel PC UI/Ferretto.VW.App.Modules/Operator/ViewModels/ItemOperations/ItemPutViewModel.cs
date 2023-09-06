@@ -817,7 +817,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             if (this.IsNrLabelsEditable is false)
             {
-                this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+                this.BarcodeImageSource = this.IsAsendia ? this.GenerateBarcodeSource(this.MissionOperation.ItemNotes) : this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
             }
 
             this.MeasureUnitDescription = string.Format(Localized.Get("OperatorApp.DrawerActivityRefillingQtyRefilled"), this.MeasureUnit);
@@ -863,7 +863,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             base.InitializeInputQuantity();
 
-            this.BarcodeImageSource = this.GenerateBarcodeSource(this.MissionOperation?.ItemCode);
+            this.BarcodeImageSource = this.IsAsendia ? this.GenerateBarcodeSource(this.MissionOperation.ItemNotes) : this.GenerateBarcodeSource(this.MissionOperation.ItemCode);
         }
 
         protected override void RaiseCanExecuteChanged()
