@@ -2364,4 +2364,7 @@
   <data name="IsBypassReason" xml:space="preserve">
     <value>Disattiva causale e ragioni</value>
   </data>
+  <data name="RefreshWaitPage" xml:space="preserve">
+    <value>Ricarica pagina attesa a operazione confermata</value>
+  </data>
 </root>

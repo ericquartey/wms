@@ -109,6 +109,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool view;
 
+        private bool refreshWaitPage;
+
         private int waitingListPriorityHighlighted;
 
         #endregion
@@ -133,6 +135,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.barcodeAutomaticPut;
             set => this.SetProperty(ref this.barcodeAutomaticPut, value, this.CanExecute);
+        }
+
+        public bool RefreshWaitPage
+        {
+            get => this.refreshWaitPage;
+            set => this.SetProperty(ref this.refreshWaitPage, value, this.CanExecute);
         }
 
         public bool LotFilter
@@ -455,6 +463,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 this.IsEnableAddItemByList = configuration.IsAddItemByList;
                 this.IsCarrefour = configuration.IsCarrefour;
                 this.IsAsendia = configuration.IsAsendia;
+                this.RefreshWaitPage = configuration.RefreshWaitPage;
                 this.IsBypassReason = configuration.IsBypassReason;
                 this.LotFilter = configuration.LotFilter;
                 this.ShowWaitListInOperation = configuration.ShowWaitListInOperation;
@@ -513,6 +522,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 machine.IsAddItemByList = this.IsEnableAddItemByList;
                 machine.IsCarrefour = this.IsCarrefour;
                 machine.IsAsendia = this.IsAsendia;
+                machine.RefreshWaitPage = this.RefreshWaitPage;
                 machine.IsBypassReason = this.IsBypassReason;
                 machine.LotFilter = this.LotFilter;
                 machine.ShowWaitListInOperation = this.ShowWaitListInOperation;

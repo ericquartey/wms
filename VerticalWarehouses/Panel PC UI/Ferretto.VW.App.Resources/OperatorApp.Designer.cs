@@ -5425,6 +5425,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh wait page on completed operation.
+        /// </summary>
+        public static string RefreshWaitPage {
+            get {
+                return ResourceManager.GetString("RefreshWaitPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove any spilled items from the compartment..
         /// </summary>
         public static string RemoveAnySpilledItemsFromCompartment {

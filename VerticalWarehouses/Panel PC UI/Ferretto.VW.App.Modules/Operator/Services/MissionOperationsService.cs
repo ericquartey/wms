@@ -264,7 +264,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     if (sortedOperations.Any(o => o.Status is MissionOperationStatus.Executing))
                     {
                         var detected = false;
-                        foreach (var op in sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing))
+                        foreach (var op in sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing && o.RequestedQuantity > 0))
                         {
                             if (op.Id != missionId)
                             {
@@ -630,7 +630,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
                         this.MaxOperation = sortedOperations.Count(o => o.Status == MissionOperationStatus.Executing || o.Status == MissionOperationStatus.New);
 
-                        newWmsOperationInfo = sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing).Skip(this.CurrentOperation - 1).FirstOrDefault();
+                        newWmsOperationInfo = sortedOperations.Where(o => o.Status is MissionOperationStatus.Executing && o.RequestedQuantity > 0).Skip(this.CurrentOperation - 1).FirstOrDefault();
 
                         if (newWmsOperationInfo is null)
                         {
@@ -659,7 +659,6 @@ namespace Ferretto.VW.App.Modules.Operator
                                 catch (Exception)
                                 {
                                 }
-
                             }
 
                             this.logger.Debug($"Active mission has WMS operation {newWmsOperationInfo.Id}; priority {newWmsOperationInfo.Priority}; creation date {newWmsOperationInfo.CreationDate}; status {newWmsOperationInfo.Status}.");

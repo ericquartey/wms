@@ -5570,6 +5570,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("IsAsendia", Required = Newtonsoft.Json.Required.Always)]
         public bool IsAsendia { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("RefreshWaitPage", Required = Newtonsoft.Json.Required.Always)]
+        public bool RefreshWaitPage { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("LotFilter", Required = Newtonsoft.Json.Required.Always)]
         public bool LotFilter { get; set; }
     

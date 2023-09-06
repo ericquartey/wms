@@ -721,6 +721,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 machineDB.IsDrapery = machine.IsDrapery;
                 machineDB.IsCarrefour = machine.IsCarrefour;
                 machineDB.IsAsendia = machine.IsAsendia;
+                machineDB.RefreshWaitPage = machine.RefreshWaitPage;
                 machineDB.IsBypassReason = machine.IsBypassReason;
                 machineDB.LotFilter = machine.LotFilter;
                 machineDB.ShowWaitListInOperation = machine.ShowWaitListInOperation;

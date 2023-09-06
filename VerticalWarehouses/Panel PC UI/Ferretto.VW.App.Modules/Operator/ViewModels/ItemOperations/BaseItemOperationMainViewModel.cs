@@ -118,6 +118,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool fullCompartment;
 
+        private bool refreshWaitPage;
+
         private string inputItemCode;
 
         private string inputLot;
@@ -271,6 +273,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isAsendia;
             set => this.SetProperty(ref this.isAsendia, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool RefreshWaitPage
+        {
+            get => this.refreshWaitPage;
+            set => this.SetProperty(ref this.refreshWaitPage, value, this.RaiseCanExecuteChanged);
         }
 
         public string ToteBarcode
@@ -1258,9 +1266,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         DialogButtons.OK);
                 }
 
-                //this.navigationService.GoBackTo(
-                //    nameof(Utils.Modules.Operator),
-                //    Utils.Modules.Operator.ItemOperations.WAIT);
+                if (this.RefreshWaitPage)
+                {
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "ConfirmOperationAsync");
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -1420,10 +1432,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                     await this.machineBaysWebService.ActivateAsync();
                 }
 
-                this.navigationService.GoBackTo(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT,
-                    "ConfirmPartialOperationAsync");
+                if (this.RefreshWaitPage)
+                {
+                    this.navigationService.GoBackTo(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        "ConfirmOperationAsync");
+                }
             }
             catch (Exception ex) when (ex is MasWebApiException || ex is System.Net.Http.HttpRequestException)
             {
@@ -1601,6 +1616,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             var machine = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsBoxEnabled = machine.Box;
             this.IsAsendia = machine.IsAsendia;
+            this.RefreshWaitPage = machine.RefreshWaitPage;
 
             this.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
             this.IsDoubleConfirmBarcodePick = machine.IsDoubleConfirmBarcodePick;

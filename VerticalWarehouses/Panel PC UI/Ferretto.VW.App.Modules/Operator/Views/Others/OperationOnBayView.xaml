@@ -48,6 +48,11 @@
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
                         Orientation="Vertical">
+                <!-- WMS Custom -->
+                <TextBlock Margin="0,10,15,0"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="WMS Custom" />
                 <controls:PpcCheckBox Margin="0,10,15,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsAsendia, Mode=TwoWay}"
@@ -88,7 +93,13 @@
                                       IsChecked="{Binding IsOrderList, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsOrderList}" />
 
-                
+                <!-- Normal Operation On Bay-->
+
+                <TextBlock Margin="0,10,15,0"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{res:Loc OperatorApp.BayOperations}" />
+
                 <controls:PpcCheckBox Margin="0,15,0,0"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Pick, Mode=TwoWay}"
@@ -257,6 +268,11 @@
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding IsBypassReason, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsBypassReason }" /> 
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding RefreshWaitPage, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.RefreshWaitPage }" /> 
             </StackPanel>
         </ScrollViewer>
 
