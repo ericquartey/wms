@@ -1600,6 +1600,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var machine = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsBoxEnabled = machine.Box;
+            this.IsAsendia = machine.IsAsendia;
 
             this.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
             this.IsDoubleConfirmBarcodePick = machine.IsDoubleConfirmBarcodePick;
