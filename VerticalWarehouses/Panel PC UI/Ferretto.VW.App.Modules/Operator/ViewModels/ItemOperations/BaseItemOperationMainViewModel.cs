@@ -148,6 +148,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isCurrentDraperyItem;
 
+        private bool isDoubleConfirmBarcodeInventory;
+
         private bool isDoubleConfirmBarcodePick;
 
         private bool isDoubleConfirmBarcodePut;
@@ -526,6 +528,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.isCurrentDraperyItem;
             set => this.SetProperty(ref this.isCurrentDraperyItem, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsDoubleConfirmBarcodeInventory
+        {
+            get => this.isDoubleConfirmBarcodeInventory;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodeInventory, value);
         }
 
         public bool IsDoubleConfirmBarcodePick
@@ -1620,6 +1628,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             this.IsDoubleConfirmBarcodePut = machine.IsDoubleConfirmBarcodePut;
             this.IsDoubleConfirmBarcodePick = machine.IsDoubleConfirmBarcodePick;
+            this.IsDoubleConfirmBarcodeInventory = machine.IsDoubleConfirmBarcodeInventory;
             this.barcodeOk = null;
 
             var disableQtyItemEditingPick = machine.IsDisableQtyItemEditingPick;

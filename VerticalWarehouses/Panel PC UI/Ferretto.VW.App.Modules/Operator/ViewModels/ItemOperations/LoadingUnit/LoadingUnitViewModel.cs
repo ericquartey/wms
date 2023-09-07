@@ -128,6 +128,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isWmsEnabled;
 
+        private bool isDoubleConfirmBarcodeInventory;
+
         private string itemBarcode;
 
         private string itemLot;
@@ -332,6 +334,12 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             get => this.inputBoxCode;
             set => this.SetProperty(ref this.inputBoxCode, value);
+        }
+
+        public bool IsDoubleConfirmBarcodeInventory
+        {
+            get => this.isDoubleConfirmBarcodeInventory;
+            set => this.SetProperty(ref this.isDoubleConfirmBarcodeInventory, value);
         }
 
         public double? InputQuantity
@@ -913,12 +921,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
 
                 await this.ShowItemDetailsByBarcodeAsync(userAction);
-                return;
             }
+
             if (this.IsAddListItemVisible)
             {
                 await this.ShowItemDetailsByBarcodeAsync(userAction);
                 return;
+            }
+
+            if (this.IsDoubleConfirmBarcodeInventory && userAction.UserAction == UserAction.ConfirmKey)
+            {
+                if (this.SelectedProduct is null)
+                {
+                    this.ShowNotification(Localized.Get("OperatorApp.SelectItem"), Services.Models.NotificationSeverity.Error);
+                    return;
+                }
+
+                await this.ConfirmOperationAsync();
             }
 
             if (this.IsBoxOperationVisible && userAction.UserAction == UserAction.VerifyItem)
@@ -1017,7 +1036,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             var configuration = await this.machineConfigurationWebService.GetConfigAsync();
             this.IsBypassReason = configuration.IsBypassReason;
-
+            this.IsDoubleConfirmBarcodeInventory = configuration.IsDoubleConfirmBarcodeInventory;
             this.IsItalMetal = configuration.IsItalMetal;
 
             this.IsWmsEnabled = this.wmsDataProvider.IsEnabled;
@@ -1048,7 +1067,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
             // Show the picking/filling item operation panel view (ref. Idroinox customer), if requested
             this.IsAdjustmentButtonVisible = true;
-            //await this.MakePickItemPutItemOperationsVisible();
+            // await this.MakePickItemPutItemOperationsVisible();
 
             this.itemWeightToken = this.itemWeightToken
                 ??
@@ -1842,6 +1861,41 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else if (this.IsAddItemVisible)
                 {
+                    this.ClearNotifications();
+                    this.IsWaitingForResponse = true;
+                    try
+                    {
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemAdding"), Services.Models.NotificationSeverity.Info);
+
+                        this.Logger.Debug($"Immediate adding item {this.SelectedProduct.Id} into loading unit {this.LoadingUnit.Id} ...");
+
+                        // InputQuantity Fixed to 1
+                        this.InputQuantity = 1;
+
+                        // Add ReasonNote
+                        await this.machineLoadingUnitsWebService.AddItemReasonsAsync(
+                                                this.LoadingUnit.Id,
+                                                this.SelectedProduct.Id,
+                                                this.InputQuantity.Value,
+                                                this.SelectedCompartment.Id,
+                                                this.ItemLot,
+                                                this.SelectedProduct.SerialNumber,
+                                                this.ReasonId,
+                                                this.ReasonNotes);
+
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemLoaded"), Services.Models.NotificationSeverity.Success);
+                    }
+                    catch (Exception exc)
+                    {
+                        this.Logger.Debug($"Immediate adding item {this.SelectedProduct.Id} into loading unit {this.LoadingUnit.Id} failed. Error: {exc}");
+                        this.ShowNotification(Localized.Get("OperatorApp.ItemAddingFailed"), Services.Models.NotificationSeverity.Error);
+                    }
+
+                    this.IsWaitingForResponse = false;
+
+                    await this.OnAppearedAsync();
+
+                    this.SelectedProduct = null;
                 }
                 else
                 {

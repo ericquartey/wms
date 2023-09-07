@@ -3022,6 +3022,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Double confirm barcode inventory.
+        /// </summary>
+        public static string IsDoubleConfirmBarcodeInventory {
+            get {
+                return ResourceManager.GetString("IsDoubleConfirmBarcodeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Double confirm barcode pick.
         /// </summary>
         public static string IsDoubleConfirmBarcodePick {
@@ -5619,6 +5628,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SelectedShelf {
             get {
                 return ResourceManager.GetString("SelectedShelf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Item.
+        /// </summary>
+        public static string SelectItem {
+            get {
+                return ResourceManager.GetString("SelectItem", resourceCulture);
             }
         }
         
