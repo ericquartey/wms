@@ -537,6 +537,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 if (this.MissionOperation != null)
                 {
                     this.Logger.Debug($"Immediate adding item {this.itemId} by list {this.missionOperation.ItemListRowCode} into loading unit {this.LoadingUnitId} ...");
+
                     // No ReasonNote
                     await this.machineLoadingUnitsWebService.ImmediateAddItemByListAsync(
                                          this.LoadingUnitId,
@@ -549,6 +550,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 else
                 {
                     this.Logger.Debug($"Immediate adding item {this.itemId} into loading unit {this.LoadingUnitId} ...");
+
                     // Add ReasonNote
                     await this.machineLoadingUnitsWebService.AddItemReasonsAsync(
                                          this.LoadingUnitId,

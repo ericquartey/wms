@@ -2367,4 +2367,10 @@
   <data name="RefreshWaitPage" xml:space="preserve">
     <value>Ricarica pagina attesa a operazione confermata</value>
   </data>
+  <data name="SelectItem" xml:space="preserve">
+    <value>Seleziona Articolo</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodeInventory" xml:space="preserve">
+    <value>Doppia conferma con barcode inventario</value>
+  </data>
 </root>

@@ -209,7 +209,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isDisableQtyItemEditingPick, value, this.CanExecute);
         }
 
-        // not used
         public bool IsDoubleConfirmBarcodeInventory
         {
             get => this.isDoubleConfirmBarcodeInventory;

@@ -2770,4 +2770,10 @@
   <data name="RefreshWaitPage" xml:space="preserve">
     <value>Refresh wait page on completed operation</value>
   </data>
+  <data name="SelectItem" xml:space="preserve">
+    <value>Select Item</value>
+  </data>
+  <data name="IsDoubleConfirmBarcodeInventory" xml:space="preserve">
+    <value>Double confirm barcode inventory</value>
+  </data>
 </root>

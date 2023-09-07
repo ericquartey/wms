@@ -182,6 +182,11 @@
 
                 <controls:PpcCheckBox Margin="0,10,15,0"
                                       VerticalAlignment="Center"
+                                      IsChecked="{Binding IsDoubleConfirmBarcodeInventory, Mode=TwoWay}"
+                                      LabelText="{res:Loc OperatorApp.IsDoubleConfirmBarcodeInventory}" />
+
+                <controls:PpcCheckBox Margin="0,10,15,0"
+                                      VerticalAlignment="Center"
                                       IsChecked="{Binding IsEnabeNoteRules, Mode=TwoWay}"
                                       LabelText="{res:Loc OperatorApp.IsEnabeNoteRules}" />
 
