@@ -236,6 +236,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.SubscribeToEvents();
 
+            if (this.InputRequiredCycles is null || this.InputRequiredCycles < 60)
+            {
+                this.InputRequiredCycles = 60;
+            }
+
+
             await base.OnAppearedAsync();
         }
 
