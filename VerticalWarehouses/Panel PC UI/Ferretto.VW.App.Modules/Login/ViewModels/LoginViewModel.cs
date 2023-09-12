@@ -105,8 +105,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "installer",
-                Password = "vertimag2023",
+                UserName = "admin",
+                Password = $"Ferretto23{31 - DateTime.Now.Day:00}",
             };
 #else
             this.UserLogin = new UserLogin();

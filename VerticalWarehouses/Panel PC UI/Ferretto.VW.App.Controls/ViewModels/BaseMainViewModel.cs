@@ -85,6 +85,8 @@ namespace Ferretto.VW.App.Controls
 
         private SubscriptionToken sensorsToken;
 
+        private bool isAdmin;
+
         #endregion
 
         #region Constructors
@@ -120,6 +122,12 @@ namespace Ferretto.VW.App.Controls
         {
             get => this.isBrowserOpened;
             set => this.SetProperty(ref this.isBrowserOpened, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsAdmin
+        {
+            get => this.isAdmin;
+            set => this.SetProperty(ref this.isAdmin, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsEnabled
@@ -270,6 +278,8 @@ namespace Ferretto.VW.App.Controls
         public override async Task OnAppearedAsync()
         {
             this.IsWaitingForResponse = true;
+
+            this.IsAdmin = this.sessionService.UserAccessLevel >= UserAccessLevel.Admin;
 
             Task task = null;
             Task dataTask = null;

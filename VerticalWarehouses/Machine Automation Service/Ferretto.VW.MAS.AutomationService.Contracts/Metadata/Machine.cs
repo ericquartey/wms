@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.CanUserEnableWms))]
-            [Id(22)]
+            [Id(29)]
             public bool CanUserEnableWms { get; set; }
 
             [Category(Category = nameof(Vertimag.Elevator), ResourceType = typeof(Vertimag))]
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
 
             //[Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.FireAlarm))]
-            [Id(21)]
+            [Id(28)]
             public bool FireAlarm { get; set; }
 
             [Unit("mm")]
@@ -71,32 +71,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_InverterResponseTimeout))]
             [Unit("ms")]
             [Range(1000, 15000, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
-            [Id(26)]
+            [Id(35)]
             public int InverterResponseTimeout { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsAxisChanged))]
-            [Id(19)]
+            [Id(21)]
             public bool IsAxisChanged { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsBackToStartCell))]
-            [Id(28)]
+            [Id(36)]
             public bool IsBackToStartCell { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsFindMinHeight))]
-            [Id(29)]
+            [Id(37)]
             public bool IsFindMinHeight { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_IsHeartBeat))]
-            [Id(18)]
+            [Id(20)]
             public bool IsHeartBeat { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.IsLoadUnitFixed))]
-            [Id(27)]
+            [Id(32)]
             public bool IsLoadUnitFixed { get; set; }
 
             [Editable(true)]
@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ResponseTimeoutMilliseconds))]
             [Unit("ms")]
             [Range(1000, 15000, ErrorMessageResourceType = typeof(ErrorMessages), ErrorMessageResourceName = nameof(ErrorMessages.Range))]
-            [Id(24)]
+            [Id(33)]
             public int ResponseTimeoutMilliseconds { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_SerialNumber))]
@@ -173,22 +173,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             public bool Simulation { get; set; }
 
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_TouchHelper))]
-            [Id(23)]
+            [Id(31)]
             public bool TouchHelper { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalCyclesToCalibrate))]
-            [Id(20)]
+            [Id(23)]
             public int VerticalCyclesToCalibrate { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_VerticalPositionToCalibrate))]
-            [Id(25)]
+            [Id(34)]
             public int VerticalPositionToCalibrate { get; set; }
 
             [Editable(true)]
             [Display(ResourceType = typeof(Vertimag), Name = nameof(Vertimag.Machine_ActiveVerticalCalibratePosition))]
-            [Id(31)]
+            [Id(38)]
             public bool ActiveVerticalCalibratePosition { get; set; }
 
             #endregion

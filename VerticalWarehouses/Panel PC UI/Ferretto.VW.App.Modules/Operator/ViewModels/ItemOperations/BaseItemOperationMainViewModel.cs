@@ -138,6 +138,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
         private bool isBusyAbortingOperation;
 
+        private bool asendiaVerifyItemNote;
+
+        private bool asendiaVerifyItem;
+
         private bool isBusyConfirmingOperation;
 
         private bool isBusyConfirmingPartialOperation;
@@ -610,6 +614,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool AsendiaVerifyItemNote
+        {
+            get => this.asendiaVerifyItemNote;
+            set => this.SetProperty(ref this.asendiaVerifyItemNote, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool AsendiaVerifyItem
+        {
+            get => this.asendiaVerifyItem;
+            set => this.SetProperty(ref this.asendiaVerifyItem, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsWmsEnabledAndHealthy =>
                                                                                                                                                                                                                                                                                                                                                                    this.IsWmsHealthy
                && this.wmsDataProvider.IsEnabled;
@@ -1019,8 +1035,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                             }
                             else
                             {
-                                await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
-                                this.ResetInputFields();
+                                if (this.IsAsendia)
+                                {
+                                    if (this.AsendiaVerifyItemNote)
+                                    {
+                                        await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
+                                        this.ResetInputFields();
+                                    }
+                                    else
+                                    {
+                                        this.AsendiaVerifyItem = true;
+                                    }
+                                }
+                                else
+                                {
+                                    await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
+                                    this.ResetInputFields();
+                                }
                             }
                         }
                     }
@@ -1075,6 +1106,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
 
                 case UserAction.VerifyItemNote:
                     {
+                        // VerifyItemNote   ItemPick    UDC(?<ItemNote>[0-9a-zA-Z_\.\/ \-\+\|]+)    -1  NULL    False
+                        // VerifyItemNote   ItemPut     UDC(?<ItemNote>[0-9a-zA-Z_\.\/ \-\+\|]+)    -1  NULL    False
                         var itemNote = e.Code;
 
                         e.HasMismatch = itemNote is null || this.MissionOperation?.ItemNotes != itemNote;
@@ -1115,6 +1148,24 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                         else
                         {
                             this.ShowNotification((Localized.Get("OperatorApp.BoxUdcOperationConfirmed") + e.Code), Services.Models.NotificationSeverity.Success);
+
+                            if (this.IsAsendia)
+                            {
+                                if (this.AsendiaVerifyItem)
+                                {
+                                    await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
+                                    this.ResetInputFields();
+                                }
+                                else
+                                {
+                                    this.AsendiaVerifyItemNote = true;
+                                }
+                            }
+                            else
+                            {
+                                await this.ConfirmOperationAsync(e.Code, !string.IsNullOrEmpty(this.InputSerialNumber));
+                                this.ResetInputFields();
+                            }
                         }
                     }
 
@@ -2463,6 +2514,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
             //this.IsItemCodeValid = false;
             this.InputQuantity = this.MissionRequestedQuantity;
             //this.AvailableQuantity = this.MissionRequestedQuantity; //to fix
+
+            this.AsendiaVerifyItem = false;
+            this.AsendiaVerifyItemNote = false;
         }
 
         private void SetCurrentIndex(int? itemId)

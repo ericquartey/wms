@@ -261,6 +261,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.LoadingUnits = this.Convert(iLoadingUnits);
 
             await base.OnAppearedAsync();
+
+            if (!this.IsAdmin)
+            {
+                await this.AddAllUnitAsync();
+            }
         }
 
         protected override async Task OnDataRefreshAsync()
@@ -278,7 +283,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 var procedureParameters = await this.machineFullTestWebService.GetParametersAsync();
                 this.RequiredCycles = procedureParameters.RequiredCycles;
-                if(this.RequiredCycles is null || this.RequiredCycles == 0)
+                if (this.RequiredCycles is null || this.RequiredCycles == 0)
                 {
                     this.RequiredCycles = 1;
                 }
@@ -314,6 +319,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task AddAllUnitAsync()
         {
+            this.IsWaitingForResponse = true;
+
             try
             {
                 foreach (var unit in this.LoadingUnits)
@@ -336,6 +343,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -365,22 +376,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanAddAllUnit()
         {
-            return this.LoadingUnits.Count > 0 && !this.IsMoving && (this.TestUnits != this.LoadingUnits);
+            return this.LoadingUnits.Count > 0 && !this.IsMoving && (this.TestUnits != this.LoadingUnits) && !this.IsWaitingForResponse;
         }
 
         private bool CanAddUnit()
         {
-            return this.SelectedLU != null && !this.TestUnits.Contains(this.SelectedLU) && !this.IsMoving;
+            return this.SelectedLU != null && !this.TestUnits.Contains(this.SelectedLU) && !this.IsWaitingForResponse && !this.IsMoving && this.IsAdmin;
         }
 
         private bool CanRemoveAllUnit()
         {
-            return this.TestUnits.Count > 0 && !this.IsMoving;
+            return this.TestUnits.Count > 0 && !this.IsMoving && !this.IsWaitingForResponse && this.IsAdmin;
         }
 
         private bool CanRemoveUnit()
         {
-            return this.SelectedTU != null && this.TestUnits.Contains(this.SelectedTU) && !this.IsMoving;
+            return this.SelectedTU != null && this.TestUnits.Contains(this.SelectedTU) && !this.IsMoving && this.IsAdmin && !this.IsWaitingForResponse && this.IsAdmin;
         }
 
         private bool CanResetSession()
@@ -400,7 +411,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsMoving &&
                    this.TestUnits.Any() &&
                    this.RequiredCycles.HasValue &&
-                   this.RequiredCycles > 0;
+                   this.RequiredCycles > 0 &&
+                   !this.IsWaitingForResponse;
         }
 
         private bool CanStop()
@@ -443,6 +455,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task RemoveAllUnitAsync()
         {
+            this.IsWaitingForResponse = true;
             try
             {
                 foreach (var unit in this.LoadingUnits)
@@ -470,6 +483,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             catch (Exception)
             {
                 throw;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
