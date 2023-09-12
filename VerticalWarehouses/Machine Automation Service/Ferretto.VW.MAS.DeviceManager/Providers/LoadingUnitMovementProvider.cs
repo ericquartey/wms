@@ -515,7 +515,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
             else
             {
-                this.elevatorProvider.MoveToAbsoluteVerticalPosition(false, homingPosition, false, false, null, null, true, true, false, null, requestingBay, sender);
+                try
+                {
+                    this.elevatorProvider.MoveToAbsoluteVerticalPosition(false, homingPosition, false, false, null, null, true, false, false, null, requestingBay, sender);
+                }
+                catch (Exception)
+                {
+                    this.logger.LogError("Failed to resume mission Force Homing");
+
+                    this.elevatorProvider.Homing(axis, calibration, loadingUnitId, showErrors, requestingBay, sender);
+                }
             }
         }
 
