@@ -810,9 +810,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private async Task LoadConfigurationAsync(string configurationFilePath, DataLayerContext dataContext, bool force = false)
+        private async Task LoadConfigurationAsync(string configurationFilePath, DataLayerContext dataContext)
         {
-            if (dataContext.Machines.Any() && !force)
+            if (dataContext.Machines.Any())
             {
                 return;
             }

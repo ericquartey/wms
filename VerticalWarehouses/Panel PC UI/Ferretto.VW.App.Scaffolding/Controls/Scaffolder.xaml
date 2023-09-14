@@ -44,7 +44,7 @@
       <Setter Property="VerticalAlignment" Value="Center" />
       <Setter Property="TextTrimming" Value="CharacterEllipsis" />
       <Setter Property="ToolTip" Value="{Binding Path=Text, RelativeSource={RelativeSource Mode=Self}}" />
-        </Style>
+    </Style>
 
     <Style x:Key="BreadcrumbTextBlock"
            TargetType="{x:Type TextBlock}">
@@ -500,23 +500,16 @@
                 <DataTemplate>
                   <DataTemplate.Resources>
                     <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                    <converters:CheckDifferenceValueJsonConverter x:Key="CDVJC" />
                   </DataTemplate.Resources>
                   <Border Style="{StaticResource CellBorderStyle}">
                     <TextBlock Style="{StaticResource CellTextBlockStyle}">
-                        <TextBlock.Text>
+                      <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource TwoWayConverter}"
-                                        ConverterCulture="{x:Static res:UILoc.UICulture}">
-                            <Binding Path="Property" />
-                            <Binding Path="Instance" />
+                                      ConverterCulture="{x:Static res:UILoc.UICulture}">
+                          <Binding Path="Property" />
+                          <Binding Path="Instance" />
                         </MultiBinding>
-                        </TextBlock.Text>
-                        <TextBlock.Foreground>
-                            <MultiBinding Converter="{StaticResource CDVJC}">
-                                    <Binding Path="Property" />
-                                    <Binding Path="Instance" />
-                            </MultiBinding>
-                        </TextBlock.Foreground>
+                      </TextBlock.Text>
                     </TextBlock>
                   </Border>
                 </DataTemplate>
@@ -557,16 +550,24 @@
             </GridViewColumn>
             <GridViewColumn Width="80"
                             Header="Max">
-                <GridViewColumn.CellTemplate>
-                    <DataTemplate>
-                        <Border Style="{StaticResource CellBorderStyle}">
-                            <TextBlock Style="{StaticResource CellTextBlockStyle}"
-                                        Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
-                        </Border>
-                    </DataTemplate>
-                </GridViewColumn.CellTemplate>
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <Border Style="{StaticResource CellBorderStyle}">
+                    <TextBlock Style="{StaticResource CellTextBlockStyle}"
+                               Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
+                  </Border>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
             </GridViewColumn>
-        </GridView>
+
+            <!--<GridViewColumn Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="{icons:PackIconFontAwesome Kind=EditRegular}" Click="Edit_Click" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>-->
+          </GridView>
         </ListView.View>
       </ListView>
     </Grid>

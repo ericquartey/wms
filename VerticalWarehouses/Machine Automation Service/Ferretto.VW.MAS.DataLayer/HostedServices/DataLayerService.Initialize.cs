@@ -55,14 +55,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 await standbyDbContext.Database.MigrateAsync();
             }
 
-            var defaultDbContext = new DataLayerContext(redundancyService.DefaultDbContextOptions, redundancyService);
-            var defaultPendingMigrations = await defaultDbContext.Database.GetPendingMigrationsAsync();
-            if (defaultPendingMigrations.Any())
-            {
-                this.Logger.LogInformation($"Applying {defaultPendingMigrations.Count()} migrations to default database ...");
-                await standbyDbContext.Database.MigrateAsync();
-            }
-
             redundancyService.IsEnabled = true;
         }
 
@@ -76,9 +68,9 @@ namespace Ferretto.VW.MAS.DataLayer
             var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var primaryDb = configuration.GetDataLayerPrimaryConnectionString().Split('=')[1]?.Trim('\'');
             var secondaryDb = configuration.GetDataLayerSecondaryConnectionString().Split('=')[1]?.Trim('\'');
-            var defaultDb = configuration.GetDataLayerDefaultConnectionString().Split('=')[1]?.Trim('\'');
-
-            if (!string.IsNullOrEmpty(secondaryDb) && System.IO.File.Exists(secondaryDb))
+            if (!string.IsNullOrEmpty(secondaryDb)
+                && System.IO.File.Exists(secondaryDb)
+                )
             {
                 // create a backup
                 var currentDir = System.IO.Path.GetDirectoryName(secondaryDb);
@@ -98,7 +90,11 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.Logger.LogError(ex.Message);
                 }
             }
-            if (!string.IsNullOrEmpty(primaryDb) && System.IO.File.Exists(primaryDb) && !string.IsNullOrEmpty(secondaryDb) && !System.IO.File.Exists(secondaryDb))
+            if (!string.IsNullOrEmpty(primaryDb)
+                && System.IO.File.Exists(primaryDb)
+                && !string.IsNullOrEmpty(secondaryDb)
+                && !System.IO.File.Exists(secondaryDb)
+                )
             {
                 this.Logger.LogWarning($"No standby database. Copy database from [{primaryDb}] to [{secondaryDb}].");
                 var secondaryDir = System.IO.Path.GetDirectoryName(secondaryDb);
@@ -109,25 +105,6 @@ namespace Ferretto.VW.MAS.DataLayer
                         System.IO.Directory.CreateDirectory(secondaryDir);
                     }
                     System.IO.File.Copy(primaryDb, secondaryDb);
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex.Message);
-                }
-            }
-            if (!string.IsNullOrEmpty(defaultDb) && !System.IO.File.Exists(defaultDb))
-            {
-                // create a Db with all default value from ConfigurationFile
-                this.Logger.LogWarning($"No default database. create database from [{configuration.GetDataLayerConfigurationFile()}].");
-
-                var defaultDir = System.IO.Path.GetDirectoryName(defaultDb);
-                try
-                {
-                    if (!System.IO.Directory.Exists(defaultDir))
-                    {
-                        System.IO.Directory.CreateDirectory(defaultDir);
-                    }
-                    System.IO.File.Copy(primaryDb, defaultDb);
                 }
                 catch (Exception ex)
                 {
@@ -146,12 +123,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
                     var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
                     var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+
                     await this.LoadConfigurationAsync(configuration.GetDataLayerConfigurationFile(), dataContext);
-
-                    var redundancyService = scope.ServiceProvider.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
-                    var defaultDataContext = new DataLayerContext(redundancyService.DefaultDbContextOptions, redundancyService);
-                    await this.LoadConfigurationAsync(configuration.GetDataLayerDefaultConnectionString(), defaultDataContext, true);
-
                     this.GenerateInstructionDefinitions(dataContext);
                     this.GenerateAccessories(dataContext);
                     this.GenerateSetupProcedures(dataContext);
@@ -216,8 +189,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.Logger.LogError(ex, "Error while initializing database.");
                 this.SendErrorMessage(new DLExceptionMessageData(ex, null, 0, MessageVerbosity.Fatal));
             }
-
-
         }
 
         #endregion
