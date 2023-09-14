@@ -9,13 +9,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         DbContextOptions<TDbContext> ActiveDbContextOptions { get; }
 
-        bool IsActiveDbInhibited { get; }
+        DbContextOptions<TDbContext> StandbyDbContextOptions { get; }
 
-        bool IsEnabled { get; set; }
+        DbContextOptions<TDbContext> DefaultDbContextOptions { get; }
+
+        bool IsActiveDbInhibited { get; }
 
         bool IsStandbyDbInhibited { get; }
 
-        DbContextOptions<TDbContext> StandbyDbContextOptions { get; }
+        bool IsDefaultDbInhibited { get; }
+
+        bool IsEnabled { get; set; }
 
         #endregion
 

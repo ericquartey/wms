@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly string standbyDbConnectionString;
 
+        private readonly string defaultDbConnectionString;
+
         private Exception lastSeenException;
 
         #endregion
@@ -44,6 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.activeDbConnectionString = configuration.GetDataLayerPrimaryConnectionString();
             this.standbyDbConnectionString = configuration.GetDataLayerSecondaryConnectionString();
+            this.defaultDbConnectionString = configuration.GetDataLayerDefaultConnectionString();
 
             this.Initialize();
         }
@@ -52,17 +55,23 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Properties
 
-        public DbContextOptions<TDbContext> ActiveDbContextOptions { get; private set; }
-
-        public bool IsActiveDbInhibited => this.isInhibited[this.ActiveDbContextOptions];
-
         public bool IsEnabled { get; set; }
 
-        public bool IsStandbyDbInhibited => this.isInhibited[this.StandbyDbContextOptions];
+        public DbContextOptions<TDbContext> ActiveDbContextOptions { get; private set; }
 
         public DbContextOptions<TDbContext> StandbyDbContextOptions { get; private set; }
 
+        public DbContextOptions<TDbContext> DefaultDbContextOptions { get; private set; }
+
+        public bool IsActiveDbInhibited => this.isInhibited[this.ActiveDbContextOptions];
+
+        public bool IsStandbyDbInhibited => this.isInhibited[this.StandbyDbContextOptions];
+
+        public bool IsDefaultDbInhibited => this.isInhibited[this.DefaultDbContextOptions];
+
         private bool IsRedundancyConfigured => this.StandbyDbContextOptions != null;
+
+        private bool IsRedundancyDefaultConfigured => this.DefaultDbContextOptions != null;
 
         #endregion
 
@@ -147,6 +156,20 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Options;
 
                 this.isInhibited.Add(this.StandbyDbContextOptions, false);
+            }
+
+            if (string.IsNullOrWhiteSpace(this.defaultDbConnectionString))
+            {
+                this.isInhibited.Add(this.StandbyDbContextOptions, true);
+                this.logger.LogWarning("No connection string specified for standby database. Database redundancy disabled.");
+            }
+            else
+            {
+                this.DefaultDbContextOptions = new DbContextOptionsBuilder<TDbContext>()
+                    .UseSqlite(this.defaultDbConnectionString)
+                    .Options;
+
+                this.isInhibited.Add(this.DefaultDbContextOptions, false);
             }
         }
 

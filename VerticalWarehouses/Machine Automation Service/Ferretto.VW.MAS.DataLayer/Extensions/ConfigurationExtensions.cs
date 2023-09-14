@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
 
+        private const string DefaultConnectionStringName = "AutomationServiceDefault";
+
         #endregion
 
         #region Methods
@@ -42,6 +44,11 @@ namespace Ferretto.VW.MAS.DataLayer
         public static string GetDataLayerSecondaryConnectionString(this IConfiguration configuration)
         {
             return configuration.GetConnectionString(SecondaryConnectionStringName);
+        }
+
+        public static string GetDataLayerDefaultConnectionString(this IConfiguration configuration)
+        {
+            return configuration.GetConnectionString(DefaultConnectionStringName);
         }
 
         public static MemoryCacheEntryOptions GetMemoryCacheOptions(this IConfiguration configuration)
