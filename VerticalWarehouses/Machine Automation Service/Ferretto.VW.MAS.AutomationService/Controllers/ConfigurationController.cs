@@ -88,6 +88,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("get-json-configuration")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<VertimagConfiguration> GetJsonConfiguration()
+        {
+            return this.Ok(this.configurationProvider.GetJsonConfiguration());
+        }
+
         #endregion
     }
 }

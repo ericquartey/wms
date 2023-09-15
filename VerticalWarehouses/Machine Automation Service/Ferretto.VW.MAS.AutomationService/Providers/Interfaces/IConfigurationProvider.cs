@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         void UpdateMachine(Machine machine);
 
+        VertimagConfiguration GetJsonConfiguration();
+
         #endregion
     }
 }
