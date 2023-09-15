@@ -58,6 +58,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         public static readonly DependencyProperty ModelProperty
                             = DependencyProperty.Register("Model", typeof(object), typeof(Scaffolder), new PropertyMetadata(OnModelPropertyChanged));
 
+        public static readonly DependencyProperty JsonModelProperty
+                            = DependencyProperty.Register("JsonModel", typeof(object), typeof(Scaffolder), new PropertyMetadata(OnJsonModelPropertyChanged));
+
         public static readonly DependencyProperty SearchTextProperty
                     = DependencyProperty.Register("SearchText", typeof(string), typeof(Scaffolder), new PropertyMetadata(OnSearchTextPropertyChanged));
 
@@ -79,6 +82,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private readonly List<ScaffoldedEntityDataTableItem> _elasticDataTable = new List<ScaffoldedEntityDataTableItem>();
 
         private Models.ScaffoldedStructure _model = null;
+
+        private Models.ScaffoldedStructure _jsonModel = null;
 
         private Models.ScaffoldedStructure _navigationRoot = null;
 
@@ -164,6 +169,12 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             set => this.SetValue(ModelProperty, value);
         }
 
+        public object JsonModel
+        {
+            get => this.GetValue(JsonModelProperty);
+            set => this.SetValue(JsonModelProperty, value);
+        }
+
         public string SearchText
         {
             get => (string)this.GetValue(SearchTextProperty);
@@ -191,6 +202,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
         private static void OnModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((Scaffolder)d).OnModelChanged(e);
+
+        private static void OnJsonModelPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            => ((Scaffolder)d).OnJsonModelChanged(e);
 
         private static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
             => ((Scaffolder)d).OnSearchTextChanged(e);
@@ -220,27 +234,36 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
-        private void BuildUpElasticDataTable(Models.ScaffoldedStructure branch, string category = default)
+        private void BuildUpElasticDataTable(Models.ScaffoldedStructure branch, Models.ScaffoldedStructure jsonBranch = null, string category = default)
         {
             foreach (var entity in branch.Entities)
             {
+                var jsonEntity = jsonBranch.Entities.First(e => e.Id == entity.Id);
+
                 object originalValue = null;
+                object jsonlValue = null;
                 if (entity.Instance != null)
                 {
                     originalValue = entity.Property.GetValue(entity.Instance);
+                    jsonlValue = jsonEntity.Property.GetValue(jsonEntity.Instance);
                 }
+
+                entity.DifferentFromJson = originalValue?.ToString() != jsonlValue?.ToString();
+
                 this._elasticDataTable.Add(new ScaffoldedEntityDataTableItem
                 {
                     Entity = entity,
                     FullCategory = string.Concat(category, string.IsNullOrEmpty(category) ? default : CATEGORY_SEPARATOR, entity.DisplayName()).Trim(),
                     Id = entity.Id,
                     OriginalValue = originalValue,
+                    JsonValue = jsonlValue,
                     Tags = new[] { entity.DisplayName(), category }.Union(entity.Metadata.OfType<TagAttribute>().Select(t => t.Tag())).Where(t => !string.IsNullOrEmpty(t))
                 });
             }
+
             foreach (var child in branch.Children)
             {
-                this.BuildUpElasticDataTable(child, string.Concat(category, CATEGORY_SEPARATOR, child.Category).Trim());
+                this.BuildUpElasticDataTable(child, jsonBranch.Children.First(c => c.Id == child.Id), string.Concat(category, CATEGORY_SEPARATOR, child.Category).Trim());
             }
         }
 
@@ -306,11 +329,12 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
-        private void OnFocusStructureChanged(DependencyPropertyChangedEventArgs e)
+        private async void OnFocusStructureChanged(DependencyPropertyChangedEventArgs e)
         {
             var current = e.NewValue as Models.ScaffoldedStructure;
             this.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? Array.Empty<Models.ScaffoldedEntity>());
             this.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? Array.Empty<Models.ScaffoldedStructure>());
+
 
             // navigating? (aka: deeper than the root?)
             var navigating = this.IsNavigating = current != this._navigationRoot;
@@ -335,6 +359,14 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                     }
                 }
             }
+        }
+
+        private void OnJsonModelChanged(DependencyPropertyChangedEventArgs e)
+        {
+            this.SearchText = default;
+            var model = e.NewValue;
+
+            this._jsonModel = model?.Scaffold();
         }
 
         private void OnModelChanged(DependencyPropertyChangedEventArgs e)
@@ -435,9 +467,9 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void RebuildElasticDataTable()
         {
             this._elasticDataTable.Clear();
-            if (this._model != null)
+            if (this._model != null && this._jsonModel != null)
             {
-                this.BuildUpElasticDataTable(this._model);
+                this.BuildUpElasticDataTable(this._model, this._jsonModel);
             }
         }
 
@@ -488,6 +520,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             /// Gets or sets the pristine value of the <see cref="Entity"/>.
             /// </summary>
             public object OriginalValue { get; set; }
+
+            public object JsonValue { get; set; }
 
             /// <summary>
             /// Gets or sets all the tags set up to the actual <see cref="Entity"/>.

@@ -1,9 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
+using NLog;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -25,6 +32,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IWmsSettingsProvider wmsSettingsProvider;
 
+        private readonly IServiceScopeFactory serviceScopeFactory;
+
         #endregion
 
         #region Constructors
@@ -35,6 +44,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IMachineProvider machineProvider,
             IWmsSettingsProvider wmsSettingsProvider,
             IBaysDataProvider baysDataProvider,
+            IServiceScopeFactory serviceScopeFactory,
             DataLayerContext dataContext,
             ILogger<ConfigurationProvider> logger)
         {
@@ -44,6 +54,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.baysDataProvider = baysDataProvider;
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -147,6 +158,68 @@ namespace Ferretto.VW.MAS.AutomationService
                         this.logger.LogError(e, $"Configuration Provider update exception");
                     }
                 }
+            }
+        }
+
+        public VertimagConfiguration GetJsonConfiguration()
+        {
+            try
+            {
+                var scope = this.serviceScopeFactory.CreateScope();
+
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+                var ConfigurationFile = configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile");
+
+                if (string.IsNullOrEmpty(ConfigurationFile))
+                {
+                    return null;
+                }
+
+                this.logger.LogInformation($"Run: loading configuration from JSON file ({ConfigurationFile}) ...");
+
+                string fileContents;
+                using (var streamReader = new StreamReader(ConfigurationFile))
+                {
+                    fileContents = streamReader.ReadToEnd();
+                }
+
+                var jsonObject = JObject.Parse(fileContents);
+
+                ValidateJson(jsonObject);
+
+                var settings = new JsonSerializerSettings();
+                settings.Converters.Add(new IPAddressConverter());
+
+                var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
+                vertimagConfiguration.Validate();
+
+                return vertimagConfiguration;
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError($"Exeption While loading configuration from JSON file ({e.Message}) ...");
+
+                return null;
+            }
+        }
+
+        private static void ValidateJson(JObject jsonObject)
+        {
+            try
+            {
+                using (var streamReader = new StreamReader("configuration/schemas/vertimag-configuration-schema.json"))
+                {
+                    using (var textReader = new JsonTextReader(streamReader))
+                    {
+                        var schema = JSchema.Load(textReader);
+                        jsonObject.Validate(schema);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                var logger = LogManager.GetCurrentClassLogger();
+                logger.Error(ex, ex.Message);
             }
         }
 

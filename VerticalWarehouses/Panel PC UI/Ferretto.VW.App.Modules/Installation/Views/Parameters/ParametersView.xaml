@@ -45,7 +45,6 @@
             </Image.Visibility>
         </Image>
 
-
         <Grid Grid.Column="0"
               Margin="0">
             <Grid.RowDefinitions>
@@ -81,7 +80,6 @@
                                     Kind="Magnify"
                                     Style="{DynamicResource PpcButtonMenuStyle}"
                                     Visibility="{Binding IsNavigating, ElementName=scaffolder, Converter={StaticResource TTUI}, ConverterParameter=Invert}" />
-
             </Grid>
         </Grid>
 
@@ -113,6 +111,7 @@
                                     HorizontalAlignment="Stretch"
                                     Command="{Binding SaveCommand}"
                                     IsBusy="{Binding IsBusy}"
+                                    JsonModel="{Binding Path=JsonConfiguration}"
                                     Model="{Binding Path=Configuration}">
                 <!--<scaffolding:Scaffolder.Style>
                 <Style TargetType="{x:Type scaffolding:Scaffolder}">
@@ -155,11 +154,8 @@
                                             Command="{Binding ChangeIdCommand}"
                                             Content="{res:Loc InstallationApp.ChangeId}" />
                     </StackPanel>
-
                 </Grid>
             </Border>
-
-
         </Grid>
     </Grid>
 </ctrls:View>

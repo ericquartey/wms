@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private VertimagConfiguration configuration;
 
+        private VertimagConfiguration jsonConfiguration;
+
         private IEnumerable<DriveInfo> exportableDrives = Array.Empty<DriveInfo>();
 
         private DelegateCommand goToExport;
@@ -75,6 +77,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public IEnumerable<DriveInfo> AvailableDrives => this.exportableDrives;
 
         public VertimagConfiguration Configuration => this.configuration;
+
+        public VertimagConfiguration JsonConfiguration => this.jsonConfiguration;
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -157,6 +161,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
+
+            try
+            {
+                if (this.jsonConfiguration is null || this.jsonConfiguration.Machine is null)
+                {
+                    this.jsonConfiguration = await this.machineConfigurationWebService.GetJsonConfigurationAsync();
+
+                    this.RaisePropertyChanged(nameof(this.JsonConfiguration));
+                }
+            }
+            catch (Exception e)
+            {
+                this.Logger.Error($"Exeption while configurin json value ({e})");
+            }
 
             this.usbWatcher.DrivesChanged += this.UsbWatcher_DrivesChange;
             this.usbWatcher.Enable();
