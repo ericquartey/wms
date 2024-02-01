@@ -2079,4 +2079,7 @@
   <data name="SetPoint" xml:space="preserve">
     <value>Riferimento</value>
   </data>
+  <data name="NoMaintenerNameError" xml:space="preserve">
+    <value>Nome Manutentore Richiesto per la conferma del servizio</value>
+  </data>
 </root>

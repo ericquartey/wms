@@ -555,7 +555,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
                 }
                 else
                 {
-                    this.dialogService.ShowMessage("Nome del manutentore Obbligatorio", Localized.Get("OperatorApp.ConfirmService"), DialogType.Exclamation, DialogButtons.OK);
+                    this.dialogService.ShowMessage(Localized.Get("OperatorApp.NoMaintenerNameError"), Localized.Get("OperatorApp.ConfirmService"), DialogType.Exclamation, DialogButtons.OK);
                 }
             }
             catch (Exception)

@@ -2480,4 +2480,7 @@
   <data name="SetPoint" xml:space="preserve">
     <value>Set Point</value>
   </data>
+  <data name="NoMaintenerNameError" xml:space="preserve">
+    <value>Maintener Name required to confirm the service</value>
+  </data>
 </root>

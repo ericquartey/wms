@@ -4265,6 +4265,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Maintener Name required to confirm the service.
+        /// </summary>
+        public static string NoMaintenerNameError {
+            get {
+                return ResourceManager.GetString("NoMaintenerNameError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No reason.
         /// </summary>
         public static string NoReason {
