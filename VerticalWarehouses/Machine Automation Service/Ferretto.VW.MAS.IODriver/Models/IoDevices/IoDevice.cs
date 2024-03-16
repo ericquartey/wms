@@ -454,64 +454,68 @@ namespace Ferretto.VW.MAS.IODriver
                             // INFO The sensor presence in lower bay must be inverted (NOT for carousel or External bay)
                             inputData[(int)IoPorts.LoadingUnitInLowerBay] = (this.isCarousel || (this.isExternalBay && !this.isDoubleBay)) ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
-                            var isOstec = false;
-
-                            using (var scope = this.serviceScopeFactory.CreateScope())
+                            try
                             {
-                                var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-
-                                isOstec = machineProvider.IsOstecActive();
-
-                            }
-                            // Ostec Siren Control
-                            if (isOstec)
-                            {
-
-                                var silenceAlarm = false;
-                                var hasError = false;
-
-                                using (var scope = this.serviceScopeFactory.CreateScope())
-                                {
-                                    var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-                                    hasError = errorsProvider.HasActiveErrors();
-                                }
+                                var isOstec = false;
 
                                 using (var scope = this.serviceScopeFactory.CreateScope())
                                 {
                                     var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
 
-                                    silenceAlarm = machineProvider.IsSilenceSirenAlarm();
-
+                                    isOstec = machineProvider.IsOstecActive();
                                 }
 
-                                if (hasError && !silenceAlarm)
+                                // Ostec Siren Control
+                                if (isOstec)
                                 {
-                                    this.ioStatus.OutputData[6] = true;
-                                    this.ioStatus.OutputData[7] = true;
-                                }
-                                else if (hasError && silenceAlarm)
-                                {
-                                    this.ioStatus.OutputData[6] = true;
-                                    this.ioStatus.OutputData[7] = false;
-                                }
-                                else
-                                {
-                                    this.ioStatus.OutputData[6] = false;
-                                    this.ioStatus.OutputData[7] = false;
+                                    var silenceAlarm = false;
+                                    var hasError = false;
+
+                                    using (var scope = this.serviceScopeFactory.CreateScope())
+                                    {
+                                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                                        hasError = errorsProvider.HasActiveErrors();
+                                    }
 
                                     using (var scope = this.serviceScopeFactory.CreateScope())
                                     {
                                         var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                                        await machineProvider.SetSilenceSirenAlarm(false);
+
+                                        silenceAlarm = machineProvider.IsSilenceSirenAlarm();
+                                    }
+
+                                    if (hasError && !silenceAlarm)
+                                    {
+                                        this.ioStatus.OutputData[6] = true;
+                                        this.ioStatus.OutputData[7] = true;
+                                    }
+                                    else if (hasError && silenceAlarm)
+                                    {
+                                        this.ioStatus.OutputData[6] = true;
+                                        this.ioStatus.OutputData[7] = false;
+                                    }
+                                    else
+                                    {
+                                        this.ioStatus.OutputData[6] = false;
+                                        this.ioStatus.OutputData[7] = false;
+
+                                        using (var scope = this.serviceScopeFactory.CreateScope())
+                                        {
+                                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                                            await machineProvider.SetSilenceSirenAlarm(false);
+                                        }
+                                    }
+
+                                    lock (this.ioStatus)
+                                    {
+                                        this.ioStatus.UpdateOutputStates(this.ioStatus.OutputData);
                                     }
                                 }
-
-                                lock (this.ioStatus)
-                                {
-                                    this.ioStatus.UpdateOutputStates(this.ioStatus.OutputData);
-                                }
                             }
-                            
+                            catch (Exception)
+                            {
+                            }
+
                             if (this.ioStatus.UpdateInputStates(inputData)
                                 || this.forceIoStatusPublish)
                             {
